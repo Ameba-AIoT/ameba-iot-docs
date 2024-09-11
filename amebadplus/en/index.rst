@@ -3,7 +3,7 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-:github_url: https://github.com/Ameba_AIoT/ameba-iot-docs
+:github_url: https://github.com/Ameba-AIoT/ameba-iot-docs
 
 AmebaDPlus Documents
 ==========================================
