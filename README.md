@@ -1,4 +1,4 @@
-# Techincal documents of Ameba IoT ICs
+# Techincal documents of Ameba AIoT chips
 - AT Command
 - Application Note
 - Software Tools
