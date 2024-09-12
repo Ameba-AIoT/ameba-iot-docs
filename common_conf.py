@@ -80,6 +80,14 @@ def get_exclude_rst(root_rst: Path, src_root: Path, exclude_patterns) -> List:
             if fpath not in toctree_rst_files:
                 exclude_rst.append(os.path.relpath(fpath, src_root).replace("\\", "/"))
 
+    filter_cfg = src_root / "filter_cfg.txt"
+    run_location = os.environ.get("RUN_LOCATION", "github")
+    print(f"RunLocation: {run_location}")
+    if filter_cfg.exists() and run_location == "github":
+        print(f"Read {filter_cfg}...")
+        for line in filter_cfg.read_text().splitlines():
+            if line.strip():
+                exclude_rst.append(line.strip().replace("\\", "/"))
     return exclude_rst
 
 
@@ -144,7 +152,8 @@ extensions = [
     "sphinx_toggleprompt",
     "sphinx_tabs.tabs",
     "sphinx.ext.autodoc",
-    "sphinx.ext.viewcode"
+    "sphinx.ext.viewcode",
+    'sphinx_togglebutton'
 ]
 
 toggleprompt_offset_right = 30  # 示例：设置提示符偏移量

@@ -9,6 +9,9 @@ pushd %~dp0
 
 REM Command file for Sphinx documentation
 
+REM This ENV var used to switch filter
+set RUN_LOCATION=local 
+
 REM Set Tag and NDA
 set tag=-t FreeRTOS
 set SET_NDA=
