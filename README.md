@@ -5,4 +5,4 @@
 - MP Tools
 
 ## View Docs
-- AmebaDPlus (RTL8721Dx series): https://ameba-iot-docs.readthedocs.io/en/latest/
+- AmebaDPlus (RTL8721Dx series): https://ameba-aiot.github.io/ameba-iot-docs/amebadplus/en/RTL8721Dx/latest
