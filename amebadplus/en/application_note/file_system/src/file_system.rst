@@ -21,7 +21,17 @@ By default, the VFS has been initialized in ``main.c`` as follows:
    {
      int ret = 0;
      vfs_init();
-     ret = vfs_user_register("lfs", VFS_LITTLEFS, VFS_INF_FLASH, VFS_FLASH_R1, VFS_RW);
+
+ #ifdef CONFIG_FATFS_WITHIN_APP_IMG
+     ret = vfs_user_register("fat", VFS_FATFS, VFS_INF_FLASH, VFS_REGION_2, VFS_RO);
+     if (ret == 0) {
+         RTK_LOGI(TAG, "VFS-FAT Init Success \n");
+     } else {
+        RTK_LOGI(TAG, "VFS-FAT Init Fail \n");
+     }
+ #endif
+
+     ret = vfs_user_register(VFS_PREFIX, VFS_LITTLEFS, VFS_INF_FLASH, VFS_REGION_1, VFS_RW);
      if (ret == 0) {
        ret = rt_kv_init();
        if (ret == 0) {
@@ -41,20 +51,20 @@ The ``vfs_user_register()`` API will mount VFS to the Flash by users' configurat
 
 Where:
 
-:prefix: defined by users, used to distinguish different file systems
+- ``prefix``: defined by users, used to distinguish different file systems
 
-:vfs_type: file system type of the underlying implementation (FatFS or LittleFS)
+- ``vfs_type``: file system type of the underlying implementation (FatFS or LittleFS)
 
 - ``interface``: memory type (Flash only)
 
-- ``region``: Flash partition (VFS1 or USER, described in section :ref:`vfs_on_flash_section`)
+- ``region``: Flash partition (VFS1 or VFS2, described in section :ref:`vfs_on_flash_section`)
 
 - ``flag``: operation authority of file system (read-write or read-only)
 
 
 
 .. note::
-   ``vfs_type`` is set to ``LittleFS`` by default for read-write balance and power failure protection. To ensure proper utilization of FatFS, it is essential to configure the relevant settings in the menuconfig.
+   ``vfs_type`` of VFS_REGION_1 is set to ``LittleFS`` by default for read-write balance and power failure protection. To ensure proper utilization of FatFS, it is essential to configure the relevant settings in the menuconfig.
 
 
 Usage of VFS
@@ -64,7 +74,7 @@ Usage of VFS
 
 VFS on Flash
 ~~~~~~~~~~~~~~~~~~~~~~~~
-Adjust the Flash partitions appropriately if the VFS interfaces are set to the Flash, and modify VFS1 in ``Flash_Layout[]`` in ``{SDK}\component\soc\amebadplus\usrcfg\ameba_flashcfg.c``.
+Adjust the Flash partitions appropriately if the VFS interfaces are set to the Flash, and modify VFS1 or VFS2 (according to register region in main.c) in ``Flash_Layout[]`` in ``{SDK}\component\soc\amebadplus\usrcfg\ameba_flashcfg.c``.
 
 .. code-block:: c
    :emphasize-lines: 11
@@ -76,10 +86,11 @@ Adjust the Flash partitions appropriately if the VFS interfaces are set to the F
        {IMG_APP_OTA1,  0x08014000, 0x081F3FFF}, //Certificate(4K) + Manifest(4K) + KM4 Application OTA1 + Manifest(4K) + RDP IMG OTA1
 
        {IMG_BOOT_OTA2, 0x08200000, 0x08213FFF}, //Boot Manifest(4K) + KM4 Bootloader(76K) OTA
-       {IMG_APP_OTA2,  0x08214000, 0x083F3FFF}, //Certificate(4K) + Manifest(4K) + KM4 Application OTA2 + Manifest(4K) + RDP IMG OTA2
+       {IMG_APP_OTA2,  0x08214000, 0x083DCFFF}, //Certificate(4K) + Manifest(4K) + KM4 Application OTA2 + Manifest(4K) + RDP IMG OTA2
 
-       {FTL,           0x08700000, 0x08702FFF}, //FTL for BT(>=12K), The start offset of flash pages which is allocated to FTL physical map.
-       {VFS1,          0x08703000, 0x08722FFF}, //VFS region 1 (128K)
+       {FTL,           0x083DD000, 0x083DFFFF}, //FTL for BT(>=12K), The start offset of flash pages which is allocated to FTL physical map.
+       {VFS1,          0x083E0000, 0x083FFFFF}, //VFS region 1 (128K)
+       {VFS2,          0xFFFFFFFF, 0xFFFFFFFF}, //VFS region 2
        {USER,          0xFFFFFFFF, 0xFFFFFFFF}, //Reserved for users
 
        /* End */
@@ -88,7 +99,7 @@ Adjust the Flash partitions appropriately if the VFS interfaces are set to the F
 
 
 .. note::
-   The VFS1 region must exist, and its size should always be larger than 128KB.
+   The VFS1 region must exist, and its size should always be larger than 128KB. There are two VFS regions at most.
 
 
 Common File Operation
@@ -186,13 +197,14 @@ Users can rebuild the project by ``make all EXAMPLE=vfs`` to test how common fil
 
 .. code::
    
-   [example_vfs_thread] fwrite success!!!
-   [example_vfs_thread] fread success!!!
+   [example_vfs_thread] fwrite succeeded !!!
+   [example_vfs_thread] fread succeeded !!!
+   [example_vfs_thread] remove file succeeded !!!
 
 
 
 .. note::
-   There are some interfaces whose return value is different from standard interfaces. If successful, ``fwrite``/``fread`` returns 1 and ``fseek`` returns offset according to the beginning of file.
+   If successful, ``fseek`` returns offset according to the beginning of file which is different from standard interfaces.
 
 
 Key-Value Operation
@@ -260,7 +272,7 @@ For special storage security needs, users can configure encryption and decryptio
 
 VFS Bin File Generation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-If data needs to be placed in the Flash in advance, VFS bin file can be generated on PC. After generating the bin file, it should be downloaded to VFS1 region according to the Flash layout.
+If data needs to be placed in the Flash in advance, VFS bin file can be generated on PC. After generating the bin file, it should be downloaded to VFS region according to the Flash layout.
 
 LittleFS Bin File Generation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -272,7 +284,7 @@ LittleFS Bin File Generation
 
    ``AUDIO`` and ``KV`` directories will be LittleFS directory in the Flash.
 
-2. Use the command ``$./mklittlefs -b 4096 -p 256 -c test image_littlefs.bin`` in ``mklittlefs`` tool located at ``\tools\littlefs`` to generate LittleFS bin files.
+2. Use the command ``$./mklittlefs -b 4096 -p 256 -s 0x20000 -c test image_littlefs.bin`` in ``mklittlefs`` tool located at ``\tools\littlefs`` to generate LittleFS bin files.
 
    Where:
 
@@ -291,12 +303,12 @@ LittleFS Bin File Generation
       :align: center
 
    .. note::
-      "-b 4096" and "-p 256" are default configurations, users should adapt the configuration according to "block_size" and "cache_size" of ``lfs_config`` in \ ``{SDK}\component\file_system\littlefs\littlefs_adapter.c.``\  "-s 0x20000" is according to VFS1 region mentioned in section :ref:`vfs_on_flash_section`.
+      "-b 4096" and "-p 256" are default configurations, users should adapt the configuration according to "block_size" and "cache_size" of ``lfs_config`` in \ ``{SDK}\component\file_system\littlefs\littlefs_adapter.c.``\  "-s 0x20000" is according to VFS region mentioned in section :ref:`vfs_on_flash_section`.
 
 
 3. Download the image to the Flash.
 
-   The start address of image should be VFS1 Flash region address mentioned in section :ref:`vfs_on_flash_section`. Test logs are shown below:
+   The start address of image should be VFS Flash region address mentioned in section :ref:`vfs_on_flash_section`. Test logs are shown below:
 
    .. code::
 
