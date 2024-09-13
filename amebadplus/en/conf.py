@@ -52,7 +52,12 @@ copyright = "2024, Realsil"
 author = "Realsil"
 
 # 宏替换
-CHIP_NAME = 'RTL8721Dx'
+print(f"TAGS: {tags}")
+if "RTL8711D" in tags:
+    CHIP_NAME = 'RTL8711Dx'
+elif "RTL8721D" in tags:
+    CHIP_NAME = 'RTL8721Dx'
+
 VERSION = '1.0.0'
 
 rst_prolog = """
