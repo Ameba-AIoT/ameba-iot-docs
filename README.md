@@ -28,6 +28,6 @@ The SDK accompanying the documentations can be downloaded from https://github.co
 
 # Feedback
 
-- If you have any issues or suggestions when using the documentations, please login [RealMCU](https://www.realmcu.com/en/Account/Login) and give feedback.
+- If you have any issues or suggestions when using these documentations, please log in [RealMCU](https://www.realmcu.com/en/Account/Login) and give feedback.
 
 - If you find a bug or any error, you can directly submit a Pull Request on GitHub.
