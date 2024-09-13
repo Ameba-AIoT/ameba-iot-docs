@@ -155,21 +155,31 @@
 <section id="vfs-initialization">
 <h1>VFS Initialization<a class="headerlink" href="#vfs-initialization" title="Link to this heading"></a></h1>
 <p>By default, the VFS has been initialized in <code class="docutils literal notranslate"><span class="pre">main.c</span></code> as follows:</p>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">app_filesystem_init</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
-<span class="p">{</span>
-<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">ret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-<span class="w">  </span><span class="n">vfs_init</span><span class="p">();</span>
-<span class="w">  </span><span class="n">ret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">vfs_user_register</span><span class="p">(</span><span class="s">&quot;lfs&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">VFS_LITTLEFS</span><span class="p">,</span><span class="w"> </span><span class="n">VFS_INF_FLASH</span><span class="p">,</span><span class="w"> </span><span class="n">VFS_FLASH_R1</span><span class="p">,</span><span class="w"> </span><span class="n">VFS_RW</span><span class="p">);</span>
-<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ret</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="n">ret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rt_kv_init</span><span class="p">();</span>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">app_filesystem_init</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">ret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="n">vfs_init</span><span class="p">();</span>
+
+<span class="cp">#ifdef CONFIG_FATFS_WITHIN_APP_IMG</span>
+<span class="w">    </span><span class="n">ret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">vfs_user_register</span><span class="p">(</span><span class="s">&quot;fat&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">VFS_FATFS</span><span class="p">,</span><span class="w"> </span><span class="n">VFS_INF_FLASH</span><span class="p">,</span><span class="w"> </span><span class="n">VFS_REGION_2</span><span class="p">,</span><span class="w"> </span><span class="n">VFS_RO</span><span class="p">);</span>
 <span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ret</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">      </span><span class="n">RTK_LOGI</span><span class="p">(</span><span class="n">TAG</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;File System Init Success</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
-<span class="w">      </span><span class="k">return</span><span class="p">;</span>
+<span class="w">        </span><span class="n">RTK_LOGI</span><span class="p">(</span><span class="n">TAG</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;VFS-FAT Init Success </span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">       </span><span class="n">RTK_LOGI</span><span class="p">(</span><span class="n">TAG</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;VFS-FAT Init Fail </span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
 <span class="w">    </span><span class="p">}</span>
+<span class="cp">#endif</span>
+
+<span class="w">    </span><span class="n">ret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">vfs_user_register</span><span class="p">(</span><span class="n">VFS_PREFIX</span><span class="p">,</span><span class="w"> </span><span class="n">VFS_LITTLEFS</span><span class="p">,</span><span class="w"> </span><span class="n">VFS_INF_FLASH</span><span class="p">,</span><span class="w"> </span><span class="n">VFS_REGION_1</span><span class="p">,</span><span class="w"> </span><span class="n">VFS_RW</span><span class="p">);</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ret</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">ret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rt_kv_init</span><span class="p">();</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ret</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">RTK_LOGI</span><span class="p">(</span><span class="n">TAG</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;File System Init Success</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="k">return</span><span class="p">;</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="n">RTK_LOGE</span><span class="p">(</span><span class="n">TAG</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;File System Init Fail </span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="k">return</span><span class="p">;</span>
 <span class="w">  </span><span class="p">}</span>
-<span class="w">  </span><span class="n">RTK_LOGE</span><span class="p">(</span><span class="n">TAG</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;File System Init Fail </span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
-<span class="w">  </span><span class="k">return</span><span class="p">;</span>
-<span class="p">}</span>
 </pre></div>
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">vfs_user_register()</span></code> API will mount VFS to the Flash by users’ configuration. If failed to mount, this API will check whether the Flash is clean (0xFF). And if the Flash is clean, it will program the Flash to initialize VFS.</p>
@@ -177,29 +187,23 @@
 </pre></div>
 </div>
 <p>Where:</p>
-<dl class="field-list simple">
-<dt class="field-odd">prefix<span class="colon">:</span></dt>
-<dd class="field-odd"><p>defined by users, used to distinguish different file systems</p>
-</dd>
-<dt class="field-even">vfs_type<span class="colon">:</span></dt>
-<dd class="field-even"><p>file system type of the underlying implementation (FatFS or LittleFS)</p>
-</dd>
-</dl>
 <ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">prefix</span></code>: defined by users, used to distinguish different file systems</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">vfs_type</span></code>: file system type of the underlying implementation (FatFS or LittleFS)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">interface</span></code>: memory type (Flash only)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">region</span></code>: Flash partition (VFS1 or USER, described in section <a class="reference internal" href="#vfs-on-flash-section"><span class="std std-ref">VFS on Flash</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">region</span></code>: Flash partition (VFS1 or VFS2, described in section <a class="reference internal" href="#vfs-on-flash-section"><span class="std std-ref">VFS on Flash</span></a>)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">flag</span></code>: operation authority of file system (read-write or read-only)</p></li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p><code class="docutils literal notranslate"><span class="pre">vfs_type</span></code> is set to <code class="docutils literal notranslate"><span class="pre">LittleFS</span></code> by default for read-write balance and power failure protection. To ensure proper utilization of FatFS, it is essential to configure the relevant settings in the menuconfig.</p>
+<p><code class="docutils literal notranslate"><span class="pre">vfs_type</span></code> of VFS_REGION_1 is set to <code class="docutils literal notranslate"><span class="pre">LittleFS</span></code> by default for read-write balance and power failure protection. To ensure proper utilization of FatFS, it is essential to configure the relevant settings in the menuconfig.</p>
 </div>
 </section>
 <section id="usage-of-vfs">
 <h1>Usage of VFS<a class="headerlink" href="#usage-of-vfs" title="Link to this heading"></a></h1>
 <section id="vfs-on-flash">
 <span id="vfs-on-flash-section"></span><h2>VFS on Flash<a class="headerlink" href="#vfs-on-flash" title="Link to this heading"></a></h2>
-<p>Adjust the Flash partitions appropriately if the VFS interfaces are set to the Flash, and modify VFS1 in <code class="docutils literal notranslate"><span class="pre">Flash_Layout[]</span></code> in <code class="docutils literal notranslate"><span class="pre">{SDK}\component\soc\amebadplus\usrcfg\ameba_flashcfg.c</span></code>.</p>
+<p>Adjust the Flash partitions appropriately if the VFS interfaces are set to the Flash, and modify VFS1 or VFS2 (according to register region in main.c) in <code class="docutils literal notranslate"><span class="pre">Flash_Layout[]</span></code> in <code class="docutils literal notranslate"><span class="pre">{SDK}\component\soc\amebadplus\usrcfg\ameba_flashcfg.c</span></code>.</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">const</span><span class="w"> </span><span class="n">FlashLayoutInfo_TypeDef</span><span class="w"> </span><span class="n">Flash_Layout</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="cm">/*Region_Type,  [StartAddr, EndAddr]   */</span>
 <span class="w">    </span><span class="p">{</span><span class="n">IMG_BOOT</span><span class="p">,</span><span class="w">      </span><span class="mh">0x08000000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x08013FFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Boot Manifest(4K) + KM4 Bootloader(76K)</span>
@@ -207,11 +211,12 @@
 <span class="w">    </span><span class="p">{</span><span class="n">IMG_APP_OTA1</span><span class="p">,</span><span class="w">  </span><span class="mh">0x08014000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x081F3FFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Certificate(4K) + Manifest(4K) + KM4 Application OTA1 + Manifest(4K) + RDP IMG OTA1</span>
 
 <span class="w">    </span><span class="p">{</span><span class="n">IMG_BOOT_OTA2</span><span class="p">,</span><span class="w"> </span><span class="mh">0x08200000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x08213FFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Boot Manifest(4K) + KM4 Bootloader(76K) OTA</span>
-<span class="w">    </span><span class="p">{</span><span class="n">IMG_APP_OTA2</span><span class="p">,</span><span class="w">  </span><span class="mh">0x08214000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x083F3FFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Certificate(4K) + Manifest(4K) + KM4 Application OTA2 + Manifest(4K) + RDP IMG OTA2</span>
+<span class="w">    </span><span class="p">{</span><span class="n">IMG_APP_OTA2</span><span class="p">,</span><span class="w">  </span><span class="mh">0x08214000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x083DCFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Certificate(4K) + Manifest(4K) + KM4 Application OTA2 + Manifest(4K) + RDP IMG OTA2</span>
 
-<span class="w">    </span><span class="p">{</span><span class="n">FTL</span><span class="p">,</span><span class="w">           </span><span class="mh">0x08700000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x08702FFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//FTL for BT(&gt;=12K), The start offset of flash pages which is allocated to FTL physical map.</span>
-<span class="hll"><span class="w">    </span><span class="p">{</span><span class="n">VFS1</span><span class="p">,</span><span class="w">          </span><span class="mh">0x08703000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x08722FFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//VFS region 1 (128K)</span>
-</span><span class="w">    </span><span class="p">{</span><span class="n">USER</span><span class="p">,</span><span class="w">          </span><span class="mh">0xFFFFFFFF</span><span class="p">,</span><span class="w"> </span><span class="mh">0xFFFFFFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Reserved for users</span>
+<span class="w">    </span><span class="p">{</span><span class="n">FTL</span><span class="p">,</span><span class="w">           </span><span class="mh">0x083DD000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x083DFFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//FTL for BT(&gt;=12K), The start offset of flash pages which is allocated to FTL physical map.</span>
+<span class="hll"><span class="w">    </span><span class="p">{</span><span class="n">VFS1</span><span class="p">,</span><span class="w">          </span><span class="mh">0x083E0000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x083FFFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//VFS region 1 (128K)</span>
+</span><span class="w">    </span><span class="p">{</span><span class="n">VFS2</span><span class="p">,</span><span class="w">          </span><span class="mh">0xFFFFFFFF</span><span class="p">,</span><span class="w"> </span><span class="mh">0xFFFFFFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//VFS region 2</span>
+<span class="w">    </span><span class="p">{</span><span class="n">USER</span><span class="p">,</span><span class="w">          </span><span class="mh">0xFFFFFFFF</span><span class="p">,</span><span class="w"> </span><span class="mh">0xFFFFFFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Reserved for users</span>
 
 <span class="w">    </span><span class="cm">/* End */</span>
 <span class="w">    </span><span class="p">{</span><span class="mh">0xFF</span><span class="p">,</span><span class="w">          </span><span class="mh">0xFFFFFFFF</span><span class="p">,</span><span class="w"> </span><span class="mh">0xFFFFFFFF</span><span class="p">},</span>
@@ -220,7 +225,7 @@
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The VFS1 region must exist, and its size should always be larger than 128KB.</p>
+<p>The VFS1 region must exist, and its size should always be larger than 128KB. There are two VFS regions at most.</p>
 </div>
 </section>
 <section id="common-file-operation">
@@ -380,13 +385,14 @@
 </tbody>
 </table>
 <p>Users can rebuild the project by <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">all</span> <span class="pre">EXAMPLE=vfs</span></code> to test how common file operations work. Test logs should be like below:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>[example_vfs_thread] fwrite success!!!
-[example_vfs_thread] fread success!!!
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>[example_vfs_thread] fwrite succeeded !!!
+[example_vfs_thread] fread succeeded !!!
+[example_vfs_thread] remove file succeeded !!!
 </pre></div>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>There are some interfaces whose return value is different from standard interfaces. If successful, <code class="docutils literal notranslate"><span class="pre">fwrite</span></code>/<code class="docutils literal notranslate"><span class="pre">fread</span></code> returns 1 and <code class="docutils literal notranslate"><span class="pre">fseek</span></code> returns offset according to the beginning of file.</p>
+<p>If successful, <code class="docutils literal notranslate"><span class="pre">fseek</span></code> returns offset according to the beginning of file which is different from standard interfaces.</p>
 </div>
 </section>
 <section id="key-value-operation">
@@ -447,7 +453,7 @@
 </section>
 <section id="vfs-bin-file-generation">
 <h2>VFS Bin File Generation<a class="headerlink" href="#vfs-bin-file-generation" title="Link to this heading"></a></h2>
-<p>If data needs to be placed in the Flash in advance, VFS bin file can be generated on PC. After generating the bin file, it should be downloaded to VFS1 region according to the Flash layout.</p>
+<p>If data needs to be placed in the Flash in advance, VFS bin file can be generated on PC. After generating the bin file, it should be downloaded to VFS region according to the Flash layout.</p>
 <section id="littlefs-bin-file-generation">
 <h3>LittleFS Bin File Generation<a class="headerlink" href="#littlefs-bin-file-generation" title="Link to this heading"></a></h3>
 <ol class="arabic">
@@ -457,7 +463,7 @@
 </figure>
 <p><code class="docutils literal notranslate"><span class="pre">AUDIO</span></code> and <code class="docutils literal notranslate"><span class="pre">KV</span></code> directories will be LittleFS directory in the Flash.</p>
 </li>
-<li><p>Use the command <code class="docutils literal notranslate"><span class="pre">$./mklittlefs</span> <span class="pre">-b</span> <span class="pre">4096</span> <span class="pre">-p</span> <span class="pre">256</span> <span class="pre">-c</span> <span class="pre">test</span> <span class="pre">image_littlefs.bin</span></code> in <code class="docutils literal notranslate"><span class="pre">mklittlefs</span></code> tool located at <code class="docutils literal notranslate"><span class="pre">\tools\littlefs</span></code> to generate LittleFS bin files.</p>
+<li><p>Use the command <code class="docutils literal notranslate"><span class="pre">$./mklittlefs</span> <span class="pre">-b</span> <span class="pre">4096</span> <span class="pre">-p</span> <span class="pre">256</span> <span class="pre">-s</span> <span class="pre">0x20000</span> <span class="pre">-c</span> <span class="pre">test</span> <span class="pre">image_littlefs.bin</span></code> in <code class="docutils literal notranslate"><span class="pre">mklittlefs</span></code> tool located at <code class="docutils literal notranslate"><span class="pre">\tools\littlefs</span></code> to generate LittleFS bin files.</p>
 <p>Where:</p>
 <blockquote>
 <div><ul class="simple">
@@ -473,11 +479,11 @@
 </figure>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>“-b 4096” and “-p 256” are default configurations, users should adapt the configuration according to “block_size” and “cache_size” of <code class="docutils literal notranslate"><span class="pre">lfs_config</span></code> in <code class="docutils literal notranslate"><span class="pre">{SDK}\component\file_system\littlefs\littlefs_adapter.c.</span></code> “-s 0x20000” is according to VFS1 region mentioned in section <a class="reference internal" href="#vfs-on-flash-section"><span class="std std-ref">VFS on Flash</span></a>.</p>
+<p>“-b 4096” and “-p 256” are default configurations, users should adapt the configuration according to “block_size” and “cache_size” of <code class="docutils literal notranslate"><span class="pre">lfs_config</span></code> in <code class="docutils literal notranslate"><span class="pre">{SDK}\component\file_system\littlefs\littlefs_adapter.c.</span></code> “-s 0x20000” is according to VFS region mentioned in section <a class="reference internal" href="#vfs-on-flash-section"><span class="std std-ref">VFS on Flash</span></a>.</p>
 </div>
 </li>
 <li><p>Download the image to the Flash.</p>
-<p>The start address of image should be VFS1 Flash region address mentioned in section <a class="reference internal" href="#vfs-on-flash-section"><span class="std std-ref">VFS on Flash</span></a>. Test logs are shown below:</p>
+<p>The start address of image should be VFS Flash region address mentioned in section <a class="reference internal" href="#vfs-on-flash-section"><span class="std std-ref">VFS on Flash</span></a>. Test logs are shown below:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>==========mklittlefs example==========
 [TEST1]: This is a test file for mklittle …
 [AUDIO1]: Copyright (c) 2013 Realtek …
