@@ -52,7 +52,6 @@ copyright = "2024, Realsil"
 author = "Realsil"
 
 # 宏替换
-print(f"TAGS: {tags}")
 if "RTL8711D" in tags:
     CHIP_NAME = 'RTL8711Dx'
 elif "RTL8721D" in tags:
