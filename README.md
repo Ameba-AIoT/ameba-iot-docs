@@ -1,11 +1,11 @@
 # Introduction
-This repository contains the technical documentation for Realtek Ameba IoT Socs, including:
+This repository contains the technical documentation for Realtek Ameba IoT SoCs, including:
 - AmebaDPlus
 - AmebaLite
 - AmebaSmart
 - AmebaGreen2 (TBD)
 
-The technical documentation of each Soc includes but is not limited to the following parts：
+The technical documentation of each SoC includes but is not limited to the following parts：
 - AT Command
 - Application Note
 - Software Tools
@@ -22,3 +22,12 @@ The technical documentation of each Soc includes but is not limited to the follo
   * RTL8710EC series: TBD
 - AmebaSmart:
   * RTL8730E series: TBD
+
+# SDK
+The SDK accompanying the documentations can be downloaded from https://github.com/Ameba-AIoT/ameba-rtos.
+
+# Feedback
+
+- If you have any issues or suggestions when using the documentations, please login [RealMCU](https://www.realmcu.com/en/Account/Login) and give feedback.
+
+- If you find a bug or any error, you can directly submit a Pull Request on GitHub.
