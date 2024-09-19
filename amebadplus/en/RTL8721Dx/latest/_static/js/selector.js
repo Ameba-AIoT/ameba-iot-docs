@@ -17,8 +17,7 @@ function add_selector() {
             const series_obj = languages_obj[cur_language];
             const series = Object.keys(series_obj);
 
-            const versions_obj = series_obj[cur_series];
-            const versions = Object.keys(versions_obj);
+            const versions = series_obj[cur_series];
 
             // 根据 cur_language 设置表格标题
             const labels = {
@@ -31,7 +30,6 @@ function add_selector() {
             let p = document.getElementById("rtd-search-form").parentElement;
             p.innerHTML = `
             <table>
-            // ics
             <tr><td>${labels.ic}</td>
             <td><select name="ic" id="ic-selector" title="ic" onchange="change_ic()" style="width:120px; border-radius:2px; margin-bottom:15px">
             ${ics.map(ic => {
@@ -39,7 +37,6 @@ function add_selector() {
             }).join('')}
             </select></td></tr>
 
-            // language
             <tr><td>${labels.language}</td><td>
             <select name="language" id="language-selector" title="language" onchange="change_language()" style="width:120px; border-radius:2px; margin-bottom:15px">
             ${languages.map(language => {
@@ -47,7 +44,6 @@ function add_selector() {
             }).join('')}
             </select></td></tr>
 
-            // series
             <tr><td>${labels.series}</td><td>
             <select name="series" id="series-selector" title="series" onchange="change_series()" style="width:120px; border-radius:2px; margin-bottom:15px">
             ${series.map(series => {
@@ -55,7 +51,6 @@ function add_selector() {
             }).join('')}
             </select></td></tr>
 
-            // versions
             <tr><td>${labels.version}</td><td>
             <select name="version" id="version-selector" title="version" onchange="change_version()" style="width:120px; border-radius:2px; margin-bottom:15px">
             ${versions.map(version => {
