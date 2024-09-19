@@ -39,18 +39,18 @@ function add_selector() {
             </select></td></tr>
 
             <tr>
-            <td style="text-align: right;vertical-align: middle;">${labels.language}</td>
-            <td style="text-align: left;vertical-align: middle;"><select name="language" id="language-selector" title="language" onchange="change_language()" style="width:120px; border-radius:2px; margin:5px">
-            ${languages.map(language => {
-                return `<option value="${language}">${language}</option>`;
-            }).join('')}
-            </select></td></tr>
-
-            <tr>
             <td style="text-align: right;vertical-align: middle;">${labels.series}</td>
             <td style="text-align: left;vertical-align: middle;"><select name="series" id="series-selector" title="series" onchange="change_series()" style="width:120px; border-radius:2px; margin:5px">
             ${series.map(series => {
                 return `<option value="${series}">${series}</option>`;
+            }).join('')}
+            </select></td></tr>
+
+            <tr>
+            <td style="text-align: right;vertical-align: middle;">${labels.language}</td>
+            <td style="text-align: left;vertical-align: middle;"><select name="language" id="language-selector" title="language" onchange="change_language()" style="width:120px; border-radius:2px; margin:5px">
+            ${languages.map(language => {
+                return `<option value="${language}">${language}</option>`;
             }).join('')}
             </select></td></tr>
 
