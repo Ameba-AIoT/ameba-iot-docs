@@ -1,7 +1,7 @@
 /* ============= Support Multiple Versions ============= */
-
+const baseURL = "https://ameba-aiot.github.io/ameba-iot-docs";
 function add_selector() {
-    return fetch("https://ameba-aiot.github.io/ameba-iot-docs/config.json")
+    return fetch(`${baseURL}/config.json`)
         .then(res => res.json())
         .then(res => {
             const cur_ic = window.location.pathname.split('/')[2];
@@ -67,42 +67,54 @@ function add_selector() {
 
 /* ============= Toggle IC ============= */
 function change_ic() {
-    const cur_ic = window.location.pathname.split('/')[2];
+    const { cur_ic, cur_language, cur_series, cur_version } = getURLSegments();
+
     const next_ic = document.getElementById("ic-selector").value;
-    window.location.href = location.href.replace("/" + cur_ic + "/", "/" + next_ic + "/");
+    window.location.href = `${baseURL}/${next_ic}/${cur_language}/${cur_series}/${cur_version}/`
 }
 
 /* ============= Toggle Languages ============= */
 function change_language() {
-    const cur_language = window.location.pathname.split('/')[3];
+    const { cur_ic, cur_language, cur_series, cur_version } = getURLSegments();
+
     const next_language = document.getElementById("language-selector").value;
-    window.location.href = location.href.replace("/" + cur_language + "/", "/" + next_language + "/");
+    window.location.href = `${baseURL}/${cur_ic}/${next_language}/${cur_series}/${cur_version}/`
 }
 
 /* ============= Toggle Series ============= */
 function change_series() {
-    const cur_series = window.location.pathname.split('/')[4];
+    const { cur_ic, cur_language, cur_series, cur_version } = getURLSegments();
     const next_series = document.getElementById("series-selector").value;
-    window.location.href = location.href.replace("/" + cur_series + "/", "/" + next_series + "/");
+    window.location.href = `${baseURL}/${cur_ic}/${cur_language}/${next_series}/${cur_version}/`
 }
 
 /* ============= Toggle Version ============= */
 function change_version() {
-    const cur_version = window.location.pathname.split('/')[5];
+    const { cur_ic, cur_language, cur_series, cur_version } = getURLSegments();
     const next_version = document.getElementById("version-selector").value;
-    window.location.href = location.href.replace("/" + cur_version + "/", "/" + next_version + "/");
+    window.location.href = `${baseURL}/${cur_ic}/${cur_language}/${cur_series}/${next_version}/`
 }
+
+/* ============= Get URL Segments ============= */
+function getURLSegments() {
+    const segments = window.location.pathname.split('/');
+    return {
+        cur_ic: segments[2],
+        cur_language: segments[3],
+        cur_series: segments[4],
+        cur_version: segments[5]
+    };
+}
+
 
 /* ============= Init selector ============= */
 document.addEventListener('DOMContentLoaded', (event) => {
     add_selector().then(() => {
-        const cur_ic = window.location.pathname.split('/')[2];
+        const { cur_ic, cur_language, cur_series, cur_version } = getURLSegments();
+
         document.getElementById("ic-selector").value = cur_ic;
-        const cur_language = window.location.pathname.split('/')[3];
         document.getElementById("language-selector").value = cur_language;
-        const cur_series = window.location.pathname.split('/')[4];
         document.getElementById("series-selector").value = cur_series;
-        const cur_version = window.location.pathname.split('/')[5];
         document.getElementById("version-selector").value = cur_version;
     });
 });
