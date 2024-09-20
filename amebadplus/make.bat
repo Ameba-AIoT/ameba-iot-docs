@@ -1,4 +1,4 @@
-@ECHO OFF
+﻿@ECHO OFF
 setlocal enabledelayedexpansion
 
 REM Set command window format
@@ -84,8 +84,8 @@ exit /b 0
 
 
 :Clean
-REM Clean build\html
-set folderPath=build\html\latest
+REM Clean build
+set folderPath=build
   
 if exist "%folderPath%" (  
     echo Attempting to delete %folderPath%
