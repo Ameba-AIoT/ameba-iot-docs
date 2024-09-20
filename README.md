@@ -1,11 +1,11 @@
 # Introduction
-This repository contains the technical documentation for Realtek Ameba IoT SoCs, including:
+This repository contains the technical documentations for Realtek Ameba IoT SoCs, including:
 - AmebaDPlus
 - AmebaLite
 - AmebaSmart
 - AmebaGreen2 (TBD)
 
-The technical documentation of each SoC includes but is not limited to the following parts：
+The technical documentation of every SoC includes but is not limited to the following parts：
 - Product Overview
 - AT Command
 - Application Note
