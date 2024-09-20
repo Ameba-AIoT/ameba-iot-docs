@@ -175,6 +175,8 @@ numfig_format = {
 templates_path = ["_templates"]
 html_static_path = ["_static"]
 
+html_favicon = '_static/favicon.ico'
+
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 html_theme = "sphinx_rtd_theme"
 # 移除view source code 并且不生成source code
