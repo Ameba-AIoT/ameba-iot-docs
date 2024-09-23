@@ -39,10 +39,10 @@ help:
 	@echo '########################################################################################################################'
 
 en:
-	python sphinx-build -b html $@ build/$@/latest -c $@ ${tag}
+	python ../sphinx_venv/Linux/bin/sphinx-build -b html $@ build/$@/latest -c $@ ${tag}
 
 cn:
-	python sphinx-build -b html $@ build/$@/latest -c $@ ${tag}
+	python ../sphinx_venv/Linux/bin/sphinx-build -b html $@ build/$@/latest -c $@ ${tag}
 
 clean:
 	rm -rf build
