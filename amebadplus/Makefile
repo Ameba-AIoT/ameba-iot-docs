@@ -39,10 +39,10 @@ help:
 	@echo '########################################################################################################################'
 
 en:
-	sphinx-build -b html $@ build/$@/latest -c $@ ${tag}
+	python sphinx-build -b html $@ build/$@/latest -c $@ ${tag}
 
 cn:
-	sphinx-build -b html $@ build/$@/latest -c $@ ${tag}
+	python sphinx-build -b html $@ build/$@/latest -c $@ ${tag}
 
 clean:
 	rm -rf build
