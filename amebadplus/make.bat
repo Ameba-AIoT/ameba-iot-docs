@@ -1,4 +1,4 @@
-﻿@ECHO OFF
+@ECHO OFF
 setlocal enabledelayedexpansion
 
 REM Set command window format
@@ -67,15 +67,15 @@ if "%1" == "" (
 ) else if "%1" == "clean" (
     goto Clean
 ) else if "%1" == "active" (
-    ..\sphinx_venv\Scripts\activate.bat
+    ..\sphinx_venv\Windows\Scripts\activate.bat
 ) else if "%1" == "visio" (
-    python ..\sphinx_venv\Scripts\trans_visio_files.py -r ..
+    python ..\sphinx_venv\Windows\Scripts\trans_visio_files.py -r ..
 ) else if "%1" == "en" (
-    echo "..\sphinx_venv\Scripts\sphinx-build.exe -b html %1 build/%1/latest -c %1 !tag!"
-    python ..\sphinx_venv\Scripts\sphinx-build.exe -b html %1 build/%1/latest -c %1 !tag!
+    echo "..\sphinx_venv\Windows\Scripts\sphinx-build.exe -b html %1 build/%1/latest -c %1 !tag!"
+    python ..\sphinx_venv\Windows\Scripts\sphinx-build.exe -b html %1 build/%1/latest -c %1 !tag!
 ) else if "%1" == "cn" (
-    echo "..\sphinx_venv\Scripts\sphinx-build.exe -b html %1 build/%1/latest -c %1 !tag!"
-    python ..\sphinx_venv\Scripts\sphinx-build.exe -b html %1 build/%1/latest -c %1 !tag!
+    echo "..\sphinx_venv\Windows\Scripts\sphinx-build.exe -b html %1 build/%1/latest -c %1 !tag!"
+    python ..\sphinx_venv\Windows\Scripts\sphinx-build.exe -b html %1 build/%1/latest -c %1 !tag!
 ) else (
     echo "Invalid target: %1."
     exit /b 1
