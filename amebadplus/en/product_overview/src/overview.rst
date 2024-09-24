@@ -38,9 +38,7 @@ The functional block diagram is illustrated below, which provides a view of the 
    :scale: 110%
    :align: center
 
-	  Block diagram
-
-	  Block diagram
+   Block diagram
 
 Target Applications
 ---------------------

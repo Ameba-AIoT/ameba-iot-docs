@@ -4,8 +4,7 @@ Introduction
 ------------------------
 The Image Tool is the official image download tool developed by Realtek for Ameba series SoC.
 It can be used to download images to the Flash of the device through the interfaces below.
-   
-   
+  
 .. table:: Download interface supported by different Ameba ICs
    :width: 100%
    :widths: auto
@@ -21,7 +20,6 @@ It can be used to download images to the Flash of the device through the interfa
    +------------+------------+-------------------------+------------------------+
    | AmebaLite  | NAND Flash | ×                       | √                      |
    +------------+------------+-------------------------+------------------------+
-
 
 The UI of Image Tool is shown below.
 
