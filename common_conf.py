@@ -80,7 +80,7 @@ def get_exclude_rst(root_rst: Path, src_root: Path, exclude_patterns) -> List:
             if fpath not in toctree_rst_files:
                 exclude_rst.append(os.path.relpath(fpath, src_root).replace("\\", "/"))
 
-    filter_cfg = src_root / "filter_cfg.txt"
+    filter_cfg = src_root / "build_exclude.txt"
     run_location = os.environ.get("RUN_LOCATION", "github")
     print(f"RunLocation: {run_location}")
     if filter_cfg.exists() and run_location == "github":
