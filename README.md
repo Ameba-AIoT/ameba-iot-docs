@@ -13,9 +13,7 @@ The technical documentation of every SoC includes but is not limited to the foll
 - MP Tools
 
 # View Docs
-- AmebaDPlus:
-  * RTL8721Dx series: https://ameba-aiot.github.io/ameba-iot-docs/amebadplus/en/RTL8721Dx/latest/
-  * RTL8711Dx series: https://ameba-aiot.github.io/ameba-iot-docs/amebadplus/en/RTL8711Dx/latest/
+- AmebaDPlus (RTL8721Dx series): https://ameba-aiot.github.io/ameba-iot-docs/amebadplus/en/RTL8721Dx/latest/
 - AmebaLite:
   * RTL8726EA series: TBD
   * RTL8720EA series: TBD
