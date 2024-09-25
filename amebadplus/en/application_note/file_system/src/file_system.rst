@@ -102,6 +102,36 @@ Adjust the Flash partitions appropriately if the VFS interfaces are set to the F
    The VFS1 region must exist, and its size should always be larger than 128KB. There are two VFS regions at most.
 
 
+VFS within APP Image
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+If the user only intends to use read-only files through VFS, VFS provides a more convenient read-only configuration feature on flash. The detailed steps are as follows:
+
+1. Prepare the read-only files and convert them into a FAT-formatted bin file. Refer to section :ref:`fatfs_bin_file_generation_section` for the method.
+   
+2. Name the bin file ``fatfs.bin`` and place it in the ``{SDK}\amebasmart_gcc_project`` directory.
+   
+3. Enable the following configurations in the menuconfig:
+
+.. figure:: ../figures/vfs_within_app_image_1.png
+    :scale: 90%
+    :align: center
+
+.. figure:: ../figures/vfs_within_app_image_2.png
+    :scale: 90%
+    :align: center
+
+4. Rebuild the application firmware. The application firmware (km0_km4_app.bin) will include a read-only VFS area in FAT format, which will be mounted during the startup process.
+
+5. After startup, you will see the log ``VFS-FAT Init Success`` indicating that the read-only file system has been successfully mounted.
+
+6. For the file usage method, refer to sections :ref:`common_file_operation_section` or :ref:`key_value_operation_section`.
+
+.. note::
+   To optimize the effective space utilization of the read-only file system, only FAT format is currently supported.
+
+
+.. _common_file_operation_section:
+
 Common File Operation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 The common file operation interfaces used in VFS are listed below:
@@ -206,6 +236,8 @@ Users can rebuild the project by ``make all EXAMPLE=vfs`` to test how common fil
 .. note::
    If successful, ``fseek`` returns offset according to the beginning of file which is different from standard interfaces.
 
+
+.. _key_value_operation_section:
 
 Key-Value Operation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -316,6 +348,8 @@ LittleFS Bin File Generation
       [TEST1]: This is a test file for mklittle …
       [AUDIO1]: Copyright (c) 2013 Realtek …
 
+.. _fatfs_bin_file_generation_section:
+
 FatFS Bin File Generation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 The steps to generate FatFS bin files are listed below:
@@ -326,11 +360,11 @@ The steps to generate FatFS bin files are listed below:
 
 3. Use command ``root@ubuntu # sudo mount test.bin ./fs`` to mount ``test.bin`` to file folder fs.
 
-4. Use command ``root@ubuntu # sudocphello.txt ./fs`` to copy the files that users want to store into ``test.bin``.
+4. Use command ``root@ubuntu # sudo cp hello.txt ./fs`` to copy the files that users want to store into ``test.bin``.
 
    In this step, ``hello.txt`` is stored in ``test.bin``.
 
-5. Use command ``root@ubuntu # sudoumount ./fs`` to generate the FatFS file after unmounting ``test.bin``.
+5. Use command ``root@ubuntu # sudo umount ./fs`` to generate the FatFS file after unmounting ``test.bin``.
 
    Users should find other related information from the internet, and copy ``test.bin`` into user data area of Flash finally.
 
