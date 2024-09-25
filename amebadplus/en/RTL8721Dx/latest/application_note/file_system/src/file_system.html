@@ -79,6 +79,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#vfs-initialization">VFS Initialization</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#usage-of-vfs">Usage of VFS</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#vfs-on-flash">VFS on Flash</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vfs-within-app-image">VFS within APP Image</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#common-file-operation">Common File Operation</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#key-value-operation">Key-Value Operation</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#code-conversion">Code Conversion</a></li>
@@ -229,8 +230,32 @@
 <p>The VFS1 region must exist, and its size should always be larger than 128KB. There are two VFS regions at most.</p>
 </div>
 </section>
+<section id="vfs-within-app-image">
+<h2>VFS within APP Image<a class="headerlink" href="#vfs-within-app-image" title="Link to this heading"></a></h2>
+<p>If the user only intends to use read-only files through VFS, VFS provides a more convenient read-only configuration feature on flash. The detailed steps are as follows:</p>
+<ol class="arabic simple">
+<li><p>Prepare the read-only files and convert them into a FAT-formatted bin file. Refer to section <a class="reference internal" href="#fatfs-bin-file-generation-section"><span class="std std-ref">FatFS Bin File Generation</span></a> for the method.</p></li>
+<li><p>Name the bin file <code class="docutils literal notranslate"><span class="pre">fatfs.bin</span></code> and place it in the <code class="docutils literal notranslate"><span class="pre">{SDK}\amebasmart_gcc_project</span></code> directory.</p></li>
+<li><p>Enable the following configurations in the menuconfig:</p></li>
+</ol>
+<figure class="align-center">
+<a class="reference internal image-reference" href="application_note/file_system/figures/vfs_within_app_image_1.png"><img alt="application_note/file_system/figures/vfs_within_app_image_1.png" src="application_note/file_system/figures/vfs_within_app_image_1.png" /></a>
+</figure>
+<figure class="align-center">
+<a class="reference internal image-reference" href="application_note/file_system/figures/vfs_within_app_image_2.png"><img alt="application_note/file_system/figures/vfs_within_app_image_2.png" src="application_note/file_system/figures/vfs_within_app_image_2.png" /></a>
+</figure>
+<ol class="arabic simple" start="4">
+<li><p>Rebuild the application firmware. The application firmware (km0_km4_app.bin) will include a read-only VFS area in FAT format, which will be mounted during the startup process.</p></li>
+<li><p>After startup, you will see the log <code class="docutils literal notranslate"><span class="pre">VFS-FAT</span> <span class="pre">Init</span> <span class="pre">Success</span></code> indicating that the read-only file system has been successfully mounted.</p></li>
+<li><p>For the file usage method, refer to sections <a class="reference internal" href="#common-file-operation-section"><span class="std std-ref">Common File Operation</span></a> or <a class="reference internal" href="#key-value-operation-section"><span class="std std-ref">Key-Value Operation</span></a>.</p></li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>To optimize the effective space utilization of the read-only file system, only FAT format is currently supported.</p>
+</div>
+</section>
 <section id="common-file-operation">
-<h2>Common File Operation<a class="headerlink" href="#common-file-operation" title="Link to this heading"></a></h2>
+<span id="common-file-operation-section"></span><h2>Common File Operation<a class="headerlink" href="#common-file-operation" title="Link to this heading"></a></h2>
 <p>The common file operation interfaces used in VFS are listed below:</p>
 <table class="longtable docutils align-default" id="id1" style="width: 100%">
 <caption><span class="caption-text">Tabel name</span><a class="headerlink" href="#id1" title="Link to this table"></a></caption>
@@ -397,7 +422,7 @@
 </div>
 </section>
 <section id="key-value-operation">
-<h2>Key-Value Operation<a class="headerlink" href="#key-value-operation" title="Link to this heading"></a></h2>
+<span id="key-value-operation-section"></span><h2>Key-Value Operation<a class="headerlink" href="#key-value-operation" title="Link to this heading"></a></h2>
 <p>Simple KV interfaces are also provided for users. All KV APIs are placed in <code class="docutils literal notranslate"><span class="pre">{SDK}\component\file_system\kv\kv.c</span></code>. Users can rebuild the project by <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">all</span> <span class="pre">EXAMPLE=kv</span></code> to test how KV APIs work. Test logs should be like below:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">rt_kv_set</span> <span class="n">success</span><span class="p">,</span> <span class="n">write</span> <span class="mi">28</span> <span class="n">letters</span><span class="o">.</span>
 <span class="n">rt_kv_get</span> <span class="n">success</span><span class="p">,</span> <span class="n">read</span> <span class="mi">28</span> <span class="n">letters</span><span class="o">.</span>
@@ -494,16 +519,16 @@
 </ol>
 </section>
 <section id="fatfs-bin-file-generation">
-<h3>FatFS Bin File Generation<a class="headerlink" href="#fatfs-bin-file-generation" title="Link to this heading"></a></h3>
+<span id="fatfs-bin-file-generation-section"></span><h3>FatFS Bin File Generation<a class="headerlink" href="#fatfs-bin-file-generation" title="Link to this heading"></a></h3>
 <p>The steps to generate FatFS bin files are listed below:</p>
 <ol class="arabic">
 <li><p>Use command <code class="docutils literal notranslate"><span class="pre">root&#64;ubuntu</span> <span class="pre">#</span> <span class="pre">dd</span> <span class="pre">if=/dev/zero</span> <span class="pre">of=test.bin</span> <span class="pre">count=64</span> <span class="pre">bs=1KB</span></code> to create <code class="docutils literal notranslate"><span class="pre">test.bin</span></code> that has 64 blocks and each block is 1KB.</p></li>
 <li><p>Use command <code class="docutils literal notranslate"><span class="pre">root&#64;ubuntu</span> <span class="pre">#</span> <span class="pre">mkfs.fat</span> <span class="pre">-S</span> <span class="pre">512-F</span> <span class="pre">12</span> <span class="pre">test.bin</span></code> to build a FAT file system.</p></li>
 <li><p>Use command <code class="docutils literal notranslate"><span class="pre">root&#64;ubuntu</span> <span class="pre">#</span> <span class="pre">sudo</span> <span class="pre">mount</span> <span class="pre">test.bin</span> <span class="pre">./fs</span></code> to mount <code class="docutils literal notranslate"><span class="pre">test.bin</span></code> to file folder fs.</p></li>
-<li><p>Use command <code class="docutils literal notranslate"><span class="pre">root&#64;ubuntu</span> <span class="pre">#</span> <span class="pre">sudocphello.txt</span> <span class="pre">./fs</span></code> to copy the files that users want to store into <code class="docutils literal notranslate"><span class="pre">test.bin</span></code>.</p>
+<li><p>Use command <code class="docutils literal notranslate"><span class="pre">root&#64;ubuntu</span> <span class="pre">#</span> <span class="pre">sudo</span> <span class="pre">cp</span> <span class="pre">hello.txt</span> <span class="pre">./fs</span></code> to copy the files that users want to store into <code class="docutils literal notranslate"><span class="pre">test.bin</span></code>.</p>
 <p>In this step, <code class="docutils literal notranslate"><span class="pre">hello.txt</span></code> is stored in <code class="docutils literal notranslate"><span class="pre">test.bin</span></code>.</p>
 </li>
-<li><p>Use command <code class="docutils literal notranslate"><span class="pre">root&#64;ubuntu</span> <span class="pre">#</span> <span class="pre">sudoumount</span> <span class="pre">./fs</span></code> to generate the FatFS file after unmounting <code class="docutils literal notranslate"><span class="pre">test.bin</span></code>.</p>
+<li><p>Use command <code class="docutils literal notranslate"><span class="pre">root&#64;ubuntu</span> <span class="pre">#</span> <span class="pre">sudo</span> <span class="pre">umount</span> <span class="pre">./fs</span></code> to generate the FatFS file after unmounting <code class="docutils literal notranslate"><span class="pre">test.bin</span></code>.</p>
 <p>Users should find other related information from the internet, and copy <code class="docutils literal notranslate"><span class="pre">test.bin</span></code> into user data area of Flash finally.</p>
 </li>
 </ol>
