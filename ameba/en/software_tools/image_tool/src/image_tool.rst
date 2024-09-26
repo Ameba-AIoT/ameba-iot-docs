@@ -253,19 +253,16 @@ Steps to erase Flash are illustrated below:
 
    .. note::
 
-         - No need to erase Flash manually before image download since Flash will be automatically erased during image download process.
+      - No need to erase Flash manually before image download since Flash will be automatically erased during image download process.
 
-         - If Flash block protection is detected at :ref:`Step 6 <image_tool_flash_erase_step_6>`, refer to Section :ref:`image_tool_flash_block_protection_process` for details.
+      - If Flash block protection is detected at :ref:`Step 6 <image_tool_flash_erase_step_6>`, refer to Section :ref:`image_tool_flash_block_protection_process` for details.
 
 
 Flash Register Access
-------------------------------------------
+----------------------
 This function is for internal usage only, used to read/write Flash status/feature registers.
 
-
-.. caution::
-
-   Any Flash register operations, especially write operations, shall refer to the datasheet of the Flash; otherwise, it may cause irreversible damage to the Flash.
+.. caution:: Any Flash register operations, especially write operations, shall refer to the datasheet of the Flash; otherwise, it may cause irreversible damage to the Flash.
 
 Common pre-steps to access Flash register are illustrated below:
 
@@ -280,7 +277,7 @@ Common pre-steps to access Flash register are illustrated below:
 5. Select the corresponding serial port and baud rate.
 
 NOR Flash Register Access
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 Besides the common pre-steps, click :menuselection:`Advanced` and select :menuselection:`NOR Flash Register Access` item to lunch the NOR Flash Register Access dialog for further operations:
 
 .. figure:: ../figures/nor_flash_register_access.png
@@ -292,7 +289,7 @@ Besides the common pre-steps, click :menuselection:`Advanced` and select :menuse
 .. _read_nor_flash_register:
 
 Read NOR Flash Register
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^
 After the common pre-steps, next steps to read NOR Flash register:
 
 1. Select the read command to read specific register.
@@ -306,7 +303,7 @@ After the common pre-steps, next steps to read NOR Flash register:
       Read NOR Flash register operation
 
 Write NOR Flash Register
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^
 After the common pre-steps, next steps to write NOR Flash register:
 
 1. Select the write command to write specific register.
@@ -330,23 +327,14 @@ Flash Block Protection Process
 During image download or Flash Erase operation, if Flash block protection configuration is detected on the device,
 Image Tool will pop up a dialog to guide user for the follow-up actions.
 
-- For NAND Flash, detailed Flash information will be shown.
-   
-  .. figure:: ../figures/nand.png
-     :scale: 90%
-     :align: center
-  
-     Flash block protection detected dialog for NAND Flash
-
-- For NOR Flash, only Flash type and protection register value will be shown.
-
+For NOR Flash, only Flash type and protection register value will be shown
 .. figure:: ../figures/nor.png
    :scale: 90%
    :align: center
 
    Flash block protection detected dialog for NOR Flash
 
-Following follow-up actions are provided for user to choose:
+The following follow-up actions are provided for users to choose:
 
 - Try operation with block protected (may fail)
 
@@ -355,11 +343,6 @@ Following follow-up actions are provided for user to choose:
 - Abort the operation
 
 Additionally, user can check the :menuselection:`Remember the choice of follow-up action` check box to remember the choice for further operations, and uncheck :menuselection:`Option > Remember Flash Protection Process` to forget the remembered choice.
-
-.. include:: flash_read_internal.rst
-
-.. include:: efuse_access_internal.rst  
-
 
 .. _image_tool_modifying_device_profile:
 
