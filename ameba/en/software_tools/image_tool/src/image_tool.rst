@@ -23,11 +23,13 @@ It can be used to download images to the Flash of the device through the interfa
 
 The UI of Image Tool is shown below.
 
-.. figure:: ../figures/image_tool_ui_freertos.png
-   :scale: 90%
-   :align: center
+.. only:: FreeRTOS
+   
+   .. figure:: ../figures/image_tool_ui_freertos.png
+      :scale: 90%
+      :align: center
 
-   Image Tool UI
+      Image Tool UI
 
 
 Environment Setup
@@ -104,107 +106,112 @@ Download Images
 ~~~~~~~~~~~~~~~~
 For an empty chip, the following mandatory images shall be downloaded:
 
-.. table::
-   :width: 100%
-   :widths: auto
+.. only:: FreeRTOS
+
+   .. table::
+      :width: 100%
+      :widths: auto
    
-   +---------------------------+----------------------+---------------------------+---------------------------------------+
-   | IC                        | Image name           | Description               | Mandatory?                            |
-   +===========================+======================+===========================+=======================================+
-   | AmebaSmart                | km4_boot_all.bin     | KM4 bootloader            | √                                     |
-   |                           +----------------------+---------------------------+---------------------------------------+
-   |                           | km0_km4_ca32_app.bin | KM0/KM4/CA32 applications | √                                     |
-   +---------------------------+----------------------+---------------------------+---------------------------------------+
-   | AmebaLite                 | km4_boot_all.bin     | KM4 bootloader            | √                                     |
-   |                           +----------------------+---------------------------+---------------------------------------+
-   |                           | kr4_km4_app.bin      | KR4/KM4 applications      | √                                     |
-   |                           +----------------------+---------------------------+---------------------------------------+
-   |                           | dsp_all.bin          | DSP image                 | x (only for IC series with DSP)       |
-   +---------------------------+----------------------+---------------------------+---------------------------------------+
-   | AmebaDPlus                | km4_boot_all.bin     | KM4 bootloader            | √                                     |
-   |                           +----------------------+---------------------------+---------------------------------------+
-   |                           | km0_km4_app.bin      | KM0/KM4 applications      | √                                     |  
-   +---------------------------+----------------------+---------------------------+---------------------------------------+
+      +---------------------------+----------------------+---------------------------+---------------------------------------+
+      | IC                        | Image name           | Description               | Mandatory?                            |
+      +===========================+======================+===========================+=======================================+
+      | AmebaSmart                | km4_boot_all.bin     | KM4 bootloader            | √                                     |
+      |                           +----------------------+---------------------------+---------------------------------------+
+      |                           | km0_km4_ca32_app.bin | KM0/KM4/CA32 applications | √                                     |
+      +---------------------------+----------------------+---------------------------+---------------------------------------+
+      | AmebaLite                 | km4_boot_all.bin     | KM4 bootloader            | √                                     |
+      |                           +----------------------+---------------------------+---------------------------------------+
+      |                           | kr4_km4_app.bin      | KR4/KM4 applications      | √                                     |
+      |                           +----------------------+---------------------------+---------------------------------------+
+      |                           | dsp_all.bin          | DSP image                 | x (only for IC series with DSP)       |
+      +---------------------------+----------------------+---------------------------+---------------------------------------+
+      | AmebaDPlus                | km4_boot_all.bin     | KM4 bootloader            | √                                     |
+      |                           +----------------------+---------------------------+---------------------------------------+
+      |                           | km0_km4_app.bin      | KM0/KM4 applications      | √                                     |  
+      +---------------------------+----------------------+---------------------------+---------------------------------------+
 
 Download Steps
 ~~~~~~~~~~~~~~~~
-The image download steps are illustrated below:
+.. only:: FreeRTOS
+
+   The image download steps are illustrated below:
    
-1. Enter into download mode.
+   1. Enter into download mode.
 
-   There are two ways to enter into download mode.
+      There are two ways to enter into download mode.
       
-      A. The first and recommended way is to push the hardware :guilabel:`Download` and :guilabel:`CHIP_EN` buttons.
+         A. The first and recommended way is to push the hardware :guilabel:`Download` and :guilabel:`CHIP_EN` buttons.
       
-         a. Push the :guilabel:`Download` button and keep it pressed.
+            a. Push the :guilabel:`Download` button and keep it pressed.
       
-         b. Re-power on the device or press the :guilabel:`CHIP_EN` button.
+            b. Re-power on the device or press the :guilabel:`CHIP_EN` button.
       
-         c. Release the :guilabel:`Download` button.
+            c. Release the :guilabel:`Download` button.
       
-      B. The alternate way is to type the ``reboot uartburn`` command from the UART console if this command is not removed from SDK and AP is running normally.
+         B. The alternate way is to type the ``reboot uartburn`` command from the UART console if this command is not removed from SDK and AP is running normally.
    
-   Now, the device goes into download mode and is ready to receive data.
+      Now, the device goes into download mode and is ready to receive data.
    
-.. tabs::
-
-   .. tab:: AmebaSmart
-
-      2. Open Image Tool, click :menuselection:`File > Open` and select the proper device profile.
-      
-         - For IC series with NOR Flash, select :file:`AmebaSmart_FreeRTOS_NOR.rdev`.
-      
-         - For IC series with NAND Flash, select :file:`AmebaSmart_FreeRTOS_NAND.rdev`.         
-   
-   .. tab:: AmebaLite
-
-      2. Open Image Tool, click :menuselection:`File > Open` and select the device profile :file:`AmebaLite_FreeRTOS_NOR.rdev`.
-
-   .. tab:: AmebaDPlus
-
-      2. Open Image Tool, click :menuselection:`File > Open` and select the device profile :file:`AmebaDplus_FreeRTOS_NOR.rdev`.
-
-   
-3. Select the corresponding serial port and transmission baud rate. The default baud rate is 1500000.
-      
-   .. note:: The baud rate will be ignored for USB download interface.
-      
-         
-4. Click the :menuselection:`Browse` button to select the images to be programmed.
-   
-   .. note::
-         Flash layout is allowed to be changed via Image Tool if indeed necessary.
-         However, to formally change the Flash layout, it is suggested to use :mod:`Device Profile Editor` other than :mod:`Image Tool` and the Flash layout in SDK shall be changed accordingly. Refer to Section :ref:`image_tool_modifying_device_profile` for details.
-     
-5. Click the :menuselection:`Download` button to start.
-
-   The progress bar will show the download progress of each image and the log widget will show the operation status.
-
    .. tabs::
-      
+
       .. tab:: AmebaSmart
-      
-         .. figure:: ../figures/image_download_operation_smart_freertos.png
-            :scale: 90%
-            :align: center
 
-            Image download operation
+         2. Open Image Tool, click :menuselection:`File > Open` and select the proper device profile.
       
+            - For IC series with NOR Flash, select :file:`AmebaSmart_FreeRTOS_NOR.rdev`.
+      
+            - For IC series with NAND Flash, select :file:`AmebaSmart_FreeRTOS_NAND.rdev`.         
+   
       .. tab:: AmebaLite
-      
-         .. figure:: ../figures/image_download_operation_lite.png
-            :scale: 90%
-            :align: center
 
-            Image download operation
+         2. Open Image Tool, click :menuselection:`File > Open` and select the device profile :file:`AmebaLite_FreeRTOS_NOR.rdev`.
 
       .. tab:: AmebaDPlus
-      
-         .. figure:: ../figures/image_download_operation_dplus.png
-            :scale: 90%
-            :align: center
 
-            Image download operation
+         2. Open Image Tool, click :menuselection:`File > Open` and select the device profile :file:`AmebaDplus_FreeRTOS_NOR.rdev`.
+
+   
+   3. Select the corresponding serial port and transmission baud rate. The default baud rate is 1500000.
+      
+      .. only:: RTL8721D
+      
+         .. note:: The baud rate will be ignored for USB download interface.
+         
+   4. Click the :menuselection:`Browse` button to select the images to be programmed.
+   
+      .. note::
+            Flash layout is allowed to be changed via Image Tool if indeed necessary.
+            However, to formally change the Flash layout, it is suggested to use :mod:`Device Profile Editor` other than :mod:`Image Tool` and the Flash layout in SDK shall be changed accordingly. Refer to Section :ref:`image_tool_modifying_device_profile` for details.
+     
+   5. Click the :menuselection:`Download` button to start.
+
+      The progress bar will show the download progress of each image and the log widget will show the operation status.
+
+      .. tabs::
+      
+         .. tab:: AmebaSmart
+      
+            .. figure:: ../figures/image_download_operation_smart_freertos.png
+               :scale: 90%
+               :align: center
+
+               Image download operation
+      
+         .. tab:: AmebaLite
+      
+            .. figure:: ../figures/image_download_operation_lite.png
+               :scale: 90%
+               :align: center
+
+               Image download operation
+
+         .. tab:: AmebaDPlus
+      
+            .. figure:: ../figures/image_download_operation_dplus.png
+               :scale: 90%
+               :align: center
+
+               Image download operation
 
    
 Flash Erase
