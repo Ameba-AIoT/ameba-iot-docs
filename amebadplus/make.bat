@@ -1,4 +1,4 @@
-@ECHO OFF
+﻿@ECHO OFF
 setlocal enabledelayedexpansion
 
 REM Set command window format
@@ -37,11 +37,11 @@ if "%2" == "nda" (
     )
 )
 
-REM 遍历所有传入的参数
+REM parse each arg
 for %%i in (%*) do (
     echo %%i | findstr /i "Linux" >nul
     if !errorlevel! equ 0 (
-        REM 删除字符 "-t FreeOS"
+        REM delete "-t FreeOS"
         set tag=!tag:-t FreeRTOS=!
     )
 )
