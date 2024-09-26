@@ -28,7 +28,9 @@ By default, the AGG (aggregation) function of loguart is disabled so any serial 
 When the AGG function is enabled, every packet will be send from UART Tx module with AGG header, which is used for Trace Tool 
 to distinguish multi-path data that from different cores.
 
-The AGG function is used for multi-paths to print logs at the same time, which are KM0, KM4, BT trace and BT FW logs.
+.. only:: RTL8721D
+     
+   The AGG function is used for multi-paths to print logs at the same time, which are KM0, KM4, BT trace and BT FW logs.
    
 - When the AGG function is enabled, hardware will attach AGG header automatically. TraceTool can separate logs from different paths according to AGG header. 
   In this case, logs from BT trace and BT FW will be saved into files separately and other logs will print on screen.
@@ -47,11 +49,13 @@ Hardware Connection
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 The hardware connection is illustrated below.
 
-.. figure:: ../figures/hardware_connection_8721d.svg
-   :scale: 90%
-   :align: center
+.. only:: RTL8721D
 
-   Hardware connection
+   .. figure:: ../figures/hardware_connection_8721d.svg
+      :scale: 90%
+      :align: center
+
+      Hardware connection
 
 .. note:: If external UART is used to download images, the USB to UART dongle must be used.
 
@@ -159,17 +163,19 @@ The history command box records the commands have been sent before.
 
 Command Prefix
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-.. table::
-   :width: 100%
-   :widths: auto
+.. only:: RTL8721D
 
-   +------+------+----------------+
-   | Core | Role | Command prefix |
-   +======+======+================+
-   | KM4  | AP   | None           |
-   +------+------+----------------+
-   | KM0  | NP   | @              |
-   +------+------+----------------+
+   .. table::
+      :width: 100%
+      :widths: auto
+
+      +------+------+----------------+
+      | Core | Role | Command prefix |
+      +======+======+================+
+      | KM4  | AP   | None           |
+      +------+------+----------------+
+      | KM0  | NP   | @              |
+      +------+------+----------------+
 
 Debug
 ~~~~~~~~~~
