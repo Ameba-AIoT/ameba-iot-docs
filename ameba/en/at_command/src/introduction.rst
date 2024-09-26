@@ -87,9 +87,6 @@ For different ICs, the default UART input and output ports are listed below.
    +-------------+---------+---------+-------------------+
    | AmebaDPlus  | PA_26   | PA_27   | 38400             |
    +-------------+---------+---------+-------------------+
-   | AmebaGreen2 | PA_4    | PA_5    | 38400             |
-   +-------------+---------+---------+-------------------+
-
 
 You can modify these values in :file:`{sdk}/source/component/at_cmd/at_intf_uart.h`.
 
@@ -112,11 +109,6 @@ You can modify these values in :file:`{sdk}/source/component/at_cmd/at_intf_uart
    #elif defined (CONFIG_AMEBADPLUS)
    #define UART_TX     _PA_26 // UART TX
    #define UART_RX     _PA_27 // UART RX
-   #elif defined (CONFIG_AMEBAGREEN2)
-   #define UART_TX     _PA_4 // UART TX
-   #define UART_RX     _PA_5 // UART RX
-   #endif
-
 
 Command Description
 --------------------------------------
