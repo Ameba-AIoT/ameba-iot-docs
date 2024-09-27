@@ -334,7 +334,8 @@ Flash Block Protection Process
 During image download or Flash Erase operation, if Flash block protection configuration is detected on the device,
 Image Tool will pop up a dialog to guide user for the follow-up actions.
 
-For NOR Flash, only Flash type and protection register value will be shown
+For NOR Flash, only Flash type and protection register value will be shown.
+
 .. figure:: ../figures/nor.png
    :scale: 90%
    :align: center
