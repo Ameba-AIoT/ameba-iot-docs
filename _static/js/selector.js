@@ -8,9 +8,11 @@ function add_selector() {
             const cur_language = window.location.pathname.split('/')[3];
             const cur_version = window.location.pathname.split('/')[4];
 
-            window.ics = Object.keys(res);
+            window.res = res
+            window.ics = Object.keys(res).map(key => res[key].name);
+            cur_ic_name = res[cur_ic].name
 
-            const languages_obj = res[cur_ic];
+            const languages_obj = res[cur_ic].languages;
             window.languages = Object.keys(languages_obj);
 
             window.versions = languages_obj[cur_language];
@@ -47,7 +49,7 @@ function add_selector() {
 function change_ic() {
     const { cur_ic, cur_language, cur_version } = getURLSegments();
 
-    const next_ic = document.getElementById("ic-selector").value;
+    const next_ic = document.getElementById("ic-selector").value.toLowerCase();
     window.location.href = `${baseURL}/${next_ic}/${cur_language}/${cur_version}/`
 }
 
@@ -83,7 +85,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     add_selector().then(() => {
         const { cur_ic, cur_language, cur_version } = getURLSegments();
 
-        document.getElementById("ic-selector").value = cur_ic;
+        document.getElementById("ic-selector").value = window.res[cur_ic].name;
         document.getElementById("language-selector").value = cur_language;
         document.getElementById("version-selector").value = cur_version;
     });
