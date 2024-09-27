@@ -9,15 +9,15 @@ function add_selector() {
             const cur_series = window.location.pathname.split('/')[4];
             const cur_version = window.location.pathname.split('/')[5];
 
-            const ics = Object.keys(res);
+            window.ics = Object.keys(res);
 
             const languages_obj = res[cur_ic];
-            const languages = Object.keys(languages_obj);
+            window.languages = Object.keys(languages_obj);
 
             const series_obj = languages_obj[cur_language];
-            const series = Object.keys(series_obj);
+            window.seriess = Object.keys(series_obj);
 
-            const versions = series_obj[cur_series];
+            window.versions = series_obj[cur_series];
 
             // 根据 cur_language 设置表格标题
             const labels = {
