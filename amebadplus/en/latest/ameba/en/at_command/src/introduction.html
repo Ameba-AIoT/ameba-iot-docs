@@ -69,15 +69,18 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../application_note/index.html">Application Note</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">AT Command</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Introduction</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#hardware-connection">Hardware Connection</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#command-description">Command Description</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#command-format">Command Format</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#command-format">Command format</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#command-response">Command Response</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#command-paramter">Command Paramter</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#escapes-character">Escapes Character</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#command-length">Command Length</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#at-command-list">AT Command List</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#building-image">Building Image</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#at-command-version">AT Command Version</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#build-image">Build image</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#preparation">Preparation</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#building">Building</a></li>
 </ul>
@@ -122,58 +125,73 @@
              
   <section id="introduction">
 <span id="at-command"></span><h1>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h1>
-<p>This article describes the role, usage, version information, of AT command.
-Users can perform some basic IoT applications, such as Wi-Fi, Bluetooth, TCP/IP, MQTT and other operations, with AT command.</p>
-<p>We set the module as the slave, and the PC as the master. The master can send AT commands to the slave.
-While receiving the AT command, the slave recognizes the validity of the command. If it is a valid command, it returns the corresponding AT response.</p>
-<section id="overview">
-<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
-<p>Regarding the different chips in slave module, we commonly call them AmebaLite, AmebaGreen2, AmebaSmart, and AmebaDPlus.
-For their usages, the hardware connections are generally similar, but the interfaces used are slightly different.</p>
-<p>There are two currently used AT command input and response methods, which can be called LOGUART mode and UART mode.</p>
-<ul class="simple">
-<li><p>In LOGUART mode, the log of the program is in the same window with the input and response of the AT command, but the connection of the device is relatively simple, the module can be directly connected to the PC by USB cable.</p></li>
-<li><p>In UART mode, the log of program, input and response of AT commands, are presented in their respective windows, so that the results of AT commands can be displayed to the user more clearly, which can facilitate some automated testing.</p></li>
-</ul>
-<p>However, the device connection is relatively complicated, it requires an additional designated UART port to be connected to the PC through USB2TTL cable.</p>
-<p>You can run <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">menuconfig</span></code> to choose UART mode or LOGUART mode. The procedure is as follows:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>// Your SDK direction
-cd $&lt;sdk&gt;
-// The chip type you choose, e.g. amebasmart
-cd source/&lt;ameba_type&gt;
-make menuconfig
-// ...
-</pre></div>
-</div>
-<figure class="align-center" id="general-config">
-<a class="reference internal image-reference" href="../../../../_images/general_config.png"><img alt="../../../../_images/general_config.png" src="../../../../_images/general_config.png" style="width: 348.59999999999997px; height: 251.39999999999998px;" /></a>
-<figcaption>
-<p><span class="caption-text">Mode selection</span><a class="headerlink" href="#general-config" title="Link to this image"></a></p>
-</figcaption>
-</figure>
+<p>This article describes the role, usage and version information of AT commands.
+There are two currently used AT command modes and scenarios, which can be called LOGUART mode and MCU control mode.</p>
+<p>Scenario 1: LOGUART Mode - In this mode, users can evaluate the module’s functionality and conduct various tests or demos, such as WiFi or Bluetooth testing. It is important to note that in this mode, AT command information will be intermingled with information from the driver since both of them will output from LOGUART.</p>
+<p>Scenario 2: MCU Control Mode - This scenario includes connecting the AT command module via UART/SPI/SDIO for rapid product development by the customer. In this mode, AT command information is transmitted and displayed exclusively through UART/SPI/SDIO.</p>
+<table class="docutils align-center" id="at-command-modes-and-scenarios" style="width: 100%">
+<caption><span class="caption-text">AT command modes and scenarios</span><a class="headerlink" href="#at-command-modes-and-scenarios" title="Link to this table"></a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>Mode</p></th>
+<th class="head"><p>Connecting Method</p></th>
+<th class="head"><p>Status</p></th>
+<th class="head"><p>Scenario</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>LOGUART</p></td>
+<td><p>USB</p></td>
+<td><p>Ready</p></td>
+<td><p>Evaluate, Test, Demo</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><p>MCU Control</p></td>
+<td><p>uart</p></td>
+<td><p>Ready</p></td>
+<td rowspan="3"><p>Product Develop</p></td>
+</tr>
+<tr class="row-even"><td><p>spi</p></td>
+<td><p>Developing</p></td>
+</tr>
+<tr class="row-odd"><td><p>sdio</p></td>
+<td><p>Developing</p></td>
+</tr>
+</tbody>
+</table>
+<p>We set a Ameba module as a slave, and a MCU as a host. The host can send AT commands to the slave and receive the corresponding AT response.
+Users can use AmebaLite, AmebaSmart, and AmebaDPlus as slaves for AT commands.
+AT commands provides a wide range of command types, such as Wi-Fi commands, MQTT commands, TCP/IP commands and Bluetooth commands.</p>
+<section id="hardware-connection">
+<h2>Hardware Connection<a class="headerlink" href="#hardware-connection" title="Link to this heading"></a></h2>
 <p>Some hardwares are inquired at first.</p>
+<p>LOGUART mode:</p>
 <ul class="simple">
 <li><p>Ameba board: As a slave module.</p></li>
-<li><p>PC (or other master device): Download image, input AT commands, observe the response of AT commands.</p></li>
-<li><p>USB cables of type-C: Connect module to PC (or other master device).</p></li>
-<li><p>Several dupont lines: Connect module to USB2TTL in case of UART mode.</p></li>
-<li><p>USB2TTL: Used in case of UART mode, convert the USB signal into TTL signal, or vice versa.</p></li>
+<li><p>PC (or other host device): Input AT commands, observe the response of AT commands.</p></li>
+<li><p>LOGUART: Connect module to PC (or other host device), download image, transmit driver and AT command log.</p></li>
 </ul>
 <p>In case of LOGUART mode, the input and response of AT commands are shown in the same port.</p>
 <figure class="align-center" id="id1">
-<a class="reference internal image-reference" href="../../../../_images/loguart_mode.svg"><img alt="../../../../_images/loguart_mode.svg" height="108" src="../../../../_images/loguart_mode.svg" width="301" /></a>
+<a class="reference internal image-reference" href="../../../../_images/loguart_mode.svg"><img alt="../../../../_images/loguart_mode.svg" height="134" src="../../../../_images/loguart_mode.svg" width="517" /></a>
 <figcaption>
 <p><span class="caption-text">LOGUART mode</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
 </figcaption>
 </figure>
-<p>In case of UART mode, the input and response of AT commands can be separated from the debug log, through the UART port, making it easier for users to view the execution results of AT commands more intuitively.</p>
+<p>MCU Control mode:</p>
+<ul class="simple">
+<li><p>Ameba board: As a slave module.</p></li>
+<li><p>Raspberry Pi (or other MCU host device): Input AT commands, observe the response of AT commands.</p></li>
+<li><p>LOGUART: Connect module to Raspberry Pi (or other MCU host device), download image, show driver log.</p></li>
+<li><p>SPI/UART/SDIO : Connect module to Raspberry Pi (or other MCU host device), transmit AT command, show AT command response.</p></li>
+</ul>
+<p>In case of MCU control mode, the input and response of AT commands can be separated from the driver log, making it easier for users to view the execution results of AT commands more intuitively.</p>
 <figure class="align-center" id="id2">
-<a class="reference internal image-reference" href="../../../../_images/uart_mode.svg"><img alt="../../../../_images/uart_mode.svg" height="168" src="../../../../_images/uart_mode.svg" width="301" /></a>
+<a class="reference internal image-reference" href="../../../../_images/mcu_control_mode.svg"><img alt="../../../../_images/mcu_control_mode.svg" height="221" src="../../../../_images/mcu_control_mode.svg" width="557" /></a>
 <figcaption>
-<p><span class="caption-text">UART mode</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
+<p><span class="caption-text">MCU Control mode</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
 </figcaption>
 </figure>
-<p>For different ICs, the default UART input and output ports are listed below.</p>
+<p>In MCU Control mode, users should prepare the <code class="docutils literal notranslate"><span class="pre">atcmd_config.json</span></code> file in advance, convert it into a bin file (for detailed instructions, please refer to the AN VFS section), and download it to the module’s corresponding flash partition along with the image. If no VFS AT command configuration file is provided, the default configuration of UART will be used.
+For different chip types, the default UART input and output ports are shown in flowing table.</p>
 <table class="docutils align-default" id="id3" style="width: 100%">
 <caption><span class="caption-text">Default UART port and baud rates for chips</span><a class="headerlink" href="#id3" title="Link to this table"></a></caption>
 <thead>
@@ -201,32 +219,11 @@ make menuconfig
 </tr>
 </tbody>
 </table>
-<p>You can modify these values in <code class="file docutils literal notranslate"><em><span class="pre">sdk</span></em><span class="pre">/source/component/at_cmd/at_intf_uart.h</span></code>.</p>
-<ol class="arabic simple">
-<li><p>Modify the baud rate</p></li>
-</ol>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#define UART_BAUD   38400</span>
-</pre></div>
-</div>
-<ol class="arabic simple" start="2">
-<li><p>Modify the UART ports for chips</p></li>
-</ol>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#if defined (CONFIG_AMEBASMART)</span>
-<span class="cp">#define UART_TX     _PA_3 </span><span class="c1">// UART0 TX</span>
-<span class="cp">#define UART_RX     _PA_2 </span><span class="c1">// UART0 RX</span>
-<span class="cp">#elif defined (CONFIG_AMEBALITE)</span>
-<span class="cp">#define UART_TX     _PA_28 </span><span class="c1">// UART TX</span>
-<span class="cp">#define UART_RX     _PA_29 </span><span class="c1">// UART RX</span>
-<span class="cp">#elif defined (CONFIG_AMEBADPLUS)</span>
-<span class="cp">#define UART_TX     _PA_26 </span><span class="c1">// UART TX</span>
-<span class="cp">#define UART_RX     _PA_27 </span><span class="c1">// UART RX</span>
-</pre></div>
-</div>
 </section>
 <section id="command-description">
 <h2>Command Description<a class="headerlink" href="#command-description" title="Link to this heading"></a></h2>
 <section id="command-format">
-<h3>Command Format<a class="headerlink" href="#command-format" title="Link to this heading"></a></h3>
+<h3>Command format<a class="headerlink" href="#command-format" title="Link to this heading"></a></h3>
 <p>The current format of the supported AT command set starts with two capital letters <code class="docutils literal notranslate"><span class="pre">AT</span></code> (abbreviation of attention), called the start characters, followed by a <code class="docutils literal notranslate"><span class="pre">+</span></code>, then by the command name.
 If there are several parameters more, it will be followed by an <code class="docutils literal notranslate"><span class="pre">=</span></code>, then by a parameter list. For example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">COMMAND</span><span class="o">=</span><span class="n">parameter1</span><span class="p">,</span> <span class="n">parameter2</span>
@@ -234,21 +231,29 @@ If there are several parameters more, it will be followed by an <code class="doc
 </div>
 <p>In this case, the first two letters <code class="docutils literal notranslate"><span class="pre">AT</span></code> are the start characters, indicating that the current string can be recognized as AT command, and <code class="docutils literal notranslate"><span class="pre">+</span></code> is used to separate the start characters and subsequent commands.
 <code class="docutils literal notranslate"><span class="pre">COMMAND</span></code> is the specific command name, to be executed right now.
-This command requires some parameters. It contains two parameters in this example: <em>parameter1</em> and <em>parameter2</em>. After entering this AT command, continue to press Enter (means newline) to start executing this AT command.</p>
-<p>After receiving the AT command, the slave judges whether it is a valid command at first.
-If it is considered as an invalid command (not in the AT command set), nothing will be performed.
-Otherwise, it will be executed based on the input command and its parameters, if present.
-When the command is successfully executed, the command name plus an <strong>OK</strong> mark will generally be returned.
-When the command execution fails, the command name plus an <strong>ERROR</strong> mark will generally be returned, followed by an error code.</p>
-<p>As in the above example, after the command executed, you can observe the result on the host side. If you see <strong>OK</strong> returned, it means the command has been executed successfully.
-therwise, <strong>ERROR</strong> is returned, based on the subsequent error code, you can inquiry the error code corresponding to each command to find out what it means.</p>
+This command requires some parameters. It contains two parameters in this example: <em>parameter1</em> and <em>parameter2</em>.</p>
 <p>Sometimes, several parameters in AT command may be ignored, in this case, one or more comma(s) should be input inside parameters.</p>
 <p>For example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">COMMAND</span><span class="o">=</span><span class="n">parameter1</span><span class="p">,</span> <span class="p">,</span> <span class="n">parameter3</span>
 </pre></div>
 </div>
-<p>In this command above, there is an invisible <em>parameter2</em> between two commas, in this case, the <em>parameter2</em> is considered as a null string whose length equals to zero byte.
-In this text, when introducing the parameter list of a certain AT command, angle brackets <code class="docutils literal notranslate"><span class="pre">&lt;</span> <span class="pre">&gt;</span></code> are added to indicate the name of the parameter, and square brackets <code class="docutils literal notranslate"><span class="pre">[</span> <span class="pre">]</span></code> are added to indicate that the parameter is optional.
+<p>In this command above, there is an invisible <em>parameter2</em> between two commas. In this case, the <em>parameter2</em> is considered to use default value.</p>
+</section>
+<section id="command-response">
+<h3>Command Response<a class="headerlink" href="#command-response" title="Link to this heading"></a></h3>
+<p>After receiving the AT command, the slave judges whether it is a valid command at first.
+If it is considered as an invalid command (not in the AT command set), <strong>“unkown command COMMAND”</strong> will be performed.
+Otherwise, it will be executed based on the input command and its parameters.
+When the command is successfully executed, the command name plus an <strong>OK</strong> mark will generally be returned.
+When the command execution fails, the command name plus an <strong>ERROR</strong> mark will generally be returned, followed by an error code.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Every AT command has it’s corresponding error code number and meaning.</p>
+</div>
+</section>
+<section id="command-paramter">
+<h3>Command Paramter<a class="headerlink" href="#command-paramter" title="Link to this heading"></a></h3>
+<p>In this text, when introducing the parameter list of a certain AT command, angle brackets <code class="docutils literal notranslate"><span class="pre">&lt;</span> <span class="pre">&gt;</span></code> are added to indicate the name of the parameter, and square brackets <code class="docutils literal notranslate"><span class="pre">[</span> <span class="pre">]</span></code> are added to indicate that the parameter is optional.
 Different parameters are separated by commas.</p>
 <p>For example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">COMMAND</span><span class="o">=&lt;</span><span class="n">param1</span><span class="o">&gt;</span><span class="p">[,</span><span class="o">&lt;</span><span class="n">param2</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">param3</span><span class="o">&gt;</span><span class="p">]</span>
@@ -294,9 +299,8 @@ For the other AT commands which do not need use escapes character, the comma wil
 <section id="command-length">
 <h3>Command Length<a class="headerlink" href="#command-length" title="Link to this heading"></a></h3>
 <p>Each AT command must not exceed a length limit, otherwise, the excess part will be ignored.</p>
-<p>There are 2 types of length limit. When longer command format is enabled, the length limit is 511 bytes, otherwise (shorter command format), the length limit is 126 bytes.
-When the AT command using escapes character, the escapes characters such as ‘<code class="docutils literal notranslate"><span class="pre">\</span></code> or <code class="docutils literal notranslate"><span class="pre">\\</span></code> should be regarded as 2 bytes.
-Especially, the longer command format is not available for AmebaGreen2 yet.</p>
+<p>There are 2 types of length limit. When longer command format is enabled, the length limit is 4095 bytes, otherwise (shorter command format), the length limit is 126 bytes.
+When the AT command using escapes character, the escapes characters such as ‘<code class="docutils literal notranslate"><span class="pre">\</span></code> or <code class="docutils literal notranslate"><span class="pre">\\</span></code> should be regarded as 2 bytes.</p>
 <p>You can modify the length limit by <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">menuconfig</span></code> when compiling the SDK. If you select the option <code class="docutils literal notranslate"><span class="pre">Enable</span> <span class="pre">Longer</span> <span class="pre">CMD</span></code>, the length limit will be larger.</p>
 </section>
 </section>
@@ -455,24 +459,53 @@ Especially, the longer command format is not available for AmebaGreen2 yet.</p>
 </tbody>
 </table>
 </section>
-<section id="building-image">
-<h2>Building Image<a class="headerlink" href="#building-image" title="Link to this heading"></a></h2>
+<section id="at-command-version">
+<h2>AT Command Version<a class="headerlink" href="#at-command-version" title="Link to this heading"></a></h2>
+<p>Users can query the current firmware’s AT command version by executing the AT+GMR command. The version number employs a semantic versioning system, and its format is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">major</span><span class="o">&gt;.&lt;</span><span class="n">minor</span><span class="o">&gt;.&lt;</span><span class="n">patch</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>where:</p>
+<ul class="simple">
+<li><p>&lt;major&gt;is the major version. Represents major updates, typically including the introduction of new chip support, new features, etc.</p></li>
+<li><p>&lt;minor&gt;is the minor version. Represents important updates, typically including new commands, bug fixes, etc.</p></li>
+<li><p>&lt;patch&gt;is the patch version. Represents fixing some issues without adding any new features.</p></li>
+</ul>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">//</span> <span class="n">send</span> <span class="n">ATCMD</span>
+<span class="n">AT</span><span class="o">+</span><span class="n">GMR</span>
+<span class="o">//</span> <span class="n">receive</span> <span class="n">ATCMD</span> <span class="n">response</span>
+<span class="o">+</span><span class="n">GMR</span><span class="p">:</span>
+<span class="n">ATCMD</span> <span class="n">VERSION</span><span class="p">:</span> <span class="n">v2</span><span class="mf">.2.1</span>
+<span class="n">SDK</span> <span class="n">VERSION</span><span class="p">:</span> <span class="n">v3</span><span class="mf">.5</span>
+</pre></div>
+</div>
+</section>
+<section id="build-image">
+<h2>Build image<a class="headerlink" href="#build-image" title="Link to this heading"></a></h2>
 <section id="preparation">
 <h3>Preparation<a class="headerlink" href="#preparation" title="Link to this heading"></a></h3>
-<p>Users can also build images with <code class="docutils literal notranslate"><span class="pre">{sdk}</span></code> by self. For detailed building procedure, please refer to the AN documents for different type of chips.</p>
+<p>Besides obtaining the release version from GitHub, users can also build images with <code class="docutils literal notranslate"><span class="pre">{sdk}</span></code> by self. For detailed building procedure, please refer to the AN documents for different type of chips.</p>
 </section>
 <section id="building">
 <h3>Building<a class="headerlink" href="#building" title="Link to this heading"></a></h3>
-<p>After preparations above, user can build images in the <code class="docutils literal notranslate"><span class="pre">{sdk}</span></code> directory.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>cd ${sdk}
-// The &lt;ameba_type&gt; is different for chips
+<p>After preparations above, users can build images in the <code class="docutils literal notranslate"><span class="pre">{sdk}</span></code> directory.</p>
+<p>Users can run <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">menuconfig</span></code> to choice MCU Control mode or LOGUART mode. The procedure is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>// Your SDK direction
+cd $&lt;sdk&gt;
+// The chip type you choose, e.g. amebasmart
 cd source/&lt;ameba_type&gt;
-// make menuconfig is optional, if you need modify some options
 make menuconfig
-make all
+// ……
 </pre></div>
 </div>
-<p>If somehow failed, type <code class="docutils literal notranslate"><span class="pre">$make</span> <span class="pre">clean</span></code> to clean, then redo the make procedure.</p>
+<figure class="align-center" id="general-config">
+<a class="reference internal image-reference" href="../../../../_images/general_config.png"><img alt="../../../../_images/general_config.png" src="../../../../_images/general_config.png" style="width: 338.0px; height: 288.0px;" /></a>
+<figcaption>
+<p><span class="caption-text">Choice mode</span><a class="headerlink" href="#general-config" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p>After <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">menuconfig</span></code>, users can run <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">all</span></code> to rebuild the project.</p>
 <p>After building successfully, the image files can be found at <code class="docutils literal notranslate"><span class="pre">{ameba_type}</span></code> directory.</p>
 </section>
 </section>
@@ -497,7 +530,7 @@ make all
 </pre></div>
 </div>
 <p>For different type of chips, you should select the corresponding rdev file before downloading image to flash. You can click the <span class="menuselection">File &gt; Open</span> to select corresponding rdev file. Then, select the corresponding image files.</p>
-<p>Bofore downloading image, the chip should enter download mode at first.
+<p>Before downloading image, the chip should enter download mode at first.
 You can press and hold the <span class="guilabel">DOWNLOAD</span> button on chip, then press the <span class="guilabel">CHIP_EN</span> button, the chip will enter download mode after you loosen them both.</p>
 <p>Then connect the chip module to PC with USB cable, and press the <span class="guilabel">DOWNLOAD</span> button of Image Tool to start downloading the image files.</p>
 </section>
