@@ -28,40 +28,22 @@ function add_selector() {
             };
 
             let p = document.getElementById("rtd-search-form").parentElement;
+
+            const labelsList = ["ic", "language", "version"];
+
             p.innerHTML = `
-            <table>
-            <tr>
-            <td style="text-align: right;vertical-align: middle;">${labels.ic}</td>
-            <td style="text-align: left;vertical-align: middle;"><select name="ic" id="ic-selector" title="ic" onchange="change_ic()" style="width:120px; border-radius:2px; margin:5px">
-            ${ics.map(ic => {
-                return `<option value="${ic}">${ic}</option>`;
-            }).join('')}
-            </select></td></tr>
-
-            <tr>
-            <td style="text-align: right;vertical-align: middle;">${labels.series}</td>
-            <td style="text-align: left;vertical-align: middle;"><select name="series" id="series-selector" title="series" onchange="change_series()" style="width:120px; border-radius:2px; margin:5px">
-            ${series.map(series => {
-                return `<option value="${series}">${series}</option>`;
-            }).join('')}
-            </select></td></tr>
-
-            <tr>
-            <td style="text-align: right;vertical-align: middle;">${labels.language}</td>
-            <td style="text-align: left;vertical-align: middle;"><select name="language" id="language-selector" title="language" onchange="change_language()" style="width:120px; border-radius:2px; margin:5px">
-            ${languages.map(language => {
-                return `<option value="${language}">${language}</option>`;
-            }).join('')}
-            </select></td></tr>
-
-            <tr>
-            <td style="text-align: right;vertical-align: middle;">${labels.version}</td>
-            <td style="text-align: left;vertical-align: middle;"><select name="version" id="version-selector" title="version" onchange="change_version()" style="width:120px; border-radius:2px; margin:5px">
-            ${versions.map(version => {
-                return `<option value="${version}">${version}</option>`;
-            }).join('')}
-            </select></td></tr>
-            </table>` + p.innerHTML;
+                <table>
+                ${labelsList.map(label => `
+                    <tr>
+                        <td style="text-align: right;vertical-align: middle;">${labels[label]}</td>
+                        <td style="text-align: left;vertical-align: middle;">
+                            <select name="${label}" id="${label}-selector" title="${label}" onchange="change_${label}()" style="width:120px; border-radius:2px; margin:5px">
+                                ${window[label + 's'].map(option => `<option value="${option}">${option}</option>`).join('')}
+                            </select>
+                        </td>
+                    </tr>
+                `).join('')}
+                </table>` + p.innerHTML;
         });
 }
 
