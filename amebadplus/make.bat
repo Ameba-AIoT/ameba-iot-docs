@@ -1,4 +1,4 @@
-﻿@ECHO OFF
+@ECHO OFF
 setlocal enabledelayedexpansion
 
 REM Set command window format
