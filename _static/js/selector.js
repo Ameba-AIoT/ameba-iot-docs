@@ -6,24 +6,20 @@ function add_selector() {
         .then(res => {
             const cur_ic = window.location.pathname.split('/')[2];
             const cur_language = window.location.pathname.split('/')[3];
-            const cur_series = window.location.pathname.split('/')[4];
-            const cur_version = window.location.pathname.split('/')[5];
+            const cur_version = window.location.pathname.split('/')[4];
 
             window.ics = Object.keys(res);
 
             const languages_obj = res[cur_ic];
             window.languages = Object.keys(languages_obj);
 
-            const series_obj = languages_obj[cur_language];
-            window.seriess = Object.keys(series_obj);
+            window.versions = languages_obj[cur_language];
 
-            window.versions = series_obj[cur_series];
 
             // 根据 cur_language 设置表格标题
             const labels = {
                 ic: cur_language === 'cn' ? '芯片' : 'IC',
                 language: cur_language === 'cn' ? '语言' : 'Language',
-                series: cur_language === 'cn' ? '系列' : 'Series',
                 version: cur_language === 'cn' ? '版本' : 'Version'
             };
 
@@ -49,32 +45,26 @@ function add_selector() {
 
 /* ============= Toggle IC ============= */
 function change_ic() {
-    const { cur_ic, cur_language, cur_series, cur_version } = getURLSegments();
+    const { cur_ic, cur_language, cur_version } = getURLSegments();
 
     const next_ic = document.getElementById("ic-selector").value;
-    window.location.href = `${baseURL}/${next_ic}/${cur_language}/${cur_series}/${cur_version}/`
+    window.location.href = `${baseURL}/${next_ic}/${cur_language}/${cur_version}/`
 }
 
 /* ============= Toggle Languages ============= */
 function change_language() {
-    const { cur_ic, cur_language, cur_series, cur_version } = getURLSegments();
+    const { cur_ic, cur_language, cur_version } = getURLSegments();
 
     const next_language = document.getElementById("language-selector").value;
-    window.location.href = `${baseURL}/${cur_ic}/${next_language}/${cur_series}/${cur_version}/`
+    window.location.href = `${baseURL}/${cur_ic}/${next_language}/${cur_version}/`
 }
 
-/* ============= Toggle Series ============= */
-function change_series() {
-    const { cur_ic, cur_language, cur_series, cur_version } = getURLSegments();
-    const next_series = document.getElementById("series-selector").value;
-    window.location.href = `${baseURL}/${cur_ic}/${cur_language}/${next_series}/${cur_version}/`
-}
 
 /* ============= Toggle Version ============= */
 function change_version() {
-    const { cur_ic, cur_language, cur_series, cur_version } = getURLSegments();
+    const { cur_ic, cur_language, cur_version } = getURLSegments();
     const next_version = document.getElementById("version-selector").value;
-    window.location.href = `${baseURL}/${cur_ic}/${cur_language}/${cur_series}/${next_version}/`
+    window.location.href = `${baseURL}/${cur_ic}/${cur_language}/${next_version}/`
 }
 
 /* ============= Get URL Segments ============= */
@@ -83,8 +73,7 @@ function getURLSegments() {
     return {
         cur_ic: segments[2],
         cur_language: segments[3],
-        cur_series: segments[4],
-        cur_version: segments[5]
+        cur_version: segments[4]
     };
 }
 
@@ -92,11 +81,10 @@ function getURLSegments() {
 /* ============= Init selector ============= */
 document.addEventListener('DOMContentLoaded', (event) => {
     add_selector().then(() => {
-        const { cur_ic, cur_language, cur_series, cur_version } = getURLSegments();
+        const { cur_ic, cur_language, cur_version } = getURLSegments();
 
         document.getElementById("ic-selector").value = cur_ic;
         document.getElementById("language-selector").value = cur_language;
-        document.getElementById("series-selector").value = cur_series;
         document.getElementById("version-selector").value = cur_version;
     });
 });
