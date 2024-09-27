@@ -13,8 +13,8 @@ AmebaDPlus Documents
 
 
    Product Overview <product_overview/src/index>
-   AT Command <ameba/en/at_command/src/index>
    Application Note <application_note/index>
+   AT Command <ameba/en/at_command/src/index>
    Software Tools <ameba/en/software_tools/index>
    MP Tools <ameba/en/mp_tools/src/index>
 
