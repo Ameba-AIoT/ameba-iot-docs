@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     add_selector().then(() => {
         const { cur_ic, cur_language, cur_version } = getURLSegments();
 
-        document.getElementById("ic-selector").value = window.ics[cur_ic].name;
+        document.getElementById("ic-selector").value = window.res[cur_ic].name;
         document.getElementById("language-selector").value = cur_language;
         document.getElementById("version-selector").value = cur_version;
     });
