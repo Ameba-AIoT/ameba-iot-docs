@@ -122,11 +122,16 @@ How to Switch Image
 --------------------------------------
 When MP is finished, you need to switch the image from MP image to the normal image to verify the application.
 
-1. Use command ``ATSC`` from serial terminal to clear the signature of MP image in order to assign the MP image invalid.
+1. Use command ``AT+OTACLEAR`` from serial terminal to clear the signature of MP image in order to assign the MP image invalid.
 
-   .. figure:: ../figures/boot_flow_2.png
-      :scale: 90%
-      :align: center
+   .. code-block::
+
+      [16:41:35:731]AT+OTACLEAR
+      [16:41:35:731][SYS-A] [sys_clear_ota_signature] IMGID: 1, current OTA1 Address: 0x00014000, target OTA2 Address: 0x00214000
+      [16:41:35:731]
+      [16:41:35:731]+OTACLEAR:OK
+      [16:41:35:731]
+      [16:41:35:732][MEM] After do cmd, available heap 318976
 
 2. Reset the device, then the device will boot from the normal image located in OTA2 field.
 
