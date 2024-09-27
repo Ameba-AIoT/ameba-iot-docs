@@ -8,9 +8,28 @@ function add_selector() {
             const cur_language = window.location.pathname.split('/')[3];
             const cur_version = window.location.pathname.split('/')[4];
 
-            window.ics = Object.keys(res);
+            function toLowerCaseKeys(obj) {
+                if (typeof obj !== 'object' || obj === null) {
+                    return obj;
+                }
+    
+                if (Array.isArray(obj)) {
+                    return obj.map(toLowerCaseKeys);
+                }
+    
+                return Object.keys(obj).reduce((acc, key) => {
+                    const lowerKey = key.toLowerCase();
+                    acc[lowerKey] = toLowerCaseKeys(obj[key]);
+                    return acc;
+                }, {});
+            }
+    
+            // 将 res 中的所有键和值转换为小写
+            const lowerCaseRes = toLowerCaseKeys(res);
 
-            const languages_obj = res[cur_ic];
+            window.ics = Object.keys(lowerCaseRes);
+
+            const languages_obj = lowerCaseRes[cur_ic];
             window.languages = Object.keys(languages_obj);
 
             window.versions = languages_obj[cur_language];
