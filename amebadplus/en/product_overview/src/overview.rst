@@ -3,7 +3,7 @@ Introduction
 -------------------
 .. only:: RTL8721D
 
-   The |CHIP_NAME| (including RTL8721DAx/RTL8721DCx/RTL8721DGx series) is a low-power dual-band microcontroller integrating a high-performance MCU 
+   The |CHIP_NAME| is a low-power dual-band microcontroller integrating a high-performance MCU 
    (Armv8.1-M, Cortex-M55 instruction set compatible) called Real-M300 and a low-power MCU (Armv8-M, Cortex-M23 instruction set compatible) called Real-M200.
    It is designed to achieve enhanced power and RF performance and low-power consumption, featuring all the characteristics of low-power chips, such as 
    fine-grained clock gating, multiple power modes, and dynamic power scaling.
@@ -23,17 +23,16 @@ The |CHIP_NAME| is a dual-band (2.4GHz and 5GHz) communication controller that i
 It supports 802.11 a/b/g/n wireless LAN (WLAN) network with 40MHz bandwidth. It consists of WLAN MAC, a 1T1R capable WLAN baseband, RF, and Bluetooth, providing complete Wi-Fi and Bluetooth functionalities.
 
 A variety of peripheral interfaces, including UART, SPI, QSPI/OSPI, I2C, LEDC, etc., as well as sensor controllers (such as ADC, Cap-Touch, and Key-Scan) are integrated into |CHIP_NAME| devices. 
-High-speed connectivity interfaces, SDIO and USB, are also provided. Besides, the <$$CHIP_NAME> has audio features with a dedicated digital microphone (DMIC) interface and I2S. 
+High-speed connectivity interfaces, SDIO and USB, are also provided. Besides, the |CHIP_NAME| has audio features with a dedicated digital microphone (DMIC) interface and I2S. 
 Abundant general-purpose I/O (GPIOs) can be configured to different functions according to different IoT (Internet of Things) applications flexibly. 
 The user-friendly development kits (SDK and HDK) are provided to customers for developing applications.
 
 The |CHIP_NAME| also incorporates high-speed memories with on-chip SRAM and stacked Flash or PSRAM. A dedicated SPI Flash controller provides 
 a flexible and efficient way to access NOR Flash (e.g., byte and block access). A multilayer AXI bus interconnect supports internal and external memory access.
 
-.. only:: RTL8721D
-
-   The |CHIP_NAME| family offers devices in different packages ranging from 48 pins to 100 pins. The included peripherals change with the device.
+The |CHIP_NAME| family offers devices in different packages ranging from 48 pins to 100 pins. The included peripherals change with the device.
    
+
 Block Diagram
 -------------------
 The functional block diagram is illustrated below, which provides a view of the chip's major functional components and core complexes.
