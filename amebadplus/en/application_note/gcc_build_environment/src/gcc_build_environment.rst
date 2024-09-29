@@ -187,9 +187,29 @@ Troubleshooting
 
 Installing Toolchain
 ----------------------------------------
+The toolchain will be installed automatically when building the project at the first time. And the toolchain will be intalled in ``/opt/rtk-toolchain`` by default. 
+
+1. During the compilation, we will check if the toolchain exists and if the version of the toolchain match the lastest version. Once error occurs, you should fix the error according to the prompts on the screen and try again with ``make``.
+
+.. _make_toolchain:
+
+2. The toolchain will be downloaded from github when building the project at the first time. If find the download speed from github is too slow or download failed, please execute command ``make toolchain URL=aliyun`` or ``make toolchain URL=github`` first to get toolchain before building project. We recommend use ``make toolchain URL=aliyun`` to download toolchain from aliyun to improve the download speed.
+
+.. _change_installation_dir:
+
+3. The default directory for the toolchain installation is ``/opt/rtk-toolchain``. If you want to change the installation path, modify the ``TOOLCHAINDIR`` defined in ``Makefile.include.gen`` which is located both in ``project_km0`` and ``project_km4``.
+
+.. note::
+
+   - If an error ``Create Toolchain Dir Failed. May Not Have Permission`` appears, please create the installation directory by manual. If still fails, please refer to :ref:`3 <change_installation_dir>` above to change the installtion directory.
+   - If an error ``Download Failed`` appears, please check if the network connection is accessible first. If still fails, please refer to :ref:`2 <make_toolchain>` above to intall the toolchain again.
+   - If an error ``Current Toolchain Version Mismatched`` appears, please delete the current toochain and retry with ``make``, and the latest toolchain will be installed automatically during building the project.
+
+If the installation still fails, try with the manual installation steps shown in below.
+
 Windows
 ~~~~~~~~~~~~~~
-This section introduces the steps to prepare the toolchain environment.
+This section introduces the steps to prepare the toolchain environment manually.
 
 1. Acquire the zip files of |CHIP_NAME| toolchain from Realtek.
 
@@ -211,12 +231,10 @@ This section introduces the steps to prepare the toolchain environment.
 
 .. note::
    - The unzip folders should stay the same with the figure above and do NOT change them, otherwise you need to modify the toolchain directory in makefile to customize the path.
-   - If an error of the toolchain, just like the log ``Error: No Toolchain in /opt/rtk-toolchain/vsdk-10.3.1/mingw32/newlib`` appears when building the project, find out if your toolchain files directory are not the same with the directory in the log. Place the toolchain files correctly and try again.
-   - The toolchain will be downloaded from github when build project for the first time. If find the download speed from github is too slow or download failed, please execute command ``make toolchain URL=aliyun`` or ``make toolchain URL=github`` first to get toolchain before building project. We recommend use ``make toolchain URL=aliyun`` to download toolchain from aliyun to improve the download speed.
 
 Linux
 ~~~~~~~~~~
-This section introduces the steps to prepare the toolchain environment.
+This section introduces the steps to prepare the toolchain environment manually.
 
 1. Acquire the zip files of |CHIP_NAME| toolchain from Realtek.
 
@@ -235,7 +253,6 @@ This section introduces the steps to prepare the toolchain environment.
 
 .. note::
    - The unzip folders should stay the same with the figure above and do NOT change them, otherwise you need to modify the toolchain directory in makefile to customize the path.
-   - The toolchain will be downloaded from github when build project for the first time. If find the download speed from github is too slow or download failed, please execute command ``make toolchain URL=aliyun`` or ``make toolchain URL=github`` first to get toolchain before building project. We recommend use ``make toolchain URL=aliyun`` to download toolchain from aliyun to improve the download speed.
 
 .. _configuring_sdk:
 
