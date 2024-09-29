@@ -316,9 +316,28 @@ pacman -S mingw-w64-x86_64-gcc-libs
 </section>
 <section id="installing-toolchain">
 <h1>Installing Toolchain<a class="headerlink" href="#installing-toolchain" title="Link to this heading"></a></h1>
+<p>The toolchain will be installed automatically when building the project at the first time. And the toolchain will be intalled in <code class="docutils literal notranslate"><span class="pre">/opt/rtk-toolchain</span></code> by default.</p>
+<ol class="arabic simple">
+<li><p>During the compilation, we will check if the toolchain exists and if the version of the toolchain match the lastest version. Once error occurs, you should fix the error according to the prompts on the screen and try again with <code class="docutils literal notranslate"><span class="pre">make</span></code>.</p></li>
+</ol>
+<ol class="arabic simple" id="make-toolchain" start="2">
+<li><p>The toolchain will be downloaded from github when building the project at the first time. If find the download speed from github is too slow or download failed, please execute command <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">toolchain</span> <span class="pre">URL=aliyun</span></code> or <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">toolchain</span> <span class="pre">URL=github</span></code> first to get toolchain before building project. We recommend use <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">toolchain</span> <span class="pre">URL=aliyun</span></code> to download toolchain from aliyun to improve the download speed.</p></li>
+</ol>
+<ol class="arabic simple" id="change-installation-dir" start="3">
+<li><p>The default directory for the toolchain installation is <code class="docutils literal notranslate"><span class="pre">/opt/rtk-toolchain</span></code>. If you want to change the installation path, modify the <code class="docutils literal notranslate"><span class="pre">TOOLCHAINDIR</span></code> defined in <code class="docutils literal notranslate"><span class="pre">Makefile.include.gen</span></code> which is located both in <code class="docutils literal notranslate"><span class="pre">project_km0</span></code> and <code class="docutils literal notranslate"><span class="pre">project_km4</span></code>.</p></li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>If an error <code class="docutils literal notranslate"><span class="pre">Create</span> <span class="pre">Toolchain</span> <span class="pre">Dir</span> <span class="pre">Failed.</span> <span class="pre">May</span> <span class="pre">Not</span> <span class="pre">Have</span> <span class="pre">Permission</span></code> appears, please create the installation directory by manual. If still fails, please refer to <a class="reference internal" href="#change-installation-dir"><span class="std std-ref">3</span></a> above to change the installtion directory.</p></li>
+<li><p>If an error <code class="docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Failed</span></code> appears, please check if the network connection is accessible first. If still fails, please refer to <a class="reference internal" href="#make-toolchain"><span class="std std-ref">2</span></a> above to intall the toolchain again.</p></li>
+<li><p>If an error <code class="docutils literal notranslate"><span class="pre">Current</span> <span class="pre">Toolchain</span> <span class="pre">Version</span> <span class="pre">Mismatched</span></code> appears, please delete the current toochain and retry with <code class="docutils literal notranslate"><span class="pre">make</span></code>, and the latest toolchain will be installed automatically during building the project.</p></li>
+</ul>
+</div>
+<p>If the installation still fails, try with the manual installation steps shown in below.</p>
 <section id="id1">
 <h2>Windows<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
-<p>This section introduces the steps to prepare the toolchain environment.</p>
+<p>This section introduces the steps to prepare the toolchain environment manually.</p>
 <ol class="arabic simple">
 <li><p>Acquire the zip files of AmebaDPlus toolchain from Realtek.</p></li>
 </ol>
@@ -339,14 +358,12 @@ pacman -S mingw-w64-x86_64-gcc-libs
 <p class="admonition-title">Note</p>
 <ul class="simple">
 <li><p>The unzip folders should stay the same with the figure above and do NOT change them, otherwise you need to modify the toolchain directory in makefile to customize the path.</p></li>
-<li><p>If an error of the toolchain, just like the log <code class="docutils literal notranslate"><span class="pre">Error:</span> <span class="pre">No</span> <span class="pre">Toolchain</span> <span class="pre">in</span> <span class="pre">/opt/rtk-toolchain/vsdk-10.3.1/mingw32/newlib</span></code> appears when building the project, find out if your toolchain files directory are not the same with the directory in the log. Place the toolchain files correctly and try again.</p></li>
-<li><p>The toolchain will be downloaded from github when build project for the first time. If find the download speed from github is too slow or download failed, please execute command <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">toolchain</span> <span class="pre">URL=aliyun</span></code> or <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">toolchain</span> <span class="pre">URL=github</span></code> first to get toolchain before building project. We recommend use <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">toolchain</span> <span class="pre">URL=aliyun</span></code> to download toolchain from aliyun to improve the download speed.</p></li>
 </ul>
 </div>
 </section>
 <section id="id2">
 <h2>Linux<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
-<p>This section introduces the steps to prepare the toolchain environment.</p>
+<p>This section introduces the steps to prepare the toolchain environment manually.</p>
 <ol class="arabic">
 <li><p>Acquire the zip files of AmebaDPlus toolchain from Realtek.</p></li>
 <li><p>Create a new directory <code class="docutils literal notranslate"><span class="pre">rtk-toolchain</span></code> under the path <code class="docutils literal notranslate"><span class="pre">/opt</span></code>.</p>
@@ -364,7 +381,6 @@ pacman -S mingw-w64-x86_64-gcc-libs
 <p class="admonition-title">Note</p>
 <ul class="simple">
 <li><p>The unzip folders should stay the same with the figure above and do NOT change them, otherwise you need to modify the toolchain directory in makefile to customize the path.</p></li>
-<li><p>The toolchain will be downloaded from github when build project for the first time. If find the download speed from github is too slow or download failed, please execute command <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">toolchain</span> <span class="pre">URL=aliyun</span></code> or <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">toolchain</span> <span class="pre">URL=github</span></code> first to get toolchain before building project. We recommend use <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">toolchain</span> <span class="pre">URL=aliyun</span></code> to download toolchain from aliyun to improve the download speed.</p></li>
 </ul>
 </div>
 </section>
