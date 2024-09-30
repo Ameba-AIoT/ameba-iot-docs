@@ -2,11 +2,11 @@
 
 Power-Saving Mode
 ------------------
-Summary
-~~~~~~~~~~~~~~
+
 The |CHIP_NAME| has an advanced Power Management Controller (PMC), which can flexibly power up different power domains of the chip, to achieve the best balance between chip performance and power consumption. AON, SYSON, SOC are three main power domains in digital system. Functions in different power domains will be turned off differently in different power-saving modes.
 
 .. figure:: ../figures/different_power_domains.png
+   :scale: 90%
    :align: center
 
    Different power domains
