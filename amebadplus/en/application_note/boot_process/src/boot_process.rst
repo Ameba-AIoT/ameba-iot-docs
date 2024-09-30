@@ -51,13 +51,13 @@ Boot Flow
 ------------------
 The boot flow of |CHIP_NAME| is illustrated below. After a power-up or hardware reset, the hardware will boot KM4 at 150MHz. The boot process is handled by the on-chip boot ROM and is always executed by the KM4. After the KM4 bootloader code, the KM4 will set up the environment for the KM0.
 
-- KM4 boots ROM
+1. KM4 boots ROM
 
-- KM4 secure boot (optional)
+2. KM4 secure boot (optional)
 
-- KM4 boots to SRAM
+3. KM4 boots to SRAM
 
-- KM4 helps KM0 load images and check the signature (optional)
+4. KM4 helps KM0 load images and check the signature (optional)
 
 .. figure:: ../figures/boot_flow.svg
    :scale: 90%
