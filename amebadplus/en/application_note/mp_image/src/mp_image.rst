@@ -36,9 +36,11 @@ The steps of building MP image are depcited below:
 
    d. Save and exit the menuconfig.
 
-3. Use command ``make all`` to rebuild the projects of KM0 and KM4. The MP image ``km0_km4_app_mp.bin`` will be generated in ``{SDK}\amebadplus_gcc_project`` and all the images releated to the MP image can be found in the paths below:
+3. Use command ``make all`` to rebuild the projects of KM0 and KM4.
 
-   .. code::
+The MP image ``km0_km4_app_mp.bin`` will be generated in ``{SDK}\amebadplus_gcc_project`` and all the images releated to the MP image can be found in the paths below:
+
+   .. code-block::
 
       {SDK}\amebadplus_gcc_project\project_km4\asdk\image_mp
       {SDK}\amebadplus_gcc_project\project_km0\asdk\image_mp
