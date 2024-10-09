@@ -12,6 +12,7 @@ Application Note
    mpu_cache/src/index
    file_system/src/index
    mp_image/src/index
+   mass_produciton/src/index
    ota/src/index
    chip_en/src/index
    boot_process/src/index
