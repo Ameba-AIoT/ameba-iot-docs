@@ -38,5 +38,4 @@ The functional block diagram is illustrated below, which provides a view of the 
 
 .. note::
 
-   For different series of AmebaLite, the modules, functions and peripherals may differ. Refer to Section :ref:`Series Comparison <ameba_soc_family>` for more details.
-
+   For different series of |CHIP_NAME|, the modules, functions and peripherals may differ. Refer to Section :ref:`Series Comparison <ameba_soc_family>` for more details.
