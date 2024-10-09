@@ -44,23 +44,21 @@ AmebaDPlus
       :width: 100%
       :widths: auto
 
-      +-----------+------------------------+-----------+-----------+-----------+----------+-----------+-------------------+-----------+-------------------+
-      | Series    | Package (mm)           | Real-M300 | Real-M200 | TrustZone | NOR Flash| PSRAM     | Wi-Fi             | Bluetooth | Operating voltage | 
-      +===========+========================+===========+===========+===========+==========+===========+===================+===========+===================+
-      | RTL8721Dx | | - QFN48 (6 x 6)      | 345MHz    | 115MHz    | √         | | - 0MB  | | - 0MB   | | Wi-Fi 4         | BLE 5.0   | | - 2.97V ~ 3.63V |
-      |           | | - QFN68 (8 x 8)      |           |           |           | | - 4MB  | | - 4MB   | | (2.4GHz + 5GHz) |           | | - 1.71V ~ 3.63V |
-      |           | | - BGA100 (5.1 x 5.1) |           |           |           |          | | - 8MB   |                   |           |                   |
-      +-----------+------------------------+-----------+-----------+-----------+----------+-----------+-------------------+-----------+-------------------+
-      | RTL8711Dx | | - QFN48 (6 x 6)      | 345MHz    | 115MHz    | x         | | - 0MB  | | - 0MB   | | Wi-Fi 4         | BLE 5.0   | 2.97V ~ 3.63V     |
-      |           | | - QFN68 (8 x 8)      |           |           |           | | - 4MB  | | - 4MB   | | (2.4GHz + 5GHz) |           |                   |
-      |           |                        |           |           |           |          | | - 8MB   |                   |           |                   |
-      +-----------+------------------------+-----------+-----------+-----------+----------+-----------+-------------------+-----------+-------------------+
+      +-----------+------------------------+-----------+-----------+-----------+------------------------------+-----------------------+-------------------+-----------+-------------------+
+      | Series    | Package (mm)           | Real-M300 | Real-M200 | TrustZone | NOR Flash :sup:`[1][2]`      | PSRAM :sup:`[1][2]`   | Wi-Fi             | Bluetooth | Operating voltage | 
+      +===========+========================+===========+===========+===========+==============================+=======================+===================+===========+===================+
+      | RTL8721Dx | | - QFN48 (6 x 6)      | 345MHz    | 115MHz    | √         | | - 0MB                      | | - 0MB               | | Wi-Fi 4         | BLE 5.0   | | - 2.97V ~ 3.63V |
+      |           | | - QFN68 (8 x 8)      |           |           |           | | - 4MB                      | | - 4MB               | | (2.4GHz + 5GHz) |           | | - 1.71V ~ 3.63V |
+      |           | | - BGA100 (5.1 x 5.1) |           |           |           |                              | | - 8MB               |                   |           |                   |
+      +-----------+------------------------+-----------+-----------+-----------+------------------------------+-----------------------+-------------------+-----------+-------------------+
+      | RTL8711Dx | | - QFN48 (6 x 6)      | 345MHz    | 115MHz    | x         | | - 0MB                      | | - 0MB               | | Wi-Fi 4         | BLE 5.0   | 2.97V ~ 3.63V     |
+      |           | | - QFN68 (8 x 8)      |           |           |           | | - 4MB                      | | - 4MB               | | (2.4GHz + 5GHz) |           |                   |
+      |           |                        |           |           |           |                              | | - 8MB               |                   |           |                   |
+      +-----------+------------------------+-----------+-----------+-----------+------------------------------+-----------------------+-------------------+-----------+-------------------+
 
    .. note:: 
-
-      - If the memory (Flash or PSRAM) size is 0MB, it means that there is no such type of memory embedded in the corresponding IC.
-
-      - For different series and package numbers, the embedded memory can be only Flash or only PSRAM, or none of them. Refer to Datasheet for more information.
+      | [1] If the memory (Flash or PSRAM) size is 0MB, it means that there is no such type of memory embedded in the corresponding IC.
+      | [2] For different series and package numbers, the embedded memory can be only Flash or only PSRAM, or none of them. Refer to Datasheet for more information.
 
 AmebaLite
 ~~~~~~~~~~~
@@ -96,8 +94,8 @@ AmebaLite
         - HiFi 5 (DSP)
         - TrustZone
         - On-chip SRAM
-        - NOR Flash
-        - PSRAM
+        - NOR Flash :sup:`[1][2]`
+        - PSRAM :sup:`[1][2]`
         - Wi-Fi
         - Bluetooth
         - Operating temperature
@@ -148,7 +146,6 @@ AmebaLite
         - 
           - -20℃ ~ 85℃
           - -40℃ ~ 105℃
-        - 
       * - RTL8710EC
         - QFN48 (6 x 6)
         - 400MHz
@@ -170,10 +167,8 @@ AmebaLite
           - -40℃ ~ 105℃
 
    .. note:: 
-      
-      - If the memory (Flash or PSRAM) size is 0MB, it means that there is no such type of memory embedded in the corresponding IC.
-
-      - For different series and package numbers, the embedded memory can be only Flash or only PSRAM. Refer to Datasheet for more information.
+      | [1] If the memory (Flash or PSRAM) size is 0MB, it means that there is no such type of memory embedded in the corresponding IC.
+      | [2] For different series and package numbers, the embedded memory can be only Flash or only PSRAM. Refer to Datasheet for more information.
 
 AmebaSmart
 ~~~~~~~~~~~
@@ -202,20 +197,17 @@ AmebaSmart
       :width: 100%
       :widths: auto
 
-      +----------+-------------------------+-------------+-----------+-----------+-----------+---------+-------------------+-------------------+------------------+
-      | Series   | Package (mm)            | CA32        | Real-M300 | Real-M200 | NOR Flash | PSRAM   | DDR               | Wi-Fi             | Bluetooth        |
-      +==========+=========================+=============+===========+===========+===========+=========+===================+===================+==================+
-      | RTL8730E | | - QFN100 (10 x 10)    | | - 1.2GHz  | 333MHz    | 40MHz     | | - 0MB   | | - 0MB | | - 0MB           | | Wi-Fi 6         | | Bluetooth 5.3  |
-      |          | | - DR-QFN144 (11 x 11) | | - 1.32GHz |           |           | | - 8MB   | | - 8MB | | - 64MB (DDR2)   | | (2.4GHz + 5GHz) | | (BR/EDR + BLE) |
-      |          |                         |             |           |           | | - 16MB  |         | | - 128MB (DDR2)  |                   |                  |
-      |          |                         |             |           |           | | - 32MB  |         | | - 256MB (DDR3L) |                   |                  |
-      +----------+-------------------------+-------------+-----------+-----------+-----------+---------+-------------------+-------------------+------------------+
+      +----------+-------------------------+----------------+-----------+-----------+------------------------+---------------------+-------------------+-------------------+------------------+
+      | Series   | Package (mm)            | CA32 :sup:`[1]`| Real-M300 | Real-M200 | NOR Flash :sup:`[2][3]`| PSRAM :sup:`[2][3]` | DDR :sup:`[2][3]` | Wi-Fi             | Bluetooth        |
+      +==========+=========================+================+===========+===========+========================+=====================+===================+===================+==================+
+      | RTL8730E | | - QFN100 (10 x 10)    | | - 1.2GHz     | 333MHz    | 40MHz     | | - 0MB                | | - 0MB             | | - 0MB           | | Wi-Fi 6         | | Bluetooth 5.3  |
+      |          | | - DR-QFN144 (11 x 11) | | - 1.32GHz    |           |           | | - 8MB                | | - 8MB             | | - 64MB (DDR2)   | | (2.4GHz + 5GHz) | | (BR/EDR + BLE) |
+      |          |                         |                |           |           | | - 16MB               |                     | | - 128MB (DDR2)  |                   |                  |
+      |          |                         |                |           |           | | - 32MB               |                     | | - 256MB (DDR3L) |                   |                  |
+      +----------+-------------------------+----------------+-----------+-----------+------------------------+---------------------+-------------------+-------------------+------------------+
 
    .. note::
-
-      - The CA32 can run at a frequency of up to 1.32GHz (embedded DDR) or 1.2GHz (embedded PSRAM), depending on the in-package type of DDR/PSRAM.
-
-      - If the memory (Flash or PSRAM/DDR) size is 0MB, it means that there is no such type of memory embedded in the corresponding IC.
-
-      - For different package numbers, the embedded memory is also different. Refer to Datasheet for more information.
+      | [1] The CA32 can run at a frequency of up to 1.32GHz (embedded DDR) or 1.2GHz (embedded PSRAM), depending on the in-package type of DDR/PSRAM.
+      | [2] If the memory (Flash or PSRAM/DDR) size is 0MB, it means that there is no such type of memory embedded in the corresponding IC.
+      | [3] For different package numbers, the embedded memory is also different. Refer to Datasheet for more information.
 
