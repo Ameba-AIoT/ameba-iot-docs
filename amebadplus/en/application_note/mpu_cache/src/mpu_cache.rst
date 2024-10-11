@@ -7,7 +7,7 @@ Functional Description
 The Memory Protection Unit (MPU) is a component provided by Arm and is used to provide hardware protection by software definition. The code in SDK provides the mpu_region_config struct to set the region memory attribute of MPU.
 
 
-The following table shows the member variables of the mpu_region_config struct.
+The following table shows the member variables of the :class:`mpu_region_config` struct.
 
 .. list-table:: mpu_region_config struct
    :header-rows: 1
@@ -25,10 +25,9 @@ The following table shows the member variables of the mpu_region_config struct.
    * -  xn
      -  uint8_t
      -  Execute Never attribute
-       
-        - MPU_EXEC_ALLOW: Allows program execution in this region
-       
-        - MPU_EXEC_NEVER: Does not allow program execution in this region
+
+        * MPU_EXEC_ALLOW: Allows program execution in this region
+        * MPU_EXEC_NEVER: Does not allow program execution in this region
    * -  ap
      -  uint8_t
      -  Access permissions
@@ -51,27 +50,15 @@ The following table shows the member variables of the mpu_region_config struct.
         - MPU_INR_SHAREABLE: Inner shareable
    * -  attr_idx
      -  uint8_t
-     -  Memory attribute indirect index
-       
-        This parameter can be a value of 0 ~ 7, the detailed attribute is defined in :func:`mpu_init()`
-       
-        and is customized. The typical definition is as follows:
+     -  Memory attribute indirect index, can be a value of 0 ~ 7, the detailed attribute is defined in :func:`mpu_init()` and is customized. The typical definition is as follows:
        
         - 0: MPU_MEM_ATTR_IDX_NC, defines memory attribute of Normal memory with non-cacheable.
        
-        - 1: MPU_MEM_ATTR_IDX_WT_T_RA, defines memory attribute of Normal memory with
-         
-          write-through transient, read allocation.
+        - 1: MPU_MEM_ATTR_IDX_WT_T_RA, defines memory attribute of Normal memory with write-through transient, read allocation.
+
+        - 2: MPU_MEM_ATTR_IDX_WB_T_RWA, defines memory attribute of Normal memory with write-back transient, read and write allocation.
        
-        - 2: MPU_MEM_ATTR_IDX_WB_T_RWA, defines memory attribute of Normal memory with
-         
-          write-back transient, read and write allocation.
-       
-        - 3 ~ 7: MPU_MEM_ATTR_IDX_DEVICE, defines memory attribute of Device memory with
-
-          non-gathering, non-recording, non-early Write Acknowledge.
-
-
+        - 3 ~ 7: MPU_MEM_ATTR_IDX_DEVICE, defines memory attribute of Device memory with non-gathering, non-recording, non-early Write Acknowledge.
 
 MPU APIs
 ----------------
@@ -92,7 +79,7 @@ mpu_init
    +--------------+---------------------------------------------------------+
 
 mpu_set_mem_attr
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
 .. table::
    :width: 100%
    :widths: 30, 70
@@ -228,11 +215,11 @@ The Cache of |CHIP_NAME| supports Enable/Disable, Flush and Clean operation, as 
 
 
 .. note::
+
    In the ROM code, the default states of Cache are:
-
-      - KM4 Cache: enabled by default
-
-      - KM0 Cache: disabled by default
+   
+   - KM4 Cache: enabled by default
+   - KM0 Cache: disabled by default
 
 
 Cache APIs
@@ -361,19 +348,19 @@ DCache_Clean
    :width: 100%
    :widths: 30, 70
 
-   +--------------+-------------------------------------------------------------+
-   | Items        | Description                                                 |
-   +==============+=============================================================+
-   | Introduction | Clean D-Cache by address                                    |
-   +--------------+-------------------------------------------------------------+
-   | Parameters   | - Address: Clean address (aligned to 32-byte boundary)      |
-   |              |                                                             |
-   |              | - Bytes: size of memory block (in number of bytes)          |
-   |              |                                                             |
-   |              | - Note: Address set 0xFFFFFFFF is used to clean all D-Cache |
-   +--------------+-------------------------------------------------------------+
-   | Return       | None                                                        |
-   +--------------+-------------------------------------------------------------+
+   +--------------+---------------------------------------------------------------+
+   | Items        | Description                                                   |
+   +==============+===============================================================+
+   | Introduction | Clean D-Cache by address                                      |
+   +--------------+---------------------------------------------------------------+
+   | Parameters   | - Address: Clean address (aligned to 32-byte boundary)        |
+   |              |                                                               |
+   |              | - Bytes: size of memory block (in number of bytes)            |
+   |              |                                                               |
+   |              | .. note:: Address set 0xFFFFFFFF is used to clean all D-Cache.|
+   +--------------+---------------------------------------------------------------+
+   | Return       | None                                                          |
+   +--------------+---------------------------------------------------------------+
 
 DCache_CleanInvalidate
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -381,19 +368,19 @@ DCache_CleanInvalidate
    :width: 100%
    :widths: 30, 70
 
-   +--------------+------------------------------------------------------------------------+
-   | Items        | Description                                                            |
-   +==============+========================================================================+
-   | Introduction | Clean and invalidate D-Cache by address                                |
-   +--------------+------------------------------------------------------------------------+
-   | Parameters   | - Address: Clean and invalidated address (aligned to 32-byte boundary) |
-   |              |                                                                        |
-   |              | - Bytes: size of memory block (in number of bytes)                     |
-   |              |                                                                        |
-   |              | - Note: Address set 0xFFFFFFFF is used to clean and flush all D-Cache  |
-   +--------------+------------------------------------------------------------------------+
-   | Return       | None                                                                   |
-   +--------------+------------------------------------------------------------------------+
+   +--------------+---------------------------------------------------------------------------+
+   | Items        | Description                                                               |
+   +==============+===========================================================================+
+   | Introduction | Clean and invalidate D-Cache by address                                   |
+   +--------------+---------------------------------------------------------------------------+
+   | Parameters   | - Address: Clean and invalidated address (aligned to 32-byte boundary)    |
+   |              |                                                                           |
+   |              | - Bytes: size of memory block (in number of bytes)                        |
+   |              |                                                                           |
+   |              | .. note:: Address set 0xFFFFFFFF is used to clean and flush all D-Cache.  |
+   +--------------+---------------------------------------------------------------------------+
+   | Return       | None                                                                      |
+   +--------------+---------------------------------------------------------------------------+
 
 How to Define a Non-cacheable Data Buffer
 ----------------------------------------------------------------------------------
@@ -410,10 +397,8 @@ Cache Consistency When Using DMA
 ----------------------------------------------------------------
 When DMA is used to migrate data from/to memory buffers, the start and end address of the buffer must be aligned with the cache line to avoid inconsistencies between cache data and memory data. For example, if the start address of a buffer is in the middle of the cache line and the first half is occupied by other programs, when other programs invalidate or clean the current cache line, this operation will affect the entire cache line, resulting in inconsistent cache and memory data of the current buffer.
 
-
-
 .. Caution::
-   The DMA operation address requires exclusive ownership of a complete cache line. You can define the buffer using *malloc()* or *ALIGNMTO(CACHE_LINE_SIZE) u8 op_buffer[CACHE_LINE_ALIGMENT(op_buffer_size)]*.
+   The DMA operation address requires exclusive ownership of a complete cache line. You can define the buffer using :func:`malloc()` or :func:`ALIGNMTO(CACHE_LINE_SIZE) u8 op_buffer[CACHE_LINE_ALIGMENT(op_buffer_size)]`.
 
 
 DMA Tx Flow
