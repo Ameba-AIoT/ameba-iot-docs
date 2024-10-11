@@ -152,7 +152,7 @@
 <section id="functional-description">
 <h2>Functional Description<a class="headerlink" href="#functional-description" title="Link to this heading"></a></h2>
 <p>The Memory Protection Unit (MPU) is a component provided by Arm and is used to provide hardware protection by software definition. The code in SDK provides the mpu_region_config struct to set the region memory attribute of MPU.</p>
-<p>The following table shows the member variables of the mpu_region_config struct.</p>
+<p>The following table shows the member variables of the <code class="xref py py-class docutils literal notranslate"><span class="pre">mpu_region_config</span></code> struct.</p>
 <table class="docutils align-default" id="id4" style="width: 100%">
 <caption><span class="caption-text">mpu_region_config struct</span><a class="headerlink" href="#id4" title="Link to this table"></a></caption>
 <thead>
@@ -202,20 +202,12 @@
 </tr>
 <tr class="row-odd"><td><p>attr_idx</p></td>
 <td><p>uint8_t</p></td>
-<td><p>Memory attribute indirect index</p>
-<p>This parameter can be a value of 0 ~ 7, the detailed attribute is defined in <code class="xref py py-func docutils literal notranslate"><span class="pre">mpu_init()</span></code></p>
-<p>and is customized. The typical definition is as follows:</p>
-<ul>
+<td><p>Memory attribute indirect index, can be a value of 0 ~ 7, the detailed attribute is defined in <code class="xref py py-func docutils literal notranslate"><span class="pre">mpu_init()</span></code> and is customized. The typical definition is as follows:</p>
+<ul class="simple">
 <li><p>0: MPU_MEM_ATTR_IDX_NC, defines memory attribute of Normal memory with non-cacheable.</p></li>
-<li><p>1: MPU_MEM_ATTR_IDX_WT_T_RA, defines memory attribute of Normal memory with</p>
-<p>write-through transient, read allocation.</p>
-</li>
-<li><p>2: MPU_MEM_ATTR_IDX_WB_T_RWA, defines memory attribute of Normal memory with</p>
-<p>write-back transient, read and write allocation.</p>
-</li>
-<li><p>3 ~ 7: MPU_MEM_ATTR_IDX_DEVICE, defines memory attribute of Device memory with</p>
-<p>non-gathering, non-recording, non-early Write Acknowledge.</p>
-</li>
+<li><p>1: MPU_MEM_ATTR_IDX_WT_T_RA, defines memory attribute of Normal memory with write-through transient, read allocation.</p></li>
+<li><p>2: MPU_MEM_ATTR_IDX_WB_T_RWA, defines memory attribute of Normal memory with write-back transient, read and write allocation.</p></li>
+<li><p>3 ~ 7: MPU_MEM_ATTR_IDX_DEVICE, defines memory attribute of Device memory with non-gathering, non-recording, non-early Write Acknowledge.</p></li>
 </ul>
 </td>
 </tr>
@@ -438,12 +430,10 @@
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>In the ROM code, the default states of Cache are:</p>
-<blockquote>
-<div><ul class="simple">
+<ul class="simple">
 <li><p>KM4 Cache: enabled by default</p></li>
 <li><p>KM0 Cache: disabled by default</p></li>
 </ul>
-</div></blockquote>
 </div>
 </section>
 <section id="cache-apis">
@@ -652,8 +642,11 @@
 <td><ul class="simple">
 <li><p>Address: Clean address (aligned to 32-byte boundary)</p></li>
 <li><p>Bytes: size of memory block (in number of bytes)</p></li>
-<li><p>Note: Address set 0xFFFFFFFF is used to clean all D-Cache</p></li>
 </ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Address set 0xFFFFFFFF is used to clean all D-Cache.</p>
+</div>
 </td>
 </tr>
 <tr class="row-even"><td><p>Return</p></td>
@@ -682,8 +675,11 @@
 <td><ul class="simple">
 <li><p>Address: Clean and invalidated address (aligned to 32-byte boundary)</p></li>
 <li><p>Bytes: size of memory block (in number of bytes)</p></li>
-<li><p>Note: Address set 0xFFFFFFFF is used to clean and flush all D-Cache</p></li>
 </ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Address set 0xFFFFFFFF is used to clean and flush all D-Cache.</p>
+</div>
 </td>
 </tr>
 <tr class="row-even"><td><p>Return</p></td>
@@ -705,7 +701,7 @@
 <p>When DMA is used to migrate data from/to memory buffers, the start and end address of the buffer must be aligned with the cache line to avoid inconsistencies between cache data and memory data. For example, if the start address of a buffer is in the middle of the cache line and the first half is occupied by other programs, when other programs invalidate or clean the current cache line, this operation will affect the entire cache line, resulting in inconsistent cache and memory data of the current buffer.</p>
 <div class="admonition caution">
 <p class="admonition-title">Caution</p>
-<p>The DMA operation address requires exclusive ownership of a complete cache line. You can define the buffer using <em>malloc()</em> or <em>ALIGNMTO(CACHE_LINE_SIZE) u8 op_buffer[CACHE_LINE_ALIGMENT(op_buffer_size)]</em>.</p>
+<p>The DMA operation address requires exclusive ownership of a complete cache line. You can define the buffer using <code class="xref py py-func docutils literal notranslate"><span class="pre">malloc()</span></code> or <code class="xref py py-func docutils literal notranslate"><span class="pre">ALIGNMTO(CACHE_LINE_SIZE)</span> <span class="pre">u8</span> <span class="pre">op_buffer[CACHE_LINE_ALIGMENT(op_buffer_size)]()</span></code>.</p>
 </div>
 <section id="dma-tx-flow">
 <h3>DMA Tx Flow<a class="headerlink" href="#dma-tx-flow" title="Link to this heading"></a></h3>
