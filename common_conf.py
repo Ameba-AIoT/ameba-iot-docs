@@ -90,7 +90,7 @@ def get_exclude_rst(root_rst: Path, src_root: Path, exclude_patterns) -> List:
     if filter_cfg.exists() and run_location == "github":
         print(f"Read {filter_cfg}...")
         for line in filter_cfg.read_text().splitlines():
-            if line.strip():
+            if line.strip() and not line.strip().startswith("#"):
                 exclude_rst.append(line.strip().replace("\\", "/"))
     return exclude_rst
 
@@ -157,7 +157,7 @@ class WarningFilter(logging.Filter):
         known_warn_file = self.src_root / KNOWN_WARNING_FILE
         if known_warn_file.exists():
             for line in known_warn_file.read_text().splitlines():
-                if line.strip():
+                if line.strip() and not line.strip().startswith("#"):
                     self.known_warnings.append(f"*{line.strip().strip('*')}*")
 
         if self.known_warnings:
