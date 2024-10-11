@@ -112,9 +112,37 @@ Boot Flow
 
 2. Check if the device boots from MP image successfully.
 
-   .. figure:: ../figures/boot_flow_1.png
-      :scale: 60%
-      :align: center
+   .. code-block::
+      :emphasize-lines: 3, 28
+
+      [MODULE_BOOT-LEVEL_INFO]: KM4 SRAM[20010000:1200]
+      [MODULE_BOOT-LEVEL_INFO]: KM4 PSRAM[0e045a20:20]
+      [MODULE_BOOT-LEVEL_INFO]: IMG2 BOOT from OTA 1
+      [MODULE_BOOT-LEVEL_INFO]: Start NonSecure @ 0xe000115 ...
+      [MODULE_BOOT-LEVEL_INFO]: VTOR: 20005000, VTOR_NS: 0
+      [MODULE_BOOT-LEVEL_INFO]: KM4 APP START
+      ...
+      [MODULE_BOOT-LEVEL_INFO]: KM0 VTOR: Ox20000000
+      [MODULE_PMC-LEVEL_INFO]: AP wake event 410 80000008
+      [MODULE_PMC-LEVEL_INFO]: NP wake event 804 41008308
+      [MODULE_BOOT-LEVEL_INFO]: KM0 OS START
+      [CAL131K]: delta:22 target:2441 PPM: 9012 PPM_Limit:30000
+      [CAL4M]: delta:0 target:320 PPM: 0 PPM_Limit:30000
+      [MODULE_BOOT-LEVEL_INFO]: KM4 MAIN
+      Register flash disk driver to Fatfs.
+      Fatfs Register:disk driver 0
+      Flash drive path:0:/
+      Test flash drive (file: flash.txt)
+
+      flash mount OK
+      [MODULE_BOOT-LEVEL_INFO]: File system Init success
+      [MODULE_BOOT-LEVEL_INFO]: KM4 START SCHEDULER
+      interface 0 is initialized
+      interface 1 is initialized
+      interface 2 is initialized
+
+      Initializing WIFI ...
+      RTL8721F[Driver]: The driver is for MP Firmware Enable
 
 3. Start the massive production flow if the device boots from MP image successfully.
 
@@ -137,7 +165,17 @@ When MP is finished, you need to switch the image from MP image to the normal im
 
 2. Reset the device, then the device will boot from the normal image located in OTA2 field.
 
-   .. figure:: ../figures/boot_flow_3.png
-      :scale: 60%
-      :align: center
+   .. code-block::
+      :emphasize-lines: 7
+
+      [MODULE_BOOT-LEVEL_INFO]: KM0 XIP IMG[0c000000:4c020]
+      [MODULE_BOOT-LEVEL_INFO]: KM0 SRAM[20040000:3960]
+      [MODULE_BOOT-LEVEL_INFO]: KM0 PSRAM[0c04f980:20]
+      [MODULE_BOOT-LEVEL_INFO]: KM0 B00T[20004d00:40]
+      [MODULE_BOOT-LEVEL_INFO]: KM4 XIP IMG[0e000000:43200]
+      [MODULE_BOOT-LEVEL_INFO]: KM4 SRAM[0e0443e0:20]
+      [MODULE_BOOT-LEVEL_INFO]: IMG2 BOOT from OTA 2
+      [MODULE_BOOT-LEVEL_INFO]: Start NonSecure @ 0xe000115 ...
+      [MODULE_BOOT-LEVEL_INFO]: VTOR: 20005000, VTOR_NS: 0
+      [MODULE_BOOT-LEVEL_INFO]: ...
 
