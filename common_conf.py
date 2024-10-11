@@ -1,14 +1,15 @@
 # Configuration file for the Sphinx documentation builder.
-# 
+#
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 # Author: terra_cai@realsil.com.cn
-
+import fnmatch
 import re
 import os
 import shutil
 from pathlib import Path
 from typing import List
+import logging
 
 # 初步获取需要排除的项
 exclude_patterns = []
@@ -17,6 +18,9 @@ project_dir = running_path.parent
 repo_root = project_dir.parent
 
 common_dirs_files = ["_static", "_templates", "ameba"]
+
+BUILD_EXCLUDE_FILE = "build_exclude.txt"
+KNOWN_WARNING_FILE = "known_warnings.txt"
 
 
 # 定义排除更多与toctree无关的rst的方法
@@ -80,7 +84,7 @@ def get_exclude_rst(root_rst: Path, src_root: Path, exclude_patterns) -> List:
             if fpath not in toctree_rst_files:
                 exclude_rst.append(os.path.relpath(fpath, src_root).replace("\\", "/"))
 
-    filter_cfg = src_root / "build_exclude.txt"
+    filter_cfg = src_root / BUILD_EXCLUDE_FILE
     run_location = os.environ.get("RUN_LOCATION", "github")
     print(f"RunLocation: {run_location}")
     if filter_cfg.exists() and run_location == "github":
@@ -141,8 +145,40 @@ def run_after_build(app, exception):
         clean_common_files(app.srcdir)
 
 
+# -- 注册事件，用于过滤部分warning -------------------------------------------------
+class WarningFilter(logging.Filter):
+    def __init__(self, src_root):
+        super().__init__()
+        self.src_root = Path(src_root)
+        self.known_warnings = []
+        self.__get_known_warnings()
+
+    def __get_known_warnings(self):
+        known_warn_file = self.src_root / KNOWN_WARNING_FILE
+        if known_warn_file.exists():
+            for line in known_warn_file.read_text().splitlines():
+                if line.strip():
+                    self.known_warnings.append(f"*{line.strip().strip('*')}*")
+
+        if self.known_warnings:
+            print(f"KnownWarnings:\n======================================================")
+            for known_warn in self.known_warnings:
+                print(known_warn)
+
+    def filter(self, record):
+        # 过滤掉包含特定警告信息的日志记录
+        for known_warning in self.known_warnings:
+            if fnmatch.fnmatch(record.msg, known_warning):
+                return False
+        return True
+
+
 def setup(app):
     app.connect('build-finished', run_after_build)
+    # 获取Sphinx的根记录器
+    logger = logging.getLogger('sphinx')
+    # 添加自定义过滤器
+    logger.addFilter(WarningFilter(app.srcdir))
 
 
 # 公共设置
