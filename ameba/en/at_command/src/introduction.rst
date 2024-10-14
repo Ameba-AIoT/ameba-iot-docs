@@ -6,7 +6,7 @@ Introduction
 This article describes the role, usage and version information of AT commands.
 There are two currently used AT command modes and scenarios, which can be called LOGUART mode and MCU control mode.
 
-Scenario 1: LOGUART Mode - In this mode, users can evaluate the module’s functionality and conduct various tests or demos, such as WiFi or Bluetooth testing. It is important to note that in this mode, AT command information will be intermingled with information from the driver since both of them will output from LOGUART.
+Scenario 1: LOGUART Mode - In this mode, users can evaluate the module’s functionality and conduct various tests or demos, such as WiFi or Bluetooth testing. It is important to note that in this mode, AT command information will be intermingled with driver logs since both of them will output from LOGUART.
 
 Scenario 2: MCU Control Mode - This scenario includes connecting the AT command module via UART/SPI/SDIO for rapid product development by the customer. In this mode, AT command information is transmitted and displayed exclusively through UART/SPI/SDIO.
 
@@ -19,7 +19,7 @@ Scenario 2: MCU Control Mode - This scenario includes connecting the AT command 
    +--------------+-------------------+-------------------+----------------------+
    | Mode         | Connecting Method | Status            | Scenario             |
    +==============+===================+===================+======================+
-   | LOGUART      | USB               | Ready             | Evaluate, Test, Demo |
+   | LOGUART      | loguart           | Ready             | Evaluate, Test, Demo |
    +--------------+-------------------+-------------------+----------------------+
    | MCU Control  | uart              | Ready             |                      |
    +              +-------------------+-------------------+                      +

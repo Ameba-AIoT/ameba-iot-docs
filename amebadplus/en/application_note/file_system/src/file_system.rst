@@ -314,7 +314,7 @@ LittleFS Bin File Generation
       :scale: 90%
       :align: center
 
-   ``AUDIO`` and ``KV`` directories will be LittleFS directory in the Flash.
+   ``AUDIO`` and ``KV`` directories will be LittleFS directory in the Flash. The ``test`` directory is equivalent to the root directory.
 
 2. Use the command ``$./mklittlefs -b 4096 -p 256 -s 0x20000 -c test image_littlefs.bin`` in ``mklittlefs`` tool located at ``\tools\littlefs`` to generate LittleFS bin files.
 
@@ -340,13 +340,11 @@ LittleFS Bin File Generation
 
 3. Download the image to the Flash.
 
-   The start address of image should be VFS Flash region address mentioned in section :ref:`vfs_on_flash_section`. Test logs are shown below:
+   The start address of Image Tool should be ``StartAddr`` of VFS Flash region mentioned in section :ref:`vfs_on_flash_section`. The end address of Image Tool should be it's ``EndAddr`` + 1;
 
-   .. code::
-
-      ==========mklittlefs example==========
-      [TEST1]: This is a test file for mklittle …
-      [AUDIO1]: Copyright (c) 2013 Realtek …
+   .. figure:: ../figures/littlefs_bin_download.png
+      :scale: 60%
+      :align: center
 
 .. _fatfs_bin_file_generation_section:
 
