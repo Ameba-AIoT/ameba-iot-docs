@@ -152,7 +152,9 @@ AmebaLite
         - 400MHz
         - x
         - x
-        - 512KB
+        - 
+          - 512KB
+          - 768KB
         - 
           - 0MB
           - 4MB
