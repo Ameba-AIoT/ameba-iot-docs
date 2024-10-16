@@ -40,17 +40,16 @@ The steps of building MP image are depcited below:
 
 The MP image ``km0_km4_app_mp.bin`` will be generated in ``{SDK}\amebadplus_gcc_project`` and all the images releated to the MP image can be found in the paths below:
 
-   .. code-block::
+::
 
-      {SDK}\amebadplus_gcc_project\project_km4\asdk\image_mp
-      {SDK}\amebadplus_gcc_project\project_km0\asdk\image_mp
+   {SDK}\amebadplus_gcc_project\project_km4\asdk\image_mp
+   {SDK}\amebadplus_gcc_project\project_km0\asdk\image_mp
 
 .. _how_to_combine_images:
 
 How to Combine Images
 ------------------------------------------
 Before downloading images into the chip, the MP image needs to be combined with normal image. In massive production, the MP image is used to calibrate the parameters first. After calibration, you can use the command illustrated in :ref:`how_to_switch_image` to switch to the normal image and boot from it. Since the chip boots from OTA1 by default when both OTA1 and OTA2 images are valid and with the same version number, the MP image should be located in the OTA1 field.
-
 
 The steps of combining images are depcited below:
 
@@ -62,7 +61,6 @@ The steps of combining images are depcited below:
 
       .. code-block:: c
          :emphasize-lines: 6,8,11
-         :linenos:
 
          /*
          * @brif	Flash layout is set according to Flash Layout in User Manual
@@ -91,7 +89,7 @@ The steps of combining images are depcited below:
 
    b. Execute the command and save the combined image named ``Image_All.bin``.
 
-      .. code::
+      ::
 
          sudo ./Ameba_1-10_MP_ImageTool_Linux -combine km4_boot_all.bin 0x0000 km0_km4_app_mp.bin 0x14000 km0_km4_app.bin 0x214000
 
@@ -100,7 +98,7 @@ The steps of combining images are depcited below:
 .. note::
    The normal image ``km0_km4_app.bin`` is built with MP disabled. Check the normal image in ``{SDK}\amebadplus_gcc_project``. All the images related to normal image can be found in paths below:
 
-   .. code::
+   ::
 
       {SDK}\amebadplus_gcc_project\project_km4\asdk\image
       {SDK}\amebadplus_gcc_project\project_km0\asdk\image
