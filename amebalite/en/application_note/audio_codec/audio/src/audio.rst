@@ -8,7 +8,6 @@ The audio framework is a whole audio architecture aiming to provide different la
 
 - Audio Framework: provides interfaces for audio streaming, volume, and other settings.
 
-
 The audio framework provides two architectures to meet different needs of audio. Different architectures have different implementations, but the interfaces are the same.
 
 - Audio mixer architecture: supports audio recording, and audio playback. For audio playback, this architecture provides audio mixing functions, and format, rate, channel will be converted to a unified format for mixing.
@@ -20,7 +19,7 @@ Mixer Overview
 The audio interfaces and the entire implementation are shown as below.
 
 .. figure:: ../figures/audio_mixer_overview.svg
-   :scale: 120%
+   :scale: 130%
    :align: center
 
    Audio mixer overview
@@ -69,10 +68,11 @@ The audio interfaces and the entire implementation are shown as below.
 
 The audio passthrough architecture has no Audio Framework layer compared to audio mixer architecture, other layers are nearly the same.
 
+.. _architecture_comparison:
+
 Architecture Comparison
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 The above sections describe two architectures of audio: mixer and passthrough. Users can choose the suitable architecture according to the project's requirements. Here is a comparison table of the two architectures:
-
 
 .. table:: 
    :width: 100%
@@ -88,8 +88,6 @@ The above sections describe two architectures of audio: mixer and passthrough. U
    | Passthrough  | Less             | Less      | Nearly the same   | Not support       | Less              | Same             |
    +--------------+------------------+-----------+-------------------+-------------------+-------------------+------------------+
 
-
-
 - For record implementation, the two architectures are the same. Both architectures can meet user's record function needs.
 
 - For playback implements, the two architectures are different. If the user has the requirements to play two sounds together at the same time, choose mixer architecture, because only the mixer architecture can do the mixing.
@@ -99,7 +97,6 @@ The above sections describe two architectures of audio: mixer and passthrough. U
 Terminology
 ----------------------
 The meanings of some widely-used audio terms in this chapter are listed below.
-
 
 .. table:: 
    :width: 100%
@@ -177,9 +174,7 @@ Data Format
 ----------------------
 This section describes the data format that audio framework and audio HAL supports. The common part of audio framework and audio HAL is described here. And the different parts will be described in their own sections.
 
-
 Both audio framework and audio HAL support interleaved streaming data.
-
 
 The two-channel interleaved data is illustrated in :ref:`audio_two_channel_interleaved`, and the four-channel interleaved data is illustrated in :ref:`audio_four_channel_interleaved`.
 
@@ -201,7 +196,6 @@ Framework Format
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 This section describes the format that Audio Framework supports. Before playback, or capture, make sure your sound format is supported.
 
-
 Audio Framework has the following types of bit depth:
 
 - **RTAUDIO_FORMAT_INVALID** - invalid bit depth of audio stream
@@ -218,9 +212,7 @@ Audio Framework has the following types of bit depth:
 
 - **RTAUDIO_FORMAT_PCM_8_24_BIT** - audio stream has 24-bit + 8-bit depth
 
-
 The following table describes the supported formats for playback and recording. ``Y`` means the format is supported; ``N`` means the format is not supported.
-
 
 .. table:: 
    :width: 100%
@@ -242,9 +234,7 @@ The following table describes the supported formats for playback and recording. 
    | RTAUDIO_FORMAT_PCM_8_24_BIT      | N                | Y                      | Y                           |
    +----------------------------------+------------------+------------------------+-----------------------------+
 
-
 The sample rate is another important format of audio streaming. For playback and recording, audio framework supports the following sample rates. ``Y`` means the sample rate is supported; ``N`` means the sample rate is not supported.
-
 
 .. table:: 
    :width: 100%
@@ -274,9 +264,7 @@ The sample rate is another important format of audio streaming. For playback and
    | 192000      | N                            | N                           |
    +-------------+------------------------------+-----------------------------+
 
-
 To do audio streaming, the channel count parameter setting is necessary, too. For playback and recording, audio framework supports the following channel counts. ``Y`` means the channel count is supported; ``N`` means the channel count is not supported.
-
 
 .. table:: 
    :width: 100%
@@ -314,9 +302,7 @@ Mixer and passthrough architecture have the same audio HAL. Audio Hal has the fo
 
 - **AUDIO_HW_FORMAT_PCM_8_24_BIT** - audio stream has 24-bit + 8-bit depth
 
-
 If using the Audio HAL interface, please check the bit depth HAL supported for Playback and Capture. ``Y`` means the format is supported; ``N`` means the format is not supported.
-
 
 .. table:: 
    :width: 100%
@@ -325,22 +311,20 @@ If using the Audio HAL interface, please check the bit depth HAL supported for P
    +------------------------------------+----------+---------+
    | Bit depth                          | Playback | Capture |
    +====================================+==========+=========+
-   | AUDIO_ HW_FORMAT_PCM_8_BIT         | Y        | Y       |
+   | AUDIO_HW_FORMAT_PCM_8_BIT          | Y        | Y       |
    +------------------------------------+----------+---------+
-   | AUDIO_ HW_FORMAT_PCM_16_BIT        | Y        | Y       |
+   | AUDIO_HW_FORMAT_PCM_16_BIT         | Y        | Y       |
    +------------------------------------+----------+---------+
-   | AUDIO_ HW_FORMAT_PCM_32_BIT        | N        | N       |
+   | AUDIO_HW_FORMAT_PCM_32_BIT         | N        | N       |
    +------------------------------------+----------+---------+
-   | AUDIO_ HW_FORMAT_PCM_FLOAT         | N        | N       |
+   | AUDIO_HW_FORMAT_PCM_FLOAT          | N        | N       |
    +------------------------------------+----------+---------+
-   | AUDIO_ HW_FORMAT_PCM_24_BIT_PACKED | N        | N       |
+   | AUDIO_HW_FORMAT_PCM_24_BIT_PACKED  | N        | N       |
    +------------------------------------+----------+---------+
-   | AUDIO_ HW_FORMAT_PCM_8_24_BIT      | Y        | Y       |
+   | AUDIO_HW_FORMAT_PCM_8_24_BIT       | Y        | Y       |
    +------------------------------------+----------+---------+
-
 
 The sample rate is another important format of HAL audio streaming. For playback and recording, audio HAL supports the following sample rates. ``Y`` means the sample rate is supported; ``N`` means the sample rate is not supported.
-
 
 .. table:: 
    :width: 100%
@@ -370,9 +354,7 @@ The sample rate is another important format of HAL audio streaming. For playback
    | 192000      | N        | N       |
    +-------------+----------+---------+
 
-
 To do audio streaming, the channel count parameter setting is necessary, too. For playback and recording, audio HAL supports the following channel counts. ``Y`` means the channel count is supported; ``N`` means the channel count is not supported.
-
 
 .. table:: 
    :width: 100%
@@ -399,7 +381,7 @@ Playback Architecture
 The block diagram of audio mixer playback architecture is shown as below.
 
 .. figure:: ../figures/audio_playback_mixer_architecture.svg
-   :scale: 120%
+   :scale: 130%
    :align: center
 
    Playback mixer architecture
@@ -407,7 +389,7 @@ The block diagram of audio mixer playback architecture is shown as below.
 The block diagram of audio passthrough playback architecture is shown as below.
 
 .. figure:: ../figures/audio_playback_passthrough_architecture.svg
-   :scale: 120%
+   :scale: 130%
    :align: center
 
    Playback passthrough architecture
@@ -442,8 +424,6 @@ Audio mixer and passthrough have the same record architecture. The block diagram
 
    Record architecture
 
-
-
 The audio record architecture includes the following sub-modules:
 
 - **RTAudioRecord**: captures data from Audio HAL, and provides data to audio applications, which want to record data.
@@ -476,52 +456,46 @@ RTAudioControl provides interfaces to set and get hardware volume.
 
 .. code-block:: c
 
-
    #include "audio/audio_control.h"
    int32_t RTAudioControl_SetHardwareVolume(float left_volume, float right_volume)
 
 Users set the left and right channel volume to 0.0-1.0, linear maps to -65.625-MAXdb.
 
 Configurations
-----------------------------
+----------------
 MenuConfig
-~~~~~~~~~~~~~~~~~~~~
-If users want to use audio interfaces, select the following audio configurations, and choose the suitable audio architecture according to section 1.1.3.
+~~~~~~~~~~~
+If users want to use audio interfaces, select the following audio configurations, and choose the suitable audio architecture according to Section :ref:`architecture_comparison`.
 
 .. figure:: ../figures/audio_menuconfig.svg
    :scale: 130%
    :align: center
 
 Framework Configuration
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Audio Framework configurations lie in :file:`{{SDK}}/component/soc/amebalite/usrcfg/ameba_audio_mixer_usrcfg.cpp`.
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+Audio Framework configurations lie in ``{SDK}/component/soc/amebalite/usrcfg/ameba_audio_mixer_usrcfg.cpp``.
 
+If users want to change the audio HAL period buffer size, or audio mixer's buffer policy, change *kPrimaryAudioConfig* according to the description of ``{SDK}/component/soc/amebalite/usrcfg/include/ameba_audio_mixer_usrcfg.h``.
 
-If users want to change the audio HAL period buffer size, or audio mixer's buffer policy, please change ``kPrimaryAudioConfig`` according to the description of :file:`{{SDK}}/component/soc/amebalite/usrcfg/include/ameba_audio_mixer_usrcfg.h`.
+The config *out_min_frames_stage* in *kPrimaryAudioConfig* only supports *RTAUDIO_OUT_MIN_FRAMES_STAGE1* and *RTAUDIO_OUT_MIN_ FRAMES_STAGE2*.
 
+- *RTAUDIO_OUT_MIN_FRAMES_STAGE1* means more data output to audio HAL one time.
 
-The config out_min_frames_stage in ``kPrimaryAudioConfig`` only supports ``RTAUDIO_OUT_MIN_FRAMES_STAGE1`` and ``RTAUDIO_OUT_MIN_ FRAMES_STAGE2``.
+- *RTAUDIO_OUT_MIN_FRAMES_ STAGE2* means less data output to audio HAL one time.
 
-- ``RTAUDIO_OUT_MIN_FRAMES_STAGE1`` means more data output to audio HAL one time.
-
-- ``RTAUDIO_OUT_MIN_FRAMES_ STAGE2`` means less data output to audio HAL one time.
-
-``RTAUDIO_OUT_MIN_FRAMES_STAGE2`` may reduce the framework's latency, but may cause noise. It's the user's choice to set it.
+*RTAUDIO_OUT_MIN_FRAMES_STAGE2* may reduce the framework's latency, but may cause noise. It's the user's choice to set it.
 
 HAL Configuration
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Audio hardware configurations lie in :file:`{{SDK}}/component/soc/amebalite/usrcfg/include/ameba_audio_hw_usrcfg.h`.
-
+~~~~~~~~~~~~~~~~~~
+Audio hardware configurations lie in ``{SDK}/component/soc/amebalite/usrcfg/include/ameba_audio_hw_usrcfg.h``.
 
 Different boards have different configurations. For example, some boards need to use an amplifier, while others do not. Different boards may use different pins to enable the amplifier; the start-up time is different for different amplifiers. In addition, the pins used by each board's DMICs may be different, and the stable time of DMICs may be different. All the information needs to be configured in the configuration file.
-
 
 The :file:`ameba_audio_hw_usrcfg.h` file has the description for each configuration, please set them according to the description.
 
 Interfaces
---------------------
+-------------
 The audio component provides two layers of interfaces.
-
 
 .. table:: 
    :width: 100%
@@ -537,7 +511,6 @@ The audio component provides two layers of interfaces.
    | Audio Framework Interfaces | High-level Interfaces for applications to render/capture stream, set volume and so on. |
    +----------------------------+----------------------------------------------------------------------------------------+
 
-
 The interfaces layer is shown as below.
 
 .. figure:: ../figures/audio_interfaces.svg
@@ -547,9 +520,9 @@ The interfaces layer is shown as below.
    Audio interfaces
 
 Driver Interfaces
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~
 Audio Clock and Function APIs
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. table:: 
    :width: 100%
    :widths: 30, 70 
@@ -809,8 +782,8 @@ VAD APIs
    +--------------------------------+------------------------------------------------+
 
 HAL Interfaces
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Audio HAL provides AudioHwRender/AudioHwCapture/AudioHwControl interfaces to interact with audio hardware. The interfaces lie in :file:`{{SDK}}/component/audio/interfaces/hardware/audio`. The interfaces have specific descriptions in them, read them before use.
+~~~~~~~~~~~~~~~~
+Audio HAL provides AudioHwRender/AudioHwCapture/AudioHwControl interfaces to interact with audio hardware. The interfaces lie in ``{SDK}/component/audio/interfaces/hardware/audio``. The interfaces have specific descriptions in them, read them before use.
 
 - **AudioHwRender**: receives PCM data from the upper layer, writes data via audio driver to send PCM data to hardware, and provides information about audio output hardware driver.
 
@@ -818,12 +791,11 @@ Audio HAL provides AudioHwRender/AudioHwCapture/AudioHwControl interfaces to int
 
 - **AudioHwControl**: receives control calling from the upper layer, and sets control information to the driver.
 
-
 The AudioHwRender/AudioHwCapture is managed by AudioHwAdapter interface. It is responsible for creating/destroying AudioHwRender/AudioHwCapture instance. AudioHwAdapter is a physical or virtual hardware to process audio stream. It contains a set of ports and pins as shown in :ref:`audio_hw_adapter_example`.
 
-- **Port** – the stream input of the audio adapter is called “port”.
+- **Port** – the stream input of audio adapter
 
-- **Pin** – The output stream of audio adapter is called “pin”.
+- **Pin** – the output stream of audio adapter
 
 .. figure:: ../figures/audio_hw_adapter_example.svg
    :scale: 90%
@@ -835,19 +807,18 @@ The AudioHwRender/AudioHwCapture is managed by AudioHwAdapter interface. It is r
 The AudioHwManager manages system's all AudioHwAdapters and loads a specific adapter driver based on the given audio adapter descriptor.
 
 Using AudioHwRender
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Users can check the example of AudioHwRender in :file:`{{SDK}}/component/example/audio/audio_hal_render`.
-
+^^^^^^^^^^^^^^^^^^^^^
+Users can check the example of AudioHwRender in ``{SDK}/component/example/audio/audio_hal_render``.
 
 Here is the description showing how to use audio HAL interfaces to play audio raw data (PCM format):
 
-1. Use :func:`GetAudioManagerFuncs` to get AudioHwManager instance:
+1. Use :func:`GetAudioManagerFuncs()` to get AudioHwManager instance
 
    .. code-block:: c
 
       struct AudioHwManager *audio_manager = GetAudioManagerFuncs();
 
-2. Use :func:`GetAllAdapters` to get all audio adapter descriptors:
+2. Use :func:`GetAllAdapters()` to get all audio adapter descriptors
 
    .. code-block:: c
 
@@ -855,7 +826,7 @@ Here is the description showing how to use audio HAL interfaces to play audio ra
       struct AudioHwAdapterDescriptor *descs = nullptr;
       audio_manager->GetAllAdapters(audio_manager, &descs, &size);
 
-3. Choose a specific adapter to play (currently audio manager only supports primary audio adapter):
+3. Choose a specific adapter to play (currently audio manager only supports primary audio adapter)
 
    .. code-block:: c
 
@@ -870,10 +841,9 @@ Here is the description showing how to use audio HAL interfaces to play audio ra
          }
       }
 
-4. Create AudioHwSampleAttributes according to the sample rate, channel, format, and AudioHwDeviceDescriptor, then use :func:`CreateRender` to create an AudioHwRender based on the specific audio adapter:
+4. Create *AudioHwSampleAttributes* according to the sample rate, channel, format, and AudioHwDeviceDescriptor, then use :func:`CreateRender()` to create an AudioHwRender based on the specific audio adapter
 
    .. code-block:: c
-
 
       struct AudioHwSampleAttributes  param;
       param.sample_rate = sample_rate;
@@ -886,44 +856,46 @@ Here is the description showing how to use audio HAL interfaces to play audio ra
       device_desc.desc = NULL;
       int32_t ret = audio_adapter->CreateRender(audio_adapter, &device_desc, &param, &audio_render);
 
-5. Use :func:`GetBufferSize` to get AudioHwRender buffer size:
+5. Use :func:`GetBufferSize()` to get AudioHwRender buffer size
 
    .. code-block:: c
 
       ssize_t size = ((struct AudioHalStream *)audio_render)->GetBufferSize((struct AudioHalStream *)audio_render);
 
-6. Write PCM data to AudioHwRender repeatly. This size can be defined by users, instead of the size got in the last step. Users need to make sure the *size/frame_size* is integer.
+6. Write PCM data to AudioHwRender repeatly.
+
+   This size can be defined by users, instead of the size got in the last step. Users need to make sure the *size/frame_size* is integer.
+
 
    .. code-block:: c
 
       int32_t bytes = audio_render->Write(audio_render, buffer, size);
 
-7. Use :func:`DestroyRender` to close AudioHwRender when finishing playing:
+7. Use :func:`DestroyRender()` to close AudioHwRender when finishing playing
 
    .. code-block:: c
 
       audio_adapter->DestroyRender(audio_adapter, audio_render);
 
-8. Use :func:`UnloadAdapter` to unload the AudioHwAdapter and finally call :func:`DestoryAudioManager` to release AudioHwManager instance:
+8. Use :func:`UnloadAdapter()` to unload the AudioHwAdapter and finally call :func:`DestoryAudioManager()` to release AudioHwManager instance
 
    .. code-block:: c
 
       audio_manager->UnloadAdapter(audio_manager,desc,&audio_adapter); DestoryAudioManager(&audio_manager);
 
 Using AudioHwCapture
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Users can check the example of AudioHwRender in :file:`{{SDK}}/component/example/audio/audio_hal_capture`.
-
+^^^^^^^^^^^^^^^^^^^^^^^
+Users can check the example of AudioHwRender in ``{SDK}/component/example/audio/audio_hal_capture``.
 
 Here is the description showing how to use audio HAL interfaces to capture audio raw data:
 
-1. Use :func:`GetAudioManagerFuncs` to get AudioHwManager instance:
+1. Use :func:`GetAudioManagerFuncs()` to get AudioHwManager instance
 
    .. code-block:: c
 
       struct AudioHwManager *audio_manager = GetAudioManagerFuncs();
 
-2. Use :func:`GetAllAdapters` to get all audio adapter descriptors:
+2. Use :func:`GetAllAdapters()` to get all audio adapter descriptors
 
    .. code-block:: c
 
@@ -931,7 +903,7 @@ Here is the description showing how to use audio HAL interfaces to capture audio
       struct AudioHwAdapterDescriptor *descs = nullptr;
       audio_manager->GetAllAdapters(audio_manager, &descs, &size);
 
-3. Choose a specific adapter to capture(currently audio manager only supports primary audio adapter):
+3. Choose a specific adapter to capture (currently audio manager only supports primary audio adapter)
 
    .. code-block:: c
 
@@ -946,7 +918,7 @@ Here is the description showing how to use audio HAL interfaces to capture audio
          }
       }
 
-4. Construct AudioHwSampleAttributes according to the sample rate, channel, format, and AudioHwDeviceDescriptor, then use :func:`CreateCapture` to create an AudioHwCapture based on the specific audio adapter:
+4. Construct *AudioHwSampleAttributes* according to the sample rate, channel, format, and AudioHwDeviceDescriptor, then use :func:`CreateCapture()` to create an AudioHwCapture based on the specific audio adapter
 
    .. code-block:: c
 
@@ -961,7 +933,7 @@ Here is the description showing how to use audio HAL interfaces to capture audio
       device_desc.desc = NULL;
       int32_t ret = audio_adapter->CreateCapture(audio_adapter, &device_desc, &param, &audio_capture);
 
-5. Use :func:`GetBufferSize` to get AudioHwCapture buffer size:
+5. Use :func:`GetBufferSize()` to get AudioHwCapture buffer size:
 
    .. code-block:: c
 
@@ -973,43 +945,42 @@ Here is the description showing how to use audio HAL interfaces to capture audio
 
       int32_t bytes = audio_capture->Read(audio_capture, buffer, size);
 
-7. Use :func:`DestroyCapture` to close AudioHwCapture when finishing recording:
+7. Use :func:`DestroyCapture()` to close AudioHwCapture when finishing recording
 
    .. code-block:: c
 
       audio_adapter->DestroyCapture(audio_adapter, audio_capture);
 
-8. Use :func:`UnloadAdapter` to unload the AudioHwAdapter, and finally call :func:`DestoryAudioManager` to release AudioHwManager instance.
+8. Use :func:`UnloadAdapter()` to unload the AudioHwAdapter, and finally call :func:`DestoryAudioManager()` to release AudioHwManager instance
 
    .. code-block:: c
 
       audio_manager->UnloadAdapter(audio_manager,desc,&audio_adapter); DestoryAudioManager(&audio_manager);
 
 Using AudioHwControl
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Here is an example showing how to use audio HAL interfaces to control audio codec:
+^^^^^^^^^^^^^^^^^^^^^^^
+Here is an example showing how to use audio HAL interfaces to control audio codec.
 
+AudioHwCotrol is always thread-safe, and the calling is convenient.
+To use AudioHwCotrol, the first parameter of the function call should always be :func:`GetAudioHwControl()`. Take the hardware volume setting for example:
 
-AudioHwCotrol is always thread-safe, and the calling is convenient. To use AudioHwCotrol, the first parameter of the function call should always be :func:`GetAudioHwControl()`. Take the hardware volume setting for example:
-
-   .. code-block:: c
-
-      GetAudioHwControl()->SetHardwareVolume(GetAudioHwControl(), left_volume, right_volume);
+.. code-block:: c
+   
+   GetAudioHwControl()->SetHardwareVolume(GetAudioHwControl(), left_volume, right_volume);
 
 Framework Interfaces
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~
 Streaming Interfaces
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Audio Streaming Interfaces include RTAudioTrack and RTAudioRecord interfaces. The interfaces lie in :file:`{{SDK}}/component/audio/interfaces/audio`. The interfaces have specific descriptions in them, please read them before using.
+^^^^^^^^^^^^^^^^^^^^^
+Audio Streaming Interfaces include RTAudioTrack and RTAudioRecord interfaces. The interfaces lie in ``{SDK}/component/audio/interfaces/audio``. The interfaces have specific descriptions in them, please read them before using.
 
 - **RTAudioTrack**: initializes the format of playback data streaming in the framework, receives PCM data from the application, and writes data to Audio Framework (mixer) or Audio HAL (passthrough).
 
 - **RTAudioRecord**: initializes the format of record data streaming in the framework, receives PCM data from Audio HAL, and sends data to applications.
 
 Using RTAudioTrack
-************************************
+*******************
 RTAudioTrack includes support for playing variety of common audio raw format types so that audio can be easily integrated into applications. At most 32 RTAudioTracks can play together.
-
 
 Audio Framework has the following audio playback stream types. Applications can use the types to initialize RTAudioTrack. Framework gets the streaming type and does the volume mixing according to the types.
 
@@ -1021,25 +992,23 @@ Audio Framework has the following audio playback stream types. Applications can 
 
 - **RTAUDIO_CATEGORY_BEEP** - if the sound is key tone, or other beep sound, then its type is **RTAUDIO_CATEGORY_BEEP**.
 
-
-The test demo of RTAudioTrack lies in :file:`{{SDK}}/component/example/audio/audio_track`.
-
+The test demo of RTAudioTrack lies in ``{SDK}/component/example/audio/audio_track``.
 
 Here is an example showing how to play audio raw data:
 
-1. Before using RTAudioTrack, RTAudioService should be initialized:
+1. Before using RTAudioTrack, RTAudioService should be initialized
 
    .. code-block:: c
 
       RTAudioService_Init();
 
-2. To use RTAudioTrack to play a sound, create it:
+2. To use RTAudioTrack to play a sound, create it
 
    .. code-block:: c
 
       struct RTAudioTrack* audio_track = RTAudioTrack_Create();
 
-Apps can use the Audio Configs API to provide detailed audio information about a specific audio playback source, including stream type (type of playback source), format, number of channels, sample rate, and RTAudioTrack ringbuffer size. The syntax is as follows:
+   The application can use the Audio Configs API to provide detailed audio information about a specific audio playback source, including stream type (type of playback source), format, number of channels, sample rate, and RTAudioTrack ringbuffer size. The syntax is as follows:
 
    .. code-block:: c
 
@@ -1067,7 +1036,10 @@ Apps can use the Audio Configs API to provide detailed audio information about a
 
       The *buffer_bytes* in RTAudioTrackConfig is very important. The buffer size should always be more than the minimum buffer size Audio framework calculated. Otherwise overrun will occur.
 
-3. Use the interface to get minimum RTAudioTrack buffer bytes, and use it as a reference to define RTAudioTrack buffer size, for example, you can use minimum buffer size*4 as buffer size. The bigger size you use, the smoother playing you will get, yet it may cause more latency. It's your choice to define the size.
+3. Use the interface to get minimum RTAudioTrack buffer bytes, and use it as a reference to define RTAudioTrack buffer size.
+
+   For example, you can use minimum buffer size*4 as buffer size.
+   The bigger size you use, the smoother playing you will get, yet it may cause more latency. It's your choice to define the size.
 
    .. code-block:: c
 
@@ -1090,7 +1062,7 @@ Apps can use the Audio Configs API to provide detailed audio information about a
 
       RTAudioTrack_Init(audio_track, &track_config);
 
-5. When all the preparations are completed, start RTAudioTrack and check if starts success.
+5. When all the preparations are completed, start RTAudioTrack and check if starts success
 
    .. code-block:: c
 
@@ -1099,19 +1071,16 @@ Apps can use the Audio Configs API to provide detailed audio information about a
          return;
       }
 
-   The default volume of RTAudioTrack is maximum 1.0, you can change the volume with the following API calling. Users can adjust the volume of track by using
+   The default volume of RTAudioTrack is maximum 1.0, you can adjust the volume with the following API.
 
    .. code-block:: c
 
       RTAudioTrack_SetVolume(audio_track, 1.0, 1.0);
 
-
-
    .. note::
-            - In the mixer architecture, this API sets the software volume of the current audio_track.
+      - In the mixer architecture, this API sets the software volume of the current audio_track.
 
-            - In the passthrough architecture, this API is not supported.
-
+      - In the passthrough architecture, this API is not supported.
 
 6. Write audio data to the framework. The write_size can be defined by users. Users need to make sure the *write_size/frame_size* is integer.
 
@@ -1119,31 +1088,30 @@ Apps can use the Audio Configs API to provide detailed audio information about a
 
       RTAudioTrack_Write(audio_track, buffer, write_size, true);
 
-   - If users want to pause, stop writing data, and then call the following APIs to tell the framework to do pause:
+   - If users want to pause, stop writing data, and then call the following APIs to tell the framework to do pause.
 
      .. code-block:: c
 
         RTAudioTrack_Pause(audio_track);
         RTAudioTrack_Flush(audio_track);
 
-   - If users want to stop playing audio, stop writing data, and then call :func:`RTAudioTrack_Stop()` API:
+   - If users want to stop playing audio, stop writing data, and then call :func:`RTAudioTrack_Stop()`.
 
      .. code-block:: c
 
         RTAudioTrack_Stop(audio_track);
 
-7. Delete audio_track pointer when it's no use.
+7. Delete audio_track pointer when it's no use
 
    .. code-block:: c
 
       RTAudioTrack_Destroy(audio_track);
 
 Using RTAudioRecord
-**************************************
+**********************
 RTAudioRecord supports variety of common audio raw format types, so that you can easily integrate record into applications.
 
-
-RTAudioRecord supports the following audio input sources:
+The following audio input sources are supported by RTAudioRecord:
 
 - **RTPIN_IN_MIC** - if the application wants to capture data from microphone, then choose this input source.
 
@@ -1151,19 +1119,19 @@ RTAudioRecord supports the following audio input sources:
 
 - **RTPIN_IN_HS_MIC** - if the application wants to capture data from LINE-IN, then choose this input source.
 
-
-The test demo of RTAudioRecord lies in :file:`{{SDK}}/component/example/audio/audio_record`.
-
+The test demo of RTAudioRecord lies in ``{SDK}/component/example/audio/audio_record``.
 
 Here is an example showing how to record audio raw data:
 
-1. Create RTAudioRecord:
+1. Create RTAudioRecord
 
    .. code-block:: c
 
       struct RTAudioRecord *audio_record = RTAudioRecord_Create();
 
-2. Apps can use the Audio Configs API to provide detailed audio information about a specific audio record source, including record device source, format, number of channels, and sample rate. The syntax is as follows:
+2. The application can use the Audio Configs API to provide detailed audio information about a specific audio record source, including record device source, format, number of channels, and sample rate.
+
+   The syntax is as follows:
 
    .. code-block:: c
 
@@ -1187,7 +1155,7 @@ Here is an example showing how to record audio raw data:
 
       :buffer_bytes: audio buffer bytes in framework. Set 0 to use default value. User can also set other value, the bigger buffer_bytes means bigger latency.
 
-   Here's an example showing how to create RTAudioRecordConfig object of RTAudioRecord:
+   Here's an example showing how to create RTAudioRecordConfig object of RTAudioRecord.
 
    .. code-block:: c
 
@@ -1198,280 +1166,51 @@ Here is an example showing how to record audio raw data:
       record_config.device = RTPIN_IN_MIC;
       record_config.buffer_bytes = 0;
 
-3. With RTAudioRecordConfig object created, you can initialize RTAudioRecord, in this step, Audio HAL's AudioHwAdapter will be loaded, according to the audio input device source:
+3. With RTAudioRecordConfig object created, initialize RTAudioRecord
+
+   In this step, Audio HAL's AudioHwAdapter will be loaded, according to the audio input device source.
 
    .. code-block:: c
 
       RTAudioRecord_Init(audio_record, &record_config);
 
-4. When all the preparations are completed, start audio_record:
+4. When all the preparations are completed, start audio_record
 
    .. code-block:: c
 
       RTAudioRecord_Start(audio_record);
 
-5. Read audio microphone data. The read size can be defined by users. Users need to make sure *size/frame_size* is integer.
+5. Read audio microphone data.
+
+   The read size can be defined by users. Users need to make sure *size/frame_size* is integer.
 
    .. code-block:: c
 
       RTAudioRecord_Read(audio_record, buffer, size, true);
 
-6. When the record ends, stop the record:
+6. When the record ends, stop the record
 
    .. code-block:: c
 
       RTAudioRecord_Stop(audio_record);
 
-7. When audio_record no use, destroy it to avoid memory leak:
+7. When audio_record no use, destroy it to avoid memory leak
 
    .. code-block:: c
 
       RTAudioRecord_Destroy(audio_record);
 
 Control Interfaces
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Audio Control Interfaces include RTAudioControl interfaces to interact with audio control HAL. RTAudioControl provides interfaces to set and get hardware volume, set output device, and so on. The interfaces lie in :file:`{{SDK}}/component/audio/interfaces/audio/audio_control.h` The interfaces have specific descriptions, read them before use.
+^^^^^^^^^^^^^^^^^^^^
+Audio Control Interfaces include RTAudioControl interfaces to interact with audio control HAL.
+RTAudioControl provides interfaces to set and get hardware volume, set output device, and so on. The interfaces lie in :file:`{SDK}/component/audio/interfaces/audio/audio_control.h` The interfaces have specific descriptions, read them before use.
 
 Using RTAudioControl
-****************************************
-Here is an example of how to use RTAudioControl:
-
-1. Call RTAudioControl to set audio hardware volume of DAC:
-
-   .. code-block:: c
-
-      RTAudioControl_SetHardwareVolume(0.5, 0.5);
-
-For playback and record case, most RTAudioControl APIs can be called at any time, any place, they can work directly. Only :func:`RTAudioControl_SetPlaybackDevice` can only be called before :func:`RTAudioService_Init` in mixer architecture, and before :func:`RTAudioTrack_Start` in passthrough architecture.
-
-Audio Hardware Application
-----------------------------------------------------
-.. only:: RTL8726EA
-   
-   Line-out
-   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   Line-out supports differential output mode. Users can select the mode by setting the related registers.
-   
-
-   In line-out differential mode, both N-end and P-end drive the available analog audio signal. This application is mainly used to provide clean audio for external power amplifiers (Class-AB/Class-D).
-   
-   .. figure:: ../figures/audio_differential_mode_connection_with_audio_power_amplifiers.svg
-      :scale: 120%
-      :align: center
-   
-      Differential mode connection with audio power amplifiers
-   
-.. only:: RTL8726EA
-   
-   Line-in
-   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   Line-in has 0dB gain preamplifier, its input signal often has a large output power. It often connects to the audio output of equipment such as electric guitar, electronic organ, and synthesizer.
-   
-
-   Connect the left channel of line-in signal to MICx_L, and the right channel to MICx_R accordingly.
-   
-   .. figure:: ../figures/audio_line_in_mode_connection.svg
-      :scale: 120%
-      :align: center
-   
-      Line-in mode connection
-   
-.. only:: RTL8726EA
-   
-   AMIC-in
-   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   The amplitude of the signal collected by analog microphone (AMIC-in) is very small, a preamplifier is necessary, AMIC-in supports differential mode and single-ended mode.
-   
-   AMIC-in Single-ended Mode
-   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-   Connect MIC_P with a single-ended analog microphone, while MICBIAS provides the microphone bias voltage.
-   
-   .. figure:: ../figures/audio_amic_in_single_ended_mode_connection.svg
-      :scale: 120%
-      :align: center
-   
-      AMIC-in single-ended mode connection
-   
-   AMIC-in Differential Mode
-   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-   Connect MICx_P/MICx_N with a differential analog microphone, while MIC_BIAS provides the microphone bias voltage.
-   
-   .. figure:: ../figures/audio_amic_in_differential_mode_connection.svg
-      :scale: 120%
-      :align: center
-   
-      AMIC-in differential mode connection
-   
-DMIC-in
-~~~~~~~~~~~~~~
-Digital microphone (DMIC) records audio data. It is integrated with ADC internal, and can directly output digital signal. DMIC-in supports mono mode and stereo mode.
-
-DMIC-in Mono Mode
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Tie the L/R of a digital microphone to ground or VDD if only one digital microphone is placed.
-
-.. figure:: ../figures/audio_dmic_in_mono_mode_connection.svg
-   :scale: 120%
-   :align: center
-
-   DMIC-in mono mode connection
-
-For layout design，DMIC_CLK and DMIC_DATA should add ground isolation on both sides of the routing.
-
-.. figure:: ../figures/audio_dmic_in_layout.svg
-   :scale: 120%
-   :align: center
-   :name: audio_dmic_in_layout
-
-   DMIC-in layout
-
-
-DMIC-in Stereo Mode
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Tie the L/R of two digital microphones to ground and VDD respectively if a stereo microphone is needed. The two microphones share the DMIC_DATA according to the rising/falling edge. DMIC_CLK and DMIC_DATA layout design refor to :ref:`audio_dmic_in_layout`.
-
-.. figure:: ../figures/audio_dmic_in_stereo_mode_connection.svg
-   :scale: 120%
-   :align: center
-
-   DMIC-in stereo mode connection
-
-.. only:: RTL8726EA
-   
-   Microphone Array
-   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   In a two-microphone smart voice application, two ADCs are used to collect the speaker's voice, and one ADC is used to collect the reference sound of echo cancellation.
-   
-   .. figure:: ../figures/audio_two_microphone_smart_voice_application.svg
-      :scale: 120%
-      :align: center
-   
-      Two-microphone smart voice application
-   
-I2S Data Pin
-~~~~~~~~~~~~~~~~~~~~~~~~
-The data paths of SPORT 0/1 are shown in :ref:`audio_sport0_data_path` to :ref:`audio_sport1_data_path` respectively.
-
-- For I2S TDM mode: Only SD_O_0 and SD_I_0 can be used.
-
-- For I2S Multi-IO mode: SD_O_0/1/2/3 and SD_I_0/1/2/3 all can be used. By default, use SD_O_0/1/2/3 and SD_I_0/1/2/3 in order according to the number of channels.
-
-.. figure:: ../figures/audio_sport0_data_path.svg
-   :scale: 100%
-   :align: center
-   :name: audio_sport0_data_path
-
-   SPORT0 data path
-
-.. figure:: ../figures/audio_sport1_data_path.svg
-   :scale: 120%
-   :align: center
-   :name: audio_sport1_data_path
-
-   SPORT1 data path
-
-As shown in :ref:`audio_sport1_data_path`, the default path is red line and the arbitrary path is blue line. For arbitrary path, default order can be changed by the following interfaces:
-
-- **SD_O**: :func:`AUDIO_SP_TXCHNSrcSel(u32 index, u32 fifo_num, u32 NewState)`
-
-- **SD_I**: :func:`AUDIO_SP_RXFIFOSrcSel(u32 index, u32 fifo_num, u32 NewState)`
-
-SPORT0 Rx with External I2S0
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-SPORT0 can be connected to an internal audio codec or an external I2S0 device, but not both.
-
-.. figure:: ../figures/audio_sport_block_diagram.svg
-   :scale: 120%
-   :align: center
-
-   SPORT block diagram
-
-When SPORT0 Rx connected with external I2S0, it must disconnect from audio codec by the interface:
+**********************
+For using RTAudioControl, Call RTAudioControl to set audio hardware volume of DAC:
 
 .. code-block:: c
 
-   AUDIO_CODEC_SetI2SSRC(u32 i2s_sel, u32 src)
+   RTAudioControl_SetHardwareVolume(0.5, 0.5);
 
-
-
-.. note::
-   Calling this API can access the register of audio codec, so you need to enable audio codec function and clock at first by the interfaces:
-
-   .. code-block:: c
-
-      RCC_PeriphClockCmd(APBPeriph_AC, APBPeriph_AC_CLOCK, ENABLE)
-      RCC_PeriphClockSource_AUDIOCODEC(CKSL_AC_XTAL)
-
-Audio Pad
-~~~~~~~~~~~~~~~~~~
-Audio Pad can be used as digital path or analog path, and Audio pad share status can be changed by the interface:
-
-.. code-block:: c
-
-   APAD_InputCtrl(u8 PinName, u32 NewState)
-
-- **ENABLE**: enable digital path
-
-- **DISABLE**: disable digital path
-
-AOUT Pad
-^^^^^^^^^^^^^^^^
-If AOUT pad (PB16 & PB17) are used as digital I/O functions, LINEOUT should be powered down.
-
-
-When audio playback is running, LINEOUT will be powered on. Users can call the following interface to power down LINEOUT.
-
-.. code-block:: c
-
-   AUDIO_CODEC_SetLineOutPowerMode (u32 channel, u32 powermode)
-
-.. figure:: ../figures/audio_aout_pad.svg
-   :scale: 130%
-   :align: center
-
-   AOUT pad
-
-MICBIAS Pad
-^^^^^^^^^^^^^^^^^^^^^^
-If MICBIAS pad (PB15) is used as digital I/O function, MICBIAS should be powered down.
-
-
-When audio record is running, MICBIAS will be powered on. Users can call the following interface to power down MICBIAS.
-
-.. code-block:: c
-
-   AUDIO_CODEC_SetMicBiasPowerMode(u32 powermode)
-
-.. figure:: ../figures/audio_micbias_pad.svg
-   :scale: 130%
-   :align: center
-
-   MICBIAS pad
-
-MIC Pad
-^^^^^^^^^^^^^^
-If MIC pad (PB11~PB14, PB18~PB19) are used as digital I/O functions, MICBST should be mute.
-
-
-When audio record is running, MICBST will be unmute. Users can call the following interface to mute MICBST.
-
-.. code-block:: c
-
-   AUDIO_CODEC_SetMicBstChnMute(u32 amic_sel, u32 type, u32 newstate)
-
-.. figure:: ../figures/audio_mic_pad.svg
-   :scale: 130%
-   :align: center
-
-   MIC pad
-
-I2S Layout
-~~~~~~~~~~~~~~~~~~~~
-Reserve 22ohm resistors on the CLK and DATA paths of I2S. If the layout space allows, increase ground isolation for CLK and DATA as much as possible.
-
-.. figure:: ../figures/audio_i2s_layout.svg
-   :scale: 130%
-   :align: center
-
-   I2S layout
-
+For playback and record case, most RTAudioControl APIs can be called at any time, any place, they can work directly. Only :func:`RTAudioControl_SetPlaybackDevice()` can only be called before :func:`RTAudioService_Init` in mixer architecture, and before :func:`RTAudioTrack_Start` in passthrough architecture.
