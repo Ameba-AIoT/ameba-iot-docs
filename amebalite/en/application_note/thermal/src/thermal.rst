@@ -30,7 +30,7 @@ The steps of using thermal to get current temperature are as below:
 
 1. Set default parameters.
 
-   After that, thermal threshold, down sample rate and other parameters can be modified in ``TM_InitStruct`` if needed.
+   After that, thermal threshold, down sample rate and other parameters can be modified in :func:`TM_InitStruct` if needed.
 
    .. code-block:: c
 
