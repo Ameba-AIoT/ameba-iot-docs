@@ -46,9 +46,9 @@ Flow
 
 1. (Optional) Find out the speed limit of PSRAM device embedded in |CHIP_NAME| if not sure.
 
-   a. Print the value of ``ChipInfo_BDNum()`` function, which will get the chip info from OTP.
+   a. Print the value of :func:`ChipInfo_BDNum()` function, which will get the chip info from OTP.
 
-   b. Refer to PSRAM type in ``Chip_Info[]`` in ``\component\soc\amebalite\fwlib\ram_common\ameba_chipinfo.c``.
+   b. Refer to PSRAM type in *Chip_Info[]* in ``\component\soc\amebalite\fwlib\ram_common\ameba_chipinfo.c``.
 
 For example: If bdnumer is 0x1010, the psram can run under 166MHz.
 
@@ -56,15 +56,15 @@ For example: If bdnumer is 0x1010, the psram can run under 166MHz.
    :scale: 90%
    :align: center
 
-2. Check the value of ``Boot_SocClk_Info_Idx`` and the clock info in ``\component\soc\amebalite\usrcfg\ameba_bootcfg.c``.
+2. Check the value of *Boot_SocClk_Info_Idx* and the clock info in ``\component\soc\amebalite\usrcfg\ameba_bootcfg.c``.
 
 .. figure:: ../figures/657655f166a931700dad5043010f56b902d618dc.png
    :scale: 90%
    :align: center
 
-- If ``Boot_SocClk_Info_Idx`` is not 0xFF, BootLoader will set the SoC clock defined by ``SocClk_Info[Boot_SocClk_Info_Idx]``.
+- If *Boot_SocClk_Info_Idx* is not 0xFF, BootLoader will set the SoC clock defined by ``SocClk_Info[Boot_SocClk_Info_Idx]``.
 
-- If ``Boot_SocClk_Info_Idx`` is 0xFF (defult), BootLoader will set the SoC clock automatically according to the PSRAM type embedded in |CHIP_NAME|.
+- If *Boot_SocClk_Info_Idx* is 0xFF (defult), BootLoader will set the SoC clock automatically according to the PSRAM type embedded in |CHIP_NAME|.
 
 For example: If bdnumer is 0x1010, the psram can run under 166MHz, and bootloader will use ``SocClk_Info[1]. CLKDIV(3) | ISPLLM`` means the clocks KM4/KR4 equal to PLLM/3.
 
@@ -103,9 +103,9 @@ For example: If bdnumer is 0x1010, the psram can run under 166MHz, and bootloade
 
 3. Refer to one of the following methods to change the SoC clock if needed.
 
-   - Keep the ``Boot_SocClk_Info_Idx`` 0xFF, and only change the clock info of SocClk_Info[x] to set the clocks of PLLM/PLLD and CPUs.
+   - Keep the *Boot_SocClk_Info_Idx* 0xFF, and only change the clock info of ``SocClk_Info[x]`` to set the clocks of PLLM/PLLD and CPUs.
 
-   - Modify the ``Boot_SocClk_Info_Idx`` to [0, 3], and then define your own clock info in ``SocClk_Info[Boot_SocClk_Info_Idx]``.
+   - Modify the *Boot_SocClk_Info_Idx* to [0, 3], and then define your own clock info in ``SocClk_Info[Boot_SocClk_Info_Idx]``.
 
 .. note:: Consider the limitations of the hardware and do not set the clock info illogically.
 
@@ -115,7 +115,7 @@ Example
 ^^^^^^^^^^^^^^
 1. Refer to :ref:`Flow Step1<user_configuration_flow_step_1>` to find out the speed limit of PSRAM device if not sure (suppose the maximum speed is 200MHz)
 
-2. Change ``CPU_CKD`` of ``SocClk_Info[2]`` to ``CLKDIV(1)`` if CPU is needed to run faster.
+2. Change *CPU_CKD* of ``SocClk_Info[2]`` to *CLKDIV(1)* if CPU is needed to run faster.
 
 .. figure:: ../figures/181366bac48ab28a54fb64111d7b7cbc61693abf.png
    :scale: 90%
@@ -140,7 +140,7 @@ The bootloader log is enabled by default and can be disabled in \ ``\component\s
 
 Loguart AGG
 ^^^^^^^^^^^^^
-The ``Boot_Agg_En macro`` is used with Trace Tool to sort out boot logs from different cores. It can be enabled in \ ``\component\soc\amebalite\usrcfg\ameba_bootcfg.c.``\
+The *Boot_Agg_En* macro is used with Trace Tool to sort out boot logs from different cores. It can be enabled in \ ``\component\soc\amebalite\usrcfg\ameba_bootcfg.c.``\
 
 .. figure:: ../figures/a860f36bbfc21e7b207c7009389099df584e2e3d.png
    :scale: 90%
