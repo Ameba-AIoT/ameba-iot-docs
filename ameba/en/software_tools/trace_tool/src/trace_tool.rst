@@ -32,6 +32,10 @@ to distinguish multi-path data that from different cores.
      
    The AGG function is used for multi-paths to print logs at the same time, which are KM0, KM4, BT trace and BT FW logs.
    
+.. only:: RTL8726EA
+   
+   The AGG function is used for multi-paths to print logs at the same time, which are KM4, KR4, DSP, BT trace and BT FW logs.
+   
 - When the AGG function is enabled, hardware will attach AGG header automatically. TraceTool can separate logs from different paths according to AGG header. 
   In this case, logs from BT trace and BT FW will be saved into files separately and other logs will print on screen.
   Therefore, users must use Trace Tool instead of any other serial port tools because the latter will print disordered logs.
@@ -48,6 +52,14 @@ Environment Setup
 Hardware Connection
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 The hardware connection is illustrated below.
+
+.. only:: RTL8726EA
+   
+   .. figure:: ../figures/hardware_connection_8726e.svg
+      :scale: 90%
+      :align: center
+
+      Hardware connection
 
 .. only:: RTL8721D
 
@@ -163,6 +175,36 @@ The history command box records the commands have been sent before.
 
 Command Prefix
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. only:: RTL8726EA
+
+   .. table::
+      :width: 100%
+      :widths: auto
+
+      +------+-----------+----------------+
+      | Core | Role      | Command prefix |
+      +======+===========+================+
+      | DSP  | Algorithm | ~              |
+      +------+-----------+----------------+
+      | KM4  | NP        | @              |
+      +------+-----------+----------------+
+      | KR4  | AP        | None           |
+      +------+-----------+----------------+
+
+   .. table::
+      :width: 100%
+      :widths: auto
+
+      +------+-----------+----------------+
+      | Core | Role      | Command prefix |
+      +======+===========+================+
+      | DSP  | Algorithm | ~              |
+      +------+-----------+----------------+
+      | KM4  | AP        | None           |
+      +------+-----------+----------------+
+      | KR4  | NP        | @              |
+      +------+-----------+----------------+
+
 .. only:: RTL8721D
 
    .. table::
