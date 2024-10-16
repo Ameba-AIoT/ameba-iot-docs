@@ -19,13 +19,13 @@ Features
 
 Block Diagram
 --------------------------
-The block diagram of TRNG is shown in Figure 1-1.
+The block diagram of TRNG is shown as below.
 
 .. figure:: ../figures/trng_block_diagram.svg
    :scale: 115%
    :align: center
 
-   Figure 1-1 TRNG block diagram
+   TRNG block diagram
 
 The TRNG includes the following sub-modules:
 

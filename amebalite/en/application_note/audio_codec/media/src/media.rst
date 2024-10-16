@@ -47,25 +47,27 @@ For audio format, the RTPlayer supports the following:
 
 Architecture
 ------------------------
-Applications interact with media according to the following architecture Figure 1-1.
+Applications interact with media according to the following :ref:`media_architecture`.
 
 .. figure:: ../figures/media_architecture.svg
    :scale: 110%
    :align: center
+   :name: media_architecture
 
-   Figure 1-1 Media architecture
+   Media architecture
 
 Playback States
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Playback of media is managed through a state machine. The playback state is shown in Figure 1-2.
+Playback of media is managed through a state machine. The playback state is shown as below.
 
 .. figure:: ../figures/media_playback_states.svg
    :scale: 110%
    :align: center
+   :name: media_playback_states
 
-   Figure 1-2 Playback states
+   Playback states
 
-The supported playback control operations of an RTPlayer object is shown in Figure 1-2. The ovals represent the possible state of the RTPlayer object. The arcs with a single arrow head represent synchronous method calls that drive the object state transition. Those with a double arrow head represent asynchronous method calls that drive the object state transition.
+The supported playback control operations of an RTPlayer object is shown in :ref:`media_playback_states`. The ovals represent the possible state of the RTPlayer object. The arcs with a single arrow head represent synchronous method calls that drive the object state transition. Those with a double arrow head represent asynchronous method calls that drive the object state transition.
 
 
 As can be seen from the figure, certain operations are only valid when the player is in specific states. If you perform an operation in the wrong state, the system may cause other undesirable behaviors. Calling some functions at some specific states may trigger state transmit, please refer to the following table for details.
@@ -257,21 +259,21 @@ The RTPlayer sets a starting water level for http streaming source, playback wil
 - :func:`RTPlayer_PrepareAsync(…)` is an asynchronous function, application should not call :func:`RTPlayer_Start(…)` until receiving ``RTPlayerCallback.OnRTPlayerStateChanged(…, …, RTPLAYER_PREPARED)``.
 
 
-For http source, the RTPlayer will continuously check the downloaded data and update the downloaded percentage to monitors via ``RTPlayerCallback.OnRTPlayerInfo(…, …, RTPLAYER_INFO_BUFFERING_INFO_UPDATE)``. When the downloaded data is enough, the RTPlayer will trigger ``RTPlayerCallback.OnRTPlayerStateChanged (…, …, RTPLAYER_PREPARED)`` and application can start the playback. The detailed principle is shown as in Figure 1-3.
+For http source, the RTPlayer will continuously check the downloaded data and update the downloaded percentage to monitors via ``RTPlayerCallback.OnRTPlayerInfo(…, …, RTPLAYER_INFO_BUFFERING_INFO_UPDATE)``. When the downloaded data is enough, the RTPlayer will trigger ``RTPlayerCallback.OnRTPlayerStateChanged (…, …, RTPLAYER_PREPARED)`` and application can start the playback. The detailed principle is shown as below.
 
 .. figure:: ../figures/media_http_source_stream_buffering_principle_during_starting.svg
    :scale: 120%
    :align: center
 
-   Figure 1-3 HttpSource stream buffering principle during starting
+   HttpSource stream buffering principle during starting
 
-During playback, if the remaining downloaded data is not enough, the RTPlayer will trigger ``RTPlayerCallback.OnRTPlayerInfo(…, …, RTPLAYER_INFO_BUFFERING_START)``. Application can update user display interfaces to indicate users that the current network status is poor. During this time, the RTPlayer will continuously check the downloaded data and update the downloaded percentage to monitors via ``RTPlayerCallback.OnRTPlayerInfo(…, …, RTPLAYER_INFO_BUFFERING_INFO_UPDATE)``. When the downloaded data is enough, the RTPlayer will trigger ``RTPlayerCallback.OnRTPlayerInfo(…, …, RTPLAYER_INFO_BUFFERING_END)`` and application can resume the playback. The detailed principle is shown as in Figure 1-4.
+During playback, if the remaining downloaded data is not enough, the RTPlayer will trigger ``RTPlayerCallback.OnRTPlayerInfo(…, …, RTPLAYER_INFO_BUFFERING_START)``. Application can update user display interfaces to indicate users that the current network status is poor. During this time, the RTPlayer will continuously check the downloaded data and update the downloaded percentage to monitors via ``RTPlayerCallback.OnRTPlayerInfo(…, …, RTPLAYER_INFO_BUFFERING_INFO_UPDATE)``. When the downloaded data is enough, the RTPlayer will trigger ``RTPlayerCallback.OnRTPlayerInfo(…, …, RTPLAYER_INFO_BUFFERING_END)`` and application can resume the playback. The detailed principle is shown as below.
 
 .. figure:: ../figures/media_http_source_stream_buffering_principle_during_playing.svg
    :scale: 120%
    :align: center
 
-   Figure 1-4 HttpSource stream buffering principle during playing
+   HttpSource stream buffering principle during playing
 
 Interfaces
 --------------------

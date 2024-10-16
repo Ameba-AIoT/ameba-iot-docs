@@ -17,13 +17,13 @@ The audio framework provides two architectures to meet different needs of audio.
 
 Mixer Overview
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-The audio interfaces and the entire implementation are shown in Figure 1-1.
+The audio interfaces and the entire implementation are shown as below.
 
 .. figure:: ../figures/audio_mixer_overview.svg
    :scale: 120%
    :align: center
 
-   Figure 1-1 Audio mixer overview
+   Audio mixer overview
 
 The whole audio mixer architecture includes the following sub-modules:
 
@@ -59,13 +59,13 @@ The whole audio mixer architecture includes the following sub-modules:
 
 Passthrough Overview
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-The audio interfaces and the entire implementation are shown in Figure 1-2.
+The audio interfaces and the entire implementation are shown as below.
 
 .. figure:: ../figures/audio_passthrough_overview.svg
    :scale: 120%
    :align: center
 
-   Figure 1-2 Audio passthrough overview
+   Audio passthrough overview
 
 The audio passthrough architecture has no Audio Framework layer compared to audio mixer architecture, other layers are nearly the same.
 
@@ -181,19 +181,21 @@ This section describes the data format that audio framework and audio HAL suppor
 Both audio framework and audio HAL support interleaved streaming data.
 
 
-The two-channel interleaved data is illustrated in Figure 1-3, and the four-channel interleaved data is illustrated in Figure 1-4.
+The two-channel interleaved data is illustrated in :ref:`audio_two_channel_interleaved`, and the four-channel interleaved data is illustrated in :ref:`audio_four_channel_interleaved`.
 
 .. figure:: ../figures/audio_two_channel_interleaved.svg
    :scale: 95%
    :align: center
+   :name: audio_two_channel_interleaved
 
-   Figure 1-3 Two-channel interleaved
+   Two-channel interleaved
 
 .. figure:: ../figures/audio_four_channel_interleaved.svg
    :scale: 95%
    :align: center
+   :name: audio_four_channel_interleaved
 
-   Figure 1-4 Four-channel interleaved
+   Four-channel interleaved
 
 Framework Format
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -394,21 +396,21 @@ Architecture
 ------------------------
 Playback Architecture
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-The block diagram of audio mixer playback architecture is shown in Figure 1-5.
+The block diagram of audio mixer playback architecture is shown as below.
 
 .. figure:: ../figures/audio_playback_mixer_architecture.svg
    :scale: 120%
    :align: center
 
-   Figure 1-5 Playback mixer architecture
+   Playback mixer architecture
 
-The block diagram of audio passthrough playback architecture is shown in Figure 1-6.
+The block diagram of audio passthrough playback architecture is shown as below.
 
 .. figure:: ../figures/audio_playback_passthrough_architecture.svg
    :scale: 120%
    :align: center
 
-   Figure 1-6 Playback passthrough architecture
+   Playback passthrough architecture
 
 The audio playback architecture includes the following sub-modules:
 
@@ -432,13 +434,13 @@ The audio playback architecture includes the following sub-modules:
 
 Record Architecture
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Audio mixer and passthrough have the same record architecture. The block diagram of audio record is shown in Figure 1-7.
+Audio mixer and passthrough have the same record architecture. The block diagram of audio record is shown as below.
 
 .. figure:: ../figures/audio_record_architecture.svg
    :scale: 120%
    :align: center
 
-   Figure 1-7 Record architecture
+   Record architecture
 
 
 
@@ -452,13 +454,13 @@ The audio record architecture includes the following sub-modules:
 
 Control Architecture
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Audio mixer and passthrough have the same control architecture. The block diagram of audio control is shown in Figure 1-8.
+Audio mixer and passthrough have the same control architecture. The block diagram of audio control is shown as below.
 
 .. figure:: ../figures/audio_control_architecture.svg
    :scale: 120%
    :align: center
 
-   Figure 1-8 Control architecture
+   Control architecture
 
 The audio control architecture includes the following sub-modules:
 
@@ -536,13 +538,13 @@ The audio component provides two layers of interfaces.
    +----------------------------+----------------------------------------------------------------------------------------+
 
 
-The interfaces layer is shown in Figure 1-9.
+The interfaces layer is shown as below.
 
 .. figure:: ../figures/audio_interfaces.svg
    :scale: 120%
    :align: center
 
-   Figure 1-9 Audio interfaces
+   Audio interfaces
 
 Driver Interfaces
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -817,7 +819,7 @@ Audio HAL provides AudioHwRender/AudioHwCapture/AudioHwControl interfaces to int
 - **AudioHwControl**: receives control calling from the upper layer, and sets control information to the driver.
 
 
-The AudioHwRender/AudioHwCapture is managed by AudioHwAdapter interface. It is responsible for creating/destroying AudioHwRender/AudioHwCapture instance. AudioHwAdapter is a physical or virtual hardware to process audio stream. It contains a set of ports and pins as shown in Figure 1-10.
+The AudioHwRender/AudioHwCapture is managed by AudioHwAdapter interface. It is responsible for creating/destroying AudioHwRender/AudioHwCapture instance. AudioHwAdapter is a physical or virtual hardware to process audio stream. It contains a set of ports and pins as shown in :ref:`audio_hw_adapter_example`.
 
 - **Port** – the stream input of the audio adapter is called “port”.
 
@@ -826,8 +828,9 @@ The AudioHwRender/AudioHwCapture is managed by AudioHwAdapter interface. It is r
 .. figure:: ../figures/audio_hw_adapter_example.svg
    :scale: 90%
    :align: center
+   :name: audio_hw_adapter_example
 
-   Figure 1-10 AudioHwAdapter example
+   AudioHwAdapter example
 
 The AudioHwManager manages system's all AudioHwAdapters and loads a specific adapter driver based on the given audio adapter descriptor.
 
@@ -1256,7 +1259,7 @@ Audio Hardware Application
       :scale: 120%
       :align: center
    
-      Figure 1-11 Differential mode connection with audio power amplifiers
+      Differential mode connection with audio power amplifiers
    
 .. only:: RTL8726EA
    
@@ -1271,7 +1274,7 @@ Audio Hardware Application
       :scale: 120%
       :align: center
    
-      Figure 1-12 Line-in mode connection
+      Line-in mode connection
    
 .. only:: RTL8726EA
    
@@ -1287,7 +1290,7 @@ Audio Hardware Application
       :scale: 120%
       :align: center
    
-      Figure 1-13 AMIC-in single-ended mode connection
+      AMIC-in single-ended mode connection
    
    AMIC-in Differential Mode
    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1297,7 +1300,7 @@ Audio Hardware Application
       :scale: 120%
       :align: center
    
-      Figure 1-14 AMIC-in differential mode connection
+      AMIC-in differential mode connection
    
 DMIC-in
 ~~~~~~~~~~~~~~
@@ -1311,26 +1314,27 @@ Tie the L/R of a digital microphone to ground or VDD if only one digital microph
    :scale: 120%
    :align: center
 
-   Figure 1-15 DMIC-in mono mode connection
+   DMIC-in mono mode connection
 
 For layout design，DMIC_CLK and DMIC_DATA should add ground isolation on both sides of the routing.
 
 .. figure:: ../figures/audio_dmic_in_layout.svg
    :scale: 120%
    :align: center
+   :name: audio_dmic_in_layout
 
-   Figure 1-16 DMIC-in layout
+   DMIC-in layout
 
 
 DMIC-in Stereo Mode
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Tie the L/R of two digital microphones to ground and VDD respectively if a stereo microphone is needed. The two microphones share the DMIC_DATA according to the rising/falling edge. DMIC_CLK and DMIC_DATA layout design refor to Figure 1-16 DMIC-in layout.
+Tie the L/R of two digital microphones to ground and VDD respectively if a stereo microphone is needed. The two microphones share the DMIC_DATA according to the rising/falling edge. DMIC_CLK and DMIC_DATA layout design refor to :ref:`audio_dmic_in_layout`.
 
 .. figure:: ../figures/audio_dmic_in_stereo_mode_connection.svg
    :scale: 120%
    :align: center
 
-   Figure 1-17 DMIC-in stereo mode connection
+   DMIC-in stereo mode connection
 
 .. only:: RTL8726EA
    
@@ -1342,11 +1346,11 @@ Tie the L/R of two digital microphones to ground and VDD respectively if a stere
       :scale: 120%
       :align: center
    
-      Figure 1-18 Two-microphone smart voice application
+      Two-microphone smart voice application
    
 I2S Data Pin
 ~~~~~~~~~~~~~~~~~~~~~~~~
-The data paths of SPORT 0/1 are shown in Figure 1-19 to Figure 1-20 respectively.
+The data paths of SPORT 0/1 are shown in :ref:`audio_sport0_data_path` to :ref:`audio_sport1_data_path` respectively.
 
 - For I2S TDM mode: Only SD_O_0 and SD_I_0 can be used.
 
@@ -1355,16 +1359,18 @@ The data paths of SPORT 0/1 are shown in Figure 1-19 to Figure 1-20 respectively
 .. figure:: ../figures/audio_sport0_data_path.svg
    :scale: 100%
    :align: center
+   :name: audio_sport0_data_path
 
-   Figure 1-19 SPORT0 data path
+   SPORT0 data path
 
 .. figure:: ../figures/audio_sport1_data_path.svg
    :scale: 120%
    :align: center
+   :name: audio_sport1_data_path
 
-   Figure 1-20 SPORT1 data path
+   SPORT1 data path
 
-As shown in Figure 1-20, the default path is red line and the arbitrary path is blue line. For arbitrary path, default order can be changed by the following interfaces:
+As shown in :ref:`audio_sport1_data_path`, the default path is red line and the arbitrary path is blue line. For arbitrary path, default order can be changed by the following interfaces:
 
 - **SD_O**: :func:`AUDIO_SP_TXCHNSrcSel(u32 index, u32 fifo_num, u32 NewState)`
 
@@ -1378,7 +1384,7 @@ SPORT0 can be connected to an internal audio codec or an external I2S0 device, b
    :scale: 120%
    :align: center
 
-   Figure 1-21 SPORT block diagram
+   SPORT block diagram
 
 When SPORT0 Rx connected with external I2S0, it must disconnect from audio codec by the interface:
 
@@ -1423,7 +1429,7 @@ When audio playback is running, LINEOUT will be powered on. Users can call the f
    :scale: 130%
    :align: center
 
-   Figure 1-22 AOUT pad
+   AOUT pad
 
 MICBIAS Pad
 ^^^^^^^^^^^^^^^^^^^^^^
@@ -1440,7 +1446,7 @@ When audio record is running, MICBIAS will be powered on. Users can call the fol
    :scale: 130%
    :align: center
 
-   Figure 1-23 MICBIAS pad
+   MICBIAS pad
 
 MIC Pad
 ^^^^^^^^^^^^^^
@@ -1457,7 +1463,7 @@ When audio record is running, MICBST will be unmute. Users can call the followin
    :scale: 130%
    :align: center
 
-Figure - MIC pad
+   MIC pad
 
 I2S Layout
 ~~~~~~~~~~~~~~~~~~~~
@@ -1467,5 +1473,5 @@ Reserve 22ohm resistors on the CLK and DATA paths of I2S. If the layout space al
    :scale: 130%
    :align: center
 
-   Figure 1-25 I2S layout
+   I2S layout
 
