@@ -27,7 +27,7 @@ The CTC initialization is implemented by the following steps:
 
 .. _ctc_initialization_step_1:
 
-1. Call ``CapTouch_StructInit()`` to initialize the configuration parameters of Cap-Touch, such as SampleCnt, ScanInterval, DiffThreshold, etc.
+1. Call :func:`CapTouch_StructInit()` to initialize the configuration parameters of Cap-Touch, such as SampleCnt, ScanInterval, DiffThreshold, etc.
 
 2. Set configuration parameters in the following table and update configuration parameters of Cap-Touch in step :ref:`1 <ctc_initialization_step_1>` with it, which include touch threshold, noise threshold, mbias current, and enable control for each channel. This method to tune parameters for each channel can be found in section :ref:`ctc_calibration`.
 
@@ -49,9 +49,9 @@ The CTC initialization is implemented by the following steps:
 
    .. note:: The configuration parameters can be acquired in Cap Test Tool.
 
-3. Call ``CapTouch_Init()`` to configure the Cap-Touch.
+3. Call :func:`CapTouch_Init()` to configure the Cap-Touch.
 
-4. Enable Cap-Touch by ``CapTouch_Cmd()`` and enable the interrupt by ``CapTouch_INTConfig()``.
+4. Enable Cap-Touch by :func:`CapTouch_Cmd()` and enable the interrupt by :func:`CapTouch_INTConfig()`.
 
 After all this, the Cap-Touch will start to work.
 
@@ -78,11 +78,11 @@ When using CTC as a wakeup source, configure the CTC and system as follows:
 
 1. Initialize CTC and enable its interrupt according to section :ref:`ctc_initialization`.
 
-2. Set the related wakeup source (``WAKE_SRC_CTOUCH``) in ``sleep_wevent_config[]`` to ``WAKEUP_AP`` or ``WAKEUP_NP`` (based on which CPU you want to wake). The interrupt should be registered on the same CPU selected by ``sleep_wevent_config[]``.
+2. Set the related wakeup source (*WAKE_SRC_CTOUCH*) in ``sleep_wevent_config[]`` to *WAKEUP_AP* or *WAKEUP_NP* (based on which CPU you want to wake). The interrupt should be registered on the same CPU selected by ``sleep_wevent_config[]``.
 
-3. Switch CTC clock source to CTC 131K clock before system enters sleep mode by ``RCC_PeriphClockSource_CTC()``.
+3. Switch CTC clock source to CTC 131K clock before system enters sleep mode by :func:`RCC_PeriphClockSource_CTC()`.
 
 4. Enter sleep mode by releasing the wakelock in AP (PMU_OS needs to be released since it is acquired by default when boot).
 
-5. Clear the CTC interrupt when wakeup and switch CTC clock source to lbus clock by ``RCC_PeriphClockSource_CTC()``.
+5. Clear the CTC interrupt when wakeup and switch CTC clock source to lbus clock by :func:`RCC_PeriphClockSource_CTC()`.
 

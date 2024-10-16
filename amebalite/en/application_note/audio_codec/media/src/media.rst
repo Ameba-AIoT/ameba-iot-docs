@@ -2,22 +2,19 @@
 
 Overview
 ----------------
-Media is a whole media architecture aiming to provide media interfaces for applications to use. It provides a player named RTPlayer. The RTPlayer can be used to control the playback of an audio file.
-
+The Media refers to a whole media architecture aiming to provide media interfaces for applications to use. It provides a player named RTPlayer. The RTPlayer can be used to control the playback of an audio file.
 
 There are many kinds of audio sources, the RTPlayer supports the following:
 
-- Audio file stored in flash.
+- Audio file stored in the flash
 
-- Audio data buffer stored in memory.
+- Audio data buffer stored in the memory
 
-- Http/Https streaming.
+- Http/Https streaming
 
-- Custom data source.
+- Custom data source
 
-
-For audio format, the RTPlayer supports the following:
-
+The RTPlayer supports the following audio formats:
 
 .. table:: 
    :width: 100%
@@ -47,7 +44,7 @@ For audio format, the RTPlayer supports the following:
 
 Architecture
 ------------------------
-Applications interact with media according to the following :ref:`media_architecture`.
+The applications interact with media according to the following figure.
 
 .. figure:: ../figures/media_architecture.svg
    :scale: 110%
@@ -69,9 +66,7 @@ Playback of media is managed through a state machine. The playback state is show
 
 The supported playback control operations of an RTPlayer object is shown in :ref:`media_playback_states`. The ovals represent the possible state of the RTPlayer object. The arcs with a single arrow head represent synchronous method calls that drive the object state transition. Those with a double arrow head represent asynchronous method calls that drive the object state transition.
 
-
 As can be seen from the figure, certain operations are only valid when the player is in specific states. If you perform an operation in the wrong state, the system may cause other undesirable behaviors. Calling some functions at some specific states may trigger state transmit, please refer to the following table for details.
-
 
 .. table:: 
    :width: 100%
@@ -153,10 +148,9 @@ Callbacks
 ~~~~~~~~~~~~~~~~~~
 The Media provides a registration function :func:`RTPlayer_SetCallback(struct RTPlayer *player, struct RTPlayerCallback *callbacks)` for applications to monitor state change and runtime errors during playback or streaming. Applications need to implement the interfaces defined in struct ``RTPlayerCallback``.
 
+The relevant interfaces are described as below:
 
-Relevant interfaces are described as below:
-
-- :func:`void (*OnRTPlayerStateChanged)(const struct RTPlayerCallback *listener, const struct RTPlayer *player, int state);`
+- ``void (*OnRTPlayerStateChanged)(const struct RTPlayerCallback *listener, const struct RTPlayer *player, int state)``
 
    Notify monitors the player status is changed. The parameter state is one of RTPlayerStates. RTPlayerStates is shown as below:
 
@@ -185,7 +179,7 @@ Relevant interfaces are described as below:
       +----------------------------+-----------------------------------+
 
 
-- ``void (*OnRTPlayerInfo)(const struct RTPlayerCallback *listener, const struct RTPlayer *player, int info, int extra);``
+- ``void (*OnRTPlayerInfo)(const struct RTPlayerCallback *listener, const struct RTPlayer *player, int info, int extra)``
 
    Notify monitors some player information. The parameter info indicates the information type, see RTPlayerInfos. The parameter extra indicates the information code, for example, the value of extra is the percentage of buffered data during a buffering state. RTPlayerInfos is shown as below:
 
@@ -204,7 +198,7 @@ Relevant interfaces are described as below:
       +-------------------------------------+-----------------------------------------------------------------------------------+
 
 
-- ``void (*OnRTPlayerError)(const struct RTPlayerCallback *listener, const struct RTPlayer *player, int error, int extra);``
+- ``void (*OnRTPlayerError)(const struct RTPlayerCallback *listener, const struct RTPlayer *player, int error, int extra)``
 
    Notify monitors some player error occurs. The parameter error indicates the error type. For details, see RTPlayerErrors. RTPlayerErrors is shown as below:
 
@@ -222,8 +216,7 @@ RTDataSource
 ~~~~~~~~~~~~~~~~~~~~~~~~
 The Media supports playing a customer implementation data source. Applications need to implement the interfaces defined in struct ``RTDataSource``.
 
-
-1. Relevant interfaces are described as below:
+1. Relevant interfaces are described as below.
 
    .. code-block:: c
 
@@ -244,7 +237,7 @@ The Media supports playing a customer implementation data source. Applications n
 4. Get the whole length of the source.
 
 Stream Buffering Principle
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 For http streaming source, the bandwidth of the network will affect the playback effect. A good user experience should contain the following functions:
 
 - When the download speed is too slow, the application needs to pause playback and makes some prompts, such as: pop up some dialog boxes showing the download percentage.
@@ -252,11 +245,11 @@ For http streaming source, the bandwidth of the network will affect the playback
 - When a certain data has been downloaded, the application needs to resume playback.
 
 
-The RTPlayer sets a starting water level for http streaming source, playback will not start until enough audio data is buffered. Application calls :func:`RTPlayer_Prepare(…)` or :func:`RTPlayer_PrepareAsync(…)` to prepare the streaming source.
+The RTPlayer sets a starting water level for http streaming source, playback will not start until enough audio data is buffered. Application calls :func:`RTPlayer_Prepare()` or :func:`RTPlayer_PrepareAsync(…)` to prepare the streaming source.
 
-- :func:`RTPlayer_Prepare(…)` is a synchronous function, application can call :func:`RTPlayer_Start(…)` after it.
+- :func:`RTPlayer_Prepare()` is a synchronous function, application can call :func:`RTPlayer_Start()` after it.
 
-- :func:`RTPlayer_PrepareAsync(…)` is an asynchronous function, application should not call :func:`RTPlayer_Start(…)` until receiving ``RTPlayerCallback.OnRTPlayerStateChanged(…, …, RTPLAYER_PREPARED)``.
+- :func:`RTPlayer_PrepareAsync()` is an asynchronous function, application should not call :func:`RTPlayer_Start()` until receiving ``RTPlayerCallback.OnRTPlayerStateChanged(…, …, RTPLAYER_PREPARED)``.
 
 
 For http source, the RTPlayer will continuously check the downloaded data and update the downloaded percentage to monitors via ``RTPlayerCallback.OnRTPlayerInfo(…, …, RTPLAYER_INFO_BUFFERING_INFO_UPDATE)``. When the downloaded data is enough, the RTPlayer will trigger ``RTPlayerCallback.OnRTPlayerStateChanged (…, …, RTPLAYER_PREPARED)`` and application can start the playback. The detailed principle is shown as below.
@@ -304,10 +297,10 @@ The RTPlayer supports several different media sources such as: local files store
 
 - For a buffering source, URL starts with **"buffer://"**, such as: ``char *url = "buffer://1611496456"``.
 
-Note: "1611496456" is an address pointing to buffer data information.
+  .. note::
+     **1611496456** is an address pointing to buffer data information.
 
 - For an http/https streaming source, URL starts with **"http://"** or **"https://"**, such as: ``char *url = "http://127.0.0.1/2.mp3";`` or ``char *url = "https://127.0.0.1/2.mp3"``.
-
 
 Here is how you might create a playback for a buffer source:
 
