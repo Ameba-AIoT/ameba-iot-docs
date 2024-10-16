@@ -221,8 +221,8 @@
 <ol class="arabic simple" id="user-configuration-flow-step-1">
 <li><p>(Optional) Find out the speed limit of PSRAM device embedded in AmebaLite if not sure.</p>
 <ol class="loweralpha simple">
-<li><p>Print the value of <code class="docutils literal notranslate"><span class="pre">ChipInfo_BDNum()</span></code> function, which will get the chip info from OTP.</p></li>
-<li><p>Refer to PSRAM type in <code class="docutils literal notranslate"><span class="pre">Chip_Info[]</span></code> in <code class="docutils literal notranslate"><span class="pre">\component\soc\amebalite\fwlib\ram_common\ameba_chipinfo.c</span></code>.</p></li>
+<li><p>Print the value of <code class="xref py py-func docutils literal notranslate"><span class="pre">ChipInfo_BDNum()</span></code> function, which will get the chip info from OTP.</p></li>
+<li><p>Refer to PSRAM type in <em>Chip_Info[]</em> in <code class="docutils literal notranslate"><span class="pre">\component\soc\amebalite\fwlib\ram_common\ameba_chipinfo.c</span></code>.</p></li>
 </ol>
 </li>
 </ol>
@@ -231,14 +231,14 @@
 <a class="reference internal image-reference" href="../../../_images/f532ddaa3d203cfecfd02f48240990a101903c0e.png"><img alt="../../../_images/f532ddaa3d203cfecfd02f48240990a101903c0e.png" src="../../../_images/f532ddaa3d203cfecfd02f48240990a101903c0e.png" style="width: 873.0px; height: 174.6px;" /></a>
 </figure>
 <ol class="arabic simple" start="2">
-<li><p>Check the value of <code class="docutils literal notranslate"><span class="pre">Boot_SocClk_Info_Idx</span></code> and the clock info in <code class="docutils literal notranslate"><span class="pre">\component\soc\amebalite\usrcfg\ameba_bootcfg.c</span></code>.</p></li>
+<li><p>Check the value of <em>Boot_SocClk_Info_Idx</em> and the clock info in <code class="docutils literal notranslate"><span class="pre">\component\soc\amebalite\usrcfg\ameba_bootcfg.c</span></code>.</p></li>
 </ol>
 <figure class="align-center">
 <a class="reference internal image-reference" href="../../../_images/657655f166a931700dad5043010f56b902d618dc.png"><img alt="../../../_images/657655f166a931700dad5043010f56b902d618dc.png" src="../../../_images/657655f166a931700dad5043010f56b902d618dc.png" style="width: 674.1px; height: 272.7px;" /></a>
 </figure>
 <ul class="simple">
-<li><p>If <code class="docutils literal notranslate"><span class="pre">Boot_SocClk_Info_Idx</span></code> is not 0xFF, BootLoader will set the SoC clock defined by <code class="docutils literal notranslate"><span class="pre">SocClk_Info[Boot_SocClk_Info_Idx]</span></code>.</p></li>
-<li><p>If <code class="docutils literal notranslate"><span class="pre">Boot_SocClk_Info_Idx</span></code> is 0xFF (defult), BootLoader will set the SoC clock automatically according to the PSRAM type embedded in AmebaLite.</p></li>
+<li><p>If <em>Boot_SocClk_Info_Idx</em> is not 0xFF, BootLoader will set the SoC clock defined by <code class="docutils literal notranslate"><span class="pre">SocClk_Info[Boot_SocClk_Info_Idx]</span></code>.</p></li>
+<li><p>If <em>Boot_SocClk_Info_Idx</em> is 0xFF (defult), BootLoader will set the SoC clock automatically according to the PSRAM type embedded in AmebaLite.</p></li>
 </ul>
 <p>For example: If bdnumer is 0x1010, the psram can run under 166MHz, and bootloader will use <code class="docutils literal notranslate"><span class="pre">SocClk_Info[1].</span> <span class="pre">CLKDIV(3)</span> <span class="pre">|</span> <span class="pre">ISPLLM</span></code> means the clocks KM4/KR4 equal to PLLM/3.</p>
 <table class="docutils align-default" id="table-user-config-2" style="width: 100%">
@@ -292,8 +292,8 @@
 <ol class="arabic simple" start="3">
 <li><p>Refer to one of the following methods to change the SoC clock if needed.</p>
 <ul class="simple">
-<li><p>Keep the <code class="docutils literal notranslate"><span class="pre">Boot_SocClk_Info_Idx</span></code> 0xFF, and only change the clock info of SocClk_Info[x] to set the clocks of PLLM/PLLD and CPUs.</p></li>
-<li><p>Modify the <code class="docutils literal notranslate"><span class="pre">Boot_SocClk_Info_Idx</span></code> to [0, 3], and then define your own clock info in <code class="docutils literal notranslate"><span class="pre">SocClk_Info[Boot_SocClk_Info_Idx]</span></code>.</p></li>
+<li><p>Keep the <em>Boot_SocClk_Info_Idx</em> 0xFF, and only change the clock info of <code class="docutils literal notranslate"><span class="pre">SocClk_Info[x]</span></code> to set the clocks of PLLM/PLLD and CPUs.</p></li>
+<li><p>Modify the <em>Boot_SocClk_Info_Idx</em> to [0, 3], and then define your own clock info in <code class="docutils literal notranslate"><span class="pre">SocClk_Info[Boot_SocClk_Info_Idx]</span></code>.</p></li>
 </ul>
 </li>
 </ol>
@@ -309,7 +309,7 @@
 <h3>Example<a class="headerlink" href="#example" title="Link to this heading"></a></h3>
 <ol class="arabic simple">
 <li><p>Refer to <a class="reference internal" href="#user-configuration-flow-step-1"><span class="std std-ref">Flow Step1</span></a> to find out the speed limit of PSRAM device if not sure (suppose the maximum speed is 200MHz)</p></li>
-<li><p>Change <code class="docutils literal notranslate"><span class="pre">CPU_CKD</span></code> of <code class="docutils literal notranslate"><span class="pre">SocClk_Info[2]</span></code> to <code class="docutils literal notranslate"><span class="pre">CLKDIV(1)</span></code> if CPU is needed to run faster.</p></li>
+<li><p>Change <em>CPU_CKD</em> of <code class="docutils literal notranslate"><span class="pre">SocClk_Info[2]</span></code> to <em>CLKDIV(1)</em> if CPU is needed to run faster.</p></li>
 </ol>
 <figure class="align-center">
 <a class="reference internal image-reference" href="../../../_images/181366bac48ab28a54fb64111d7b7cbc61693abf.png"><img alt="../../../_images/181366bac48ab28a54fb64111d7b7cbc61693abf.png" src="../../../_images/181366bac48ab28a54fb64111d7b7cbc61693abf.png" style="width: 676.8000000000001px; height: 219.6px;" /></a>
@@ -335,7 +335,7 @@
 </section>
 <section id="loguart-agg">
 <h3>Loguart AGG<a class="headerlink" href="#loguart-agg" title="Link to this heading"></a></h3>
-<p>The <code class="docutils literal notranslate"><span class="pre">Boot_Agg_En</span> <span class="pre">macro</span></code> is used with Trace Tool to sort out boot logs from different cores. It can be enabled in <code class="docutils literal notranslate"><span class="pre">\component\soc\amebalite\usrcfg\ameba_bootcfg.c.</span></code></p>
+<p>The <em>Boot_Agg_En</em> macro is used with Trace Tool to sort out boot logs from different cores. It can be enabled in <code class="docutils literal notranslate"><span class="pre">\component\soc\amebalite\usrcfg\ameba_bootcfg.c.</span></code></p>
 <figure class="align-center">
 <a class="reference internal image-reference" href="../../../_images/a860f36bbfc21e7b207c7009389099df584e2e3d.png"><img alt="../../../_images/a860f36bbfc21e7b207c7009389099df584e2e3d.png" src="../../../_images/a860f36bbfc21e7b207c7009389099df584e2e3d.png" style="width: 312.3px; height: 128.70000000000002px;" /></a>
 </figure>

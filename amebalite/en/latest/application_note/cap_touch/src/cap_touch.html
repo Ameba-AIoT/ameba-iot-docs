@@ -157,7 +157,7 @@
 <span id="id1"></span><h2>CTC Initialization<a class="headerlink" href="#ctc-initialization" title="Link to this heading"></a></h2>
 <p>The CTC initialization is implemented by the following steps:</p>
 <ol class="arabic" id="ctc-initialization-step-1">
-<li><p>Call <code class="docutils literal notranslate"><span class="pre">CapTouch_StructInit()</span></code> to initialize the configuration parameters of Cap-Touch, such as SampleCnt, ScanInterval, DiffThreshold, etc.</p></li>
+<li><p>Call <code class="xref py py-func docutils literal notranslate"><span class="pre">CapTouch_StructInit()</span></code> to initialize the configuration parameters of Cap-Touch, such as SampleCnt, ScanInterval, DiffThreshold, etc.</p></li>
 <li><p>Set configuration parameters in the following table and update configuration parameters of Cap-Touch in step <a class="reference internal" href="#ctc-initialization-step-1"><span class="std std-ref">1</span></a> with it, which include touch threshold, noise threshold, mbias current, and enable control for each channel. This method to tune parameters for each channel can be found in section <a class="reference internal" href="#ctc-calibration"><span class="std std-ref">CTC Calibration</span></a>.</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">const</span><span class="w"> </span><span class="n">CapTouch_CHInitTypeDef</span><span class="w"> </span><span class="n">ctc_ch_config</span><span class="p">[</span><span class="mi">9</span><span class="p">]</span><span class="w"> </span><span class="o">=</span>
 <span class="p">{</span>
@@ -179,8 +179,8 @@
 <p>The configuration parameters can be acquired in Cap Test Tool.</p>
 </div>
 </li>
-<li><p>Call <code class="docutils literal notranslate"><span class="pre">CapTouch_Init()</span></code> to configure the Cap-Touch.</p></li>
-<li><p>Enable Cap-Touch by <code class="docutils literal notranslate"><span class="pre">CapTouch_Cmd()</span></code> and enable the interrupt by <code class="docutils literal notranslate"><span class="pre">CapTouch_INTConfig()</span></code>.</p></li>
+<li><p>Call <code class="xref py py-func docutils literal notranslate"><span class="pre">CapTouch_Init()</span></code> to configure the Cap-Touch.</p></li>
+<li><p>Enable Cap-Touch by <code class="xref py py-func docutils literal notranslate"><span class="pre">CapTouch_Cmd()</span></code> and enable the interrupt by <code class="xref py py-func docutils literal notranslate"><span class="pre">CapTouch_INTConfig()</span></code>.</p></li>
 </ol>
 <p>After all this, the Cap-Touch will start to work.</p>
 </section>
@@ -203,10 +203,10 @@
 <p>When using CTC as a wakeup source, configure the CTC and system as follows:</p>
 <ol class="arabic simple">
 <li><p>Initialize CTC and enable its interrupt according to section <a class="reference internal" href="#ctc-initialization"><span class="std std-ref">CTC Initialization</span></a>.</p></li>
-<li><p>Set the related wakeup source (<code class="docutils literal notranslate"><span class="pre">WAKE_SRC_CTOUCH</span></code>) in <code class="docutils literal notranslate"><span class="pre">sleep_wevent_config[]</span></code> to <code class="docutils literal notranslate"><span class="pre">WAKEUP_AP</span></code> or <code class="docutils literal notranslate"><span class="pre">WAKEUP_NP</span></code> (based on which CPU you want to wake). The interrupt should be registered on the same CPU selected by <code class="docutils literal notranslate"><span class="pre">sleep_wevent_config[]</span></code>.</p></li>
-<li><p>Switch CTC clock source to CTC 131K clock before system enters sleep mode by <code class="docutils literal notranslate"><span class="pre">RCC_PeriphClockSource_CTC()</span></code>.</p></li>
+<li><p>Set the related wakeup source (<em>WAKE_SRC_CTOUCH</em>) in <code class="docutils literal notranslate"><span class="pre">sleep_wevent_config[]</span></code> to <em>WAKEUP_AP</em> or <em>WAKEUP_NP</em> (based on which CPU you want to wake). The interrupt should be registered on the same CPU selected by <code class="docutils literal notranslate"><span class="pre">sleep_wevent_config[]</span></code>.</p></li>
+<li><p>Switch CTC clock source to CTC 131K clock before system enters sleep mode by <code class="xref py py-func docutils literal notranslate"><span class="pre">RCC_PeriphClockSource_CTC()</span></code>.</p></li>
 <li><p>Enter sleep mode by releasing the wakelock in AP (PMU_OS needs to be released since it is acquired by default when boot).</p></li>
-<li><p>Clear the CTC interrupt when wakeup and switch CTC clock source to lbus clock by <code class="docutils literal notranslate"><span class="pre">RCC_PeriphClockSource_CTC()</span></code>.</p></li>
+<li><p>Clear the CTC interrupt when wakeup and switch CTC clock source to lbus clock by <code class="xref py py-func docutils literal notranslate"><span class="pre">RCC_PeriphClockSource_CTC()</span></code>.</p></li>
 </ol>
 </section>
 </section>
