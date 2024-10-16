@@ -1,7 +1,7 @@
 ## Reading the Docs
 Click the following URLs to view the documentations of the specific SoC.
 - AmebaDPlus: https://ameba-aiot.github.io/ameba-iot-docs/amebadplus/en/latest/
-- AmebaLite: TBD
+- AmebaLite: https://ameba-aiot.github.io/ameba-iot-docs/amebalite/en/latest/
 - AmebaSmart: TBD
 
 -----------------------------------------------------------------------------------------
