@@ -122,13 +122,6 @@
 <li class="toctree-l4"><a class="reference internal" href="#framework-interfaces">Framework Interfaces</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#audio-hardware-application">Audio Hardware Application</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#dmic-in">DMIC-in</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#i2s-data-pin">I2S Data Pin</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#sport0-rx-with-external-i2s0">SPORT0 Rx with External I2S0</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#i2s-layout">I2S layout</a></li>
-</ul>
-</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../usb_otg/src/index.html">USB OTG</a></li>
@@ -1408,97 +1401,6 @@ The interfaces have specific descriptions, read them before use.</p>
 </ol>
 </section>
 </section>
-</section>
-</section>
-<section id="audio-hardware-application">
-<h1>Audio Hardware Application<a class="headerlink" href="#audio-hardware-application" title="Link to this heading"></a></h1>
-<section id="dmic-in">
-<h2>DMIC-in<a class="headerlink" href="#dmic-in" title="Link to this heading"></a></h2>
-<p>Digital microphone (DMIC) records audio data. It is integrated with ADC internal, and can directly output digital signal. DMIC-in supports mono mode and stereo mode.</p>
-<section id="dmic-in-mono-mode">
-<h3>DMIC-in Mono Mode<a class="headerlink" href="#dmic-in-mono-mode" title="Link to this heading"></a></h3>
-<p>Tie the L/R of a digital microphone to ground or VDD if only one digital microphone is placed.</p>
-<figure class="align-center" id="id10">
-<a class="reference internal image-reference" href="../../../_images/audio_dmic_in_mono_mode_connection.svg"><img alt="../../../_images/audio_dmic_in_mono_mode_connection.svg" height="152" src="../../../_images/audio_dmic_in_mono_mode_connection.svg" width="422" /></a>
-<figcaption>
-<p><span class="caption-text">DMIC-in mono mode connection</span><a class="headerlink" href="#id10" title="Link to this image"></a></p>
-</figcaption>
-</figure>
-<p>For layout design, <em>DMIC_CLK</em> and <em>DMIC_DATA</em> should add ground isolation on both sides of the routing.</p>
-<figure class="align-center" id="id11">
-<a class="reference internal image-reference" href="../../../_images/audio_dmic_in_layout.svg"><img alt="../../../_images/audio_dmic_in_layout.svg" height="151" src="../../../_images/audio_dmic_in_layout.svg" width="408" /></a>
-<figcaption>
-<p><span class="caption-text">DMIC-in layout</span><a class="headerlink" href="#id11" title="Link to this image"></a></p>
-</figcaption>
-</figure>
-</section>
-<section id="dmic-in-stereo-mode">
-<h3>DMIC-in Stereo Mode<a class="headerlink" href="#dmic-in-stereo-mode" title="Link to this heading"></a></h3>
-<p>Tie the L/R of two digital microphones to ground and VDD respectively if a stereo microphone is needed.
-The two microphones share the <em>DMIC_DATA</em> according to the rising/falling edge.</p>
-<figure class="align-center" id="id12">
-<a class="reference internal image-reference" href="../../../_images/audio_dmic_in_stereo_mode_connection.svg"><img alt="../../../_images/audio_dmic_in_stereo_mode_connection.svg" height="307" src="../../../_images/audio_dmic_in_stereo_mode_connection.svg" width="467" /></a>
-<figcaption>
-<p><span class="caption-text">DMIC-in stereo mode connection</span><a class="headerlink" href="#id12" title="Link to this image"></a></p>
-</figcaption>
-</figure>
-</section>
-</section>
-<section id="i2s-data-pin">
-<h2>I2S Data Pin<a class="headerlink" href="#i2s-data-pin" title="Link to this heading"></a></h2>
-<p>The data paths of SPORT0 and SPORT1 are shown in <a class="reference internal" href="#sport0-data-path"><span class="std std-ref">SPORT0 data path</span></a> and <a class="reference internal" href="#sport1-data-path"><span class="std std-ref">SPORT1 data path</span></a>.</p>
-<ul class="simple">
-<li><p>For I2S TDM mode: Only <em>SD_O_0</em> and <em>SD_I_0</em> can be used.</p></li>
-<li><p>For I2S Multi-IO mode: <em>SD_O_0/1/2/3</em> and <em>SD_I_0/1/2/3</em> all can be used. By default, use <em>SD_O_0/1/2/3</em> and <em>SD_I_0/1/2/3</em> in order according to the number of channels.</p></li>
-</ul>
-<figure class="align-center" id="sport0-data-path">
-<a class="reference internal image-reference" href="../../../_images/audio_sport0_data_path.svg"><img alt="../../../_images/audio_sport0_data_path.svg" height="786" src="../../../_images/audio_sport0_data_path.svg" width="864" /></a>
-<figcaption>
-<p><span class="caption-text">SPORT0 data path</span><a class="headerlink" href="#sport0-data-path" title="Link to this image"></a></p>
-</figcaption>
-</figure>
-<figure class="align-center" id="sport1-data-path">
-<a class="reference internal image-reference" href="../../../_images/audio_sport1_data_path.svg"><img alt="../../../_images/audio_sport1_data_path.svg" height="830" src="../../../_images/audio_sport1_data_path.svg" width="914" /></a>
-<figcaption>
-<p><span class="caption-text">SPORT1 data path</span><a class="headerlink" href="#sport1-data-path" title="Link to this image"></a></p>
-</figcaption>
-</figure>
-<p>As shown above, the default path is red line and the arbitrary path is blue line. For arbitrary path, default order can be changed by the following interfaces:</p>
-<ul class="simple">
-<li><p><em>SD_O</em>: AUDIO_SP_TXCHNSrcSel(u32 index, u32 fifo_num, u32 NewState)</p></li>
-<li><p><em>SD_I</em>: AUDIO_SP_RXFIFOSrcSel(u32 index, u32 fifo_num, u32 NewState)</p></li>
-</ul>
-</section>
-<section id="sport0-rx-with-external-i2s0">
-<h2>SPORT0 Rx with External I2S0<a class="headerlink" href="#sport0-rx-with-external-i2s0" title="Link to this heading"></a></h2>
-<p>SPORT0 is for internal digital microphone interface or EXT. I2S0, but not both.</p>
-<figure class="align-center" id="id13">
-<a class="reference internal image-reference" href="../../../_images/audio_hw_soc_block_diagram.png"><img alt="../../../_images/audio_hw_soc_block_diagram.png" src="../../../_images/audio_hw_soc_block_diagram.png" style="width: 963.0px; height: 638.1px;" /></a>
-<figcaption>
-<p><span class="caption-text">Audio block diagram</span><a class="headerlink" href="#id13" title="Link to this image"></a></p>
-</figcaption>
-</figure>
-<p>When SPORT0 Rx is connected with EXT. I2S0, the internal connection of SPORT Slave and SPORT0 must be disconnected by the interface:</p>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">AUDIO_CODEC_SetI2SSRC</span><span class="p">(</span><span class="n">I2S0</span><span class="p">,</span><span class="w"> </span><span class="n">EXTERNAL_I2S</span><span class="p">)</span>
-</pre></div>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Calling this API can access register of audio codec, so you need to enable the function and clock of audio codec at first:</p>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">RCC_PeriphClockCmd</span><span class="p">(</span><span class="n">APBPeriph_AC</span><span class="p">,</span><span class="w"> </span><span class="n">APBPeriph_AC_CLOCK</span><span class="p">,</span><span class="w"> </span><span class="n">ENABLE</span><span class="p">).</span>
-</pre></div>
-</div>
-</div>
-</section>
-<section id="i2s-layout">
-<h2>I2S layout<a class="headerlink" href="#i2s-layout" title="Link to this heading"></a></h2>
-<p>Reserve 0R resistors on the clk and data paths of I2S. If layout space allows, increase ground isolation for CLK and DATA as much as possible.</p>
-<figure class="align-center" id="id14">
-<a class="reference internal image-reference" href="../../../_images/audio_i2s_layout.svg"><img alt="../../../_images/audio_i2s_layout.svg" height="179" src="../../../_images/audio_i2s_layout.svg" width="417" /></a>
-<figcaption>
-<p><span class="caption-text">I2S layout</span><a class="headerlink" href="#id14" title="Link to this image"></a></p>
-</figcaption>
-</figure>
 </section>
 </section>
 
