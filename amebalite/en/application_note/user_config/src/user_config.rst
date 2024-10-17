@@ -8,12 +8,12 @@ Boot
 --------
 This section introduces the boot-related configurations including SoC clock switch and boot log.
 
-The KM4 in |CHIP_NAME| device boots at 150MHz at the BootROM Stage, and switches to a higher frequency during the Bootloader Stage. There are some limitations when changing the SoC clock.
+The KM4 in |CHIP_NAME| device boots at 150MHz at the BootROM Stage, and switches to a higher frequency during the Bootloader Stage.
+There are some limitations when changing the SoC clock.
 
 .. table::
    :width: 100%
    :widths: auto
-   :name: table_user_config_0
 
    +---------+-------+-----------------+--------------+---------------------------------------------------+
    | Clock   | Cut   | Frequency       | Core voltage | Note                                              |
@@ -35,7 +35,7 @@ The KM4 in |CHIP_NAME| device boots at 150MHz at the BootROM Stage, and switches
    | DSP     |       | ≤500MHz         | 1.0V         | The same as PLLD                                  |
    +---------+-------+-----------------+--------------+---------------------------------------------------+
 
-.. _user_configuration_SoC_Clock_Switch:
+.. _user_configuration_soc_clock_switch:
 
 SoC Clock Switch
 ~~~~~~~~~~~~~~~~~
@@ -49,7 +49,8 @@ Flow
    a. Print the value of :func:`ChipInfo_BDNum()` function, which will get the chip info from OTP.
 
    b. Refer to PSRAM type in *Chip_Info[]* in ``\component\soc\amebalite\lib\ram_common\ameba_chipinfo_lib.c``.
-      For example: If bdnumer is 0x1010, the psram can run under 200MHz.
+      
+      For example, if *bdnumer* is 0x1010, the PSRAM can run under 200MHz.
 
       .. code-block:: c
 
@@ -97,44 +98,43 @@ Flow
       */
       u8 Boot_SocClk_Info_Idx = 0xFF;
 
-   - If *Boot_SocClk_Info_Idx* is not 0xFF, BootLoader will set the SoC clock defined by ``SocClk_Info[Boot_SocClk_Info_Idx]``.
+   - If *Boot_SocClk_Info_Idx* is not 0xFF, the bootloader will set the SoC clock defined by ``SocClk_Info[Boot_SocClk_Info_Idx]``.
 
-   - If *Boot_SocClk_Info_Idx* is 0xFF (defult), BootLoader will set the SoC clock automatically according to the PSRAM type embedded in |CHIP_NAME|.
+   - If *Boot_SocClk_Info_Idx* is 0xFF (defult), the bootloader will set the SoC clock automatically according to the PSRAM type embedded in |CHIP_NAME|.
 
-For example: If bdnumer is 0x1010, the psram can run under 166MHz, and bootloader will use ``SocClk_Info[1]. CLKDIV(3) | ISPLLM`` means the clocks KM4/KR4 equal to PLLM/3.
-
-.. table::
-   :width: 100%
-   :widths: auto
-   :name: table_user_config_2
-
-   +------------+-------------+--------------------+-------------------------------------------------------------------+-----------------+
-   | PSRAM type | PSRAM speed |   SocClk_Info[x]   | Description                                                       | Clock Info      |
-   +============+=============+====================+===================================================================+=================+
-   | No PSRAM   |             | ``SocClk_Info[0]`` | BootLoader will set the Soc clock according to ``SocClk_Info[0]`` | PLLM: 600MHz    |
-   |            |             |                    |                                                                   |                 |
-   |            |             |                    |                                                                   | PLLD: 500MHz    |
-   |            |             |                    |                                                                   |                 |
-   |            |             |                    |                                                                   | KM4/KR4: 200MHz |
-   +------------+-------------+--------------------+-------------------------------------------------------------------+-----------------+
-   | With PSRAM | ≤166MHz     | ``SocClk_Info[1]`` | BootLoader will set the Soc clock according to ``SocClk_Info[1]`` | PLLM: 600MHz    |
-   |            |             |                    |                                                                   |                 |
-   |            |             |                    |                                                                   | PLLD: 500MHz    |
-   |            |             |                    |                                                                   |                 |
-   |            |             |                    |                                                                   | KM4/KR4: 200MHz |
-   +------------+-------------+--------------------+-------------------------------------------------------------------+-----------------+
-   | With PSRAM | ≤200MHz     | ``SocClk_Info[2]`` | BootLoader will set the Soc clock according to ``SocClk_Info[2]`` | PLLM: 400MHz    |
-   |            |             |                    |                                                                   |                 |
-   |            |             |                    |                                                                   | PLLD: 500MHz    |
-   |            |             |                    |                                                                   |                 |
-   |            |             |                    |                                                                   | KM4/KR4: 200MHz |
-   +------------+-------------+--------------------+-------------------------------------------------------------------+-----------------+
-   | With PSRAM | ≤250MHz     | ``SocClk_Info[3]`` | BootLoader will set the Soc clock according to ``SocClk_Info[3]`` | PLLM: 480MHz    |
-   |            |             |                    |                                                                   |                 |
-   |            |             |                    |                                                                   | PLLD: 500MHz    |
-   |            |             |                    |                                                                   |                 |
-   |            |             |                    |                                                                   | KM4/KR4: 240MHz |
-   +------------+-------------+--------------------+-------------------------------------------------------------------+-----------------+
+   For example, if *bdnumer* is 0x1010, the PSRAM can run under 166MHz, and the bootloader will use ``SocClk_Info[1]. CLKDIV(3) | ISPLLM``, means the clocks KM4/KR4 equal to PLLM/3.
+   
+   .. table::
+      :width: 100%
+      :widths: auto
+   
+      +------------+-------------+--------------------+-------------------------------------------------------------------+-------------------+
+      | PSRAM type | PSRAM speed |   SocClk_Info[x]   | Description                                                       | Clock Info        |
+      +============+=============+====================+===================================================================+===================+
+      | No PSRAM   |             | SocClk_Info[0]     | BootLoader will set the Soc clock according to ``SocClk_Info[0]`` | - PLLM: 600MHz    |
+      |            |             |                    |                                                                   |                   |
+      |            |             |                    |                                                                   | - PLLD: 500MHz    |
+      |            |             |                    |                                                                   |                   |
+      |            |             |                    |                                                                   | - KM4/KR4: 200MHz |
+      +------------+-------------+--------------------+-------------------------------------------------------------------+-------------------+
+      | With PSRAM | ≤166MHz     | SocClk_Info[1]     | BootLoader will set the Soc clock according to ``SocClk_Info[1]`` | - PLLM: 600MHz    |
+      |            |             |                    |                                                                   |                   |
+      |            |             |                    |                                                                   | - PLLD: 500MHz    |
+      |            |             |                    |                                                                   |                   |
+      |            |             |                    |                                                                   | - KM4/KR4: 200MHz |
+      +------------+-------------+--------------------+-------------------------------------------------------------------+-------------------+
+      | With PSRAM | ≤200MHz     | SocClk_Info[2]     | BootLoader will set the Soc clock according to ``SocClk_Info[2]`` | - PLLM: 400MHz    |
+      |            |             |                    |                                                                   |                   |
+      |            |             |                    |                                                                   | - PLLD: 500MHz    |
+      |            |             |                    |                                                                   |                   |
+      |            |             |                    |                                                                   | - KM4/KR4: 200MHz |
+      +------------+-------------+--------------------+-------------------------------------------------------------------+-------------------+
+      | With PSRAM | ≤250MHz     | SocClk_Info[3]     | BootLoader will set the Soc clock according to ``SocClk_Info[3]`` | - PLLM: 480MHz    |
+      |            |             |                    |                                                                   |                   |
+      |            |             |                    |                                                                   | - PLLD: 500MHz    |
+      |            |             |                    |                                                                   |                   |
+      |            |             |                    |                                                                   | - KM4/KR4: 240MHz |
+      +------------+-------------+--------------------+-------------------------------------------------------------------+-------------------+
 
 3. Refer to one of the following methods to change the SoC clock if needed.
 
@@ -142,13 +142,13 @@ For example: If bdnumer is 0x1010, the psram can run under 166MHz, and bootloade
 
    - Modify the *Boot_SocClk_Info_Idx* to [0, 3], and then define your own clock info in ``SocClk_Info[Boot_SocClk_Info_Idx]``.
 
-.. note:: Consider the limitations of the hardware and do not set the clock info illogically.
+   .. note:: Consider the limitations of the hardware and do not set the clock info illogically.
 
 4. Re-build the project and download the new image again.
 
 Example
 ^^^^^^^^^^^^^^
-1. Refer to :ref:`Flow Step1<user_configuration_flow_step_1>` to find out the speed limit of PSRAM device if not sure (suppose the maximum speed is 200MHz)
+1. Refer to :ref:`Flow Step 1 <user_configuration_flow_step_1>` to find out the speed limit of PSRAM device if not sure (suppose the maximum speed is 200MHz)
 
 2. Change *CPU_CKD* of ``SocClk_Info[2]`` to *CLKDIV(1)* if CPU is needed to run faster.
 
@@ -171,18 +171,18 @@ Example
       */
       u8 Boot_SocClk_Info_Idx = 0xFF;
 
-3. Re-build and download the new image.
+3. Re-build the project and download the new image.
 
-   Now, the clock of KM4/KR4 is 400MHz, PSRAM controller is 400MHz (twice the PSRAM), and core power is 1.0V. The clocks of left modules in |CHIP_NAME| will be set to a reasonable value by software automatically based on their maximum speeds.
+Now, the clock of KM4/KR4 is 400MHz, PSRAM controller is 400MHz (twice the PSRAM), and core power is 1.0V.
+The clocks of left modules in |CHIP_NAME| will be set to a reasonable value by software automatically based on their maximum speeds.
 
 .. note:: The PLLD can be disabled if you do not need it work.
-
 
 Boot Log
 ~~~~~~~~~~
 Bootloader Log
 ^^^^^^^^^^^^^^^^^
-The bootloader log is enabled by default and can be disabled in \ ``\component\soc\amebalite\usrcfg\ameba_bootcfg.c.``\
+The bootloader log is enabled by default and can be disabled in ``\component\soc\amebalite\usrcfg\ameba_bootcfg.c``.
 
 .. code-block:: c
    
@@ -195,7 +195,7 @@ The bootloader log is enabled by default and can be disabled in \ ``\component\s
 
 Loguart AGG
 ^^^^^^^^^^^^^
-The *Boot_Agg_En* macro is used with Trace Tool to sort out boot logs from different cores. It can be enabled in \ ``\component\soc\amebalite\usrcfg\ameba_bootcfg.c.``\
+The *Boot_Agg_En* macro is used with Trace Tool to sort out boot logs from different cores. It can be enabled in ``\component\soc\amebalite\usrcfg\ameba_bootcfg.c``.
 
 .. code-block:: c
 
@@ -207,20 +207,19 @@ The *Boot_Agg_En* macro is used with Trace Tool to sort out boot logs from diffe
    u8 Boot_Agg_En = FALSE;
 
 .. note::
-   Refer to Chapter :ref:`trace_tool` for more information.
+   Refer to Chapter :ref:`Trace Tool <trace_tool>` for more information.
 
 Flash
 ----------
-This section introduces the Flash-related configurations including speed, read mode, layout and protect mode, which locate at \ ``\component\soc\amebalite\usrcfg\ameba_flashcfg.c``\ .
+This section introduces the Flash-related configurations including speed, read mode, layout and protect mode, which locate at ``\component\soc\amebalite\usrcfg\ameba_flashcfg.c``.
 
 Speed
 ~~~~~~~~~~
-Check the value of Flash_Speed in \ ``\component\soc\amebalite\usrcfg\ameba_flashcfg.c``\ . The parameters and corresponding speeds are listed in :ref:`Flash speed configuration`.
+Check the value of *Flash_Speed* in ``\component\soc\amebalite\usrcfg\ameba_flashcfg.c``. The parameters and corresponding speeds are listed below.
 
 .. table:: Flash speed configuration
    :width: 100%
    :widths: auto
-   :name: Flash speed configuration
 
    +----------------------+----------------------------------------------+----------------+
    | Value of Flash_Speed | Description                                  | Flash baudrate |
@@ -244,10 +243,8 @@ Check the value of Flash_Speed in \ ``\component\soc\amebalite\usrcfg\ameba_flas
    | 0xFF                 | Flash baudrate will be 1/4 of np core clock  | PLLM/4         |
    +----------------------+----------------------------------------------+----------------+
 
-
-
 .. note::
-      - Refer to :ref:`user_configuration_SoC_Clock_Switch` for details about PLLM.
+      - Refer to :ref:`user_configuration_soc_clock_switch` for details about PLLM.
 
       - The maximum clock of Flash is 120MHz. The initial flow will check whether the configured speed is higher than the maximun one or not.
 
@@ -256,12 +253,11 @@ Check the value of Flash_Speed in \ ``\component\soc\amebalite\usrcfg\ameba_flas
 
 Read Mode
 ~~~~~~~~~~~~~~~~~~
-Check the value of Flash_ReadMode in \ ``\component\soc\amebalite\usrcfg\ameba_flashcfg.c``\ . The parameters and corresponding modes are listed in the following table.
+Check the value of *Flash_ReadMode* in ``\component\soc\amebalite\usrcfg\ameba_flashcfg.c``. The parameters and corresponding modes are listed in the following table.
 
 .. table:: Flash read mode configuration
    :width: 100%
    :widths: auto
-   :name: flash_read_mode_configuration
 
    +-------------------------+---------------------------+
    | Value of Flash_ReadMode | Description               |
@@ -281,7 +277,7 @@ Check the value of Flash_ReadMode in \ ``\component\soc\amebalite\usrcfg\ameba_f
 
 Layout
 ~~~~~~~~~~~~
-The default Flash layout of |CHIP_NAME| in the SDK are illustrated in Chapter :ref:`Flash_Layout<flash_layout>`. If you want to modify the Flash Layout, refer to Section :ref:`how_to_modify_flash_layout`.
+The default Flash layout of |CHIP_NAME| in the SDK are illustrated in Chapter :ref:`Flash Layout <flash_layout>`. If you want to modify the Flash layout, refer to Section :ref:`how_to_modify_flash_layout`.
 
 Flash Protect Enable
 ~~~~~~~~~~~~~~~~~~~~~~

@@ -11,7 +11,7 @@ To do GPIO output test, the following steps are mandatory.
       GPIO_InitStruct.GPIO_Pin = GPIO_Pin;
       GPIO_InitStruct.GPIO_Mode = GPIO_Mode_OUT;
 
-2. Initialize hardware using the parameters in step (1).
+2. Initialize hardware using the parameters mentioned above.
 
    .. code-block:: c
 
@@ -34,7 +34,7 @@ To do GPIO input test, the following steps are mandatory.
       GPIO_InitStruct.GPIO_Pin = GPIO_Pin;
       GPIO_InitStruct.GPIO_Mode = GPIO_Mode_IN;
 
-2. Initialize hardware using the parameters in step (1).
+2. Initialize hardware using the parameters mentioned above.
 
    .. code-block:: c
 
