@@ -1,36 +1,38 @@
 .. _memory_layout:
 
+Introduction
+----------------
 This chapter introduces the default memory layout of |CHIP_NAME| and how to modify the memory layout if needed.
    
 RAM Layout
-----------------------------------------------------
-.. only:: RTL8726EA
-   
-   In total, there are 512KB SRAM on chip, and the size of PSRAM can be 0MB/4MB/8MB/16MB…, which is decided by users. The default RAM layout is illustrated below.
-   
-   .. figure:: ../figures/ram_layout_26EA_13EC_10EC.svg
-      :scale: 130%
-      :align: center
-   
-      RAM layout
+----------------
+In total, there are 512KB or 768KB (depending on different series) SRAM on chip, and the size of PSRAM can be 0MB/4MB/8MB/16MB…, which is decided by users. The default RAM layout is illustrated below.
+
+.. figure:: ../figures/ram_layout.svg
+   :scale: 130%
+   :align: center
+
+   RAM layout
+
+.. note:: 
+   Refer to Section :ref:`Series Comparison <ameba_soc_family>` for more information about the SRAM size of different series.
 
 SRAM0 (First 40KB) Layout
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 The first 40KB SRAM0 layout is illustrated in the following figure and table. It is the same for all situations.
 
 .. figure:: ../figures/sram0_layout.svg
-   :scale: 110%
+   :scale: 125%
    :align: center
 
    SRAM0 (first 40KB) layout
-
 
 .. table:: SRAM0 (first 40KB) layout
    :width: 100%
    :widths: auto
 
    +---------------------------+---------------+--------+-----------------------------------------------------+-----------+
-   | Items                     | Start address | Size   | Description                                         | Mandatory |
+   | Item                      | Start address | Size   | Description                                         | Mandatory |
    +===========================+===============+========+=====================================================+===========+
    | KR4_ROM_BSS_RAM           | 0x2000_0000   | 4KB    | KR4 ROM BSS                                         | √         |
    +---------------------------+---------------+--------+-----------------------------------------------------+-----------+
@@ -46,17 +48,17 @@ The first 40KB SRAM0 layout is illustrated in the following figure and table. It
    +---------------------------+---------------+--------+-----------------------------------------------------+-----------+
    | KR4_BOOT_ENTRY_BACKUP     | 0x2000_4C00   | 64B    | Backup KR4 IMG2 entry when SRAM1 is not used by KR4 | √         |
    +---------------------------+---------------+--------+-----------------------------------------------------+-----------+
-   | KM4_ROM_BSS_NS            | 0x2000_5000   | 1.25K  | KM4 ROM non-secure common BSS                       | √         |
+   | KM4_ROM_BSS_NS            | 0x2000_5000   | 1.25KB | KM4 ROM non-secure common BSS                       | √         |
    +---------------------------+---------------+--------+-----------------------------------------------------+-----------+
    | KR4_RAM_ONLY              | 0x2000_4C20   | 1KB    | Used by power save flow when KR4 is NP              | √         |
    +---------------------------+---------------+--------+-----------------------------------------------------+-----------+
    | KM4_RAM_ONLY              | 0x2000_4E00   | 1KB    | Used by power save flow when KM4 is NP              | √         |
    +---------------------------+---------------+--------+-----------------------------------------------------+-----------+
-   | KM4_TIMER_IDLE_TASK_STACK | 0x2000_6000   | 4K     | KM4 TIMER and IDLE task stack                       | √         |
+   | KM4_TIMER_IDLE_TASK_STACK | 0x2000_6000   | 4KB    | KM4 TIMER and IDLE task stack                       | √         |
    +---------------------------+---------------+--------+-----------------------------------------------------+-----------+
-   | KM4_ROM_BSS_S             | 0x3000_7000   | 4K     | KM4 ROM secure-only BSS                             | √         |
+   | KM4_ROM_BSS_S             | 0x3000_7000   | 4KB    | KM4 ROM secure-only BSS                             | √         |
    +---------------------------+---------------+--------+-----------------------------------------------------+-----------+
-   | KM4_MSP_S                 | 0x3000_8000   | 8K     | KM4 secure Main Stack Pointer                       | √         |
+   | KM4_MSP_S                 | 0x3000_8000   | 8KB    | KM4 secure Main Stack Pointer                       | √         |
    +---------------------------+---------------+--------+-----------------------------------------------------+-----------+
       
 RAM & PSRAM Layout
@@ -66,16 +68,12 @@ RAM & PSRAM Layout
 
    The following figure and table illustrate the default RAM layout with PSRAM.
 
-   .. figure:: ../figures/ram&psram_layout_26EA.svg
+   .. figure:: ../figures/ram_psram_layout_26EA.svg
       :scale: 120%
       :align: center
    
       RAM & PSRAM layout
 
-   .. note::
-      If RDP is not enabled, the `KM4_BD_PSRAM_NSC`/ `KM4_BD_PSRAM_ENTRY`/ `KM4_BD_PSRAM_S` are non-secure and would be merged into `KM4_BD_PSRAM`.
-   
-   
    .. table:: RAM & PSRAM layout
       :width: 100%
       :widths: auto
@@ -99,5 +97,4 @@ RAM & PSRAM Layout
       +----------------+---------------+--------+-------------------------------------------------------------------+-----------+
       | KR4 HEAP EXT   | 0x6FFF_FFFF   | 0      | If KR4 Heap is not enough, it can be used to extend the heap size | x         |
       +----------------+---------------+--------+-------------------------------------------------------------------+-----------+
-
 
