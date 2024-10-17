@@ -27,15 +27,15 @@ The data-transmission efficiency of GDMA is affected by clock synchronization, c
    | SPI   | 100M       | (64*8)/(710ns)= 721.13Mbps  | (64*8)/(670ns)= 764.18Mbps  |
    +-------+------------+-----------------------------+-----------------------------+
 
-
 .. note::
    The time of GDMA turn-around is not included.
 
-
 Usage
 ----------
+The block size of DMA is illustrated below.
+
 .. figure:: ../figures/dma_block_size_diagram.svg
-   :scale: 120%
+   :scale: 130%
    :align: center
    :name: dma_block_size_diagram
 
@@ -43,13 +43,14 @@ Usage
 
 
 GDMA Configuration
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~
 Data Size
 ^^^^^^^^^^^^^^^^^^
-:ref:`dma_block_size_diagram` illustrates the setting of GDMA transmission data size. The `block_ts` indicates the amount of data that will be transferred in a single data block. It needs to be set to the total number of data/SRC_TR_WIDTH, and max value is 0xFFFF.
+:ref:`dma_block_size_diagram` illustrates the setting of GDMA transmission data size. The `block_ts` indicates the amount of data that will be transferred in a single data block.
+It needs to be set to the total number of data/SRC_TR_WIDTH, and the maximum value is 0xFFFF.
 
 Transfer Direction and Flow Controller
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. table::
    :width: 100%
    :widths: auto
@@ -74,31 +75,26 @@ Transfer Direction and Flow Controller
    | 111                                              | Peripheral to Peripheral | Destination Peripheral |
    +--------------------------------------------------+--------------------------+------------------------+
 
-
 There are currently four transmission directions and two flow controller settings, with a total of eight available configurations. There are the following differences between a DMAC acting as a flow controller and a peripheral acting as a flow controller:
 
-- When the peripheral acts as a flow controller, , and the DMA transfers data according to the peripheral issues a single/burst request;
+- When the peripheral acts as a flow controller, , and the DMA transfers data according to the peripheral issues a single/burst request.
 
 - When the DMAC acts as a flow controller, all requests from the peripheral will be processed according to the configured requests.
 
-
-
 .. note::
-   The `block_ts` parameters can only be set when the DMAC is used as a flow controller.
-
+   The `block_ts` parameter can only be set when the DMAC is used as a flow controller.
 
 Transfer msize
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 The length of each transaction can be configured.
 
-- msize > 1 : burst transaction.
+- **msize > 1**: burst transaction
 
-- msize = 1 : single transaction.
-
+- **msize = 1**: single transaction
 
 .. table::
    :width: 100%
-   :widths: auto
+   :widths: 70, 30
 
    +-------------------------------------------------------+----------------+
    | SRC_MSIZE[2:0]/DEST_MSIZE[2:0] field of CTLx register | Transfer msize |
@@ -116,12 +112,11 @@ The length of each transaction can be configured.
 
 Transfer Width
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-GDMA supports the following transmission widths.
-
+The GDMA supports the following transmission widths.
 
 .. table::
    :width: 100%
-   :widths: auto
+   :widths: 70, 30
 
    +------------------------------------------------------------+---------------------+
    | SRC_TR_WIDTH[2:0]/DST_TR_WIDTH[2:0] field of CTLx register | Transfer width/byte |
@@ -135,24 +130,21 @@ GDMA supports the following transmission widths.
    | 011 and above                                              | Not support         |
    +------------------------------------------------------------+---------------------+
 
-
-
 .. note::
       - When reading and writing peripherals, the `SRC_TR_WIDTH`/ `DST_TR_WIDTH` is completely determined by the width of the peripherals.
 
       - When reading and writing memory:
 
-         - If cache is disabled, the address does not need to be aligned to any value. It only needs to be `SRC_TR_WIDTH` divisible by the total amount of data so that the `block_ts` is an integer.
+        - If cache is disabled, the address does not need to be aligned to any value. It only needs to be `SRC_TR_WIDTH` divisible by the total amount of data so that the `block_ts` is an integer.
 
-         - If cache is enabled, buffer boundary addresses and cache line alignment are necessary.
+        - If cache is enabled, buffer boundary addresses and cache line alignment are necessary.
 
-      - If Memory is destination (`P2M`, `M2M`), `DST_TR_WIDTH` parameter will be ignored, and writes are always based on the bus width (the bus width is typically 32 bits, 4 bytes).
-
+      - If the memory is destination (`P2M`, `M2M`), `DST_TR_WIDTH` parameter will be ignored, and writes are always based on the bus width (the bus width is typically 32 bits, 4 bytes).
 
 Transfer Types
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^
 Single block
-************************
+****************
 Single-block DMA transfer – Consists of a single block.
 
 Multi-block
@@ -166,7 +158,6 @@ Multi-block DMA transfer – DMA transfer may consist of multiple RTK_DMAC block
 **Auto-reloading mode**
 
 In auto-reloading mode, the source and destination can independently select which method to use.
-
 
 .. table::
    :width: 100%
@@ -187,7 +178,6 @@ In auto-reloading mode, the source and destination can independently select whic
    |                               |                                        |                                                                                                                   |
    |                               | PGDMA_InitTypeDef->GDMA_ReloadDst = 1; | each block, as shown in :ref:`mbd_source_dest_auto`.                                                              |
    +-------------------------------+----------------------------------------+-------------------------------------------------------------------------------------------------------------------+
-
 
 .. figure:: ../figures/mbd_source_auto_dest_cont.png
    :scale: 90%
@@ -239,7 +229,6 @@ In linked list mode, the addresses between data blocks do not have to be consecu
    | Dst: Link list           | PGDMA_InitTypeDef->GDMA_LlpDstEn = 1;   |                                                                                                                                     |
    +--------------------------+-----------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------+
 
-
 If both the destination and the source are continue data blocks, multi-block transmission should not be used, and single-block transmission is more appropriate.
 
 .. figure:: ../figures/mbd_source_auto_link_dest.png
@@ -264,35 +253,33 @@ If both the destination and the source are continue data blocks, multi-block tra
    Multi-block with linked address for source and destination
 
 Address Increment Type
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^
 Source Address Increment
-************************************************
+*************************
 There are two modes:
 
-   - **Increment**: Indicates whether to increment the source address on every source transfer. Incrementing is done for alignment to the next CTLx.SRC_TR_WIDTH boundary.
+- **Increment**: Indicates whether to increment the source address on every source transfer. Incrementing is done for alignment to the next CTLx.SRC_TR_WIDTH boundary.
 
-   - **No change**: If the device is fetching data from a source peripheral FIFO with a fixed address, then set this field to “No change”.
+- **No change**: If the device is fetching data from a source peripheral FIFO with a fixed address, then set this field to “No change”.
 
 Destination Address Increment
-**********************************************************
+*****************************
 There are two modes:
 
-   - **Increment**: indicates whether to increment destination address on every destination transfer. Incrementing is done for alignment to the next *CTLx.DST_TR_WIDTH* boundary.
+- **Increment**: indicates whether to increment destination address on every destination transfer. Incrementing is done for alignment to the next *CTLx.DST_TR_WIDTH* boundary.
 
-   - **No change** : If the device is writing data to a destination peripheral FIFO with a fixed address, then set this field to “No change".
+- **No change** : If the device is writing data to a destination peripheral FIFO with a fixed address, then set this field to “No change".
 
 Real-time Status Acquisition
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-GDMA supports real-time acquisition of the current transmission source address, destination address and the data size that has been transmitted. Call the corresponding APIs to read.
+The GDMA supports real-time acquisition of the current transmission source address, destination address and the data size that has been transmitted. Call the corresponding APIs to read.
 
 .. note::
    To get the amount of data that has been transferred, the `block_ts` must be greater than 768 at least, and cannot be read in an interrupt function, otherwise the value obtained is always 0.
 
-
 Interrupt Type
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 There are several supported interrupt type, these interrupts can be used independently or in combination.
-
 
 .. table:: 
    :width: 100%
@@ -308,7 +295,6 @@ There are several supported interrupt type, these interrupts can be used indepen
    | error interrupt    | There was a transfer error                           |
    +--------------------+------------------------------------------------------+
 
-
 In particular, the transfer-completed condition of the linked list mode is that the pointer of the last data block pointing to the next data block is null.
 
 .. note::
@@ -316,39 +302,35 @@ In particular, the transfer-completed condition of the linked list mode is that 
 
       - In linked-list mode, when the block interruption comes, the data will still continue to be transmitted.
 
-
 Suspend and Abort
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-GDMA supports channel suspend resume and termination.
+The GDMA supports channel suspend resume and termination.
 
-- To suspend a channel, just configure `CFGx.CH_SUSP`, but there is no guarantee that the current data transaction is completed. Combined with `CFGx.INACTIVE`, the channel can be safely paused without losing data.
+- To suspend a channel, just configure *CFGx.CH_SUSP*, but there is no guarantee that the current data transaction is completed. Combined with *CFGx.INACTIVE*, the channel can be safely paused without losing data.
 
-- To resume data transmission after suspension, clear `CFGx.CH_SUSP`.
+- To resume data transmission after suspension, clear *CFGx.CH_SUSP*.
 
-- To terminate data transfer, `CFGx.INACTIVE` must be continuously polled until this bit is set to 1, then data transfer can be aborted.
-
-
-
+- To terminate data transfer, *CFGx.INACTIVE* must be continuously polled until this bit is set to 1, then data transfer can be aborted.
 
 .. note::
    The following is situation that channels is inactive:
 
-      - ``CFGx.INACTIVE`` can only be activated after Memory has been written, and then canceled.
+   - *CFGx.INACTIVE* can only be activated after Memory has been written, and then canceled.
 
-      - The data of peripheral is 4bytes, but the FIFO of DMAC is only 2 bytes. There is no writing at this time and ``CFGx.INACTIVE`` is activated directly.
-
+   - The data of peripheral is 4bytes, but the FIFO of DMAC is only 2 bytes. There is no writing at this time and *CFGx.INACTIVE* is activated directly.
 
 Priority
 ^^^^^^^^^^^^^^^^
-GDMA supports two kinds of channel priority:
+The GDMA supports two kinds of channel priority:
 
-- Software: the priority of each channel can be configured in the ``CFGx.CH_PRIOR``. The valid value is 0 ~ (``DMAC_NUM_CHANNELS``-1), where 0 is the highest priority value and (``DMAC_NUM_CHANNELS``-1) is the lowest priority value.
+- Software: the priority of each channel can be configured in *CFGx.CH_PRIOR*. The valid value is 0 ~ (*DMAC_NUM_CHANNELS* - 1), where 0 is the highest priority value and (*DMAC_NUM_CHANNELS* - 1) is the lowest priority value.
 
 - Hardware: if two channel requests have the same software priority level, or if no software priority is configured, the channel with the lower number takes priority over the channel with the higher number. For example, channel 2 takes priority over channel 4.
 
 Secure
 ^^^^^^^^^^^^
-To start secure transfer, users need to configure the security channel control bit in the register. Access for master interface and slave interface are secure when the secure bit is set. Secure channel can only be configured in secure world. Secure channel can access secure memory and non-secure memory. Non-secure channel can only access non-secure memory.
+To start secure transfer, users need to configure the security channel control bit in the register. Access for master interface and slave interface are secure when the secure bit is set. Secure channel can only be configured in secure world.
+Secure channel can access secure memory and non-secure memory. Non-secure channel can only access non-secure memory.
 
 .. code-block:: c
 
@@ -356,8 +338,7 @@ To start secure transfer, users need to configure the security channel control b
 
 Cache
 ^^^^^^^^^^
-When DMA slave type is memory, you need to pay attention to cache operation. ``DCache_CleanInvalidate()`` should be called every time before DMA transmission starts.
-
+When DMA slave type is memory, you need to pay attention to cache operation. :func:`DCache_CleanInvalidate()` should be called every time before DMA transmission starts.
 
 The following steps should be added when executing DMA Rx/Tx.
 
@@ -382,23 +363,23 @@ The following steps should be added when executing DMA Rx/Tx.
    |           |                                                                                                       |
    |           |    read or write allocate the DST buffer during GDMA transmission.                                    |
    |           |                                                                                                       |
-   |           | .. note::                                                                                             |
+   |           |    .. note::                                                                                          |
    |           |                                                                                                       |
-   |           |    During GDMA transmission, it is forbidden to write or cache flush DST buffer. (Taking              |
-   |           |    ``{SDK}\component\ example\peripheral\raw\uart\uart_dma_stream\src\main.c`` for example,           |
-   |           |    ``uart_recv_string_done`` is DMA Rx Done Interrupt Handler)                                        |
+   |           |       During GDMA transmission, it is forbidden to write or cache flush DST buffer. (Taking           |
+   |           |       ``{SDK}\component\ example\peripheral\raw\uart\uart_dma_stream\src\main.c`` for example,        |
+   |           |       ``uart_recv_string_done`` is DMA Rx Done Interrupt Handler)                                     |
    |           |                                                                                                       |
-   |           | .. code-block:: c                                                                                     |
+   |           |    .. code-block:: c                                                                                  |
    |           |                                                                                                       |
-   |           |    u32 uart_recv_string_done(void * data)                                                             |
-   |           |    {                                                                                                  |
-   |           |       UNUSED(data);                                                                                   |
-   |           |       /* To solve the cache consistency problem, DMA mode needs it*/                                  |
-   |           |       DCache_Invalidate((u32)rx_buf, SRX_BUF_SZ);                                                     |
-   |           |       dma_free();                                                                                     |
-   |           |       rx_done = 1;                                                                                    |
-   |           |       return 0;                                                                                       |
-   |           |    }                                                                                                  |
+   |           |       u32 uart_recv_string_done(void * data)                                                          |
+   |           |       {                                                                                               |
+   |           |          UNUSED(data);                                                                                |
+   |           |          /* To solve the cache consistency problem, DMA mode needs it*/                               |
+   |           |          DCache_Invalidate((u32)rx_buf, SRX_BUF_SZ);                                                  |
+   |           |          dma_free();                                                                                  |
+   |           |          rx_done = 1;                                                                                 |
+   |           |          return 0;                                                                                    |
+   |           |       }                                                                                               |
    |           |                                                                                                       |
    |           | 6. CPU reads DST buffer                                                                               |
    +-----------+-------------------------------------------------------------------------------------------------------+
@@ -412,11 +393,10 @@ The following steps should be added when executing DMA Rx/Tx.
    +-----------+-------------------------------------------------------------------------------------------------------+
 
 
-Aligning the buffer address with the cache line will reduce the problem of inconsistent cache and memory data, 
-and details for referring to Section :ref:`cache_consistency_using_dma` .
+Aligning the buffer address with the cache line will reduce the problem of inconsistent cache and memory data, and details for referring to Section :ref:`cache_consistency_using_dma` .
 
 Demo for Single Block
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
 1. Allocate a free channel
 
    .. code-block:: c
@@ -425,11 +405,11 @@ Demo for Single Block
 
    This function also includes the following operation:
 
-      - Register IRQ handler if use interrupt mode
-
-      - Enable NVIC interrupt
-
-      - Register the GDMA channel to use
+   a. Register IRQ handler if use interrupt mode
+   
+   b. Enable NVIC interrupt
+   
+   c. Register the GDMA channel to use
 
 2. Configure interrupt type
 
@@ -463,7 +443,7 @@ Demo for Single Block
 
       GDMA_InitStruct->GDMA_SrcHandshakeInterface= GDMA_HANDSHAKE_INTERFACE_AUDIO_RX;
 
-   or
+   Or
 
    .. code-block:: c
 
@@ -495,7 +475,7 @@ Demo for Single Block
       GDMA_Cmd(gdma.index, gdma.ch_num, ENABLE);
 
 Demo for Multi-block
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
 This example is SRC auto reload, compared with single block, multi-block is different in :ref:`Step 2 <multi_block_demo_step_2>` to :ref:`Step 4 <multi_block_demo_step_4>`.
 
 1. Allocate a free channel
@@ -506,11 +486,11 @@ This example is SRC auto reload, compared with single block, multi-block is diff
 
    This function also includes the following operation:
 
-      - Register IRQ handler if use interrupt mode
+   a. Register IRQ handler if use interrupt mode
 
-      - Enable NVIC interrupt
+   b. Enable NVIC interrupt
 
-      - Register the GDMA channel to use
+   c. Register the GDMA channel to use
 
 .. _multi_block_demo_step_2:
 
@@ -556,7 +536,7 @@ This example is SRC auto reload, compared with single block, multi-block is diff
 
       GDMA_InitStruct->GDMA_SrcHandshakeInterface= GDMA_HANDSHAKE_INTERFACE_AUDIO_RX;
 
-   or
+   Or
 
    .. code-block:: c
 
@@ -569,7 +549,7 @@ This example is SRC auto reload, compared with single block, multi-block is diff
       PGDMA_InitTypeDef->GDMA_SrcAddr = (u32)BDSrcTest;
       PGDMA_InitTypeDef->GDMA_DstAddr = (u32)BDDstTest;
 
-7. Program GDMA index, GDMA channel, data width, Msize, transfer direction, address increment mode, hardware handshake interface, reload control, interrupt type, block size, multi-block configuration and the source and destination address using the :func:`GDMA_Init()` function.
+7. Program GDMA index, GDMA channel, data width, msize, transfer direction, address increment mode, hardware handshake interface, reload control, interrupt type, block size, multi-block configuration and the source and destination address using the :func:`GDMA_Init()` function.
 
    .. code-block:: c
 
