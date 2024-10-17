@@ -186,8 +186,9 @@
 </section>
 <section id="usage">
 <h1>Usage<a class="headerlink" href="#usage" title="Link to this heading"></a></h1>
+<p>The block size of DMA is illustrated below.</p>
 <figure class="align-center" id="dma-block-size-diagram">
-<a class="reference internal image-reference" href="../../../_images/dma_block_size_diagram.svg"><img alt="../../../_images/dma_block_size_diagram.svg" height="476" src="../../../_images/dma_block_size_diagram.svg" width="580" /></a>
+<a class="reference internal image-reference" href="../../../_images/dma_block_size_diagram.svg"><img alt="../../../_images/dma_block_size_diagram.svg" height="516" src="../../../_images/dma_block_size_diagram.svg" width="629" /></a>
 <figcaption>
 <p><span class="caption-text">DMA block size diagram</span><a class="headerlink" href="#dma-block-size-diagram" title="Link to this image"></a></p>
 </figcaption>
@@ -196,7 +197,8 @@
 <h2>GDMA Configuration<a class="headerlink" href="#gdma-configuration" title="Link to this heading"></a></h2>
 <section id="data-size">
 <h3>Data Size<a class="headerlink" href="#data-size" title="Link to this heading"></a></h3>
-<p><a class="reference internal" href="#dma-block-size-diagram"><span class="std std-ref">DMA block size diagram</span></a> illustrates the setting of GDMA transmission data size. The <cite>block_ts</cite> indicates the amount of data that will be transferred in a single data block. It needs to be set to the total number of data/SRC_TR_WIDTH, and max value is 0xFFFF.</p>
+<p><a class="reference internal" href="#dma-block-size-diagram"><span class="std std-ref">DMA block size diagram</span></a> illustrates the setting of GDMA transmission data size. The <cite>block_ts</cite> indicates the amount of data that will be transferred in a single data block.
+It needs to be set to the total number of data/SRC_TR_WIDTH, and the maximum value is 0xFFFF.</p>
 </section>
 <section id="transfer-direction-and-flow-controller">
 <h3>Transfer Direction and Flow Controller<a class="headerlink" href="#transfer-direction-and-flow-controller" title="Link to this heading"></a></h3>
@@ -244,22 +246,26 @@
 </table>
 <p>There are currently four transmission directions and two flow controller settings, with a total of eight available configurations. There are the following differences between a DMAC acting as a flow controller and a peripheral acting as a flow controller:</p>
 <ul class="simple">
-<li><p>When the peripheral acts as a flow controller, , and the DMA transfers data according to the peripheral issues a single/burst request;</p></li>
+<li><p>When the peripheral acts as a flow controller, , and the DMA transfers data according to the peripheral issues a single/burst request.</p></li>
 <li><p>When the DMAC acts as a flow controller, all requests from the peripheral will be processed according to the configured requests.</p></li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The <cite>block_ts</cite> parameters can only be set when the DMAC is used as a flow controller.</p>
+<p>The <cite>block_ts</cite> parameter can only be set when the DMAC is used as a flow controller.</p>
 </div>
 </section>
 <section id="transfer-msize">
 <h3>Transfer msize<a class="headerlink" href="#transfer-msize" title="Link to this heading"></a></h3>
 <p>The length of each transaction can be configured.</p>
 <ul class="simple">
-<li><p>msize &gt; 1 : burst transaction.</p></li>
-<li><p>msize = 1 : single transaction.</p></li>
+<li><p><strong>msize &gt; 1</strong>: burst transaction</p></li>
+<li><p><strong>msize = 1</strong>: single transaction</p></li>
 </ul>
 <table class="docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 70.0%" />
+<col style="width: 30.0%" />
+</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>SRC_MSIZE[2:0]/DEST_MSIZE[2:0] field of CTLx register</p></th>
 <th class="head"><p>Transfer msize</p></th>
@@ -286,8 +292,12 @@
 </section>
 <section id="transfer-width">
 <h3>Transfer Width<a class="headerlink" href="#transfer-width" title="Link to this heading"></a></h3>
-<p>GDMA supports the following transmission widths.</p>
+<p>The GDMA supports the following transmission widths.</p>
 <table class="docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 70.0%" />
+<col style="width: 30.0%" />
+</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>SRC_TR_WIDTH[2:0]/DST_TR_WIDTH[2:0] field of CTLx register</p></th>
 <th class="head"><p>Transfer width/byte</p></th>
@@ -310,17 +320,15 @@
 </table>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<ul>
+<ul class="simple">
 <li><p>When reading and writing peripherals, the <cite>SRC_TR_WIDTH</cite>/ <cite>DST_TR_WIDTH</cite> is completely determined by the width of the peripherals.</p></li>
 <li><p>When reading and writing memory:</p>
-<blockquote>
-<div><ul class="simple">
+<ul>
 <li><p>If cache is disabled, the address does not need to be aligned to any value. It only needs to be <cite>SRC_TR_WIDTH</cite> divisible by the total amount of data so that the <cite>block_ts</cite> is an integer.</p></li>
 <li><p>If cache is enabled, buffer boundary addresses and cache line alignment are necessary.</p></li>
 </ul>
-</div></blockquote>
 </li>
-<li><p>If Memory is destination (<cite>P2M</cite>, <cite>M2M</cite>), <cite>DST_TR_WIDTH</cite> parameter will be ignored, and writes are always based on the bus width (the bus width is typically 32 bits, 4 bytes).</p></li>
+<li><p>If the memory is destination (<cite>P2M</cite>, <cite>M2M</cite>), <cite>DST_TR_WIDTH</cite> parameter will be ignored, and writes are always based on the bus width (the bus width is typically 32 bits, 4 bytes).</p></li>
 </ul>
 </div>
 </section>
@@ -469,27 +477,23 @@
 <section id="source-address-increment">
 <h4>Source Address Increment<a class="headerlink" href="#source-address-increment" title="Link to this heading"></a></h4>
 <p>There are two modes:</p>
-<blockquote>
-<div><ul class="simple">
+<ul class="simple">
 <li><p><strong>Increment</strong>: Indicates whether to increment the source address on every source transfer. Incrementing is done for alignment to the next CTLx.SRC_TR_WIDTH boundary.</p></li>
 <li><p><strong>No change</strong>: If the device is fetching data from a source peripheral FIFO with a fixed address, then set this field to “No change”.</p></li>
 </ul>
-</div></blockquote>
 </section>
 <section id="destination-address-increment">
 <h4>Destination Address Increment<a class="headerlink" href="#destination-address-increment" title="Link to this heading"></a></h4>
 <p>There are two modes:</p>
-<blockquote>
-<div><ul class="simple">
+<ul class="simple">
 <li><p><strong>Increment</strong>: indicates whether to increment destination address on every destination transfer. Incrementing is done for alignment to the next <em>CTLx.DST_TR_WIDTH</em> boundary.</p></li>
 <li><p><strong>No change</strong> : If the device is writing data to a destination peripheral FIFO with a fixed address, then set this field to “No change”.</p></li>
 </ul>
-</div></blockquote>
 </section>
 </section>
 <section id="real-time-status-acquisition">
 <h3>Real-time Status Acquisition<a class="headerlink" href="#real-time-status-acquisition" title="Link to this heading"></a></h3>
-<p>GDMA supports real-time acquisition of the current transmission source address, destination address and the data size that has been transmitted. Call the corresponding APIs to read.</p>
+<p>The GDMA supports real-time acquisition of the current transmission source address, destination address and the data size that has been transmitted. Call the corresponding APIs to read.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>To get the amount of data that has been transferred, the <cite>block_ts</cite> must be greater than 768 at least, and cannot be read in an interrupt function, otherwise the value obtained is always 0.</p>
@@ -527,41 +531,40 @@
 </section>
 <section id="suspend-and-abort">
 <h3>Suspend and Abort<a class="headerlink" href="#suspend-and-abort" title="Link to this heading"></a></h3>
-<p>GDMA supports channel suspend resume and termination.</p>
+<p>The GDMA supports channel suspend resume and termination.</p>
 <ul class="simple">
-<li><p>To suspend a channel, just configure <cite>CFGx.CH_SUSP</cite>, but there is no guarantee that the current data transaction is completed. Combined with <cite>CFGx.INACTIVE</cite>, the channel can be safely paused without losing data.</p></li>
-<li><p>To resume data transmission after suspension, clear <cite>CFGx.CH_SUSP</cite>.</p></li>
-<li><p>To terminate data transfer, <cite>CFGx.INACTIVE</cite> must be continuously polled until this bit is set to 1, then data transfer can be aborted.</p></li>
+<li><p>To suspend a channel, just configure <em>CFGx.CH_SUSP</em>, but there is no guarantee that the current data transaction is completed. Combined with <em>CFGx.INACTIVE</em>, the channel can be safely paused without losing data.</p></li>
+<li><p>To resume data transmission after suspension, clear <em>CFGx.CH_SUSP</em>.</p></li>
+<li><p>To terminate data transfer, <em>CFGx.INACTIVE</em> must be continuously polled until this bit is set to 1, then data transfer can be aborted.</p></li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The following is situation that channels is inactive:</p>
-<blockquote>
-<div><ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">CFGx.INACTIVE</span></code> can only be activated after Memory has been written, and then canceled.</p></li>
-<li><p>The data of peripheral is 4bytes, but the FIFO of DMAC is only 2 bytes. There is no writing at this time and <code class="docutils literal notranslate"><span class="pre">CFGx.INACTIVE</span></code> is activated directly.</p></li>
+<ul class="simple">
+<li><p><em>CFGx.INACTIVE</em> can only be activated after Memory has been written, and then canceled.</p></li>
+<li><p>The data of peripheral is 4bytes, but the FIFO of DMAC is only 2 bytes. There is no writing at this time and <em>CFGx.INACTIVE</em> is activated directly.</p></li>
 </ul>
-</div></blockquote>
 </div>
 </section>
 <section id="priority">
 <h3>Priority<a class="headerlink" href="#priority" title="Link to this heading"></a></h3>
-<p>GDMA supports two kinds of channel priority:</p>
+<p>The GDMA supports two kinds of channel priority:</p>
 <ul class="simple">
-<li><p>Software: the priority of each channel can be configured in the <code class="docutils literal notranslate"><span class="pre">CFGx.CH_PRIOR</span></code>. The valid value is 0 ~ (<code class="docutils literal notranslate"><span class="pre">DMAC_NUM_CHANNELS</span></code>-1), where 0 is the highest priority value and (<code class="docutils literal notranslate"><span class="pre">DMAC_NUM_CHANNELS</span></code>-1) is the lowest priority value.</p></li>
+<li><p>Software: the priority of each channel can be configured in <em>CFGx.CH_PRIOR</em>. The valid value is 0 ~ (<em>DMAC_NUM_CHANNELS</em> - 1), where 0 is the highest priority value and (<em>DMAC_NUM_CHANNELS</em> - 1) is the lowest priority value.</p></li>
 <li><p>Hardware: if two channel requests have the same software priority level, or if no software priority is configured, the channel with the lower number takes priority over the channel with the higher number. For example, channel 2 takes priority over channel 4.</p></li>
 </ul>
 </section>
 <section id="secure">
 <h3>Secure<a class="headerlink" href="#secure" title="Link to this heading"></a></h3>
-<p>To start secure transfer, users need to configure the security channel control bit in the register. Access for master interface and slave interface are secure when the secure bit is set. Secure channel can only be configured in secure world. Secure channel can access secure memory and non-secure memory. Non-secure channel can only access non-secure memory.</p>
+<p>To start secure transfer, users need to configure the security channel control bit in the register. Access for master interface and slave interface are secure when the secure bit is set. Secure channel can only be configured in secure world.
+Secure channel can access secure memory and non-secure memory. Non-secure channel can only access non-secure memory.</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">PGDMA_InitTypeDef</span><span class="o">-&gt;</span><span class="n">SecureTransfer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
 </pre></div>
 </div>
 </section>
 <section id="cache">
 <h3>Cache<a class="headerlink" href="#cache" title="Link to this heading"></a></h3>
-<p>When DMA slave type is memory, you need to pay attention to cache operation. <code class="docutils literal notranslate"><span class="pre">DCache_CleanInvalidate()</span></code> should be called every time before DMA transmission starts.</p>
+<p>When DMA slave type is memory, you need to pay attention to cache operation. <code class="xref py py-func docutils literal notranslate"><span class="pre">DCache_CleanInvalidate()</span></code> should be called every time before DMA transmission starts.</p>
 <p>The following steps should be added when executing DMA Rx/Tx.</p>
 <table class="docutils align-default" style="width: 100%">
 <thead>
@@ -579,8 +582,6 @@
 <li><p>Do <code class="xref py py-func docutils literal notranslate"><span class="pre">DCache_Invalidate()</span></code> in Rx Done Handler to clean the old data, to avoid the problem</p>
 <p>that the data in the cache is inconsistent with the data in the memory after Rx done if the CPU</p>
 <p>read or write allocate the DST buffer during GDMA transmission.</p>
-</li>
-</ol>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>During GDMA transmission, it is forbidden to write or cache flush DST buffer. (Taking
@@ -598,7 +599,7 @@
 <span class="p">}</span>
 </pre></div>
 </div>
-<ol class="arabic simple" start="6">
+</li>
 <li><p>CPU reads DST buffer</p></li>
 </ol>
 </td>
@@ -614,8 +615,7 @@
 </tr>
 </tbody>
 </table>
-<p>Aligning the buffer address with the cache line will reduce the problem of inconsistent cache and memory data,
-and details for referring to Section <a class="reference internal" href="../../mpu_cache/src/mpu_cache.html#cache-consistency-using-dma"><span class="std std-ref">Cache Consistency When Using DMA</span></a> .</p>
+<p>Aligning the buffer address with the cache line will reduce the problem of inconsistent cache and memory data, and details for referring to Section <a class="reference internal" href="../../mpu_cache/src/mpu_cache.html#cache-consistency-using-dma"><span class="std std-ref">Cache Consistency When Using DMA</span></a> .</p>
 </section>
 </section>
 <section id="demo-for-single-block">
@@ -626,13 +626,11 @@ and details for referring to Section <a class="reference internal" href="../../m
 </pre></div>
 </div>
 <p>This function also includes the following operation:</p>
-<blockquote>
-<div><ul class="simple">
+<ol class="loweralpha simple">
 <li><p>Register IRQ handler if use interrupt mode</p></li>
 <li><p>Enable NVIC interrupt</p></li>
 <li><p>Register the GDMA channel to use</p></li>
-</ul>
-</div></blockquote>
+</ol>
 </li>
 <li><p>Configure interrupt type</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">PGDMA_InitTypeDef</span><span class="o">-&gt;</span><span class="n">GDMA_IsrType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">TransferType</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">ErrType</span><span class="p">);</span>
@@ -660,7 +658,7 @@ and details for referring to Section <a class="reference internal" href="../../m
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">GDMA_InitStruct</span><span class="o">-&gt;</span><span class="n">GDMA_SrcHandshakeInterface</span><span class="o">=</span><span class="w"> </span><span class="n">GDMA_HANDSHAKE_INTERFACE_AUDIO_RX</span><span class="p">;</span>
 </pre></div>
 </div>
-<p>or</p>
+<p>Or</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">GDMA_InitStruct</span><span class="o">-&gt;</span><span class="n">GDMA_DstHandshakeInterface</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GDMA_HANDSHAKE_INTERFACE_AUDIO_TX</span><span class="p">;</span>
 </pre></div>
 </div>
@@ -697,13 +695,11 @@ and details for referring to Section <a class="reference internal" href="../../m
 </pre></div>
 </div>
 <p>This function also includes the following operation:</p>
-<blockquote>
-<div><ul class="simple">
+<ol class="loweralpha simple">
 <li><p>Register IRQ handler if use interrupt mode</p></li>
 <li><p>Enable NVIC interrupt</p></li>
 <li><p>Register the GDMA channel to use</p></li>
-</ul>
-</div></blockquote>
+</ol>
 </li>
 </ol>
 <ol class="arabic" id="multi-block-demo-step-2" start="2">
@@ -745,7 +741,7 @@ and details for referring to Section <a class="reference internal" href="../../m
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">GDMA_InitStruct</span><span class="o">-&gt;</span><span class="n">GDMA_SrcHandshakeInterface</span><span class="o">=</span><span class="w"> </span><span class="n">GDMA_HANDSHAKE_INTERFACE_AUDIO_RX</span><span class="p">;</span>
 </pre></div>
 </div>
-<p>or</p>
+<p>Or</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">GDMA_InitStruct</span><span class="o">-&gt;</span><span class="n">GDMA_DstHandshakeInterface</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GDMA_HANDSHAKE_INTERFACE_AUDIO_TX</span><span class="p">;</span>
 </pre></div>
 </div>
@@ -756,7 +752,7 @@ and details for referring to Section <a class="reference internal" href="../../m
 </pre></div>
 </div>
 </li>
-<li><p>Program GDMA index, GDMA channel, data width, Msize, transfer direction, address increment mode, hardware handshake interface, reload control, interrupt type, block size, multi-block configuration and the source and destination address using the <code class="xref py py-func docutils literal notranslate"><span class="pre">GDMA_Init()</span></code> function.</p>
+<li><p>Program GDMA index, GDMA channel, data width, msize, transfer direction, address increment mode, hardware handshake interface, reload control, interrupt type, block size, multi-block configuration and the source and destination address using the <code class="xref py py-func docutils literal notranslate"><span class="pre">GDMA_Init()</span></code> function.</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">GDMA_Init</span><span class="p">(</span><span class="n">gdma</span><span class="p">.</span><span class="n">index</span><span class="p">,</span><span class="w"> </span><span class="n">gdma</span><span class="p">.</span><span class="n">ch_num</span><span class="p">,</span><span class="w"> </span><span class="n">PGDMA_InitTypeDef</span><span class="p">);</span>
 </pre></div>
 </div>
