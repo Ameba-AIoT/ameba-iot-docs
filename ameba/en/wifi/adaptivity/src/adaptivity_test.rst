@@ -4,7 +4,7 @@ Introduction
 ------------------------
 Adaptivity is an automatic channel access mechanism by which a device avoids transmission in a channel in the presence of transmission in that channel. Any equipment with maximum declared RF output power level greater than 10dBm e.i.r.p. should apply Adaptivity mechanism.
 
-ETSI has mandated Adaptivity certification since December 31, 2017. The related specs are EN300 328 V2.1.1 ??F0E0?? V2.2.2(for 2G) and EN301 893 V2.0.7 ??F0E0?? V2.1.1(for 5G). Steps of Adaptivity test are defined by ETSI as follows:
+ETSI has mandated Adaptivity certification since December 31, 2017. The related specs are *EN300 328 V2.1.1 -> V2.2.2 (for 2G)* and *EN301 893 V2.0.7 -> V2.1.1 (for 5G)*. Steps of Adaptivity test are defined by ETSI as follows:
 
 1. The test object and the companion object are connected and the traffic is transmitted;
 
@@ -12,7 +12,7 @@ ETSI has mandated Adaptivity certification since December 31, 2017. The related 
 
 3. The test object to stops TX;
 
-4. Only short control signaling transmission (e.g. ack) is allowed for the companion object. For 2G pass criteria, the TX duty cycle cannot exceed 10% within 50ms. For 5G Pass criteria, the TX duty cycle within 50ms cannot exceed 5%.
+4. Only short control signaling transmission (e.g. ACK) is allowed for the companion object. For 2G pass criteria, the TX duty cycle cannot exceed 10% within 50ms. For 5G Pass criteria, the TX duty cycle within 50ms cannot exceed 5%.
 
 5. Repeat the above steps for different channels and bandwidth and modes.
 
@@ -24,19 +24,18 @@ For interference signal power, the energy formula to be detected by ETSI is as f
    Note: Pout is the maximum TX power of test object.
    5G: TL = -75dBm/MHz
 
-Ameba is tested with the worst case in LAB. Table 1-1 is the interference power with different frequency and bandwidth.
+Ameba is tested with the worst case in LAB.
 
 .. code-block:: c
 
    2G: TL = -70dBm/MHz
    5G: TL = -75dBm/MHz
 
-Table 1-1 interference power with different frequency and bandwidth
+below table is the interference power with different frequency and bandwidth.
 
-.. table:: Table_Ameba_Adaptivity_Test_0
+.. table:: Interference power with different frequency and bandwidth
    :width: 100%
    :widths: auto
-   :name: table_ameba_adaptivity_test_0
 
    +--------------------+----------+----------+----------+----------+----------+-----------+
    |                    | 2G/20MHZ | 2G/40MHZ | 5G/20MHZ | 5G/40MHZ | 5G/80MHZ | 5G/160MHZ |
@@ -46,31 +45,34 @@ Table 1-1 interference power with different frequency and bandwidth
    | (DBM)              |          |          |          |          |          |           |
    +--------------------+----------+----------+----------+----------+----------+-----------+
 
-Ameba can set EDCCA mode as RTW_EDCCA_ADAPT and adjust EDCCA threshold to pass Adaptivity test. When the interference power is greater than threshold, the MAC is told to stop TX. Next is the software configuration, it is only supported for AmebaSmart, AmebaLite and AmebaDplus.
+Ameba can set EDCCA mode as *RTW_EDCCA_ADAPT* and adjust EDCCA threshold to pass Adaptivity test. When the interference power is greater than threshold, the MAC is told to stop TX. Next is the software configuration, it is only supported for AmebaSmart, AmebaLite and AmebaDplus.
 
 Software Configuration
 --------------------------------------------
 FreeRTOS
 ~~~~~~~~~~~~~~~~
+
+.. _edcca_mode_in_freertos:
+
 EDCCA Mode
 ^^^^^^^^^^^^^^^^^^^^
-You can set EDCCA mode type as RTW_EDCCA_ADAPT to pass Adaptivity test. Ameba supports four EDCCA mode types.
+You can set EDCCA mode type as *RTW_EDCCA_ADAPT* to pass Adaptivity test. Ameba supports four EDCCA mode types.
 
-1. RTW_EDCCA_NORM: Set EDCCA threshold dynamically with reference to current RSSI, default value;
+1. **RTW_EDCCA_NORM**: Set EDCCA threshold dynamically with reference to current RSSI, default value;
 
-2. RTW_EDCCA_ADAPT: Adaptivity certification for ETSI, fixed threshold, threshold can be modified by commands;
+2. **RTW_EDCCA_ADAPT**: Adaptivity certification for ETSI, fixed threshold, threshold can be modified by commands;
 
-3. RTW_EDCCA_CS: Carrier Sense, Japan's interference avoidance laws;
+3. **RTW_EDCCA_CS**: *Carrier Sense*, Japan's interference avoidance laws;
 
-4. RTW_EDCCA_DISABLE: MAC TX without checking EDCCA signal.
+4. **RTW_EDCCA_DISABLE**: MAC TX without checking EDCCA signal.
 
-For Adaptivity test (mode 1) and Carrier Sense(mode 2), there are two major differences:
+For Adaptivity test (mode 1) and *Carrier Sense* (mode 2), there are two major differences:
 
    a. The types of test interference required by ETSI regulations are AWGN White noise, remove preamble's OFDM packet and LTE interference. Carrier Sense is single tone.
 
    b. The interference retreat energy required by Carrier Sense is relatively high, which is -50dBm, and the interference energy threshold of ETSI is lower than that of carrier sense.
 
-For Ameba, the EDCCA mode types are defined in component/wifi/driver/include/rtw_wifi_defs.h
+For Ameba, the EDCCA mode types are defined in :file:`component/wifi/driver/include/rtw_wifi_defs.h`
 
 .. code-block:: c
 
@@ -84,25 +86,27 @@ For Ameba, the EDCCA mode types are defined in component/wifi/driver/include/rtw
 
 Setting EDCCA mode is in below path, and it will be written statically on wifi initialization process.
 
-   a. File path of AmebaSmart: source/ component/soc/amebasmart/usrcfg/Ameba_wificfg.c
+   a. File path of AmebaSmart: :file:`source/ component/soc/amebasmart/usrcfg/Ameba_wificfg.c`
 
-   b. File path of AmebaLite: source/ component/soc/amebalite/usrcfg/Ameba_wificfg.c
+   b. File path of AmebaLite: :file:`source/ component/soc/amebalite/usrcfg/Ameba_wificfg.c`
 
-   c. File path of AmebaDplus: source/ component/soc/amebadplus/usrcfg/Ameba_wificfg.c
+   c. File path of AmebaDplus: :file:`source/ component/soc/amebadplus/usrcfg/Ameba_wificfg.c`
 
-   d. Function name: _WEAK void wifi_set_user_config(void)
+   d. Function name: :func:`wifi_set_user_config`
 
-      A. For ETSI Adaptivity certification, set EDCCA mode as RTW_EDCCA_ADAPT
+      A. For ETSI Adaptivity certification, set EDCCA mode as *RTW_EDCCA_ADAPT*
 
-.. code-block:: c
+      .. code-block:: c
+      
+         wifi_user_config_edcca_mode = RTW_EDCCA_ADAPT;
 
-   wifi_user_config_edcca_mode = RTW_EDCCA_ADAPT;
+      B. For *Carrier Sense*, set EDCCA mode as *RTW_EDCCA_CS*
 
-      B. For Carrier Sense, set EDCCA mode as RTW_EDCCA_CS
+      .. code-block:: c
+      
+         wifi_user_config_edcca_mode = RTW_EDCCA_CS;
 
-.. code-block:: c
-
-   wifi_user_config_edcca_mode = RTW_EDCCA_CS;
+.. _edcca_threshold_in_freertos:
 
 EDCCA Threshold
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -132,7 +136,8 @@ In most cases, the default values are sufficient to pass Adaptivity certificatio
 
    AT+WLDBG=fix_edcca_th value
 
-The value's unit is DBM and scope is [-60 , -80], minimum step is 1.
+.. note::
+   The value's unit is DBM and scope is [-60 , -80], minimum step is 1.
 
 For example:
 
@@ -146,9 +151,9 @@ Linux
 ~~~~~~~~~~
 EDCCA Mode
 ^^^^^^^^^^^^^^^^^^^^
-Linux Ameba EDCCA mode types are same with FreeRTOS. You can refer to 1.2.1.1 for details.
+Linux Ameba EDCCA mode types are same with FreeRTOS. You can refer to :ref:`edcca_mode_in_freertos` for details.
 
-It is defined in sources/firmware/component/wifi/driver/include/rtw_wifi_defs.h
+It is defined in :file:`sources/firmware/component/wifi/driver/include/rtw_wifi_defs.h`
 
 .. code-block:: c
 
@@ -162,32 +167,33 @@ It is defined in sources/firmware/component/wifi/driver/include/rtw_wifi_defs.h
 
 EDCCA mode is set is in below path, and it will be written statically on firmware initialization process.
 
-   a. File path of Linux smart: /sources/firmware/component/wifi/cfg80211_fullmac/rtl8730e/ipc/Ameba_wificfg.c
+   a. File path of Linux smart: :file:`/sources/firmware/component/wifi/cfg80211_fullmac/rtl8730e/ipc/Ameba_wificfg.c`
 
-   b. Function name: _WEAK void wifi_set_user_config(void)
+   b. Function name: :func:`wifi_set_user_config`
 
-      A. For ETSI Adaptivity certification, set EDCCA mode as RTW_EDCCA_ADAPT
+      A. For ETSI Adaptivity certification, set EDCCA mode as *RTW_EDCCA_ADAPT*
 
-.. code-block:: c
+      .. code-block:: c
+      
+         wifi_user_config_edcca_mode = RTW_EDCCA_ADAPT;
 
-   wifi_user_config_edcca_mode = RTW_EDCCA_ADAPT;
+      B. For Carrier Sense, set EDCCA mode as *RTW_EDCCA_CS*
 
-      B. For Carrier Sense, set EDCCA mode as RTW_EDCCA_CS
-
-.. code-block:: c
-
-   wifi_user_config_edcca_mode = RTW_EDCCA_CS;
-
+      .. code-block:: c
+      
+         wifi_user_config_edcca_mode = RTW_EDCCA_CS;
+      
 In addition to the above method, EDCCA mode can also be set dynamically by command.
 
-EDCCA mode has been added in /proc/net/rtl8730e/wlan0/edcca_mode. You can write or read it by below command.
+EDCCA mode has been added in ``/proc/net/rtl8730e/wlan0/edcca_mode``. You can write or read it by below command.
 
 .. code-block:: c
 
    echo n > /proc/net/rtl8730e/wlan0/edcca_mode
    cat /proc/net/rtl8730e/wlan0/edcca_mode
 
-n is in [0， 1， 2， 9].
+.. note::
+   n is in [0, 1, 2, 9].
 
 For example of Adaptivity certification:
 
@@ -199,7 +205,7 @@ For example of Adaptivity certification:
 
 EDCCA Threshold
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Linux Ameba's EDCCA thresholds are same with FreeRTOS. You can refer to 1.2.1.2 for details.
+Linux Ameba's EDCCA thresholds are same with FreeRTOS. You can refer to :ref:`edcca_threshold_in_freertos` for details.
 
 You can get or set EDCCA threshold by below command,
 
@@ -229,7 +235,7 @@ Debug SOP
 ------------------
 1. The first step is to verify that the Adaptivity mode is turned on;
 
-The default SDK of RTK is normal EDCCA mode. So make sure the driver switches to the Adaptivity mode for Adaptivity certification. Otherwise, the certification will fail.
+   - The default SDK of RTK is normal EDCCA mode. So make sure the driver switches to the Adaptivity mode for Adaptivity certification. Otherwise, the certification will fail.
 
 2. Secondly, it is necessary to confirm whether there is a problem with the test method. For example:
 
