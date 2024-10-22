@@ -101,8 +101,6 @@ The default return value of this API is ``0`` when initially powered on, and ret
    |              |                                                                     |
    |              | - AON_BIT_RSTF_KM4_SYS: KM4 system reset                            |
    |              |                                                                     |
-   |              | - AON_BIT_RSTF_IWDG: KM0 independent watchdog reset                 |
-   |              |                                                                     |
    |              | - AON_BIT_RSTF_WDG0: KM0 watchdog reset                             |
    |              |                                                                     |
    |              | - AON_BIT_RSTF_WDG1: KM4 secure watchdog reset                      |

@@ -14,8 +14,6 @@ The following table lists the wakeup sources that can be used to wake up the sys
    +----------------+----------+----------+------------+----------------------------------------------------------------------------------------------------+
    | BT             | √        | √        | X          |                                                                                                    |
    +----------------+----------+----------+------------+----------------------------------------------------------------------------------------------------+
-   | IWDG           | √        | √        | X          |                                                                                                    |
-   +----------------+----------+----------+------------+----------------------------------------------------------------------------------------------------+
    | IPC            | √        | √        | X          | Only KM0 can use IPC to wake up KM4                                                                |
    +----------------+----------+----------+------------+----------------------------------------------------------------------------------------------------+
    | Basic Timer4~7 | √        | √        | X          |                                                                                                    |
@@ -171,7 +169,6 @@ respectively indicating that this wakeup source is only to wake up KM4, or wake 
    {WAKE_SRC_Timer6,        WAKEUP_NULL},
    {WAKE_SRC_Timer5,        WAKEUP_NULL},
    {WAKE_SRC_Timer4,        WAKEUP_NULL},
-   {WAKE_SRC_IWDG0,        WAKEUP_NULL},
    {WAKE_SRC_IPC_KM4,        WAKEUP_KM4},  /* IPC can only wake up KM4, do not change it*/
    {WAKE_SRC_BT_WAKE_HOST,      WAKEUP_NULL},
    {WAKE_SRC_KM4_WAKE_IRQ,      WAKEUP_KM0},  /* Internal use, do not change it*/
@@ -559,8 +556,6 @@ The following register can be used to get the sleep wakeup reason.
    |             | - Bit[3]: BT_WAKE_HOST     |
    |             |                            |
    |             | - Bit[4]: IPC_KM4          |
-   |             |                            |
-   |             | - Bit[5]: IWDG0            |
    |             |                            |
    |             | - Bit[9:6]: BASIC TIMER4~7 |
    |             |                            |
