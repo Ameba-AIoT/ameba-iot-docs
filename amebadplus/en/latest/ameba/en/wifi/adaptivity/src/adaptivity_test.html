@@ -152,42 +152,47 @@
 <li><p>The test object and the companion object are connected and the traffic is transmitted.</p></li>
 <li><p>Add interference signal, blocking signal of out of band is also necessary for 2G.</p></li>
 <li><p>The test object to stops TX.</p></li>
-<li><p>Only short control signaling transmission (e.g. ACK) is allowed for the companion object. For 2G pass criteria, the TX duty cycle cannot exceed 10% within 50ms. For 5G Pass criteria, the TX duty cycle within 50ms cannot exceed 5%.</p></li>
-<li><p>Repeat the above steps for different channels and bandwidth and modes.</p></li>
+<li><p>Only short control signaling transmission (e.g. ACK) is allowed for the companion object.</p>
+<ul class="simple">
+<li><p>For 2G pass criteria, the TX duty cycle cannot exceed 10% within 50ms.</p></li>
+<li><p>For 5G Pass criteria, the TX duty cycle within 50ms cannot exceed 5%.</p></li>
+</ul>
+</li>
+<li><p>Repeat the above steps for different channels, bandwidths and modes.</p></li>
 </ol>
 <p>For interference signal power, the energy formula to be detected by ETSI is as follows. Additionally, the interference signal must exceed BW of the test object and have a 100% duty cycle.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">2</span><span class="n">G</span><span class="p">:</span> <span class="n">TL</span> <span class="o">=</span> <span class="o">-</span><span class="mi">70</span><span class="n">dBm</span><span class="o">/</span><span class="n">MHz</span> <span class="o">+</span> <span class="mi">10</span><span class="o">*</span><span class="n">log10</span><span class="p">(</span><span class="mi">100</span><span class="n">mW</span><span class="o">/</span><span class="n">Pout</span><span class="p">)</span>
-</pre></div>
-</div>
+<ul>
+<li><p>2G: TL = -70dBm/MHz + 10*log10(100mW/Pout)</p></li>
+<li><p>5G: TL = -75dBm/MHz</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Pout is the maximum TX power of test object.</p>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">5</span><span class="n">G</span><span class="p">:</span> <span class="n">TL</span> <span class="o">=</span> <span class="o">-</span><span class="mi">75</span><span class="n">dBm</span><span class="o">/</span><span class="n">MHz</span>
-</pre></div>
-</div>
+</li>
+</ul>
 <p>Ameba is tested with the worst case in LAB.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">2</span><span class="n">G</span><span class="p">:</span> <span class="n">TL</span> <span class="o">=</span> <span class="o">-</span><span class="mi">70</span><span class="n">dBm</span><span class="o">/</span><span class="n">MHz</span>
-<span class="mi">5</span><span class="n">G</span><span class="p">:</span> <span class="n">TL</span> <span class="o">=</span> <span class="o">-</span><span class="mi">75</span><span class="n">dBm</span><span class="o">/</span><span class="n">MHz</span>
-</pre></div>
-</div>
-<p>The following table is the interference power with different frequency and bandwidth.</p>
+<ul class="simple">
+<li><p>2G: TL = -70dBm/MHz</p></li>
+<li><p>5G: TL = -75dBm/MHz</p></li>
+</ul>
+<p>The following table is the interference power with different frequencies and bandwidths.</p>
 <table class="docutils align-default" id="id3" style="width: 100%">
-<caption><span class="caption-text">Interference power with different frequency and bandwidth</span><a class="headerlink" href="#id3" title="Link to this table"></a></caption>
+<caption><span class="caption-text">Interference power with different frequencies and bandwidths</span><a class="headerlink" href="#id3" title="Link to this table"></a></caption>
 <thead>
-<tr class="row-odd"><th class="head"></th>
-<th class="head"><p>2G/20MHZ</p></th>
-<th class="head"><p>2G/40MHZ</p></th>
-<th class="head"><p>5G/20MHZ</p></th>
-<th class="head"><p>5G/40MHZ</p></th>
-<th class="head"><p>5G/80MHZ</p></th>
-<th class="head"><p>5G/160MHZ</p></th>
+<tr class="row-odd"><th class="head" rowspan="2"><p>Item</p></th>
+<th class="head" colspan="2"><p>2G</p></th>
+<th class="head" colspan="4"><p>5G</p></th>
+</tr>
+<tr class="row-even"><th class="head"><p>20MHZ</p></th>
+<th class="head"><p>40MHZ</p></th>
+<th class="head"><p>20MHZ</p></th>
+<th class="head"><p>40MHZ</p></th>
+<th class="head"><p>80MHZ</p></th>
+<th class="head"><p>160MHZ</p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>Interference Power</p>
-<p>(DBM)</p>
-</td>
+<tr class="row-odd"><td><p>Interference Power (dBm)</p></td>
 <td><p>-57</p></td>
 <td><p>-54</p></td>
 <td><p>-62</p></td>
@@ -197,7 +202,7 @@
 </tr>
 </tbody>
 </table>
-<p>Ameba can set EDCCA mode as <em>RTW_EDCCA_ADAPT</em> and adjust EDCCA threshold to pass Adaptivity test. When the interference power is greater than threshold, the MAC is told to stop TX.</p>
+<p>Ameba can set EDCCA mode as <em>RTW_EDCCA_ADAPT</em> and adjust EDCCA threshold to pass Adaptivity test. When the interference power is greater than the threshold, the MAC is told to stop TX.</p>
 </section>
 <section id="software-configuration">
 <h1>Software Configuration<a class="headerlink" href="#software-configuration" title="Link to this heading"></a></h1>
@@ -205,33 +210,37 @@
 <h2>FreeRTOS<a class="headerlink" href="#freertos" title="Link to this heading"></a></h2>
 <section id="edcca-mode">
 <span id="edcca-mode-in-freertos"></span><h3>EDCCA Mode<a class="headerlink" href="#edcca-mode" title="Link to this heading"></a></h3>
-<p>You can set EDCCA mode type as <em>RTW_EDCCA_ADAPT</em> to pass Adaptivity test. Ameba supports four EDCCA mode types.</p>
+<p>Ameba supports four EDCCA mode types:</p>
 <ul class="simple">
 <li><p><strong>RTW_EDCCA_NORM</strong>: Set EDCCA threshold dynamically with reference to current RSSI, default value</p></li>
 <li><p><strong>RTW_EDCCA_ADAPT</strong>: Adaptivity certification for ETSI, fixed threshold, threshold can be modified by commands</p></li>
 <li><p><strong>RTW_EDCCA_CS</strong>: Carrier Sense, Japan’s interference avoidance laws</p></li>
 <li><p><strong>RTW_EDCCA_DISABLE</strong>: MAC TX without checking EDCCA signal</p></li>
 </ul>
-<p>For Adaptivity test (mode 1) and Carrier Sense (mode 2), there are two major differences:</p>
+<p>There are two major differences between Adaptivity test (mode 1) and Carrier Sense (mode 2):</p>
 <ul class="simple">
 <li><p>The types of test interference required by ETSI regulations are AWGN White noise, remove preamble’s OFDM packet and LTE interference. Carrier Sense is single tone.</p></li>
 <li><p>The interference retreat energy required by Carrier Sense is relatively high, which is -50dBm, and the interference energy threshold of ETSI is lower than that of carrier sense.</p></li>
 </ul>
-<p>For Ameba, the EDCCA mode types are defined in <code class="file docutils literal notranslate"><span class="pre">component/wifi/driver/include/rtw_wifi_defs.h</span></code></p>
+<p>The EDCCA mode types are defined in <code class="docutils literal notranslate"><span class="pre">component/wifi/driver/include/rtw_wifi_defs.h</span></code>. You can set EDCCA mode type as <em>RTW_EDCCA_ADAPT</em> to pass Adaptivity test.</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/*The enumeration lists the edcca mode types*/</span>
 <span class="k">enum</span><span class="w"> </span><span class="n">rtw_edcca_mode</span><span class="w"> </span><span class="p">{</span>
-<span class="n">RTW_EDCCA_NORM</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="cm">/* normal*/</span>
-<span class="n">RTW_EDCCA_ADAPT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="cm">/* Adaptivity, ETSI*/</span>
-<span class="n">RTW_EDCCA_CS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="cm">/*carrier sense, Japan*/</span>
-<span class="n">RTW_EDCCA_DISABLE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">9</span><span class="p">,</span><span class="cm">/*disable*/</span>
+<span class="n">RTW_EDCCA_NORM</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="cm">/* normal*/</span>
+<span class="n">RTW_EDCCA_ADAPT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="cm">/* Adaptivity, ETSI*/</span>
+<span class="n">RTW_EDCCA_CS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="cm">/*carrier sense, Japan*/</span>
+<span class="n">RTW_EDCCA_DISABLE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">9</span><span class="p">,</span><span class="w"> </span><span class="cm">/*disable*/</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>The file for setting the EDCCA mode is in the following path, and it will be written statically on wifi initialization process.</p>
+<p>The file for setting the EDCCA mode is in the following path, and it will be written statically on Wi-Fi initialization process.</p>
 <ul>
-<li><p>File path of AmebaSmart: <code class="file docutils literal notranslate"><span class="pre">source/component/soc/amebasmart/usrcfg/Ameba_wificfg.c</span></code></p></li>
-<li><p>File path of AmebaLite: <code class="file docutils literal notranslate"><span class="pre">source/component/soc/amebalite/usrcfg/Ameba_wificfg.c</span></code></p></li>
-<li><p>File path of AmebaDplus: <code class="file docutils literal notranslate"><span class="pre">source/component/soc/amebadplus/usrcfg/Ameba_wificfg.c</span></code></p></li>
+<li><p>File path:</p>
+<ul class="simple">
+<li><p>AmebaSmart: <code class="docutils literal notranslate"><span class="pre">/component/soc/amebasmart/usrcfg/Ameba_wificfg.c</span></code></p></li>
+<li><p>AmebaLite: <code class="docutils literal notranslate"><span class="pre">/component/soc/amebalite/usrcfg/Ameba_wificfg.c</span></code></p></li>
+<li><p>AmebaDPlus: <code class="docutils literal notranslate"><span class="pre">/component/soc/amebadplus/usrcfg/Ameba_wificfg.c</span></code></p></li>
+</ul>
+</li>
 <li><p>Function name: <code class="xref py py-func docutils literal notranslate"><span class="pre">wifi_set_user_config()</span></code></p>
 <ul>
 <li><p>For ETSI Adaptivity certification, set EDCCA mode as <em>RTW_EDCCA_ADAPT</em></p>
@@ -251,22 +260,30 @@
 <section id="edcca-threshold">
 <span id="edcca-threshold-in-freertos"></span><h3>EDCCA Threshold<a class="headerlink" href="#edcca-threshold" title="Link to this heading"></a></h3>
 <p>After connection with AP, you can get current EDCCA threshold by the following command:</p>
-<p>For example of AmebaDplus 5G:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">WLDBG</span><span class="o">=</span><span class="n">get_edcca_th</span>
+</pre></div>
+</div>
+<p>For example:</p>
+<ul>
+<li><p>AmebaDPlus 5G:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">WLDBG</span><span class="o">=</span><span class="n">get_edcca_th</span>
 <span class="p">[</span><span class="n">WLDBG</span><span class="p">]:</span> <span class="n">_AT_WLAN_IWPRIV_</span>
 <span class="p">[</span><span class="n">WLAN</span><span class="o">-</span><span class="n">A</span><span class="p">]</span> <span class="p">[</span><span class="n">iwpriv_command</span><span class="p">]</span> <span class="n">cmd</span> <span class="n">name</span><span class="p">:</span> <span class="n">get_edcca_th</span>
 <span class="p">[</span><span class="n">WLAN</span><span class="o">-</span><span class="n">A</span><span class="p">]</span> <span class="n">edcca</span> <span class="n">L2H</span> <span class="n">thre</span><span class="o">=-</span><span class="mi">65</span> <span class="n">dbm</span>
 </pre></div>
 </div>
-<p>For example of AmebaSmart 2G:</p>
+</li>
+<li><p>AmebaSmart 2G:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">WLDBG</span><span class="o">=</span><span class="n">get_edcca_th</span>
 <span class="p">[</span><span class="n">WLDBG</span><span class="p">]:</span> <span class="n">_AT_WLAN_IWPRIV_</span>
 <span class="p">[</span><span class="n">WLAN</span><span class="o">-</span><span class="n">A</span><span class="p">]</span> <span class="p">[</span><span class="n">iwpriv_command</span><span class="p">]</span> <span class="n">cmd</span> <span class="n">name</span><span class="p">:</span> <span class="n">get_edcca_th</span>
 <span class="p">[</span><span class="n">WLAN</span><span class="o">-</span><span class="n">A</span><span class="p">]</span> <span class="n">edcca</span> <span class="n">thre</span><span class="o">=-</span><span class="mi">60</span> <span class="n">dbm</span>
 </pre></div>
 </div>
+</li>
+</ul>
 <p>In most cases, the default values are sufficient to pass Adaptivity certification. If it doesn’t work, you can modify the EDCCA threshold by the ollowing command:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">WLDBG</span><span class="o">=</span><span class="n">fix_edcca_th</span> <span class="n">value</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">WLDBG</span><span class="o">=</span><span class="n">fix_edcca_th</span> <span class="o">&lt;</span><span class="n">value</span><span class="o">&gt;</span>
 </pre></div>
 </div>
 <p>For example:</p>
@@ -277,7 +294,7 @@
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The value’s unit is DBM and scope is [-60 , -80], minimum step is 1.</p>
+<p>The value’s unit is dBm and the scope is [-60 , -80], and the minimum step is 1.</p>
 </div>
 </section>
 </section>
@@ -285,20 +302,20 @@
 <h2>Linux<a class="headerlink" href="#linux" title="Link to this heading"></a></h2>
 <section id="id1">
 <h3>EDCCA Mode<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
-<p>Linux Ameba EDCCA mode types are same with FreeRTOS. You can refer to <a class="reference internal" href="#edcca-mode-in-freertos"><span class="std std-ref">EDCCA Mode</span></a> for details.</p>
-<p>It is defined in <code class="file docutils literal notranslate"><span class="pre">sources/firmware/component/wifi/driver/include/rtw_wifi_defs.h</span></code></p>
+<p>Linux Ameba EDCCA mode types are the same with FreeRTOS. You can refer to <a class="reference internal" href="#edcca-mode-in-freertos"><span class="std std-ref">EDCCA Mode</span></a> for details.</p>
+<p>It is defined in <code class="file docutils literal notranslate"><span class="pre">/firmware/component/wifi/driver/include/rtw_wifi_defs.h</span></code></p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/*The enumeration lists the edcca mode types*/</span>
 <span class="k">enum</span><span class="w"> </span><span class="n">rtw_edcca_mode</span><span class="w"> </span><span class="p">{</span>
-<span class="n">RTW_EDCCA_NORM</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="cm">/* normal*/</span>
-<span class="n">RTW_EDCCA_ADAPT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="cm">/* Adaptivity, ETSI*/</span>
-<span class="n">RTW_EDCCA_CS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="cm">/*carrier sense, Japan*/</span>
-<span class="n">RTW_EDCCA_DISABLE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">9</span><span class="p">,</span><span class="cm">/*disable*/</span>
+<span class="n">RTW_EDCCA_NORM</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="cm">/* normal*/</span>
+<span class="n">RTW_EDCCA_ADAPT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="cm">/* Adaptivity, ETSI*/</span>
+<span class="n">RTW_EDCCA_CS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="cm">/*carrier sense, Japan*/</span>
+<span class="n">RTW_EDCCA_DISABLE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">9</span><span class="p">,</span><span class="w"> </span><span class="cm">/*disable*/</span>
 <span class="p">}</span>
 </pre></div>
 </div>
 <p>The file for setting the EDCCA mode is in the following path, and it will be written statically on firmware initialization process.</p>
 <ul>
-<li><p>File path of Linux smart: <code class="file docutils literal notranslate"><span class="pre">/sources/firmware/component/wifi/cfg80211_fullmac/rtl8730e/ipc/Ameba_wificfg.c</span></code></p></li>
+<li><p>File path of Linux AmebaSmart: <code class="file docutils literal notranslate"><span class="pre">/firmware/component/wifi/cfg80211_fullmac/rtl8730e/ipc/Ameba_wificfg.c</span></code></p></li>
 <li><p>Function name: <code class="xref py py-func docutils literal notranslate"><span class="pre">wifi_set_user_config()</span></code></p>
 <ul>
 <li><p>For ETSI Adaptivity certification, set EDCCA mode as <em>RTW_EDCCA_ADAPT</em></p>
@@ -314,11 +331,15 @@
 </ul>
 </li>
 </ul>
-<p>In addition, EDCCA mode can also be set dynamically by command.</p>
-<p>EDCCA mode has been added in <code class="docutils literal notranslate"><span class="pre">/proc/net/rtl8730e/wlan0/edcca_mode</span></code>. You can write or read it by the following command.</p>
+<p>In addition, EDCCA mode can also be set dynamically by commands.</p>
+<p>EDCCA mode has been added in <code class="docutils literal notranslate"><span class="pre">/proc/net/rtl8730e/wlan0/edcca_mode</span></code>. You can write or read it by the following command:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">echo</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="o">/</span><span class="n">proc</span><span class="o">/</span><span class="n">net</span><span class="o">/</span><span class="n">rtl8730e</span><span class="o">/</span><span class="n">wlan0</span><span class="o">/</span><span class="n">edcca_mode</span>
 <span class="n">cat</span> <span class="o">/</span><span class="n">proc</span><span class="o">/</span><span class="n">net</span><span class="o">/</span><span class="n">rtl8730e</span><span class="o">/</span><span class="n">wlan0</span><span class="o">/</span><span class="n">edcca_mode</span>
 </pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>n is in [0, 1, 2, 9].</p>
 </div>
 <p>For example of Adaptivity certification:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span> <span class="c1"># echo 1 &gt; /proc/net/rtl8730e/wlan0/edcca_mode</span>
@@ -326,15 +347,11 @@
 <span class="mi">1</span>
 </pre></div>
 </div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>n is in [0, 1, 2, 9].</p>
-</div>
 </section>
 <section id="id2">
 <h3>EDCCA Threshold<a class="headerlink" href="#id2" title="Link to this heading"></a></h3>
-<p>Linux Ameba’s EDCCA thresholds are same with FreeRTOS. You can refer to <a class="reference internal" href="#edcca-threshold-in-freertos"><span class="std std-ref">EDCCA Threshold</span></a> for details.</p>
-<p>You can get or set EDCCA threshold by the following command,</p>
+<p>Linux Ameba’s EDCCA thresholds are the same with FreeRTOS. You can refer to <a class="reference internal" href="#edcca-threshold-in-freertos"><span class="std std-ref">EDCCA Threshold</span></a> for details.</p>
+<p>You can get or set EDCCA threshold by the following commands:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ATWZ</span> <span class="n">get_edcca_th</span>
 <span class="n">ATWZ</span> <span class="n">fix_edcca_th</span> <span class="n">value</span>
 </pre></div>
@@ -354,42 +371,40 @@
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The value’s unit is DBM and scope is [-60, -80], minimum step is 1.</p>
+<p>The value’s unit is dBm and the scope is [-60, -80], and the minimum step is 1.</p>
 </div>
 </section>
 </section>
 </section>
 <section id="debug-sop">
 <h1>Debug SOP<a class="headerlink" href="#debug-sop" title="Link to this heading"></a></h1>
-<ul>
-<li><p>Verify that the Adaptivity mode is turned on;</p>
+<ol class="arabic simple">
+<li><p>Verify that the Adaptivity mode is turned on;</p></li>
+</ol>
 <blockquote>
 <div><p>The default SDK of RTK is normal EDCCA mode. So make sure the driver switches to the Adaptivity mode for Adaptivity certification. Otherwise, the certification will fail.</p>
 </div></blockquote>
-</li>
-<li><p>It is necessary to confirm whether there is a problem with the test method. For example:</p>
-<blockquote>
-<div><ul class="simple">
+<ol class="arabic" start="2">
+<li><p>Confirm whether there is a problem with the test method. For example:</p>
+<ol class="loweralpha simple">
 <li><p>It is recommended to test in a shielding room. Exclude some lab is not clean and may cause FA/CCA.</p></li>
 <li><p>Adaptivity’s TP measures the TX of the object instead of the RX.</p></li>
 <li><p>All antennas need to be connected to a source of interference. Otherwise, antenna diversity will affect authentication failure.</p></li>
 <li><p>The RSSI of the object to be tested should be kept at -50dBm or above to prevent certification failure due to wire breakage. When a disconnection happens, a scan will be performed, and the scan will inevitably result in Adaptivity fail.</p></li>
 <li><p>Confirm whether the interference energy size is correct. Some customers may mistake the meaning of DBM/MHZ and DBM, so they will mistype the interference energy and cause fail.</p></li>
-</ul>
-</div></blockquote>
+</ol>
 </li>
-<li><p>If the proportion of missing packets exceeds the regulatory requirements, 2G:10%,5G:5%, you need to confirm whether it is our TX signal indeed. You can check it by:</p>
-<blockquote>
-<div><ul class="simple">
+<li><p>If the proportion of missing packets exceeds the regulatory requirements: <code class="docutils literal notranslate"><span class="pre">2G:</span> <span class="pre">10%</span></code>, <code class="docutils literal notranslate"><span class="pre">5G:</span> <span class="pre">5%</span></code>, confirm whether it is our TX signal indeed.</p>
+<p>You can check it by the following steps:</p>
+<ol class="loweralpha simple">
 <li><p>Use the sniffer to capture packets and check whether it is the beacon or BT signal sent by the AP.</p></li>
 <li><p>If it is indeed the PKT of Ameba TX, so what is the PKT of TX, for example, is it scan packet or ACK?</p></li>
 <li><p>If the problem is caused by AP, it is generally suggested that LAB should replace AP. This requirement is reasonable, because some AP behaviors will indeed lead to the Adaptivity failure of STA. For example, Ameba have TX silent, but the AP behavior may have been repeatedly harassing STA to let it back to ACK. ACK is a passive TX and cannot be blocked by the AdaptivIty mechanism.</p></li>
-<li><p>If TX fail is caused by Ameba, for example, scan packet, which is sent by Ameba proactively, we need to analyze why it enters the scan mode, which may be solved by modifying the driver code.</p></li>
+<li><p>If TX fail is caused by Ameba, for example, scan packet, which is sent by Ameba proactively, you need to analyze why it enters the scan mode, which may be solved by modifying the driver code.</p></li>
 <li><p>When the proportion of missing packets is high or almost no stop TX, you can check whether the threshold is not appropriate. If the test energy is hit correctly, then the threshold can be adjusted appropriately to pass the test.</p></li>
-</ul>
-</div></blockquote>
+</ol>
 </li>
-</ul>
+</ol>
 </section>
 
 
