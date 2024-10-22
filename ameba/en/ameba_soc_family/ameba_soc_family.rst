@@ -199,17 +199,16 @@ AmebaSmart
       :width: 100%
       :widths: auto
 
-      +----------+-------------------------+----------------+-----------+-----------+------------------------+---------------------+-------------------+-------------------+------------------+
-      | Series   | Package (mm)            | CA32 :sup:`[1]`| Real-M300 | Real-M200 | NOR Flash :sup:`[2][3]`| PSRAM :sup:`[2][3]` | DDR :sup:`[2][3]` | Wi-Fi             | Bluetooth        |
-      +==========+=========================+================+===========+===========+========================+=====================+===================+===================+==================+
-      | RTL8730E | | - QFN100 (10 x 10)    | | - 1.2GHz     | 333MHz    | 40MHz     | | - 0MB                | | - 0MB             | | - 0MB           | | Wi-Fi 6         | | Bluetooth 5.3  |
-      |          | | - DR-QFN144 (11 x 11) | | - 1.32GHz    |           |           | | - 8MB                | | - 8MB             | | - 64MB (DDR2)   | | (2.4GHz + 5GHz) | | (BR/EDR + BLE) |
-      |          |                         |                |           |           | | - 16MB               |                     | | - 128MB (DDR2)  |                   |                  |
-      |          |                         |                |           |           | | - 32MB               |                     | | - 256MB (DDR3L) |                   |                  |
-      +----------+-------------------------+----------------+-----------+-----------+------------------------+---------------------+-------------------+-------------------+------------------+
+      +----------+-------------------------+--------+-----------+-----------+------------------------+---------------------+-------------------+-------------------+------------------+
+      | Series   | Package (mm)            | CA32   | Real-M300 | Real-M200 | NOR Flash :sup:`[1][2]`| PSRAM :sup:`[1][2]` | DDR :sup:`[1][2]` | Wi-Fi             | Bluetooth        |
+      +==========+=========================+========+===========+===========+========================+=====================+===================+===================+==================+
+      | RTL8730E | | - QFN100 (10 x 10)    | 1.2GHz | 333MHz    | 40MHz     | | - 0MB                | | - 0MB             | | - 0MB           | | Wi-Fi 6         | | Bluetooth 5.3  |
+      |          | | - DR-QFN144 (11 x 11) |        |           |           | | - 8MB                | | - 8MB             | | - 64MB (DDR2)   | | (2.4GHz + 5GHz) | | (BR/EDR + BLE) |
+      |          |                         |        |           |           | | - 16MB               |                     | | - 128MB (DDR2)  |                   |                  |
+      |          |                         |        |           |           | | - 32MB               |                     | | - 256MB (DDR3L) |                   |                  |
+      +----------+-------------------------+--------+-----------+-----------+------------------------+---------------------+-------------------+-------------------+------------------+
 
    .. note::
-      | [1] The CA32 can run at a frequency of up to 1.32GHz (embedded DDR) or 1.2GHz (embedded PSRAM), depending on the in-package type of DDR/PSRAM.
-      | [2] If the memory (Flash or PSRAM/DDR) size is 0MB, it means that there is no such type of memory embedded in the corresponding IC.
-      | [3] For different package numbers, the embedded memory is also different. Refer to Datasheet for more information.
+      | [1] If the memory (Flash or PSRAM/DDR) size is 0MB, it means that there is no such type of memory embedded in the corresponding IC.
+      | [2] For different package numbers, the embedded memory is also different. Refer to Datasheet for more information.
 
