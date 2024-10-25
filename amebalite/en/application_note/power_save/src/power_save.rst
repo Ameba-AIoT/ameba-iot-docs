@@ -11,20 +11,16 @@ When the system enters sleep mode, CPUs can select to enter clock-gating (CG) or
 
    - In terms of wakeup flow, SYSON PMC helps open the clock or power of NP, and NP helps open the power or clock of AP and DSP.
 
-
-
 .. note::
 
    - Both KM4 and KR4 can be configured as NP. If KR4 is configured as NP, KM4 is considered as AP.
 
    - The mode of memory is configurable when the system enters sleep mode. The retention mode is recommended for the balance between power saving and data retention.
 
-
 A hardware AON power management control module (AON PMC) is designed to control the power of SYSON PMC.
 When the system enters deep-sleep mode, CPUs and SYSON PMC are powered down while AON PMC maintains active to power on SYSON PMC when wakeup sources are triggered.
 
 In deep-sleep mode, only the memory in AON domain can be maintained, while memory in other domains will be shut down. So CPU cannot restore the stack status.
-
 
 Various wakeup sources are provided and every wakeup source can be configured to wake up NP or AP according to user's requirement. The following figure shows all the wake-up sources. AON is special because it is mater switch that manages all the wake-up sources in AON domain.
 
@@ -35,7 +31,6 @@ Some peripherals in AON domain can wake up the system both in sleep mode and dee
    :align: center
 
    Wakeup sources
-
 
 Entering Sleep Mode
 --------------------------------------
@@ -55,17 +50,18 @@ Sleep mode is based on FreeRTOS tickless, thus it is recommended to enter sleep 
 
 7. Clear the peripheral's interrupt when wakeup.
 
-
 For peripherals that need specific clock settings, such as UART and LOGUART, their setting flows are described in Section :ref:`power_saving_uart` and :ref:`power_saving_loguart`.
 
 .. _power_saving_uart:
 
 UART
 ~~~~~~~~
-- When using UART as a wakeup source, clock OSC4M should not be closed when the system is in sleep mode.
+.. note::
+   When using UART as a wakeup source:
+   
+   - If the Rx clock source is XTAL40M, do not turn off XTAL during sleep.
 
-- When the baudrate is larger than 115200, it is not recommended to use UART as a wakeup source.
-
+   - The portion of the command used to wake up that exceeds the FIFO depth (64B) will be lost.
 
 Configuration:
 
@@ -85,8 +81,12 @@ Configuration:
 
 LOGUART
 ~~~~~~~~~~~~~~
-When using LOGUART as a wakeup source, XTAL should not be closed during sleep.
+.. note::
+   When using LOGUART as a wakeup source:
+   
+   - If the Rx clock source is XTAL40M, do not turn off XTAL during sleep.
 
+   - The portion of the command used to wake up that exceeds the FIFO depth (16B) will be lost.
 
 Configuration:
 
@@ -211,7 +211,7 @@ Users can set sleep mode to CG or PG by calling the function :func:`pmu_set_slee
 
 
 Power Saving Related APIs
---------------------------------------------------
+------------------------------
 Wakelock APIs
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 In some situations, the system needs to keep awake to receive certain events. Otherwise, event may be missed when the system is in sleep. An idea of wakelock is introduced that the system cannot sleep if some module is holding wakelock.

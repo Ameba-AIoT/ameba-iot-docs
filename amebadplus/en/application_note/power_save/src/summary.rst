@@ -44,17 +44,7 @@ The following table explains power-saving related terms.
    |            |            |              |                            | - The retention SRAM will not be power off.                                                                        |
    +------------+------------+--------------+----------------------------+--------------------------------------------------------------------------------------------------------------------+
 
-
-Peripherals are also divided into different power domains in order to achieve better power consumption.
-
-- SOC power domain: including peripherals such as GDMA, SPI, I2C, SDIO, PWM, QSPI, PPE, LEDC, etc.
-
-- SYSON power domain: mainly including peripherals which support wakeup, such as Basic Timer, GPIO, UART, Key-Scan, Cap-Touch, etc.
-
-For peripherals in SOC domain, note that they need to be reinitialized after wakeup from PG since the power domain they are on has been power gated during sleep.
-
-
-FreeRTOS supports a low-power feature called tickless. It is implemented in an idle task which has the lowest priority.
+The FreeRTOS supports a low-power feature called tickless. It is implemented in an idle task which has the lowest priority.
 That is, it is invoked when there is no other task under running. Note that unlike the original FreeRTOS, the |CHIP_NAME| does not wake up based on the `xEpectedIdleTime`.
 
 .. figure:: ../figures/freertos_tickless_in_an_idle_task.png

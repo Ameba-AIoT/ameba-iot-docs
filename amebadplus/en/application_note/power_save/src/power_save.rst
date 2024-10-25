@@ -72,10 +72,14 @@ For peripherals that need specific clock settings, such as UART and LOGUART, the
 
 UART
 ~~~~~~~~
-- When using UART as a wakeup source, clock OSC4M should not be closed when the system is in sleep mode.
+.. note::
+   When using UART as a wakeup source:
+   
+   - The Rx clock source can only be OSC2M, and do not turn off OSC4M during sleep.
 
-- When the baudrate is larger than 115200, it is not recommended to use UART as a wakeup source.
+   - When the baudrate is larger than 115200, it is not recommended to use UART as a wakeup source.
 
+   - The portion of the command used to wake up that exceeds the FIFO depth (64B) will be lost.
 
 Configuration:
 
@@ -97,8 +101,12 @@ Configuration:
 
 LOGUART
 ~~~~~~~~~~~~~~
-When using LOGUART as a wakeup source, XTAL should not be closed during sleep.
+.. note::
+   When using LOGUART as a wakeup source:
+   
+   - If the Rx clock source is XTAL40M, do not turn off XTAL or OSC4M during sleep; if the Rx clock source is OSC2M, do not turn off OSC4M during sleep.
 
+   - The portion of the command used to wake up that exceeds the FIFO depth (16B) will be lost.
 
 Configuration:
 
@@ -115,7 +123,6 @@ Configuration:
 Entering Deep-Sleep Mode
 ------------------------------------------------
 Deep-sleep can also be entered from FreeRTOS tickless flow.
-
 
 When the system boots, KM4 holds the deepwakelock `PMU_OS`,
 thus :func:`freertos_ready_to_dsleep()` will be checked fail and the system does not enter deep-sleep mode in idle task by default.
