@@ -298,10 +298,15 @@
 <p>For peripherals that need specific clock settings, such as UART and LOGUART, their setting flows are described in Section <a class="reference internal" href="#power-saving-uart"><span class="std std-ref">UART</span></a> and <a class="reference internal" href="#power-saving-loguart"><span class="std std-ref">LOGUART</span></a>.</p>
 <section id="uart">
 <span id="power-saving-uart"></span><h2>UART<a class="headerlink" href="#uart" title="Link to this heading"></a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>When using UART as a wakeup source:</p>
 <ul class="simple">
-<li><p>When using UART as a wakeup source, clock OSC4M should not be closed when the system is in sleep mode.</p></li>
+<li><p>The Rx clock source can only be OSC2M, and do not turn off OSC4M during sleep.</p></li>
 <li><p>When the baudrate is larger than 115200, it is not recommended to use UART as a wakeup source.</p></li>
+<li><p>The portion of the command used to wake up that exceeds the FIFO depth (64B) will be lost.</p></li>
 </ul>
+</div>
 <p>Configuration:</p>
 <ol class="arabic simple">
 <li><p>Initialize UART and enable its interrupt.</p></li>
@@ -315,7 +320,14 @@
 </section>
 <section id="loguart">
 <span id="power-saving-loguart"></span><h2>LOGUART<a class="headerlink" href="#loguart" title="Link to this heading"></a></h2>
-<p>When using LOGUART as a wakeup source, XTAL should not be closed during sleep.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>When using LOGUART as a wakeup source:</p>
+<ul class="simple">
+<li><p>If the Rx clock source is XTAL40M, do not turn off XTAL or OSC4M during sleep; if the Rx clock source is OSC2M, do not turn off OSC4M during sleep.</p></li>
+<li><p>The portion of the command used to wake up that exceeds the FIFO depth (16B) will be lost.</p></li>
+</ul>
+</div>
 <p>Configuration:</p>
 <ol class="arabic simple">
 <li><p>Initialize LOGUART and enable its interrupt.</p></li>
