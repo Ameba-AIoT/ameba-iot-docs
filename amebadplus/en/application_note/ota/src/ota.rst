@@ -229,7 +229,7 @@ Modifying Configurations
 
    .. code-block::
 
-      EFUSE wraw 36C 2 6082
+      EFUSE wraw 36C 2 0082
 
    .. note::
    
