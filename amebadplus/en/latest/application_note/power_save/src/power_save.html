@@ -161,14 +161,14 @@
   <section id="wakeup-source">
 <h1>Wakeup Source<a class="headerlink" href="#wakeup-source" title="Link to this heading"></a></h1>
 <p>The following table lists the wakeup sources that can be used to wake up the system under different power modes.</p>
-<table class="longtable docutils align-default" id="id2" style="width: 100%">
+<table class="docutils align-default" id="id2" style="width: 100%">
 <caption><span class="caption-text">Wakeup sources</span><a class="headerlink" href="#id2" title="Link to this table"></a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p>Wakeup source</p></th>
 <th class="head"><p>Sleep CG</p></th>
 <th class="head"><p>Sleep PG</p></th>
 <th class="head"><p>Deep-sleep</p></th>
-<th class="head"><p>Comment</p></th>
+<th class="head"><p>Restriction</p></th>
 </tr>
 </thead>
 <tbody>
@@ -188,7 +188,7 @@
 <td><p>√</p></td>
 <td><p>√</p></td>
 <td><p>X</p></td>
-<td><p>Only KM0 can use IPC to wake up KM4</p></td>
+<td><p>Only KM0 can use the IPC to wake up KM4.</p></td>
 </tr>
 <tr class="row-odd"><td><p>Basic Timer4~7</p></td>
 <td><p>√</p></td>
@@ -206,13 +206,24 @@
 <td><p>√</p></td>
 <td><p>√</p></td>
 <td><p>X</p></td>
-<td><p>Need to keep OSC4M on during sleep, not recommended to use when the baudrate is larger than 115200</p></td>
+<td><ul class="simple">
+<li><p>When using UART as a wakeup source, the Rx clock source can only be OSC2M, and do not turn off OSC4M during sleep.</p></li>
+<li><p>When the baudrate is larger than 115200, it is not recommended to use UART as a wakeup source.</p></li>
+<li><p>The portion of the command used to wake up that exceeds the FIFO depth (64B) will be lost.</p></li>
+</ul>
+</td>
 </tr>
 <tr class="row-even"><td><p>LOGUART</p></td>
 <td><p>√</p></td>
 <td><p>√</p></td>
 <td><p>X</p></td>
-<td><p>Need to keep XTAL on during sleep</p></td>
+<td><p>When using LOGUART as a wakeup source:</p>
+<ul class="simple">
+<li><p>If the Rx clock source is XTAL40M, do not turn off XTAL or OSC4M during sleep.</p></li>
+<li><p>If the Rx clock source is OSC2M, do not turn off OSC4M during sleep.</p></li>
+<li><p>The portion of the command used to wake up that exceeds the FIFO depth (16B) will be lost.</p></li>
+</ul>
+</td>
 </tr>
 <tr class="row-odd"><td><p>GPIO</p></td>
 <td><p>√</p></td>
@@ -226,7 +237,7 @@
 <td><p>X</p></td>
 <td></td>
 </tr>
-<tr class="row-odd"><td><p>Cap-Touch</p></td>
+<tr class="row-odd"><td><p>CAP_TOUCH</p></td>
 <td><p>√</p></td>
 <td><p>√</p></td>
 <td><p>X</p></td>
@@ -253,7 +264,7 @@
 <tr class="row-odd"><td><p>BOR</p></td>
 <td><p>√</p></td>
 <td><p>√</p></td>
-<td><p>X</p></td>
+<td><p>√</p></td>
 <td></td>
 </tr>
 <tr class="row-even"><td><p>PWR_DOWN</p></td>
@@ -300,7 +311,7 @@
 <span id="power-saving-uart"></span><h2>UART<a class="headerlink" href="#uart" title="Link to this heading"></a></h2>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>When using UART as a wakeup source:</p>
+<p>When using UART as a wakeup source, there are some restrictions:</p>
 <ul class="simple">
 <li><p>The Rx clock source can only be OSC2M, and do not turn off OSC4M during sleep.</p></li>
 <li><p>When the baudrate is larger than 115200, it is not recommended to use UART as a wakeup source.</p></li>
@@ -322,7 +333,7 @@
 <span id="power-saving-loguart"></span><h2>LOGUART<a class="headerlink" href="#loguart" title="Link to this heading"></a></h2>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>When using LOGUART as a wakeup source:</p>
+<p>When using LOGUART as a wakeup source, there are some restrictions:</p>
 <ul class="simple">
 <li><p>If the Rx clock source is XTAL40M, do not turn off XTAL or OSC4M during sleep; if the Rx clock source is OSC2M, do not turn off OSC4M during sleep.</p></li>
 <li><p>The portion of the command used to wake up that exceeds the FIFO depth (16B) will be lost.</p></li>
@@ -450,7 +461,7 @@ Users can use this configuration for peripherals that need XTAL or OSC4M on in s
 <span id="power-saving-wakelock-apis"></span><h2>Wakelock APIs<a class="headerlink" href="#wakelock-apis" title="Link to this heading"></a></h2>
 <p>In some situations, the system needs to keep awake to receive certain events; otherwise, events may be missed when the system is in sleep mode.
 An idea of wakelock is introduced in that the system cannot enter sleep mode if some module is holding the wakelock.</p>
-<p>Wakelock is a 32-bit map. Each module has its own bit in the wakelock bit map (see enum <cite>PMU_DEVICE</cite>). Users can also add the wakelock in the enum.</p>
+<p>The Wakelock is a 32-bit map. Each module has its own bit in the wakelock bit map (see enum <cite>PMU_DEVICE</cite>). Users can also add the wakelock in the enum.</p>
 <ul class="simple">
 <li><p>If the wakelock bit map equals zero, it means that there is no module holding the wakelock.</p></li>
 <li><p>If the wakelock bit map is larger than zero, it means that some modules are holding the wakelock, and the system is not allowed to enter sleep mode.</p></li>
@@ -631,8 +642,7 @@ Also, if the CPU chooses PG, some peripherals will lose power so they need to be
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <ul class="simple">
-<li><p>Yield OS is not permitted in the suspend/resume callback functions, thus RTOS APIs which may cause OS yield such as
-<em>rtos_task_yield</em>, <em>rtos_time_delay_ms</em>, or mutex, semaphore related APIs are not recommended to use.</p></li>
+<li><p>Yield OS is not permitted in the suspend/resume callback functions, thus RTOS APIs which may cause OS yield such as <em>rtos_task_yield</em>, <em>rtos_time_delay_ms</em>, or mutex, semaphore related APIs are not recommended to use.</p></li>
 <li><p><em>pmu_set_sysactive_time</em> is not permitted in the suspend callback function, but permitted in the resume callback function.</p></li>
 </ul>
 </div>
@@ -823,7 +833,7 @@ And it releases the wakelock when it is permitted to enter the sleep state.</p>
 The station cannot receive any frame during power saving. Thus AP needs to buffer these frames and requires the station to periodically wake up to
 check the beacon which has the information of buffered frames.</p>
 <figure class="align-center" id="id3">
-<a class="reference internal image-reference" href="../../../_images/Timeline_of_power_saving.png"><img alt="../../../_images/Timeline_of_power_saving.png" src="../../../_images/Timeline_of_power_saving.png" style="width: 741.0px; height: 256.0px;" /></a>
+<a class="reference internal image-reference" href="application_note/power_save/figures/timeline_of_power_saving.png"><img alt="application_note/power_save/figures/timeline_of_power_saving.png" src="application_note/power_save/figures/timeline_of_power_saving.png" /></a>
 <figcaption>
 <p><span class="caption-text">Timeline of power saving</span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
 </figcaption>
