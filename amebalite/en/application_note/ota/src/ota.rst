@@ -305,7 +305,7 @@ Modifying Configurations
 
    .. code-block::
 
-      EFUSE wraw 36C 2 6082
+      EFUSE wraw 36C 2 0082
 
    .. note::
       - The address of bootloader OTA2 is the value of OTP 0x36C with 12-bit left shifted, or is the value of OTP 0x36C * 4K.

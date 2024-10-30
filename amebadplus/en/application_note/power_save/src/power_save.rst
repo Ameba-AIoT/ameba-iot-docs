@@ -3,49 +3,58 @@ Wakeup Source
 The following table lists the wakeup sources that can be used to wake up the system under different power modes.
 
 .. table:: Wakeup sources
-   :class: longtable
    :width: 100%
    :widths: auto
 
-   +----------------+----------+----------+------------+----------------------------------------------------------------------------------------------------+
-   | Wakeup source  | Sleep CG | Sleep PG | Deep-sleep | Comment                                                                                            |
-   +================+==========+==========+============+====================================================================================================+
-   | WLAN           | √        | √        | X          |                                                                                                    |
-   +----------------+----------+----------+------------+----------------------------------------------------------------------------------------------------+
-   | BT             | √        | √        | X          |                                                                                                    |
-   +----------------+----------+----------+------------+----------------------------------------------------------------------------------------------------+
-   | IPC            | √        | √        | X          | Only KM0 can use IPC to wake up KM4                                                                |
-   +----------------+----------+----------+------------+----------------------------------------------------------------------------------------------------+
-   | Basic Timer4~7 | √        | √        | X          |                                                                                                    |
-   +----------------+----------+----------+------------+----------------------------------------------------------------------------------------------------+
-   | PMC Timer      | √        | √        | X          | For internal usage                                                                                 |
-   +----------------+----------+----------+------------+----------------------------------------------------------------------------------------------------+
-   | UART0~2        | √        | √        | X          | Need to keep OSC4M on during sleep, not recommended to use when the baudrate is larger than 115200 |
-   +----------------+----------+----------+------------+----------------------------------------------------------------------------------------------------+
-   | LOGUART        | √        | √        | X          | Need to keep XTAL on during sleep                                                                  |
-   +----------------+----------+----------+------------+----------------------------------------------------------------------------------------------------+
-   | GPIO           | √        | √        | X          |                                                                                                    |
-   +----------------+----------+----------+------------+----------------------------------------------------------------------------------------------------+
-   | I2C            | √        | √        | X          |                                                                                                    |
-   +----------------+----------+----------+------------+----------------------------------------------------------------------------------------------------+
-   | Cap-Touch      | √        | √        | X          |                                                                                                    |
-   +----------------+----------+----------+------------+----------------------------------------------------------------------------------------------------+
-   | ADC            | √        | √        | X          |                                                                                                    |
-   +----------------+----------+----------+------------+----------------------------------------------------------------------------------------------------+
-   | SDIO           | √        | √        | X          |                                                                                                    |
-   +----------------+----------+----------+------------+----------------------------------------------------------------------------------------------------+
-   | Key-Scan       | √        | √        | X          |                                                                                                    |
-   +----------------+----------+----------+------------+----------------------------------------------------------------------------------------------------+
-   | BOR            | √        | √        | X          |                                                                                                    |
-   +----------------+----------+----------+------------+----------------------------------------------------------------------------------------------------+
-   | PWR_DOWN       | √        | √        | √          |                                                                                                    |
-   +----------------+----------+----------+------------+----------------------------------------------------------------------------------------------------+
-   | AON_TIMER      | √        | √        | √          |                                                                                                    |
-   +----------------+----------+----------+------------+----------------------------------------------------------------------------------------------------+
-   | AON_WAKEPIN    | √        | √        | √          |                                                                                                    |
-   +----------------+----------+----------+------------+----------------------------------------------------------------------------------------------------+
-   | RTC            | √        | √        | √          |                                                                                                    |
-   +----------------+----------+----------+------------+----------------------------------------------------------------------------------------------------+
+   +----------------+----------+----------+------------+------------------------------------------------------------------------------------------------------------------------+
+   | Wakeup source  | Sleep CG | Sleep PG | Deep-sleep | Restriction                                                                                                            |
+   +================+==========+==========+============+========================================================================================================================+
+   | WLAN           | √        | √        | X          |                                                                                                                        |
+   +----------------+----------+----------+------------+------------------------------------------------------------------------------------------------------------------------+
+   | BT             | √        | √        | X          |                                                                                                                        |
+   +----------------+----------+----------+------------+------------------------------------------------------------------------------------------------------------------------+
+   | IPC            | √        | √        | X          | Only KM0 can use the IPC to wake up KM4.                                                                               |
+   +----------------+----------+----------+------------+------------------------------------------------------------------------------------------------------------------------+
+   | Basic Timer4~7 | √        | √        | X          |                                                                                                                        |
+   +----------------+----------+----------+------------+------------------------------------------------------------------------------------------------------------------------+
+   | PMC Timer      | √        | √        | X          | For internal usage                                                                                                     |
+   +----------------+----------+----------+------------+------------------------------------------------------------------------------------------------------------------------+
+   | UART0~2        | √        | √        | X          | - When using UART as a wakeup source, the Rx clock source can only be OSC2M, and do not turn off OSC4M during sleep.   |
+   |                |          |          |            |                                                                                                                        |
+   |                |          |          |            | - When the baudrate is larger than 115200, it is not recommended to use UART as a wakeup source.                       |
+   |                |          |          |            |                                                                                                                        |
+   |                |          |          |            | - The portion of the command used to wake up that exceeds the FIFO depth (64B) will be lost.                           |
+   +----------------+----------+----------+------------+------------------------------------------------------------------------------------------------------------------------+
+   | LOGUART        | √        | √        | X          | When using LOGUART as a wakeup source:                                                                                 |
+   |                |          |          |            |                                                                                                                        |
+   |                |          |          |            | - If the Rx clock source is XTAL40M, do not turn off XTAL or OSC4M during sleep.                                       |
+   |                |          |          |            |                                                                                                                        |
+   |                |          |          |            | - If the Rx clock source is OSC2M, do not turn off OSC4M during sleep.                                                 |
+   |                |          |          |            |                                                                                                                        |
+   |                |          |          |            | - The portion of the command used to wake up that exceeds the FIFO depth (16B) will be lost.                           |
+   +----------------+----------+----------+------------+------------------------------------------------------------------------------------------------------------------------+
+   | GPIO           | √        | √        | X          |                                                                                                                        |
+   +----------------+----------+----------+------------+------------------------------------------------------------------------------------------------------------------------+
+   | I2C            | √        | √        | X          |                                                                                                                        |
+   +----------------+----------+----------+------------+------------------------------------------------------------------------------------------------------------------------+
+   | CAP_TOUCH      | √        | √        | X          |                                                                                                                        |
+   +----------------+----------+----------+------------+------------------------------------------------------------------------------------------------------------------------+
+   | ADC            | √        | √        | X          |                                                                                                                        |
+   +----------------+----------+----------+------------+------------------------------------------------------------------------------------------------------------------------+
+   | SDIO           | √        | √        | X          |                                                                                                                        |
+   +----------------+----------+----------+------------+------------------------------------------------------------------------------------------------------------------------+
+   | Key-Scan       | √        | √        | X          |                                                                                                                        |
+   +----------------+----------+----------+------------+------------------------------------------------------------------------------------------------------------------------+
+   | BOR            | √        | √        | √          |                                                                                                                        |
+   +----------------+----------+----------+------------+------------------------------------------------------------------------------------------------------------------------+
+   | PWR_DOWN       | √        | √        | √          |                                                                                                                        |
+   +----------------+----------+----------+------------+------------------------------------------------------------------------------------------------------------------------+
+   | AON_TIMER      | √        | √        | √          |                                                                                                                        |
+   +----------------+----------+----------+------------+------------------------------------------------------------------------------------------------------------------------+
+   | AON_WAKEPIN    | √        | √        | √          |                                                                                                                        |
+   +----------------+----------+----------+------------+------------------------------------------------------------------------------------------------------------------------+
+   | RTC            | √        | √        | √          |                                                                                                                        |
+   +----------------+----------+----------+------------+------------------------------------------------------------------------------------------------------------------------+
 
 Entering Sleep Mode
 --------------------------------------
@@ -73,7 +82,7 @@ For peripherals that need specific clock settings, such as UART and LOGUART, the
 UART
 ~~~~~~~~
 .. note::
-   When using UART as a wakeup source:
+   When using UART as a wakeup source, there are some restrictions:
    
    - The Rx clock source can only be OSC2M, and do not turn off OSC4M during sleep.
 
@@ -102,7 +111,7 @@ Configuration:
 LOGUART
 ~~~~~~~~~~~~~~
 .. note::
-   When using LOGUART as a wakeup source:
+   When using LOGUART as a wakeup source, there are some restrictions:
    
    - If the Rx clock source is XTAL40M, do not turn off XTAL or OSC4M during sleep; if the Rx clock source is OSC2M, do not turn off OSC4M during sleep.
 
@@ -226,8 +235,6 @@ Sleep Type Configuration
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 KM4 can set sleep mode to CG or PG by calling the function :func:`pmu_set_sleep_type(uint32_t type)`, and users can get CPU's sleep mode by calling the function :func:`pmu_get_sleep_type()`.
 
-
-
 .. note::
       - KM0 and KM4 are in the same power domain, so they will have the same sleep type, thus :func:`pmu_set_sleep_type()` should be set to KM4, and KM0 will follow KM4's sleep mode type.
 
@@ -244,8 +251,7 @@ Wakelock APIs
 In some situations, the system needs to keep awake to receive certain events; otherwise, events may be missed when the system is in sleep mode.
 An idea of wakelock is introduced in that the system cannot enter sleep mode if some module is holding the wakelock.
 
-
-Wakelock is a 32-bit map. Each module has its own bit in the wakelock bit map (see enum `PMU_DEVICE`). Users can also add the wakelock in the enum.
+The Wakelock is a 32-bit map. Each module has its own bit in the wakelock bit map (see enum `PMU_DEVICE`). Users can also add the wakelock in the enum.
 
 - If the wakelock bit map equals zero, it means that there is no module holding the wakelock.
 
@@ -420,11 +426,9 @@ Also, if the CPU chooses PG, some peripherals will lose power so they need to be
 
 
 .. note::
-      - Yield OS is not permitted in the suspend/resume callback functions, thus RTOS APIs which may cause OS yield such as
-        *rtos_task_yield*, *rtos_time_delay_ms*, or mutex, semaphore related APIs are not recommended to use.
+   - Yield OS is not permitted in the suspend/resume callback functions, thus RTOS APIs which may cause OS yield such as *rtos_task_yield*, *rtos_time_delay_ms*, or mutex, semaphore related APIs are not recommended to use.
 
-      - *pmu_set_sysactive_time* is not permitted in the suspend callback function, but permitted in the resume callback function.
-
+   - *pmu_set_sysactive_time* is not permitted in the suspend callback function, but permitted in the resume callback function.
 
 pmu_register_sleep_callback
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -615,7 +619,7 @@ IEEE 802.11 power management allows the station to enter power-saving mode.
 The station cannot receive any frame during power saving. Thus AP needs to buffer these frames and requires the station to periodically wake up to
 check the beacon which has the information of buffered frames.
 
-.. figure:: ../figures/Timeline_of_power_saving.png
+.. figure:: ../figures/timeline_of_power_saving.png
    :scale: 50%
    :align: center
 
@@ -624,10 +628,8 @@ check the beacon which has the information of buffered frames.
 When the system is active, and Wi-Fi is connected and enters IEEE 802.11 power management mechanism, this is called LPS in SDK;
 if the system enters sleep mode when Wi-Fi is connected, we call it WoWLAN mode.
 
-
 In WoWLAN mode, a timer with a period of about 102ms will be set in the suspend function, and KM0 will wake up every 102ms to
 receive the beacon to maintain the connection.
-
 
 Except LPS and WoWLAN modes, there is also an IPS mode, which can be used when Wi-Fi is not connected.
 The following tables list all three power-saving modes for Wi-Fi and the relationship between power modes of the system and Wi-Fi respectively.
@@ -655,7 +657,6 @@ The following tables list all three power-saving modes for Wi-Fi and the relatio
    |        |                                        |                                                                   |                                                      |
    |        | - MAC periodically enters/ exits CG/PG | NP will wake up AP when receiving a data packet.                  |                                                      |
    +--------+----------------------------------------+-------------------------------------------------------------------+------------------------------------------------------+
-
 
 .. table:: Relationship between power modes of system and Wi-Fi
    :width: 100%

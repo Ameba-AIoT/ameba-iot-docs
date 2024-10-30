@@ -5,11 +5,11 @@ Power-Saving Mode
 
 The |CHIP_NAME| has an advanced Power Management Controller (PMC), which can flexibly power up different power domains of the chip, to achieve the best balance between chip performance and power consumption. AON, SYSON, SOC are three main power domains in digital system. Functions in different power domains will be turned off differently in different power-saving modes.
 
-.. figure:: ../figures/different_power_domains.png
-   :scale: 90%
+.. figure:: ../figures/power_domains_and_wakeup_sources.svg
+   :scale: 130%
    :align: center
 
-   Different power domains
+   Power domains and wakeup sources
 
 To simplify the power management for typical scenarios, the |CHIP_NAME| supports two low-power modes, which are sleep mode and deep-sleep mode.
 Tickless is a FreeRTOS low power feature, which just gates the CPU (no clock or power be turned off) when it has nothing to do.
@@ -47,7 +47,8 @@ The following table explains power-saving related terms.
 The FreeRTOS supports a low-power feature called tickless. It is implemented in an idle task which has the lowest priority.
 That is, it is invoked when there is no other task under running. Note that unlike the original FreeRTOS, the |CHIP_NAME| does not wake up based on the `xEpectedIdleTime`.
 
-.. figure:: ../figures/freertos_tickless_in_an_idle_task.png
+.. figure:: ../figures/freertos_tickless_in_an_idle_task.svg
+   :scale: 115%
    :align: center
 
    FreeRTOS tickless in an idle task
@@ -60,9 +61,9 @@ The  figure above shows idle task code flow. In idle task, it will check sleep c
 
 .. note::
 
-      - Even FreeRTOS time control like software timer or `vTaskDelay` is set, it still enters the sleep mode if meeting the requirement as long as the idle task is executed.
+   - Even FreeRTOS time control like software timer or `vTaskDelay` is set, it still enters the sleep mode if meeting the requirement as long as the idle task is executed.
 
-      - `configUSE_TICKLESS_IDLE` must be enabled for power-saving application because sleep mode flow is based on tickless.
+   - `configUSE_TICKLESS_IDLE` must be enabled for power-saving application because sleep mode flow is based on tickless.
 
 
 
