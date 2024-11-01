@@ -8,7 +8,7 @@ The |CHIP_NAME| has an advanced Power Management Controller (PMC), which can fle
 .. only:: RTL8726EA
 
    .. figure:: ../figures/power_domains_and_wakeup_sources_dsp.svg
-      :scale: 110%
+      :scale: 130%
       :align: center
    
       Power domains and wakeup sources
@@ -60,7 +60,7 @@ The figure above shows idle task code flow. In idle task, it will check the wake
 - If yes, it will execute the function :func:`freertos_pre_sleep_processing` to enter sleep or deep-sleep mode.
 
 .. note::
-   - Even FreeRTOS time control like software timer or :func:`vTaskDelay` is set, it still enters sleep mode if meeting the requirement as long as the idle task is executed.
+- Even FreeRTOS time control like software timer or :func:`vTaskDelay` is set, it still enters sleep mode if meeting the requirement as long as the idle task is executed.
 
-   - ``configUSE_TICKLESS_IDLE`` must be enabled for power-saving application because sleep mode flow is based on tickless.
+- ``configUSE_TICKLESS_IDLE`` must be enabled for power-saving application because sleep mode flow is based on tickless.
 
