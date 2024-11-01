@@ -143,17 +143,17 @@
 <span id="power-saving"></span><h1>Power Saving Mode<a class="headerlink" href="#power-saving-mode" title="Link to this heading"></a></h1>
 <p>The AmebaLite has an advanced Power Management Controller (PMC), which can flexibly power up different power domains of the chip, to achieve the best balance between chip performance and power consumption. AON, SYSON, SOC are three main power domains in digital system. Functions in different power domains will be turned off differently in different power-saving modes.</p>
 <figure class="align-center" id="id1">
-<a class="reference internal image-reference" href="../../../_images/different_power_domains.svg"><img alt="../../../_images/different_power_domains.svg" height="199" src="../../../_images/different_power_domains.svg" width="566" /></a>
+<a class="reference internal image-reference" href="../../../_images/power_domains_and_wakeup_sources_dsp.svg"><img alt="../../../_images/power_domains_and_wakeup_sources_dsp.svg" height="213" src="../../../_images/power_domains_and_wakeup_sources_dsp.svg" width="728" /></a>
 <figcaption>
-<p><span class="caption-text">Different power domains</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
+<p><span class="caption-text">Power domains and wakeup sources</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <p>The AmebaLite supports two low-power modes which are deep-sleep mode and sleep mode.
 The deep-sleep mode turns off more power domains than the sleep mode, so it has lower power consumption.
 The tickless is a low-power feature of FreeRTOS, which just halts CPU (no clock or power be turned off) when it has nothing to do.
 The following table explains power-saving related terms.</p>
-<table class="docutils align-default" id="id2" style="width: 100%">
-<caption><span class="caption-text">Power-saving mode</span><a class="headerlink" href="#id2" title="Link to this table"></a></caption>
+<table class="docutils align-default" id="id3" style="width: 100%">
+<caption><span class="caption-text">Power-saving mode</span><a class="headerlink" href="#id3" title="Link to this table"></a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p>Mode</p></th>
 <th class="head"><p>AON domain</p></th>
@@ -201,10 +201,10 @@ The following table explains power-saving related terms.</p>
 </tbody>
 </table>
 <p>The FreeRTOS supports a low-power feature called tickless. It is implemented in an idle task which has the lowest priority. That is, it is invoked when there is no other task under running. Note that unlike the original FreeRTOS, the AmebaLite does not wake up based on the <code class="docutils literal notranslate"><span class="pre">xEpectedIdleTime</span></code>.</p>
-<figure class="align-center" id="id3">
+<figure class="align-center" id="id4">
 <a class="reference internal image-reference" href="../../../_images/freertos_tickless_in_an_idle_task.svg"><img alt="../../../_images/freertos_tickless_in_an_idle_task.svg" height="277" src="../../../_images/freertos_tickless_in_an_idle_task.svg" width="702" /></a>
 <figcaption>
-<p><span class="caption-text">FreeRTOS tickless in an idle task</span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
+<p><span class="caption-text">FreeRTOS tickless in an idle task</span><a class="headerlink" href="#id4" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <p>The figure above shows idle task code flow. In idle task, it will check the wakelock to determine whether CPU needs to enter sleep mode or software tickless or not.</p>
