@@ -17,20 +17,60 @@ When the system enters sleep mode, CPUs can select to enter clock-gating (CG) or
 
    - The mode of memory is configurable when the system enters sleep mode. The retention mode is recommended for the balance between power saving and data retention.
 
-A hardware AON power management control module (AON PMC) is designed to control the power of SYSON PMC.
-When the system enters deep-sleep mode, CPUs and SYSON PMC are powered down while AON PMC maintains active to power on SYSON PMC when wakeup sources are triggered.
-
 In deep-sleep mode, only the memory in AON domain can be maintained, while memory in other domains will be shut down. So CPU cannot restore the stack status.
 
-Various wakeup sources are provided and every wakeup source can be configured to wake up NP or AP according to user's requirement. The following figure shows all the wake-up sources. AON is special because it is mater switch that manages all the wake-up sources in AON domain.
+Various wakeup sources are provided and every wakeup source can be configured to wake up NP or AP according to user's requirement.
+AON is special because it is mater switch that manages all the wake-up sources in AON domain. Only wakeup sources in AON domain can wake up the system from deep-sleep mode.
 
-Some peripherals in AON domain can wake up the system both in sleep mode and deep-sleep mode. Only wakeup sources in AON domain can wake up the system from deep-sleep mode.
+The following table lists the wakeup sources that can be used to wake up the system under different power modes.
 
-.. figure:: ../figures/power_save_wakeup_sources.svg
-   :scale: 120%
-   :align: center
+.. table:: Wakeup sources
+   :width: 100%
+   :widths: auto
 
-   Wakeup sources
+   +----------------+----------+----------+------------+------------------------------------------------------------------------------------------------------------------------+
+   | Wakeup source  | Sleep CG | Sleep PG | Deep-sleep | Restriction                                                                                                            |
+   +================+==========+==========+============+========================================================================================================================+
+   | WLAN           | √        | √        | X          |                                                                                                                        |
+   +----------------+----------+----------+------------+------------------------------------------------------------------------------------------------------------------------+
+   | BT             | √        | √        | X          |                                                                                                                        |
+   +----------------+----------+----------+------------+------------------------------------------------------------------------------------------------------------------------+
+   | IWDG           | √        | √        | X          |                                                                                                                        |
+   +----------------+----------+----------+------------+------------------------------------------------------------------------------------------------------------------------+
+   | IPC            | √        | √        | X          |                                                                                                                        |
+   +----------------+----------+----------+------------+------------------------------------------------------------------------------------------------------------------------+
+   | Basic Timer    | √        | √        | X          |                                                                                                                        |
+   +----------------+----------+----------+------------+------------------------------------------------------------------------------------------------------------------------+
+   | UART           | √        | √        | X          | - When using UART as a wakeup source, if the Rx clock source is XTAL40M, do not turn off XTAL during sleep.            |
+   |                |          |          |            |                                                                                                                        |
+   |                |          |          |            | - The portion of the command used to wake up that exceeds the FIFO depth (64B) will be lost.                           |
+   +----------------+----------+----------+------------+------------------------------------------------------------------------------------------------------------------------+
+   | LOGUART        | √        | √        | X          | - When using LOGUART as a wakeup source, if the Rx clock source is XTAL40M, do not turn off XTAL during sleep.         |
+   |                |          |          |            |                                                                                                                        |
+   |                |          |          |            | - The portion of the command used to wake up that exceeds the FIFO depth (16B) will be lost.                           |
+   +----------------+----------+----------+------------+------------------------------------------------------------------------------------------------------------------------+
+   | GPIO           | √        | √        | X          |                                                                                                                        |
+   +----------------+----------+----------+------------+------------------------------------------------------------------------------------------------------------------------+
+   | SPI            | √        | √        | X          | - When using SPI as a wakeup source, do not turn off the power and clock of SOC domain.                                |
+   |                |          |          |            |                                                                                                                        |
+   |                |          |          |            | - Only when the NP core is active and AP core is sleep, NP can use the SPI to wake up AP.                              |
+   +----------------+----------+----------+------------+------------------------------------------------------------------------------------------------------------------------+
+   | CAP_TOUCH      | √        | √        | X          |                                                                                                                        |
+   +----------------+----------+----------+------------+------------------------------------------------------------------------------------------------------------------------+
+   | ADC            | √        | √        | X          |                                                                                                                        |
+   +----------------+----------+----------+------------+------------------------------------------------------------------------------------------------------------------------+
+   | VAD            | √        | √        | X          |                                                                                                                        |
+   +----------------+----------+----------+------------+------------------------------------------------------------------------------------------------------------------------+
+   | BOR            | √        | √        | √          |                                                                                                                        |
+   +----------------+----------+----------+------------+------------------------------------------------------------------------------------------------------------------------+
+   | PWR_DOWN       | √        | √        | √          |                                                                                                                        |
+   +----------------+----------+----------+------------+------------------------------------------------------------------------------------------------------------------------+
+   | AON_TIMER      | √        | √        | √          |                                                                                                                        |
+   +----------------+----------+----------+------------+------------------------------------------------------------------------------------------------------------------------+
+   | AON_WAKEPIN    | √        | √        | √          |                                                                                                                        |
+   +----------------+----------+----------+------------+------------------------------------------------------------------------------------------------------------------------+
+   | RTC            | √        | √        | √          |                                                                                                                        |
+   +----------------+----------+----------+------------+------------------------------------------------------------------------------------------------------------------------+
 
 Entering Sleep Mode
 --------------------------------------
