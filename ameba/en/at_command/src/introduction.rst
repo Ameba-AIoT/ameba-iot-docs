@@ -6,13 +6,17 @@ Introduction
 This article describes the role, usage and version information of AT commands.
 There are two currently used AT command modes and scenarios, which can be called LOGUART mode and MCU control mode.
 
-Scenario 1: LOGUART Mode - In this mode, users can evaluate the module’s functionality and conduct various tests or demos, such as WiFi or Bluetooth testing. It is important to note that in this mode, AT command information will be intermingled with driver logs since both of them will output from LOGUART.
+- Scenario 1: LOGUART Mode
 
-Scenario 2: MCU Control Mode - This scenario includes connecting the AT command module via UART/SPI/SDIO for rapid product development by the customer. In this mode, AT command information is transmitted and displayed exclusively through UART/SPI/SDIO.
+  In this mode, users can evaluate the module’s functionality and conduct various tests or demos, such as WiFi or Bluetooth testing.
+  It is important to note that in this mode, AT command information will be intermingled with driver logs since both of them will output from LOGUART.
 
-.. table:: AT command modes and scenarios  
-   :align: center
-   :name: at_command_modes_and_scenarios 
+- Scenario 2: MCU Control Mode
+
+  This scenario includes connecting the AT command module via UART/SPI/SDIO for rapid product development by the customer.
+  In this mode, AT command information is transmitted and displayed exclusively through UART/SPI/SDIO.
+
+.. table:: AT command modes and scenarios
    :width: 100%
    :widths: auto
 
@@ -33,13 +37,12 @@ We set a Ameba module as a slave, and a MCU as a host. The host can send AT comm
 Users can use AmebaLite, AmebaSmart, and AmebaDPlus as slaves for AT commands.
 AT commands provides a wide range of command types, such as Wi-Fi commands, MQTT commands, TCP/IP commands and Bluetooth commands.
 
-
 Hardware Connection
 --------------------
-
 Some hardwares are inquired at first.
 
-LOGUART mode:
+LOGUART mode
+^^^^^^^^^^^^^
 
 - Ameba board: As a slave module.
 - PC (or other host device): Input AT commands, observe the response of AT commands.
@@ -48,13 +51,13 @@ LOGUART mode:
 In case of LOGUART mode, the input and response of AT commands are shown in the same port.
 
 .. figure:: ../figures/loguart_mode.svg
-   :scale: 100%
+   :scale: 120%
    :align: center
 
    LOGUART mode
 
-
-MCU Control mode:
+MCU Control mode
+^^^^^^^^^^^^^^^^^^
 
 - Ameba board: As a slave module.
 - Raspberry Pi (or other MCU host device): Input AT commands, observe the response of AT commands.
@@ -64,14 +67,14 @@ MCU Control mode:
 In case of MCU control mode, the input and response of AT commands can be separated from the driver log, making it easier for users to view the execution results of AT commands more intuitively.
 
 .. figure:: ../figures/mcu_control_mode.svg
-   :scale: 100%
+   :scale: 120%
    :align: center
 
    MCU Control mode
 
+In MCU Control mode, users should prepare the :file:`atcmd_config.json` file in advance, convert it into a bin file (for detailed instructions, please refer to the AN VFS section), and download it to the module’s corresponding flash partition along with the image. If no VFS AT command configuration file is provided, the default configuration of UART will be used.
 
-In MCU Control mode, users should prepare the ``atcmd_config.json`` file in advance, convert it into a bin file (for detailed instructions, please refer to the AN VFS section), and download it to the module’s corresponding flash partition along with the image. If no VFS AT command configuration file is provided, the default configuration of UART will be used.
-For different chip types, the default UART input and output ports are shown in flowing table.
+For different chip types, the default UART input and output ports are shown in the following table.
 
 .. table:: Default UART port and baud rates for chips
    :width: 100%
@@ -86,6 +89,23 @@ For different chip types, the default UART input and output ports are shown in f
    +-------------+---------+---------+-------------------+
    | AmebaDPlus  | PA_26   | PA_27   | 38400             |
    +-------------+---------+---------+-------------------+
+
+If you want to use Bluetooth AT Commands, you have to run ``$make menuconfig`` to enable BLE transfer module. The procedure is as belows:
+
+.. code-block::
+
+   // Your sdk direction
+   cd $<sdk>
+   // The chip type you choose, e.g. amebadplus_gcc_project
+   cd source/<ameba_type>
+   make menuconfig
+   // ……
+
+.. figure:: ../figures/enable_ble_transfer_module.png
+   :scale: 90%
+   :align: center
+
+   Enable BLE transfer module
 
 Command Description
 --------------------
@@ -154,7 +174,6 @@ In this command, there are 3 parameters at all, the 2nd parameter is a string *h
 In this case, the comma inside *head,tail* will not be considered as a segmentation of parameters, but as a part of string.
 And, the 3rd parameter is a string *head\\tail* including a backslash. Single backslash is illegal here, in other words, single backslash must be followed by a comma or another backslash in these AT commands.
 For the other AT commands which do not need use escapes character, the comma will always be considered as a segmentation, and single backslash is allowed as a common character.
-
 
 .. table:: Commands with escapes character
    :width: 100%

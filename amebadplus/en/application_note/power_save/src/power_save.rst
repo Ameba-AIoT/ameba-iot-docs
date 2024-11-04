@@ -660,13 +660,13 @@ The following tables list all three power-saving modes for Wi-Fi and the relatio
 
 .. table:: Relationship between power modes of system and Wi-Fi
    :width: 100%
-   :widths: 20, 20, 60
+   :widths: auto
 
    +-------------------+------------------+------------------------------------------------------------------------+
    | System power mode | Wi-Fi power mode | Description                                                            |
    +===================+==================+========================================================================+
    | Active            | IPS              | Wi-Fi is on, but not connected.                                        |
-   |                   +-------------------+------------------------------------------------------------------------+
+   |                   +-------------------+-----------------------------------------------------------------------+
    |                   | LPS              | Wi-Fi is connected and enters IEEE 802.11 power management mechanism.  |
    +-------------------+------------------+------------------------------------------------------------------------+
    | Sleep             | Wi-Fi OFF/IPS    |                                                                        |
