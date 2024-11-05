@@ -855,7 +855,7 @@ Parameter
 
 :<disc_reason>: Reason of disconnect.
 
-   - Refer to bt_types.h
+   - Refer to :file:`bt_types.h`
 
 :<role>: Master or slave.
 
@@ -1106,7 +1106,7 @@ Parameter
 
 :<oob_data_flag>: OOB data flag.
 
-   - Default is all 0's.
+   - Default is all 0.
 
 :<bond>: Bond flag.
 
@@ -1116,7 +1116,7 @@ Parameter
 
 :<use_fixed_key>: The fix passcode available for pairing.
 
-   - 0: Disabled(Default).
+   - 0: Disabled (default).
 
    - 1: Enabled
 
@@ -1130,7 +1130,7 @@ Parameter
 
 :<auto_sec_req>: Send smp security request when connected.
 
-   - 0: Disabled(Default).
+   - 0: Disabled (default).
 
    - 1: Enabled.
 
@@ -1761,9 +1761,9 @@ Parameter
 
    - 0: Success.
 
-   - others: Failure cause.
+   - Others: Failure cause.
 
-:<service_app_id>: Service app id.
+:<service_app_id>: Service APP ID.
 
 :<len>: Length of data.
 
@@ -1781,16 +1781,16 @@ Example
    +BLEGATTS:write,12,23,4,1,1,01
 
 .. note::
-   You could use this command to enable/disable notify/indicate. The format is as following:
+   You could use this command to enable/disable notify/indicate. The format is as follows:
 
-.. code-block::
-
-   AT+BLEGATTC=write,17,0,0x17,2,0100
-   //17: Connection handle
-   //0: Write request type, must be 0
-   //0x17: CCCD handle
-   //2: Length of write data, must be 2
-   //0100: Write data, 0100 means enable notify, 0200 means enable indicate, 0000 means disable notify/indicate
+   .. code-block::
+   
+      AT+BLEGATTC=write,17,0,0x17,2,0100
+      //17: Connection handle
+      //0: Write request type, must be 0
+      //0x17: CCCD handle
+      //2: Length of write data, must be 2
+      //0100: Write data, 0100 means enable notify, 0200 means enable indicate, 0000 means disable notify/indicate
 
 AT+BLEGATTS=notify
 ------------------------------------

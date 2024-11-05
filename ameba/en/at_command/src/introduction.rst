@@ -8,8 +8,10 @@ There are two currently used AT command modes and scenarios, which can be called
 
 - Scenario 1: LOGUART Mode
 
-  In this mode, users can evaluate the module’s functionality and conduct various tests or demos, such as WiFi or Bluetooth testing.
-  It is important to note that in this mode, AT command information will be intermingled with driver logs since both of them will output from LOGUART.
+  In this mode, users can evaluate the module’s functionality and conduct various tests or demos, such as Wi-Fi or Bluetooth testing.
+
+  .. note::
+     AT command information will be intermingled with driver logs as both of them will be output from LOGUART.
 
 - Scenario 2: MCU Control Mode
 
@@ -20,33 +22,31 @@ There are two currently used AT command modes and scenarios, which can be called
    :width: 100%
    :widths: auto
 
-   +--------------+-------------------+-------------------+----------------------+
-   | Mode         | Connecting Method | Status            | Scenario             |
-   +==============+===================+===================+======================+
-   | LOGUART      | loguart           | Ready             | Evaluate, Test, Demo |
-   +--------------+-------------------+-------------------+----------------------+
-   | MCU Control  | uart              | Ready             |                      |
-   +              +-------------------+-------------------+                      +
-   |              | spi               | Developing        | Product Develop      |
-   +              +-------------------+-------------------+                      +
-   |              | sdio              | Developing        |                      |
-   +--------------+-------------------+-------------------+----------------------+
+   +--------------------+-------------------+-------------------+----------------------+
+   | Mode               | Connecting method | Status            | Scenario             |
+   +====================+===================+===================+======================+
+   | LOGUART Mode       | LOGUART           | Ready             | Evaluate/Test/Demo   |
+   +--------------------+-------------------+-------------------+----------------------+
+   | MCU Control Mode   | UART              | Ready             |                      |
+   |                    +-------------------+-------------------+                      |
+   |                    | SPI               | Developing        | Product development  |
+   |                    +-------------------+-------------------+                      |
+   |                    | SDIO              | Developing        |                      |
+   +--------------------+-------------------+-------------------+----------------------+
 
-
-We set a Ameba module as a slave, and a MCU as a host. The host can send AT commands to the slave and receive the corresponding AT response.
-Users can use AmebaLite, AmebaSmart, and AmebaDPlus as slaves for AT commands.
-AT commands provides a wide range of command types, such as Wi-Fi commands, MQTT commands, TCP/IP commands and Bluetooth commands.
+We set the Ameba module as a slave, and the MCU as a host. The host can send AT commands to the slave and receive the corresponding AT response.
+Users can use AmebaLite, AmebaSmart, and AmebaDPlus as slaves for AT commands.   
+The AT commands consist of a wide range of types, such as Wi-Fi commands, MQTT commands, TCP/IP commands, and Bluetooth commands.
 
 Hardware Connection
 --------------------
 Some hardwares are inquired at first.
 
-LOGUART mode
-^^^^^^^^^^^^^
-
+LOGUART Mode
+~~~~~~~~~~~~~~~
 - Ameba board: As a slave module.
 - PC (or other host device): Input AT commands, observe the response of AT commands.
-- LOGUART: Connect module to PC (or other host device), download image, transmit driver and AT command log.
+- LOGUART: Connect the module to PC (or other host device), download image, transmit driver and AT command log.
 
 In case of LOGUART mode, the input and response of AT commands are shown in the same port.
 
@@ -56,13 +56,12 @@ In case of LOGUART mode, the input and response of AT commands are shown in the 
 
    LOGUART mode
 
-MCU Control mode
-^^^^^^^^^^^^^^^^^^
-
+MCU Control Mode
+~~~~~~~~~~~~~~~~~
 - Ameba board: As a slave module.
 - Raspberry Pi (or other MCU host device): Input AT commands, observe the response of AT commands.
 - LOGUART: Connect module to Raspberry Pi (or other MCU host device), download image, show driver log.
-- SPI/UART/SDIO : Connect module to Raspberry Pi (or other MCU host device), transmit AT command, show AT command response.
+- SPI/UART/SDIO: Connect module to Raspberry Pi (or other MCU host device), transmit AT command, show AT command response.
 
 In case of MCU control mode, the input and response of AT commands can be separated from the driver log, making it easier for users to view the execution results of AT commands more intuitively.
 
@@ -72,108 +71,93 @@ In case of MCU control mode, the input and response of AT commands can be separa
 
    MCU Control mode
 
-In MCU Control mode, users should prepare the :file:`atcmd_config.json` file in advance, convert it into a bin file (for detailed instructions, please refer to the AN VFS section), and download it to the module’s corresponding flash partition along with the image. If no VFS AT command configuration file is provided, the default configuration of UART will be used.
+In MCU Control mode, users should prepare the :file:`atcmd_config.json` file in advance, convert it into a bin file (for detailed instructions, refer to AN VFS Chapter), and download it to the module’s corresponding Flash partition along with the image.
+If no VFS AT command configuration file is provided, the default configuration of UART will be used.
 
-For different chip types, the default UART input and output ports are shown in the following table.
+For different chips, the default UART input and output ports are shown in the following table.
 
 .. table:: Default UART port and baud rates for chips
    :width: 100%
    :widths: auto
 
    +-------------+---------+---------+-------------------+
-   | IC          | UART TX | UART RX | Default baud rate |
+   | Chip name   | UART Tx | UART Rx | Default baud rate |
    +=============+=========+=========+===================+
-   | AmebaSmart  | PA 3    | PA_2    | 38400             |
+   | AmebaSmart  | PA_3    | PA_2    | 38400             |
    +-------------+---------+---------+-------------------+
    | AmebaLite   | PA_28   | PA_29   | 38400             |
    +-------------+---------+---------+-------------------+
    | AmebaDPlus  | PA_26   | PA_27   | 38400             |
    +-------------+---------+---------+-------------------+
 
-If you want to use Bluetooth AT Commands, you have to run ``$make menuconfig`` to enable BLE transfer module. The procedure is as belows:
-
-.. code-block::
-
-   // Your sdk direction
-   cd $<sdk>
-   // The chip type you choose, e.g. amebadplus_gcc_project
-   cd source/<ameba_type>
-   make menuconfig
-   // ……
-
-.. figure:: ../figures/enable_ble_transfer_module.png
-   :scale: 90%
-   :align: center
-
-   Enable BLE transfer module
-
 Command Description
 --------------------
-Command format
-~~~~~~~~~~~~~~
-
+Command Format
+~~~~~~~~~~~~~~~
 The current format of the supported AT command set starts with two capital letters ``AT`` (abbreviation of attention), called the start characters, followed by a ``+``, then by the command name.
-If there are several parameters more, it will be followed by an ``=``, then by a parameter list. For example:
+If there are several parameters more, it will be followed by an ``=``, then by a parameter list.
 
-.. code-block::
+.. admonition:: Example
 
-   AT+COMMAND=parameter1, parameter2
-
-In this case, the first two letters ``AT`` are the start characters, indicating that the current string can be recognized as AT command, and ``+`` is used to separate the start characters and subsequent commands.
-``COMMAND`` is the specific command name, to be executed right now. 
-This command requires some parameters. It contains two parameters in this example: *parameter1* and *parameter2*. 
+   .. code-block::
+   
+      AT+COMMAND=parameter1,parameter2
+   
+   In this example, the first two letters ``AT`` are the start characters, indicating that the current string can be recognized as AT command, and ``+`` is used to separate the start characters and subsequent commands.
+   ``COMMAND`` is the specific command name, to be executed right now. This command requires two parameters: `parameter1` and `parameter2`.
 
 Sometimes, several parameters in AT command may be ignored, in this case, one or more comma(s) should be input inside parameters.
 
-For example:
+.. admonition:: Example
 
-.. code-block::
-
-   AT+COMMAND=parameter1, , parameter3
-
-In this command above, there is an invisible *parameter2* between two commas. In this case, the *parameter2* is considered to use default value.
+   .. code-block::
+   
+      AT+COMMAND=parameter1, ,parameter3
+   
+   In this command, there is an invisible `parameter2` between two commas, and it is considered to use the default value.
 
 Command Response
 ~~~~~~~~~~~~~~~~~
-
 After receiving the AT command, the slave judges whether it is a valid command at first.
-If it is considered as an invalid command (not in the AT command set), **"unkown command COMMAND"** will be performed.
+If it is considered as an invalid command (not in the AT command set), ``unkown command COMMAND`` will be performed.
 Otherwise, it will be executed based on the input command and its parameters.
-When the command is successfully executed, the command name plus an **OK** mark will generally be returned.
-When the command execution fails, the command name plus an **ERROR** mark will generally be returned, followed by an error code.
 
-.. note:: Every AT command has it's corresponding error code number and meaning.
+- When the command is successfully executed, the command name plus an ``OK`` mark will generally be returned.
 
-Command Paramter
-~~~~~~~~~~~~~~~~~
+- When the command execution fails, the command name plus an ``ERROR`` mark will generally be returned, followed by an error code.
 
-In this text, when introducing the parameter list of a certain AT command, angle brackets ``< >`` are added to indicate the name of the parameter, and square brackets ``[ ]`` are added to indicate that the parameter is optional.
+.. note::
+   Every AT command has it's corresponding error code number and meaning.
+
+Command Parameter
+~~~~~~~~~~~~~~~~~~~
+In this section, when introducing the parameter list of an AT command, angle bracket ``< >`` is added to indicate the name of the parameter, and square bracket ``[ ]`` is added to indicate that the parameter is optional.
 Different parameters are separated by commas.
 
-For example:
+.. admonition:: Example
 
-.. code-block::
-
-   AT+COMMAND=<param1>[,<param2>,<param3>]
-
-In this command, the 1st parameter named *param1* is mandatory, the 2nd parameter named *param2*, and the 3rd parameter named *param3* are optional.
+   .. code-block::
+   
+      AT+COMMAND=<param1>[,<param2>,<param3>]
+   
+   In this command, the first parameter named `param1` is mandatory, the second parameter named `param2`, and the third parameter named `param3` are optional.
 
 Escapes Character
 ~~~~~~~~~~~~~~~~~~
-Especially, in several AT commands, if you really need let one or more comma(s) be part(s) of a parameter, it is recommended to use escapes character ``\`` instead.
+Especially, in several AT commands, if you really need to let one or more comma(s) be part(s) of a parameter, it is recommended to use escapes character ``\`` instead.
 Furthermore, the backslash itself is expressed in escapes character ``\\``.
 
+.. admonition:: Example
 
-For example:
+   .. code-block::
+   
+      AT+COMMAND=parameter1,head\,tail,head\\tail
+   
+   In this command, there are three parameters at all, the second parameter is a string `head,tail` which includes a comma.
+   The comma inside `head,tail` will not be considered as a segmentation of parameters, but as a part of a string.
+   And, the third parameter is a string `head\\tail` including a backslash. Single backslash is illegal here, in other words, single backslash must be followed by a comma or another backslash in these AT commands.
 
-.. code-block::
-
-   AT+COMMAND=parameter1,head\,tail,head\\tail
-
-In this command, there are 3 parameters at all, the 2nd parameter is a string *head,tail* which includes a comma.
-In this case, the comma inside *head,tail* will not be considered as a segmentation of parameters, but as a part of string.
-And, the 3rd parameter is a string *head\\tail* including a backslash. Single backslash is illegal here, in other words, single backslash must be followed by a comma or another backslash in these AT commands.
-For the other AT commands which do not need use escapes character, the comma will always be considered as a segmentation, and single backslash is allowed as a common character.
+For the other AT commands which do not need to use escapes character, the comma will always be considered as a segmentation, and single backslash is allowed as a common character.
 
 .. table:: Commands with escapes character
    :width: 100%
@@ -193,16 +177,15 @@ For the other AT commands which do not need use escapes character, the comma wil
 
 Command Length
 ~~~~~~~~~~~~~~~
-
 Each AT command must not exceed a length limit, otherwise, the excess part will be ignored.
 
-There are 2 types of length limit. When longer command format is enabled, the length limit is 4095 bytes, otherwise (shorter command format), the length limit is 126 bytes.
-When the AT command using escapes character, the escapes characters such as '``\`` or ``\\`` should be regarded as 2 bytes.
+There are two types of length limit. When longer command format is enabled, the length limit is 4095 bytes, otherwise (shorter command format), the length limit is 126 bytes.
+When the AT command using escapes character, the escapes characters such as ``\`` or ``\\`` should be regarded as 2 bytes.
 
 You can modify the length limit by ``make menuconfig`` when compiling the SDK. If you select the option ``Enable Longer CMD``, the length limit will be larger.
 
 AT Command List
-------------------------------
+------------------
 The AT commands supported now are listed in the following table.
 
 .. table:: AT commands list
@@ -303,80 +286,87 @@ The AT commands supported now are listed in the following table.
    | :ref:`Bluetooth AT Commands<bluetooth_at_commands>`  |                                                              |                                                           |
    +------------------------------------------------------+--------------------------------------------------------------+-----------------------------------------------------------+
 
-
 AT Command Version
 ----------------------
-Users can query the current firmware’s AT command version by executing the AT+GMR command. The version number employs a semantic versioning system, and its format is as follows:
+Users can query the current firmware’s AT command version by executing ``AT+GMR`` command.
+The version number employs a semantic versioning system, and its format is as follows:
 
 .. code-block::
 
     <major>.<minor>.<patch>
 
-where:
+Where:
 
-- <major>is the major version. Represents major updates, typically including the introduction of new chip support, new features, etc.
+:<major>: the major version, represents major updates, typically including the introduction of new chip support, new features, etc.
 
-- <minor>is the minor version. Represents important updates, typically including new commands, bug fixes, etc.
+:<minor>: the minor version, represents important updates, typically including new commands, bug fixes, etc.
 
-- <patch>is the patch version. Represents fixing some issues without adding any new features.
+:<patch>: the patch version, represents fixing some issues without adding any new features.
 
-For example:
+.. admonition:: Example
 
-.. code-block::
+   .. code-block::
+   
+   	// send ATCMD
+   	AT+GMR
+   	// receive ATCMD response
+   	+GMR:
+   	ATCMD VERSION: v2.2.1
+   	SDK VERSION: v3.5
 
-	// send ATCMD
-	AT+GMR
-	// receive ATCMD response
-	+GMR:
-	ATCMD VERSION: v2.2.1
-	SDK VERSION: v3.5
-
-
-
-Build image
-----------------------
+Building image
+-----------------
 Preparation
-~~~~~~~~~~~~~~~~~~~~~~
-Besides obtaining the release version from GitHub, users can also build images with ``{sdk}`` by self. For detailed building procedure, please refer to the AN documents for different type of chips.
+~~~~~~~~~~~~~~~
+Besides obtaining the release version from GitHub, users can also build images with ``{sdk}`` by self. For detailed building procedure, refer to the Application Note of the specific Ameba chips.
 
 Building
 ~~~~~~~~~~~~~~~~
-After preparations above, users can build images in the ``{sdk}`` directory.
+After preparations above, users can build images in the ``{sdk}`` directory. The procedure is as follows:
 
-Users can run ``make menuconfig`` to choice MCU Control mode or LOGUART mode. The procedure is as follows:
+1. Run ``make menuconfig`` to choice MCU Control mode or LOGUART mode. 
 
-.. code-block::
+   .. code-block::
+   
+      // Your SDK direction
+      cd $ {sdk}
+      // The chip type you choose, e.g. amebadplus_gcc_project
+      cd source/{ameba_name}
+      make menuconfig
+      // ...
+   
+   .. figure:: ../figures/choice_mode.png
+      :scale: 90%
+      :align: center
+   
+      Choice mode
 
-   // Your SDK direction
-   cd $<sdk>
-   // The chip type you choose, e.g. amebasmart
-   cd source/<ameba_type>
-   make menuconfig
-   // ……
+2. Run ``make all`` to rebuild the project.
 
-.. figure:: ../figures/choice_mode.png
-   :scale: 100%
+3. After building successfully, the image files can be found under ``{ameba_name}`` directory.
+
+If users want to use Bluetooth AT Commands, run ``$make menuconfig`` to enable BLE transfer module first.
+
+.. figure:: ../figures/enable_ble_transfer_module.png
+   :scale: 90%
    :align: center
 
-   Choice mode
-
-After ``make menuconfig``, users can run ``make all`` to rebuild the project.
-
-After building successfully, the image files can be found at ``{ameba_type}`` directory.
+   Enable BLE transfer module
 
 Downloading Image
 ----------------------------
 There are two ways to download image to Flash:
 
-(1) Image Tool, a software provided by Realtek (recommended).
+-  Image Tool, a software provided by Realtek (recommended).
 
-(2) GDB Server, mainly used for GDB debug user case.
+-  GDB Server, mainly used for GDB debug user case.
 
 In this section, we will introduce the first one.
 
-The Image Tool is the official image download tool developed by Realtek for Ameba series SoC. It can be used to download images to the Flash of device through the UART download interface.
+The Image Tool is the official image download tool developed by Realtek for Ameba series SoC.
+It can be used to download images to the Flash of device through the UART download interface.
 
-When you open the image tool, it is shown as the following figure.
+When you lanuch the image tool, it is shown as the following figure.
 
 .. figure:: ../figures/image_tool.png
    :scale: 70%
@@ -384,18 +374,23 @@ When you open the image tool, it is shown as the following figure.
 
    Image Tool
 
-Device profiles provide the necessary device information required for image download, with the naming rules:
+The device profiles provide the necessary device information required for image download, with the naming rules:
 
 .. code-block::
 
    <SoC name>_<OS type>_<Flash type>[_<Extra info>].rdev
 
-For different type of chips, you should select the corresponding rdev file before downloading image to flash. You can click the :menuselection:`File > Open` to select corresponding rdev file. Then, select the corresponding image files.
+For different Ameba chips, click the :menuselection:`File > Open` to select the corresponding ``.rdev`` file before downloading image to Flash. Then, select the corresponding image files.
 
 Before downloading image, the chip should enter download mode at first.
-You can press and hold the :guilabel:`DOWNLOAD` button on chip, then press the :guilabel:`CHIP_EN` button, the chip will enter download mode after you loosen them both.
 
-Then connect the chip module to PC with USB cable, and press the :guilabel:`DOWNLOAD` button of Image Tool to start downloading the image files.
+1. Press and hold the :guilabel:`DOWNLOAD` button on chip
+
+2. Press the :guilabel:`CHIP_EN` button
+
+3. Release them both to let the chip enter download mode
+
+4. Connect the chip module to PC with USB cable, and press the :guilabel:`DOWNLOAD` button of Image Tool to start downloading the image files
 
 
 
