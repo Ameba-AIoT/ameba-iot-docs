@@ -354,10 +354,9 @@ Users can run ``make menuconfig`` to choice MCU Control mode or LOGUART mode. Th
    make menuconfig
    // ……
 
-.. figure:: ../figures/general_config.png
+.. figure:: ../figures/choice_mode.png
    :scale: 100%
    :align: center
-   :name: general_config
 
    Choice mode
 
@@ -379,7 +378,7 @@ The Image Tool is the official image download tool developed by Realtek for Ameb
 
 When you open the image tool, it is shown as the following figure.
 
-.. figure:: ../figures/Download_image.png
+.. figure:: ../figures/image_tool.png
    :scale: 70%
    :align: center
 
