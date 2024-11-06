@@ -1,4 +1,4 @@
-.. _virtual_file_system:
+.. _amebalite_virtual_file_system:
 
 Introduction
 ------------------------
