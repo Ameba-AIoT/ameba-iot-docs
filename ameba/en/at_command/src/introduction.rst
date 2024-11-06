@@ -71,10 +71,17 @@ In case of MCU control mode, the input and response of AT commands can be separa
 
    MCU Control mode
 
-In MCU Control mode, users should prepare the :file:`atcmd_config.json` file in advance, convert it into a bin file (for detailed instructions, refer to AN VFS Chapter), and download it to the module’s corresponding Flash partition along with the image.
-If no VFS AT command configuration file is provided, the default configuration of UART will be used.
+.. only:: RTL8721D
 
-For different chips, the default UART input and output ports are shown in the following table.
+   In MCU Control mode, users should prepare the :file:`atcmd_config.json` file in advance, convert it into a bin file (refer to :ref:`Virtual File System <amebadplus_virtual_file_system>` for detailed instructions), and download it to the module’s corresponding Flash partition along with the image.
+   If no VFS AT command configuration file is provided, the default configuration of UART will be used.
+
+.. only:: RTL8726EA
+
+   In MCU Control mode, users should prepare the :file:`atcmd_config.json` file in advance, convert it into a bin file (refer to :ref:`Virtual File System <amebalite_virtual_file_system>` for detailed instructions), and download it to the module’s corresponding Flash partition along with the image.
+   If no VFS AT command configuration file is provided, the default configuration of UART will be used.
+
+For different chips, the default UART input and output ports are listed in the following table.
 
 .. table:: Default UART port and baud rates for chips
    :width: 100%
