@@ -28,7 +28,7 @@ AT Message
 ~~~~~~~~~~~
 .. code-block::
 
-   //Here is the callback message of start adv when init transfer module
+   //Here is the callback message of start advertising when init transfer module
    +BLEGAP:adv,start,0,0
 
 Parameter
@@ -82,12 +82,12 @@ Response
 
 Parameter
 ~~~~~~~~~~~~~~~~~~
-:<name>: The device name to set.
+:<name>: The device name to be set.
 
    - The length of device name should not exceed 40.
 
 .. note::
-   This command only sets the device name. If you want to modify the name in adv data, use the command ``AT+BLEGAP=adv_data[,<data>]`` before adv started.
+   This command only sets the device name. If you want to modify the name in advertising data, use the command ``AT+BLEGAP=adv_data[,<data>]`` before advertising started.
 
 
 AT+BTDEMO= transfer_module,get_uuid
@@ -196,7 +196,7 @@ AT+BLEGAP=addr
 ----------------------------
 Description
 ~~~~~~~~~~~~~~~~~~~~~~
-Get BT mac address.
+Get BT MAC address.
 
 Command
 ~~~~~~~~~~~~~~
@@ -229,7 +229,7 @@ AT+BLEGAP=rand_addr
 --------------------------------------
 Description
 ~~~~~~~~~~~~~~~~~~~~~~
-Set random BT mac address.
+Set random BT MAC address.
 
 Command
 ~~~~~~~~~~~~~~
@@ -245,7 +245,7 @@ Response
 
 Parameter
 ~~~~~~~~~~~~~~~~~~
-:<addr>: The random address to set.
+:<addr>: The random address to be set.
 
    - The string of address, e.g. 001122334455
 
@@ -326,14 +326,14 @@ AT Message
 ~~~~~~~~~~~~~~~~~~~~
 .. code-block::
 
-   //Here is the callback message of start adv
+   //Here is the callback message of start advertising
    +BLEGAP:adv,<op>,<result>,<type>
 
 Or
 
 .. code-block::
 
-   //Here is the callback message of stop adv
+   //Here is the callback message of stop advertising
    +BLEGAP:adv,<op>,<result>,<reason>
 
 .. _bt_at_blegap_adv_para:
@@ -342,9 +342,9 @@ Parameter
 ~~~~~~~~~~~~~~~~~~
 :<op>: Advertising option.
 
-   - 1: start advertising.
+   - 1: Start advertising.
 
-   - 0: stop advertising.
+   - 0: Stop advertising.
 
 :<type>: Advertisement type.
 
@@ -412,19 +412,19 @@ Parameter
 
    - 0x07: All advertisement channel enabled.
 
-:<result>: Result of start/stop adv.
+:<result>: Result of start/stop advertising.
 
    - 0: Success.
 
    - -1: Fail.
 
-:<reason>: Reason of stop adv.
+:<reason>: Reason of stop advertising.
 
    - 0: Stopped by host.
 
    - 1: Stopped due to connection established.
 
-   - 2: Stopped due to duration expired or number of extended adv events exceeded.
+   - 2: Stopped due to duration expired or number of extended advertising events exceeded.
 
    - 3: Unknown.
 
@@ -455,7 +455,7 @@ AT+BLEGAP=adv_data
 ------------------------------------
 Description
 ~~~~~~~~~~~~~~~~~~~~~~
-Set advertising data before adv started.
+Set advertising data before advertising started.
 
 Command
 ~~~~~~~~~~~~~~
@@ -801,7 +801,7 @@ Parameter
 
    - 1: Stopped due to connection established.
 
-   - 2: Stopped due to duration expired or number of extended adv events exceeded.
+   - 2: Stopped due to duration expired or number of extended advertising events exceeded.
 
    - 3: Unknown.
 
@@ -1844,7 +1844,7 @@ Example
    +BLEGATTS:notify,0,12,23,6
 
 AT+BLEGATTS=indicate
-----------------------------------------
+----------------------
 Description
 ~~~~~~~~~~~~~~~~~~~~~~
 Send indication from GATT server.
