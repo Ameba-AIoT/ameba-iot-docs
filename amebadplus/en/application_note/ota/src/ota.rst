@@ -96,7 +96,7 @@ The layout of KM4 bootloader image is illustrated below.
 
    Layout of KM4 bootloader image
 
-OTA Select Flow
+OTA Selection Flow
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 The KM4 ROM will select OTA image according to the image version number in bootloader manifest.
 
@@ -154,39 +154,39 @@ Modifying Configurations
    a. Modify the version number for bootloader.
 
       .. code-block:: json
-	     :emphasize-lines: 4, 5
-	     
-	     "boot": 
-		 {
-			"IMG_ID": "0",
-			"IMG_VER_MAJOR": 1,
-			"IMG_VER_MINOR": 1,
+	      :emphasize-lines: 4, 5
 
-			"SEC_EPOCH": 1,
-			
-			"HASH_ALG": "sha256",
-			
-			"RSIP_IV": "01020304050607080000000000000000"
-		},
-			
+	      "boot":
+		   {
+			  "IMG_ID": "0",
+			  "IMG_VER_MAJOR": 1,
+			  "IMG_VER_MINOR": 1,
+
+			  "SEC_EPOCH": 1,
+
+			  "HASH_ALG": "sha256",
+
+			  "RSIP_IV": "01020304050607080000000000000000"
+		   },
+
 
    b. Modify the version number for certificate and application.
 
       .. code-block:: json
-	     :emphasize-lines: 4, 5
+	      :emphasize-lines: 4, 5
 	     
-	     "app":
-		 {
-			"IMG_ID": "1",
-			"IMG_VER_MAJOR": 1,
-			"IMG_VER_MINOR": 1,
+	      "app":
+		   {
+			  "IMG_ID": "1",
+			  "IMG_VER_MAJOR": 1,
+			  "IMG_VER_MINOR": 1,
 
-			"SEC_EPOCH": 1,
+			  "SEC_EPOCH": 1,
 			
-			"HASH_ALG": "sha256",
+			  "HASH_ALG": "sha256",
 			
-			"RSIP_IV": "213253647586a7b80000000000000000"
-		},
+			  "RSIP_IV": "213253647586a7b80000000000000000"
+		   },
 
 2. Change the bootloader version of anti-rollback and enable anti-rollback if necessary.
 
@@ -205,7 +205,8 @@ Modifying Configurations
          +--------------------+----------------------+---------+-----------------------------------------+
 
       The bootloader version of anti-rollback is 0 by default. Users can change the number of '0' bit to enlarge the bootloader version.
-	  For example, users can program the bootloader version of anti-rollback to 1 by the following command:
+
+      For example, users can program the bootloader version of anti-rollback to 1 by the following command:
 
       .. code-block::
 
@@ -233,11 +234,11 @@ Modifying Configurations
 
    .. note::
    
-         - The address of bootloader OTA2 is the value of OTP 0x36C with 12-bit left shifted, or is the value of OTP 0x36C * 4K.
+      - The address of bootloader OTA2 is the value of OTP 0x36C with 12-bit left shifted, or is the value of OTP 0x36C * 4K.
 
-         - If the address of bootloader OTA2 is 0xFFFFFFFF by default, the bootloader won't be upgraded when in OTA upgrade and the device always boots from bootloader OTA1.
+      - If the address of bootloader OTA2 is 0xFFFFFFFF by default, the bootloader won't be upgraded when in OTA upgrade and the device always boots from bootloader OTA1.
 
-         - The above commands are used in the serial terminal tool.
+      - The above commands are used in the serial terminal tool.
 
 
 4. Rebuild the project using ``make all`` command to generate the signed images.
@@ -246,14 +247,14 @@ Modifying Configurations
 
    .. code-block::
       :emphasize-lines: 6
-   
+
       [MODULE_BOOT-LEVEL_INFO]: KM0 PSRAM[0c051b60:20]
-	  [MODULE_BOOT-LEVEL_INFO]: KM0 BOOT[20004d00:40]
-	  [MODULE_BOOT-LEVEL_INFO]: KM4 XIP IMG[0e000000:5ad80]
-	  [MODULE_BOOT-LEVEL_INFO]: KM4 SRAM[20010000:13c0]
-	  [MODULE_BOOT-LEVEL_INFO]: KM4 PSRAM[0e05c140:20]
-	  [MODULE_BOOT-LEVEL_INFO]: IMG2 BOOT from OTA 1
-	  [MODULE_BOOT-LEVEL_INFO]: Start NonSecure @ 0xe001715 ...
+	   [MODULE_BOOT-LEVEL_INFO]: KM0 BOOT[20004d00:40]
+	   [MODULE_BOOT-LEVEL_INFO]: KM4 XIP IMG[0e000000:5ad80]
+	   [MODULE_BOOT-LEVEL_INFO]: KM4 SRAM[20010000:13c0]
+	   [MODULE_BOOT-LEVEL_INFO]: KM4 PSRAM[0e05c140:20]
+	   [MODULE_BOOT-LEVEL_INFO]: IMG2 BOOT from OTA 1
+	   [MODULE_BOOT-LEVEL_INFO]: Start NonSecure @ 0xe001715 ...
 
 Generating OTA Image Automatically
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -348,11 +349,11 @@ The image upgrade is implemented in the following steps:
 
 8. OTA is finished. Reset the device, and it would boot from the new firmware.
 
-.. figure:: ../figures/ota_operation_flow.svg
-   :scale: 140%
-   :align: center
-
-   OTA operation flow
+   .. figure:: ../figures/ota_operation_flow.svg
+      :scale: 140%
+      :align: center
+   
+      OTA operation flow
 
 OTA Demo
 ----------------
@@ -390,11 +391,11 @@ Follow these steps to run the OTA demo to update from local server:
 
    - file name = ota_all.bin
 
-   .. code-block::
-
-      @echo off
-      DownloadServer 8082 ota_all.bin
-      set /p DUMMY=Press Enter to Continue ...
+     .. code-block::
+  
+        @echo off
+        DownloadServer 8082 ota_all.bin
+        set /p DUMMY=Press Enter to Continue ...
 
 6. Click :file:`start.bat`, and start the download server program.
 
@@ -420,25 +421,24 @@ Modify the memory layout in ``{SDK}\component\soc\amebadplus\usrcfg\ameba_flashc
 
 .. code-block:: c
    :emphasize-lines: 8,11
-   :linenos:
 
    /*
    * @brif	Flash layout is set according to Flash Layout in User Manual
    *  In each entry, the first item is flash regoin type, the second item is start address, the second item is end address */
    const FlashLayoutInfo_TypeDef Flash_Layout[] = {
       /*Region_Type,	[StartAddr,	EndAddr]		*/
-      {IMG_BOOT, 		0x08000000, 0x08013FFF}, //Boot Manifest(4K) + KM4 Bootloader(76K)
+      {IMG_BOOT, 0x08000000, 0x08013FFF}, //Boot Manifest(4K) + KM4 Bootloader(76K)
       //Users should modify below according to their own memory
       {IMG_APP_OTA1, 0x08014000, 0x081F3FFF}, //Certificate(4K) + Manifest(4K) + KM4 Application OTA1 + Manifest(4K) + RDP IMG OTA1
 
       {IMG_BOOT_OTA2, 0x08200000, 0x08213FFF}, //Boot Manifest(4K) + KM4 Bootloader(76K) OTA
       {IMG_APP_OTA2, 0x08214000, 0x083F3FFF}, //Certificate(4K) + Manifest(4K) + KM4 Application OTA2 + Manifest(4K) + RDP IMG OTA2
 
-      {FTL,			0x08700000, 0x08702FFF}, //FTL for BT(>=12K), The start offset of flash pages which is allocated to FTL physical map.
-      {VFS1, 			0x08703000, 0x08722FFF}, //VFS region 1 (128K)
-      {USER, 			0xFFFFFFFF, 0xFFFFFFFF}, //reserve for user
+      {FTL,	0x08700000, 0x08702FFF}, //FTL for BT (>=12K), the start offset of flash pages which is allocated to FTL physical map.
+      {VFS1, 0x08703000, 0x08722FFF}, //VFS region 1 (128K)
+      {USER, 0xFFFFFFFF, 0xFFFFFFFF}, //reserve for user
 
       /* End */
-      {0xFF, 			0xFFFFFFFF, 0xFFFFFFFF},
+      {0xFF, 0xFFFFFFFF, 0xFFFFFFFF},
    };
 
