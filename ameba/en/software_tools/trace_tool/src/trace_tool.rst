@@ -364,7 +364,7 @@ The format of script.txt which is used in auto mode is as follows:
 
   - ``Pass``: *pass_pattern* matched within timeout in CMD execution results.
 
-  - ``Fail``: *pass_pattern* matched within timeout in CMD execution results.
+  - ``Fail``: *fail_pattern* matched within timeout in CMD execution results.
 
   - ``Timeout``: no *pass_pattern*/*fail_pattern* matched within timeout in CMD execution results.
 
