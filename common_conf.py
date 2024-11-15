@@ -189,10 +189,17 @@ extensions = [
     "sphinx_tabs.tabs",
     "sphinx.ext.autodoc",
     "sphinx.ext.viewcode",
-    'sphinx_togglebutton'
+    "sphinx_togglebutton",
+    "breathe"
 ]
 
 toggleprompt_offset_right = 30  # 示例：设置提示符偏移量
+breathe_projects = {
+    "api_docs": Path("api_docs/xml").resolve(),
+    "wifi": Path("wifi/xml").resolve()
+    }
+
+print(breathe_projects)
 
 source_suffix = {
     ".rst": "restructuredtext",
