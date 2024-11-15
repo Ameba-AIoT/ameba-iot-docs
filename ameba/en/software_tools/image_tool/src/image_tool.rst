@@ -170,7 +170,6 @@ Download Steps
 
          2. Open Image Tool, click :menuselection:`File > Open` and select the device profile :file:`AmebaDplus_FreeRTOS_NOR.rdev`.
 
-   
    3. Select the corresponding serial port and transmission baud rate. The default baud rate is 1500000.
       
       .. only:: RTL8721D
@@ -181,7 +180,8 @@ Download Steps
    
       .. note::
             Flash layout is allowed to be changed via Image Tool if indeed necessary.
-            However, to formally change the Flash layout, it is suggested to use :mod:`Device Profile Editor` other than :mod:`Image Tool` and the Flash layout in SDK shall be changed accordingly. Refer to Section :ref:`image_tool_modifying_device_profile` for details.
+            However, to formally change the Flash layout, it is suggested to use :mod:`Device Profile Editor` other than :mod:`Image Tool` and the Flash layout in SDK shall be changed accordingly.
+            Refer to Section :ref:`Modifying Device Profile <image_tool_modifying_device_profile>` for details.
      
    5. Click the :menuselection:`Download` button to start.
 
@@ -262,7 +262,7 @@ Steps to erase Flash are illustrated below:
 
       - No need to erase Flash manually before image download since Flash will be automatically erased during image download process.
 
-      - If Flash block protection is detected at :ref:`Step 6 <image_tool_flash_erase_step_6>`, refer to Section :ref:`image_tool_flash_block_protection_process` for details.
+      - If Flash block protection is detected at :ref:`Step 6 <image_tool_flash_erase_step_6>`, refer to Section :ref:`Flash Block Protection Process <image_tool_flash_block_protection_process>` for details.
 
 
 Flash Register Access
