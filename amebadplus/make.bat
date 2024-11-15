@@ -53,6 +53,7 @@ if "%1" == "" (
     echo "#                                                                                                                      #"
     echo "#    make active                Active the environmetn, the first thing you need to do.                                #"
     echo "#    make visio                 Trans all visio files to svg files, only trans visio file which newer than svg files.  #"
+    echo "#    make api_doc               Gen sdk api dox in xml format.                                                         #"
     echo "#    make en                    Compile en rst with tag FreeRTOS(default) to html.                                     #"
     echo "#    make en RTLxxx             Compile en rst with tag RTLxxx and FreeRTOS(default) to html.                          #"
     echo "#    make en nda RTLxxx         Compile en nda rst with tag RTLxxx and FreeRTOS(default) to html.                      #"
@@ -70,6 +71,8 @@ if "%1" == "" (
     ..\sphinx_venv\Windows\Scripts\activate.bat
 ) else if "%1" == "visio" (
     python ..\sphinx_venv\Windows\Scripts\trans_visio_files.py -r ..
+) else if "%1" == "api_doc" (
+    ..\doxygen\doxygen\bin\doxygen.exe en\api_docs\mbed_api_doxyfile 
 ) else if "%1" == "en" (
     echo "..\sphinx_venv\Windows\Scripts\sphinx-build.exe -b html %1 build/%1/latest -c %1 !tag!"
     python ..\sphinx_venv\Windows\Scripts\sphinx-build.exe -b html %1 build/%1/latest -c %1 !tag!

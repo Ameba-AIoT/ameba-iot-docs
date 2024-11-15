@@ -60,3 +60,4 @@ rst_prolog = """
 .. |CHIP_NAME| replace:: {0}
 .. |VERSION| replace:: {1}
 """.format(CHIP_NAME, VERSION)
+
