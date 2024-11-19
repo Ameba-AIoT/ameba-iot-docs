@@ -14,11 +14,11 @@ It can be used to download images to the Flash of the device through the interfa
    +============+============+=========================+========================+
    | AmebaSmart | NOR Flash  | √                       | √                      |
    |            +------------+-------------------------+------------------------+
-   |            | NAND Flash | ×                       | √                      |
+   |            | NAND Flash | X                       | √                      |
    +------------+------------+-------------------------+------------------------+
-   | AmebaDPlus | NAND Flash | ×                       | √                      |
+   | AmebaDPlus | NOR Flash  | √                       | √                      |
    +------------+------------+-------------------------+------------------------+
-   | AmebaLite  | NAND Flash | ×                       | √                      |
+   | AmebaLite  | NOR Flash  | √                       | X                      |
    +------------+------------+-------------------------+------------------------+
 
 The UI of Image Tool is shown below.
