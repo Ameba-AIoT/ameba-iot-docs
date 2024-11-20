@@ -266,7 +266,7 @@ The layout takes 8MB Flash as an example. The start address of boot manifest is 
 </section>
 <section id="memory-management-unit-mmu">
 <h1>Memory Management Unit (MMU)<a class="headerlink" href="#memory-management-unit-mmu" title="Link to this heading"></a></h1>
-<p>To achieve flexibility of image and for image encryption when RSIP is enabled (the fixed address is needed by IV when doing image encryption ,refer to RSIP for more information), Flash MMU is applied by default.
+<p>To achieve flexibility of image and for image encryption when RSIP is enabled (the fixed address is needed by IV when doing image encryption, refer to RSIP for more information), Flash MMU is applied by default.
 The default MMU layout used in SDK is illustrated below.</p>
 <figure class="align-center" id="id5">
 <a class="reference internal image-reference" href="../../../../_images/flash_mmu_layout.svg"><img alt="../../../../_images/flash_mmu_layout.svg" height="334" src="../../../../_images/flash_mmu_layout.svg" width="644" /></a>
@@ -378,7 +378,7 @@ That is, <em>IMG_VER_xxxxx</em> in <code class="docutils literal notranslate"><s
 <li><p>Re-build the project to generate the bootloader and APP OTA1.</p></li>
 </ol>
 <ol class="arabic" id="flash-layout-app-ota1-step3" start="3">
-<li><p>Modify the address of <code class="file docutils literal notranslate"><span class="pre">kr4_km4_app.bin</span></code> if you update the location of APP OTA1 through Image Tool, and download the new bootloader and APP OTA1.</p>
+<li><p>Modify the address of <code class="file docutils literal notranslate"><span class="pre">kr4_km4_app.bin</span></code> through Image Tool, and download the new bootloader and APP OTA1.</p>
 <figure class="align-center">
 <a class="reference internal image-reference" href="../../../../_images/app_ota1_step3.png"><img alt="../../../../_images/app_ota1_step3.png" src="../../../../_images/app_ota1_step3.png" style="width: 622.3px; height: 186.2px;" /></a>
 </figure>
@@ -457,7 +457,7 @@ That is, <em>IMG_VER_xxxxx</em> in <code class="docutils literal notranslate"><s
 <section id="flash-protect-enable">
 <span id="id2"></span><h1>Flash Protect Enable<a class="headerlink" href="#flash-protect-enable" title="Link to this heading"></a></h1>
 <p>Before loading APP IMG, the bootloader will read the Status Register from Flash.</p>
-<p>If only the <cite>Quad Enable (QE)</cite> bit is set in the output of bitwise AND between Status Register of Flash and <cite>status_mask</cite> in Flash_AVL (<code class="docutils literal notranslate"><span class="pre">{SDK}\component\soc\amebalite\usrcfg\ameba_flashcfg.c</span></code>), do nothing; otherwise the output of bitwise AND will be written to the Flash Status Register.</p>
+<p>If only the Quad Enable (QE) bit is set in the output of bitwise AND between Status Register of Flash and <code class="docutils literal notranslate"><span class="pre">status_mask</span></code> in <code class="docutils literal notranslate"><span class="pre">Flash_AVL</span></code> (<code class="docutils literal notranslate"><span class="pre">{SDK}\component\soc\amebalite\usrcfg\ameba_flashcfg.c</span></code>), do nothing; otherwise the output of bitwise AND will be written to the Flash Status Register.</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/**</span>
 <span class="cm">* @brif Flash_AVL maintains the flash IC supported by SDK.</span>
 <span class="cm">*    If users want to adpot new flash, add item in the following AVL.</span>
@@ -473,7 +473,7 @@ That is, <em>IMG_VER_xxxxx</em> in <code class="docutils literal notranslate"><s
 <span class="w">     </span><span class="p">{</span><span class="mh">0x0B</span><span class="p">,</span><span class="w">                  </span><span class="mh">0x000000FF</span><span class="p">,</span><span class="w">             </span><span class="n">FlashClass1</span><span class="p">,</span><span class="w">            </span><span class="mh">0x000043FC</span><span class="p">,</span><span class="w">             </span><span class="nb">NULL</span><span class="p">},</span><span class="w">  </span><span class="cm">/* XTX */</span>
 <span class="w">     </span><span class="p">{</span><span class="mh">0x0E</span><span class="p">,</span><span class="w">                  </span><span class="mh">0x000000FF</span><span class="p">,</span><span class="w">             </span><span class="n">FlashClass1</span><span class="p">,</span><span class="w">            </span><span class="mh">0x000043FC</span><span class="p">,</span><span class="w">             </span><span class="nb">NULL</span><span class="p">},</span><span class="w">  </span><span class="cm">/* XTX(FT) */</span>
 <span class="w">     </span><span class="p">{</span><span class="mh">0xC8</span><span class="p">,</span><span class="w">                  </span><span class="mh">0x000000FF</span><span class="p">,</span><span class="w">             </span><span class="n">FlashClass2</span><span class="p">,</span><span class="w">            </span><span class="mh">0x000043FC</span><span class="p">,</span><span class="w">             </span><span class="nb">NULL</span><span class="p">},</span><span class="w">  </span><span class="cm">/* GD normal: MANUFACTURER_ID_GD */</span>
-<span class="w">     </span><span class="p">{</span><span class="mh">0x28C2</span><span class="p">,</span><span class="w">                   </span><span class="mh">0x0000FFFF</span><span class="p">,</span><span class="w">          </span><span class="n">FlashClass6</span><span class="p">,</span><span class="w">            </span><span class="mh">0x000200FC</span><span class="p">,</span><span class="w">             </span><span class="nb">NULL</span><span class="p">},</span><span class="w">  </span><span class="cm">/* MXIC wide-range VCC: MANUFACTURER_ID_MXIC */</span>
+<span class="w">     </span><span class="p">{</span><span class="mh">0x28C2</span><span class="p">,</span><span class="w">                </span><span class="mh">0x0000FFFF</span><span class="p">,</span><span class="w">             </span><span class="n">FlashClass6</span><span class="p">,</span><span class="w">            </span><span class="mh">0x000200FC</span><span class="p">,</span><span class="w">             </span><span class="nb">NULL</span><span class="p">},</span><span class="w">  </span><span class="cm">/* MXIC wide-range VCC: MANUFACTURER_ID_MXIC */</span>
 <span class="w">     </span><span class="p">{</span><span class="mh">0xC2</span><span class="p">,</span><span class="w">                  </span><span class="mh">0x000000FF</span><span class="p">,</span><span class="w">             </span><span class="n">FlashClass3</span><span class="p">,</span><span class="w">            </span><span class="mh">0x000000FC</span><span class="p">,</span><span class="w">             </span><span class="nb">NULL</span><span class="p">},</span><span class="w">  </span><span class="cm">/* MXIC normal: MANUFACTURER_ID_BOHONG */</span>
 <span class="w">     </span><span class="p">{</span><span class="mh">0x68</span><span class="p">,</span><span class="w">                  </span><span class="mh">0x000000FF</span><span class="p">,</span><span class="w">             </span><span class="n">FlashClass3</span><span class="p">,</span><span class="w">            </span><span class="mh">0x000000FC</span><span class="p">,</span><span class="w">             </span><span class="nb">NULL</span><span class="p">},</span><span class="w">  </span><span class="cm">/* Hua Hong */</span>
 <span class="w">     </span><span class="p">{</span><span class="mh">0x51</span><span class="p">,</span><span class="w">                  </span><span class="mh">0x000000FF</span><span class="p">,</span><span class="w">             </span><span class="n">FlashClass3</span><span class="p">,</span><span class="w">            </span><span class="mh">0x000000FC</span><span class="p">,</span><span class="w">             </span><span class="nb">NULL</span><span class="p">},</span><span class="w">  </span><span class="cm">/* GD MD serial */</span>
@@ -494,14 +494,15 @@ That is, <em>IMG_VER_xxxxx</em> in <code class="docutils literal notranslate"><s
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>By default, setting the <cite>QE</cite> bit will unlock all the <cite>Block Protect</cite> bits. To avoid this operation, set <cite>Block Protect</cite> bits corresponding to <cite>Status_mask</cite> in Flash_AVL to 0. For example, change the <cite>Status_mask</cite> of winbond in the Flash_AVL to 0x000043C0.</p>
+<p>By default, setting the <code class="docutils literal notranslate"><span class="pre">QE</span></code> bit will unlock all the Block Protect bits. To avoid this operation, set Block Protect bits corresponding to <code class="docutils literal notranslate"><span class="pre">status_mask</span></code> in <code class="docutils literal notranslate"><span class="pre">Flash_AVL</span></code> to 0.
+For example, change the <code class="docutils literal notranslate"><span class="pre">status_mask</span></code> of winbond in <code class="docutils literal notranslate"><span class="pre">Flash_AVL</span></code> to 0x000043C0.</p>
 </div>
 <p>In order to avoid the mirror being damaged due to improper operation when using Littlefs to write user data, it is recommended to modify the location of FTL/Littlefs to the last 64KB area of Flash, and set the <cite>Block Protect</cite> Bit in the Status Register of Flash at the same time.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <ul class="simple">
 <li><p>Only the last 64KB area of Flash can be modified, and the other areas are protected. Remember to unlock the Flash during OTA upgrade, and keep it locked when OTA is completed.</p></li>
-<li><p>If you cannot set the Flash to allow only the last block to be modified through <cite>Block Protect</cite> bit, it is recommended to enable the Flash block protection of the first half part.</p></li>
+<li><p>If you cannot set the Flash to allow only the last block to be modified through Block Protect bit, it is recommended to enable the Flash block protection of the first half part.</p></li>
 </ul>
 </div>
 </section>
