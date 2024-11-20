@@ -67,10 +67,9 @@ The layout takes 8MB Flash as an example. The start address of boot manifest is 
    
    [1] KM4_IMG3 only exists in the RTL8726EA and RTL8720EA series.
 
-
 Memory Management Unit (MMU)
 --------------------------------------------------------
-To achieve flexibility of image and for image encryption when RSIP is enabled (the fixed address is needed by IV when doing image encryption ,refer to RSIP for more information), Flash MMU is applied by default.
+To achieve flexibility of image and for image encryption when RSIP is enabled (the fixed address is needed by IV when doing image encryption, refer to RSIP for more information), Flash MMU is applied by default.
 The default MMU layout used in SDK is illustrated below.
 
 .. figure:: ../figures/flash_mmu_layout.svg
@@ -199,7 +198,7 @@ Follow the steps to modify the location of APP OTA1:
 
 .. _flash_layout_app_ota1_step3:
 
-3. Modify the address of :file:`kr4_km4_app.bin` if you update the location of APP OTA1 through Image Tool, and download the new bootloader and APP OTA1.
+3. Modify the address of :file:`kr4_km4_app.bin` through Image Tool, and download the new bootloader and APP OTA1.
    
    .. figure:: ../figures/app_ota1_step3.png
       :scale: 70%
@@ -247,7 +246,7 @@ Refer to :ref:`flash_layout_app_ota1` to modify the location of DSP IMG.
 
 Modifying FTL/VFS Location
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-1. Modify the addresses of *FTL* and *VFS1* in ``{SDK}\component\soc\amebalite\usrcfg\ameba_flashcfg.c`` 
+1. Modify the addresses of *FTL* and *VFS1* in ``{SDK}\component\soc\amebalite\usrcfg\ameba_flashcfg.c``
 
    .. code-block:: c
       :emphasize-lines: 12,13
@@ -282,7 +281,7 @@ Flash Protect Enable
 ----------------------------------------
 Before loading APP IMG, the bootloader will read the Status Register from Flash.
 
-If only the `Quad Enable (QE)` bit is set in the output of bitwise AND between Status Register of Flash and `status_mask` in Flash_AVL (``{SDK}\component\soc\amebalite\usrcfg\ameba_flashcfg.c``), do nothing; otherwise the output of bitwise AND will be written to the Flash Status Register.
+If only the Quad Enable (QE) bit is set in the output of bitwise AND between Status Register of Flash and ``status_mask`` in ``Flash_AVL`` (``{SDK}\component\soc\amebalite\usrcfg\ameba_flashcfg.c``), do nothing; otherwise the output of bitwise AND will be written to the Flash Status Register.
 
 .. code-block:: c
 
@@ -301,7 +300,7 @@ If only the `Quad Enable (QE)` bit is set in the output of bitwise AND between S
    	{0x0B,			0x000000FF,		FlashClass1,		0x000043FC,		NULL},	/* XTX */
    	{0x0E,			0x000000FF,		FlashClass1,		0x000043FC,		NULL},	/* XTX(FT) */
    	{0xC8,			0x000000FF,		FlashClass2,		0x000043FC,		NULL},	/* GD normal: MANUFACTURER_ID_GD */
-   	{0x28C2,		   0x0000FFFF,		FlashClass6,		0x000200FC,		NULL},	/* MXIC wide-range VCC: MANUFACTURER_ID_MXIC */
+   	{0x28C2,		0x0000FFFF,		FlashClass6,		0x000200FC,		NULL},	/* MXIC wide-range VCC: MANUFACTURER_ID_MXIC */
    	{0xC2,			0x000000FF,		FlashClass3,		0x000000FC,		NULL},	/* MXIC normal: MANUFACTURER_ID_BOHONG */
    	{0x68,			0x000000FF,		FlashClass3,		0x000000FC,		NULL},	/* Hua Hong */
    	{0x51,			0x000000FF,		FlashClass3,		0x000000FC,		NULL},	/* GD MD serial */
@@ -320,15 +319,16 @@ If only the `Quad Enable (QE)` bit is set in the output of bitwise AND between S
    };
 
 .. note::
-   By default, setting the `QE` bit will unlock all the `Block Protect` bits. To avoid this operation, set `Block Protect` bits corresponding to `Status_mask` in Flash_AVL to 0. For example, change the `Status_mask` of winbond in the Flash_AVL to 0x000043C0.
+   
+   By default, setting the ``QE`` bit will unlock all the Block Protect bits. To avoid this operation, set Block Protect bits corresponding to ``status_mask`` in ``Flash_AVL`` to 0.
+   For example, change the ``status_mask`` of winbond in ``Flash_AVL`` to 0x000043C0.
 
 In order to avoid the mirror being damaged due to improper operation when using Littlefs to write user data, it is recommended to modify the location of FTL/Littlefs to the last 64KB area of Flash, and set the `Block Protect` Bit in the Status Register of Flash at the same time.
 
 .. note::
 
    - Only the last 64KB area of Flash can be modified, and the other areas are protected. Remember to unlock the Flash during OTA upgrade, and keep it locked when OTA is completed.
-
-   - If you cannot set the Flash to allow only the last block to be modified through `Block Protect` bit, it is recommended to enable the Flash block protection of the first half part.
+   - If you cannot set the Flash to allow only the last block to be modified through Block Protect bit, it is recommended to enable the Flash block protection of the first half part.
 
 
 
