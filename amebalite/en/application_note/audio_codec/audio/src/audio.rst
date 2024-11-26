@@ -40,15 +40,15 @@ The whole audio mixer architecture includes the following sub-modules:
 
 - Audio HAL
 
-   - **AudioHwManager** provides interfaces that manage audio adapters through a specific adapter driver program loaded based on the given audio adapter descriptor.
+   - **AudioHwManager** provides interfaces that manage audio cards through a specific card driver program opened based on the given audio card descriptor.
 
-   - **AudioHwAdapter** provides interfaces that manage audio adapter capabilities, including initializing ports, creating rendering and capturing tasks, and obtaining the port capability set.
+   - **AudioHwCard** provides interfaces that manage audio card capabilities, including initializing ports, creating stream out and stream in.
 
    - **AudioHwControl** provides interfaces for RTAudioControl, and set commands to audio driver.
 
-   - **AudioHwRender** provides interfaces that get data from the upper layer and render data to audio driver user interfaces.
+   - **AudioHwStreamOut** provides interfaces that get data from the upper layer and render data to audio driver user interfaces.
 
-   - **AudioHwCapture** provides interfaces to capture data from audio driver user interfaces and deliver the data to the upper layer.
+   - **AudioHwStreamIn** provides interfaces to capture data from audio driver user interfaces and deliver the data to the upper layer.
 
 - Audio Driver
 
@@ -98,77 +98,63 @@ Terminology
 ----------------------
 The meanings of some widely-used audio terms in this chapter are listed below.
 
-.. table:: 
-   :width: 100%
-   :widths: auto
+.. list-table::
+   :header-rows: 1
 
-   +-----------------+--------------------------------------------------------------------------------------------------------------------------+
-   | Terms           | Introduction                                                                                                             |
-   +=================+==========================================================================================================================+
-   | PCM             | PCM (Pulse Code Modulation), audio data is a raw stream of uncompressed audio sample data, which is standard             |
-   |                 |                                                                                                                          |
-   |                 | digital audio data converted from analog signals through sampling, quantization, and encoding.                           |
-   +-----------------+--------------------------------------------------------------------------------------------------------------------------+
-   | channel         | A channel sound is an independent audio signal captured or played in different spatial positions during recording        |
-   |                 |                                                                                                                          |
-   |                 | or playing, so the number of channels is the number of sound sources during sound recording or the number of             |
-   |                 |                                                                                                                          |
-   |                 | speakers during playback.                                                                                                |
-   +-----------------+--------------------------------------------------------------------------------------------------------------------------+
-   | mono            | Mono means only one single-channel sound.                                                                                |
-   +-----------------+--------------------------------------------------------------------------------------------------------------------------+
-   | stereo          | Stereo means two channels.                                                                                               |
-   +-----------------+--------------------------------------------------------------------------------------------------------------------------+
-   | bit depth       | Bit depth (sample depth) represents how finely the sound intensity is recorded in the sample.                            |
-   |                 |                                                                                                                          |
-   |                 | Sampling depth can be understood as the resolution of processing the sound. The larger the value, the higher the         |
-   |                 |                                                                                                                          |
-   |                 | resolution, and the more realistic the sound recorded and played.                                                        |
-   +-----------------+--------------------------------------------------------------------------------------------------------------------------+
-   | sample          | A number representing the audio value of a single channel at a point in time.                                            |
-   +-----------------+--------------------------------------------------------------------------------------------------------------------------+
-   | sample rate     | The audio sampling rate refers to the number of frames that the signal is sampled per unit time. The higher the          |
-   |                 |                                                                                                                          |
-   |                 | sampling frequency, the more realistic and natural the waveform will be.                                                 |
-   +-----------------+--------------------------------------------------------------------------------------------------------------------------+
-   | frame           | A frame is a sound unit whose length is the product of the sample length (number of samples) multiplies the              |
-   |                 |                                                                                                                          |
-   |                 | number of channels.                                                                                                      |
-   +-----------------+--------------------------------------------------------------------------------------------------------------------------+
-   | gain            | Audio signal gain control to adjust the signal level.                                                                    |
-   +-----------------+--------------------------------------------------------------------------------------------------------------------------+
-   | interleaved     | It is a recording method of audio data. In the interleaved mode, the data is stored in a continuous manner, that         | 
-   |                 |                                                                                                                          |
-   |                 | is, the left channel sample and the right channel sample of frame 1 are first stored, and then the storage of frame      |
-   |                 |                                                                                                                          |
-   |                 | 2 is started.                                                                                                            |
-   +-----------------+--------------------------------------------------------------------------------------------------------------------------+
-   | latency         | Time delay when a signal passes through the whole system.                                                                |
-   +-----------------+--------------------------------------------------------------------------------------------------------------------------+
-   | overrun         | The buffer is too full to let buffer producer write more data.                                                           |
-   +-----------------+--------------------------------------------------------------------------------------------------------------------------+
-   | underrun        | The buffer producer is too slow to write data to the buffer so that the buffer is empty when the consumer wants          |
-   |                 |                                                                                                                          |
-   |                 | to consume data.                                                                                                         |
-   +-----------------+--------------------------------------------------------------------------------------------------------------------------+
-   | xrun            | Overrun or underrun.                                                                                                     |
-   +-----------------+--------------------------------------------------------------------------------------------------------------------------+
-   | volume          | Volume, also known as sound intensity and loudness, refers to the human ear's subjective perception of the               |
-   |                 |                                                                                                                          |
-   |                 | intensity of the sound heard, and its objective evaluation scale is the amplitude of the sound.                          |
-   +-----------------+--------------------------------------------------------------------------------------------------------------------------+
-   | hardware volume | The volume of audio codec.                                                                                               |
-   +-----------------+--------------------------------------------------------------------------------------------------------------------------+
-   | software volume | The volume set in software algorithm.                                                                                    |
-   +-----------------+--------------------------------------------------------------------------------------------------------------------------+
-   | resample        | Convert the sample rate.                                                                                                 |
-   +-----------------+--------------------------------------------------------------------------------------------------------------------------+
-   | reformat        | Convert the bit depth of the sample.                                                                                     |
-   +-----------------+--------------------------------------------------------------------------------------------------------------------------+
-   | mix             | Mix several audio streaming together. Users can hear several audio streaming playing together.                           |
-   +-----------------+--------------------------------------------------------------------------------------------------------------------------+
-   | Audio codec     | The DAC and ADC controller inside the chip.                                                                              |
-   +-----------------+--------------------------------------------------------------------------------------------------------------------------+
+   * -  Terms
+     -  Introduction
+   * -  PCM
+     -  Pulse Code Modulation, audio data is a raw stream.
+   * -  channel
+     -  A channel sound is an independent audio signal captured or played in different positions, so the number of
+       
+        channels is the number of sound sources.
+   * -  mono
+     -  Mono means only one single channel sound.
+   * -  stereo
+     -  Stereo means two channels.
+   * -  bit depth
+     -  Bit depth represents the bits effectively used in the process of audio signals.
+       
+        Sampling depth shows the resolution of the sound. The larger the value, the higher the resolution.
+   * -  sample
+     -  Representing the audio processing at a point in time.
+   * -  sample rate
+     -  The audio sampling rate refers to the number of frames that the signal is sampled per second.
+       
+         The higher the sampling frequency, the higher quality the sound will be.
+   * -  frame
+     -  A frame is a sound unit whose length is the sample length multiplies the number of channels.
+   * -  gain
+     -  Audio signal gain control to adjust the signal level.
+   * -  interleaved
+     -  It is a recording method of audio data. In the interleaved mode, the data is stored in a continuous manner,
+       
+        all the channels of sample of first frame are first stored, and then the storage of second frame.
+   * -  latency
+     -  Time delay when a signal passes through the whole system.
+   * -  overrun
+     -  The buffer is too full to let buffer producer write more data.
+   * -  underrun
+     -  The buffer producer is too slow to write data to the buffer so that the buffer is empty when the consumer
+       
+        wants to consume data.
+   * -  xrun
+     -  Overrun or underrun.
+   * -  volume
+     -  Volume, sound intensity and loudness.
+   * -  hardware volume
+     -  The volume of audio codec.
+   * -  software volume
+     -  The volume set in software algorithm.
+   * -  resample
+     -  Convert the sample rate.
+   * -  reformat
+     -  Convert the bit depth of the sample.
+   * -  mix
+     -  Mix several audio streaming together. Users can hear several audio streaming playing together.
+   * -  Audio codec
+     -  The DAC and ADC controller inside the chip.
 
 Data Format
 ----------------------
@@ -208,7 +194,7 @@ Audio Framework has the following types of bit depth:
 
 - **RTAUDIO_FORMAT_PCM_FLOAT** - audio stream has 32-bit float format
 
-- **RTAUDIO_FORMAT_PCM_24_BIT_PACKED** - audio stream has 24-bit depth
+- **RTAUDIO_FORMAT_PCM_24_BIT** - audio stream has 24-bit depth
 
 - **RTAUDIO_FORMAT_PCM_8_24_BIT** - audio stream has 24-bit + 8-bit depth
 
@@ -229,7 +215,7 @@ The following table describes the supported formats for playback and recording. 
    +----------------------------------+------------------+------------------------+-----------------------------+
    | RTAUDIO_FORMAT_PCM_FLOAT         | Y                | N                      | N                           |
    +----------------------------------+------------------+------------------------+-----------------------------+
-   | RTAUDIO_FORMAT_PCM_24_BIT_PACKED | Y                | Y                      | Y                           |
+   | RTAUDIO_FORMAT_PCM_24_BIT        | Y                | Y                      | Y                           |
    +----------------------------------+------------------+------------------------+-----------------------------+
    | RTAUDIO_FORMAT_PCM_8_24_BIT      | N                | Y                      | Y                           |
    +----------------------------------+------------------+------------------------+-----------------------------+
@@ -298,7 +284,7 @@ Mixer and passthrough architecture have the same audio HAL. Audio Hal has the fo
 
 - **AUDIO_HW_FORMAT_PCM_FLOAT** - audio stream has 32-bit float format
 
-- **AUDIO_HW_FORMAT_PCM_24_BIT_PACKED** - audio stream has 24-bit depth
+- **AUDIO_HW_FORMAT_PCM_24_BIT** - audio stream has 24-bit depth
 
 - **AUDIO_HW_FORMAT_PCM_8_24_BIT** - audio stream has 24-bit + 8-bit depth
 
@@ -319,7 +305,7 @@ If using the Audio HAL interface, please check the bit depth HAL supported for P
    +------------------------------------+----------+---------+
    | AUDIO_HW_FORMAT_PCM_FLOAT          | N        | N       |
    +------------------------------------+----------+---------+
-   | AUDIO_HW_FORMAT_PCM_24_BIT_PACKED  | N        | N       |
+   | AUDIO_HW_FORMAT_PCM_24_BIT         | N        | N       |
    +------------------------------------+----------+---------+
    | AUDIO_HW_FORMAT_PCM_8_24_BIT       | Y        | Y       |
    +------------------------------------+----------+---------+
@@ -381,7 +367,7 @@ Playback Architecture
 The block diagram of audio mixer playback architecture is shown as below.
 
 .. figure:: ../figures/audio_playback_mixer_architecture.svg
-   :scale: 130%
+   :scale: 100%
    :align: center
 
    Playback mixer architecture
@@ -389,7 +375,7 @@ The block diagram of audio mixer playback architecture is shown as below.
 The block diagram of audio passthrough playback architecture is shown as below.
 
 .. figure:: ../figures/audio_playback_passthrough_architecture.svg
-   :scale: 130%
+   :scale: 100%
    :align: center
 
    Playback passthrough architecture
@@ -400,9 +386,7 @@ The audio playback architecture includes the following sub-modules:
 
    - Audio framework is responsible for audio playback sound mixing.
 
-   - Audio framework supports at most 32 sound playing together.
-
-   - Before mixing, all sound will be converted to one unified audio format, which is 16-bit, 44100Hz, 2-channel currently. Sub-modules reformat, resampler are responsible to do the conversion. There is also volume sub-module in audio framework to adjust volumes for different audio types, for example, music, speech may have different volumes.
+   - Before mixing, all sound will be converted to one unified audio format, default is 16-bit, 44100Hz, 2-channel. Sub-modules reformat, resampler are responsible to do the conversion. There is also volume sub-module in audio framework to adjust volumes for different audio types, for example, music, speech may have different volumes.
 
    - Audio framework supports sound rate from 8k-96k, channel mono/stereo, format 8-bit, 16-bit, 24-bit, and 32-bit float.
 
@@ -419,7 +403,7 @@ Record Architecture
 Audio mixer and passthrough have the same record architecture. The block diagram of audio record is shown as below.
 
 .. figure:: ../figures/audio_record_architecture.svg
-   :scale: 120%
+   :scale: 100%
    :align: center
 
    Record architecture
@@ -473,9 +457,9 @@ If users want to use audio interfaces, select the following audio configurations
 
 Framework Configuration
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
-Audio Framework configurations lie in ``{SDK}/component/soc/amebalite/usrcfg/ameba_audio_mixer_usrcfg.cpp``.
+Audio Framework configurations lie in ``{SDK}/component/audio/configs/ameba_audio_mixer_usrcfg.cpp``.
 
-If users want to change the audio HAL period buffer size, or audio mixer's buffer policy, change *kPrimaryAudioConfig* according to the description of ``{SDK}/component/soc/amebalite/usrcfg/include/ameba_audio_mixer_usrcfg.h``.
+If users want to change the audio HAL period buffer size, or audio mixer's buffer policy, change *kPrimaryAudioConfig* according to the description of ``{SDK}/component/audio/configs/include/ameba_audio_mixer_usrcfg.h``.
 
 The config *out_min_frames_stage* in *kPrimaryAudioConfig* only supports *RTAUDIO_OUT_MIN_FRAMES_STAGE1* and *RTAUDIO_OUT_MIN_ FRAMES_STAGE2*.
 
@@ -783,190 +767,183 @@ VAD APIs
 
 HAL Interfaces
 ~~~~~~~~~~~~~~~~
-Audio HAL provides AudioHwRender/AudioHwCapture/AudioHwControl interfaces to interact with audio hardware. The interfaces lie in ``{SDK}/component/audio/interfaces/hardware/audio``. The interfaces have specific descriptions in them, read them before use.
+Audio HAL provides AudioHwStreamOut/AudioHwStreamIn/AudioHwControl interfaces to interact with audio hardware. The interfaces lie in ``{SDK}/component/audio/interfaces/hardware/audio``.
+The interfaces have specific descriptions in them, read them before use.
 
-- **AudioHwRender**: receives PCM data from the upper layer, writes data via audio driver to send PCM data to hardware, and provides information about audio output hardware driver.
+- **AudioHwStreamOut**: receives PCM data from the upper layer, writes data via audio driver to send PCM data to hardware, and provides information about audio output hardware driver.
 
-- **AudioHwCapture**: receives PCM data via audio driver and sends to the upper layer.
+- **AudioHwStreamIn**: receives PCM data via audio driver and sends to the upper layer.
 
 - **AudioHwControl**: receives control calling from the upper layer, and sets control information to the driver.
 
-The AudioHwRender/AudioHwCapture is managed by AudioHwAdapter interface. It is responsible for creating/destroying AudioHwRender/AudioHwCapture instance. AudioHwAdapter is a physical or virtual hardware to process audio stream. It contains a set of ports and pins as shown in :ref:`audio_hw_adapter_example`.
 
-- **Port** – the stream input of audio adapter
+The AudioHwStreamOut/AudioHwStreamIn is managed by AudioHwCard interface. It is responsible for creating/destroying AudioHwStreamOut/AudioHwStreamIn instance.
+AudioHwCard is a physical or virtual hardware to process audio stream. It contains a set of ports and devices as shown in following figure.
 
-- **Pin** – the output stream of audio adapter
+- **Port** – the stream output/input of the audio card is called “port”.
 
-.. figure:: ../figures/audio_hw_adapter_example.svg
+- **Device** – The device output/input of audio card is called device.
+
+.. figure:: ../figures/audio_hal_architecture.svg
    :scale: 90%
    :align: center
-   :name: audio_hw_adapter_example
+   :name: audio_hal_architecture
 
-   AudioHwAdapter example
+   AudioHwCard example
 
-The AudioHwManager manages system's all AudioHwAdapters and loads a specific adapter driver based on the given audio adapter descriptor.
+The AudioHwManager manages system's all AudioHwCards and opens a specific card driver based on the given audio card descriptor.
 
-Using AudioHwRender
+Using AudioHwStreamOut
 ^^^^^^^^^^^^^^^^^^^^^
-Users can check the example of AudioHwRender in ``{SDK}/component/example/audio/audio_hal_render``.
+Users can check the example of AudioHwStreamOut in ``{SDK}/component/example/audio/audio_hal_render``.
 
 Here is the description showing how to use audio HAL interfaces to play audio raw data (PCM format):
 
-1. Use :func:`GetAudioManagerFuncs()` to get AudioHwManager instance
+1. Use :func:`CreateAudioHwManager()` to get AudioHwManager instance:
 
    .. code-block:: c
 
-      struct AudioHwManager *audio_manager = GetAudioManagerFuncs();
+      struct AudioHwManager *audio_manager = CreateAudioHwManager();
 
-2. Use :func:`GetAllAdapters()` to get all audio adapter descriptors
-
-   .. code-block:: c
-
-      int32_t size = -1;
-      struct AudioHwAdapterDescriptor *descs = nullptr;
-      audio_manager->GetAllAdapters(audio_manager, &descs, &size);
-
-3. Choose a specific adapter to play (currently audio manager only supports primary audio adapter)
+2. Use :func:`GetCards()` to get all audio card descriptors:
 
    .. code-block:: c
 
-      for (int index = 0; index < size; index++){
-         struct AudioHwAdapterDescriptor *desc = &descs[index];
-            for (int port = 0; (desc != nullptr && port < static_cast<int>(desc->portNum)); port++) {
-               if (desc->ports[port].dir == PORT_OUT &&
-                  (audio_manager->LoadAdapter(audio_manager, desc, &audio_adapter)) == 0) {
-                  render_port = desc->ports[port];
-                  break;
-            }
-         }
-      }
+      int32_t cards_size = audio_manager->GetCardsCount(audio_manager);
+      struct AudioHwCardDescriptor *card_descs = audio_manager->GetCards(audio_manager);
 
-4. Create *AudioHwSampleAttributes* according to the sample rate, channel, format, and AudioHwDeviceDescriptor, then use :func:`CreateRender()` to create an AudioHwRender based on the specific audio adapter
+3. Choose a specific card to play (currently audio manager only support primary audio card):
 
    .. code-block:: c
 
-      struct AudioHwSampleAttributes  param;
-      param.sample_rate = sample_rate;
-      param.channel_count = channel_count;
-      param.format = AUDIO_FORMAT_PCM_16_BIT;
-      param.interleaved = false;
-      struct AudioHwDeviceDescriptor device_desc;
-      device_desc.port_id = render_port.port_id;
-      device_desc.pins = AUDIO_HW_PIN_OUT_SPEAKER;
-      device_desc.desc = NULL;
-      int32_t ret = audio_adapter->CreateRender(audio_adapter, &device_desc, &param, &audio_render);
-
-5. Use :func:`GetBufferSize()` to get AudioHwRender buffer size
-
-   .. code-block:: c
-
-      ssize_t size = ((struct AudioHalStream *)audio_render)->GetBufferSize((struct AudioHalStream *)audio_render);
-
-6. Write PCM data to AudioHwRender repeatly.
-
-   This size can be defined by users, instead of the size got in the last step. Users need to make sure the *size/frame_size* is integer.
-
-
-   .. code-block:: c
-
-      int32_t bytes = audio_render->Write(audio_render, buffer, size);
-
-7. Use :func:`DestroyRender()` to close AudioHwRender when finishing playing
-
-   .. code-block:: c
-
-      audio_adapter->DestroyRender(audio_adapter, audio_render);
-
-8. Use :func:`UnloadAdapter()` to unload the AudioHwAdapter and finally call :func:`DestoryAudioManager()` to release AudioHwManager instance
-
-   .. code-block:: c
-
-      audio_manager->UnloadAdapter(audio_manager,desc,&audio_adapter); DestoryAudioManager(&audio_manager);
-
-Using AudioHwCapture
-^^^^^^^^^^^^^^^^^^^^^^^
-Users can check the example of AudioHwRender in ``{SDK}/component/example/audio/audio_hal_capture``.
-
-Here is the description showing how to use audio HAL interfaces to capture audio raw data:
-
-1. Use :func:`GetAudioManagerFuncs()` to get AudioHwManager instance
-
-   .. code-block:: c
-
-      struct AudioHwManager *audio_manager = GetAudioManagerFuncs();
-
-2. Use :func:`GetAllAdapters()` to get all audio adapter descriptors
-
-   .. code-block:: c
-
-      int32_t size = -1;
-      struct AudioHwAdapterDescriptor *descs = nullptr;
-      audio_manager->GetAllAdapters(audio_manager, &descs, &size);
-
-3. Choose a specific adapter to capture (currently audio manager only supports primary audio adapter)
-
-   .. code-block:: c
-
-      for (int index = 0; index < size; index++){
-         struct AudioHwAdapterDescriptor *desc = &descs[index];
-         for (int port = 0; (desc != nullptr && port < static_cast<int>(desc->portNum)); port++) {
-            if (desc->ports[port].dir == PORT_IN &&
-               (audio_manager->LoadAdapter(audio_manager, desc, &audio_adapter)) == 0) {
-               mCapturePort = desc->ports[port];
+      struct AudioHwCardDescriptor *audio_card_desc;
+      for (int32_t index = 0; index < cards_size; index++) {
+         struct AudioHwCardDescriptor *desc = &card_descs[index];
+         for (uint32_t port = 0; (desc != NULL && port < desc->port_num); port++) {
+            printf("check for audio port \n");
+            if (desc->ports[port].role == AUDIO_HW_PORT_ROLE_OUT &&
+               (audio_card = audio_manager->OpenCard(audio_manager, desc))) {
+               audio_port = desc->ports[port];
+               audio_card_desc = desc;
                break;
             }
          }
       }
 
-4. Construct *AudioHwSampleAttributes* according to the sample rate, channel, format, and AudioHwDeviceDescriptor, then use :func:`CreateCapture()` to create an AudioHwCapture based on the specific audio adapter
+4. Create AudioHwConfig according to the sample rate, channel, format, and AudioHwPathDescriptor, then use :func:`CreateStreamOut()` to create an AudioHwStreamOut based on the specific audio card:
 
    .. code-block:: c
 
-      struct AudioHwSampleAttributes  param;
-      param.sample_rate = sample_rate;
-      param.channel_count = channel_count;
-      param.format = AUDIO_FORMAT_PCM_16_BIT;
-      param.interleaved = false;
-      struct AudioHwDeviceDescriptor device_desc;
-      device_desc.port_id = render_port.port_id;
-      device_desc.pins = AUDIO_HW_PIN_IN_MIC;
-      device_desc.desc = NULL;
-      int32_t ret = audio_adapter->CreateCapture(audio_adapter, &device_desc, &param, &audio_capture);
+      struct AudioHwConfig audio_config;
+      audio_config.sample_rate = 48000;
+      audio_config.channel_count = 2;
+      audio_config.format = AUDIO_HW_FORMAT_PCM_16_BIT;
+      struct AudioHwPathDescriptor path_desc;
+      path_desc.port_index = audio_port.port_index;
+      path_desc.devices = AUDIO_HW_DEVICE_OUT_SPEAKER;
+      path_desc.flags = AUDIO_HW_INPUT_FLAG_NONE;
+      audio_stream_out = audio_card->CreateStreamOut(audio_card, &path_desc, &audio_config);
 
-5. Use :func:`GetBufferSize()` to get AudioHwCapture buffer size:
-
-   .. code-block:: c
-
-      ssize_t size = ((struct AudioHalStream *)audio_capture)->GetBufferSize((struct AudioHalStream *)audio_capture);
-
-6. Read PCM data from AudioHwCapture repeatly. This size can be defined by users, instead of the size got in the last step. Users need to make sure the *size/frame_size* is integer.
+5. Write PCM data to AudioHwStreamOut repeatly. Buffer size written can be defined by users. Users need to make sure the *size/frame_size* is integer.
 
    .. code-block:: c
 
-      int32_t bytes = audio_capture->Read(audio_capture, buffer, size);
+      int32_t bytes = audio_stream_out->Write(audio_stream_out, buffer, size, true);
 
-7. Use :func:`DestroyCapture()` to close AudioHwCapture when finishing recording
-
-   .. code-block:: c
-
-      audio_adapter->DestroyCapture(audio_adapter, audio_capture);
-
-8. Use :func:`UnloadAdapter()` to unload the AudioHwAdapter, and finally call :func:`DestoryAudioManager()` to release AudioHwManager instance
+6. Use :func:`DestroyStreamOut()` to close AudioHwStreamOut when finishing playing:
 
    .. code-block:: c
 
-      audio_manager->UnloadAdapter(audio_manager,desc,&audio_adapter); DestoryAudioManager(&audio_manager);
+      audio_card->DestroyStreamOut(audio_card, audio_stream_out);
+
+7. Use :func:`CloseCard()` to destroy the AudioHwCard and finally call DestoryAudioHwManager to release AudioHwManager instance:
+
+   .. code-block:: c
+
+      audio_manager->CloseCard(audio_manager, audio_card, audio_card_desc);
+      DestoryAudioHwManager(audio_manager);
+
+Using AudioHwStreamIn
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Users can check the example of AudioHwStreamOut in ``{SDK}/component/example/audio/audio_hal_capture``.
+
+
+Here is the description showing how to use audio HAL interfaces to capture audio raw data:
+
+1. Use :func:`CreateAudioHwManager()` to get AudioHwManager instance:
+
+   .. code-block:: c
+
+      struct AudioHwManager *audio_manager = CreateAudioHwManager();
+
+2. Use :func:`GetCards()` to get all audio card descriptors:
+
+   .. code-block:: c
+
+      int32_t cards_size = audio_manager->GetCardsCount(audio_manager);
+      struct AudioHwCardDescriptor *card_descs = audio_manager->GetCards(audio_manager);
+
+3. Choose a specific card to capture (currently audio manager only support primary audio card):
+
+   .. code-block:: c
+
+      struct AudioHwCardDescriptor *audio_card_in_desc = NULL;
+      for (int32_t index = 0; index < cards_size; index++) {
+         struct AudioHwCardDescriptor *desc = &card_descs[index];
+         for (uint32_t port = 0; (desc != NULL && port < desc->port_num); port++) {
+            if (desc->ports[port].role == AUDIO_HW_PORT_ROLE_IN &&
+               (audio_card_in = audio_manager->OpenCard(audio_manager, desc))) {
+               audio_port_in = desc->ports[port];
+               audio_card_in_desc = desc;
+               break;
+            }
+         }
+      }
+
+4. Construct AudioHwConfig according to the sample rate, channel, format, and AudioHwPathDescriptor, then use :func:`CreateStreamIn()` to create an AudioHwStreamIn based on the specific audio card:
+
+   .. code-block:: c
+
+      struct AudioHwConfig audio_config;
+      audio_config.sample_rate = 48000;
+      audio_config.channel_count = 2;
+      audio_config.format = AUDIO_HW_FORMAT_PCM_16_BIT;
+      struct AudioHwPathDescriptor path_desc_in;
+      path_desc_in.port_index = audio_port_in.port_index;
+      path_desc_in.devices = AUDIO_HW_DEVICE_IN_MIC;
+      path_desc_in.flags = AUDIO_HW_INPUT_FLAG_NONE;
+      audio_stream_in = audio_card_in->CreateStreamIn(audio_card_in, &path_desc_in, &audio_config);
+
+5. Read PCM data from AudioHwStreamIn repeatly. This size can be defined by users. Users need to make sure the *size/frame_size* is integer.
+
+   .. code-block:: c
+
+      audio_stream_in->Read(audio_stream_in, buffer, size);
+
+6. Use :func:`DestroyStreamIn()` to close AudioHwStreamIn when finishing recording:
+
+   .. code-block:: c
+   
+      audio_card_in->DestroyStreamIn(audio_card_in, audio_stream_in);
+
+7. Use :func:`CloseCard()` to destroy the AudioHwCard, and finally call :func:`DestoryAudioHwManager()` to release AudioHwManager instance.
+
+   .. code-block:: c
+
+      audio_manager->CloseCard(audio_manager, audio_card_in, audio_card_in_desc);
+      DestoryAudioHwManager(audio_manager);
 
 Using AudioHwControl
 ^^^^^^^^^^^^^^^^^^^^^^^
 Here is an example showing how to use audio HAL interfaces to control audio codec.
 
-AudioHwCotrol is always thread-safe, and the calling is convenient.
-To use AudioHwCotrol, the first parameter of the function call should always be :func:`GetAudioHwControl()`. Take the hardware volume setting for example:
+
+AudioHwCotrol is always thread-safe, and the calling is convenient. To use AudioHwCotrol, the first parameter of the function call should always be :func:`GetAudioHwControl()`.
+Take the PLL clock setting for example:
 
 .. code-block:: c
-   
-   GetAudioHwControl()->SetHardwareVolume(GetAudioHwControl(), left_volume, right_volume);
+
+   GetAudioHwControl()->AdjustPLLClock(GetAudioHwControl(), rate, ppm, action);
 
 Framework Interfaces
 ~~~~~~~~~~~~~~~~~~~~~
@@ -1113,11 +1090,11 @@ RTAudioRecord supports variety of common audio raw format types, so that you can
 
 The following audio input sources are supported by RTAudioRecord:
 
-- **RTPIN_IN_MIC** - if the application wants to capture data from microphone, then choose this input source.
+- **RTDEVICE_IN_MIC** - if the application wants to capture data from microphone, then choose this input source.
 
-- **RTPIN_IN_HS_MIC** - if the application wants to capture data from headset microphone, then choose this input source.
+- **RTDEVICE_IN_HS_MIC** - if the application wants to capture data from headset microphone, then choose this input source.
 
-- **RTPIN_IN_HS_MIC** - if the application wants to capture data from LINE-IN, then choose this input source.
+- **RTDEVICE_IN_HS_MIC** - if the application wants to capture data from LINE-IN, then choose this input source.
 
 The test demo of RTAudioRecord lies in ``{SDK}/component/example/audio/audio_record``.
 
@@ -1163,12 +1140,12 @@ Here is an example showing how to record audio raw data:
       record_config.sample_rate = rate;
       record_config.format = RTAUDIO_FORMAT_PCM_16_BIT;
       record_config.channel_count = channels;
-      record_config.device = RTPIN_IN_MIC;
+      record_config.device = RTDEVICE_IN_MIC;
       record_config.buffer_bytes = 0;
 
 3. With RTAudioRecordConfig object created, initialize RTAudioRecord
 
-   In this step, Audio HAL's AudioHwAdapter will be loaded, according to the audio input device source.
+   In this step, Audio HAL's AudioHwCard will be opened, according to the audio input device source.
 
    .. code-block:: c
 
