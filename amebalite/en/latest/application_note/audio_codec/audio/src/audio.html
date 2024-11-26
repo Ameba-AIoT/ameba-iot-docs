@@ -122,7 +122,6 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#interfaces">Interfaces</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#driver-interfaces">Driver Interfaces</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#hal-interfaces">HAL Interfaces</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#framework-interfaces">Framework Interfaces</a></li>
 </ul>
@@ -680,14 +679,14 @@
 <h2>Playback Architecture<a class="headerlink" href="#playback-architecture" title="Link to this heading"></a></h2>
 <p>The block diagram of audio mixer playback architecture is shown as below.</p>
 <figure class="align-center" id="id4">
-<a class="reference internal image-reference" href="../../../../_images/audio_playback_mixer_architecture.svg"><img alt="../../../../_images/audio_playback_mixer_architecture.svg" height="477" src="../../../../_images/audio_playback_mixer_architecture.svg" width="868" /></a>
+<a class="reference internal image-reference" href="../../../../_images/audio_playback_mixer_architecture.svg"><img alt="../../../../_images/audio_playback_mixer_architecture.svg" height="458" src="../../../../_images/audio_playback_mixer_architecture.svg" width="883" /></a>
 <figcaption>
 <p><span class="caption-text">Playback mixer architecture</span><a class="headerlink" href="#id4" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <p>The block diagram of audio passthrough playback architecture is shown as below.</p>
 <figure class="align-center" id="id5">
-<a class="reference internal image-reference" href="../../../../_images/audio_playback_passthrough_architecture.svg"><img alt="../../../../_images/audio_playback_passthrough_architecture.svg" height="441" src="../../../../_images/audio_playback_passthrough_architecture.svg" width="476" /></a>
+<a class="reference internal image-reference" href="../../../../_images/audio_playback_passthrough_architecture.svg"><img alt="../../../../_images/audio_playback_passthrough_architecture.svg" height="416" src="../../../../_images/audio_playback_passthrough_architecture.svg" width="449" /></a>
 <figcaption>
 <p><span class="caption-text">Playback passthrough architecture</span><a class="headerlink" href="#id5" title="Link to this image"></a></p>
 </figcaption>
@@ -723,7 +722,7 @@
 <h2>Record Architecture<a class="headerlink" href="#record-architecture" title="Link to this heading"></a></h2>
 <p>Audio mixer and passthrough have the same record architecture. The block diagram of audio record is shown as below.</p>
 <figure class="align-center" id="id6">
-<a class="reference internal image-reference" href="../../../../_images/audio_record_architecture.svg"><img alt="../../../../_images/audio_record_architecture.svg" height="434" src="../../../../_images/audio_record_architecture.svg" width="482" /></a>
+<a class="reference internal image-reference" href="../../../../_images/audio_record_architecture.svg"><img alt="../../../../_images/audio_record_architecture.svg" height="410" src="../../../../_images/audio_record_architecture.svg" width="455" /></a>
 <figcaption>
 <p><span class="caption-text">Record architecture</span><a class="headerlink" href="#id6" title="Link to this image"></a></p>
 </figcaption>
@@ -790,7 +789,7 @@
 </section>
 <section id="interfaces">
 <h1>Interfaces<a class="headerlink" href="#interfaces" title="Link to this heading"></a></h1>
-<p>The audio component provides two layers of interfaces.</p>
+<p>The audio component provides three layers of interfaces.</p>
 <table class="docutils align-default" style="width: 100%">
 <colgroup>
 <col style="width: 30.0%" />
@@ -809,7 +808,7 @@
 <td><p>Audio Hardware Abstraction Layer Interfaces.</p></td>
 </tr>
 <tr class="row-even"><td><p>Audio Framework Interfaces</p></td>
-<td><p>High-level Interfaces for applications to render/capture stream, set volume and so on.</p></td>
+<td><p>High-level Interfaces for applications to render/capture stream, set volume, and so on.</p></td>
 </tr>
 </tbody>
 </table>
@@ -820,403 +819,6 @@
 <p><span class="caption-text">Audio interfaces</span><a class="headerlink" href="#id8" title="Link to this image"></a></p>
 </figcaption>
 </figure>
-<section id="driver-interfaces">
-<h2>Driver Interfaces<a class="headerlink" href="#driver-interfaces" title="Link to this heading"></a></h2>
-<section id="audio-clock-and-function-apis">
-<h3>Audio Clock and Function APIs<a class="headerlink" href="#audio-clock-and-function-apis" title="Link to this heading"></a></h3>
-<table class="docutils align-default" style="width: 100%">
-<colgroup>
-<col style="width: 30.0%" />
-<col style="width: 70.0%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p>API</p></th>
-<th class="head"><p>Introduction</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>RCC_PeriphClockCmd</p></td>
-<td><p>Enable or disable the APB peripheral clock and function</p></td>
-</tr>
-<tr class="row-odd"><td><p>RCC_PeriphClockSource_SPORT</p></td>
-<td><p>Configure SPORT clock</p></td>
-</tr>
-<tr class="row-even"><td><p>RCC_PeriphClockSource_AUDIOCODEC</p></td>
-<td><p>Select audio codec clock</p></td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="sport-apis">
-<h3>SPORT APIs<a class="headerlink" href="#sport-apis" title="Link to this heading"></a></h3>
-<table class="docutils align-default" style="width: 100%">
-<colgroup>
-<col style="width: 30.0%" />
-<col style="width: 70.0%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p>API</p></th>
-<th class="head"><p>Introduction</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>AUDIO_SP_StructInit</p></td>
-<td><p>Fill each SP_StructInit member with its default value</p></td>
-</tr>
-<tr class="row-odd"><td><p>AUDIO_SP_Register</p></td>
-<td><p>Register audio SPORT with its index, direction, and SP_StructInit members.</p></td>
-</tr>
-<tr class="row-even"><td><p>AUDIO_SP_Unregister</p></td>
-<td><p>Unregister audio SPORT with its index</p></td>
-</tr>
-<tr class="row-odd"><td><p>AUDIO_SP_Reset</p></td>
-<td><p>Reset SPORT</p></td>
-</tr>
-<tr class="row-even"><td><p>AUDIO_SP_GetTXChnLen</p></td>
-<td><p>Get the audio SPORT Tx channel length</p></td>
-</tr>
-<tr class="row-odd"><td><p>AUDIO_SP_GetRXChnLen</p></td>
-<td><p>Get the audio SPORT Rx channel length</p></td>
-</tr>
-<tr class="row-even"><td><p>AUDIO_SP_SetTXClkDiv</p></td>
-<td><p>Set the audio SPORT Tx BCLK and LRCK</p></td>
-</tr>
-<tr class="row-odd"><td><p>AUDIO_SP_SetRXClkDiv</p></td>
-<td><p>Set the audio SPORT Rx BCLK and LRCK</p></td>
-</tr>
-<tr class="row-even"><td><p>AUDIO_SP_SetMClk</p></td>
-<td><p>Set the audio SPORT MCLK mode</p></td>
-</tr>
-<tr class="row-odd"><td><p>AUDIO_SP_SetMClkDiv</p></td>
-<td><p>Set the audio SPORT MCLK divider</p></td>
-</tr>
-<tr class="row-even"><td><p>AUDIO_SP_SetFixBclk</p></td>
-<td><p>Set the audio SPORT fix BCLK mode</p></td>
-</tr>
-<tr class="row-odd"><td><p>AUDIO_SP_SelFixBclk</p></td>
-<td><p>Select audio SPORT fix BCLK</p></td>
-</tr>
-<tr class="row-even"><td><p>AUDIO_SP_TXCHNSrcSel</p></td>
-<td><p>Select SPORT Tx channel source</p></td>
-</tr>
-<tr class="row-odd"><td><p>AUDIO_SP_RXFIFOSrcSel</p></td>
-<td><p>Select SPORT Rx FIFO source</p></td>
-</tr>
-<tr class="row-even"><td><p>AUDIO_SP_TXSetFifo</p></td>
-<td><p>Set the audio SPORT Tx FIFO</p></td>
-</tr>
-<tr class="row-odd"><td><p>AUDIO_SP_RXSetFifo</p></td>
-<td><p>Set the audio SPORT Rx FIFO</p></td>
-</tr>
-<tr class="row-even"><td><p>AUDIO_SP_Init</p></td>
-<td><p>Initialize the audio SPORT registers according to the specified parameters in SP_InitStruct</p></td>
-</tr>
-<tr class="row-odd"><td><p>AUDIO_SP_TXStart</p></td>
-<td><p>Start or stop SPORT Tx path</p></td>
-</tr>
-<tr class="row-even"><td><p>AUDIO_SP_RXStart</p></td>
-<td><p>Start or stop SPORT Rx path</p></td>
-</tr>
-<tr class="row-odd"><td><p>AUDIO_SP_DmaCmd</p></td>
-<td><p>Enable or disable SPORT DMA handshake</p></td>
-</tr>
-<tr class="row-even"><td><p>AUDIO_SP_SetSelfLPBK</p></td>
-<td><p>Set SPORT self-loopback mode</p></td>
-</tr>
-<tr class="row-odd"><td><p>AUDIO_SP_SetTXWordLen</p></td>
-<td><p>Set the audio SPORT Tx word length</p></td>
-</tr>
-<tr class="row-even"><td><p>AUDIO_SP_SetRXWordLen</p></td>
-<td><p>Set the audio SPORT Rx word length</p></td>
-</tr>
-<tr class="row-odd"><td><p>AUDIO_SP_GetTXWordLen</p></td>
-<td><p>Get the audio SPORT Tx word length</p></td>
-</tr>
-<tr class="row-even"><td><p>AUDIO_SP_GetRXWordLen</p></td>
-<td><p>Get the audio SPORT Rx word length</p></td>
-</tr>
-<tr class="row-odd"><td><p>AUDIO_SP_SetMonoStereo</p></td>
-<td><p>Set the audio SPORT channel number</p></td>
-</tr>
-<tr class="row-even"><td><p>AUDIO_SP_SetMasterSlave</p></td>
-<td><p>Set the audio SPORT master or slave mode</p></td>
-</tr>
-<tr class="row-odd"><td><p>AUDIO_SP_SetPinMux</p></td>
-<td><p>Set the audio SPORT pinmux function</p></td>
-</tr>
-<tr class="row-even"><td><p>AUDIO_SP_TXGDMA_Init</p></td>
-<td><p>Initialize GDMA peripheral for Tx data</p></td>
-</tr>
-<tr class="row-odd"><td><p>AUDIO_SP_RXGDMA_Init</p></td>
-<td><p>Initialize GDMA peripheral for Rx data</p></td>
-</tr>
-<tr class="row-even"><td><p>AUDIO_SP_TXGDMA_Restart</p></td>
-<td><p>Restart GDMA peripheral for Tx data</p></td>
-</tr>
-<tr class="row-odd"><td><p>AUDIO_SP_RXGDMA_Restart</p></td>
-<td><p>Restart GDMA peripheral for Rx data</p></td>
-</tr>
-<tr class="row-even"><td><p>AUDIO_SP_LLPTXGDMA_Init</p></td>
-<td><p>Initialize Link-list mode GDMA peripheral for Tx data</p></td>
-</tr>
-<tr class="row-odd"><td><p>AUDIO_SP_LLPRXGDMA_Init</p></td>
-<td><p>Initialize Link-list mode GDMA peripheral for Rx data</p></td>
-</tr>
-<tr class="row-even"><td><p>AUDIO_SP_SetTXCounter</p></td>
-<td><p>Set SPORT Tx counter</p></td>
-</tr>
-<tr class="row-odd"><td><p>AUDIO_SP_SetTXCounterCompVal</p></td>
-<td><p>Set SPORT Tx counter compare value</p></td>
-</tr>
-<tr class="row-even"><td><p>AUDIO_SP_ClearTXCounterIrq</p></td>
-<td><p>Clear SPORT Tx counter IRQ</p></td>
-</tr>
-<tr class="row-odd"><td><p>AUDIO_SP_SetPhaseLatch</p></td>
-<td><p>Set SPORT phase latch</p></td>
-</tr>
-<tr class="row-even"><td><p>AUDIO_SP_GetTXCounterVal</p></td>
-<td><p>Get SPORT Tx counter value</p></td>
-</tr>
-<tr class="row-odd"><td><p>AUDIO_SP_GetTXPhaseVal</p></td>
-<td><p>Get SPORT Tx phase value: only available when SPORT channel length is 32bit.</p></td>
-</tr>
-<tr class="row-even"><td><p>AUDIO_SP_SetRXCounter</p></td>
-<td><p>Set SPORT Rx counter</p></td>
-</tr>
-<tr class="row-odd"><td><p>AUDIO_SP_SetRXCounterCompVal</p></td>
-<td><p>Set SPORT Rx counter compare value</p></td>
-</tr>
-<tr class="row-even"><td><p>AUDIO_SP_ClearRXCounterIrq</p></td>
-<td><p>Clear SPORT Rx counter IRQ</p></td>
-</tr>
-<tr class="row-odd"><td><p>AUDIO_SP_GetRXCounterVal</p></td>
-<td><p>Get SPORT Rx counter value</p></td>
-</tr>
-<tr class="row-even"><td><p>AUDIO_SP_GetRXPhaseVal</p></td>
-<td><p>Get SPORT Rx phase value: only available when SPORT channel length is 32bit.</p></td>
-</tr>
-<tr class="row-odd"><td><p>AUDIO_SP_SetDirectOutMode</p></td>
-<td><p>Set SPORT direct out mode</p></td>
-</tr>
-<tr class="row-even"><td><p>AUDIO_SP_Deinit</p></td>
-<td><p>De-initialize the audio SPORT index and direction</p></td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="codec-apis">
-<h3>Codec APIs<a class="headerlink" href="#codec-apis" title="Link to this heading"></a></h3>
-<table class="docutils align-default" style="width: 100%">
-<colgroup>
-<col style="width: 30.0%" />
-<col style="width: 70.0%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p>API</p></th>
-<th class="head"><p>Introduction</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>AUDIO_CODEC_SetAudioIP</p></td>
-<td><p>Enable or disable audio codec IP</p></td>
-</tr>
-<tr class="row-odd"><td><p>AUDIO_CODEC_SetI2SIP</p></td>
-<td><p>Enable or disable I2S IP</p></td>
-</tr>
-<tr class="row-even"><td><p>AUDIO_CODEC_SetI2SSRC</p></td>
-<td><p>Select I2S master source.</p></td>
-</tr>
-<tr class="row-odd"><td><p>AUDIO_CODEC_SetANAClk</p></td>
-<td><p>Enable or disable ADC/DAC analog clock</p></td>
-</tr>
-<tr class="row-even"><td><p>AUDIO_CODEC_SetI2SRXTDM</p></td>
-<td><p>Select I2S Rx and I2S Rx TDM mode</p></td>
-</tr>
-<tr class="row-odd"><td><p>AUDIO_CODEC_I2S_StructInit</p></td>
-<td><p>Default I2S initialization parameter</p></td>
-</tr>
-<tr class="row-even"><td><p>AUDIO_CODEC_SetI2SParameters</p></td>
-<td><p>Set I2S initialization parameter</p></td>
-</tr>
-<tr class="row-odd"><td><p>AUDIO_CODEC_SetADCSRSrc</p></td>
-<td><p>Select ADC sample rate and source, all ADC share source and sample rate</p></td>
-</tr>
-<tr class="row-even"><td><p>AUDIO_CODEC_SetDACSRSrc</p></td>
-<td><p>Select DAC sample rate and source</p></td>
-</tr>
-<tr class="row-odd"><td><p>AUDIO_CODEC_EnableDACFifo</p></td>
-<td><p>Enable or disable DAC fif0</p></td>
-</tr>
-<tr class="row-even"><td><p>AUDIO_CODEC_EnableADCFifo</p></td>
-<td><p>Enable or disable ADC fif0</p></td>
-</tr>
-<tr class="row-odd"><td><p>AUDIO_CODEC_DisPAD</p></td>
-<td><p>Disable audio pad according to the work path</p></td>
-</tr>
-<tr class="row-even"><td><p>AUDIO_CODEC_SetLDOMode</p></td>
-<td><p>Audio Codec LDO power on or power down</p></td>
-</tr>
-<tr class="row-odd"><td><p>AUDIO_CODEC_EnableADC</p></td>
-<td><p>Enable or disable per AD and AD FIFO channel clock</p></td>
-</tr>
-<tr class="row-even"><td><p>AUDIO_CODEC_SetADCVolume</p></td>
-<td><p>Set the gain of ADC digital volume</p></td>
-</tr>
-<tr class="row-odd"><td><p>AUDIO_CODEC_SetADCHPF</p></td>
-<td><p>Set per ADC channel HPF mode and select HPF FC</p></td>
-</tr>
-<tr class="row-even"><td><p>AUDIO_CODEC_SetADCASRC</p></td>
-<td><p>Set ADC ASRC mode</p></td>
-</tr>
-<tr class="row-odd"><td><p>AUDIO_CODEC_SetADCMute</p></td>
-<td><p>Mute ADC path</p></td>
-</tr>
-<tr class="row-even"><td><p>AUDIO_CODEC_SetADCMixMute</p></td>
-<td><p>Set per ADC mix mute type and state</p></td>
-</tr>
-<tr class="row-odd"><td><p>AUDIO_CODEC_SetADCANASrc</p></td>
-<td><p>Select analog ad source for per ad channel</p></td>
-</tr>
-<tr class="row-even"><td><p>AUDIO_CODEC_SetADCANAFilter</p></td>
-<td><p>Enable or disable per ADC analog ad filter</p></td>
-</tr>
-<tr class="row-odd"><td><p>AUDIO_CODEC_SetMicBiasPowerMode</p></td>
-<td><p>Audio Codec MICBIAS power on or power down</p></td>
-</tr>
-<tr class="row-even"><td><p>AUDIO_CODEC_SetMicBstPowerMode</p></td>
-<td><p>Set MICBST power on or down</p></td>
-</tr>
-<tr class="row-odd"><td><p>AUDIO_CODEC_SetMicBstChnMute</p></td>
-<td><p>Set per MICBST mute or unmute</p></td>
-</tr>
-<tr class="row-even"><td><p>AUDIO_CODEC_SetMicBstInputMode</p></td>
-<td><p>Set MICBST single-end or differential mode</p></td>
-</tr>
-<tr class="row-odd"><td><p>AUDIO_CODEC_SetMicBstGain</p></td>
-<td><p>Set codec MICBST gain</p></td>
-</tr>
-<tr class="row-even"><td><p>AUDIO_CODEC_SetADCDmicFilter</p></td>
-<td><p>Enable per DIMC channel filter</p></td>
-</tr>
-<tr class="row-odd"><td><p>AUDIO_CODEC_SetDmicClk</p></td>
-<td><p>Enable and select DMIC clock</p></td>
-</tr>
-<tr class="row-even"><td><p>AUDIO_CODEC_SetDmicSrc</p></td>
-<td><p>Set DIMC channel source</p></td>
-</tr>
-<tr class="row-odd"><td><p>AUDIO_CODEC_SetDACSrc</p></td>
-<td><p>Set DAC source</p></td>
-</tr>
-<tr class="row-even"><td><p>AUDIO_CODEC_EnableDAC</p></td>
-<td><p>Enable or disable da and da FIFO channel clock</p></td>
-</tr>
-<tr class="row-odd"><td><p>AUDIO_CODEC_SetDACMute</p></td>
-<td><p>Mute DAC path</p></td>
-</tr>
-<tr class="row-even"><td><p>AUDIO_CODEC_SetDACVolume</p></td>
-<td><p>Set the gain of DAC digital volume</p></td>
-</tr>
-<tr class="row-odd"><td><p>AUDIO_CODEC_SetDACHPF</p></td>
-<td><p>Set DAC HPF enable</p></td>
-</tr>
-<tr class="row-even"><td><p>AUDIO_CODEC_SetDACASRC</p></td>
-<td><p>Enable or disable DAC ASRC mode and select ASRC rate</p></td>
-</tr>
-<tr class="row-odd"><td><p>AUDIO_CODEC_SetDACPowerMode</p></td>
-<td><p>Set DAC power mode</p></td>
-</tr>
-<tr class="row-even"><td><p>AUDIO_CODEC_SetLineOutPowerMode</p></td>
-<td><p>Set lineout power mode</p></td>
-</tr>
-<tr class="row-odd"><td><p>AUDIO_CODEC_SetLineOutMode</p></td>
-<td><p>Set Lineout single-end or differential mode</p></td>
-</tr>
-<tr class="row-even"><td><p>AUDIO_CODEC_SetLineOutMute</p></td>
-<td><p>Set Line out mute control: DAC in or analog in</p></td>
-</tr>
-<tr class="row-odd"><td><p>AUDIO_CODEC_SetPDMClk</p></td>
-<td><p>Enable and select or disable PDM clock</p></td>
-</tr>
-<tr class="row-even"><td><p>AUDIO_CODEC_SetTesttone</p></td>
-<td><p>DAC Test tone mode</p></td>
-</tr>
-<tr class="row-odd"><td><p>AUDIO_CODEC_SetDAADLPBK</p></td>
-<td><p>Set daad loopback mode</p></td>
-</tr>
-<tr class="row-even"><td><p>AUDIO_CODEC_SetADDALPBK</p></td>
-<td><p>Set adda loopback mode</p></td>
-</tr>
-<tr class="row-odd"><td><p>AUDIO_CODEC_SetADCDecimationSrc</p></td>
-<td><p>select ADC path decimation source</p></td>
-</tr>
-<tr class="row-even"><td><p>AUDIO_CODEC_SetDACZDET</p></td>
-<td><p>Set DAC path zero detection function</p></td>
-</tr>
-<tr class="row-odd"><td><p>AUDIO_CODEC_SetDACZDETTimeOut</p></td>
-<td><p>Set DAC path zero detection time out selection</p></td>
-</tr>
-<tr class="row-even"><td><p>AUDIO_CODEC_SetADCZDET</p></td>
-<td><p>Set ADC path zero detection function</p></td>
-</tr>
-<tr class="row-odd"><td><p>AUDIO_CODEC_SetADCZDETTimeOut</p></td>
-<td><p>Set ADC path zero detection function</p></td>
-</tr>
-<tr class="row-even"><td><p>AUDIO_CODEC_Record</p></td>
-<td><p>Audio codec record flow for test</p></td>
-</tr>
-<tr class="row-odd"><td><p>AUDIO_CODEC_Playback</p></td>
-<td><p>Audio codec playback flow for test</p></td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="vad-apis">
-<h3>VAD APIs<a class="headerlink" href="#vad-apis" title="Link to this heading"></a></h3>
-<table class="docutils align-default" style="width: 100%">
-<colgroup>
-<col style="width: 30.0%" />
-<col style="width: 70.0%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p>API</p></th>
-<th class="head"><p>Introduction</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>AUDIO_CODEC_VADStart</p></td>
-<td><p>Enable and start VAD</p></td>
-</tr>
-<tr class="row-odd"><td><p>AUDIO_CODEC_ENVADIRQ</p></td>
-<td><p>Enable and select VAD interrupt mode</p></td>
-</tr>
-<tr class="row-even"><td><p>AUDIO_CODEC_DISVADIRQ</p></td>
-<td><p>Enable and select VAD interrupt mode</p></td>
-</tr>
-<tr class="row-odd"><td><p>AUDIO_CODEC_SetVADDetThr</p></td>
-<td><p>Set VAD detection threshold</p></td>
-</tr>
-<tr class="row-even"><td><p>AUDIO_CODEC_SetVADVoice</p></td>
-<td><p>Set VAD voice volume</p></td>
-</tr>
-<tr class="row-odd"><td><p>AUDIO_CODEC_SetVADSrc</p></td>
-<td><p>Select the source for voice activity detection</p></td>
-</tr>
-<tr class="row-even"><td><p>AUDIO_CODEC _VADBuf_move_one</p></td>
-<td><p>Configure VAD buffer operation (1 block)</p></td>
-</tr>
-<tr class="row-odd"><td><p>AUDIO_CODEC _VADBuf_move_two</p></td>
-<td><p>Configure VAD buffer operation (2 blocks)</p></td>
-</tr>
-<tr class="row-even"><td><p>AUDIO_CODEC _VADBuf_move_three</p></td>
-<td><p>Configure VAD buffer operation (3 blocks)</p></td>
-</tr>
-<tr class="row-odd"><td><p>AUDIO_CODEC _VADBuf_move_four</p></td>
-<td><p>Configure VAD buffer operation(4 blocks)</p></td>
-</tr>
-</tbody>
-</table>
-</section>
-</section>
 <section id="hal-interfaces">
 <h2>HAL Interfaces<a class="headerlink" href="#hal-interfaces" title="Link to this heading"></a></h2>
 <p>Audio HAL provides AudioHwStreamOut/AudioHwStreamIn/AudioHwControl interfaces to interact with audio hardware.
