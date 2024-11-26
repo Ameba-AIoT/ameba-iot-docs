@@ -178,7 +178,7 @@
 <h2>Mixer Overview<a class="headerlink" href="#mixer-overview" title="Link to this heading"></a></h2>
 <p>The audio interfaces and the entire implementation are shown as below.</p>
 <figure class="align-center" id="id2">
-<a class="reference internal image-reference" href="../../../../_images/audio_mixer_overview.svg"><img alt="../../../../_images/audio_mixer_overview.svg" height="507" src="../../../../_images/audio_mixer_overview.svg" width="663" /></a>
+<a class="reference internal image-reference" href="../../../../_images/audio_mixer_overview.svg"><img alt="../../../../_images/audio_mixer_overview.svg" height="569" src="../../../../_images/audio_mixer_overview.svg" width="725" /></a>
 <figcaption>
 <p><span class="caption-text">Audio mixer overview</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
 </figcaption>
@@ -204,11 +204,11 @@
 <li><p>Audio HAL</p>
 <blockquote>
 <div><ul class="simple">
-<li><p><strong>AudioHwManager</strong> provides interfaces that manage audio adapters through a specific adapter driver program loaded based on the given audio adapter descriptor.</p></li>
-<li><p><strong>AudioHwAdapter</strong> provides interfaces that manage audio adapter capabilities, including initializing ports, creating rendering and capturing tasks, and obtaining the port capability set.</p></li>
+<li><p><strong>AudioHwManager</strong> provides interfaces that manage audio cards through a specific card driver program opened based on the given audio card descriptor.</p></li>
+<li><p><strong>AudioHwCard</strong> provides interfaces that manage audio card capabilities, including initializing ports, creating stream out and stream in.</p></li>
 <li><p><strong>AudioHwControl</strong> provides interfaces for RTAudioControl, and set commands to audio driver.</p></li>
-<li><p><strong>AudioHwRender</strong> provides interfaces that get data from the upper layer and render data to audio driver user interfaces.</p></li>
-<li><p><strong>AudioHwCapture</strong> provides interfaces to capture data from audio driver user interfaces and deliver the data to the upper layer.</p></li>
+<li><p><strong>AudioHwStreamOut</strong> provides interfaces that get data from the upper layer and render data to audio driver user interfaces.</p></li>
+<li><p><strong>AudioHwStreamIn</strong> provides interfaces to capture data from audio driver user interfaces and deliver the data to the upper layer.</p></li>
 </ul>
 </div></blockquote>
 </li>
@@ -226,7 +226,7 @@
 <h2>Passthrough Overview<a class="headerlink" href="#passthrough-overview" title="Link to this heading"></a></h2>
 <p>The audio interfaces and the entire implementation are shown as below.</p>
 <figure class="align-center" id="id3">
-<a class="reference internal image-reference" href="../../../../_images/audio_passthrough_overview.svg"><img alt="../../../../_images/audio_passthrough_overview.svg" height="313" src="../../../../_images/audio_passthrough_overview.svg" width="612" /></a>
+<a class="reference internal image-reference" href="../../../../_images/audio_passthrough_overview.svg"><img alt="../../../../_images/audio_passthrough_overview.svg" height="321" src="../../../../_images/audio_passthrough_overview.svg" width="616" /></a>
 <figcaption>
 <p><span class="caption-text">Audio passthrough overview</span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
 </figcaption>
@@ -278,7 +278,7 @@
 <section id="terminology">
 <h1>Terminology<a class="headerlink" href="#terminology" title="Link to this heading"></a></h1>
 <p>The meanings of some widely-used audio terms in this chapter are listed below.</p>
-<table class="docutils align-default" style="width: 100%">
+<table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Terms</p></th>
 <th class="head"><p>Introduction</p></th>
@@ -286,48 +286,43 @@
 </thead>
 <tbody>
 <tr class="row-even"><td><p>PCM</p></td>
-<td><p>PCM (Pulse Code Modulation), audio data is a raw stream of uncompressed audio sample data, which is standard</p>
-<p>digital audio data converted from analog signals through sampling, quantization, and encoding.</p>
-</td>
+<td><p>Pulse Code Modulation, audio data is a raw stream.</p></td>
 </tr>
 <tr class="row-odd"><td><p>channel</p></td>
-<td><p>A channel sound is an independent audio signal captured or played in different spatial positions during recording</p>
-<p>or playing, so the number of channels is the number of sound sources during sound recording or the number of</p>
-<p>speakers during playback.</p>
+<td><p>A channel sound is an independent audio signal captured or played in different positions, so the number of</p>
+<p>channels is the number of sound sources.</p>
 </td>
 </tr>
 <tr class="row-even"><td><p>mono</p></td>
-<td><p>Mono means only one single-channel sound.</p></td>
+<td><p>Mono means only one single channel sound.</p></td>
 </tr>
 <tr class="row-odd"><td><p>stereo</p></td>
 <td><p>Stereo means two channels.</p></td>
 </tr>
 <tr class="row-even"><td><p>bit depth</p></td>
-<td><p>Bit depth (sample depth) represents how finely the sound intensity is recorded in the sample.</p>
-<p>Sampling depth can be understood as the resolution of processing the sound. The larger the value, the higher the</p>
-<p>resolution, and the more realistic the sound recorded and played.</p>
+<td><p>Bit depth represents the bits effectively used in the process of audio signals.</p>
+<p>Sampling depth shows the resolution of the sound. The larger the value, the higher the resolution.</p>
 </td>
 </tr>
 <tr class="row-odd"><td><p>sample</p></td>
-<td><p>A number representing the audio value of a single channel at a point in time.</p></td>
+<td><p>Representing the audio processing at a point in time.</p></td>
 </tr>
 <tr class="row-even"><td><p>sample rate</p></td>
-<td><p>The audio sampling rate refers to the number of frames that the signal is sampled per unit time. The higher the</p>
-<p>sampling frequency, the more realistic and natural the waveform will be.</p>
+<td><p>The audio sampling rate refers to the number of frames that the signal is sampled per second.</p>
+<blockquote>
+<div><p>The higher the sampling frequency, the higher quality the sound will be.</p>
+</div></blockquote>
 </td>
 </tr>
 <tr class="row-odd"><td><p>frame</p></td>
-<td><p>A frame is a sound unit whose length is the product of the sample length (number of samples) multiplies the</p>
-<p>number of channels.</p>
-</td>
+<td><p>A frame is a sound unit whose length is the sample length multiplies the number of channels.</p></td>
 </tr>
 <tr class="row-even"><td><p>gain</p></td>
 <td><p>Audio signal gain control to adjust the signal level.</p></td>
 </tr>
 <tr class="row-odd"><td><p>interleaved</p></td>
-<td><p>It is a recording method of audio data. In the interleaved mode, the data is stored in a continuous manner, that</p>
-<p>is, the left channel sample and the right channel sample of frame 1 are first stored, and then the storage of frame</p>
-<p>2 is started.</p>
+<td><p>It is a recording method of audio data. In the interleaved mode, the data is stored in a continuous manner,</p>
+<p>all the channels of sample of first frame are first stored, and then the storage of second frame.</p>
 </td>
 </tr>
 <tr class="row-even"><td><p>latency</p></td>
@@ -337,17 +332,15 @@
 <td><p>The buffer is too full to let buffer producer write more data.</p></td>
 </tr>
 <tr class="row-even"><td><p>underrun</p></td>
-<td><p>The buffer producer is too slow to write data to the buffer so that the buffer is empty when the consumer wants</p>
-<p>to consume data.</p>
+<td><p>The buffer producer is too slow to write data to the buffer so that the buffer is empty when the consumer</p>
+<p>wants to consume data.</p>
 </td>
 </tr>
 <tr class="row-odd"><td><p>xrun</p></td>
 <td><p>Overrun or underrun.</p></td>
 </tr>
 <tr class="row-even"><td><p>volume</p></td>
-<td><p>Volume, also known as sound intensity and loudness, refers to the human ear’s subjective perception of the</p>
-<p>intensity of the sound heard, and its objective evaluation scale is the amplitude of the sound.</p>
-</td>
+<td><p>Volume, sound intensity and loudness.</p></td>
 </tr>
 <tr class="row-odd"><td><p>hardware volume</p></td>
 <td><p>The volume of audio codec.</p></td>
@@ -397,7 +390,7 @@
 <li><p><strong>RTAUDIO_FORMAT_PCM_16_BIT</strong> - audio stream has 16-bit depth</p></li>
 <li><p><strong>RTAUDIO_FORMAT_PCM_32_BIT</strong> - audio stream has 32-bit depth</p></li>
 <li><p><strong>RTAUDIO_FORMAT_PCM_FLOAT</strong> - audio stream has 32-bit float format</p></li>
-<li><p><strong>RTAUDIO_FORMAT_PCM_24_BIT_PACKED</strong> - audio stream has 24-bit depth</p></li>
+<li><p><strong>RTAUDIO_FORMAT_PCM_24_BIT</strong> - audio stream has 24-bit depth</p></li>
 <li><p><strong>RTAUDIO_FORMAT_PCM_8_24_BIT</strong> - audio stream has 24-bit + 8-bit depth</p></li>
 </ul>
 <p>The following table describes the supported formats for playback and recording. <code class="docutils literal notranslate"><span class="pre">Y</span></code> means the format is supported; <code class="docutils literal notranslate"><span class="pre">N</span></code> means the format is not supported.</p>
@@ -430,7 +423,7 @@
 <td><p>N</p></td>
 <td><p>N</p></td>
 </tr>
-<tr class="row-even"><td><p>RTAUDIO_FORMAT_PCM_24_BIT_PACKED</p></td>
+<tr class="row-even"><td><p>RTAUDIO_FORMAT_PCM_24_BIT</p></td>
 <td><p>Y</p></td>
 <td><p>Y</p></td>
 <td><p>Y</p></td>
@@ -545,7 +538,7 @@
 <li><p><strong>AUDIO_HW_FORMAT_PCM_16_BIT</strong> - audio stream has 16-bit depth</p></li>
 <li><p><strong>AUDIO_HW_FORMAT_PCM_32_BIT</strong> - audio stream has 32-bit depth</p></li>
 <li><p><strong>AUDIO_HW_FORMAT_PCM_FLOAT</strong> - audio stream has 32-bit float format</p></li>
-<li><p><strong>AUDIO_HW_FORMAT_PCM_24_BIT_PACKED</strong> - audio stream has 24-bit depth</p></li>
+<li><p><strong>AUDIO_HW_FORMAT_PCM_24_BIT</strong> - audio stream has 24-bit depth</p></li>
 <li><p><strong>AUDIO_HW_FORMAT_PCM_8_24_BIT</strong> - audio stream has 24-bit + 8-bit depth</p></li>
 </ul>
 <p>If using the Audio HAL interface, please check the bit depth HAL supported for Playback and Capture. <code class="docutils literal notranslate"><span class="pre">Y</span></code> means the format is supported; <code class="docutils literal notranslate"><span class="pre">N</span></code> means the format is not supported.</p>
@@ -578,7 +571,7 @@
 <td><p>N</p></td>
 <td><p>N</p></td>
 </tr>
-<tr class="row-even"><td><p>AUDIO_HW_FORMAT_PCM_24_BIT_PACKED</p></td>
+<tr class="row-even"><td><p>AUDIO_HW_FORMAT_PCM_24_BIT</p></td>
 <td><p>N</p></td>
 <td><p>N</p></td>
 </tr>
@@ -689,14 +682,14 @@
 <h2>Playback Architecture<a class="headerlink" href="#playback-architecture" title="Link to this heading"></a></h2>
 <p>The block diagram of audio mixer playback architecture is shown as below.</p>
 <figure class="align-center" id="id4">
-<a class="reference internal image-reference" href="../../../../_images/audio_playback_mixer_architecture.svg"><img alt="../../../../_images/audio_playback_mixer_architecture.svg" height="477" src="../../../../_images/audio_playback_mixer_architecture.svg" width="919" /></a>
+<a class="reference internal image-reference" href="../../../../_images/audio_playback_mixer_architecture.svg"><img alt="../../../../_images/audio_playback_mixer_architecture.svg" height="415" src="../../../../_images/audio_playback_mixer_architecture.svg" width="755" /></a>
 <figcaption>
 <p><span class="caption-text">Playback mixer architecture</span><a class="headerlink" href="#id4" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <p>The block diagram of audio passthrough playback architecture is shown as below.</p>
 <figure class="align-center" id="id5">
-<a class="reference internal image-reference" href="../../../../_images/audio_playback_passthrough_architecture.svg"><img alt="../../../../_images/audio_playback_passthrough_architecture.svg" height="439" src="../../../../_images/audio_playback_passthrough_architecture.svg" width="483" /></a>
+<a class="reference internal image-reference" href="../../../../_images/audio_playback_passthrough_architecture.svg"><img alt="../../../../_images/audio_playback_passthrough_architecture.svg" height="490" src="../../../../_images/audio_playback_passthrough_architecture.svg" width="529" /></a>
 <figcaption>
 <p><span class="caption-text">Playback passthrough architecture</span><a class="headerlink" href="#id5" title="Link to this image"></a></p>
 </figcaption>
@@ -707,8 +700,7 @@
 <blockquote>
 <div><ul class="simple">
 <li><p>Audio framework is responsible for audio playback sound mixing.</p></li>
-<li><p>Audio framework supports at most 32 sound playing together.</p></li>
-<li><p>Before mixing, all sound will be converted to one unified audio format, which is 16-bit, 44100Hz, 2-channel currently. Sub-modules reformat, resampler are responsible to do the conversion. There is also volume sub-module in audio framework to adjust volumes for different audio types, for example, music, speech may have different volumes.</p></li>
+<li><p>Before mixing, all sound will be converted to one unified audio format, default is 16-bit, 44100Hz, 2-channel. Sub-modules reformat, resampler are responsible to do the conversion. There is also volume sub-module in audio framework to adjust volumes for different audio types, for example, music, speech may have different volumes.</p></li>
 <li><p>Audio framework supports sound rate from 8k-96k, channel mono/stereo, format 8-bit, 16-bit, 24-bit, and 32-bit float.</p></li>
 </ul>
 </div></blockquote>
@@ -733,7 +725,7 @@
 <h2>Record Architecture<a class="headerlink" href="#record-architecture" title="Link to this heading"></a></h2>
 <p>Audio mixer and passthrough have the same record architecture. The block diagram of audio record is shown as below.</p>
 <figure class="align-center" id="id6">
-<a class="reference internal image-reference" href="../../../../_images/audio_record_architecture.svg"><img alt="../../../../_images/audio_record_architecture.svg" height="405" src="../../../../_images/audio_record_architecture.svg" width="446" /></a>
+<a class="reference internal image-reference" href="../../../../_images/audio_record_architecture.svg"><img alt="../../../../_images/audio_record_architecture.svg" height="483" src="../../../../_images/audio_record_architecture.svg" width="536" /></a>
 <figcaption>
 <p><span class="caption-text">Record architecture</span><a class="headerlink" href="#id6" title="Link to this image"></a></p>
 </figcaption>
@@ -782,8 +774,8 @@
 </section>
 <section id="framework-configuration">
 <h2>Framework Configuration<a class="headerlink" href="#framework-configuration" title="Link to this heading"></a></h2>
-<p>Audio Framework configurations lie in <code class="docutils literal notranslate"><span class="pre">{SDK}/component/soc/amebalite/usrcfg/ameba_audio_mixer_usrcfg.cpp</span></code>.</p>
-<p>If users want to change the audio HAL period buffer size, or audio mixer’s buffer policy, change <em>kPrimaryAudioConfig</em> according to the description of <code class="docutils literal notranslate"><span class="pre">{SDK}/component/soc/amebalite/usrcfg/include/ameba_audio_mixer_usrcfg.h</span></code>.</p>
+<p>Audio Framework configurations lie in <code class="docutils literal notranslate"><span class="pre">{SDK}/component/audio/configs/ameba_audio_mixer_usrcfg.cpp</span></code>.</p>
+<p>If users want to change the audio HAL period buffer size, or audio mixer’s buffer policy, change <em>kPrimaryAudioConfig</em> according to the description of <code class="docutils literal notranslate"><span class="pre">{SDK}/component/audio/configs/include/ameba_audio_mixer_usrcfg.h</span></code>.</p>
 <p>The config <em>out_min_frames_stage</em> in <em>kPrimaryAudioConfig</em> only supports <em>RTAUDIO_OUT_MIN_FRAMES_STAGE1</em> and <em>RTAUDIO_OUT_MIN_ FRAMES_STAGE2</em>.</p>
 <ul class="simple">
 <li><p><em>RTAUDIO_OUT_MIN_FRAMES_STAGE1</em> means more data output to audio HAL one time.</p></li>
@@ -825,7 +817,7 @@
 </table>
 <p>The interfaces layer is shown as below.</p>
 <figure class="align-center" id="id8">
-<a class="reference internal image-reference" href="../../../../_images/audio_interfaces.svg"><img alt="../../../../_images/audio_interfaces.svg" height="247" src="../../../../_images/audio_interfaces.svg" width="722" /></a>
+<a class="reference internal image-reference" href="../../../../_images/audio_interfaces.svg"><img alt="../../../../_images/audio_interfaces.svg" height="268" src="../../../../_images/audio_interfaces.svg" width="734" /></a>
 <figcaption>
 <p><span class="caption-text">Audio interfaces</span><a class="headerlink" href="#id8" title="Link to this image"></a></p>
 </figcaption>
@@ -1229,116 +1221,52 @@
 </section>
 <section id="hal-interfaces">
 <h2>HAL Interfaces<a class="headerlink" href="#hal-interfaces" title="Link to this heading"></a></h2>
-<p>Audio HAL provides AudioHwRender/AudioHwCapture/AudioHwControl interfaces to interact with audio hardware. The interfaces lie in <code class="docutils literal notranslate"><span class="pre">{SDK}/component/audio/interfaces/hardware/audio</span></code>. The interfaces have specific descriptions in them, read them before use.</p>
+<p>Audio HAL provides AudioHwStreamOut/AudioHwStreamIn/AudioHwControl interfaces to interact with audio hardware. The interfaces lie in <code class="docutils literal notranslate"><span class="pre">{SDK}/component/audio/interfaces/hardware/audio</span></code>.
+The interfaces have specific descriptions in them, read them before use.</p>
 <ul class="simple">
-<li><p><strong>AudioHwRender</strong>: receives PCM data from the upper layer, writes data via audio driver to send PCM data to hardware, and provides information about audio output hardware driver.</p></li>
-<li><p><strong>AudioHwCapture</strong>: receives PCM data via audio driver and sends to the upper layer.</p></li>
+<li><p><strong>AudioHwStreamOut</strong>: receives PCM data from the upper layer, writes data via audio driver to send PCM data to hardware, and provides information about audio output hardware driver.</p></li>
+<li><p><strong>AudioHwStreamIn</strong>: receives PCM data via audio driver and sends to the upper layer.</p></li>
 <li><p><strong>AudioHwControl</strong>: receives control calling from the upper layer, and sets control information to the driver.</p></li>
 </ul>
-<p>The AudioHwRender/AudioHwCapture is managed by AudioHwAdapter interface. It is responsible for creating/destroying AudioHwRender/AudioHwCapture instance. AudioHwAdapter is a physical or virtual hardware to process audio stream. It contains a set of ports and pins as shown in <a class="reference internal" href="#audio-hw-adapter-example"><span class="std std-ref">AudioHwAdapter example</span></a>.</p>
+<p>The AudioHwStreamOut/AudioHwStreamIn is managed by AudioHwCard interface. It is responsible for creating/destroying AudioHwStreamOut/AudioHwStreamIn instance.
+AudioHwCard is a physical or virtual hardware to process audio stream. It contains a set of ports and devices as shown in following figure.</p>
 <ul class="simple">
-<li><p><strong>Port</strong> – the stream input of audio adapter</p></li>
-<li><p><strong>Pin</strong> – the output stream of audio adapter</p></li>
+<li><p><strong>Port</strong> – the stream output/input of the audio card is called “port”.</p></li>
+<li><p><strong>Device</strong> – The device output/input of audio card is called device.</p></li>
 </ul>
-<figure class="align-center" id="audio-hw-adapter-example">
-<a class="reference internal image-reference" href="../../../../_images/audio_hw_adapter_example.svg"><img alt="../../../../_images/audio_hw_adapter_example.svg" height="351" src="../../../../_images/audio_hw_adapter_example.svg" width="504" /></a>
+<figure class="align-center" id="audio-hal-architecture">
+<a class="reference internal image-reference" href="../../../../_images/audio_hal_architecture.svg"><img alt="../../../../_images/audio_hal_architecture.svg" height="285" src="../../../../_images/audio_hal_architecture.svg" width="507" /></a>
 <figcaption>
-<p><span class="caption-text">AudioHwAdapter example</span><a class="headerlink" href="#audio-hw-adapter-example" title="Link to this image"></a></p>
+<p><span class="caption-text">AudioHwCard example</span><a class="headerlink" href="#audio-hal-architecture" title="Link to this image"></a></p>
 </figcaption>
 </figure>
-<p>The AudioHwManager manages system’s all AudioHwAdapters and loads a specific adapter driver based on the given audio adapter descriptor.</p>
-<section id="using-audiohwrender">
-<h3>Using AudioHwRender<a class="headerlink" href="#using-audiohwrender" title="Link to this heading"></a></h3>
-<p>Users can check the example of AudioHwRender in <code class="docutils literal notranslate"><span class="pre">{SDK}/component/example/audio/audio_hal_render</span></code>.</p>
+<p>The AudioHwManager manages system’s all AudioHwCards and opens a specific card driver based on the given audio card descriptor.</p>
+<section id="using-audiohwstreamout">
+<h3>Using AudioHwStreamOut<a class="headerlink" href="#using-audiohwstreamout" title="Link to this heading"></a></h3>
+<p>Users can check the example of AudioHwStreamOut in <code class="docutils literal notranslate"><span class="pre">{SDK}/component/example/audio/audio_hal_render</span></code>.</p>
 <p>Here is the description showing how to use audio HAL interfaces to play audio raw data (PCM format):</p>
 <ol class="arabic">
-<li><p>Use <code class="xref py py-func docutils literal notranslate"><span class="pre">GetAudioManagerFuncs()</span></code> to get AudioHwManager instance</p>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">AudioHwManager</span><span class="w"> </span><span class="o">*</span><span class="n">audio_manager</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GetAudioManagerFuncs</span><span class="p">();</span>
+<li><p>Use <code class="xref py py-func docutils literal notranslate"><span class="pre">CreateAudioHwManager()</span></code> to get AudioHwManager instance:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">AudioHwManager</span><span class="w"> </span><span class="o">*</span><span class="n">audio_manager</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CreateAudioHwManager</span><span class="p">();</span>
 </pre></div>
 </div>
 </li>
-<li><p>Use <code class="xref py py-func docutils literal notranslate"><span class="pre">GetAllAdapters()</span></code> to get all audio adapter descriptors</p>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int32_t</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span>
-<span class="k">struct</span><span class="w"> </span><span class="nc">AudioHwAdapterDescriptor</span><span class="w"> </span><span class="o">*</span><span class="n">descs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nullptr</span><span class="p">;</span>
-<span class="n">audio_manager</span><span class="o">-&gt;</span><span class="n">GetAllAdapters</span><span class="p">(</span><span class="n">audio_manager</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">descs</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">size</span><span class="p">);</span>
+<li><p>Use <code class="xref py py-func docutils literal notranslate"><span class="pre">GetCards()</span></code> to get all audio card descriptors:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int32_t</span><span class="w"> </span><span class="n">cards_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">audio_manager</span><span class="o">-&gt;</span><span class="n">GetCardsCount</span><span class="p">(</span><span class="n">audio_manager</span><span class="p">);</span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">AudioHwCardDescriptor</span><span class="w"> </span><span class="o">*</span><span class="n">card_descs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">audio_manager</span><span class="o">-&gt;</span><span class="n">GetCards</span><span class="p">(</span><span class="n">audio_manager</span><span class="p">);</span>
 </pre></div>
 </div>
 </li>
-<li><p>Choose a specific adapter to play (currently audio manager only supports primary audio adapter)</p>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">index</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">index</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">size</span><span class="p">;</span><span class="w"> </span><span class="n">index</span><span class="o">++</span><span class="p">){</span>
-<span class="w">   </span><span class="k">struct</span><span class="w"> </span><span class="nc">AudioHwAdapterDescriptor</span><span class="w"> </span><span class="o">*</span><span class="n">desc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">descs</span><span class="p">[</span><span class="n">index</span><span class="p">];</span>
-<span class="w">      </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">port</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="p">(</span><span class="n">desc</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">nullptr</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">port</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">static_cast</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">desc</span><span class="o">-&gt;</span><span class="n">portNum</span><span class="p">));</span><span class="w"> </span><span class="n">port</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">         </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">desc</span><span class="o">-&gt;</span><span class="n">ports</span><span class="p">[</span><span class="n">port</span><span class="p">].</span><span class="n">dir</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">PORT_OUT</span><span class="w"> </span><span class="o">&amp;&amp;</span>
-<span class="w">            </span><span class="p">(</span><span class="n">audio_manager</span><span class="o">-&gt;</span><span class="n">LoadAdapter</span><span class="p">(</span><span class="n">audio_manager</span><span class="p">,</span><span class="w"> </span><span class="n">desc</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">audio_adapter</span><span class="p">))</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">            </span><span class="n">render_port</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">desc</span><span class="o">-&gt;</span><span class="n">ports</span><span class="p">[</span><span class="n">port</span><span class="p">];</span>
-<span class="w">            </span><span class="k">break</span><span class="p">;</span>
-<span class="w">      </span><span class="p">}</span>
-<span class="w">   </span><span class="p">}</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-</li>
-<li><p>Create <em>AudioHwSampleAttributes</em> according to the sample rate, channel, format, and AudioHwDeviceDescriptor, then use <code class="xref py py-func docutils literal notranslate"><span class="pre">CreateRender()</span></code> to create an AudioHwRender based on the specific audio adapter</p>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">AudioHwSampleAttributes</span><span class="w">  </span><span class="n">param</span><span class="p">;</span>
-<span class="n">param</span><span class="p">.</span><span class="n">sample_rate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sample_rate</span><span class="p">;</span>
-<span class="n">param</span><span class="p">.</span><span class="n">channel_count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">channel_count</span><span class="p">;</span>
-<span class="n">param</span><span class="p">.</span><span class="n">format</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AUDIO_FORMAT_PCM_16_BIT</span><span class="p">;</span>
-<span class="n">param</span><span class="p">.</span><span class="n">interleaved</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
-<span class="k">struct</span><span class="w"> </span><span class="nc">AudioHwDeviceDescriptor</span><span class="w"> </span><span class="n">device_desc</span><span class="p">;</span>
-<span class="n">device_desc</span><span class="p">.</span><span class="n">port_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">render_port</span><span class="p">.</span><span class="n">port_id</span><span class="p">;</span>
-<span class="n">device_desc</span><span class="p">.</span><span class="n">pins</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AUDIO_HW_PIN_OUT_SPEAKER</span><span class="p">;</span>
-<span class="n">device_desc</span><span class="p">.</span><span class="n">desc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span>
-<span class="kt">int32_t</span><span class="w"> </span><span class="n">ret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">audio_adapter</span><span class="o">-&gt;</span><span class="n">CreateRender</span><span class="p">(</span><span class="n">audio_adapter</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">device_desc</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">param</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">audio_render</span><span class="p">);</span>
-</pre></div>
-</div>
-</li>
-<li><p>Use <code class="xref py py-func docutils literal notranslate"><span class="pre">GetBufferSize()</span></code> to get AudioHwRender buffer size</p>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">ssize_t</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">((</span><span class="k">struct</span><span class="w"> </span><span class="nc">AudioHalStream</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">audio_render</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">GetBufferSize</span><span class="p">((</span><span class="k">struct</span><span class="w"> </span><span class="nc">AudioHalStream</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">audio_render</span><span class="p">);</span>
-</pre></div>
-</div>
-</li>
-<li><p>Write PCM data to AudioHwRender repeatly.</p>
-<p>This size can be defined by users, instead of the size got in the last step. Users need to make sure the <em>size/frame_size</em> is integer.</p>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int32_t</span><span class="w"> </span><span class="n">bytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">audio_render</span><span class="o">-&gt;</span><span class="n">Write</span><span class="p">(</span><span class="n">audio_render</span><span class="p">,</span><span class="w"> </span><span class="n">buffer</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="p">);</span>
-</pre></div>
-</div>
-</li>
-<li><p>Use <code class="xref py py-func docutils literal notranslate"><span class="pre">DestroyRender()</span></code> to close AudioHwRender when finishing playing</p>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">audio_adapter</span><span class="o">-&gt;</span><span class="n">DestroyRender</span><span class="p">(</span><span class="n">audio_adapter</span><span class="p">,</span><span class="w"> </span><span class="n">audio_render</span><span class="p">);</span>
-</pre></div>
-</div>
-</li>
-<li><p>Use <code class="xref py py-func docutils literal notranslate"><span class="pre">UnloadAdapter()</span></code> to unload the AudioHwAdapter and finally call <code class="xref py py-func docutils literal notranslate"><span class="pre">DestoryAudioManager()</span></code> to release AudioHwManager instance</p>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">audio_manager</span><span class="o">-&gt;</span><span class="n">UnloadAdapter</span><span class="p">(</span><span class="n">audio_manager</span><span class="p">,</span><span class="n">desc</span><span class="p">,</span><span class="o">&amp;</span><span class="n">audio_adapter</span><span class="p">);</span><span class="w"> </span><span class="n">DestoryAudioManager</span><span class="p">(</span><span class="o">&amp;</span><span class="n">audio_manager</span><span class="p">);</span>
-</pre></div>
-</div>
-</li>
-</ol>
-</section>
-<section id="using-audiohwcapture">
-<h3>Using AudioHwCapture<a class="headerlink" href="#using-audiohwcapture" title="Link to this heading"></a></h3>
-<p>Users can check the example of AudioHwRender in <code class="docutils literal notranslate"><span class="pre">{SDK}/component/example/audio/audio_hal_capture</span></code>.</p>
-<p>Here is the description showing how to use audio HAL interfaces to capture audio raw data:</p>
-<ol class="arabic">
-<li><p>Use <code class="xref py py-func docutils literal notranslate"><span class="pre">GetAudioManagerFuncs()</span></code> to get AudioHwManager instance</p>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">AudioHwManager</span><span class="w"> </span><span class="o">*</span><span class="n">audio_manager</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GetAudioManagerFuncs</span><span class="p">();</span>
-</pre></div>
-</div>
-</li>
-<li><p>Use <code class="xref py py-func docutils literal notranslate"><span class="pre">GetAllAdapters()</span></code> to get all audio adapter descriptors</p>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int32_t</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span>
-<span class="k">struct</span><span class="w"> </span><span class="nc">AudioHwAdapterDescriptor</span><span class="w"> </span><span class="o">*</span><span class="n">descs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nullptr</span><span class="p">;</span>
-<span class="n">audio_manager</span><span class="o">-&gt;</span><span class="n">GetAllAdapters</span><span class="p">(</span><span class="n">audio_manager</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">descs</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">size</span><span class="p">);</span>
-</pre></div>
-</div>
-</li>
-<li><p>Choose a specific adapter to capture (currently audio manager only supports primary audio adapter)</p>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">index</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">index</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">size</span><span class="p">;</span><span class="w"> </span><span class="n">index</span><span class="o">++</span><span class="p">){</span>
-<span class="w">   </span><span class="k">struct</span><span class="w"> </span><span class="nc">AudioHwAdapterDescriptor</span><span class="w"> </span><span class="o">*</span><span class="n">desc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">descs</span><span class="p">[</span><span class="n">index</span><span class="p">];</span>
-<span class="w">   </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">port</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="p">(</span><span class="n">desc</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">nullptr</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">port</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">static_cast</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">desc</span><span class="o">-&gt;</span><span class="n">portNum</span><span class="p">));</span><span class="w"> </span><span class="n">port</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">desc</span><span class="o">-&gt;</span><span class="n">ports</span><span class="p">[</span><span class="n">port</span><span class="p">].</span><span class="n">dir</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">PORT_IN</span><span class="w"> </span><span class="o">&amp;&amp;</span>
-<span class="w">         </span><span class="p">(</span><span class="n">audio_manager</span><span class="o">-&gt;</span><span class="n">LoadAdapter</span><span class="p">(</span><span class="n">audio_manager</span><span class="p">,</span><span class="w"> </span><span class="n">desc</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">audio_adapter</span><span class="p">))</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">         </span><span class="n">mCapturePort</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">desc</span><span class="o">-&gt;</span><span class="n">ports</span><span class="p">[</span><span class="n">port</span><span class="p">];</span>
+<li><p>Choose a specific card to play (currently audio manager only support primary audio card):</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">AudioHwCardDescriptor</span><span class="w"> </span><span class="o">*</span><span class="n">audio_card_desc</span><span class="p">;</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int32_t</span><span class="w"> </span><span class="n">index</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">index</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">cards_size</span><span class="p">;</span><span class="w"> </span><span class="n">index</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="k">struct</span><span class="w"> </span><span class="nc">AudioHwCardDescriptor</span><span class="w"> </span><span class="o">*</span><span class="n">desc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">card_descs</span><span class="p">[</span><span class="n">index</span><span class="p">];</span>
+<span class="w">   </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">port</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="p">(</span><span class="n">desc</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nb">NULL</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">port</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">desc</span><span class="o">-&gt;</span><span class="n">port_num</span><span class="p">);</span><span class="w"> </span><span class="n">port</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;check for audio port </span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">desc</span><span class="o">-&gt;</span><span class="n">ports</span><span class="p">[</span><span class="n">port</span><span class="p">].</span><span class="n">role</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">AUDIO_HW_PORT_ROLE_OUT</span><span class="w"> </span><span class="o">&amp;&amp;</span>
+<span class="w">         </span><span class="p">(</span><span class="n">audio_card</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">audio_manager</span><span class="o">-&gt;</span><span class="n">OpenCard</span><span class="p">(</span><span class="n">audio_manager</span><span class="p">,</span><span class="w"> </span><span class="n">desc</span><span class="p">)))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">         </span><span class="n">audio_port</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">desc</span><span class="o">-&gt;</span><span class="n">ports</span><span class="p">[</span><span class="n">port</span><span class="p">];</span>
+<span class="w">         </span><span class="n">audio_card_desc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">desc</span><span class="p">;</span>
 <span class="w">         </span><span class="k">break</span><span class="p">;</span>
 <span class="w">      </span><span class="p">}</span>
 <span class="w">   </span><span class="p">}</span>
@@ -1346,37 +1274,95 @@
 </pre></div>
 </div>
 </li>
-<li><p>Construct <em>AudioHwSampleAttributes</em> according to the sample rate, channel, format, and AudioHwDeviceDescriptor, then use <code class="xref py py-func docutils literal notranslate"><span class="pre">CreateCapture()</span></code> to create an AudioHwCapture based on the specific audio adapter</p>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">AudioHwSampleAttributes</span><span class="w">  </span><span class="n">param</span><span class="p">;</span>
-<span class="n">param</span><span class="p">.</span><span class="n">sample_rate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sample_rate</span><span class="p">;</span>
-<span class="n">param</span><span class="p">.</span><span class="n">channel_count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">channel_count</span><span class="p">;</span>
-<span class="n">param</span><span class="p">.</span><span class="n">format</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AUDIO_FORMAT_PCM_16_BIT</span><span class="p">;</span>
-<span class="n">param</span><span class="p">.</span><span class="n">interleaved</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
-<span class="k">struct</span><span class="w"> </span><span class="nc">AudioHwDeviceDescriptor</span><span class="w"> </span><span class="n">device_desc</span><span class="p">;</span>
-<span class="n">device_desc</span><span class="p">.</span><span class="n">port_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">render_port</span><span class="p">.</span><span class="n">port_id</span><span class="p">;</span>
-<span class="n">device_desc</span><span class="p">.</span><span class="n">pins</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AUDIO_HW_PIN_IN_MIC</span><span class="p">;</span>
-<span class="n">device_desc</span><span class="p">.</span><span class="n">desc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span>
-<span class="kt">int32_t</span><span class="w"> </span><span class="n">ret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">audio_adapter</span><span class="o">-&gt;</span><span class="n">CreateCapture</span><span class="p">(</span><span class="n">audio_adapter</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">device_desc</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">param</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">audio_capture</span><span class="p">);</span>
+<li><p>Create AudioHwConfig according to the sample rate, channel, format, and AudioHwPathDescriptor, then use <code class="xref py py-func docutils literal notranslate"><span class="pre">CreateStreamOut()</span></code> to create an AudioHwStreamOut based on the specific audio card:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">AudioHwConfig</span><span class="w"> </span><span class="n">audio_config</span><span class="p">;</span>
+<span class="n">audio_config</span><span class="p">.</span><span class="n">sample_rate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">48000</span><span class="p">;</span>
+<span class="n">audio_config</span><span class="p">.</span><span class="n">channel_count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+<span class="n">audio_config</span><span class="p">.</span><span class="n">format</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AUDIO_HW_FORMAT_PCM_16_BIT</span><span class="p">;</span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">AudioHwPathDescriptor</span><span class="w"> </span><span class="n">path_desc</span><span class="p">;</span>
+<span class="n">path_desc</span><span class="p">.</span><span class="n">port_index</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">audio_port</span><span class="p">.</span><span class="n">port_index</span><span class="p">;</span>
+<span class="n">path_desc</span><span class="p">.</span><span class="n">devices</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AUDIO_HW_DEVICE_OUT_SPEAKER</span><span class="p">;</span>
+<span class="n">path_desc</span><span class="p">.</span><span class="n">flags</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AUDIO_HW_INPUT_FLAG_NONE</span><span class="p">;</span>
+<span class="n">audio_stream_out</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">audio_card</span><span class="o">-&gt;</span><span class="n">CreateStreamOut</span><span class="p">(</span><span class="n">audio_card</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">path_desc</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">audio_config</span><span class="p">);</span>
 </pre></div>
 </div>
 </li>
-<li><p>Use <code class="xref py py-func docutils literal notranslate"><span class="pre">GetBufferSize()</span></code> to get AudioHwCapture buffer size:</p>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">ssize_t</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">((</span><span class="k">struct</span><span class="w"> </span><span class="nc">AudioHalStream</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">audio_capture</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">GetBufferSize</span><span class="p">((</span><span class="k">struct</span><span class="w"> </span><span class="nc">AudioHalStream</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">audio_capture</span><span class="p">);</span>
+<li><p>Write PCM data to AudioHwStreamOut repeatly. Buffer size written can be defined by users. Users need to make sure the <em>size/frame_size</em> is integer.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int32_t</span><span class="w"> </span><span class="n">bytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">audio_stream_out</span><span class="o">-&gt;</span><span class="n">Write</span><span class="p">(</span><span class="n">audio_stream_out</span><span class="p">,</span><span class="w"> </span><span class="n">buffer</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">);</span>
 </pre></div>
 </div>
 </li>
-<li><p>Read PCM data from AudioHwCapture repeatly. This size can be defined by users, instead of the size got in the last step. Users need to make sure the <em>size/frame_size</em> is integer.</p>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int32_t</span><span class="w"> </span><span class="n">bytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">audio_capture</span><span class="o">-&gt;</span><span class="n">Read</span><span class="p">(</span><span class="n">audio_capture</span><span class="p">,</span><span class="w"> </span><span class="n">buffer</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="p">);</span>
+<li><p>Use <code class="xref py py-func docutils literal notranslate"><span class="pre">DestroyStreamOut()</span></code> to close AudioHwStreamOut when finishing playing:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">audio_card</span><span class="o">-&gt;</span><span class="n">DestroyStreamOut</span><span class="p">(</span><span class="n">audio_card</span><span class="p">,</span><span class="w"> </span><span class="n">audio_stream_out</span><span class="p">);</span>
 </pre></div>
 </div>
 </li>
-<li><p>Use <code class="xref py py-func docutils literal notranslate"><span class="pre">DestroyCapture()</span></code> to close AudioHwCapture when finishing recording</p>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">audio_adapter</span><span class="o">-&gt;</span><span class="n">DestroyCapture</span><span class="p">(</span><span class="n">audio_adapter</span><span class="p">,</span><span class="w"> </span><span class="n">audio_capture</span><span class="p">);</span>
+<li><p>Use <code class="xref py py-func docutils literal notranslate"><span class="pre">CloseCard()</span></code> to destroy the AudioHwCard and finally call DestoryAudioHwManager to release AudioHwManager instance:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">audio_manager</span><span class="o">-&gt;</span><span class="n">CloseCard</span><span class="p">(</span><span class="n">audio_manager</span><span class="p">,</span><span class="w"> </span><span class="n">audio_card</span><span class="p">,</span><span class="w"> </span><span class="n">audio_card_desc</span><span class="p">);</span>
+<span class="n">DestoryAudioHwManager</span><span class="p">(</span><span class="n">audio_manager</span><span class="p">);</span>
 </pre></div>
 </div>
 </li>
-<li><p>Use <code class="xref py py-func docutils literal notranslate"><span class="pre">UnloadAdapter()</span></code> to unload the AudioHwAdapter, and finally call <code class="xref py py-func docutils literal notranslate"><span class="pre">DestoryAudioManager()</span></code> to release AudioHwManager instance</p>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">audio_manager</span><span class="o">-&gt;</span><span class="n">UnloadAdapter</span><span class="p">(</span><span class="n">audio_manager</span><span class="p">,</span><span class="n">desc</span><span class="p">,</span><span class="o">&amp;</span><span class="n">audio_adapter</span><span class="p">);</span><span class="w"> </span><span class="n">DestoryAudioManager</span><span class="p">(</span><span class="o">&amp;</span><span class="n">audio_manager</span><span class="p">);</span>
+</ol>
+</section>
+<section id="using-audiohwstreamin">
+<h3>Using AudioHwStreamIn<a class="headerlink" href="#using-audiohwstreamin" title="Link to this heading"></a></h3>
+<p>Users can check the example of AudioHwStreamOut in <code class="docutils literal notranslate"><span class="pre">{SDK}/component/example/audio/audio_hal_capture</span></code>.</p>
+<p>Here is the description showing how to use audio HAL interfaces to capture audio raw data:</p>
+<ol class="arabic">
+<li><p>Use <code class="xref py py-func docutils literal notranslate"><span class="pre">CreateAudioHwManager()</span></code> to get AudioHwManager instance:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">AudioHwManager</span><span class="w"> </span><span class="o">*</span><span class="n">audio_manager</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CreateAudioHwManager</span><span class="p">();</span>
+</pre></div>
+</div>
+</li>
+<li><p>Use <code class="xref py py-func docutils literal notranslate"><span class="pre">GetCards()</span></code> to get all audio card descriptors:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int32_t</span><span class="w"> </span><span class="n">cards_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">audio_manager</span><span class="o">-&gt;</span><span class="n">GetCardsCount</span><span class="p">(</span><span class="n">audio_manager</span><span class="p">);</span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">AudioHwCardDescriptor</span><span class="w"> </span><span class="o">*</span><span class="n">card_descs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">audio_manager</span><span class="o">-&gt;</span><span class="n">GetCards</span><span class="p">(</span><span class="n">audio_manager</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+<li><p>Choose a specific card to capture (currently audio manager only support primary audio card):</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">AudioHwCardDescriptor</span><span class="w"> </span><span class="o">*</span><span class="n">audio_card_in_desc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int32_t</span><span class="w"> </span><span class="n">index</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">index</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">cards_size</span><span class="p">;</span><span class="w"> </span><span class="n">index</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="k">struct</span><span class="w"> </span><span class="nc">AudioHwCardDescriptor</span><span class="w"> </span><span class="o">*</span><span class="n">desc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">card_descs</span><span class="p">[</span><span class="n">index</span><span class="p">];</span>
+<span class="w">   </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">port</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="p">(</span><span class="n">desc</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nb">NULL</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">port</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">desc</span><span class="o">-&gt;</span><span class="n">port_num</span><span class="p">);</span><span class="w"> </span><span class="n">port</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">desc</span><span class="o">-&gt;</span><span class="n">ports</span><span class="p">[</span><span class="n">port</span><span class="p">].</span><span class="n">role</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">AUDIO_HW_PORT_ROLE_IN</span><span class="w"> </span><span class="o">&amp;&amp;</span>
+<span class="w">         </span><span class="p">(</span><span class="n">audio_card_in</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">audio_manager</span><span class="o">-&gt;</span><span class="n">OpenCard</span><span class="p">(</span><span class="n">audio_manager</span><span class="p">,</span><span class="w"> </span><span class="n">desc</span><span class="p">)))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">         </span><span class="n">audio_port_in</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">desc</span><span class="o">-&gt;</span><span class="n">ports</span><span class="p">[</span><span class="n">port</span><span class="p">];</span>
+<span class="w">         </span><span class="n">audio_card_in_desc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">desc</span><span class="p">;</span>
+<span class="w">         </span><span class="k">break</span><span class="p">;</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">   </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><p>Construct AudioHwConfig according to the sample rate, channel, format, and AudioHwPathDescriptor, then use <code class="xref py py-func docutils literal notranslate"><span class="pre">CreateStreamIn()</span></code> to create an AudioHwStreamIn based on the specific audio card:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">AudioHwConfig</span><span class="w"> </span><span class="n">audio_config</span><span class="p">;</span>
+<span class="n">audio_config</span><span class="p">.</span><span class="n">sample_rate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">48000</span><span class="p">;</span>
+<span class="n">audio_config</span><span class="p">.</span><span class="n">channel_count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+<span class="n">audio_config</span><span class="p">.</span><span class="n">format</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AUDIO_HW_FORMAT_PCM_16_BIT</span><span class="p">;</span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">AudioHwPathDescriptor</span><span class="w"> </span><span class="n">path_desc_in</span><span class="p">;</span>
+<span class="n">path_desc_in</span><span class="p">.</span><span class="n">port_index</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">audio_port_in</span><span class="p">.</span><span class="n">port_index</span><span class="p">;</span>
+<span class="n">path_desc_in</span><span class="p">.</span><span class="n">devices</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AUDIO_HW_DEVICE_IN_MIC</span><span class="p">;</span>
+<span class="n">path_desc_in</span><span class="p">.</span><span class="n">flags</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AUDIO_HW_INPUT_FLAG_NONE</span><span class="p">;</span>
+<span class="n">audio_stream_in</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">audio_card_in</span><span class="o">-&gt;</span><span class="n">CreateStreamIn</span><span class="p">(</span><span class="n">audio_card_in</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">path_desc_in</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">audio_config</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+<li><p>Read PCM data from AudioHwStreamIn repeatly. This size can be defined by users. Users need to make sure the <em>size/frame_size</em> is integer.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">audio_stream_in</span><span class="o">-&gt;</span><span class="n">Read</span><span class="p">(</span><span class="n">audio_stream_in</span><span class="p">,</span><span class="w"> </span><span class="n">buffer</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+<li><p>Use <code class="xref py py-func docutils literal notranslate"><span class="pre">DestroyStreamIn()</span></code> to close AudioHwStreamIn when finishing recording:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">audio_card_in</span><span class="o">-&gt;</span><span class="n">DestroyStreamIn</span><span class="p">(</span><span class="n">audio_card_in</span><span class="p">,</span><span class="w"> </span><span class="n">audio_stream_in</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+<li><p>Use <code class="xref py py-func docutils literal notranslate"><span class="pre">CloseCard()</span></code> to destroy the AudioHwCard, and finally call <code class="xref py py-func docutils literal notranslate"><span class="pre">DestoryAudioHwManager()</span></code> to release AudioHwManager instance.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">audio_manager</span><span class="o">-&gt;</span><span class="n">CloseCard</span><span class="p">(</span><span class="n">audio_manager</span><span class="p">,</span><span class="w"> </span><span class="n">audio_card_in</span><span class="p">,</span><span class="w"> </span><span class="n">audio_card_in_desc</span><span class="p">);</span>
+<span class="n">DestoryAudioHwManager</span><span class="p">(</span><span class="n">audio_manager</span><span class="p">);</span>
 </pre></div>
 </div>
 </li>
@@ -1385,9 +1371,9 @@
 <section id="using-audiohwcontrol">
 <h3>Using AudioHwControl<a class="headerlink" href="#using-audiohwcontrol" title="Link to this heading"></a></h3>
 <p>Here is an example showing how to use audio HAL interfaces to control audio codec.</p>
-<p>AudioHwCotrol is always thread-safe, and the calling is convenient.
-To use AudioHwCotrol, the first parameter of the function call should always be <code class="xref py py-func docutils literal notranslate"><span class="pre">GetAudioHwControl()</span></code>. Take the hardware volume setting for example:</p>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">GetAudioHwControl</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">SetHardwareVolume</span><span class="p">(</span><span class="n">GetAudioHwControl</span><span class="p">(),</span><span class="w"> </span><span class="n">left_volume</span><span class="p">,</span><span class="w"> </span><span class="n">right_volume</span><span class="p">);</span>
+<p>AudioHwCotrol is always thread-safe, and the calling is convenient. To use AudioHwCotrol, the first parameter of the function call should always be <code class="xref py py-func docutils literal notranslate"><span class="pre">GetAudioHwControl()</span></code>.
+Take the PLL clock setting for example:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">GetAudioHwControl</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">AdjustPLLClock</span><span class="p">(</span><span class="n">GetAudioHwControl</span><span class="p">(),</span><span class="w"> </span><span class="n">rate</span><span class="p">,</span><span class="w"> </span><span class="n">ppm</span><span class="p">,</span><span class="w"> </span><span class="n">action</span><span class="p">);</span>
 </pre></div>
 </div>
 </section>
@@ -1528,9 +1514,9 @@ The bigger size you use, the smoother playing you will get, yet it may cause mor
 <p>RTAudioRecord supports variety of common audio raw format types, so that you can easily integrate record into applications.</p>
 <p>The following audio input sources are supported by RTAudioRecord:</p>
 <ul class="simple">
-<li><p><strong>RTPIN_IN_MIC</strong> - if the application wants to capture data from microphone, then choose this input source.</p></li>
-<li><p><strong>RTPIN_IN_HS_MIC</strong> - if the application wants to capture data from headset microphone, then choose this input source.</p></li>
-<li><p><strong>RTPIN_IN_HS_MIC</strong> - if the application wants to capture data from LINE-IN, then choose this input source.</p></li>
+<li><p><strong>RTDEVICE_IN_MIC</strong> - if the application wants to capture data from microphone, then choose this input source.</p></li>
+<li><p><strong>RTDEVICE_IN_HS_MIC</strong> - if the application wants to capture data from headset microphone, then choose this input source.</p></li>
+<li><p><strong>RTDEVICE_IN_HS_MIC</strong> - if the application wants to capture data from LINE-IN, then choose this input source.</p></li>
 </ul>
 <p>The test demo of RTAudioRecord lies in <code class="docutils literal notranslate"><span class="pre">{SDK}/component/example/audio/audio_record</span></code>.</p>
 <p>Here is an example showing how to record audio raw data:</p>
@@ -1576,13 +1562,13 @@ The bigger size you use, the smoother playing you will get, yet it may cause mor
 <span class="n">record_config</span><span class="p">.</span><span class="n">sample_rate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rate</span><span class="p">;</span>
 <span class="n">record_config</span><span class="p">.</span><span class="n">format</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RTAUDIO_FORMAT_PCM_16_BIT</span><span class="p">;</span>
 <span class="n">record_config</span><span class="p">.</span><span class="n">channel_count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">channels</span><span class="p">;</span>
-<span class="n">record_config</span><span class="p">.</span><span class="n">device</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RTPIN_IN_MIC</span><span class="p">;</span>
+<span class="n">record_config</span><span class="p">.</span><span class="n">device</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RTDEVICE_IN_MIC</span><span class="p">;</span>
 <span class="n">record_config</span><span class="p">.</span><span class="n">buffer_bytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
 </pre></div>
 </div>
 </li>
 <li><p>With RTAudioRecordConfig object created, initialize RTAudioRecord</p>
-<p>In this step, Audio HAL’s AudioHwAdapter will be loaded, according to the audio input device source.</p>
+<p>In this step, Audio HAL’s AudioHwCard will be opened, according to the audio input device source.</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">RTAudioRecord_Init</span><span class="p">(</span><span class="n">audio_record</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">record_config</span><span class="p">);</span>
 </pre></div>
 </div>
