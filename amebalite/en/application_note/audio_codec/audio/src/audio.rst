@@ -5,13 +5,11 @@ Introduction
 The audio framework is a whole audio architecture aiming to provide different layers of audio interfaces for applications. The interfaces involve Audio HAL and Audio Framework.
 
 - Audio HAL: defines unified audio hardware interfaces. It interacts with audio driver to do audio streaming or audio settings.
-
 - Audio Framework: provides interfaces for audio streaming, volume, and other settings.
 
 The audio framework provides two architectures to meet different needs of audio. Different architectures have different implementations, but the interfaces are the same.
 
 - Audio mixer architecture: supports audio recording, and audio playback. For audio playback, this architecture provides audio mixing functions, and format, rate, channel will be converted to a unified format for mixing.
-
 - Audio passthrough architecture: supports audio recording, and audio playback. This architecture has no audio mixing, only one audio playback is allowed at the same moment.
 
 Mixer Overview
@@ -29,9 +27,7 @@ The whole audio mixer architecture includes the following sub-modules:
 - Application Interface
 
    - **RTAudioTrack** provides interfaces to play sound.
-
    - **RTAudioRecord** provides interfaces to capture sound.
-
    - **RTAudioControl** provides interfaces to control sound volumes and so on.
 
 - Audio Framework
@@ -41,23 +37,18 @@ The whole audio mixer architecture includes the following sub-modules:
 - Audio HAL
 
    - **AudioHwManager** provides interfaces that manage audio cards through a specific card driver program opened based on the given audio card descriptor.
-
    - **AudioHwCard** provides interfaces that manage audio card capabilities, including initializing ports, creating stream out and stream in.
-
    - **AudioHwControl** provides interfaces for RTAudioControl, and set commands to audio driver.
-
    - **AudioHwStreamOut** provides interfaces that get data from the upper layer and render data to audio driver user interfaces.
-
    - **AudioHwStreamIn** provides interfaces to capture data from audio driver user interfaces and deliver the data to the upper layer.
 
 - Audio Driver
 
    - **AUDIO_SP** provides interfaces to configure audio sports.
-
    - **AUDIO_CODEC** provides interfaces to configure audio codec.
 
 Passthrough Overview
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
 The audio interfaces and the entire implementation are shown as below.
 
 .. figure:: ../figures/audio_passthrough_overview.svg
@@ -71,7 +62,7 @@ The audio passthrough architecture has no Audio Framework layer compared to audi
 .. _architecture_comparison:
 
 Architecture Comparison
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~
 The above sections describe two architectures of audio: mixer and passthrough. Users can choose the suitable architecture according to the project's requirements. Here is a comparison table of the two architectures:
 
 .. table:: 
@@ -89,9 +80,7 @@ The above sections describe two architectures of audio: mixer and passthrough. U
    +--------------+------------------+-----------+-------------------+-------------------+-------------------+------------------+
 
 - For record implementation, the two architectures are the same. Both architectures can meet user's record function needs.
-
 - For playback implements, the two architectures are different. If the user has the requirements to play two sounds together at the same time, choose mixer architecture, because only the mixer architecture can do the mixing.
-
 - The mixer architecture takes more memory and has a bigger code size. If the user wants to save memory and code size and has no requirements of audio mixing, choose the passthrough architecture.
 
 Terminology
@@ -106,9 +95,9 @@ The meanings of some widely-used audio terms in this chapter are listed below.
    * -  PCM
      -  Pulse Code Modulation, audio data is a raw stream.
    * -  channel
-     -  A channel sound is an independent audio signal captured or played in different positions, so the number of
-       
-        channels is the number of sound sources.
+     -  A channel sound is an independent audio signal captured or played in different positions, so the number of channels
+        
+        is the number of sound sources.
    * -  mono
      -  Mono means only one single channel sound.
    * -  stereo
@@ -122,23 +111,23 @@ The meanings of some widely-used audio terms in this chapter are listed below.
    * -  sample rate
      -  The audio sampling rate refers to the number of frames that the signal is sampled per second.
        
-         The higher the sampling frequency, the higher quality the sound will be.
+        The higher the sampling frequency, the higher quality the sound will be.
    * -  frame
      -  A frame is a sound unit whose length is the sample length multiplies the number of channels.
    * -  gain
      -  Audio signal gain control to adjust the signal level.
    * -  interleaved
-     -  It is a recording method of audio data. In the interleaved mode, the data is stored in a continuous manner,
-       
-        all the channels of sample of first frame are first stored, and then the storage of second frame.
+     -  It is a recording method of audio data. In the interleaved mode, the data is stored in a continuous manner, all the
+
+        channels of sample of first frame are first stored, and then the storage of second frame.
    * -  latency
      -  Time delay when a signal passes through the whole system.
    * -  overrun
      -  The buffer is too full to let buffer producer write more data.
    * -  underrun
-     -  The buffer producer is too slow to write data to the buffer so that the buffer is empty when the consumer
-       
-        wants to consume data.
+     -  The buffer producer is too slow to write data to the buffer so that the buffer is empty when the consumer wants to
+
+        consume data.
    * -  xrun
      -  Overrun or underrun.
    * -  volume
@@ -185,17 +174,11 @@ This section describes the format that Audio Framework supports. Before playback
 Audio Framework has the following types of bit depth:
 
 - **RTAUDIO_FORMAT_INVALID** - invalid bit depth of audio stream
-
 - **RTAUDIO_FORMAT_PCM_8_BIT** - audio stream has 8-bit depth
-
 - **RTAUDIO_FORMAT_PCM_16_BIT** - audio stream has 16-bit depth
-
 - **RTAUDIO_FORMAT_PCM_32_BIT** - audio stream has 32-bit depth
-
 - **RTAUDIO_FORMAT_PCM_FLOAT** - audio stream has 32-bit float format
-
 - **RTAUDIO_FORMAT_PCM_24_BIT** - audio stream has 24-bit depth
-
 - **RTAUDIO_FORMAT_PCM_8_24_BIT** - audio stream has 24-bit + 8-bit depth
 
 The following table describes the supported formats for playback and recording. ``Y`` means the format is supported; ``N`` means the format is not supported.
@@ -275,17 +258,11 @@ HAL Format
 Mixer and passthrough architecture have the same audio HAL. Audio Hal has the following types of bit depth:
 
 - **AUDIO_HW_FORMAT_INVALID** - invalid bit depth of audio stream
-
 - **AUDIO_HW_FORMAT_PCM_8_BIT** - audio stream has 8-bit depth
-
 - **AUDIO_HW_FORMAT_PCM_16_BIT** - audio stream has 16-bit depth
-
 - **AUDIO_HW_FORMAT_PCM_32_BIT** - audio stream has 32-bit depth
-
 - **AUDIO_HW_FORMAT_PCM_FLOAT** - audio stream has 32-bit float format
-
 - **AUDIO_HW_FORMAT_PCM_24_BIT** - audio stream has 24-bit depth
-
 - **AUDIO_HW_FORMAT_PCM_8_24_BIT** - audio stream has 24-bit + 8-bit depth
 
 If using the Audio HAL interface, please check the bit depth HAL supported for Playback and Capture. ``Y`` means the format is supported; ``N`` means the format is not supported.
@@ -367,7 +344,7 @@ Playback Architecture
 The block diagram of audio mixer playback architecture is shown as below.
 
 .. figure:: ../figures/audio_playback_mixer_architecture.svg
-   :scale: 100%
+   :scale: 125%
    :align: center
 
    Playback mixer architecture
@@ -375,7 +352,7 @@ The block diagram of audio mixer playback architecture is shown as below.
 The block diagram of audio passthrough playback architecture is shown as below.
 
 .. figure:: ../figures/audio_playback_passthrough_architecture.svg
-   :scale: 100%
+   :scale: 85%
    :align: center
 
    Playback passthrough architecture
@@ -385,9 +362,7 @@ The audio playback architecture includes the following sub-modules:
 - Audio Framework (only mixer architecture)
 
    - Audio framework is responsible for audio playback sound mixing.
-
    - Before mixing, all sound will be converted to one unified audio format, default is 16-bit, 44100Hz, 2-channel. Sub-modules reformat, resampler are responsible to do the conversion. There is also volume sub-module in audio framework to adjust volumes for different audio types, for example, music, speech may have different volumes.
-
    - Audio framework supports sound rate from 8k-96k, channel mono/stereo, format 8-bit, 16-bit, 24-bit, and 32-bit float.
 
 - Audio HAL
@@ -399,11 +374,11 @@ The audio playback architecture includes the following sub-modules:
    - Audio Driver gets playback data from audio HAL and sends data to audio hardware.
 
 Record Architecture
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~
 Audio mixer and passthrough have the same record architecture. The block diagram of audio record is shown as below.
 
 .. figure:: ../figures/audio_record_architecture.svg
-   :scale: 100%
+   :scale: 85%
    :align: center
 
    Record architecture
@@ -411,9 +386,7 @@ Audio mixer and passthrough have the same record architecture. The block diagram
 The audio record architecture includes the following sub-modules:
 
 - **RTAudioRecord**: captures data from Audio HAL, and provides data to audio applications, which want to record data.
-
 - **Audio HAL**: gets record data from Audio driver, and sends the data to RTAudioRecord.
-
 - **Audio Driver**: gets record data from Audio hardware, and sends data to audio HAL.
 
 Control Architecture
@@ -429,9 +402,7 @@ Audio mixer and passthrough have the same control architecture. The block diagra
 The audio control architecture includes the following sub-modules:
 
 - **RTAudioControl**: called by Apps, and interacts with HAL to do audio control settings.
-
 - **Audio HAL**: does audio control settings by calling Driver APIs.
-
 - **Audio Driver**: controls audio codec hardware.
 
 Hardware Volume
@@ -464,7 +435,6 @@ If users want to change the audio HAL period buffer size, or audio mixer's buffe
 The config *out_min_frames_stage* in *kPrimaryAudioConfig* only supports *RTAUDIO_OUT_MIN_FRAMES_STAGE1* and *RTAUDIO_OUT_MIN_ FRAMES_STAGE2*.
 
 - *RTAUDIO_OUT_MIN_FRAMES_STAGE1* means more data output to audio HAL one time.
-
 - *RTAUDIO_OUT_MIN_FRAMES_ STAGE2* means less data output to audio HAL one time.
 
 *RTAUDIO_OUT_MIN_FRAMES_STAGE2* may reduce the framework's latency, but may cause noise. It's the user's choice to set it.
@@ -479,7 +449,7 @@ The :file:`ameba_audio_hw_usrcfg.h` file has the description for each configurat
 
 Interfaces
 -------------
-The audio component provides two layers of interfaces.
+The audio component provides three layers of interfaces.
 
 .. table:: 
    :width: 100%
@@ -492,7 +462,7 @@ The audio component provides two layers of interfaces.
    +----------------------------+----------------------------------------------------------------------------------------+
    | Audio HAL Interfaces       | Audio Hardware Abstraction Layer Interfaces.                                           |
    +----------------------------+----------------------------------------------------------------------------------------+
-   | Audio Framework Interfaces | High-level Interfaces for applications to render/capture stream, set volume and so on. |
+   | Audio Framework Interfaces | High-level Interfaces for applications to render/capture stream, set volume, and so on.|
    +----------------------------+----------------------------------------------------------------------------------------+
 
 The interfaces layer is shown as below.
@@ -503,289 +473,24 @@ The interfaces layer is shown as below.
 
    Audio interfaces
 
-Driver Interfaces
-~~~~~~~~~~~~~~~~~~~
-Audio Clock and Function APIs
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-.. table:: 
-   :width: 100%
-   :widths: 30, 70 
-
-   +----------------------------------+---------------------------------------------------------+
-   | API                              | Introduction                                            |
-   +==================================+=========================================================+
-   | RCC_PeriphClockCmd               | Enable or disable the APB peripheral clock and function |
-   +----------------------------------+---------------------------------------------------------+
-   | RCC_PeriphClockSource_SPORT      | Configure SPORT clock                                   |
-   +----------------------------------+---------------------------------------------------------+
-   | RCC_PeriphClockSource_AUDIOCODEC | Select audio codec clock                                |
-   +----------------------------------+---------------------------------------------------------+
-
-SPORT APIs
-^^^^^^^^^^^^^^^^^^^^
-.. table:: 
-   :width: 100%
-   :widths: 30, 70 
-
-   +------------------------------+---------------------------------------------------------------------------------------------+
-   | API                          | Introduction                                                                                |
-   +==============================+=============================================================================================+
-   | AUDIO_SP_StructInit          | Fill each SP_StructInit member with its default value                                       |
-   +------------------------------+---------------------------------------------------------------------------------------------+
-   | AUDIO_SP_Register            | Register audio SPORT with its index, direction, and SP_StructInit members.                  |
-   +------------------------------+---------------------------------------------------------------------------------------------+
-   | AUDIO_SP_Unregister          | Unregister audio SPORT with its index                                                       |
-   +------------------------------+---------------------------------------------------------------------------------------------+
-   | AUDIO_SP_Reset               | Reset SPORT                                                                                 |
-   +------------------------------+---------------------------------------------------------------------------------------------+
-   | AUDIO_SP_GetTXChnLen         | Get the audio SPORT Tx channel length                                                       |
-   +------------------------------+---------------------------------------------------------------------------------------------+
-   | AUDIO_SP_GetRXChnLen         | Get the audio SPORT Rx channel length                                                       |
-   +------------------------------+---------------------------------------------------------------------------------------------+
-   | AUDIO_SP_SetTXClkDiv         | Set the audio SPORT Tx BCLK and LRCK                                                        |
-   +------------------------------+---------------------------------------------------------------------------------------------+
-   | AUDIO_SP_SetRXClkDiv         | Set the audio SPORT Rx BCLK and LRCK                                                        |
-   +------------------------------+---------------------------------------------------------------------------------------------+
-   | AUDIO_SP_SetMClk             | Set the audio SPORT MCLK mode                                                               |
-   +------------------------------+---------------------------------------------------------------------------------------------+
-   | AUDIO_SP_SetMClkDiv          | Set the audio SPORT MCLK divider                                                            |
-   +------------------------------+---------------------------------------------------------------------------------------------+
-   | AUDIO_SP_SetFixBclk          | Set the audio SPORT fix BCLK mode                                                           |
-   +------------------------------+---------------------------------------------------------------------------------------------+
-   | AUDIO_SP_SelFixBclk          | Select audio SPORT fix BCLK                                                                 |
-   +------------------------------+---------------------------------------------------------------------------------------------+
-   | AUDIO_SP_TXCHNSrcSel         | Select SPORT Tx channel source                                                              |
-   +------------------------------+---------------------------------------------------------------------------------------------+
-   | AUDIO_SP_RXFIFOSrcSel        | Select SPORT Rx FIFO source                                                                 |
-   +------------------------------+---------------------------------------------------------------------------------------------+
-   | AUDIO_SP_TXSetFifo           | Set the audio SPORT Tx FIFO                                                                 |
-   +------------------------------+---------------------------------------------------------------------------------------------+
-   | AUDIO_SP_RXSetFifo           | Set the audio SPORT Rx FIFO                                                                 |
-   +------------------------------+---------------------------------------------------------------------------------------------+
-   | AUDIO_SP_Init                | Initialize the audio SPORT registers according to the specified parameters in SP_InitStruct |
-   +------------------------------+---------------------------------------------------------------------------------------------+
-   | AUDIO_SP_TXStart             | Start or stop SPORT Tx path                                                                 |
-   +------------------------------+---------------------------------------------------------------------------------------------+
-   | AUDIO_SP_RXStart             | Start or stop SPORT Rx path                                                                 |
-   +------------------------------+---------------------------------------------------------------------------------------------+
-   | AUDIO_SP_DmaCmd              | Enable or disable SPORT DMA handshake                                                       |
-   +------------------------------+---------------------------------------------------------------------------------------------+
-   | AUDIO_SP_SetSelfLPBK         | Set SPORT self-loopback mode                                                                |
-   +------------------------------+---------------------------------------------------------------------------------------------+
-   | AUDIO_SP_SetTXWordLen        | Set the audio SPORT Tx word length                                                          |
-   +------------------------------+---------------------------------------------------------------------------------------------+
-   | AUDIO_SP_SetRXWordLen        | Set the audio SPORT Rx word length                                                          |
-   +------------------------------+---------------------------------------------------------------------------------------------+
-   | AUDIO_SP_GetTXWordLen        | Get the audio SPORT Tx word length                                                          |
-   +------------------------------+---------------------------------------------------------------------------------------------+
-   | AUDIO_SP_GetRXWordLen        | Get the audio SPORT Rx word length                                                          |
-   +------------------------------+---------------------------------------------------------------------------------------------+
-   | AUDIO_SP_SetMonoStereo       | Set the audio SPORT channel number                                                          |
-   +------------------------------+---------------------------------------------------------------------------------------------+
-   | AUDIO_SP_SetMasterSlave      | Set the audio SPORT master or slave mode                                                    |
-   +------------------------------+---------------------------------------------------------------------------------------------+
-   | AUDIO_SP_SetPinMux           | Set the audio SPORT pinmux function                                                         |
-   +------------------------------+---------------------------------------------------------------------------------------------+
-   | AUDIO_SP_TXGDMA_Init         | Initialize GDMA peripheral for Tx data                                                      |
-   +------------------------------+---------------------------------------------------------------------------------------------+
-   | AUDIO_SP_RXGDMA_Init         | Initialize GDMA peripheral for Rx data                                                      |
-   +------------------------------+---------------------------------------------------------------------------------------------+
-   | AUDIO_SP_TXGDMA_Restart      | Restart GDMA peripheral for Tx data                                                         |
-   +------------------------------+---------------------------------------------------------------------------------------------+
-   | AUDIO_SP_RXGDMA_Restart      | Restart GDMA peripheral for Rx data                                                         |
-   +------------------------------+---------------------------------------------------------------------------------------------+
-   | AUDIO_SP_LLPTXGDMA_Init      | Initialize Link-list mode GDMA peripheral for Tx data                                       |
-   +------------------------------+---------------------------------------------------------------------------------------------+
-   | AUDIO_SP_LLPRXGDMA_Init      | Initialize Link-list mode GDMA peripheral for Rx data                                       |
-   +------------------------------+---------------------------------------------------------------------------------------------+
-   | AUDIO_SP_SetTXCounter        | Set SPORT Tx counter                                                                        |
-   +------------------------------+---------------------------------------------------------------------------------------------+
-   | AUDIO_SP_SetTXCounterCompVal | Set SPORT Tx counter compare value                                                          |
-   +------------------------------+---------------------------------------------------------------------------------------------+
-   | AUDIO_SP_ClearTXCounterIrq   | Clear SPORT Tx counter IRQ                                                                  |
-   +------------------------------+---------------------------------------------------------------------------------------------+
-   | AUDIO_SP_SetPhaseLatch       | Set SPORT phase latch                                                                       |
-   +------------------------------+---------------------------------------------------------------------------------------------+
-   | AUDIO_SP_GetTXCounterVal     | Get SPORT Tx counter value                                                                  |
-   +------------------------------+---------------------------------------------------------------------------------------------+
-   | AUDIO_SP_GetTXPhaseVal       | Get SPORT Tx phase value: only available when SPORT channel length is 32bit.                |
-   +------------------------------+---------------------------------------------------------------------------------------------+
-   | AUDIO_SP_SetRXCounter        | Set SPORT Rx counter                                                                        |
-   +------------------------------+---------------------------------------------------------------------------------------------+
-   | AUDIO_SP_SetRXCounterCompVal | Set SPORT Rx counter compare value                                                          |
-   +------------------------------+---------------------------------------------------------------------------------------------+
-   | AUDIO_SP_ClearRXCounterIrq   | Clear SPORT Rx counter IRQ                                                                  |
-   +------------------------------+---------------------------------------------------------------------------------------------+
-   | AUDIO_SP_GetRXCounterVal     | Get SPORT Rx counter value                                                                  |
-   +------------------------------+---------------------------------------------------------------------------------------------+
-   | AUDIO_SP_GetRXPhaseVal       | Get SPORT Rx phase value: only available when SPORT channel length is 32bit.                |
-   +------------------------------+---------------------------------------------------------------------------------------------+
-   | AUDIO_SP_SetDirectOutMode    | Set SPORT direct out mode                                                                   |
-   +------------------------------+---------------------------------------------------------------------------------------------+
-   | AUDIO_SP_Deinit              | De-initialize the audio SPORT index and direction                                           |
-   +------------------------------+---------------------------------------------------------------------------------------------+
-
-Codec APIs
-^^^^^^^^^^^^^^^^^^^^
-.. table:: 
-   :width: 100%
-   :widths: 30, 70 
-
-   +---------------------------------+-------------------------------------------------------------------------+
-   | API                             | Introduction                                                            |
-   +=================================+=========================================================================+
-   | AUDIO_CODEC_SetAudioIP          | Enable or disable audio codec IP                                        |
-   +---------------------------------+-------------------------------------------------------------------------+
-   | AUDIO_CODEC_SetI2SIP            | Enable or disable I2S IP                                                |
-   +---------------------------------+-------------------------------------------------------------------------+
-   | AUDIO_CODEC_SetI2SSRC           | Select I2S master source.                                               |
-   +---------------------------------+-------------------------------------------------------------------------+
-   | AUDIO_CODEC_SetANAClk           | Enable or disable ADC/DAC analog clock                                  |
-   +---------------------------------+-------------------------------------------------------------------------+
-   | AUDIO_CODEC_SetI2SRXTDM         | Select I2S Rx and I2S Rx TDM mode                                       |
-   +---------------------------------+-------------------------------------------------------------------------+
-   | AUDIO_CODEC_I2S_StructInit      | Default I2S initialization parameter                                    |
-   +---------------------------------+-------------------------------------------------------------------------+
-   | AUDIO_CODEC_SetI2SParameters    | Set I2S initialization parameter                                        |
-   +---------------------------------+-------------------------------------------------------------------------+
-   | AUDIO_CODEC_SetADCSRSrc         | Select ADC sample rate and source, all ADC share source and sample rate |
-   +---------------------------------+-------------------------------------------------------------------------+
-   | AUDIO_CODEC_SetDACSRSrc         | Select DAC sample rate and source                                       |
-   +---------------------------------+-------------------------------------------------------------------------+
-   | AUDIO_CODEC_EnableDACFifo       | Enable or disable DAC fif0                                              |
-   +---------------------------------+-------------------------------------------------------------------------+
-   | AUDIO_CODEC_EnableADCFifo       | Enable or disable ADC fif0                                              |
-   +---------------------------------+-------------------------------------------------------------------------+
-   | AUDIO_CODEC_DisPAD              | Disable audio pad according to the work path                            |
-   +---------------------------------+-------------------------------------------------------------------------+
-   | AUDIO_CODEC_SetLDOMode          | Audio Codec LDO power on or power down                                  |
-   +---------------------------------+-------------------------------------------------------------------------+
-   | AUDIO_CODEC_EnableADC           | Enable or disable per AD and AD FIFO channel clock                      |
-   +---------------------------------+-------------------------------------------------------------------------+
-   | AUDIO_CODEC_SetADCVolume        | Set the gain of ADC digital volume                                      |
-   +---------------------------------+-------------------------------------------------------------------------+
-   | AUDIO_CODEC_SetADCHPF           | Set per ADC channel HPF mode and select HPF FC                          |
-   +---------------------------------+-------------------------------------------------------------------------+
-   | AUDIO_CODEC_SetADCASRC          | Set ADC ASRC mode                                                       |
-   +---------------------------------+-------------------------------------------------------------------------+
-   | AUDIO_CODEC_SetADCMute          | Mute ADC path                                                           |
-   +---------------------------------+-------------------------------------------------------------------------+
-   | AUDIO_CODEC_SetADCMixMute       | Set per ADC mix mute type and state                                     |
-   +---------------------------------+-------------------------------------------------------------------------+
-   | AUDIO_CODEC_SetADCANASrc        | Select analog ad source for per ad channel                              |
-   +---------------------------------+-------------------------------------------------------------------------+
-   | AUDIO_CODEC_SetADCANAFilter     | Enable or disable per ADC analog ad filter                              |
-   +---------------------------------+-------------------------------------------------------------------------+
-   | AUDIO_CODEC_SetMicBiasPowerMode | Audio Codec MICBIAS power on or power down                              |
-   +---------------------------------+-------------------------------------------------------------------------+
-   | AUDIO_CODEC_SetMicBstPowerMode  | Set MICBST power on or down                                             |
-   +---------------------------------+-------------------------------------------------------------------------+
-   | AUDIO_CODEC_SetMicBstChnMute    | Set per MICBST mute or unmute                                           |
-   +---------------------------------+-------------------------------------------------------------------------+
-   | AUDIO_CODEC_SetMicBstInputMode  | Set MICBST single-end or differential mode                              |
-   +---------------------------------+-------------------------------------------------------------------------+
-   | AUDIO_CODEC_SetMicBstGain       | Set codec MICBST gain                                                   |
-   +---------------------------------+-------------------------------------------------------------------------+
-   | AUDIO_CODEC_SetADCDmicFilter    | Enable per DIMC channel filter                                          |
-   +---------------------------------+-------------------------------------------------------------------------+
-   | AUDIO_CODEC_SetDmicClk          | Enable and select DMIC clock                                            |
-   +---------------------------------+-------------------------------------------------------------------------+
-   | AUDIO_CODEC_SetDmicSrc          | Set DIMC channel source                                                 |
-   +---------------------------------+-------------------------------------------------------------------------+
-   | AUDIO_CODEC_SetDACSrc           | Set DAC source                                                          |
-   +---------------------------------+-------------------------------------------------------------------------+
-   | AUDIO_CODEC_EnableDAC           | Enable or disable da and da FIFO channel clock                          |
-   +---------------------------------+-------------------------------------------------------------------------+
-   | AUDIO_CODEC_SetDACMute          | Mute DAC path                                                           |
-   +---------------------------------+-------------------------------------------------------------------------+
-   | AUDIO_CODEC_SetDACVolume        | Set the gain of DAC digital volume                                      |
-   +---------------------------------+-------------------------------------------------------------------------+
-   | AUDIO_CODEC_SetDACHPF           | Set DAC HPF enable                                                      |
-   +---------------------------------+-------------------------------------------------------------------------+
-   | AUDIO_CODEC_SetDACASRC          | Enable or disable DAC ASRC mode and select ASRC rate                    |
-   +---------------------------------+-------------------------------------------------------------------------+
-   | AUDIO_CODEC_SetDACPowerMode     | Set DAC power mode                                                      |
-   +---------------------------------+-------------------------------------------------------------------------+
-   | AUDIO_CODEC_SetLineOutPowerMode | Set lineout power mode                                                  |
-   +---------------------------------+-------------------------------------------------------------------------+
-   | AUDIO_CODEC_SetLineOutMode      | Set Lineout single-end or differential mode                             |
-   +---------------------------------+-------------------------------------------------------------------------+
-   | AUDIO_CODEC_SetLineOutMute      | Set Line out mute control: DAC in or analog in                          |
-   +---------------------------------+-------------------------------------------------------------------------+
-   | AUDIO_CODEC_SetPDMClk           | Enable and select or disable PDM clock                                  |
-   +---------------------------------+-------------------------------------------------------------------------+
-   | AUDIO_CODEC_SetTesttone         | DAC Test tone mode                                                      |
-   +---------------------------------+-------------------------------------------------------------------------+
-   | AUDIO_CODEC_SetDAADLPBK         | Set daad loopback mode                                                  |
-   +---------------------------------+-------------------------------------------------------------------------+
-   | AUDIO_CODEC_SetADDALPBK         | Set adda loopback mode                                                  |
-   +---------------------------------+-------------------------------------------------------------------------+
-   | AUDIO_CODEC_SetADCDecimationSrc | select ADC path decimation source                                       |
-   +---------------------------------+-------------------------------------------------------------------------+
-   | AUDIO_CODEC_SetDACZDET          | Set DAC path zero detection function                                    |
-   +---------------------------------+-------------------------------------------------------------------------+
-   | AUDIO_CODEC_SetDACZDETTimeOut   | Set DAC path zero detection time out selection                          |
-   +---------------------------------+-------------------------------------------------------------------------+
-   | AUDIO_CODEC_SetADCZDET          | Set ADC path zero detection function                                    |
-   +---------------------------------+-------------------------------------------------------------------------+
-   | AUDIO_CODEC_SetADCZDETTimeOut   | Set ADC path zero detection function                                    |
-   +---------------------------------+-------------------------------------------------------------------------+
-   | AUDIO_CODEC_Record              | Audio codec record flow for test                                        |
-   +---------------------------------+-------------------------------------------------------------------------+
-   | AUDIO_CODEC_Playback            | Audio codec playback flow for test                                      |
-   +---------------------------------+-------------------------------------------------------------------------+
-
-VAD APIs
-^^^^^^^^^^^^^^^^
-.. table:: 
-   :width: 100%
-   :widths: 30, 70
-
-   +--------------------------------+------------------------------------------------+
-   | API                            | Introduction                                   |
-   +================================+================================================+
-   | AUDIO_CODEC_VADStart           | Enable and start VAD                           |
-   +--------------------------------+------------------------------------------------+
-   | AUDIO_CODEC_ENVADIRQ           | Enable and select VAD interrupt mode           |
-   +--------------------------------+------------------------------------------------+
-   | AUDIO_CODEC_DISVADIRQ          | Enable and select VAD interrupt mode           |
-   +--------------------------------+------------------------------------------------+
-   | AUDIO_CODEC_SetVADDetThr       | Set VAD detection threshold                    |
-   +--------------------------------+------------------------------------------------+
-   | AUDIO_CODEC_SetVADVoice        | Set VAD voice volume                           |
-   +--------------------------------+------------------------------------------------+
-   | AUDIO_CODEC_SetVADSrc          | Select the source for voice activity detection |
-   +--------------------------------+------------------------------------------------+
-   | AUDIO_CODEC _VADBuf_move_one   | Configure VAD buffer operation (1 block)       |
-   +--------------------------------+------------------------------------------------+
-   | AUDIO_CODEC _VADBuf_move_two   | Configure VAD buffer operation (2 blocks)      |
-   +--------------------------------+------------------------------------------------+
-   | AUDIO_CODEC _VADBuf_move_three | Configure VAD buffer operation (3 blocks)      |
-   +--------------------------------+------------------------------------------------+
-   | AUDIO_CODEC _VADBuf_move_four  | Configure VAD buffer operation(4 blocks)       |
-   +--------------------------------+------------------------------------------------+
-
 HAL Interfaces
 ~~~~~~~~~~~~~~~~
-Audio HAL provides AudioHwStreamOut/AudioHwStreamIn/AudioHwControl interfaces to interact with audio hardware. The interfaces lie in ``{SDK}/component/audio/interfaces/hardware/audio``.
+Audio HAL provides AudioHwStreamOut/AudioHwStreamIn/AudioHwControl interfaces to interact with audio hardware.
+The interfaces lie in ``{SDK}/component/audio/interfaces/hardware/audio``.
 The interfaces have specific descriptions in them, read them before use.
 
 - **AudioHwStreamOut**: receives PCM data from the upper layer, writes data via audio driver to send PCM data to hardware, and provides information about audio output hardware driver.
-
 - **AudioHwStreamIn**: receives PCM data via audio driver and sends to the upper layer.
-
 - **AudioHwControl**: receives control calling from the upper layer, and sets control information to the driver.
-
 
 The AudioHwStreamOut/AudioHwStreamIn is managed by AudioHwCard interface. It is responsible for creating/destroying AudioHwStreamOut/AudioHwStreamIn instance.
 AudioHwCard is a physical or virtual hardware to process audio stream. It contains a set of ports and devices as shown in following figure.
 
 - **Port** – the stream output/input of the audio card is called “port”.
-
 - **Device** – The device output/input of audio card is called device.
 
 .. figure:: ../figures/audio_hal_architecture.svg
-   :scale: 90%
+   :scale: 80%
    :align: center
    :name: audio_hal_architecture
 
@@ -794,7 +499,7 @@ AudioHwCard is a physical or virtual hardware to process audio stream. It contai
 The AudioHwManager manages system's all AudioHwCards and opens a specific card driver based on the given audio card descriptor.
 
 Using AudioHwStreamOut
-^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^
 Users can check the example of AudioHwStreamOut in ``{SDK}/component/example/audio/audio_hal_render``.
 
 Here is the description showing how to use audio HAL interfaces to play audio raw data (PCM format):
@@ -864,7 +569,7 @@ Here is the description showing how to use audio HAL interfaces to play audio ra
       DestoryAudioHwManager(audio_manager);
 
 Using AudioHwStreamIn
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^
 Users can check the example of AudioHwStreamOut in ``{SDK}/component/example/audio/audio_hal_capture``.
 
 
@@ -952,7 +657,6 @@ Streaming Interfaces
 Audio Streaming Interfaces include RTAudioTrack and RTAudioRecord interfaces. The interfaces lie in ``{SDK}/component/audio/interfaces/audio``. The interfaces have specific descriptions in them, please read them before using.
 
 - **RTAudioTrack**: initializes the format of playback data streaming in the framework, receives PCM data from the application, and writes data to Audio Framework (mixer) or Audio HAL (passthrough).
-
 - **RTAudioRecord**: initializes the format of record data streaming in the framework, receives PCM data from Audio HAL, and sends data to applications.
 
 Using RTAudioTrack
@@ -962,11 +666,8 @@ RTAudioTrack includes support for playing variety of common audio raw format typ
 Audio Framework has the following audio playback stream types. Applications can use the types to initialize RTAudioTrack. Framework gets the streaming type and does the volume mixing according to the types.
 
 - **RTAUDIO_CATEGORY_MEDIA** - if the application wants to play music, then its type is **RTAUDIO_CATEGORY_MEDIA**, it can use this type to init RTAudioTrack. Then audio framework will know its type, and mix it with media's volume.
-
 - **RTAUDIO_CATEGORY_COMMUNICATION** - if the application wants to start a phone call, it can output the phone call's sound, the sound's type should be **RTAUDIO_CATEGORY_COMMUNICATION**.
-
 - **RTAUDIO_CATEGORY_SPEECH** - if the application wants to do voice recognition, and output the speech sound.
-
 - **RTAUDIO_CATEGORY_BEEP** - if the sound is key tone, or other beep sound, then its type is **RTAUDIO_CATEGORY_BEEP**.
 
 The test demo of RTAudioTrack lies in ``{SDK}/component/example/audio/audio_track``.
@@ -1091,9 +792,7 @@ RTAudioRecord supports variety of common audio raw format types, so that you can
 The following audio input sources are supported by RTAudioRecord:
 
 - **RTDEVICE_IN_MIC** - if the application wants to capture data from microphone, then choose this input source.
-
 - **RTDEVICE_IN_HS_MIC** - if the application wants to capture data from headset microphone, then choose this input source.
-
 - **RTDEVICE_IN_HS_MIC** - if the application wants to capture data from LINE-IN, then choose this input source.
 
 The test demo of RTAudioRecord lies in ``{SDK}/component/example/audio/audio_record``.
@@ -1159,7 +858,7 @@ Here is an example showing how to record audio raw data:
 
 5. Read audio microphone data.
 
-   The read size can be defined by users. Users need to make sure *size/frame_size* is integer.
+   The read size can be defined by users. Users need to make sure that *size/frame_size* is integer.
 
    .. code-block:: c
 
@@ -1180,7 +879,8 @@ Here is an example showing how to record audio raw data:
 Control Interfaces
 ^^^^^^^^^^^^^^^^^^^^
 Audio Control Interfaces include RTAudioControl interfaces to interact with audio control HAL.
-RTAudioControl provides interfaces to set and get hardware volume, set output device, and so on. The interfaces lie in :file:`{SDK}/component/audio/interfaces/audio/audio_control.h` The interfaces have specific descriptions, read them before use.
+RTAudioControl provides interfaces to set and get hardware volume, set output device, and so on, which lie in ``{SDK}/component/audio/interfaces/audio/audio_control.h``.
+The interfaces have specific descriptions, read them before using.
 
 Using RTAudioControl
 **********************
@@ -1190,4 +890,5 @@ For using RTAudioControl, Call RTAudioControl to set audio hardware volume of DA
 
    RTAudioControl_SetHardwareVolume(0.5, 0.5);
 
-For playback and record case, most RTAudioControl APIs can be called at any time, any place, they can work directly. Only :func:`RTAudioControl_SetPlaybackDevice()` can only be called before :func:`RTAudioService_Init` in mixer architecture, and before :func:`RTAudioTrack_Start` in passthrough architecture.
+For playback and record case, most RTAudioControl APIs can be called at any time, any place, and they can work directly.
+Only :func:`RTAudioControl_SetPlaybackDevice()` can only be called before :func:`RTAudioService_Init()` in mixer architecture, and before :func:`RTAudioTrack_Start()` in passthrough architecture.
