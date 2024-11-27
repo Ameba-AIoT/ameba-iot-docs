@@ -14,10 +14,8 @@ set RUN_LOCATION=local
 
 REM Set Tag and NDA
 set tag=-t FreeRTOS
-set SET_NDA=
 if "%2" == "nda" (
     set tag=!tag! -t %2
-    set SET_NDA=1
     if "%3" neq "" (
         set tag=!tag! -t %3
     )

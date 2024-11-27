@@ -59,7 +59,7 @@ def get_toctree_rst(root_rst: Path, toctree_rst_files: List) -> None:
                 get_toctree_rst(sub_rst, toctree_rst_files)
 
 
-def get_exclude_rst(root_rst: Path, src_root: Path, exclude_patterns) -> List:
+def get_exclude_rst(root_rst: Path, src_root: Path, exclude_patterns, tags) -> List:
     """
     get exclude rst files
     Args:
@@ -92,11 +92,15 @@ def get_exclude_rst(root_rst: Path, src_root: Path, exclude_patterns) -> List:
         for line in filter_cfg.read_text().splitlines():
             if line.strip() and not line.strip().startswith("#"):
                 exclude_rst.append(line.strip().replace("\\", "/"))
+    
+    if not tags.has("nda") :
+        exclude_rst.append("*_nda*") # confirm set nda exclude when not nda build
+
     return exclude_rst
 
 
-def get_master_doc():
-    if os.environ.get("SET_NDA"):
+def get_master_doc(tags):
+    if tags.has("nda"):
         master_doc = "index_nda"
     else:
         master_doc = "index"

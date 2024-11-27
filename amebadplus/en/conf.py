@@ -24,7 +24,7 @@ clean_common_files(source_dir)
 copy_common_files(source_dir)
 
 # 确定NDA或非NDA入口
-master_doc = get_master_doc()
+master_doc = get_master_doc(tags)
 master_doc_path = source_dir / f"{master_doc}.rst"
 print(f"MASTER_DOC: {master_doc_path}")
 
@@ -34,7 +34,7 @@ if en_or_cn == "en":
 else:
     exclude_patterns.append("**/en")
 
-exclude_rst = get_exclude_rst(master_doc_path, source_dir, exclude_patterns)
+exclude_rst = get_exclude_rst(master_doc_path, source_dir, exclude_patterns, tags)
 exclude_patterns.extend(exclude_rst)
 print("Exclude:\n=============================================================")
 for ign in exclude_patterns:
