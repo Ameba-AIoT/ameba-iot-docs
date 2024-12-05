@@ -101,9 +101,15 @@ def get_exclude_rst(root_rst: Path, src_root: Path, exclude_patterns, tags) -> L
 
 def get_master_doc(tags):
     if tags.has("nda"):
-        master_doc = "index_nda"
+        if tags.has("linux"):
+            master_doc = "index_linux_nda"
+        else:
+            master_doc = "index_nda"
     else:
-        master_doc = "index"
+        if tags.has("linux"):
+            master_doc="index_linux"
+        else:
+            master_doc = "index"
     return master_doc
 
 
