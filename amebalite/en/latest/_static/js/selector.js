@@ -8,7 +8,7 @@ const port = window.location.port ? `:${window.location.port}` : '';
 // 结合以上获取完整根路径
 const baseURL = `${protocol}//${hostname}${port}`;
 function add_selector() {
-    return fetch("${baseURL}/config.json")
+    return fetch(`${baseURL}/config.json`)
         .then(res => res.json())
         .then(res => {
             const cur_ic = window.location.pathname.split('/')[2];
