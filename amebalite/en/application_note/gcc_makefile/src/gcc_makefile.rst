@@ -12,7 +12,7 @@ The following figures summary the makefile architectures of each project.
        project_km4\asdk\Makefile-->
           project_km4\asdk\make\Makefile-->
             project_km4\asdk\make\application\Makefile
-            project_kr4\vsdk\make\at_cmd\Makefile
+            project_km4\vsdk\make\at_cmd\Makefile
             project_km4\asdk\make\audio\Makefile
             project_km4\asdk\make\bluetooth\Makefile
             project_km4\asdk\make\bootloader\Makefile
