@@ -1,5 +1,20 @@
 /* ============= Support Multiple Versions ============= */
-const baseURL = "https://ameba-aiot.github.io/ameba-iot-docs";
+// 获取协议 (http: / https:)
+const protocol = window.location.protocol;
+
+// 获取域名 (例如: www.example.com)
+const hostname = window.location.hostname;
+
+// 获取端口 (如果有)
+const port = window.location.port ? `:${window.location.port}` : '';
+
+// 初始化 baseURL
+let baseURL = `${protocol}//${hostname}${port}`;
+
+const cur_dir = window.location.pathname.split('/')[1];
+baseURL += `/${cur_dir}`;
+
+console.log(baseURL); // 
 function add_selector() {
     return fetch(`${baseURL}/config.json`)
         .then(res => res.json())
