@@ -6,7 +6,7 @@ const hostname = window.location.hostname;
 // 获取端口 (如果有)
 const port = window.location.port ? `:${window.location.port}` : '';
 // 结合以上获取完整根路径
-const baseURL = `${protocol}//${hostname}${port}/`;
+const baseURL = `${protocol}//${hostname}${port}`;
 function add_selector() {
     return fetch("${baseURL}/config.json")
         .then(res => res.json())
