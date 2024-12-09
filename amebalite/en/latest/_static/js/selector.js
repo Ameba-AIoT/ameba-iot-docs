@@ -1,7 +1,7 @@
 /* ============= Support Multiple Versions ============= */
 const baseURL = "https://ameba-aiot.github.io/ameba-iot-docs";
 function add_selector() {
-    return fetch("/config.json")
+    return fetch("${baseURL}/config.json")
         .then(res => res.json())
         .then(res => {
             const cur_ic = window.location.pathname.split('/')[2];
