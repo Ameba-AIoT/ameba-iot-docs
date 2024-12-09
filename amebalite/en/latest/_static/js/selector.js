@@ -10,7 +10,7 @@ const pathname = window.location.pathname;
 const basePath = pathname.endsWith('/') ? pathname : pathname.substring(0, pathname.lastIndexOf('/') + 1);
 
 // 在 pathname 中排除任何子路径或文件名
-const baseUrl = `${origin}${basePath}`;
+const baseURL = `${origin}${basePath}`;
 
 console.log(baseUrl); // 输出 'https://ameba-aiot.github.io/ameba-iot-docs/'
 function add_selector() {
