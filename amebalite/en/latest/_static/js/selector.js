@@ -1,17 +1,20 @@
 /* ============= Support Multiple Versions ============= */
-// 当前的完整URL
-const fullUrl = window.location.href;
+// 获取协议 (http: / https:)
+const protocol = window.location.protocol;
 
-// 使用 window.location.origin 和 window.location.pathname 来构建基本URL
-const origin = window.location.origin; // 获取协议＋域名＋端口
-const pathname = window.location.pathname;
+// 获取域名 (例如: www.example.com)
+const hostname = window.location.hostname;
 
-// 判断末尾是否斜杠
-const basePath = pathname.endsWith('/') ? pathname : pathname.substring(0, pathname.lastIndexOf('/') + 1);
+// 获取端口 (如果有)
+const port = window.location.port ? `:${window.location.port}` : '';
 
-// 在 pathname 中排除任何子路径或文件名
-const baseURL = `${origin}${basePath}`;
+// 初始化 baseURL
+let baseURL = `${protocol}//${hostname}${port}`;
 
+// 如果 hostname 包含 "github.io"，则在 baseURL 后添加 "ameba-iot-docs"
+if (hostname.includes("github.io")) {
+  baseURL += "ameba-iot-docs";
+}
 console.log(baseURL); // 输出 'https://ameba-aiot.github.io/ameba-iot-docs/'
 function add_selector() {
     return fetch(`${baseURL}/config.json`)
