@@ -13,7 +13,7 @@ let baseURL = `${protocol}//${hostname}${port}`;
 
 // 如果 hostname 包含 "github.io"，则在 baseURL 后添加 "ameba-iot-docs"
 if (hostname.includes("github.io")) {
-  baseURL += "ameba-iot-docs";
+  baseURL += "/ameba-iot-docs";
 }
 console.log(baseURL); // 输出 'https://ameba-aiot.github.io/ameba-iot-docs/'
 function add_selector() {
