@@ -14,7 +14,7 @@ let baseURL = `${protocol}//${hostname}${port}`;
 const cur_dir = window.location.pathname.split('/')[1];
 baseURL += `/${cur_dir}`;
 
-console.log(baseURL); 
+console.log(baseURL); // 
 function add_selector() {
     return fetch(`${baseURL}/config.json`)
         .then(res => res.json())
