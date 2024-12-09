@@ -11,11 +11,10 @@ const port = window.location.port ? `:${window.location.port}` : '';
 // 初始化 baseURL
 let baseURL = `${protocol}//${hostname}${port}`;
 
-// 如果 hostname 包含 "github.io"，则在 baseURL 后添加 "ameba-iot-docs"
-if (hostname.includes("github.io")) {
-  baseURL += "/ameba-iot-docs";
-}
-console.log(baseURL); // 输出 'https://ameba-aiot.github.io/ameba-iot-docs/'
+const cur_dir = window.location.pathname.split('/')[1];
+baseURL += `/${cur_dir}`;
+
+console.log(baseURL); 
 function add_selector() {
     return fetch(`${baseURL}/config.json`)
         .then(res => res.json())
