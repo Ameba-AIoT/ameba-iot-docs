@@ -12,7 +12,7 @@ const basePath = pathname.endsWith('/') ? pathname : pathname.substring(0, pathn
 // 在 pathname 中排除任何子路径或文件名
 const baseURL = `${origin}${basePath}`;
 
-console.log(baseUrl); // 输出 'https://ameba-aiot.github.io/ameba-iot-docs/'
+console.log(baseURL); // 输出 'https://ameba-aiot.github.io/ameba-iot-docs/'
 function add_selector() {
     return fetch(`${baseURL}/config.json`)
         .then(res => res.json())
