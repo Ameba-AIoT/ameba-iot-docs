@@ -178,7 +178,7 @@ The application image OTA select flow is illustrated below.
          :align: center
 
 
-   2. Set the path of :file:`dsp.bin` in Makefile located in ``{SDK}\amebalite_gcc_project\project_km4\asdk``.
+   2. Set the path of :file:`dsp.bin` in Makefile located in ``{SDK}\amebalite_gcc_project\project_kr4\asdk``.
    
       .. code-block:: make
          :emphasize-lines: 3
@@ -190,7 +190,7 @@ The application image OTA select flow is illustrated below.
    
    3. For example, after DSP SDK is compiled finished, there will be two images generated, named :file:`dsp.bin` and :file:`dsp_all.bin` respectively under the path of ``{DSP_SDK}\project\image``. So the path of :file:`dsp.bin` is ``{DSP_SDK}\project\image``.
    
-      a. Set the path in ``{SDK}\amebalite_gcc_project\project_km4\asdk\Makefile``.
+      a. Set the path in ``{SDK}\amebalite_gcc_project\project_kr4\asdk\Makefile``.
    
         .. code-block:: make
            :emphasize-lines: 3
