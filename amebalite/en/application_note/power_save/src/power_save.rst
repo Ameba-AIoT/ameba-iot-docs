@@ -423,10 +423,7 @@ Sleep/Wake Callback APIs
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 These APIs are used to register suspend/resume callback function for *<nDeviceId>*. The suspend callback function will be called in idle task before the system enters sleep mode, and the resume callback function will be called after the system resumes.
 
-
 It is a good way to use the suspend and resume function if there is something to do before the chip sleeps or after the chip wakes. A typical application of the resume function is to acquire the wakelock to prevent the chip from sleeping again. Also, if the CPU chooses PG, some peripherals will lose power so they need to be reinitialized. This can be implemented in the resume function.
-
-
 
 .. note::
    Yield OS is not permitted in the suspend/resume callback functions, thus RTOS APIs which may cause OS yield such as :func:`rtos_task_yield`, :func:`rtos_time_delay_ms`, or mutex, semaphore related APIs are not recommended to use.
@@ -438,7 +435,6 @@ pmu_register_sleep_callback
 .. table::
    :width: 100%
    :widths: auto
-   :name:
 
    +--------------+--------------------------------------------------------------+
    | Items        | Description                                                  |
@@ -469,11 +465,9 @@ pmu_register_sleep_callback
 pmu_unregister_sleep_callback
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-
 .. table::
    :width: 100%
    :widths: auto
-
 
    +--------------+--------------------------------------------------------------+
    | Items        | Description                                                  |
@@ -503,7 +497,6 @@ pmu_unregister_sleep_callback
 
 pmu_set_max_sleep_time
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Set the system max sleep time.
 
 .. table::
    :width: 100%
@@ -519,14 +512,12 @@ Set the system max sleep time.
    | Return       | None                                                |
    +--------------+-----------------------------------------------------+
 
-
-
 .. note::
-      - The system will be woken up after the timeout.
+   - The system will be woken up after the timeout.
 
-      - The system may be woken up by other wake events before this timer is timeout.
+   - The system may be woken up by other wake events before this timer is timeout.
 
-      - This setting only works once. The timer will be cleared after the system wakeup.
+   - This setting only works once. The timer will be cleared after the system wakeup.
 
 
 Wi-Fi Power Saving
