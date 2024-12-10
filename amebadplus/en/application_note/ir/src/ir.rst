@@ -53,22 +53,21 @@ To use IR sending function, the following steps are mandatory.
 
 
 .. note::
-      - In :ref:`Step 2 <ir_sending_step_2>` to :ref:`Step 6 <ir_sending_step_6>`, It is suggested that disabling IR at first, and then enabling IR after writing data to FIFO.
-
-      - In :ref:`Step 5 <ir_sending_step_5>`, pay attention to convert the data into the appropriate format that Tx FIFO register can recognize before writing data to FIFO.
+   - In :ref:`Step 2 <ir_sending_step_2>` to :ref:`Step 6 <ir_sending_step_6>`, It is suggested that disabling IR at first, and then enabling IR after writing data to FIFO.
+   - In :ref:`Step 5 <ir_sending_step_5>`, pay attention to convert the data into the appropriate format that Tx FIFO register can recognize before writing data to FIFO.
 
 
 Special Notes
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~
 Tx FIFO Offset Issue
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^
 If you want to judge whether Tx data in FIFO has been sent completely or not, you’d better check Tx FIFO empty flag rather than *TX_FIFO_OFFSET*.
 
 Tx Last Packet Cannot Let FSM Enter Idle Issue
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 If the last packet written to Tx FIFO cannot let Tx state machine enter idle, it is suggested write some data packets to Tx FIFO before enabling IR Tx.
 
-Refer to :ref:`Step 2 <ir_sending_step_2>` ~ :ref:`Step 6 <ir_sending_step_6>` in Section :ref:`ir_tx_polling_mode`.
+Refer to :ref:`Step 2 <ir_sending_step_2>` to :ref:`Step 6 <ir_sending_step_6>` in Section :ref:`ir_tx_polling_mode`.
 
 IR Receiving
 ------------------------
@@ -115,9 +114,8 @@ To use IR receiving function, the following steps are mandatory.
 7. When Rx FIFO threshold interrupt triggers, read data from Rx FIFO with :func:`IR_ReceiveBuf()` and :func:`IR_ReceiveData()`, and make further processing in interrupt handle function.
 
 .. note::
-      - In :ref:`Step 7 <ir_receiving_step_7>`, to decode the receiving data correctly, you should understand the data format in Rx FIFO register.
-
-      - Waveform inverse issue: in Rx ending, if the waveform is inverse, you should define *INVERSE_DATA* in :file:`Ir_nec_protocol.h` and set ``IR_InitStruct.IR_RxCntThrType = IR_RX_COUNT_HIGH_LEVEL``.
+   - In :ref:`Step 7 <ir_receiving_step_7>`, to decode the receiving data correctly, you should understand the data format in Rx FIFO register.
+   - Waveform inverse issue: in Rx ending, if the waveform is inverse, you should define *INVERSE_DATA* in :file:`Ir_nec_protocol.h` and set ``IR_InitStruct.IR_RxCntThrType = IR_RX_COUNT_HIGH_LEVEL``.
 
 
 Rx Learning
