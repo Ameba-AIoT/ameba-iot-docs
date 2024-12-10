@@ -182,8 +182,8 @@ The LEDC supports DMA mode and interrupt mode, with 32 * 24 bits LEDC FIFO, and 
 </tr>
 </tbody>
 </table>
-<p>Logical <code class="docutils literal notranslate"><span class="pre">0</span></code> coding time is T0-code: 800ns ~ 1980ns, and logical <code class="docutils literal notranslate"><span class="pre">1</span></code> coding time is T1-code: 800ns ~ 2020ns.</p>
-<p>The supported LED number is：</p>
+<p>The logical <code class="docutils literal notranslate"><span class="pre">0</span></code> coding time is T0-code (800ns ~ 1980ns), and logical <code class="docutils literal notranslate"><span class="pre">1</span></code> coding time is T1-code (800ns ~ 2020ns).</p>
+<p>The supported LED number is:</p>
 <div class="math notranslate nohighlight">
 \begin{gather*}
 LED\_NUM = \frac{\frac{1}{LED\,fresh\,rate(\frac{frame}{s})} - 280μs}{(logical\,0\,or\,1\,coding\,time) * 24}
@@ -200,36 +200,26 @@ the signal reduces 24 bits. Pixel adopts auto reshaping transmit technology, mak
 <section id="operation-flow">
 <h1>Operation Flow<a class="headerlink" href="#operation-flow" title="Link to this heading"></a></h1>
 <p>The flow of LEDC normal configuration process is shown below.</p>
-<ol class="arabic simple" id="ledc-operation-flow-step-1">
+<ol class="arabic simple">
 <li><p>Configure LEDC data mode through <em>LED_RGB_MODE</em> field, <em>LED_MSB_TOP</em> bit, <em>LED_MSB_BYTE2</em> bit, <em>LED_MSB_BYTE1</em> bit and <em>LED_MSB_BYTE0</em> bit in the <em>LEDC_CTRL_REG</em> register.</p></li>
 <li><p>Configure LEDC control mode through the registers: <em>LED_T01_TIMING_CTRL_REG</em>, <em>LEDC_DATA_FINISH_CNT_REG</em>, <em>LED_RESET_TIMING_CTRL_REG</em>, <em>LEDC_WAIT_TIME0_CTRL_REG</em>, <em>LEDC_WAIT_TIME1_CTRL_REG</em>, <em>LEDC_DMA_CTRL_REG</em> and <em>LEDC_INTERRUPT_CTRL_REG</em>.</p></li>
 <li><p>Enable the LEDC by writing 1 to the LEDC_EN bit in <em>LEDC_CTRL_REG</em> register.</p></li>
-<li><p>If <em>LEDC_DMA_EN</em> bit in <em>LEDC_DMA_CTRL_REG</em> register is set to 1, go to <a class="reference internal" href="#ledc-operation-flow-step-5"><span class="std std-ref">Step 5</span></a>. If not, go to <a class="reference internal" href="#ledc-operation-flow-step-7"><span class="std std-ref">Step 7</span></a>.</p></li>
-</ol>
-<ol class="arabic simple" id="ledc-operation-flow-step-5" start="5">
+<li><p>If <em>LEDC_DMA_EN</em> bit in <em>LEDC_DMA_CTRL_REG</em> register is set to <code class="docutils literal notranslate"><span class="pre">1</span></code>, go to Step 5. If not, go to Step 7.</p></li>
 <li><p>The LEDC sends <em>dma_req</em> to DMAC.</p></li>
-<li><p>The DMAC transfers data from memory to LEDC FIFO by APB bus and sends dma_ack signal following the last data. Go to <a class="reference internal" href="#ledc-operation-flow-step-8"><span class="std std-ref">Step 8</span></a>.</p></li>
-</ol>
-<ol class="arabic simple" id="ledc-operation-flow-step-7" start="7">
-<li><p>The LEDC sends CPU_REQ_INT signal to CPU. DMAC is required to transfer data from memory to LEDC. Go to <a class="reference internal" href="#ledc-operation-flow-step-8"><span class="std std-ref">Step 8</span></a>.</p></li>
-</ol>
-<ol class="arabic simple" id="ledc-operation-flow-step-8" start="8">
+<li><p>The DMAC transfers data from memory to LEDC FIFO by APB bus and sends dma_ack signal following the last data. Go to Step 8.</p></li>
+<li><p>The LEDC sends CPU_REQ_INT signal to CPU. DMAC is required to transfer data from memory to LEDC. Go to Step 8.</p></li>
 <li><p>The LEDC transfers data from LEDC FIFO to LED lamps.</p></li>
 <li><p>When <em>LED_DATA_FINISH_CNT</em> field in <em>LEDC_DATA_FINISH_CNT_REG</em> register equals <em>TOTAL_DATA_LENGTH</em> which is set in <em>LEDC_CTRL_REG</em> register, <em>LED_TRANS_FINISH_INT</em> interrupt is generated, and hardware resets LEDC_EN to 0.</p></li>
 <li><p>Clear <em>LED_TRANS_FINISH_INT</em> interrupt by software.</p></li>
-<li><p>It is suggested that asserting <em>LEDC_SOFT_RESET</em> bit in <em>LEDC_CTRL_REG</em> register to clear all interrupt status registers.</p></li>
-<li><p>If software wants to scan LED lamps again, go to <a class="reference internal" href="#ledc-operation-flow-step-1"><span class="std std-ref">Step 1</span></a>.</p></li>
+<li><p>It is suggested to assert <em>LEDC_SOFT_RESET</em> bit in <em>LEDC_CTRL_REG</em> register to clear all interrupt status registers.</p></li>
+<li><p>If software wants to scan LED lamps again, go to Step 1.</p></li>
 </ol>
-<figure class="align-center" id="ledc-normal-configuration-process">
-<a class="reference internal image-reference" href="../../../_images/ledc_normal_configuration_process.svg"><img alt="../../../_images/ledc_normal_configuration_process.svg" height="336" src="../../../_images/ledc_normal_configuration_process.svg" width="470" /></a>
+<figure class="align-center" id="id1">
+<a class="reference internal image-reference" href="../../../_images/ledc_normal_configuration_process.svg"><img alt="../../../_images/ledc_normal_configuration_process.svg" height="392" src="../../../_images/ledc_normal_configuration_process.svg" width="548" /></a>
 <figcaption>
-<p><span class="caption-text">LEDC normal configuration process</span><a class="headerlink" href="#ledc-normal-configuration-process" title="Link to this image"></a></p>
+<p><span class="caption-text">LEDC normal configuration process</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
 </figcaption>
 </figure>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>For more details, refer to the document of mbed APIs.</p>
-</div>
 </section>
 
 
