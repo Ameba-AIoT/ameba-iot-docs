@@ -41,7 +41,7 @@ def get_toctree_rst(root_rst: Path, toctree_rst_files: List) -> None:
             toctree_rst_files.append(root_rst)
         else:
             return  # 已经存在,则终止当前路径,防止陷入死循环
-        if root_rst.stem not in ["index", "index_nda"]:
+        if root_rst.stem not in ["index", "index_nda","index_linux","index_linux_nda"]:
             return  # 只解析index,index_nda,提高效率
         for line in root_rst.read_text(encoding='utf-8').splitlines():
             line = line.strip()
@@ -101,12 +101,12 @@ def get_exclude_rst(root_rst: Path, src_root: Path, exclude_patterns, tags) -> L
 
 def get_master_doc(tags):
     if tags.has("nda"):
-        if tags.has("linux"):
+        if tags.has("Linux"):
             master_doc = "index_linux_nda"
         else:
             master_doc = "index_nda"
     else:
-        if tags.has("linux"):
+        if tags.has("Linux"):
             master_doc="index_linux"
         else:
             master_doc = "index"
