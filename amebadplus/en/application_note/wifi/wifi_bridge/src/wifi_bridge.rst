@@ -77,34 +77,34 @@ The following figure shows the SDIO bridge related files which run at host.
 ::
 
    wifi\cfg80211_fullmac -- >
- 	  wifi\cfg80211_fullmac\rtl8730e -- >
-		   wifi\cfg80211_fullmac\rtl8730e\rtw_drv_probe.c
-		   wifi\cfg80211_fullmac\rtl8730e\rtw_ethtool_ops.c
-		   wifi\cfg80211_fullmac\rtl8730e\rtw_netdev_ops.c
-		   wifi\cfg80211_fullmac\rtl8730e\rtw_proc.c
-		   wifi\cfg80211_fullmac\rtl8730e\sdio -- >
-		   	wifi\cfg80211_fullmac\rtl8730e\sdio\rtw_llhw_event.c
-		   	wifi\cfg80211_fullmac\rtl8730e\sdio\rtw_llhw_event.h
-		   	wifi\cfg80211_fullmac\rtl8730e\sdio\rtw_llhw_hci.c
-		   	wifi\cfg80211_fullmac\rtl8730e\sdio\rtw_llhw_hci.h
-		   	wifi\cfg80211_fullmac\rtl8730e\sdio\rtw_llhw_memory.c
-		   	wifi\cfg80211_fullmac\rtl8730e\sdio\rtw_llhw_ops.c
-		   	wifi\cfg80211_fullmac\rtl8730e\sdio\rtw_llhw_ops.h
-		   	wifi\cfg80211_fullmac\rtl8730e\sdio\rtw_llhw_recv.c
-		   	wifi\cfg80211_fullmac\rtl8730e\sdio\rtw_llhw_trx.h
-		   	wifi\cfg80211_fullmac\rtl8730e\sdio\rtw_llhw_xmit.c
-		   	wifi\cfg80211_fullmac\rtl8730e\sdio\rtw_sdio_drvio.c
-		   	wifi\cfg80211_fullmac\rtl8730e\sdio\rtw_sdio_drvio.h
-		   	wifi\cfg80211_fullmac\rtl8730e\sdio\rtw_sdio_ops.c
-		   	wifi\cfg80211_fullmac\rtl8730e\sdio\rtw_sdio_ops.h
-		   	wifi\cfg80211_fullmac\rtl8730e\sdio\rtw_sdio_probe.c
-		   	wifi\cfg80211_fullmac\rtl8730e\sdio\rtw_sdio_reg.h
-		   wifi\cfg80211_fullmac\rtl8730e\sdio_bridge -- >
-		   	wifi\cfg80211_fullmac\rtl8730e\sdio_bridge\rtw_sdio_bridge_netlink.h
-		   	wifi\cfg80211_fullmac\rtl8730e\sdio_bridge\rtw_sdio_bridge.c
-		   	wifi\cfg80211_fullmac\rtl8730e\sdio_bridge\bridge_api -- >
-		   		wifi\cfg80211_fullmac\rtl8730e\sdio_bridge\bridge_api\rtw_sdio_bridge_api.h
-		   		wifi\cfg80211_fullmac\rtl8730e\sdio_bridge\bridge_api\rtw_sdio_bridge_api.c
+ 	  wifi\cfg80211_fullmac -- >
+		   wifi\cfg80211_fullmac\rtw_drv_probe.c
+		   wifi\cfg80211_fullmac\rtw_ethtool_ops.c
+		   wifi\cfg80211_fullmac\rtw_netdev_ops.c
+		   wifi\cfg80211_fullmac\rtw_proc.c
+		   wifi\cfg80211_fullmac\sdio -- >
+		   	wifi\cfg80211_fullmac\sdio\rtw_llhw_event.c
+		   	wifi\cfg80211_fullmac\sdio\rtw_llhw_event.h
+		   	wifi\cfg80211_fullmac\sdio\rtw_llhw_hci.c
+		   	wifi\cfg80211_fullmac\sdio\rtw_llhw_hci.h
+		   	wifi\cfg80211_fullmac\sdio\rtw_llhw_memory.c
+		   	wifi\cfg80211_fullmac\sdio\rtw_llhw_ops.c
+		   	wifi\cfg80211_fullmac\sdio\rtw_llhw_ops.h
+		   	wifi\cfg80211_fullmac\sdio\rtw_llhw_recv.c
+		   	wifi\cfg80211_fullmac\sdio\rtw_llhw_trx.h
+		   	wifi\cfg80211_fullmac\sdio\rtw_llhw_xmit.c
+		   	wifi\cfg80211_fullmac\sdio\rtw_sdio_drvio.c
+		   	wifi\cfg80211_fullmac\sdio\rtw_sdio_drvio.h
+		   	wifi\cfg80211_fullmac\sdio\rtw_sdio_ops.c
+		   	wifi\cfg80211_fullmac\sdio\rtw_sdio_ops.h
+		   	wifi\cfg80211_fullmac\sdio\rtw_sdio_probe.c
+		   	wifi\cfg80211_fullmac\sdio\rtw_sdio_reg.h
+		   wifi\cfg80211_fullmac\sdio_bridge -- >
+		   	wifi\cfg80211_fullmac\sdio_bridge\rtw_sdio_bridge_netlink.h
+		   	wifi\cfg80211_fullmac\sdio_bridge\rtw_sdio_bridge.c
+		   	wifi\cfg80211_fullmac\sdio_bridge\bridge_api -- >
+		   		wifi\cfg80211_fullmac\sdio_bridge\bridge_api\rtw_sdio_bridge_api.h
+		   		wifi\cfg80211_fullmac\sdio_bridge\bridge_api\rtw_sdio_bridge_api.c
 
 Porting Guide
 --------------------------
@@ -173,19 +173,25 @@ Host driver has been tested and verified to work on Linux kernel version v5.4. I
 
       $sudo apt-get install build-essential
 
-2. Enter ``{SDK}/component/wifi/cfg80211_fullmac/rtl8730e``, and execute the following command
+2. Enter ``{SDK}/component/wifi/cfg80211_fullmac``, and execute the following command
 
    .. code-block:: C
 
-      ./sdiobridge_setup.sh
+      ./fullmac_setup.sh sdiobridge
 
-3. Copy ``cfg80211_fullmac`` folder to host side
-
-4. Build and install host driver as below
+3. Enter ``{SDK}/component/wifi/cfg80211_fullmac``, and execute the following command to choose target device ic
 
    .. code-block:: C
 
-      $cd {driver_path}/cfg80211_fullmac/rtl8730e
+      make menuconfig
+
+4. Copy ``cfg80211_fullmac`` folder to host side
+
+5. Build and install host driver as below
+
+   .. code-block:: C
+
+      $cd {driver_path}/cfg80211_fullmac
       $make
       $sudo systemctl stop dhcpcd.service
       $sudo insmod sdio_bridge/bridge_sdio.ko
@@ -211,13 +217,13 @@ Software Configuration at |CHIP_NAME|
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 In order to build SDIO bridge image, choose :guilabel:`SDIO_BRIDGE` in menuconfig according to the following steps:
 
-1. Enter menuconfig and select :guilabel:`CONFIG WIFI`
+1. Enter menuconfig and select :guilabel:`CONFIG INIC INTF`
 
-   .. figure:: ../figures/bridge_config_wifi.png
+   .. figure:: ../figures/bridge_config_inic_intf.png
       :scale: 40%
       :align: center
 
-2. In Wi-Fi menu, select :guilabel:`INIC mode`
+2. In INIC-INTF menu, select :guilabel:`INIC MODE`
 
    .. figure:: ../figures/bridge_inic_mode.png
       :scale: 40%

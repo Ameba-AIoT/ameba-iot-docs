@@ -86,7 +86,7 @@ Features
 
 File Tree
 ----------
-The Linux driver in the SDK is located at: ``{SDK}/component/wifi/cfg80211_fullmac/rtl8730e``. The main focus should be on the files within the red boxes below.
+The Linux driver in the SDK is located at: ``{SDK}/component/wifi/cfg80211_fullmac``. The main focus should be on the files within the red boxes below.
 
 .. figure:: ../figures/fullmac_driver_file_tree.svg
    :scale: 100%
@@ -201,7 +201,7 @@ Software Configuration
 ~~~~~~~~~~~~~~~~~~~~~~~
 Device Driver
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
-1. Execute ``make menuconfig`` under the path ``{SDK}/amebadplus_gcc_project``
+1. Execute ``./menuconfig.py`` under the path ``{SDK}/amebadplus_gcc_project``
 
    a. Click :menuselection:`CONFIG Link Option > IMG2(Application) running on FLASH or PSRAM?`, and select :menuselection:`PSRAM`
 
@@ -209,7 +209,7 @@ Device Driver
          :scale: 80%
          :align: center
 
-   b. Click :menuselection:`CONFIG WIFI > INIC Mode`, select :menuselection:`SDIO_FULLMAC` for SDIO interface or :menuselection:`SPI_FULLMAC` for SPI interface, then select ``KM0`` as ``WIFI Driver Location``. If you have any other special requirements, select ``KM4`` as ``WIFI Driver Location``.
+   b. Click :menuselection:`CONFIG INIC ITNF > INIC Mode`, select :menuselection:`SDIO_FULLMAC` for SDIO interface or :menuselection:`SPI_FULLMAC` for SPI interface.
 
       .. figure:: ../figures/wifi_sdio_spi_selection.png
          :scale: 100%
@@ -272,7 +272,7 @@ The FullMAC driver has been tested and verified to work on Linux kernel versions
 
 3. Build the module
 
-   a. In the path ``/component/wifi/cfg80211_fullmac/rtl8730e``, execute the following script with an interface parameter to configure host driver.
+   a. In the path ``/component/wifi/cfg80211_fullmac``, execute the following script with an interface parameter to configure host driver.
 
       - SDIO:
 
@@ -292,13 +292,13 @@ The FullMAC driver has been tested and verified to work on Linux kernel versions
 
       .. code-block::
 
-         cd {driver_path}/cfg80211_fullmac/rtl8730e;make 
+         cd {driver_path}/cfg80211_fullmac;make 
 
 .. _load_the_module_step_4:
 
 4. Load the module.
 
-   - SDIO: :file:`fullmac_sdio.ko` is generated in ``/cfg80211_fullmac/rtl8730e/sdio``.
+   - SDIO: :file:`fullmac_sdio.ko` is generated in ``/cfg80211_fullmac/sdio``.
 
      .. code-block:: sh
 
@@ -308,7 +308,7 @@ The FullMAC driver has been tested and verified to work on Linux kernel versions
         modprobe fullmac_sdio
 
 
-   - SPI: :file:`fullmac_spi.ko` is generated in ``/cfg80211_fullmac/rtl8730e/spi``.
+   - SPI: :file:`fullmac_spi.ko` is generated in ``/cfg80211_fullmac/spi``.
  
      .. code-block::
 
