@@ -80,7 +80,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../ota/src/index.html">OTA Firmware Update</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="index.html">CHIP Enable</a><ul class="current">
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Introduction</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#three-working-modes">Three Working Modes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#working-modes">Working Modes</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#level-reset-mode">Level Reset Mode</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#interrupt-reset-mode">Interrupt Reset Mode</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#pulse-reset-mode">Pulse Reset Mode</a></li>
@@ -163,8 +163,8 @@ This pin always has the function to reset the system no matter in which mode.</p
 </figcaption>
 </figure>
 </section>
-<section id="three-working-modes">
-<h1>Three Working Modes<a class="headerlink" href="#three-working-modes" title="Link to this heading"></a></h1>
+<section id="working-modes">
+<h1>Working Modes<a class="headerlink" href="#working-modes" title="Link to this heading"></a></h1>
 <p>There are three working modes of CHIP_EN for different usages.</p>
 <section id="level-reset-mode">
 <h2>Level Reset Mode<a class="headerlink" href="#level-reset-mode" title="Link to this heading"></a></h2>
@@ -178,23 +178,24 @@ So user can adjust the sensitivity of CHIP_EN by setting different debounce time
 <p>In interrupt reset mode, a low level on this pin longer than the sum of debounce and short press time can trigger an interrupt instead of resetting the system directly.
 Thus, the software can handle the interrupt and choose whether to reset the system.</p>
 <p>The interrupt reset mode is mainly designed for the power save scenario.
-The <code class="docutils literal notranslate"><span class="pre">CHIP_EN</span></code> button just likes the power button of the smartphone: a short press will trigger the system to enter low power mode or wake up the system; a long press will trigger an interrupt to remind the user whether to reset the system. The reboot will happen if user chooses reboot or the system crashed.</p>
+The <code class="docutils literal notranslate"><span class="pre">CHIP_EN</span></code> button just likes the power button of the smartphone: a short press will trigger the system to enter low power mode or wake up the system;
+a long press will trigger an interrupt to remind the user whether to reset the system. The reboot will happen if user chooses reboot or the system crashed.</p>
 </section>
 <section id="pulse-reset-mode">
 <h2>Pulse Reset Mode<a class="headerlink" href="#pulse-reset-mode" title="Link to this heading"></a></h2>
 <p>In pulse reset mode, a low level on this pin longer than debounce time will trigger RESET directly and the SoC will reboot immediately.
-User can read the status of the CHIPEN pin in boot code to distinguish short/long press. This mode usually can be found in router.
-Short press will cause the system cold boot; long press will cause the system code boot and restore factory settings.</p>
+User can read the status of the <code class="docutils literal notranslate"><span class="pre">CHIP_EN</span></code> pin in boot code to distinguish short/long press. This mode usually can be found in router.
+Short press will cause the system cold boot, and long press will cause the system code boot and restore factory settings.</p>
 <p>Once the chip is configured working in Pulse Reset Mode, software cannot change the mode anymore. Only power off will take the chip to Level Reset Mode.</p>
 </section>
 </section>
 <section id="how-to-choose-work-mode">
 <h1>How to Choose Work Mode<a class="headerlink" href="#how-to-choose-work-mode" title="Link to this heading"></a></h1>
 <ul class="simple">
-<li><p>For device does not need any control on this pin, tie this pin to <code class="docutils literal notranslate"><span class="pre">high</span></code>.</p></li>
-<li><p>For simply reset requirement, use the default <code class="docutils literal notranslate"><span class="pre">Level</span> <span class="pre">Reset</span> <span class="pre">Mode</span></code>.</p></li>
-<li><p>If both reset and re-storage of factory settings are needed, use <code class="docutils literal notranslate"><span class="pre">Pulse</span> <span class="pre">Reset</span> <span class="pre">Mode</span></code>.</p></li>
-<li><p>For low power scenario, power control and reset are needed on a single pin, use <code class="docutils literal notranslate"><span class="pre">Interrupt</span> <span class="pre">Reset</span> <span class="pre">Mode</span></code>.</p></li>
+<li><p>For device does not need any control on this pin, tie this pin to high.</p></li>
+<li><p>For simply reset requirement, use the default Level Reset Mode.</p></li>
+<li><p>If both reset and re-storage of factory settings are needed, use Pulse Reset Mode.</p></li>
+<li><p>For low power scenario, power control and reset are needed on a single pin, use Interrupt Reset Mode.</p></li>
 </ul>
 </section>
 <section id="chip-en-driver-apis">
@@ -218,7 +219,7 @@ Short press will cause the system cold boot; long press will cause the system co
 </td>
 </tr>
 <tr class="row-odd"><td><p>Parameters</p></td>
-<td><p>mode: new work mode of CHIPEN, which can be:</p>
+<td><p>mode: new work mode of CHIP_EN, which can be:</p>
 <ul class="simple">
 <li><p>CHIPEN_HW_RESET_MODE</p></li>
 <li><p>CHIPEN_INT_RESET_MODE</p></li>
