@@ -143,7 +143,7 @@
              
   <section id="introduction">
 <span id="ecdsa-engine"></span><h1>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h1>
-<p>The ECDSA supports all curves under 256 bits, but in our ROM code, only 8 kinds are supported:</p>
+<p>The ECDSA supports all curves under 256-bit. But in our ROM code, only 8 kinds of curves are supported:</p>
 <ul class="simple">
 <li><p>SECP256K1</p></li>
 <li><p>SECP256R1</p></li>
@@ -154,16 +154,25 @@
 <li><p>SECP224R1</p></li>
 <li><p>BP256R1</p></li>
 </ul>
-<p>The ECDSA has the features of key pair generation, ECDH key agreement, signature generation, public key signature verification and basic function.</p>
+<p>The ECDSA has the features of key pair generation, ECDH key agreement, signature generation, public key signature verification, and basic function.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>ECDSA can be accessed by NP and AP, but if multi-core calls API to operate ECDSA at the same time,
+it will lead to ECDSA function error. Users should take protective measures to ensure that only one core can operate ECDSA at the same time.</p>
+</div>
 </section>
 <section id="ecdsa-otp">
 <h1>ECDSA OTP<a class="headerlink" href="#ecdsa-otp" title="Link to this heading"></a></h1>
-<p>The ECDSA engine can download the private key in two ways: one is that the user passes the private key into the API, and the function will write the private key into the register of ECDSA; the other is that ECDSA automatically downloads ECDSA OTP key.</p>
+<p>The ECDSA engine can download the private key in two ways:</p>
+<ul class="simple">
+<li><p>The user passes the private key into the API, and the function will write the private key into the registers of ECDSA.</p></li>
+<li><p>The ECDSA automatically downloads the ECDSA OTP key.</p></li>
+</ul>
 <p>The OTP physical map can store two keys for ECDSA to use as private keys, which can only be accessed by ECDSA trigger and will not be tampered with or read by attackers.
 The premise is that the private key needs to be programmed into OTP physical map.</p>
 <table class="docutils align-default" style="width: 100%">
 <thead>
-<tr class="row-odd"><th class="head"><p>OTP KEY name</p></th>
+<tr class="row-odd"><th class="head"><p>OTP key</p></th>
 <th class="head"><p>Address</p></th>
 <th class="head"><p>Size</p></th>
 <th class="head"><p>Default</p></th>
@@ -173,69 +182,69 @@ The premise is that the private key needs to be programmed into OTP physical map
 <tbody>
 <tr class="row-even"><td><p>ECDSA_PRI_KEY1</p></td>
 <td><p>Physical Map 0x280</p></td>
-<td><p>32bytes</p></td>
+<td><p>32 bytes</p></td>
 <td><p>Each Byte 0xFF</p></td>
 <td><p>If OTPKEY=1, load this key for ECDSA engine as a private key.</p></td>
 </tr>
 <tr class="row-odd"><td><p>ECDSA_PRI_KEY2</p></td>
 <td><p>Physical Map 0x2A0</p></td>
-<td><p>32bytes</p></td>
+<td><p>32 bytes</p></td>
 <td><p>Each Byte 0xFF</p></td>
 <td><p>If OTPKEY=2, load this key for ECDSA engine as a private key.</p></td>
 </tr>
-<tr class="row-even"><td><p>ECDSA_PRI_KEY1
-Read Protection</p></td>
+<tr class="row-even"><td><p><a href="#id1"><span class="problematic" id="id2">ECDSA_PRI_KEY1_</span></a>
+Read_Protection</p></td>
 <td><p>Physical Map 0x366[2]</p></td>
 <td><p>1 bit</p></td>
 <td><p>1</p></td>
 <td><div class="line-block">
-<div class="line">- 0: Enable read protection for ECDSA Key1 to prevent from</div>
+<div class="line">0: Enable read protection for ECDSA Key1 to prevent from</div>
 <div class="line-block">
 <div class="line">being read out.</div>
 </div>
-<div class="line">- 1: Disable read protection for ECDSA Key1.</div>
+<div class="line">1: Disable read protection for ECDSA Key1.</div>
 </div>
 </td>
 </tr>
-<tr class="row-odd"><td><p>ECDSA_PRI_KEY1
-Write Protection</p></td>
+<tr class="row-odd"><td><p><a href="#id3"><span class="problematic" id="id4">ECDSA_PRI_KEY1_</span></a>
+Write_Protection</p></td>
 <td><p>Physical Map 0x366[3]</p></td>
 <td><p>1 bit</p></td>
 <td><p>1</p></td>
 <td><div class="line-block">
-<div class="line">- 0: Enable write protection for ECDSA Key1 to prevent from</div>
+<div class="line">0: Enable write protection for ECDSA Key1 to prevent from</div>
 <div class="line-block">
 <div class="line">being programmed to all 0 by hacker.</div>
 </div>
-<div class="line">- 1: Disable write protection for ECDSA Key1.</div>
+<div class="line">1: Disable write protection for ECDSA Key1.</div>
 </div>
 </td>
 </tr>
-<tr class="row-even"><td><p>ECDSA_PRI_KEY2
-Read Protection</p></td>
+<tr class="row-even"><td><p><a href="#id5"><span class="problematic" id="id6">ECDSA_PRI_KEY2_</span></a>
+Read_Protection</p></td>
 <td><p>Physical Map 0x366[4]</p></td>
 <td><p>1 bit</p></td>
 <td><p>1</p></td>
 <td><div class="line-block">
-<div class="line">- 0: Enable read protection for ECDSA Key2 to prevent from</div>
+<div class="line">0: Enable read protection for ECDSA Key2 to prevent from</div>
 <div class="line-block">
 <div class="line">being read out.</div>
 </div>
-<div class="line">- 1: Disable read protection for ECDSA Key2.</div>
+<div class="line">1: Disable read protection for ECDSA Key2.</div>
 </div>
 </td>
 </tr>
-<tr class="row-odd"><td><p>ECDSA_PRI_KEY2
-Write Protection</p></td>
+<tr class="row-odd"><td><p><a href="#id7"><span class="problematic" id="id8">ECDSA_PRI_KEY2_</span></a>
+Write_Protection</p></td>
 <td><p>Physical Map 0x366[5]</p></td>
 <td><p>1 bit</p></td>
 <td><p>1</p></td>
 <td><div class="line-block">
-<div class="line">- 0: Enable write protection for ECDSA Key2 to prevent from</div>
+<div class="line">0: Enable write protection for ECDSA Key2 to prevent from</div>
 <div class="line-block">
 <div class="line">being programmed to all 0 by hacker.</div>
 </div>
-<div class="line">- 1: Disable write protection for ECDSA Key2.</div>
+<div class="line">1: Disable write protection for ECDSA Key2.</div>
 </div>
 </td>
 </tr>
@@ -244,7 +253,7 @@ Write Protection</p></td>
 <p>The process of programming OTP physical map is as follows:</p>
 <ol class="arabic">
 <li><p>Generate the key.</p></li>
-<li><p>Write into OTP physical map.</p>
+<li><p>Write the key into OTP physical map.</p>
 <p>Suppose this is your private key, it is displayed in the u8 type array as:</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">u8</span><span class="w"> </span><span class="n">key1</span><span class="p">[</span><span class="mi">32</span><span class="p">]</span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
 <span class="mh">0xff</span><span class="p">,</span><span class="w"> </span><span class="mh">0xee</span><span class="p">,</span><span class="w"> </span><span class="mh">0xdd</span><span class="p">,</span><span class="w"> </span><span class="mh">0xcc</span><span class="p">,</span><span class="w"> </span><span class="mh">0xbb</span><span class="p">,</span><span class="w"> </span><span class="mh">0xaa</span><span class="p">,</span><span class="w"> </span><span class="mh">0x99</span><span class="p">,</span><span class="w"> </span><span class="mh">0x88</span><span class="p">,</span><span class="w"> </span><span class="mh">0x77</span><span class="p">,</span><span class="w"> </span><span class="mh">0x66</span><span class="p">,</span><span class="w"> </span><span class="mh">0x55</span><span class="p">,</span><span class="w"> </span><span class="mh">0x44</span><span class="p">,</span><span class="w"> </span><span class="mh">0x33</span><span class="p">,</span><span class="w"> </span><span class="mh">0x22</span><span class="p">,</span><span class="w"> </span><span class="mh">0x11</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span>
@@ -279,7 +288,7 @@ Write Protection</p></td>
 </pre></div>
 </div>
 <p>At this point, the array address can be API parameter.</p>
-<p>If you program it into OTP as <code class="docutils literal notranslate"><span class="pre">ECDSA_PRI_KEY1</span></code>, then the memory layout is:</p>
+<p>If you program it into OTP as <code class="docutils literal notranslate"><span class="pre">ECDSA_PRI_KEY1</span></code>, the memory layout is:</p>
 <table class="docutils align-default" style="width: 100%">
 <tbody>
 <tr class="row-odd"><td><p>0x280</p></td>
@@ -320,24 +329,19 @@ Write Protection</p></td>
 </tr>
 </tbody>
 </table>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>ECDSA can be accessed by NP and AP, but if multi-core calls API to operate ECDSA at the same time,
-it will lead to ECDSA function error. Users should take protective measures to ensure that only one core can operate ECDSA at the same time.</p>
-</div>
 </section>
 <section id="usage">
 <h1>Usage<a class="headerlink" href="#usage" title="Link to this heading"></a></h1>
 <section id="enabling-clock-for-ecdsa-engine">
 <h2>Enabling Clock for ECDSA Engine<a class="headerlink" href="#enabling-clock-for-ecdsa-engine" title="Link to this heading"></a></h2>
-<p>It is very easy to use ECDSA, that is, you only need to ensure that the function and clock of the ECDSA are enabled. If not, the function will hang.</p>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">RCC_PeriphClockCmd</span><span class="p">(</span><span class="n">APBPeriph_ECDSA</span><span class="p">,</span><span class="w"> </span><span class="n">APBPeriph_CLOCK_NULL</span><span class="p">,</span><span class="w"> </span><span class="n">ENABLE</span><span class="p">);</span>
+<p>The ECDSA is easy to use. You only need to ensure that the function and clock of the ECDSA are enabled; otherwise, the function will hang.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">RCC_PeriphClockCmd</span><span class="p">(</span><span class="n">APBPeriph_ECDSA</span><span class="p">,</span> <span class="n">APBPeriph_CLOCK_NULL</span><span class="p">,</span> <span class="n">ENABLE</span><span class="p">);</span>
 </pre></div>
 </div>
 </section>
 <section id="starting-ecdsa-engine-calculation">
 <h2>Starting ECDSA Engine Calculation<a class="headerlink" href="#starting-ecdsa-engine-calculation" title="Link to this heading"></a></h2>
-<p>Initialize the parameters and call the APIs to calculate.</p>
+<p>Initialize the parameters and call the API to start ECDSA engine calculation.</p>
 </section>
 </section>
 
