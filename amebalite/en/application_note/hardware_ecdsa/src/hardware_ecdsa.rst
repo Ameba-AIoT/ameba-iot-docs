@@ -2,30 +2,29 @@
 
 Introduction
 ------------------------------------
-The ECDSA supports all curves under 256 bits, but in our ROM code, only 8 kinds are supported:
+The ECDSA supports all curves under 256-bit. But in our ROM code, only 8 kinds of curves are supported:
 
 - SECP256K1
-
 - SECP256R1
-
 - CURVE25519
-
 - SECP192K1
-
 - SECP224K1
-
 - SECP192R1
-
 - SECP224R1
-
 - BP256R1
 
+The ECDSA has the features of key pair generation, ECDH key agreement, signature generation, public key signature verification, and basic function.
 
-The ECDSA has the features of key pair generation, ECDH key agreement, signature generation, public key signature verification and basic function.
+.. note:: 
+   ECDSA can be accessed by NP and AP, but if multi-core calls API to operate ECDSA at the same time,
+   it will lead to ECDSA function error. Users should take protective measures to ensure that only one core can operate ECDSA at the same time.
 
 ECDSA OTP
 ------------------
-The ECDSA engine can download the private key in two ways: one is that the user passes the private key into the API, and the function will write the private key into the register of ECDSA; the other is that ECDSA automatically downloads ECDSA OTP key.
+The ECDSA engine can download the private key in two ways:
+
+- The user passes the private key into the API, and the function will write the private key into the registers of ECDSA.
+- The ECDSA automatically downloads the ECDSA OTP key.
 
 The OTP physical map can store two keys for ECDSA to use as private keys, which can only be accessed by ECDSA trigger and will not be tampered with or read by attackers.
 The premise is that the private key needs to be programmed into OTP physical map.
@@ -35,34 +34,34 @@ The premise is that the private key needs to be programmed into OTP physical map
    :widths: auto
 
    +------------------+-----------------------+---------+----------------+-----------------------------------------------------------------+
-   | OTP KEY name     | Address               | Size    | Default        | Description                                                     |
+   | OTP key          | Address               | Size    | Default        | Description                                                     |
    +==================+=======================+=========+================+=================================================================+
-   | ECDSA_PRI_KEY1   | Physical Map 0x280    | 32bytes | Each Byte 0xFF | If OTPKEY=1, load this key for ECDSA engine as a private key.   |
+   | ECDSA_PRI_KEY1   | Physical Map 0x280    | 32 bytes| Each Byte 0xFF | If OTPKEY=1, load this key for ECDSA engine as a private key.   |
    +------------------+-----------------------+---------+----------------+-----------------------------------------------------------------+
-   | ECDSA_PRI_KEY2   | Physical Map 0x2A0    | 32bytes | Each Byte 0xFF | If OTPKEY=2, load this key for ECDSA engine as a private key.   |
+   | ECDSA_PRI_KEY2   | Physical Map 0x2A0    | 32 bytes| Each Byte 0xFF | If OTPKEY=2, load this key for ECDSA engine as a private key.   |
    +------------------+-----------------------+---------+----------------+-----------------------------------------------------------------+
-   | ECDSA_PRI_KEY1   | Physical Map 0x366[2] | 1 bit   | 1              | | - 0: Enable read protection for ECDSA Key1 to prevent from    |
-   | Read Protection  |                       |         |                | |      being read out.                                          |
-   |                  |                       |         |                | | - 1: Disable read protection for ECDSA Key1.                  |
+   | ECDSA_PRI_KEY1_  | Physical Map 0x366[2] | 1 bit   | 1              | | 0: Enable read protection for ECDSA Key1 to prevent from      |
+   | Read_Protection  |                       |         |                | |    being read out.                                            |
+   |                  |                       |         |                | | 1: Disable read protection for ECDSA Key1.                    |
    +------------------+-----------------------+---------+----------------+-----------------------------------------------------------------+
-   | ECDSA_PRI_KEY1   | Physical Map 0x366[3] | 1 bit   | 1              | | - 0: Enable write protection for ECDSA Key1 to prevent from   |
-   | Write Protection |                       |         |                | |      being programmed to all 0 by hacker.                     |
-   |                  |                       |         |                | | - 1: Disable write protection for ECDSA Key1.                 |
+   | ECDSA_PRI_KEY1_  | Physical Map 0x366[3] | 1 bit   | 1              | | 0: Enable write protection for ECDSA Key1 to prevent from     |
+   | Write_Protection |                       |         |                | |    being programmed to all 0 by hacker.                       |
+   |                  |                       |         |                | | 1: Disable write protection for ECDSA Key1.                   |
    +------------------+-----------------------+---------+----------------+-----------------------------------------------------------------+
-   | ECDSA_PRI_KEY2   | Physical Map 0x366[4] | 1 bit   | 1              | | - 0: Enable read protection for ECDSA Key2 to prevent from    |
-   | Read Protection  |                       |         |                | |      being read out.                                          |
-   |                  |                       |         |                | | - 1: Disable read protection for ECDSA Key2.                  |
+   | ECDSA_PRI_KEY2_  | Physical Map 0x366[4] | 1 bit   | 1              | | 0: Enable read protection for ECDSA Key2 to prevent from      |
+   | Read_Protection  |                       |         |                | |    being read out.                                            |
+   |                  |                       |         |                | | 1: Disable read protection for ECDSA Key2.                    |
    +------------------+-----------------------+---------+----------------+-----------------------------------------------------------------+
-   | ECDSA_PRI_KEY2   | Physical Map 0x366[5] | 1 bit   | 1              | | - 0: Enable write protection for ECDSA Key2 to prevent from   |
-   | Write Protection |                       |         |                | |      being programmed to all 0 by hacker.                     |
-   |                  |                       |         |                | | - 1: Disable write protection for ECDSA Key2.                 |
+   | ECDSA_PRI_KEY2_  | Physical Map 0x366[5] | 1 bit   | 1              | | 0: Enable write protection for ECDSA Key2 to prevent from     |
+   | Write_Protection |                       |         |                | |    being programmed to all 0 by hacker.                       |
+   |                  |                       |         |                | | 1: Disable write protection for ECDSA Key2.                   |
    +------------------+-----------------------+---------+----------------+-----------------------------------------------------------------+
 
 The process of programming OTP physical map is as follows:
 
 1. Generate the key.
 
-2. Write into OTP physical map.
+2. Write the key into OTP physical map.
 
    Suppose this is your private key, it is displayed in the u8 type array as:
 
@@ -88,7 +87,7 @@ The process of programming OTP physical map is as follows:
 4. Enable ECDSA Key Read Protection and Write Protection to prevent key exposure and tampering after the written ECDSA key is confirmed.
 
 ECDSA Key Buff Order
-----------------------------------------
+----------------------
 The key buffer parameter of ECDSA follows the small endian mode. For example, if the key is:
 
 .. code-block:: c
@@ -106,7 +105,7 @@ You need to put it into an array in u8 format, like this:
 
 At this point, the array address can be API parameter.
 
-If you program it into OTP as ``ECDSA_PRI_KEY1``, then the memory layout is:
+If you program it into OTP as ``ECDSA_PRI_KEY1``, the memory layout is:
 
 .. table:: 
    :width: 100%
@@ -118,21 +117,17 @@ If you program it into OTP as ``ECDSA_PRI_KEY1``, then the memory layout is:
    | 0x290 | ef | cd | ab | 89 | 67 | 45 | 23 | 01 | ef | cd | ab | 89 | 67 | 45 | 23 | 01 |
    +-------+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+
 
-.. note:: 
-   ECDSA can be accessed by NP and AP, but if multi-core calls API to operate ECDSA at the same time,
-   it will lead to ECDSA function error. Users should take protective measures to ensure that only one core can operate ECDSA at the same time.
-
 Usage
 ----------
 Enabling Clock for ECDSA Engine
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-It is very easy to use ECDSA, that is, you only need to ensure that the function and clock of the ECDSA are enabled. If not, the function will hang.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The ECDSA is easy to use. You only need to ensure that the function and clock of the ECDSA are enabled; otherwise, the function will hang.
 
-.. code-block:: c
+.. code-block::
 
    RCC_PeriphClockCmd(APBPeriph_ECDSA, APBPeriph_CLOCK_NULL, ENABLE);
 
 Starting ECDSA Engine Calculation
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Initialize the parameters and call the APIs to calculate.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Initialize the parameters and call the API to start ECDSA engine calculation.
 
