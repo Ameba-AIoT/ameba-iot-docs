@@ -38,19 +38,20 @@ After reset, CPU will boot from the vector table start address, which is fixed b
 
 Pin Description
 ----------------
-The |CHIP_NAME| supports ISP via LOGUART (``PA19`` & ``PA20``). The ISP mode is determined by the state of ``PA20`` when boot.
+The |CHIP_NAME| supports ISP (In-System Programming) via LOGUART (``PA19`` & ``PA20``). The ISP mode is determined by the state of ``PA20`` when boot.
 
 .. table:: ISP mode
    :width: 100%
    :widths: auto
 
-   +-----------+----------------------+-------------------------------------------------+
-   | Boot Mode | PA20 (UART_DOWNLOAD) | Description                                     |
-   +===========+======================+=================================================+
-   | No ISP    | HIGH                 | ISP bypassed. Part attempts to boot from Flash. |
-   +-----------+----------------------+-------------------------------------------------+
-   | ISP       | LOW                  | Part enters ISP via LOGUART.                    |
-   +-----------+----------------------+-------------------------------------------------+
+   +-----------+----------------------+---------------------------------------+
+   | Boot mode | PA20 (UART_DOWNLOAD) | Description                           |
+   +===========+======================+=======================================+
+   | No ISP    | HIGH                 | | ISP bypassed.                       |
+   |           |                      | | The IC attempts to boot from Flash. |
+   +-----------+----------------------+---------------------------------------+
+   | ISP       | LOW                  | The IC enters ISP via LOGUART.        |
+   +-----------+----------------------+---------------------------------------+
 
 Boot Flow
 ----------

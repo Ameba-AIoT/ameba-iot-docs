@@ -10,13 +10,40 @@ The following figure is the high-level block diagram for SDIO bridge solution.
 
    SDIO bridge architecture
 
-In this solution, host runs on Linux with an Ethernet interface, Ameba acts as an intermedium role to send data between host and AP. The topology of this solution is shown in Figure :ref:`Data flow <sdio_data_flow>`. Ameba connects to AP and gets an IP address by DHCP protocol from AP. Ameba and host use SDIO interface to communicate with each other and they share the same IP address, which is obtained by Ameba.
+The interfaces supported by Wi-Fi bridge mode are listed below：
 
-When the host needs transmit packets, these packets will be send to Ameba by SDIO interface with Ethernet format. Ameba will receive these packets from SDIO and forward them to AP by Wi-Fi. Meanwhile, if Ameba receives packets from AP, it will decide the destination of these packets by protocol type or TCP/UDP source port, then forward to host by SDIO or to Upper layer application on Ameba.
+.. table::
+   :width: 100%
+   :widths: auto
 
-By default, the forward rules of packets from AP are DHCP, and TCP/UDP with specific source port numbers will be sent to Ameba TCP/IP stack, and other IP packets will directly send to host through SDIO. ARP request packet will sent to both Ameba TCP/IP stack and to host.
+   +------------+-----------------+---------------+
+   | Interface  | Host (Operating system)         |
+   |            +-----------------+---------------+
+   |            | Linux           | FreeRTOS      |
+   +============+=================+===============+
+   | SDIO       | Y               | Ongoing       |
+   +------------+-----------------+---------------+
+   | SPI        | TBD             | TBD           |
+   +------------+-----------------+---------------+
+   | USB        | TBD             | N             |
+   +------------+-----------------+---------------+
+   | UART       | TBD             | TBD           |
+   +------------+-----------------+---------------+
 
-Usually, the host will create a TCP/UDP connection with Internet Cloud Service, and send heartbeat packets periodically to keep this connection alive. If the host needs to enter power-saving mode and still keep connection with Cloud Service, they can create another same TCP/UDP connection on Ameba upper layer application. The IP address and destination port are the same, the only difference is source port.
+In this solution, host runs on Linux with an Ethernet interface, Ameba acts as an intermedium role to send data between host and AP.
+The topology of this solution is shown in Figure :ref:`Data flow <sdio_data_flow>`. Ameba connects to AP and gets an IP address by DHCP protocol from AP.
+Ameba and host use SDIO interface to communicate with each other and they share the same IP address, which is obtained by Ameba.
+
+When the host needs transmit packets, these packets will be send to Ameba by SDIO interface with Ethernet format.
+Ameba will receive these packets from SDIO and forward them to AP by Wi-Fi.
+Meanwhile, if Ameba receives packets from AP, it will decide the destination of these packets by protocol type or TCP/UDP source port, then forward to host by SDIO or to Upper layer application on Ameba.
+
+By default, the forward rules of packets from AP are DHCP, and TCP/UDP with specific source port numbers will be sent to Ameba TCP/IP stack, and other IP packets will directly send to host through SDIO.
+ARP request packet will sent to both Ameba TCP/IP stack and to host.
+
+Usually, the host will create a TCP/UDP connection with Internet Cloud Service, and send heartbeat packets periodically to keep this connection alive.
+If the host needs to enter power-saving mode and still keep connection with Cloud Service, they can create another same TCP/UDP connection on Ameba upper layer application.
+The IP address and destination port are the same, the only difference is source port.
 
 .. figure:: ../figures/sdio_data_flow.svg
    :scale: 90%
@@ -55,7 +82,6 @@ Features
    |                          | - SoftAP (operated at device side only)                                                  |
    +--------------------------+------------------------------------------------------------------------------------------+
    | Protocol offload         | When host suspend, it can offload processing of packets for certain protocols to device. |
-   |                          |                                                                                          |
    |                          |                                                                                          |
    |                          | The following protocols are supported:                                                   |
    |                          |                                                                                          |
@@ -107,9 +133,9 @@ The following figure shows the SDIO bridge related files which run at host.
 		   		wifi\cfg80211_fullmac\sdio_bridge\bridge_api\rtw_sdio_bridge_api.c
 
 Porting Guide
---------------------------
+----------------
 Hardware Configuration
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
 Please connect |CHIP_NAME| to host with jumper cables as mentioned below.
 
 
@@ -157,9 +183,9 @@ The pin layout of |CHIP_NAME| demo board refers the pin layout of Raspberry Pi a
 .. _bridge_software_configuration:
 
 Software Configuration
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
 Software Configuration at Linux Platform
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. _sdio_linux_pc:
 
@@ -234,8 +260,6 @@ In order to build SDIO bridge image, choose :guilabel:`SDIO_BRIDGE` in menuconfi
    .. figure:: ../figures/bridge_sdio_bridge.png
       :scale: 50%
       :align: center
-
-
 
 testapp Guide
 --------------------------
