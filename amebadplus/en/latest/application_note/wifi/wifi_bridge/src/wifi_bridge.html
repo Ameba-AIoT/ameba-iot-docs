@@ -157,10 +157,46 @@
 <p><span class="caption-text">SDIO bridge architecture</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
 </figcaption>
 </figure>
-<p>In this solution, host runs on Linux with an Ethernet interface, Ameba acts as an intermedium role to send data between host and AP. The topology of this solution is shown in Figure <a class="reference internal" href="#sdio-data-flow"><span class="std std-ref">Data flow</span></a>. Ameba connects to AP and gets an IP address by DHCP protocol from AP. Ameba and host use SDIO interface to communicate with each other and they share the same IP address, which is obtained by Ameba.</p>
-<p>When the host needs transmit packets, these packets will be send to Ameba by SDIO interface with Ethernet format. Ameba will receive these packets from SDIO and forward them to AP by Wi-Fi. Meanwhile, if Ameba receives packets from AP, it will decide the destination of these packets by protocol type or TCP/UDP source port, then forward to host by SDIO or to Upper layer application on Ameba.</p>
-<p>By default, the forward rules of packets from AP are DHCP, and TCP/UDP with specific source port numbers will be sent to Ameba TCP/IP stack, and other IP packets will directly send to host through SDIO. ARP request packet will sent to both Ameba TCP/IP stack and to host.</p>
-<p>Usually, the host will create a TCP/UDP connection with Internet Cloud Service, and send heartbeat packets periodically to keep this connection alive. If the host needs to enter power-saving mode and still keep connection with Cloud Service, they can create another same TCP/UDP connection on Ameba upper layer application. The IP address and destination port are the same, the only difference is source port.</p>
+<p>The interfaces supported by Wi-Fi bridge mode are listed below：</p>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head" rowspan="2"><p>Interface</p></th>
+<th class="head" colspan="2"><p>Host (Operating system)</p></th>
+</tr>
+<tr class="row-even"><th class="head"><p>Linux</p></th>
+<th class="head"><p>FreeRTOS</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-odd"><td><p>SDIO</p></td>
+<td><p>Y</p></td>
+<td><p>Ongoing</p></td>
+</tr>
+<tr class="row-even"><td><p>SPI</p></td>
+<td><p>TBD</p></td>
+<td><p>TBD</p></td>
+</tr>
+<tr class="row-odd"><td><p>USB</p></td>
+<td><p>TBD</p></td>
+<td><p>N</p></td>
+</tr>
+<tr class="row-even"><td><p>UART</p></td>
+<td><p>TBD</p></td>
+<td><p>TBD</p></td>
+</tr>
+</tbody>
+</table>
+<p>In this solution, host runs on Linux with an Ethernet interface, Ameba acts as an intermedium role to send data between host and AP.
+The topology of this solution is shown in Figure <a class="reference internal" href="#sdio-data-flow"><span class="std std-ref">Data flow</span></a>. Ameba connects to AP and gets an IP address by DHCP protocol from AP.
+Ameba and host use SDIO interface to communicate with each other and they share the same IP address, which is obtained by Ameba.</p>
+<p>When the host needs transmit packets, these packets will be send to Ameba by SDIO interface with Ethernet format.
+Ameba will receive these packets from SDIO and forward them to AP by Wi-Fi.
+Meanwhile, if Ameba receives packets from AP, it will decide the destination of these packets by protocol type or TCP/UDP source port, then forward to host by SDIO or to Upper layer application on Ameba.</p>
+<p>By default, the forward rules of packets from AP are DHCP, and TCP/UDP with specific source port numbers will be sent to Ameba TCP/IP stack, and other IP packets will directly send to host through SDIO.
+ARP request packet will sent to both Ameba TCP/IP stack and to host.</p>
+<p>Usually, the host will create a TCP/UDP connection with Internet Cloud Service, and send heartbeat packets periodically to keep this connection alive.
+If the host needs to enter power-saving mode and still keep connection with Cloud Service, they can create another same TCP/UDP connection on Ameba upper layer application.
+The IP address and destination port are the same, the only difference is source port.</p>
 <figure class="align-center" id="sdio-data-flow">
 <a class="reference internal image-reference" href="../../../../_images/sdio_data_flow.svg"><img alt="../../../../_images/sdio_data_flow.svg" height="407" src="../../../../_images/sdio_data_flow.svg" width="910" /></a>
 <figcaption>
