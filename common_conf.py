@@ -21,10 +21,27 @@ common_dirs_files = ["_static", "_templates", "ameba"]
 
 BUILD_EXCLUDE_FILE = "build_exclude.txt"
 KNOWN_WARNING_FILE = "known_warnings.txt"
+# 获取Sphinx的根记录器
+logger = logging.getLogger('sphinx')
+
+
+# 检查rst是否存在，检查rst中ameba部分的层级是否正确
+def check_rst(rst_file, src_root):
+    # 检查文件是否存在
+    if not rst_file.exists():
+        logger.warning(f"{rst_file} not exists!")
+        return False
+    # 检查rst中ameba部分的层级是否正确
+    if "ameba" in rst_file.parts:
+        if os.path.relpath(rst_file, src_root).startswith(".."):
+            logger.error(f"{rst_file} ameba path is not correct! "
+                         f"You should treat 'ameba' as a direct subdir of {src_root}!")
+            return False
+    return True
 
 
 # 定义排除更多与toctree无关的rst的方法
-def get_toctree_rst(root_rst: Path, toctree_rst_files: List) -> None:
+def get_toctree_rst(root_rst: Path, src_root: Path, toctree_rst_files: List) -> None:
     """
     get all used rst according to toctree
     Args:
@@ -36,27 +53,28 @@ def get_toctree_rst(root_rst: Path, toctree_rst_files: List) -> None:
     """
     root_rst = Path(root_rst).resolve()
     start_check = False
-    if root_rst.exists():
-        if root_rst not in toctree_rst_files:
-            toctree_rst_files.append(root_rst)
-        else:
-            return  # 已经存在,则终止当前路径,防止陷入死循环
-        if root_rst.stem not in ["index", "index_nda","index_linux","index_linux_nda"]:
-            return  # 只解析index,index_nda,提高效率
-        for line in root_rst.read_text(encoding='utf-8').splitlines():
-            line = line.strip()
-            if line.startswith(".. toctree::"):
-                start_check = True
-                continue
-            if start_check and line and not line.startswith(":"):
-                tag_mo = re.match(".+<(.+)>", line)
-                if tag_mo:
-                    sub_rst = tag_mo.group(1)
-                    sub_rst = (root_rst.parent / sub_rst).resolve()
-                else:
-                    sub_rst = (root_rst.parent / line).resolve()
-                sub_rst = sub_rst.with_suffix(".rst") if sub_rst.suffix == "" else sub_rst
-                get_toctree_rst(sub_rst, toctree_rst_files)
+    if root_rst not in toctree_rst_files:
+        if not check_rst(root_rst, src_root):
+            return  # 检查失败,则终止当前路径
+        toctree_rst_files.append(root_rst)
+    else:
+        return  # 已经存在,则终止当前路径,防止陷入死循环
+    if root_rst.stem not in ["index", "index_nda", "index_linux", "index_linux_nda"]:
+        return  # 只解析index,index_nda,提高效率
+    for line in root_rst.read_text(encoding='utf-8').splitlines():
+        line = line.strip()
+        if line.startswith(".. toctree::"):
+            start_check = True
+            continue
+        if start_check and line and not line.startswith(":"):
+            tag_mo = re.match(".+<(.+)>", line)
+            if tag_mo:
+                sub_rst = tag_mo.group(1)
+                sub_rst = (root_rst.parent / sub_rst).resolve()
+            else:
+                sub_rst = (root_rst.parent / line).resolve()
+            sub_rst = sub_rst.with_suffix(".rst") if sub_rst.suffix == "" else sub_rst
+            get_toctree_rst(sub_rst, src_root, toctree_rst_files)
 
 
 def get_exclude_rst(root_rst: Path, src_root: Path, exclude_patterns, tags) -> List:
@@ -72,7 +90,7 @@ def get_exclude_rst(root_rst: Path, src_root: Path, exclude_patterns, tags) -> L
     """
     exclude_rst = []
     toctree_rst_files = []
-    get_toctree_rst(root_rst, toctree_rst_files)
+    get_toctree_rst(root_rst, src_root, toctree_rst_files)
     for fpath in Path(src_root).iterdir():
         if fpath.is_dir():
             if fpath.name in exclude_patterns:  # skip already in exclude dir
@@ -92,9 +110,9 @@ def get_exclude_rst(root_rst: Path, src_root: Path, exclude_patterns, tags) -> L
         for line in filter_cfg.read_text().splitlines():
             if line.strip() and not line.strip().startswith("#"):
                 exclude_rst.append(line.strip().replace("\\", "/"))
-    
-    if not tags.has("nda") :
-        exclude_rst.append("*_nda*") # confirm set nda exclude when not nda build
+
+    if not tags.has("nda"):
+        exclude_rst.append("*_nda*")  # confirm set nda exclude when not nda build
 
     return exclude_rst
 
@@ -107,7 +125,7 @@ def get_master_doc(tags):
             master_doc = "index_nda"
     else:
         if tags.has("Linux"):
-            master_doc="index_linux"
+            master_doc = "index_linux"
         else:
             master_doc = "index"
     return master_doc
@@ -185,8 +203,6 @@ class WarningFilter(logging.Filter):
 
 def setup(app):
     app.connect('build-finished', run_after_build)
-    # 获取Sphinx的根记录器
-    logger = logging.getLogger('sphinx')
     # 添加自定义过滤器
     logger.addFilter(WarningFilter(app.srcdir))
 
@@ -206,7 +222,7 @@ extensions = [
 toggleprompt_offset_right = 30  # 示例：设置提示符偏移量
 breathe_projects = {
     "mbed_api": Path("api_docs/xml").resolve()
-    }
+}
 
 source_suffix = {
     ".rst": "restructuredtext",
