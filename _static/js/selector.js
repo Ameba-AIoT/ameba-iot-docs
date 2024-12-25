@@ -15,35 +15,43 @@ const cur_dir = window.location.pathname.split('/')[1];
 baseURL += `/${cur_dir}`;
 
 console.log(baseURL); // 
+
+const pathname = window.location.pathname;
+
+function checkHasOs() {
+    return window.location.pathname.includes('/amebasmart/');
+}
+
 function add_selector() {
     return fetch(`${baseURL}/config.json`)
         .then(res => res.json())
         .then(res => {
-            const cur_ic = window.location.pathname.split('/')[2];
-            const cur_language = window.location.pathname.split('/')[3];
-            const cur_version = window.location.pathname.split('/')[4];
+            const segments = window.location.pathname.split('/');
+            const hasOs = checkHasOs();
 
-            window.res = res
+            const cur_ic = segments[2];
+            const cur_os = hasOs ? segments[3] : "";
+            const cur_language = segments[hasOs ? 4 : 3];
+            const cur_version = segments[hasOs ? 5 : 4];
+
+            window.res = res;
             window.ics = Object.keys(res).map(key => res[key].name);
-            cur_ic_name = res[cur_ic].name
+            window.languages = Object.keys(res[cur_ic].languages);
+            window.versions = res[cur_ic].languages[cur_language];
 
-            const languages_obj = res[cur_ic].languages;
-            window.languages = Object.keys(languages_obj);
+            if (hasOs) {
+                window.os = res[cur_ic].os;
+            }
 
-            window.versions = languages_obj[cur_language];
-
-
-            // 根据 cur_language 设置表格标题
             const labels = {
                 ic: cur_language === 'cn' ? '芯片' : 'IC',
                 language: cur_language === 'cn' ? '语言' : 'Language',
-                version: cur_language === 'cn' ? '版本' : 'Version'
+                version: cur_language === 'cn' ? '版本' : 'Version',
+                os: cur_language === 'cn' ? '系统' : 'OS'
             };
 
+            const labelsList = hasOs ? ["ic", "language", "os", "version"] : ["ic", "language", "version"];
             let p = document.getElementById("rtd-search-form").parentElement;
-
-            const labelsList = ["ic", "language", "version"];
-
             p.innerHTML = `
                 <table>
                 ${labelsList.map(label => `
@@ -62,7 +70,7 @@ function add_selector() {
 
 /* ============= Toggle IC ============= */
 function change_ic() {
-    const { cur_ic, cur_language, cur_version } = getURLSegments();
+    const { cur_ic, cur_language, cur_os, cur_version } = getURLSegments();
 
     const next_ic = document.getElementById("ic-selector").value.toLowerCase();
     window.location.href = `${baseURL}/${next_ic}/${cur_language}/${cur_version}/`
@@ -70,16 +78,23 @@ function change_ic() {
 
 /* ============= Toggle Languages ============= */
 function change_language() {
-    const { cur_ic, cur_language, cur_version } = getURLSegments();
+    const { cur_ic, cur_language, cur_os, cur_version } = getURLSegments();
 
     const next_language = document.getElementById("language-selector").value;
     window.location.href = `${baseURL}/${cur_ic}/${next_language}/${cur_version}/`
 }
 
+/* ============= Toggle OS ============= */
+function change_os() {
+    const { cur_ic, cur_language, cur_os, cur_version } = getURLSegments();
+
+    const next_os = document.getElementById("os-selector").value;
+    window.location.href = `${baseURL}/${cur_ic}/${cur_language}/${next_os}/${cur_version}/`
+}
 
 /* ============= Toggle Version ============= */
 function change_version() {
-    const { cur_ic, cur_language, cur_version } = getURLSegments();
+    const { cur_ic, cur_language, cur_os, cur_version } = getURLSegments();
     const next_version = document.getElementById("version-selector").value;
     window.location.href = `${baseURL}/${cur_ic}/${cur_language}/${next_version}/`
 }
@@ -87,21 +102,37 @@ function change_version() {
 /* ============= Get URL Segments ============= */
 function getURLSegments() {
     const segments = window.location.pathname.split('/');
-    return {
-        cur_ic: segments[2],
-        cur_language: segments[3],
-        cur_version: segments[4]
-    };
+    const hasOs = checkHasOs();
+    if (hasOs) {
+        return {
+            cur_ic: segments[2],
+            cur_os: segments[3],
+            cur_language: segments[4],
+            cur_version: segments[5]
+        };
+    } else {
+        return {
+            cur_ic: segments[2],
+            cur_os: "",
+            cur_language: segments[3],
+            cur_version: segments[4]
+        };
+    }
 }
 
 
 /* ============= Init selector ============= */
 document.addEventListener('DOMContentLoaded', (event) => {
     add_selector().then(() => {
-        const { cur_ic, cur_language, cur_version } = getURLSegments();
+        const { cur_ic, cur_language, cur_os, cur_version } = getURLSegments();
+        const hasOs = checkHasOs();
 
         document.getElementById("ic-selector").value = window.res[cur_ic].name;
         document.getElementById("language-selector").value = cur_language;
         document.getElementById("version-selector").value = cur_version;
+        if (hasOs) {
+            document.getElementById("os-selector").value = cur_os;
+        }
+
     });
 });
