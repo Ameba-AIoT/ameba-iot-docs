@@ -9,7 +9,7 @@ import os
 import shutil
 from pathlib import Path
 from typing import List
-import logging
+from sphinx.util import logging  # 使用sphinx的日志记录器,借用其格式处理
 
 # 初步获取需要排除的项
 exclude_patterns = []
@@ -22,7 +22,7 @@ common_dirs_files = ["_static", "_templates", "ameba"]
 BUILD_EXCLUDE_FILE = "build_exclude.txt"
 KNOWN_WARNING_FILE = "known_warnings.txt"
 # 获取Sphinx的根记录器
-logger = logging.getLogger('sphinx')
+logger = logging.logging.getLogger('sphinx')
 
 
 # 检查rst是否存在，检查rst中ameba部分的层级是否正确
@@ -174,7 +174,7 @@ def run_after_build(app, exception):
 
 
 # -- 注册事件，用于过滤部分warning -------------------------------------------------
-class WarningFilter(logging.Filter):
+class WarningFilter(logging.logging.Filter):
     def __init__(self, src_root):
         super().__init__()
         self.src_root = Path(src_root)
@@ -195,16 +195,25 @@ class WarningFilter(logging.Filter):
 
     def filter(self, record):
         # 过滤掉包含特定警告信息的日志记录
+        if record.levelname != "WARNING":
+            return True  # 非警告信息,不过滤
+        if not record.msg:
+            return True  # 没有msg,不过滤
+        # 检查是否包含已知的警告信息
+        # print(record.getMessage())
         for known_warning in self.known_warnings:
-            if fnmatch.fnmatch(record.msg, known_warning):
+            # 使用record.getMessage 获取与输出一致的msg
+            if fnmatch.fnmatch(record.getMessage(), known_warning):
                 return False
         return True
 
 
 def setup(app):
     app.connect('build-finished', run_after_build)
-    # 添加自定义过滤器
-    logger.addFilter(WarningFilter(app.srcdir))
+    # 添加自定义过滤器，使用sphinx的logging
+    for handler in logger.handlers:
+        if isinstance(handler, logging.WarningStreamHandler):  # 获取sphinx的warning handler
+            handler.addFilter(WarningFilter(app.srcdir))
 
 
 # 公共设置
