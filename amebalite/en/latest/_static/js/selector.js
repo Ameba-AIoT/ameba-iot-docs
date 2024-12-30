@@ -23,7 +23,7 @@ function check_hasos(data, ic, language) {
 
 // 获取所有的 IC 名称
 function get_ics(data) {
-    return Object.keys(data);
+    return Object.keys(res).map(key => res[key].name);;
 }
 
 // 获取指定 IC 中所有的语言
