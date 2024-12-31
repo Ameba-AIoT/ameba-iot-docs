@@ -85,12 +85,10 @@ UART
    When using UART as a wakeup source, there are some restrictions:
    
    - The Rx clock source can only be OSC2M, and do not turn off OSC4M during sleep.
-
    - When the baudrate is larger than 115200, it is not recommended to use UART as a wakeup source.
-
    - The portion of the command used to wake up that exceeds the FIFO depth (64B) will be lost.
 
-Configuration:
+**Configuration:**
 
 1. Initialize UART and enable its interrupt.
 
@@ -98,13 +96,13 @@ Configuration:
 
 3. Set `keep_OSC4M_on` in ``ps_config[]`` to **TRUE** to keep OSC4M enabled during sleep mode.
 
-4. Switch clock to osc 2M with API :func:`RCC_PeriphClockSource_UART(UARTx_DEV, UART_RX_CLK_OSC_LP)`.
+4. Switch clock to OSC2M with API ``RCC_PeriphClockSource_UART(UARTx_DEV, UART_RX_CLK_OSC_LP)``.
 
 5. Enter sleep mode by releasing the wakelock in KM4 (PMU_OS needs to be released since it is acquired by default when boot).
 
 6. Clear the UART interrupt when wakeup.
 
-7. If a higher baudrate is required after waking up, it is recommended to switch to XTAL 40M Rx clock  by API :func:`RCC_PeriphClockSource_UART(UART0_DEV, UART_RX_CLK_XTAL_40M)`.
+7. If a higher baudrate is required after waking up, it is recommended to switch to XTAL40M Rx clock by API ``RCC_PeriphClockSource_UART(UART0_DEV, UART_RX_CLK_XTAL_40M)``.
 
 .. _power_saving_loguart:
 
@@ -114,10 +112,9 @@ LOGUART
    When using LOGUART as a wakeup source, there are some restrictions:
    
    - If the Rx clock source is XTAL40M, do not turn off XTAL or OSC4M during sleep; if the Rx clock source is OSC2M, do not turn off OSC4M during sleep.
-
    - The portion of the command used to wake up that exceeds the FIFO depth (16B) will be lost.
 
-Configuration:
+**Configuration:**
 
 1. Initialize LOGUART and enable its interrupt.
 
@@ -138,7 +135,7 @@ thus :func:`freertos_ready_to_dsleep()` will be checked fail and the system does
 Since :func:`freertos_ready_to_dsleep()` will be checked only after :func:`freertos_ready_to_sleep()` is checked pass,
 both the wakelock and deepwakelock need to be released for entering deep-sleep mode.
 
-Configuration:
+**Configuration:**
 
 1. Initialize the related peripheral and enable its interrupt.
 
@@ -211,10 +208,8 @@ The config attribute can be set to **DISABLE_WAKEPIN** or **HIGH_LEVEL_WAKEUP** 
 
 
 
-.. note::
-   
+.. note:: 
    - By default, AON_WAKEPIN_IRQ will not be enabled in ``sleep_wakepin_config[]``, and users need to enable it by themselves.
-
    - The wakeup mask will not be set in ``sleep_wakepin_config[]``. If wakepin is used for sleep mode, `WAKE_SRC_AON_WAKEPIN` entry
      needs to be set in ``sleep_wevent_config[]``.
 
