@@ -328,13 +328,13 @@ AON is special because it is mater switch that manages all the wake-up sources i
 <li><p>The portion of the command used to wake up that exceeds the FIFO depth (64B) will be lost.</p></li>
 </ul>
 </div>
-<p>Configuration:</p>
+<p><strong>Configuration:</strong></p>
 <ol class="arabic simple">
 <li><p>Initialize UART and enable its interrupt.</p></li>
 <li><p>Set the related wakeup source (<code class="docutils literal notranslate"><span class="pre">WAKE_SRC_UART0/WAKE_SRC_UART1/WAKE_SRC_UART2_BT</span></code>) in <code class="docutils literal notranslate"><span class="pre">sleep_wevent_config[]</span></code> to <cite>WAKEUP_KM4</cite> or <cite>WAKEUP_KM0</cite> (based on which CPU you want to wake). The interrupt should be registered on the same CPU selected by <code class="docutils literal notranslate"><span class="pre">sleep_wevent_config[]</span></code>.</p></li>
-<li><p>Set the corresponding entry of <code class="docutils literal notranslate"><span class="pre">uart_config[]</span></code> in <code class="file docutils literal notranslate"><span class="pre">ameba_sleepcfg.c</span></code> to <code class="docutils literal notranslate"><span class="pre">ENABLE</span></code>.</p></li>
-<li><p>Set <cite>keep_OSC4M_on</cite> in <code class="docutils literal notranslate"><span class="pre">ps_config[]</span></code> to <code class="docutils literal notranslate"><span class="pre">TRUE</span></code> to keep OSC4M enabled during sleep mode.</p></li>
-<li><p>Enter sleep mode by releasing the wakelock in KM4 (<cite>PMU_OS</cite> needs to be released since it is acquired by default when boot).</p></li>
+<li><p>Set the corresponding entry of <code class="docutils literal notranslate"><span class="pre">uart_config[]</span></code> in <code class="file docutils literal notranslate"><span class="pre">ameba_sleepcfg.c</span></code> to <strong>ENABLE</strong>.</p></li>
+<li><p>Set <cite>keep_OSC4M_on</cite> in <code class="docutils literal notranslate"><span class="pre">ps_config[]</span></code> to <strong>TRUE</strong> to keep OSC4M enabled during sleep mode.</p></li>
+<li><p>Enter sleep mode by releasing the wakelock in KM4 (PMU_OS needs to be released since it is acquired by default when boot).</p></li>
 <li><p>Clear the UART interrupt when wakeup.</p></li>
 </ol>
 </section>
@@ -348,12 +348,12 @@ AON is special because it is mater switch that manages all the wake-up sources i
 <li><p>The portion of the command used to wake up that exceeds the FIFO depth (16B) will be lost.</p></li>
 </ul>
 </div>
-<p>Configuration:</p>
+<p><strong>Configuration:</strong></p>
 <ol class="arabic simple">
 <li><p>Initialize LOGUART and enable its interrupt.</p></li>
 <li><p>Set <code class="docutils literal notranslate"><span class="pre">WAKE_SRC_UART_LOG</span></code> in <code class="docutils literal notranslate"><span class="pre">sleep_wevent_config[]</span></code> to <cite>WAKEUP_KM4</cite> or <cite>WAKEUP_KM0</cite> (based on which CPU you want to wake). The interrupt should be registered on the same CPU selected by <code class="docutils literal notranslate"><span class="pre">sleep_wevent_config[]</span></code>.</p></li>
-<li><p>Set <code class="docutils literal notranslate"><span class="pre">xtal_mode_in_sleep</span></code> to <cite>XTAL_Normal</cite> in <code class="docutils literal notranslate"><span class="pre">ps_config[]</span></code>.</p></li>
-<li><p>Enter sleep mode by releasing the wakelock in KM4 (<cite>PMU_OS</cite> needs to be released since it is acquired by default when boot).</p></li>
+<li><p>Set <code class="docutils literal notranslate"><span class="pre">xtal_mode_in_sleep</span></code> to <strong>XTAL_Normal</strong> in <code class="docutils literal notranslate"><span class="pre">ps_config[]</span></code>.</p></li>
+<li><p>Enter sleep mode by releasing the wakelock in KM4 (PMU_OS needs to be released since it is acquired by default when boot).</p></li>
 <li><p>Clear the LOGUART interrupt when wakeup.</p></li>
 </ol>
 </section>
@@ -362,7 +362,7 @@ AON is special because it is mater switch that manages all the wake-up sources i
 <h1>Entering Deep-Sleep Mode<a class="headerlink" href="#entering-deep-sleep-mode" title="Link to this heading"></a></h1>
 <p>Deep-sleep can also be entered from FreeRTOS tickless flow.</p>
 <p>When the system boots, KM4 holds the deepwakelock PMU_OS, thus <code class="xref py py-func docutils literal notranslate"><span class="pre">freertos_ready_to_dsleep()</span></code> will be checked fail and the system does not enter deep-sleep mode in idle task by default. Since <code class="xref py py-func docutils literal notranslate"><span class="pre">freertos_ready_to_dsleep()</span></code> will be checked only after <code class="xref py py-func docutils literal notranslate"><span class="pre">freertos_ready_to_sleep()</span></code> is checked pass, both the wakelock and deepwakelock need to be released for entering deep-sleep mode.</p>
-<p>Configuration:</p>
+<p><strong>Configuration:</strong></p>
 <ol class="arabic simple">
 <li><p>Initialize the related peripheral and enable its interrupt.</p></li>
 <li><p>Set <code class="docutils literal notranslate"><span class="pre">sleep_wakepin_config[]</span></code> in <code class="file docutils literal notranslate"><span class="pre">ameba_sleepcfg.c</span></code> when using AON wakepin as a wakeup source.</p></li>
