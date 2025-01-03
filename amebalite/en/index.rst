@@ -12,7 +12,6 @@ AmebaLite Documents
 .. toctree::
    :maxdepth: 2
 
-   Ameba SoC Family <ameba/en/ameba_soc_family/index>  
    Product Overview <product_overview/src/index>
    Application Note <application_note/index>
    Wi-Fi Guide <ameba/en/wifi/index>
