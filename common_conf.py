@@ -148,8 +148,13 @@ def clean_common_files(source_dir):
 
 # -- 复制公共文件 -------------------------------------------------
 def copy_common_files(source_dir):
+    if source_dir.parent.name == "ameba":
+        src_root = repo_root / "ameba"
+    else:
+        src_root = repo_root
+
     for common_dirs_file in common_dirs_files:
-        src_ = repo_root / common_dirs_file
+        src_ = src_root / common_dirs_file
         tgt_ = source_dir / common_dirs_file
 
         if src_.exists():
@@ -163,8 +168,6 @@ def copy_common_files(source_dir):
                 print(f"Copy {src_}!")
             except:
                 print(f"[Failed]Copy {src_}!")
-        else:
-            print(f"[Warning]Not exists {src_}!")
 
 
 # -- 注册事件，用于清理公共文件 -------------------------------------------------

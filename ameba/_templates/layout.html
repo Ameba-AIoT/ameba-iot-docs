@@ -1,0 +1,31 @@
+{% extends "!layout.html" %}  
+  
+{% block extrahead %}  
+  {{ super() }}  
+<style>
+      .wy-nav-content {
+      max-width: 1400px; /* 设置最大宽度 */
+      }
+</style>
+
+<script>
+  function adjustContentWidth() {
+      const screenWidth = window.innerWidth;
+      const contentElement = document.querySelector('.wy-nav-content');
+
+      // Example of dynamically setting the max-width
+      if (screenWidth < 1400) {
+          contentElement.style.maxWidth = screenWidth + 'px';
+      } else {
+          contentElement.style.maxWidth = '1400px'; // fallback or default
+      }
+  }
+
+  // Adjust width on window resize
+  window.addEventListener('resize', adjustContentWidth);
+
+  // Initial adjustment
+  adjustContentWidth();
+</script>
+
+{% endblock %}
