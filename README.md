@@ -1,5 +1,6 @@
 ## Reading the Docs
 Click the following URLs to view the documentations of the specific SoC.
+- Ameba SoCs: https://ameba-aiot.github.io/ameba-iot-docs/ameba/en/latest/
 - AmebaDPlus: https://ameba-aiot.github.io/ameba-iot-docs/amebadplus/en/latest/
 - AmebaLite: https://ameba-aiot.github.io/ameba-iot-docs/amebalite/en/latest/
 - AmebaSmart: TBD
@@ -15,8 +16,9 @@ This repository contains the technical documentations for Realtek Ameba IoT SoCs
 
 The technical documentation of every SoC includes but is not limited to the following parts：
 - Product Overview
-- AT Command
 - Application Note
+- Wi-Fi Guide
+- AT Command
 - Software Tools
 - MP Tools
 
