@@ -5,7 +5,6 @@
 
 import sys
 from pathlib import Path
-import datetime
 
 config_file = Path(__file__).resolve()
 config_dir = config_file.parent
@@ -49,13 +48,4 @@ for ign in exclude_patterns:
 # 项目设置
 language = "en" if en_or_cn == "en" else "cn"
 project = "ameba_docs"
-copyright = f"{datetime.datetime.now().year}, Realsil"
-author = "Realsil"
 VERSION = '1.0.0'
-
-
-# 设置资源路径
-templates_path = ["_templates"]
-html_static_path = ["_static"]
-
-

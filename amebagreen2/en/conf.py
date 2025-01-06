@@ -48,8 +48,6 @@ for ign in exclude_patterns:
 # 项目设置
 language = "en" if en_or_cn == "en" else "cn"
 project = "AmebaGreen2 Docs"
-copyright = "2024, Realsil"
-author = "Realsil"
 
 # 宏替换
 CHIP_NAME = 'AmebaGreen2'

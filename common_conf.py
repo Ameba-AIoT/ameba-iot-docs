@@ -9,6 +9,7 @@ import os
 import shutil
 from pathlib import Path
 from typing import List
+import datetime
 from sphinx.util import logging  # 使用sphinx的日志记录器,借用其格式处理
 
 # 初步获取需要排除的项
@@ -220,6 +221,11 @@ def setup(app):
 
 
 # 公共设置
+# 项目设置
+author = "Realsil"
+copyright = f"{datetime.datetime.now().year}, Realsil"
+
+
 # 设置扩展
 extensions = [
     "sphinx_rtd_theme",
