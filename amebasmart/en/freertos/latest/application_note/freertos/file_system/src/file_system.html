@@ -151,10 +151,10 @@
   <section id="introduction">
 <span id="amebasmart-virtual-file-system"></span><h1>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h1>
 <p>This section introduces how to run Virtual File System (VFS) on AmebaSmart, including FatFS and LittleFS as the underlying implementation. Users can ignore the differences between different file systems by using VFS. The VFS provides common file operation interfaces like fopen, fclose, fwrite, fread, etc. The Key-Value (KV) interfaces are based on these common file operations. The architecture of VFS is illustrated below.</p>
-<figure class="align-center" id="id1">
+<figure class="align-center" id="id5">
 <a class="reference internal image-reference" href="../../../../_images/architecture_of_vfs.svg"><img alt="../../../../_images/architecture_of_vfs.svg" height="269" src="../../../../_images/architecture_of_vfs.svg" width="349" /></a>
 <figcaption>
-<p><span class="caption-text">Architecture of VFS</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
+<p><span class="caption-text">Architecture of VFS</span><a class="headerlink" href="#id5" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 </section>
@@ -202,7 +202,7 @@
 <dd class="field-odd"><p>memory type (Flash for LittleFS, Flash and SD card for FatFS)</p>
 </dd>
 <dt class="field-even"><strong>region</strong><span class="colon">:</span></dt>
-<dd class="field-even"><p>Flash partition (VFS1 or VFS2, described in <a class="reference internal" href="#vfs-on-flash-section"><span class="std std-ref">VFS on Flash</span></a>)</p>
+<dd class="field-even"><p>Flash partition (VFS1 or VFS2, described in <a class="reference internal" href="#vfs-on-flash"><span class="std std-ref">VFS on Flash</span></a>)</p>
 </dd>
 <dt class="field-odd"><strong>flag</strong><span class="colon">:</span></dt>
 <dd class="field-odd"><p>operation authority of file system (read-write or read-only)</p>
@@ -216,11 +216,15 @@
 <section id="usage-of-vfs">
 <h1>Usage of VFS<a class="headerlink" href="#usage-of-vfs" title="Link to this heading"></a></h1>
 <section id="vfs-on-flash">
-<span id="vfs-on-flash-section"></span><h2>VFS on Flash<a class="headerlink" href="#vfs-on-flash" title="Link to this heading"></a></h2>
+<span id="id1"></span><h2>VFS on Flash<a class="headerlink" href="#vfs-on-flash" title="Link to this heading"></a></h2>
 <p>Adjust the Flash partitions appropriately if the VFS interfaces are set to the Flash, and modify VFS1 or VFS2 (according to register region in <code class="file docutils literal notranslate"><span class="pre">main.c</span></code>) in <cite>Flash_Layout[]</cite> in <code class="docutils literal notranslate"><span class="pre">{SDK}\component\soc\amebasmart\usrcfg\ameba_flashcfg.c</span></code>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The Flash type should be considered (NOR Flash for FatFS and LittleFS, NAND Flash only for LittleFS) when changing the Flash layout.</p>
+<p>The Flash type should be considered when changing the Flash layout.</p>
+<ul class="simple">
+<li><p>NOR Flash for FatFS and LittleFS</p></li>
+<li><p>NAND Flash only for LittleFS</p></li>
+</ul>
 </div>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">FlashLayoutInfo_TypeDef</span><span class="w"> </span><span class="n">Flash_Layout_Nor</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
 <span class="w">   </span><span class="cm">/*Region_Type,            [StartAddr,     EndAddr]                */</span>
@@ -267,21 +271,21 @@
 <h2>VFS on SD card<a class="headerlink" href="#vfs-on-sd-card" title="Link to this heading"></a></h2>
 <p>The SD card is only supported by FatFS, <cite>vfs_type</cite> should be set to FatFS when <cite>interface</cite> is set to SD card. Menuconfig VFS Fatfs SD configuration should be set.</p>
 <figure class="align-center">
-<a class="reference internal image-reference" href="../../../../_images/sd_conf1.png"><img alt="../../../../_images/sd_conf1.png" src="../../../../_images/sd_conf1.png" style="width: 241.20000000000002px; height: 100.8px;" /></a>
+<a class="reference internal image-reference" href="../../../../_images/sd_conf1.png"><img alt="../../../../_images/sd_conf1.png" src="../../../../_images/sd_conf1.png" style="width: 201.6px; height: 77.4px;" /></a>
 </figure>
 <figure class="align-center">
-<a class="reference internal image-reference" href="../../../../_images/sd_conf2.png"><img alt="../../../../_images/sd_conf2.png" src="../../../../_images/sd_conf2.png" style="width: 189.9px; height: 75.60000000000001px;" /></a>
+<a class="reference internal image-reference" href="../../../../_images/sd_conf2.png"><img alt="../../../../_images/sd_conf2.png" src="../../../../_images/sd_conf2.png" style="width: 166.5px; height: 50.4px;" /></a>
 </figure>
 <section id="hardware-setup">
 <h3>Hardware Setup<a class="headerlink" href="#hardware-setup" title="Link to this heading"></a></h3>
 <p>Connect your EVB board to PC with micro-USB cable, and then plug in a compatible SD card to the card connector, as shown in the following figure.</p>
 <figure class="align-center">
-<a class="reference internal image-reference" href="../../../../_images/hardware_setup1.jpeg"><img alt="../../../../_images/hardware_setup1.jpeg" src="../../../../_images/hardware_setup1.jpeg" style="width: 478.8px; height: 367.2px;" /></a>
+<a class="reference internal image-reference" href="../../../../_images/hardware_setup1.jpeg"><img alt="../../../../_images/hardware_setup1.jpeg" src="../../../../_images/hardware_setup1.jpeg" style="width: 363.20000000000005px; height: 288.8px;" /></a>
 </figure>
-<figure class="align-center" id="id2">
-<a class="reference internal image-reference" href="../../../../_images/hardware_setup2.jpeg"><img alt="../../../../_images/hardware_setup2.jpeg" src="../../../../_images/hardware_setup2.jpeg" style="width: 467.1px; height: 349.2px;" /></a>
+<figure class="align-center" id="id6">
+<a class="reference internal image-reference" href="../../../../_images/hardware_setup2.jpeg"><img alt="../../../../_images/hardware_setup2.jpeg" src="../../../../_images/hardware_setup2.jpeg" style="width: 361.6px; height: 292.8px;" /></a>
 <figcaption>
-<p><span class="caption-text">Hardware setup</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
+<p><span class="caption-text">Hardware setup</span><a class="headerlink" href="#id6" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 </section>
@@ -294,22 +298,22 @@
 <h2>VFS within APP Image<a class="headerlink" href="#vfs-within-app-image" title="Link to this heading"></a></h2>
 <p>If the user only intends to use read-only files through VFS, VFS provides a more convenient read-only configuration feature on flash. The detailed steps are as follows:</p>
 <ol class="arabic simple">
-<li><p>Prepare the read-only files and convert them into a FAT-formatted bin file. Refer to section <a class="reference internal" href="#fatfs-bin-file-generation-section"><span class="std std-ref">FatFS Bin File Generation</span></a> for the method.</p></li>
-<li><p>Name the bin file <code class="file docutils literal notranslate"><span class="pre">fatfs.bin</span></code> and place it in the <code class="docutils literal notranslate"><span class="pre">{SDK}\amebasmart_gcc_project</span></code> directory.</p></li>
+<li><p>Prepare the read-only files and convert them into a FAT-formatted bin file. Refer to Section <a class="reference internal" href="#fatfs-bin-file-generation"><span class="std std-ref">FatFS Bin File Generation</span></a> for the method.</p></li>
+<li><p>Name the bin file <code class="file docutils literal notranslate"><span class="pre">fatfs.bin</span></code> and place it in <code class="docutils literal notranslate"><span class="pre">{SDK}\amebasmart_gcc_project</span></code> directory.</p></li>
 <li><p>Enable the following configurations in the menuconfig:</p></li>
 </ol>
 <blockquote>
 <div><figure class="align-center">
-<a class="reference internal image-reference" href="../../../../_images/config_within_app1.png"><img alt="../../../../_images/config_within_app1.png" src="../../../../_images/config_within_app1.png" style="width: 427.5px; height: 187.20000000000002px;" /></a>
+<a class="reference internal image-reference" href="../../../../_images/config_within_app1.png"><img alt="../../../../_images/config_within_app1.png" src="../../../../_images/config_within_app1.png" style="width: 297.0px; height: 157.5px;" /></a>
 </figure>
 <figure class="align-center">
-<a class="reference internal image-reference" href="../../../../_images/config_within_app2.png"><img alt="../../../../_images/config_within_app2.png" src="../../../../_images/config_within_app2.png" style="width: 269.1px; height: 112.5px;" /></a>
+<a class="reference internal image-reference" href="../../../../_images/config_within_app2.png"><img alt="../../../../_images/config_within_app2.png" src="../../../../_images/config_within_app2.png" style="width: 225.9px; height: 72.0px;" /></a>
 </figure>
 </div></blockquote>
 <ol class="arabic simple" start="4">
 <li><p>Rebuild the application firmware. The application firmware (<code class="file docutils literal notranslate"><span class="pre">km0_km4_ca32_app.bin</span></code> or <code class="file docutils literal notranslate"><span class="pre">km0_km4_app.bin</span></code>) will include a read-only VFS area in FAT format, which will be mounted during the startup process.</p></li>
-<li><p>After startup, you will see the log <code class="docutils literal notranslate"><span class="pre">&quot;VFS-FAT</span> <span class="pre">Init</span> <span class="pre">Success&quot;</span></code> indicating that the read-only file system has been successfully mounted.</p></li>
-<li><p>For the file usage method, refer to sections <a class="reference internal" href="#common-file-operation-section"><span class="std std-ref">Common File Operation</span></a> or <a class="reference internal" href="#key-value-operation-section"><span class="std std-ref">Key-Value Operation</span></a>.</p></li>
+<li><p>After startup, you will see the log <code class="docutils literal notranslate"><span class="pre">VFS-FAT</span> <span class="pre">Init</span> <span class="pre">Success</span></code> indicating that the read-only file system has been successfully mounted.</p></li>
+<li><p>For the file usage method, refer to Section <a class="reference internal" href="#common-file-operation"><span class="std std-ref">Common File Operation</span></a> or <a class="reference internal" href="#key-value-operation"><span class="std std-ref">Key-Value Operation</span></a>.</p></li>
 </ol>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -317,7 +321,7 @@
 </div>
 </section>
 <section id="common-file-operation">
-<span id="common-file-operation-section"></span><h2>Common File Operation<a class="headerlink" href="#common-file-operation" title="Link to this heading"></a></h2>
+<span id="id2"></span><h2>Common File Operation<a class="headerlink" href="#common-file-operation" title="Link to this heading"></a></h2>
 <p>The common file operation interfaces used in VFS are listed below:</p>
 <table class="docutils align-default" style="width: 100%">
 <thead>
@@ -478,7 +482,7 @@
 </div>
 </section>
 <section id="key-value-operation">
-<span id="key-value-operation-section"></span><h2>Key-Value Operation<a class="headerlink" href="#key-value-operation" title="Link to this heading"></a></h2>
+<span id="id3"></span><h2>Key-Value Operation<a class="headerlink" href="#key-value-operation" title="Link to this heading"></a></h2>
 <p>Simple KV interfaces are also provided for users. All KV APIs are placed in <code class="docutils literal notranslate"><span class="pre">{SDK}\component\file_system\kv\kv.c</span></code>. Users can rebuild the project by <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">all</span> <span class="pre">EXAMPLE=kv</span></code> to test how KV APIs work. Test logs should be like below:</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">rt_kv_set</span><span class="w"> </span><span class="n">success</span><span class="p">,</span><span class="w"> </span><span class="n">write</span><span class="w"> </span><span class="mi">28</span><span class="w"> </span><span class="n">letters</span><span class="p">.</span>
 <span class="n">rt_kv_get</span><span class="w"> </span><span class="n">success</span><span class="p">,</span><span class="w"> </span><span class="n">read</span><span class="w"> </span><span class="mi">28</span><span class="w"> </span><span class="n">letters</span><span class="p">.</span>
@@ -547,8 +551,7 @@
 </li>
 <li><p>Use the command <code class="docutils literal notranslate"><span class="pre">$./mklittlefs</span> <span class="pre">-b</span> <span class="pre">4096</span> <span class="pre">-p</span> <span class="pre">256</span> <span class="pre">-s</span> <span class="pre">0x20000-c</span> <span class="pre">test</span> <span class="pre">image_littlefs.bin</span></code> in <code class="docutils literal notranslate"><span class="pre">mklittlefs</span></code> tool located at <code class="docutils literal notranslate"><span class="pre">\tools\littlefs</span></code> to generate LittleFS bin files.</p>
 <p>Where:</p>
-<blockquote>
-<div><dl class="field-list simple">
+<dl class="field-list simple">
 <dt class="field-odd"><strong>b</strong><span class="colon">:</span></dt>
 <dd class="field-odd"><p>block size decided by Flash</p>
 </dd>
@@ -566,16 +569,15 @@
 </dd>
 </dl>
 <figure class="align-center">
-<a class="reference internal image-reference" href="../../../../_images/little_bin_file_generation_step2.png"><img alt="../../../../_images/little_bin_file_generation_step2.png" src="../../../../_images/little_bin_file_generation_step2.png" style="width: 614.7px; height: 81.0px;" /></a>
+<a class="reference internal image-reference" href="../../../../_images/little_bin_file_generation_step2.png"><img alt="../../../../_images/little_bin_file_generation_step2.png" src="../../../../_images/little_bin_file_generation_step2.png" style="width: 592.2px; height: 60.300000000000004px;" /></a>
 </figure>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>“-b 4096” and “-p 256” are default configurations, users should adapt the configuration according to <cite>block_size</cite> and <cite>cache_size</cite> of lfs_config in <code class="docutils literal notranslate"><span class="pre">{SDK}\component\file_system\littlefs\littlefs_adapter.c</span></code>. “-s 0x20000” is according to VFS Region mentioned in section <a class="reference internal" href="#vfs-on-flash-section"><span class="std std-ref">VFS on Flash</span></a>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">-b</span> <span class="pre">4096</span></code> and <code class="docutils literal notranslate"><span class="pre">-p</span> <span class="pre">256</span></code> are default configurations, users should adapt the configuration according to <cite>block_size</cite> and <cite>cache_size</cite> of lfs_config in <code class="docutils literal notranslate"><span class="pre">{SDK}\component\file_system\littlefs\littlefs_adapter.c</span></code>. “-s 0x20000” is according to VFS Region mentioned in Section <a class="reference internal" href="#vfs-on-flash"><span class="std std-ref">VFS on Flash</span></a>.</p>
 </div>
-</div></blockquote>
 </li>
 <li><p>Download the image to the Flash.</p>
-<p>The start address of image should be VFS Flash region start address mentioned in section <a class="reference internal" href="#vfs-on-flash-section"><span class="std std-ref">VFS on Flash</span></a>. Test logs are shown below:</p>
+<p>The start address of image should be VFS Flash region start address mentioned in Section <a class="reference internal" href="#vfs-on-flash"><span class="std std-ref">VFS on Flash</span></a>. Test logs are shown below:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>==========mklittlefs example==========
 [TEST1]: This is a test file for mklittle …
 [AUDIO1]: Copyright (c) 2013 Realtek …
@@ -585,7 +587,7 @@
 </ol>
 </section>
 <section id="fatfs-bin-file-generation">
-<span id="fatfs-bin-file-generation-section"></span><h3>FatFS Bin File Generation<a class="headerlink" href="#fatfs-bin-file-generation" title="Link to this heading"></a></h3>
+<span id="id4"></span><h3>FatFS Bin File Generation<a class="headerlink" href="#fatfs-bin-file-generation" title="Link to this heading"></a></h3>
 <p>The steps to generate FatFS bin files are listed below:</p>
 <ol class="arabic">
 <li><p>Use command <code class="docutils literal notranslate"><span class="pre">root&#64;ubuntu</span> <span class="pre">#</span> <span class="pre">dd</span> <span class="pre">if=/dev/zero</span> <span class="pre">of=test.bin</span> <span class="pre">count=64</span> <span class="pre">bs=1KB</span></code> to create <code class="file docutils literal notranslate"><span class="pre">test.bin</span></code> that has 64 blocks and each block is 1KB.</p></li>
