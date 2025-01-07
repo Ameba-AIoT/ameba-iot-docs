@@ -1,10 +1,10 @@
-.. _wifi_fullmac:
+.. _fullmac:
 
 Introduction
 ------------------------
 The Wi-Fi FullMAC solution provides a standard wireless network interface for the host, allowing Wi-Fi applications (such as wpa_supplicant, TCP/IP stack, etc.) to run smoothly on the operating system.
 
-The interfaces supported by Wi-Fi FullMAC are listed below：
+The interfaces supported by Wi-Fi FullMAC are listed below:
 
 .. table::
    :width: 100%
@@ -94,7 +94,7 @@ The Linux driver in the SDK is located at: ``{SDK}/component/wifi/cfg80211_fullm
    FullMAC driver file tree
 
 Porting Guide
---------------------------
+---------------------
 Hardware Configuration
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -142,7 +142,7 @@ Note that in this case, you need to contact us to modify the demo board circuit.
 
 .. This figure is located at ../../wifi_bridge/figures.
    If the figure name has been changed, make sure to update sdio_fullmac.rst accordingly.
-.. figure:: ../../wifi_bridge/figures/sdio_adapter_board.jpg
+.. figure:: ../../wifi/wifi_bridge/figures/sdio_adapter_board.jpg
    :align: center
    :scale: 50%
 
@@ -155,7 +155,7 @@ In order to run at high speed, it's strongly recommended to plug the demo board 
 
 The pins used for SDIO FullMAC on Raspberry Pi are listed in :ref:`sdio_fullmac_pins`.
 
-.. figure:: ../../wifi_bridge/figures/connection_with_raspberry_pi.jpg
+.. figure:: ../../wifi/wifi_bridge/figures/connection_with_raspberry_pi.jpg
    :align: center
    :scale: 50%
 
@@ -189,12 +189,10 @@ The SPI FullMAC can be used on on platforms with SPI interface, such as Raspberr
    +-----------------+------------------+---------------+-----------------------------------------------------------------+
    | PB9             | GPIO 22          | DEV_READY     | | An output pin for |CHIP_NAME|, used to indicate its readiness |
    |                 |                  |               | | for SPI transcation to host.                                  |
-   |                 |                  |               |                                                                 |   
+   |                 |                  |               |                                                                 |
    |                 |                  |               | - 1: Device is ready.                                           |
    |                 |                  |               | - 0: Device is busy.                                            |
    +-----------------+------------------+---------------+-----------------------------------------------------------------+
-   
-
 
 Software Configuration
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -354,9 +352,7 @@ The FullMAC driver has been tested and verified to work on Linux kernel versions
    .. note::
 
       - The *wlanX* in the above command refers to the name of STA obtained from :ref:`Step 4 <load_the_module_step_4>`.
-
       - The configuration files of OPEN and WPA3 are different, please refer to the official supplicant documentation for details.
-
       - For Ubuntu system, if you want to manually connect using command ``wpa_supplicant`` and obtain an IP address, first stop NetworkManager and DHCP service to avoid the influence of NetworkManager on *wpa_supplicant*.
 
         .. code-block:: sh
@@ -365,7 +361,6 @@ The FullMAC driver has been tested and verified to work on Linux kernel versions
            systemctl stop NetworkManager
            systemctl disable NetworkManager
            systemctl stop dhcpcd.service
-
 
 6. Setup the softAP.
 
@@ -427,7 +422,6 @@ The FullMAC driver has been tested and verified to work on Linux kernel versions
          option	staticroutes	10.0.0.0/8 10.127.0.1, 10.11.12.0/24 10.11.12.1
          option	0x08	01020304	# option 8: "cookie server IP addr: 1.2.3.4"
 
-
    c. Start the softAP.
 
       .. code-block::
@@ -449,7 +443,6 @@ The FullMAC driver has been tested and verified to work on Linux kernel versions
    .. note::
 
       The *wlanX* in the above command refers to the name of softAP obtained from :ref:`Step 4 <load_the_module_step_4>`.
-
 
 Throughput
 --------------------
@@ -489,12 +482,11 @@ Throughput
 .. note::
 
    - [1] The data is the test result of device code running in PSRAM, host driver running on Dell Optiplex 3080 MT.
-   
    - [2] The data is the test result of device code running in PSRAM, host driver running on Raspberry Pi 4.
 
 
 Memory Size Requirement
-----------------------------------------------
+--------------------------
 Device
 ~~~~~~~~~~~~
 Take the Wi-Fi driver running on KM0 for an example:
