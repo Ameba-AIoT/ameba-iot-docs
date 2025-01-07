@@ -154,12 +154,165 @@
 Hardware crypto engine executing these functions cannot only reduce software overhead but also save CPU and memory resources, and the processing of it is more secure and faster than software. The key pair can be passed in by software or automatically loaded from OTP by hardware without software access the key.</p>
 <section id="otp-keys-for-crypto">
 <h2>OTP Keys for Crypto<a class="headerlink" href="#otp-keys-for-crypto" title="Link to this heading"></a></h2>
-<p>Crypto engine loads the secret key in two ways: one is that the user passes the secret key into the engine (software accessible key), another way is that Crypto automatically loads keys from OTP (software inaccessible key).</p>
-<p>OTP physical map can store six keys for Crypto to use as secret keys, which can only be accessed by Crypto engine and will not be tampered with or read by attackers. The premise is that the secret key needs to be programmed into OTP physical map.</p>
+<p>Crypto engine loads the secret key in two ways:
+- One way is that the user passes the secret key into the engine (software accessible key).
+- Another way is that Crypto automatically loads keys from OTP (software inaccessible key).</p>
+<p>The OTP physical map can store six keys for Crypto to use as secret keys, which can only be accessed by Crypto engine and will not be tampered with or read by attackers.
+The premise is that the secret key needs to be programmed into OTP physical map.</p>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>OTP KEY name</p></th>
+<th class="head"><p>Address</p></th>
+<th class="head"><p>Size</p></th>
+<th class="head"><p>Default</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>S_IPSEC_Key1 (RDP)</p></td>
+<td><p>Logic Map 0x200</p></td>
+<td><p>32 bytes</p></td>
+<td><p>Each byte 0xFF</p></td>
+<td><p>Secure crypto engine will auto-load this key for HAMC or AES function when OTPKey_init function is enabled.</p></td>
+</tr>
+<tr class="row-odd"><td><p>S_IPSEC_Key2</p>
+<p>(Secure boot HMAC)</p>
+</td>
+<td><p>Logic Map 0x220</p></td>
+<td><p>32 bytes</p></td>
+<td><p>Each byte 0xFF</p></td>
+<td><p>Secure crypto engine will auto-load this key for HAMC or AES function when OTPKey_init function is enabled.</p></td>
+</tr>
+<tr class="row-even"><td><p>NS_IPSEC_Key1</p></td>
+<td><p>Logic Map 0x240</p></td>
+<td><p>32 bytes</p></td>
+<td><p>Each byte 0xFF</p></td>
+<td><p>Non secure crypto engine will auto-load this key for HAMC function when OTPKey_init function is enabled.</p></td>
+</tr>
+<tr class="row-odd"><td><p>NS_IPSEC_Key2</p></td>
+<td><p>Logic Map 0x260</p></td>
+<td><p>32 bytes</p></td>
+<td><p>Each byte 0xFF</p></td>
+<td><p>Non secure crypto engine will auto-load this key for HAMC function when OTPKey_init function is enabled.</p></td>
+</tr>
+<tr class="row-even"><td><p>RSIP_AES_key1</p></td>
+<td><p>Logic Map 0x2C0</p></td>
+<td><p>32 bytes</p></td>
+<td><p>Each byte 0xFF</p></td>
+<td><p>Non secure AES engine and secure AES engine will auto-load this key for AES function when OTPKey_init function is enabled.</p></td>
+</tr>
+<tr class="row-odd"><td><p>RSIP_AES_key2</p></td>
+<td><p>Logic Map 0x2E0</p></td>
+<td><p>32 bytes</p></td>
+<td><p>Each byte 0xFF</p></td>
+<td><p>Non secure AES engine and secure AES engine will auto-load this key for AES function when OTPKey_init function is enabled.</p></td>
+</tr>
+<tr class="row-even"><td><p>S_IPSEC_Key1 Read Protection</p></td>
+<td><p>Physical Map 0x365[3]</p></td>
+<td><p>1 bit</p></td>
+<td><p>1</p></td>
+<td><p>0: Enable read protection for S_IPSEC_Key1 to prevent from being read out.</p>
+<p>1: Disable read protection for S_IPSEC_Key1.</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p>S_IPSEC_Key1 Write Protection</p></td>
+<td><p>Physical Map 0x365[4]</p></td>
+<td><p>1 bit</p></td>
+<td><p>1</p></td>
+<td><p>0: Enable write protection for S_IPSEC_Key1 to prevent from being programmed to all 0 by hacker.</p>
+<p>1: Disable write protection for S_IPSEC_Key1.</p>
+</td>
+</tr>
+<tr class="row-even"><td><p>S_IPSEC_Key2 Read Protection</p></td>
+<td><p>Physical Map 0x365[5]</p></td>
+<td><p>1 bit</p></td>
+<td><p>1</p></td>
+<td><p>0: Enable read protection for S_IPSEC_Key2 to prevent from being read out.</p>
+<p>1: Disable read protection for S_IPSEC_Key2.</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p>S_IPSEC_Key2 Write Protection</p></td>
+<td><p>Physical Map 0x365[6]</p></td>
+<td><p>1 bit</p></td>
+<td><p>1</p></td>
+<td><p>0: Enable write protection for S_IPSEC_Key2 to prevent from being programmed to all 0 by hacker.</p>
+<p>1: Disable write protection for S_IPSEC_Key2.</p>
+</td>
+</tr>
+<tr class="row-even"><td><p>NS_IPSEC_Key1 Read Protection</p></td>
+<td><p>Physical Map 0x365[7]</p></td>
+<td><p>1 bit</p></td>
+<td><p>1</p></td>
+<td><p>0: Enable read protection for NS_IPSEC_Key1 to prevent from being read out.</p>
+<p>1: Disable read protection for NS_SHA_Key1.</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p>NS_IPSEC_Key1 Write Protection</p></td>
+<td><p>Physical Map 0x366[0]</p></td>
+<td><p>1 bit</p></td>
+<td><p>1</p></td>
+<td><p>0: Enable write protection for NS_IPSEC_Key1 to prevent from being programmed to all 0 by hacker.</p>
+<p>1: Disable write protection for NS_IPSEC_Key1.</p>
+</td>
+</tr>
+<tr class="row-even"><td><p>NS_IPSEC_Key2 Read Protection</p></td>
+<td><p>Physical Map 0x366[1]</p></td>
+<td><p>1 bit</p></td>
+<td><p>1</p></td>
+<td><p>0: Enable read protection for NS_IPSEC_Key2 to prevent from being read out.</p>
+<p>1: Disable read protection for NS_IPSEC_Key2.</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p>NS_IPSEC_Key2 Write Protection</p></td>
+<td><p>Physical Map 0x366[2]</p></td>
+<td><p>1 bit</p></td>
+<td><p>1</p></td>
+<td><p>0: Enable write protection for NS_IPSEC_Key2 to prevent from being programmed to all 0 by hacker.</p>
+<p>1: Disable write protection for NS_IPSEC_Key2.</p>
+</td>
+</tr>
+<tr class="row-even"><td><p>RSIP_AES_Key1 Read Protection</p></td>
+<td><p>Physical Map 0x366[7]</p></td>
+<td><p>1 bit</p></td>
+<td><p>1</p></td>
+<td><p>0: Enable read protection for RSIP_AES_Key1 to prevent from being read out.</p>
+<p>1: Disable read protection for RSIP_AES_Key1.</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p>RSIP_AES_Key1 Write Protection</p></td>
+<td><p>Physical Map 0x367[0]</p></td>
+<td><p>1 bit</p></td>
+<td><p>1</p></td>
+<td><p>0: Enable write protection for RSIP_AES_Key1 to prevent from being programmed to all 0 by hacker.</p>
+<p>1: Disable write protection for RSIP_AES_Key1.</p>
+</td>
+</tr>
+<tr class="row-even"><td><p>RSIP_AES_Key2 Read Protection</p></td>
+<td><p>Physical Map 0x367[1]</p></td>
+<td><p>1 bit</p></td>
+<td><p>1</p></td>
+<td><p>0: Enable read protection for RSIP_AES_Key2 to prevent from being read out.</p>
+<p>1: Disable read protection for RSIP_AES_Key2.</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p>RSIP_AES_Key2 Write Protection</p></td>
+<td><p>Physical Map 0x367[2]</p></td>
+<td><p>1 bit</p></td>
+<td><p>1</p></td>
+<td><p>0: Enable write protection for RSIP_AES_Key2 to prevent from being programmed to all 0 by hacker.</p>
+<p>1: Disable write protection for RSIP_AES_Key2.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For the two secure keys of IPsec, if the system enables RDP, SDK will use <code class="docutils literal notranslate"><span class="pre">S_IPSEC_Key1</span></code> for secure data protection by default. And if secure boot uses HMAC as a hash algorithm, it will use <code class="docutils literal notranslate"><span class="pre">S_IPSEC_Key2</span></code>. Users need to reasonably allocate the use of keys according to the above contents. For more information, refer to Chapters: Secure Boot and Read Protection.</p>
+</div>
 </section>
 <section id="crypto-key-order">
 <h2>Crypto Key Order<a class="headerlink" href="#crypto-key-order" title="Link to this heading"></a></h2>
-<p>The key order for Crypto Engine is the same with mbedtls, it use little endian mode. For example, if the key is:</p>
+<p>The key order for Crypto Engine is the same with mbedtls, it uses little endian mode. For example, if the key is:</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="mh">0x0123456789abcdef0123456789abcdef00112233445566778899aabbccddeeff</span>
 </pre></div>
 </div>
@@ -221,25 +374,24 @@ Hardware crypto engine executing these functions cannot only reduce software ove
 <section id="crypto-key-flash-procedure">
 <h2>Crypto Key Flash Procedure<a class="headerlink" href="#crypto-key-flash-procedure" title="Link to this heading"></a></h2>
 <p>The process of programming OTP physical map is as follows:</p>
-<ol class="arabic simple">
-<li><p>Generate key.</p></li>
-<li><p>Write into OTP physical map by the command <code class="docutils literal notranslate"><span class="pre">Efuse</span> <span class="pre">wraw</span> <span class="pre">&lt;addr&gt;</span> <span class="pre">&lt;length&gt;</span> <span class="pre">&lt;content&gt;</span></code>.</p></li>
-</ol>
+<ol class="arabic">
+<li><p>Generate the key.</p></li>
+<li><p>Write into OTP physical map by the command <code class="docutils literal notranslate"><span class="pre">Efuse</span> <span class="pre">wraw</span> <span class="pre">&lt;addr&gt;</span> <span class="pre">&lt;length&gt;</span> <span class="pre">&lt;content&gt;</span></code>.</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Efuse</span><span class="w"> </span><span class="n">wraw</span><span class="w"> </span><span class="mh">0x260</span><span class="w"> </span><span class="mi">20</span><span class="w"> </span><span class="mo">01234567</span><span class="mi">89</span><span class="n">abcdef0123456789abcdef00112233445566778899aabbccddeeff</span>
 </pre></div>
 </div>
-<ol class="arabic simple" start="3">
-<li><p>Use the command <code class="docutils literal notranslate"><span class="pre">Efuse</span> <span class="pre">rraw</span></code> to read the OTP key back to check if it is written correctly. If not match, re-write it.</p></li>
-</ol>
+</li>
+<li><p>Use the command <code class="docutils literal notranslate"><span class="pre">Efuse</span> <span class="pre">rraw</span></code> to read the OTP key back to check if it is written correctly. If not match, re-write it.</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Efuse</span><span class="w"> </span><span class="n">rraw</span>
 </pre></div>
 </div>
-<ol class="arabic simple" start="4">
-<li><p>Enable Key Read Protection and Write Protection to prevent key exposure and tampering after the written IPSEC Key is confirmed.</p></li>
-</ol>
+</li>
+<li><p>Enable Key Read Protection and Write Protection to prevent key exposure and tampering after the written IPSEC Key is confirmed.</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Efuse</span><span class="w"> </span><span class="n">wraw</span><span class="w"> </span><span class="mh">0x366</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">f9</span>
 </pre></div>
 </div>
+</li>
+</ol>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>After read protection and write protection are programmed, the key can never be read out again. So users need to maintain the key pair carefully.</p>
@@ -258,18 +410,18 @@ Hardware crypto engine executing these functions cannot only reduce software ove
 </section>
 <section id="using-auto-loading-otp-key-from-otp">
 <h2>Using Auto-loading OTP KEY from OTP<a class="headerlink" href="#using-auto-loading-otp-key-from-otp" title="Link to this heading"></a></h2>
-<ol class="arabic simple">
-<li><p>Initialize AES OTP key function:</p></li>
-</ol>
+<ol class="arabic">
+<li><p>Initialize AES OTP key function:</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">CRYPTO_OTPKey_Init</span><span class="p">(</span><span class="n">keynum</span><span class="p">,</span><span class="w"> </span><span class="n">ENABLE</span><span class="p">);</span>
 </pre></div>
 </div>
-<ol class="arabic simple" start="2">
-<li><p>Initialize HMAC OTP key function:</p></li>
-</ol>
+</li>
+<li><p>Initialize HMAC OTP key function:</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">CRYPTO_OTPKey_SHA_Init</span><span class="p">(</span><span class="n">keynum</span><span class="p">,</span><span class="w"> </span><span class="n">ENABLE</span><span class="p">);</span>
 </pre></div>
 </div>
+</li>
+</ol>
 </section>
 <section id="starting-crypto-engine-calculation">
 <h2>Starting Crypto Engine Calculation<a class="headerlink" href="#starting-crypto-engine-calculation" title="Link to this heading"></a></h2>
@@ -288,36 +440,28 @@ Hardware crypto engine executing these functions cannot only reduce software ove
 <p class="admonition-title">Note</p>
 <ul>
 <li><p>Considering that the crypto engine moves data through DMA and bypasses the D-Cache, if the destination array is placed in stack and the start address is not 32-byte aligned, the cache line would be dirty during function call in some cases. To avoid reading wrong digest back, users should choose one of the following methods:</p>
-<blockquote>
-<div><ul>
+<ul>
 <li><p>The digest array is a global variable.</p></li>
 <li><p>Or the start address of digest array should be 32-byte aligned if it’s a local variable.</p></li>
 <li><p>Or call the following line to restore data from memory before reading digest when calculation is finished if it’s a local variable.</p>
-<blockquote>
-<div><div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">DCache_Invalidate</span><span class="p">(((</span><span class="n">u32</span><span class="p">)</span><span class="n">digest</span><span class="o">&amp;</span><span class="n">CACHE_LINE_ADDR_MSK</span><span class="p">),(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">digest</span><span class="p">)</span><span class="o">+</span><span class="n">CACHE_LINE_SIZE</span><span class="p">));</span>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">DCache_Invalidate</span><span class="p">(((</span><span class="n">u32</span><span class="p">)</span><span class="n">digest</span><span class="o">&amp;</span><span class="n">CACHE_LINE_ADDR_MSK</span><span class="p">),(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">digest</span><span class="p">)</span><span class="o">+</span><span class="n">CACHE_LINE_SIZE</span><span class="p">));</span>
 </pre></div>
 </div>
-</div></blockquote>
 </li>
 </ul>
-</div></blockquote>
 </li>
 <li><p>After HP power gating, IPsec needs to be initialized again to work normally.</p></li>
 <li><p>To prevent errors caused by multi-core access to crypto simultaneously, a lock is added before <code class="docutils literal notranslate"><span class="pre">CRYPTO_OTPKey_Init</span></code>, and the lock is released after crypto calculation.</p>
-<blockquote>
-<div><div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/*take sema to obtain the right to crypto engine*/</span>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/*take sema to obtain the right to crypto engine*/</span>
 <span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">IPC_SEMTake</span><span class="p">(</span><span class="n">IPC_SEM_CRYPTO</span><span class="p">,</span><span class="w"> </span><span class="n">timeout</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">_TRUE</span><span class="p">);</span>
-
 <span class="n">CRYPTO_OTPKey_SHA_Init</span><span class="p">(</span><span class="n">keynum</span><span class="p">,</span><span class="w"> </span><span class="n">status</span><span class="p">);</span>
 <span class="n">rtl_crypto_hmac_sha2_update</span><span class="p">(</span><span class="n">u8</span><span class="w"> </span><span class="o">*</span><span class="n">message</span><span class="p">,</span><span class="w"> </span><span class="n">IN</span><span class="w"> </span><span class="n">u32</span><span class="w"> </span><span class="n">msglen</span><span class="p">,</span><span class="w"> </span><span class="n">hw_sha_context</span><span class="w"> </span><span class="o">*</span><span class="n">ctx</span><span class="p">);</span>
 <span class="p">...</span>
 <span class="n">rtl_crypto_hmac_sha2_final</span><span class="p">(</span><span class="n">u8</span><span class="w"> </span><span class="o">*</span><span class="n">pDigest</span><span class="p">,</span><span class="w"> </span><span class="n">hw_sha_context</span><span class="w"> </span><span class="o">*</span><span class="n">ctx</span><span class="p">);</span>
-
 <span class="cm">/*free sema to release the right to crypto engine*/</span>
 <span class="n">IPC_SEMFree</span><span class="p">(</span><span class="n">IPC_SEM_CRYPTO</span><span class="p">);</span>
 </pre></div>
 </div>
-</div></blockquote>
 </li>
 </ul>
 </div>
@@ -327,7 +471,7 @@ Hardware crypto engine executing these functions cannot only reduce software ove
 <p>Steps to encrypt or decrypt message are as follows:</p>
 <ol class="arabic simple">
 <li><p>Call Cipher APIs (<code class="xref py py-func docutils literal notranslate"><span class="pre">rtl_crypto_aes_xxx_init()</span></code>) to initialize.</p></li>
-<li><p>Encrypt or decrypt the message</p>
+<li><p>Encrypt or decrypt the message.</p>
 <ul class="simple">
 <li><p>Call Cipher APIs (<code class="xref py py-func docutils literal notranslate"><span class="pre">rtl_crypto_aes_xxx_encrypt()</span></code>) to encrypt source message.</p></li>
 <li><p>Call Cipher APIs (<code class="xref py py-func docutils literal notranslate"><span class="pre">rtl_crypto_aes_xxx_decrypt()</span></code>) to decrypt source message.</p></li>
@@ -338,8 +482,7 @@ Hardware crypto engine executing these functions cannot only reduce software ove
 <p class="admonition-title">Note</p>
 <ul>
 <li><p>To prevent errors caused by multi-core access to crypto simultaneously, a lock is added before <code class="xref py py-func docutils literal notranslate"><span class="pre">CRYPTO_OTPKey_Init()</span></code>, and the lock is released after <code class="xref py py-func docutils literal notranslate"><span class="pre">rtl_crypto_aes_xxx_encrypt()</span></code> or <code class="xref py py-func docutils literal notranslate"><span class="pre">rtl_crypto_aes_xxx_decrypt()</span></code>.</p>
-<blockquote>
-<div><div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/*take sema to obtain the right to crypto engine*/</span>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/*take sema to obtain the right to crypto engine*/</span>
 <span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">IPC_SEMTake</span><span class="p">(</span><span class="n">IPC_SEM_CRYPTO</span><span class="p">,</span><span class="w"> </span><span class="n">timeout</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">_TRUE</span><span class="p">);</span>
 <span class="n">CRYPTO_OTPKey_Init</span><span class="p">(</span><span class="n">keynum</span><span class="p">,</span><span class="w"> </span><span class="n">status</span><span class="p">);</span>
 <span class="n">rtl_crypto_aes_xxx_encrypt</span><span class="p">(</span><span class="n">message</span><span class="p">,</span><span class="w"> </span><span class="n">msglen</span><span class="p">,</span><span class="w"> </span><span class="n">pIv</span><span class="p">,</span><span class="w"> </span><span class="n">ivlen</span><span class="p">,</span><span class="w"> </span><span class="n">pResult</span><span class="p">);</span>
@@ -353,7 +496,6 @@ Hardware crypto engine executing these functions cannot only reduce software ove
 <span class="n">IPC_SEMFree</span><span class="p">(</span><span class="n">IPC_SEM_CRYPTO</span><span class="p">);</span>
 </pre></div>
 </div>
-</div></blockquote>
 </li>
 </ul>
 </div>

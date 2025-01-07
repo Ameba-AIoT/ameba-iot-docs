@@ -252,7 +252,7 @@
 </table>
 <p>There are currently four transmission directions and two flow controller settings, with a total of eight available configurations. There are the following differences between a DMAC acting as a flow controller and a peripheral acting as a flow controller:</p>
 <ul class="simple">
-<li><p>When the peripheral acts as a flow controller, and the DMA transfers data according to the peripheral issues a single/burst request;</p></li>
+<li><p>When the peripheral acts as a flow controller, and the DMA transfers data according to the peripheral issues a single/burst request.</p></li>
 <li><p>When the DMAC acts as a flow controller, all requests from the peripheral will be processed according to the configured requests.</p></li>
 </ul>
 <div class="admonition note">
@@ -294,7 +294,7 @@
 </section>
 <section id="transfer-width">
 <h3>Transfer Width<a class="headerlink" href="#transfer-width" title="Link to this heading"></a></h3>
-<p>GDMA supports the following transmission widths.</p>
+<p>The GDMA supports the following transmission widths.</p>
 <table class="docutils align-default" style="width: 100%">
 <thead>
 <tr class="row-odd"><th class="head"><p>SRC_TR_WIDTH[2:0]/DST_TR_WIDTH[2:0] field of CTLx register</p></th>
@@ -318,15 +318,13 @@
 </table>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<ul>
+<ul class="simple">
 <li><p>When reading from and writing to peripherals, the SRC_TR_WIDTH/DST_TR_WIDTH is completely determined by the width of the peripherals.</p></li>
 <li><p>When reading from and writing to memory:</p>
-<blockquote>
-<div><ul class="simple">
+<ul>
 <li><p>If cache is disabled, the address does not need to be aligned to any value. It only needs to be SRC_TR_WIDTH divisible by the total amount of data so that the block_ts is an integer.</p></li>
 <li><p>If cache is enabled, buffer boundary addresses and cache line alignment are necessary.</p></li>
 </ul>
-</div></blockquote>
 </li>
 <li><p>If memory is destination (P2M, M2M), DST_TR_WIDTH parameter will be ignored, and writes are always based on the bus width (the bus width is typically 32 bits, 4 bytes).</p></li>
 </ul>
@@ -345,7 +343,7 @@
 <li><p>Auto-reload mode</p></li>
 <li><p>Linked list mode</p></li>
 </ul>
-<p><strong>Auto-reload mode</strong></p>
+<p><strong>Auto-reload Mode</strong></p>
 <p>In auto-reload mode, the source and destination can independently select which method to use.</p>
 <table class="docutils align-default" style="width: 100%">
 <thead>
@@ -387,7 +385,7 @@
 <p><span class="caption-text">Multi-block DMA transfer with source and destination address auto-reloaded</span><a class="headerlink" href="#mbd-source-dest-auto" title="Link to this image"></a></p>
 </figcaption>
 </figure>
-<p><strong>Linked list mode</strong></p>
+<p><strong>Linked List Mode</strong></p>
 <p>In linked list mode, the addresses between data blocks do not have to be consecutive.</p>
 <table class="docutils align-default" style="width: 100%">
 <thead>
@@ -477,7 +475,7 @@
 </section>
 <section id="real-time-status-acquisition">
 <h3>Real-time Status Acquisition<a class="headerlink" href="#real-time-status-acquisition" title="Link to this heading"></a></h3>
-<p>GDMA supports real-time acquisition of the current transmission source address, destination address and the data size that has been transmitted. Call the corresponding APIs to read.</p>
+<p>The GDMA supports real-time acquisition of the current transmission source address, destination address and the data size that has been transmitted. Call the corresponding APIs to read.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>To get the amount of data that has been transferred, the <cite>block_ts</cite> must be greater than 768 at least, and cannot be read in an interrupt function; otherwise, the value obtained is always 0.</p>
@@ -515,7 +513,7 @@
 </section>
 <section id="suspend-and-abort">
 <h3>Suspend and Abort<a class="headerlink" href="#suspend-and-abort" title="Link to this heading"></a></h3>
-<p>GDMA supports channel suspend resume and termination.</p>
+<p>The GDMA supports channel suspend resume and termination.</p>
 <ul class="simple">
 <li><p>To suspend a channel, just configure <cite>CFGx.CH_SUSP</cite>, but there is no guarantee that the current data transaction is completed. Combined with <cite>CFGx.INACTIVE</cite>, the channel can be safely paused without losing data.</p></li>
 <li><p>To resume data transmission after suspension, clear <cite>CFGx.CH_SUSP</cite>.</p></li>
@@ -524,17 +522,15 @@
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>In the following situation, channels are inactive:</p>
-<blockquote>
-<div><ul class="simple">
+<ul class="simple">
 <li><p><cite>CFGx.INACTIVE</cite> can only be activated after Memory has been written, and then canceled.</p></li>
 <li><p>The data of peripheral is 4bytes, but the FIFO of DMAC is only 2bytes. There is no writing at this time and CFGx.INACTIVE is activated directly.</p></li>
 </ul>
-</div></blockquote>
 </div>
 </section>
 <section id="priority">
 <h3>Priority<a class="headerlink" href="#priority" title="Link to this heading"></a></h3>
-<p>GDMA supports two kinds of channel priority:</p>
+<p>The GDMA supports two kinds of channel priority:</p>
 <ul class="simple">
 <li><p>Software: the priority of each channel can be configured in the <cite>CFGx.CH_PRIOR</cite>. The valid value is 0 ~ (<cite>DMAC_NUM_CHANNELS</cite>-1), where 0 is the highest priority value and (<cite>DMAC_NUM_CHANNELS</cite>-1) is the lowest priority value.</p></li>
 <li><p>Hardware: if two channel requests have the same software priority level, or if no software priority is configured, the channel with the lower number takes priority over the channel with the higher number. For example, channel 2 takes priority over channel 4.</p></li>
@@ -607,13 +603,11 @@
 </pre></div>
 </div>
 <p>This function also includes the following operation:</p>
-<blockquote>
-<div><ul class="simple">
+<ul class="simple">
 <li><p>Register IRQ handler if use interrupt mode</p></li>
 <li><p>Enable NVIC interrupt</p></li>
 <li><p>Register the GDMA channel to use</p></li>
 </ul>
-</div></blockquote>
 </li>
 <li><p>Configure interrupt type</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">PGDMA_InitTypeDef</span><span class="o">-&gt;</span><span class="n">GDMA_IsrType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">TransferType</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">ErrType</span><span class="p">);</span>
@@ -678,13 +672,11 @@
 </pre></div>
 </div>
 <p>This function also includes the following operation:</p>
-<blockquote>
-<div><ul class="simple">
+<ul class="simple">
 <li><p>Register IRQ handler if use interrupt mode</p></li>
 <li><p>Enable NVIC interrupt</p></li>
 <li><p>Register the GDMA channel to use</p></li>
 </ul>
-</div></blockquote>
 </li>
 <li><p>Configure interrupt type</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">PGDMA_InitTypeDef</span><span class="o">-&gt;</span><span class="n">GDMA_IsrType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">BlockType</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">TransferType</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">ErrType</span><span class="p">);</span>

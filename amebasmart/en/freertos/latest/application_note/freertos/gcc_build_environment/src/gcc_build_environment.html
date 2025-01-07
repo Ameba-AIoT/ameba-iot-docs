@@ -243,7 +243,7 @@ pacman -S mingw-w64-x86_64-gcc-libs
 <ol class="loweralpha simple">
 <li><p>Press <kbd class="kbd compound docutils literal notranslate"><kbd class="kbd docutils literal notranslate">Win</kbd>+<kbd class="kbd docutils literal notranslate">R</kbd></kbd>  keys to open the <span class="guilabel">Run</span> dialog box, then type <code class="docutils literal notranslate"><span class="pre">regedit</span></code> and press <span class="guilabel">Enter</span> to open the <code class="docutils literal notranslate"><span class="pre">Registry</span> <span class="pre">Editor</span></code>.</p></li>
 <li><p>Navigate to the registry key: <code class="docutils literal notranslate"><span class="pre">Computer\HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\FileSystem</span></code>.</p></li>
-<li><p>Search and check if the <span class="guilabel">LongPathsEnabled</span> item exists. If not, <a class="reference internal" href="#windows-preparing-gcc-environment-step-8-d"><span class="std std-ref">d</span></a>; otherwise, go to Step <a class="reference internal" href="#windows-preparing-gcc-environment-step-8-e"><span class="std std-ref">e</span></a>.</p></li>
+<li><p>Search and check if the <span class="guilabel">LongPathsEnabled</span> item exists. If not, go to Step <a class="reference internal" href="#windows-preparing-gcc-environment-step-8-d"><span class="std std-ref">d</span></a>; otherwise, go to Step <a class="reference internal" href="#windows-preparing-gcc-environment-step-8-e"><span class="std std-ref">e</span></a>.</p></li>
 </ol>
 <ol class="loweralpha simple" id="windows-preparing-gcc-environment-step-8-d" start="4">
 <li><p>Right-click on an empty space in the right pane, then select <span class="menuselection">New &gt; DWORD (32-bit) Value</span>, and name it <code class="docutils literal notranslate"><span class="pre">LongPathsEnabled</span></code>.</p></li>
@@ -270,8 +270,7 @@ pacman -S mingw-w64-x86_64-gcc-libs
 You can either use package manager or type the corresponding version command on terminal to check whether these packages have already existed. If not, make them installed.</p>
 <ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">$ls</span> <span class="pre">-l</span> <span class="pre">/bin/sh</span></code></p>
-<blockquote>
-<div><p>Starting from Ubuntu 6.10, dash is used by default instead of bash. You can check by using <code class="docutils literal notranslate"><span class="pre">$ls</span> <span class="pre">-l</span> <span class="pre">/bin/sh</span></code> command to check whether the system shell is bash or dash.</p>
+<p>Starting from Ubuntu 6.10, dash is used by default instead of bash. You can check by using <code class="docutils literal notranslate"><span class="pre">$ls</span> <span class="pre">-l</span> <span class="pre">/bin/sh</span></code> command to check whether the system shell is bash or dash.</p>
 <ul class="simple">
 <li><p>(Optional) If the system shell is dash, use <code class="docutils literal notranslate"><span class="pre">$sudo</span> <span class="pre">dpkg-reconfigure</span> <span class="pre">dash</span></code> command to switch from dash to bash.</p></li>
 <li><p>If the system shell is bash, continue to do the subsequent operations.</p></li>
@@ -279,21 +278,16 @@ You can either use package manager or type the corresponding version command on 
 <figure class="align-center">
 <a class="reference internal image-reference" href="../../../../_images/switching_from_dash_to_bash.png"><img alt="../../../../_images/switching_from_dash_to_bash.png" src="../../../../_images/switching_from_dash_to_bash.png" style="width: 757.35px; height: 141.95px;" /></a>
 </figure>
-</div></blockquote>
 </li>
 <li><p><code class="docutils literal notranslate"><span class="pre">$make</span> <span class="pre">-v</span></code></p>
-<blockquote>
-<div><figure class="align-center">
+<figure class="align-center">
 <a class="reference internal image-reference" href="../../../../_images/make_v.png"><img alt="../../../../_images/make_v.png" src="../../../../_images/make_v.png" style="width: 599.25px; height: 104.55px;" /></a>
 </figure>
-</div></blockquote>
 </li>
 <li><p><code class="docutils literal notranslate"><span class="pre">$sudo</span> <span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">libssl-dev</span></code></p>
-<blockquote>
-<div><figure class="align-center">
+<figure class="align-center">
 <a class="reference internal image-reference" href="../../../../_images/libssl_dev.png"><img alt="../../../../_images/libssl_dev.png" src="../../../../_images/libssl_dev.png" style="width: 779.25px; height: 384.75px;" /></a>
 </figure>
-</div></blockquote>
 </li>
 <li><p><code class="docutils literal notranslate"><span class="pre">binutils</span></code></p>
 <p>Using <code class="docutils literal notranslate"><span class="pre">ld</span> <span class="pre">-v</span></code> command to check if binutils has been installed. If not, the following error may occur.</p>
@@ -369,14 +363,15 @@ You can either use package manager or type the corresponding version command on 
 <span id="id3"></span><h1>Configuring SDK<a class="headerlink" href="#configuring-sdk" title="Link to this heading"></a></h1>
 <p>This section illustrates how to change SDK configurations.</p>
 <p>Users can configure SDK options for KM0/KM4/CA32 at the same time through <code class="docutils literal notranslate"><span class="pre">$make</span> <span class="pre">menuconfig</span></code> command.</p>
-<ol class="arabic simple">
+<ol class="arabic">
 <li><p>Switch to the directory <code class="docutils literal notranslate"><span class="pre">{SDK}\amebasmart_gcc_project</span></code>.</p></li>
-<li><p>Run <code class="docutils literal notranslate"><span class="pre">$make</span> <span class="pre">menuconfig</span></code> command on MSYS2 MinGW 64-bit (Windows) or terminal (Linux)</p></li>
-</ol>
+<li><p>Run <code class="docutils literal notranslate"><span class="pre">$make</span> <span class="pre">menuconfig</span></code> command on MSYS2 MinGW 64-bit (Windows) or terminal (Linux)</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p><code class="docutils literal notranslate"><span class="pre">$make</span> <span class="pre">menuconfig</span></code> command is only supported under <code class="docutils literal notranslate"><span class="pre">{SDK}\amebasmart_gcc_project</span></code>, but not supported under other paths.</p>
 </div>
+</li>
+</ol>
 <p>The main configurable options are divided into five parts:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">General</span> <span class="pre">Config</span></code>: the shared kernel configurations for KM0/KM4/CA32. The configurations will take effect in all CPUs.</p></li>
@@ -440,8 +435,7 @@ You can either use package manager or type the corresponding version command on 
 <li><p>Check the command execution results. If somehow failed, type <code class="docutils literal notranslate"><span class="pre">$make</span> <span class="pre">clean</span></code> to clean and then redo the make procedure.</p>
 <ul>
 <li><p>For KM4 project, if the terminal contains <code class="docutils literal notranslate"><span class="pre">target_img2.axf</span></code> and <code class="docutils literal notranslate"><span class="pre">Image</span> <span class="pre">manipulating</span> <span class="pre">end</span></code> messages, it means that the images have been built successfully. You can find them under <code class="docutils literal notranslate"><span class="pre">{SDK}\amebasmart_gcc_project\project_hp\asdk\image</span></code>, as shown in <a class="reference internal" href="#km4-project-make-all"><span class="std std-ref">KM4 project make all</span></a> and <a class="reference internal" href="#km4-image-generation"><span class="std std-ref">KM4 image generation</span></a>.</p>
-<blockquote>
-<div><figure class="align-center" id="km4-project-make-all">
+<figure class="align-center" id="km4-project-make-all">
 <a class="reference internal image-reference" href="../../../../_images/km4_project_make_all.PNG"><img alt="../../../../_images/km4_project_make_all.PNG" src="../../../../_images/km4_project_make_all.PNG" style="width: 975.6px; height: 163.8px;" /></a>
 <figcaption>
 <p><span class="caption-text">KM4 project make all</span><a class="headerlink" href="#km4-project-make-all" title="Link to this image"></a></p>
@@ -453,11 +447,9 @@ You can either use package manager or type the corresponding version command on 
 <p><span class="caption-text">KM4 image generation</span><a class="headerlink" href="#km4-image-generation" title="Link to this image"></a></p>
 </figcaption>
 </figure>
-</div></blockquote>
 </li>
 <li><p>For KM0 project, if the terminal contains <code class="docutils literal notranslate"><span class="pre">target_img2.axf</span></code> and <code class="docutils literal notranslate"><span class="pre">Image</span> <span class="pre">manipulating</span> <span class="pre">end</span></code> messages, it means that the images have been built successfully. You can find them under <code class="docutils literal notranslate"><span class="pre">{SDK}\amebasmart_gcc_project\project_lp\asdk\image</span></code>, as shown in <a class="reference internal" href="#km0-project-make-all"><span class="std std-ref">KM0 project make all</span></a> and <a class="reference internal" href="#km0-image-generation"><span class="std std-ref">KM0 image generation</span></a>.</p>
-<blockquote>
-<div><figure class="align-center" id="km0-project-make-all">
+<figure class="align-center" id="km0-project-make-all">
 <a class="reference internal image-reference" href="../../../../_images/km0_project_make_all.PNG"><img alt="../../../../_images/km0_project_make_all.PNG" src="../../../../_images/km0_project_make_all.PNG" style="width: 974.7px; height: 119.7px;" /></a>
 <figcaption>
 <p><span class="caption-text">KM0 project make all</span><a class="headerlink" href="#km0-project-make-all" title="Link to this image"></a></p>
@@ -469,11 +461,9 @@ You can either use package manager or type the corresponding version command on 
 <p><span class="caption-text">KM0 image generation</span><a class="headerlink" href="#km0-image-generation" title="Link to this image"></a></p>
 </figcaption>
 </figure>
-</div></blockquote>
 </li>
 <li><p>For CA32 project, if the terminal contains <code class="docutils literal notranslate"><span class="pre">fip.bin</span></code> and <code class="docutils literal notranslate"><span class="pre">Image</span> <span class="pre">manipulating</span> <span class="pre">end</span></code> messages, it means that the images have been built successfully. You can find them under <code class="docutils literal notranslate"><span class="pre">{SDK}\amebasmart_gcc_project\project_ap\asdk\image</span></code>, as shown in <a class="reference internal" href="#ca32-project-make-all"><span class="std std-ref">CA32 project make all</span></a> and <a class="reference internal" href="#ca32-image-generation"><span class="std std-ref">CA32 image generation</span></a>.</p>
-<blockquote>
-<div><figure class="align-center" id="ca32-project-make-all">
+<figure class="align-center" id="ca32-project-make-all">
 <a class="reference internal image-reference" href="../../../../_images/ca32_project_make_all.PNG"><img alt="../../../../_images/ca32_project_make_all.PNG" src="../../../../_images/ca32_project_make_all.PNG" style="width: 799.2px; height: 151.20000000000002px;" /></a>
 <figcaption>
 <p><span class="caption-text">CA32 project make all</span><a class="headerlink" href="#ca32-project-make-all" title="Link to this image"></a></p>
@@ -485,7 +475,6 @@ You can either use package manager or type the corresponding version command on 
 <p><span class="caption-text">CA32 image generation</span><a class="headerlink" href="#ca32-image-generation" title="Link to this image"></a></p>
 </figcaption>
 </figure>
-</div></blockquote>
 </li>
 </ul>
 </li>
@@ -532,7 +521,7 @@ You can either use package manager or type the corresponding version command on 
 <li><p>Connect the AmebaSmart device to PC after finishing these configurations.</p></li>
 </ol>
 <figure class="align-center" id="id24">
-<a class="reference internal image-reference" href="../../../../_images/wiring_diagram_of_connecting_jlink_to_swd.svg"><img alt="../../../../_images/wiring_diagram_of_connecting_jlink_to_swd.svg" height="145" src="../../../../_images/wiring_diagram_of_connecting_jlink_to_swd.svg" width="405" /></a>
+<a class="reference internal image-reference" href="../../../../_images/wiring_diagram_of_connecting_jlink_to_swd.svg"><img alt="../../../../_images/wiring_diagram_of_connecting_jlink_to_swd.svg" height="178" src="../../../../_images/wiring_diagram_of_connecting_jlink_to_swd.svg" width="495" /></a>
 <figcaption>
 <p><span class="caption-text">Wiring diagram of connecting J-Link to SWD</span><a class="headerlink" href="#id24" title="Link to this image"></a></p>
 </figcaption>
@@ -622,8 +611,7 @@ You can either use package manager or type the corresponding version command on 
 <ul>
 <li><p>When opening core1 GDB server, core0 and core1 will halt and can’t run together. Open this window only when you want to debug two cores together, and you know what you are doing.</p></li>
 <li><p>To debug core0 and core1 separately, make sure that function <code class="xref py py-func docutils literal notranslate"><span class="pre">EnabelCrossTrigger()</span></code> is commented out as below.</p>
-<blockquote>
-<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span>void InitTarget(void) {
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>void InitTarget(void) {
    Report(&quot;******************************************************&quot;);
    Report(&quot;J-Link script: AmebaSmart (Cortex-A32 CPU0) J-Link script&quot;);
    Report(&quot;******************************************************&quot;);
@@ -632,7 +620,6 @@ You can either use package manager or type the corresponding version command on 
 }
 </pre></div>
 </div>
-</div></blockquote>
 </li>
 </ul>
 </div>
@@ -712,8 +699,6 @@ You can either use package manager or type the corresponding version command on 
 <p>There are two ways to download image to flash:</p>
 <ul class="simple">
 <li><p>Image Tool, a software provided by Realtek. For more information, refer to <a class="reference internal" href="../../../../ameba/en/software_tools/image_tool/src/image_tool.html#image-tool"><span class="std std-ref">Image Tool</span></a>.</p></li>
-</ul>
-<ul class="simple">
 <li><p>GDB Server, mainly used for GDB debug user case.</p></li>
 </ul>
 <p>This section illustrates the second method to download images to Flash.</p>
@@ -763,32 +748,24 @@ You can either use package manager or type the corresponding version command on 
 <li><p>Copy the J-Link script commad below for specific target:</p>
 <ul>
 <li><p>For KM4:</p>
-<blockquote>
-<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;</span><span class="si">{Jlink_path}</span><span class="s2">\JLink.exe&quot;</span> <span class="o">-</span><span class="n">device</span> <span class="n">Cortex</span><span class="o">-</span><span class="n">M33</span> <span class="o">-</span><span class="k">if</span> <span class="n">SWD</span> <span class="o">-</span><span class="n">speed</span> <span class="mi">4000</span> <span class="o">-</span><span class="n">autoconnect</span> <span class="mi">1</span> <span class="o">-</span><span class="n">JLinkScriptFile</span> <span class="p">{</span><span class="n">script_path</span><span class="p">}</span>\<span class="n">AP1_KM4</span><span class="o">.</span><span class="n">JLinkScript</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;</span><span class="si">{Jlink_path}</span><span class="s2">\JLink.exe&quot;</span> <span class="o">-</span><span class="n">device</span> <span class="n">Cortex</span><span class="o">-</span><span class="n">M33</span> <span class="o">-</span><span class="k">if</span> <span class="n">SWD</span> <span class="o">-</span><span class="n">speed</span> <span class="mi">4000</span> <span class="o">-</span><span class="n">autoconnect</span> <span class="mi">1</span> <span class="o">-</span><span class="n">JLinkScriptFile</span> <span class="p">{</span><span class="n">script_path</span><span class="p">}</span>\<span class="n">AP1_KM4</span><span class="o">.</span><span class="n">JLinkScript</span>
 </pre></div>
 </div>
-</div></blockquote>
 </li>
 <li><p>For KM0:</p>
-<blockquote>
-<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;</span><span class="si">{Jlink_path}</span><span class="s2">\JLink.exe&quot;</span> <span class="o">-</span><span class="n">device</span> <span class="n">Cortex</span><span class="o">-</span><span class="n">M23</span> <span class="o">-</span><span class="k">if</span> <span class="n">SWD</span> <span class="o">-</span><span class="n">speed</span> <span class="mi">4000</span> <span class="o">-</span><span class="n">autoconnect</span> <span class="mi">1</span> <span class="o">-</span><span class="n">JLinkScriptFile</span> <span class="p">{</span><span class="n">script_path</span><span class="p">}</span>\<span class="n">AP0_KM0</span><span class="o">.</span><span class="n">JLinkScript</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;</span><span class="si">{Jlink_path}</span><span class="s2">\JLink.exe&quot;</span> <span class="o">-</span><span class="n">device</span> <span class="n">Cortex</span><span class="o">-</span><span class="n">M23</span> <span class="o">-</span><span class="k">if</span> <span class="n">SWD</span> <span class="o">-</span><span class="n">speed</span> <span class="mi">4000</span> <span class="o">-</span><span class="n">autoconnect</span> <span class="mi">1</span> <span class="o">-</span><span class="n">JLinkScriptFile</span> <span class="p">{</span><span class="n">script_path</span><span class="p">}</span>\<span class="n">AP0_KM0</span><span class="o">.</span><span class="n">JLinkScript</span>
 </pre></div>
 </div>
-</div></blockquote>
 </li>
 <li><p>For CA32 core0:</p>
-<blockquote>
-<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;</span><span class="si">{Jlink_path}</span><span class="s2">\JLink.exe&quot;</span> <span class="o">-</span><span class="n">device</span> <span class="n">Cortex</span><span class="o">-</span><span class="n">A32</span> <span class="o">-</span><span class="k">if</span> <span class="n">SWD</span> <span class="o">-</span><span class="n">speed</span> <span class="mi">4000</span> <span class="o">-</span><span class="n">autoconnect</span> <span class="mi">1</span> <span class="o">-</span><span class="n">JLinkScriptFile</span> <span class="p">{</span><span class="n">script_path</span><span class="p">}</span>\<span class="n">AP3_CA32_Core0</span><span class="o">.</span><span class="n">JLinkScript</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;</span><span class="si">{Jlink_path}</span><span class="s2">\JLink.exe&quot;</span> <span class="o">-</span><span class="n">device</span> <span class="n">Cortex</span><span class="o">-</span><span class="n">A32</span> <span class="o">-</span><span class="k">if</span> <span class="n">SWD</span> <span class="o">-</span><span class="n">speed</span> <span class="mi">4000</span> <span class="o">-</span><span class="n">autoconnect</span> <span class="mi">1</span> <span class="o">-</span><span class="n">JLinkScriptFile</span> <span class="p">{</span><span class="n">script_path</span><span class="p">}</span>\<span class="n">AP3_CA32_Core0</span><span class="o">.</span><span class="n">JLinkScript</span>
 </pre></div>
 </div>
-</div></blockquote>
 </li>
 <li><p>For CA32 core1:</p>
-<blockquote>
-<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;</span><span class="si">{Jlink_path}</span><span class="s2">\JLink.exe&quot;</span> <span class="o">-</span><span class="n">device</span> <span class="n">Cortex</span><span class="o">-</span><span class="n">A32</span> <span class="o">-</span><span class="k">if</span> <span class="n">SWD</span> <span class="o">-</span><span class="n">speed</span> <span class="mi">4000</span> <span class="o">-</span><span class="n">autoconnect</span> <span class="mi">1</span> <span class="o">-</span><span class="n">JLinkScriptFile</span> <span class="p">{</span><span class="n">script_path</span><span class="p">}</span>\<span class="n">AP3_CA32_Core1</span><span class="o">.</span><span class="n">JlinkScript</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;</span><span class="si">{Jlink_path}</span><span class="s2">\JLink.exe&quot;</span> <span class="o">-</span><span class="n">device</span> <span class="n">Cortex</span><span class="o">-</span><span class="n">A32</span> <span class="o">-</span><span class="k">if</span> <span class="n">SWD</span> <span class="o">-</span><span class="n">speed</span> <span class="mi">4000</span> <span class="o">-</span><span class="n">autoconnect</span> <span class="mi">1</span> <span class="o">-</span><span class="n">JLinkScriptFile</span> <span class="p">{</span><span class="n">script_path</span><span class="p">}</span>\<span class="n">AP3_CA32_Core1</span><span class="o">.</span><span class="n">JlinkScript</span>
 </pre></div>
 </div>
-</div></blockquote>
 </li>
 </ul>
 </li>
