@@ -3,14 +3,30 @@
 HTTP AT Commands
 ================================
 
-The HTTP AT commands supports all the AT commands mentioned on this page. If you need |CHIP_NAME| to support HTTP AT commands,
-you can enable HTTP AT commands by the following selections:
+The HTTP AT commands supports all the AT commands mentioned on this page. The HTTP AT commands is disabled by default.
+If you need |CHIP_NAME| to support HTTP AT commands, you can enable HTTP AT commands by the following steps:
+
+- Navigate to your target project and open configuration menu
+
+.. only:: RTL8721D
+
+   .. code-block::
+
+      cd amebadplus_gcc_project
+      ./menuconfig.py
+
+.. only:: RTL8726EA
+
+   .. code-block::
+
+      cd amebalite_gcc_project
+      ./menuconfig.py
 
 - Select :menuselection:`ATCMD Mode -> MCU Control`
 
 - Select :menuselection:`CONFIG AT CMD -> Enable HTTP`
 
-.. note:: Only support for AmebaDplus for now.
+- Save and Exit.
 
 .. _http_at_httpconf:
 
@@ -46,11 +62,11 @@ Parameter
 ~~~~~~~~~~~~~~~~~~
 :<timeout>: HTTP receive timeout.
 
-   - Unit: second. Default: 0.
+   - Unit: second. Default: 10s.
 
 :<port>: HTTP server port.
 
-   - Default: 0. Range: [1,65535].
+   - Default: 80 for HTTP, 443 for HTTPS. Range: [1,65535].
 
 Error Number
 ~~~~~~~~~~~~~~~~~~~~~~~~
