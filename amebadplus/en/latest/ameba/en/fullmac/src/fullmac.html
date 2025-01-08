@@ -22,6 +22,7 @@
         <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
         <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script src="../../../../_static/toggleprompt.js?v=d7ede5d2"></script>
+        <script src="../../../../_static/tabs.js?v=3030b3cb"></script>
         <script>let toggleHintShow = 'Click to show';</script>
         <script>let toggleHintHide = 'Click to hide';</script>
         <script>let toggleOpenOnPrint = 'true';</script>
@@ -71,16 +72,20 @@
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">FullMAC</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Introduction</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#features">Features</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#file-tree">File Tree</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#porting-guide">Porting Guide</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#hardware-configuration">Hardware Configuration</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#sdio">SDIO</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#spi">SPI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#file-tree">File Tree</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#wi-fi">Wi-Fi</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bluetooth">Bluetooth</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#software-configuration">Software Configuration</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#device-driver">Device Driver</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#host-driver">Host Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#porting-guide">Porting Guide</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#freertos">FreeRTOS</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#hardware-configuration">Hardware Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#software-configuration">Software Configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#linux">Linux</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id3">Hardware Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id4">Software Configuration</a></li>
 </ul>
 </li>
 </ul>
@@ -162,10 +167,10 @@
 <li><p>Provide commonly-used and proprietary commands to configure the parameters of Wi-Fi interface</p></li>
 </ul>
 <p>To clarify, in the following sections, the term <code class="docutils literal notranslate"><span class="pre">host</span></code> refers to the Linux PC acting as the host, and the term <code class="docutils literal notranslate"><span class="pre">device</span></code> refers to the AmebaDPlus serving as the device.</p>
-<figure class="align-center" id="id1">
+<figure class="align-center" id="id5">
 <a class="reference internal image-reference" href="../../../../_images/wifi_fullmac_architecture.svg"><img alt="../../../../_images/wifi_fullmac_architecture.svg" height="466" src="../../../../_images/wifi_fullmac_architecture.svg" width="375" /></a>
 <figcaption>
-<p><span class="caption-text">Wi-Fi FullMAC architecture</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
+<p><span class="caption-text">Wi-Fi FullMAC architecture</span><a class="headerlink" href="#id5" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 </section>
@@ -235,31 +240,196 @@
 </section>
 <section id="file-tree">
 <h1>File Tree<a class="headerlink" href="#file-tree" title="Link to this heading"></a></h1>
-<p>The Linux driver in the SDK is located at: <code class="docutils literal notranslate"><span class="pre">{SDK}/component/wifi/cfg80211_fullmac</span></code>. The main focus should be on the files within the red boxes below.</p>
-<figure class="align-center" id="id2">
-<a class="reference internal image-reference" href="../../../../_images/fullmac_driver_file_tree.svg"><img alt="../../../../_images/fullmac_driver_file_tree.svg" height="730" src="../../../../_images/fullmac_driver_file_tree.svg" width="581" /></a>
-<figcaption>
-<p><span class="caption-text">FullMAC driver file tree</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
-</figcaption>
-</figure>
+<section id="wi-fi">
+<h2>Wi-Fi<a class="headerlink" href="#wi-fi" title="Link to this heading"></a></h2>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-0-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-0-0-0" name="0-0" role="tab" tabindex="0">FreeRTOS</button><button aria-controls="panel-0-0-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-1" name="0-1" role="tab" tabindex="-1">Linux</button></div><div aria-labelledby="tab-0-0-0" class="sphinx-tabs-panel" id="panel-0-0-0" name="0-0" role="tabpanel" tabindex="0"><p>The FullMAC driver of FreeRTOS in the SDK is located at</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Low-level hardware driver
+└── common
+    ├── rtw_ioctl.c
+    ├── rtw_ioctl.h
+    ├── rtw_llhw_event.h
+    ├── rtw_llhw_event_rx.c
+    ├── rtw_llhw_event_tx.c
+    ├── rtw_llhw_hci.c
+    ├── rtw_llhw_hci.h
+    ├── rtw_llhw_hci_memory.c
+    ├── rtw_llhw_ops.c
+    ├── rtw_llhw_pkt_rx.c
+    ├── rtw_llhw_pkt_tx.c
+    ├── rtw_llhw_trx.h
+    └── rtw_protocal_offload.c
+└── sdio
+    ├── Kbuild
+    ├── rtw_sdio.h
+    ├── rtw_sdio_drvio.c
+    ├── rtw_sdio_drvio.h
+    ├── rtw_sdio_fwdl.c
+    ├── rtw_sdio_init.c
+    ├── rtw_sdio_ops.c
+    ├── rtw_sdio_ops.h
+    ├── rtw_sdio_probe.c
+    └── rtw_sdio_reg.h
+└── spi
+    ├── Kbuild
+    ├── rtw_spi.h
+    ├── rtw_spi_ops.c
+    ├── rtw_spi_probe.c
+    └── spidev-overlay.dts
+└── usb
+    ├── Kbuild
+    ├── rtw_usb.h
+    ├── rtw_usb_ops.c
+    └── rtw_usb_probe.c
+
+FullMAC driver
+├── rtw_acs.c
+├── rtw_acs.h
+├── rtw_cfg80211_fullmac.h
+├── rtw_cfg80211_ops.c
+├── rtw_cfg80211_ops_ap.c
+├── rtw_cfg80211_ops_key.c
+├── rtw_cfg80211_ops_nan.c
+├── rtw_cfg80211_ops_p2p.c
+├── rtw_cfgvendor.c
+├── rtw_cfgvendor.h
+├── rtw_drv_probe.c
+├── rtw_drv_probe.h
+├── rtw_ethtool_ops.c
+├── rtw_ethtool_ops.h
+├── rtw_functions.h
+├── rtw_netdev_ops.c
+├── rtw_netdev_ops.h
+├── rtw_netdev_ops_p2p.c
+├── rtw_proc.c
+├── rtw_proc.h
+├── rtw_promisc.c
+├── rtw_promisc.h
+├── rtw_regd.c
+├── rtw_regd.h
+├── rtw_wiphy.c
+└── rtw_wiphy.h
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-0-0-1" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-1" name="0-1" role="tabpanel" tabindex="0"><p>The FullMAC driver of Linux in the SDK is located at <code class="docutils literal notranslate"><span class="pre">{SDK}/component/wifi/cfg80211_fullmac</span></code>. The main focus should be on the files below.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Low-level hardware driver
+└── common
+    ├── rtw_ioctl.c
+    ├── rtw_ioctl.h
+    ├── rtw_llhw_event.h
+    ├── rtw_llhw_event_rx.c
+    ├── rtw_llhw_event_tx.c
+    ├── rtw_llhw_hci.c
+    ├── rtw_llhw_hci.h
+    ├── rtw_llhw_hci_memory.c
+    ├── rtw_llhw_ops.c
+    ├── rtw_llhw_pkt_rx.c
+    ├── rtw_llhw_pkt_tx.c
+    ├── rtw_llhw_trx.h
+    └── rtw_protocal_offload.c
+└── sdio
+    ├── Kbuild
+    ├── rtw_sdio.h
+    ├── rtw_sdio_drvio.c
+    ├── rtw_sdio_drvio.h
+    ├── rtw_sdio_fwdl.c
+    ├── rtw_sdio_init.c
+    ├── rtw_sdio_ops.c
+    ├── rtw_sdio_ops.h
+    ├── rtw_sdio_probe.c
+    └── rtw_sdio_reg.h
+└── spi
+    ├── Kbuild
+    ├── rtw_spi.h
+    ├── rtw_spi_ops.c
+    ├── rtw_spi_probe.c
+    └── spidev-overlay.dts
+└── usb
+    ├── Kbuild
+    ├── rtw_usb.h
+    ├── rtw_usb_ops.c
+    └── rtw_usb_probe.c
+
+FullMAC driver
+├── rtw_acs.c
+├── rtw_acs.h
+├── rtw_cfg80211_fullmac.h
+├── rtw_cfg80211_ops.c
+├── rtw_cfg80211_ops_ap.c
+├── rtw_cfg80211_ops_key.c
+├── rtw_cfg80211_ops_nan.c
+├── rtw_cfg80211_ops_p2p.c
+├── rtw_cfgvendor.c
+├── rtw_cfgvendor.h
+├── rtw_drv_probe.c
+├── rtw_drv_probe.h
+├── rtw_ethtool_ops.c
+├── rtw_ethtool_ops.h
+├── rtw_functions.h
+├── rtw_netdev_ops.c
+├── rtw_netdev_ops.h
+├── rtw_netdev_ops_p2p.c
+├── rtw_proc.c
+├── rtw_proc.h
+├── rtw_promisc.c
+├── rtw_promisc.h
+├── rtw_regd.c
+├── rtw_regd.h
+├── rtw_wiphy.c
+└── rtw_wiphy.h
+</pre></div>
+</div>
+</div></div>
+</section>
+<section id="bluetooth">
+<h2>Bluetooth<a class="headerlink" href="#bluetooth" title="Link to this heading"></a></h2>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-1-1-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-1-1-0" name="1-0" role="tab" tabindex="0">FreeRTOS</button><button aria-controls="panel-1-1-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-1-1-1" name="1-1" role="tab" tabindex="-1">Linux</button></div><div aria-labelledby="tab-1-1-0" class="sphinx-tabs-panel" id="panel-1-1-0" name="1-0" role="tabpanel" tabindex="0"></div><div aria-labelledby="tab-1-1-1" class="sphinx-tabs-panel" hidden="true" id="panel-1-1-1" name="1-1" role="tabpanel" tabindex="0"></div></div>
+</section>
 </section>
 <section id="porting-guide">
 <h1>Porting Guide<a class="headerlink" href="#porting-guide" title="Link to this heading"></a></h1>
+<section id="freertos">
+<h2>FreeRTOS<a class="headerlink" href="#freertos" title="Link to this heading"></a></h2>
 <section id="hardware-configuration">
-<h2>Hardware Configuration<a class="headerlink" href="#hardware-configuration" title="Link to this heading"></a></h2>
-<section id="sdio">
-<h3>SDIO<a class="headerlink" href="#sdio" title="Link to this heading"></a></h3>
-<p>The SDIO FullMAC can be used on Linux PC with SDIO interface or Raspberry Pi. The following pins of AmebaDPlus are used for SDIO FullMAC function.</p>
-<table class="docutils align-default" id="sdio-fullmac-pins" style="width: 100%">
-<caption><span class="caption-text">SDIO FullMAC used pins</span><a class="headerlink" href="#sdio-fullmac-pins" title="Link to this table"></a></caption>
-<tbody>
-<tr class="row-odd"><td><p>AmebaDPlus pin</p></td>
-<td><p>Raspberry Pi pin</p></td>
-<td><p>Function</p></td>
+<h3>Hardware Configuration<a class="headerlink" href="#hardware-configuration" title="Link to this heading"></a></h3>
+<p>The FullMAC can be used on FreeRTOS with different interfaces, with different pins used for FullMAC function.</p>
+</section>
+<section id="software-configuration">
+<h3>Software Configuration<a class="headerlink" href="#software-configuration" title="Link to this heading"></a></h3>
+<section id="id1">
+<h4>Wi-Fi<a class="headerlink" href="#id1" title="Link to this heading"></a></h4>
+<p>Software Configuration for Wi-Fi</p>
+<p>xxxx</p>
+</section>
+<section id="id2">
+<h4>Bluetooth<a class="headerlink" href="#id2" title="Link to this heading"></a></h4>
+<p>Software Configuration for Bluetooth</p>
+<p>xxxxx</p>
+</section>
+</section>
+</section>
+<section id="linux">
+<h2>Linux<a class="headerlink" href="#linux" title="Link to this heading"></a></h2>
+<section id="id3">
+<h3>Hardware Configuration<a class="headerlink" href="#id3" title="Link to this heading"></a></h3>
+<p>The FullMAC can be used on Linux PC or Raspberry Pi with different interfaces, with different pins used for FullMAC function.</p>
+<table class="docutils align-default" id="fullmac-pins" style="width: 100%">
+<caption><span class="caption-text">FullMAC used pins of different interfaces</span><a class="headerlink" href="#fullmac-pins" title="Link to this table"></a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>Interface</p></th>
+<th class="head"><p>AmebaDPlus pin</p></th>
+<th class="head"><p>Raspberry Pi pin</p></th>
+<th class="head"><p>Function</p></th>
+<th class="head"><p>Description</p></th>
 </tr>
-<tr class="row-even"><td><p>PB6</p></td>
+</thead>
+<tbody>
+<tr class="row-even"><td rowspan="6"><p>SDIO</p></td>
+<td><p>PB6</p></td>
 <td><p>GPIO 26</p></td>
 <td><p>SDIO_DAT2</p></td>
+<td rowspan="6"><p>SDIO pins</p></td>
 </tr>
 <tr class="row-odd"><td><p>PB7</p></td>
 <td><p>GPIO 27</p></td>
@@ -281,48 +451,30 @@
 <td><p>GPIO 25</p></td>
 <td><p>SDIO_DAT1</p></td>
 </tr>
-</tbody>
-</table>
-<section id="linux-pc">
-<h4>Linux PC<a class="headerlink" href="#linux-pc" title="Link to this heading"></a></h4>
-<p>For the Linux PC, an SDIO host peripheral is required. Please connect to AmebaDPlus with the corresponding pins according to <a class="reference internal" href="#sdio-fullmac-pins"><span class="std std-ref">SDIO FullMAC used pins</span></a>.</p>
-<p>The AmebaDPlus can also use a gold finger adapter to convert the SDIO pins into a standard SD card, as the following figure shows, and supports the hardware platform only with an SD card slot.
-Note that in this case, you need to contact us to modify the demo board circuit.</p>
-<figure class="align-center" id="id3">
-<a class="reference internal image-reference" href="../../../../_images/sdio_adapter_board.jpg"><img alt="../../../../_images/sdio_adapter_board.jpg" src="../../../../_images/sdio_adapter_board.jpg" style="width: 335.5px; height: 248.5px;" /></a>
-<figcaption>
-<p><span class="caption-text">AmebaDPlus SDIO adapter board</span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
-</figcaption>
-</figure>
-</section>
-<section id="raspberry-pi">
-<h4>Raspberry Pi<a class="headerlink" href="#raspberry-pi" title="Link to this heading"></a></h4>
-<p>The pin location of AmebaDPlus demo board corresponds to the pin location of Raspberry Pi.
-In order to run at high speed, it’s strongly recommended to plug the demo board directly into Raspberry Pi, as the following figure shows.</p>
-<p>The pins used for SDIO FullMAC on Raspberry Pi are listed in <a class="reference internal" href="#sdio-fullmac-pins"><span class="std std-ref">SDIO FullMAC used pins</span></a>.</p>
-<figure class="align-center" id="id4">
-<a class="reference internal image-reference" href="../../../../_images/connection_with_raspberry_pi.jpg"><img alt="../../../../_images/connection_with_raspberry_pi.jpg" src="../../../../_images/connection_with_raspberry_pi.jpg" style="width: 254.5px; height: 227.0px;" /></a>
-<figcaption>
-<p><span class="caption-text">AmebaDPlus connection with Raspberry Pi</span><a class="headerlink" href="#id4" title="Link to this image"></a></p>
-</figcaption>
-</figure>
-</section>
-</section>
-<section id="spi">
-<h3>SPI<a class="headerlink" href="#spi" title="Link to this heading"></a></h3>
-<p>The SPI FullMAC can be used on on platforms with SPI interface, such as Raspberry Pi. The following pins of AmebaDPlus and Raspberry Pi are used for SPI FullMAC function.</p>
-<table class="docutils align-default" id="id5" style="width: 100%">
-<caption><span class="caption-text">SPI FullMAC used pins</span><a class="headerlink" href="#id5" title="Link to this table"></a></caption>
-<tbody>
-<tr class="row-odd"><td><p>AmebaDPlus pin</p></td>
-<td><p>Raspberry Pi pin</p></td>
-<td><p>Function</p></td>
-<td><p>Description</p></td>
-</tr>
-<tr class="row-even"><td><p>PB24</p></td>
+<tr class="row-even"><td rowspan="6"><p>SPI</p></td>
+<td><p>PB24</p></td>
 <td><p>GPIO 10</p></td>
 <td><p>SPI_MOSI</p></td>
-<td rowspan="4"><p>SPI pins</p></td>
+<td rowspan="6"><blockquote>
+<div><p>SPI pins</p>
+</div></blockquote>
+<blockquote>
+<div><div class="line-block">
+<div class="line">An output pin for AmebaDPlus, used to indicate to the host</div>
+<div class="line">that it has a data packet to send with a rising edge.</div>
+</div>
+</div></blockquote>
+<blockquote>
+<div><div class="line-block">
+<div class="line">An output pin for AmebaDPlus, used to indicate its readiness</div>
+<div class="line">for SPI transcation to host.</div>
+</div>
+<ul class="simple">
+<li><p>1: Device is ready.</p></li>
+<li><p>0: Device is busy.</p></li>
+</ul>
+</div></blockquote>
+</td>
 </tr>
 <tr class="row-odd"><td><p>PB25</p></td>
 <td><p>GPIO 9</p></td>
@@ -339,33 +491,75 @@ In order to run at high speed, it’s strongly recommended to plug the demo boar
 <tr class="row-even"><td><p>PB8</p></td>
 <td><p>GPIO 23</p></td>
 <td><p>DEV_TX_REQ</p></td>
-<td><div class="line-block">
-<div class="line">An output pin for AmebaDPlus, used to indicate</div>
-<div class="line">to host that it has a data packet to send with a rising edge.</div>
-</div>
-</td>
 </tr>
 <tr class="row-odd"><td><p>PB9</p></td>
 <td><p>GPIO 22</p></td>
 <td><p>DEV_READY</p></td>
-<td><div class="line-block">
-<div class="line">An output pin for AmebaDPlus, used to indicate its readiness</div>
-<div class="line">for SPI transcation to host.</div>
-</div>
-<ul class="simple">
-<li><p>1: Device is ready.</p></li>
-<li><p>0: Device is busy.</p></li>
-</ul>
-</td>
+</tr>
+<tr class="row-even"><td rowspan="6"><p>USB???</p></td>
+<td><p>PB6</p></td>
+<td><p>GPIO 26</p></td>
+<td><p>SDIO_DAT2</p></td>
+<td><p>SDIO_DAT2</p></td>
+</tr>
+<tr class="row-odd"><td><p>PB7</p></td>
+<td><p>GPIO 27</p></td>
+<td><p>SDIO_DAT3</p></td>
+<td><p>SDIO_DAT3</p></td>
+</tr>
+<tr class="row-even"><td><p>PB8</p></td>
+<td><p>GPIO 23</p></td>
+<td><p>SDIO_CMD</p></td>
+<td><p>SDIO_CMD</p></td>
+</tr>
+<tr class="row-odd"><td><p>PB9</p></td>
+<td><p>GPIO 22</p></td>
+<td><p>SDIO_CLK</p></td>
+<td><p>SDIO_CLK</p></td>
+</tr>
+<tr class="row-even"><td><p>PB13</p></td>
+<td><p>GPIO 24</p></td>
+<td><p>SDIO_DAT0</p></td>
+<td><p>SDIO_DAT0</p></td>
+</tr>
+<tr class="row-odd"><td><p>PB14</p></td>
+<td><p>GPIO 25</p></td>
+<td><p>SDIO_DAT1</p></td>
+<td><p>SDIO_DAT1</p></td>
+</tr>
+<tr class="row-even"><td><p>UART???</p></td>
+<td><p>PB14</p></td>
+<td><p>GPIO 25</p></td>
+<td><p>SDIO_DAT1</p></td>
+<td><p>SDIO_DAT1</p></td>
 </tr>
 </tbody>
 </table>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-2-2-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-2-2-0" name="2-0" role="tab" tabindex="0">Linux PC</button><button aria-controls="panel-2-2-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-2-2-1" name="2-1" role="tab" tabindex="-1">Raspberry Pi</button></div><div aria-labelledby="tab-2-2-0" class="sphinx-tabs-panel" id="panel-2-2-0" name="2-0" role="tabpanel" tabindex="0"><p>For the Linux PC, an SDIO host peripheral is required. Please connect to the AmebaDPlus with corresponding pins according to <a class="reference internal" href="#fullmac-pins"><span class="std std-ref">FullMAC used pins of different interfaces</span></a>.</p>
+<p>The AmebaDPlus can also use a gold finger adapter to convert the SDIO pins into a standard SD card, as the following figure shows, and supports the hardware platform only with an SD card slot.
+Note that in this case, you need to contact us to modify the demo board circuit.</p>
+<figure class="align-center" id="id6">
+<a class="reference internal image-reference" href="../../../../_images/sdio_adapter_board.jpg"><img alt="../../../../_images/sdio_adapter_board.jpg" src="../../../../_images/sdio_adapter_board.jpg" style="width: 335.5px; height: 248.5px;" /></a>
+<figcaption>
+<p><span class="caption-text">AmebaDPlus SDIO adapter board</span><a class="headerlink" href="#id6" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</div><div aria-labelledby="tab-2-2-1" class="sphinx-tabs-panel" hidden="true" id="panel-2-2-1" name="2-1" role="tabpanel" tabindex="0"><p>The pin location of AmebaDPlus demo board corresponds to the pin location of Raspberry Pi.
+In order to run at high speed, it’s strongly recommended to plug the demo board directly into Raspberry Pi, as the following figure shows.</p>
+<p>The pins used for SDIO FullMAC on Raspberry Pi are listed in <a class="reference internal" href="#fullmac-pins"><span class="std std-ref">FullMAC used pins of different interfaces</span></a>.</p>
+<figure class="align-center" id="id7">
+<a class="reference internal image-reference" href="../../../../_images/connection_with_raspberry_pi.jpg"><img alt="../../../../_images/connection_with_raspberry_pi.jpg" src="../../../../_images/connection_with_raspberry_pi.jpg" style="width: 254.5px; height: 227.0px;" /></a>
+<figcaption>
+<p><span class="caption-text">AmebaDPlus connection with Raspberry Pi</span><a class="headerlink" href="#id7" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</div></div>
 </section>
-</section>
-<section id="software-configuration">
-<h2>Software Configuration<a class="headerlink" href="#software-configuration" title="Link to this heading"></a></h2>
+<section id="id4">
+<h3>Software Configuration<a class="headerlink" href="#id4" title="Link to this heading"></a></h3>
 <section id="device-driver">
-<h3>Device Driver<a class="headerlink" href="#device-driver" title="Link to this heading"></a></h3>
+<h4>Device Driver<a class="headerlink" href="#device-driver" title="Link to this heading"></a></h4>
 <ol class="arabic">
 <li><p>Execute <code class="docutils literal notranslate"><span class="pre">./menuconfig.py</span></code> under the path <code class="docutils literal notranslate"><span class="pre">{SDK}/amebadplus_gcc_project</span></code></p>
 <ol class="loweralpha">
@@ -386,7 +580,7 @@ In order to run at high speed, it’s strongly recommended to plug the demo boar
 </ol>
 </section>
 <section id="host-driver">
-<h3>Host Driver<a class="headerlink" href="#host-driver" title="Link to this heading"></a></h3>
+<h4>Host Driver<a class="headerlink" href="#host-driver" title="Link to this heading"></a></h4>
 <p>The FullMAC driver has been tested and verified to work on Linux kernel versions 5.4 and 5.10. If you encounter any compilation errors on other kernel versions, please contact us.</p>
 <ol class="arabic">
 <li><p>Prerequisites: install the following software packages on Linux system.</p>
@@ -398,17 +592,16 @@ sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> <
 </div>
 </li>
 <li><p>Enable the SDIO or SPI function.</p>
-<ul>
+<ul class="simple">
 <li><p>For Linux PC, skip this step.</p></li>
-<li><p>For Raspberry Pi:</p>
-<ul>
-<li><p>SDIO: Use <code class="docutils literal notranslate"><span class="pre">dtoverlay</span></code> command to configure SDIO. For the Raspberry Pi 4, type the following command:</p>
+<li><p>For Raspberry Pi:</p></li>
+</ul>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-3-3-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-3-3-0" name="3-0" role="tab" tabindex="0">SDIO</button><button aria-controls="panel-3-3-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-3-3-1" name="3-1" role="tab" tabindex="-1">SPI</button></div><div aria-labelledby="tab-3-3-0" class="sphinx-tabs-panel" id="panel-3-3-0" name="3-0" role="tabpanel" tabindex="0"><p>Use <code class="docutils literal notranslate"><span class="pre">dtoverlay</span></code> command to configure SDIO. For the Raspberry Pi 4, type the following command:</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>dtoverlay<span class="w"> </span>sdio<span class="w"> </span><span class="nv">poll_once</span><span class="o">=</span>off
 </pre></div>
 </div>
-</li>
-<li><p>SPI:</p>
-<ol class="lowerroman">
+</div><div aria-labelledby="tab-3-3-1" class="sphinx-tabs-panel" hidden="true" id="panel-3-3-1" name="3-1" role="tabpanel" tabindex="0"><ol class="lowerroman">
 <li><p>Enable SPI peripheral</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>raspi-config
 </pre></div>
@@ -433,27 +626,21 @@ dtoverlay<span class="w"> </span>inic_spidev
 </pre></div>
 </div>
 </div></blockquote>
-</li>
-</ul>
-</li>
-</ul>
+</div></div>
 </li>
 <li><p>Build the module</p>
-<ol class="loweralpha">
-<li><p>In the path <code class="docutils literal notranslate"><span class="pre">/component/wifi/cfg80211_fullmac</span></code>, execute the following script with an interface parameter to configure host driver.</p>
-<ul>
-<li><p>SDIO:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">fullmac_setup</span><span class="o">.</span><span class="n">sh</span> <span class="n">sdio</span>
+<ol class="loweralpha simple">
+<li><p>In the path <code class="docutils literal notranslate"><span class="pre">/component/wifi/cfg80211_fullmac</span></code>, execute the following script with an interface parameter to configure host driver.</p></li>
+</ol>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-4-4-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-4-4-0" name="4-0" role="tab" tabindex="0">SDIO</button><button aria-controls="panel-4-4-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-4-4-1" name="4-1" role="tab" tabindex="-1">SPI</button></div><div aria-labelledby="tab-4-4-0" class="sphinx-tabs-panel" id="panel-4-4-0" name="4-0" role="tabpanel" tabindex="0"><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">fullmac_setup</span><span class="o">.</span><span class="n">sh</span> <span class="n">sdio</span>
 </pre></div>
 </div>
-</li>
-<li><p>SPI:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">fullmac_setup</span><span class="o">.</span><span class="n">sh</span> <span class="n">spi</span>
+</div><div aria-labelledby="tab-4-4-1" class="sphinx-tabs-panel" hidden="true" id="panel-4-4-1" name="4-1" role="tabpanel" tabindex="0"><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">fullmac_setup</span><span class="o">.</span><span class="n">sh</span> <span class="n">spi</span>
 </pre></div>
 </div>
-</li>
-</ul>
-</li>
+</div></div>
+<ol class="loweralpha" start="2">
 <li><p>Copy the folder of <code class="docutils literal notranslate"><span class="pre">cfg80211_fullmac</span></code> to the Linux system.</p></li>
 <li><p>Open the terminal and execute the following command:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="p">{</span><span class="n">driver_path</span><span class="p">}</span><span class="o">/</span><span class="n">cfg80211_fullmac</span><span class="p">;</span><span class="n">make</span>
@@ -465,24 +652,22 @@ dtoverlay<span class="w"> </span>inic_spidev
 </ol>
 <ol class="arabic" id="load-the-module-step-4" start="4">
 <li><p>Load the module.</p>
-<ul>
-<li><p>SDIO: <code class="file docutils literal notranslate"><span class="pre">fullmac_sdio.ko</span></code> is generated in <code class="docutils literal notranslate"><span class="pre">/cfg80211_fullmac/sdio</span></code>.</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-5-5-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-5-5-0" name="5-0" role="tab" tabindex="0">SDIO</button><button aria-controls="panel-5-5-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-5-5-1" name="5-1" role="tab" tabindex="-1">SPI</button></div><div aria-labelledby="tab-5-5-0" class="sphinx-tabs-panel" id="panel-5-5-0" name="5-0" role="tabpanel" tabindex="0"><p><code class="file docutils literal notranslate"><span class="pre">fullmac_sdio.ko</span></code> is generated in <code class="docutils literal notranslate"><span class="pre">/cfg80211_fullmac/sdio</span></code>.</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>su
 cp<span class="w"> </span>sdio/fullmac_sdio.ko<span class="w"> </span>/lib/modules/XXX/
 depmod
 modprobe<span class="w"> </span>fullmac_sdio
 </pre></div>
 </div>
-</li>
-<li><p>SPI: <code class="file docutils literal notranslate"><span class="pre">fullmac_spi.ko</span></code> is generated in <code class="docutils literal notranslate"><span class="pre">/cfg80211_fullmac/spi</span></code>.</p>
+</div><div aria-labelledby="tab-5-5-1" class="sphinx-tabs-panel" hidden="true" id="panel-5-5-1" name="5-1" role="tabpanel" tabindex="0"><p><code class="file docutils literal notranslate"><span class="pre">fullmac_spi.ko</span></code> is generated in <code class="docutils literal notranslate"><span class="pre">/cfg80211_fullmac/spi</span></code>.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">su</span>
 <span class="n">cp</span> <span class="n">spi</span><span class="o">/</span><span class="n">fullmac_spi</span><span class="o">.</span><span class="n">ko</span> <span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">modules</span><span class="o">/</span><span class="n">XXX</span><span class="o">/</span>
 <span class="n">depmod</span>
 <span class="n">modprobe</span> <span class="n">fullmac_spi</span>
 </pre></div>
 </div>
-</li>
-</ul>
+</div></div>
 <p>When loading module is successful, use <code class="docutils literal notranslate"><span class="pre">ifconfig</span></code> command to get the information of net device.
 The net device whose MAC address starts with <code class="docutils literal notranslate"><span class="pre">00:e0:4c</span></code> is STA, and the net device whose MAC address starts with <code class="docutils literal notranslate"><span class="pre">00:e1:4c</span> <span class="pre">is</span></code> softAP.</p>
 <p>The following is an example, in which <strong>wlan1</strong> is STA and <strong>wlan2</strong> is softAP.</p>
@@ -611,6 +796,7 @@ If you want to use OPEN or WPA3, please refer to the official hostapd documentat
 </section>
 </section>
 </section>
+</section>
 <section id="throughput">
 <h1>Throughput<a class="headerlink" href="#throughput" title="Link to this heading"></a></h1>
 <table class="docutils align-default" style="width: 100%">
@@ -676,6 +862,24 @@ If you want to use OPEN or WPA3, please refer to the official hostapd documentat
 <td><p>17.8</p></td>
 <td></td>
 </tr>
+<tr class="row-even"><td rowspan="4"><p>USB <sup>[3]</sup></p></td>
+<td rowspan="4"></td>
+<td><p>TCP RX</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>TCP TX</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>UDP RX</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>UDP TX</p></td>
+<td></td>
+<td></td>
+</tr>
 </tbody>
 </table>
 <div class="admonition note">
@@ -683,6 +887,7 @@ If you want to use OPEN or WPA3, please refer to the official hostapd documentat
 <ul class="simple">
 <li><p>[1] The data is the test result of device code running in PSRAM, host driver running on Dell Optiplex 3080 MT.</p></li>
 <li><p>[2] The data is the test result of device code running in PSRAM, host driver running on Raspberry Pi 4.</p></li>
+<li><p>[3] The data is the test result of device code running in</p></li>
 </ul>
 </div>
 </section>
@@ -748,11 +953,21 @@ If you want to use OPEN or WPA3, please refer to the official hostapd documentat
 <tr class="row-odd"><td><p>bss</p></td>
 <td><p>18KB</p></td>
 </tr>
+<tr class="row-even"><td rowspan="3"><p>USB</p></td>
+<td><p>txt</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>data</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>bss</p></td>
+<td></td>
+</tr>
 </tbody>
 </table>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The characters before .ko are <code class="docutils literal notranslate"><span class="pre">sdio</span></code> or <code class="docutils literal notranslate"><span class="pre">spi</span></code>, corresponding to different hosts.</p>
+<p>The characters before <strong>.ko</strong> are <strong>sdio</strong>, <strong>spi</strong> or <strong>usb</strong>, corresponding to different hosts.</p>
 </div>
 </section>
 </section>
