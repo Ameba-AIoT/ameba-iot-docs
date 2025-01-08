@@ -86,20 +86,25 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#at-command-list">AT Command List</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#at-command-version">AT Command Version</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#building-image">Building image</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#building-and-downloading">Building and Downloading</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#preparation">Preparation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ssl-certificate">SSL Certificate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#configuration">Configuration</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#building">Building</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#downloading">Downloading</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#downloading-image">Downloading Image</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="common_at_command.html">Common AT Commands</a></li>
 <li class="toctree-l2"><a class="reference internal" href="wifi_at_command.html">Wi-Fi AT Commands</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mqtt_at_command.html">MQTT AT Commands</a></li>
 <li class="toctree-l2"><a class="reference internal" href="http_at_command.html">HTTP AT Commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="websocket_at_command.html">WebSocket AT Commands</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tcp_ip_at_command.html">TCP/IP AT Commands</a></li>
 <li class="toctree-l2"><a class="reference internal" href="bluetooth_at_command.html">Bluetooth AT Commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_system_at_command.html">File System AT Commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="how_to_use_at_command_with_spi.html">How to Use AT Command with SPI</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../software_tools/index.html">Software Tools</a></li>
@@ -168,7 +173,7 @@ In this mode, AT command information is transmitted and displayed exclusively th
 <td rowspan="3"><p>Product development</p></td>
 </tr>
 <tr class="row-even"><td><p>SPI</p></td>
-<td><p>Developing</p></td>
+<td><p>Ready</p></td>
 </tr>
 <tr class="row-odd"><td><p>SDIO</p></td>
 <td><p>Developing</p></td>
@@ -177,7 +182,7 @@ In this mode, AT command information is transmitted and displayed exclusively th
 </table>
 <p>We set the Ameba module as a slave, and the MCU as a host. The host can send AT commands to the slave and receive the corresponding AT response.
 Users can use AmebaLite, AmebaSmart, and AmebaDPlus as slaves for AT commands.
-The AT commands consist of a wide range of types, such as Wi-Fi commands, MQTT commands, TCP/IP commands, and Bluetooth commands.</p>
+The AT commands consist of a wide range of types, such as Wi-Fi commands, MQTT commands, WebSocket commands, TCP/IP commands, and Bluetooth commands.</p>
 <section id="hardware-connection">
 <h2>Hardware Connection<a class="headerlink" href="#hardware-connection" title="Link to this heading"></a></h2>
 <p>Some hardwares are inquired at first.</p>
@@ -213,6 +218,10 @@ The AT commands consist of a wide range of types, such as Wi-Fi commands, MQTT c
 </figure>
 <p>In MCU Control mode, users should prepare the <code class="file docutils literal notranslate"><span class="pre">atcmd_config.json</span></code> file in advance, convert it into a bin file (refer to Chapter Virtual File System in Application Note for detailed instructions), and download it to the module’s corresponding Flash partition along with the image.
 If no VFS AT command configuration file is provided, the default configuration of UART will be used.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>When creating the VFS bin file, <code class="docutils literal notranslate"><span class="pre">atcmd_config.json</span></code> file should be placed in the <code class="docutils literal notranslate"><span class="pre">KV</span></code> directory.</p>
+</div>
 <p>For different chips, the default UART input and output ports are listed in the following table.</p>
 <table class="docutils align-default" id="id4" style="width: 100%">
 <caption><span class="caption-text">Default UART port and baud rates for chips</span><a class="headerlink" href="#id4" title="Link to this table"></a></caption>
@@ -344,8 +353,10 @@ When the AT command using escapes character, the escapes characters such as <cod
 <li><p><a class="reference internal" href="common_at_command.html#common-at-commands"><span class="std std-ref">Common AT Commands</span></a></p></li>
 <li><p><a class="reference internal" href="wifi_at_command.html#wi-fi-at-commands"><span class="std std-ref">Wi-Fi AT Commands</span></a></p></li>
 <li><p><a class="reference internal" href="mqtt_at_command.html#mqtt-at-commands"><span class="std std-ref">MQTT AT Commands</span></a></p></li>
+<li><p><a class="reference internal" href="websocket_at_command.html#websocket-at-commands"><span class="std std-ref">WebSocket AT Commands</span></a></p></li>
 <li><p><a class="reference internal" href="tcp_ip_at_command.html#tcp-ip-at-commands"><span class="std std-ref">TCP/IP AT Commands</span></a></p></li>
 <li><p><a class="reference internal" href="bluetooth_at_command.html#bluetooth-at-commands"><span class="std std-ref">Bluetooth AT Commands</span></a></p></li>
+<li><p><a class="reference internal" href="file_system_at_command.html#file-system-at-commands"><span class="std std-ref">File system AT Commands</span></a></p></li>
 </ul>
 <p>Please refer to each section to look for more details about the command information of different AT commands.</p>
 </section>
@@ -380,11 +391,62 @@ The version number employs a semantic versioning system, and its format is as fo
 </div>
 </div>
 </section>
-<section id="building-image">
-<h2>Building image<a class="headerlink" href="#building-image" title="Link to this heading"></a></h2>
+<section id="building-and-downloading">
+<h2>Building and Downloading<a class="headerlink" href="#building-and-downloading" title="Link to this heading"></a></h2>
 <section id="preparation">
 <h3>Preparation<a class="headerlink" href="#preparation" title="Link to this heading"></a></h3>
 <p>Besides obtaining the release version from GitHub, users can also build images with <code class="docutils literal notranslate"><span class="pre">{sdk}</span></code> by self. For detailed building procedure, refer to the Application Note of the specific Ameba chips.</p>
+</section>
+<section id="ssl-certificate">
+<span id="atcmd-mcu-control-mode-configuration"></span><h3>SSL Certificate<a class="headerlink" href="#ssl-certificate" title="Link to this heading"></a></h3>
+<p>If an SSL certificate is required during the use of AT Commands, the user has two options to prepare the certificate before executing the command:</p>
+<ul class="simple">
+<li><p>1. Store the pre-prepared certificate files in the VFS binary file with the names and formats of &lt;client/server&gt;_&lt;ca/cert/key&gt;_&lt;1/2/3&gt;.crt.
+Then, flash them to the AT module together with the application firmware.</p></li>
+<li><p>2. During the operation of the AT module, use the AT+FS command to write the certificate into the file system.
+For detailed usage of the AT+FS command to write files, please refer to <a class="reference internal" href="file_system_at_command.html#file-system-at-commands"><span class="std std-ref">File System AT Commands</span></a>.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>When creating the VFS bin file, SSL certificates and <code class="docutils literal notranslate"><span class="pre">atcmd_config.json</span></code> file should be placed in the <cite>KV</cite> directory.
+The operations of the file system AT commands are also conducted in the <code class="docutils literal notranslate"><span class="pre">KV</span></code> directory.</p>
+</div>
+</section>
+<section id="configuration">
+<h3>Configuration<a class="headerlink" href="#configuration" title="Link to this heading"></a></h3>
+<p>For MCU Control mode, the configuration needs to be implemented via the <code class="docutils literal notranslate"><span class="pre">atcmd_config.json</span></code> file.
+The specific format is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+   <span class="s2">&quot;interface&quot;</span><span class="p">:</span><span class="s2">&quot;spi&quot;</span><span class="p">,</span>
+
+   <span class="s2">&quot;spi&quot;</span><span class="p">:</span>
+   <span class="p">{</span>
+      <span class="s2">&quot;mosi&quot;</span><span class="p">:</span><span class="s2">&quot;PA27&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;miso&quot;</span><span class="p">:</span><span class="s2">&quot;PA28&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;clk&quot;</span><span class="p">:</span><span class="s2">&quot;PA26&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;cs&quot;</span><span class="p">:</span><span class="s2">&quot;PA12&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;master_sync_pin&quot;</span><span class="p">:</span><span class="s2">&quot;PB30&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;slave_sync_pin&quot;</span><span class="p">:</span><span class="s2">&quot;PB31&quot;</span>
+   <span class="p">},</span>
+
+   <span class="s2">&quot;uart&quot;</span><span class="p">:</span>
+   <span class="p">{</span>
+      <span class="s2">&quot;baudrate&quot;</span><span class="p">:</span><span class="mi">115200</span><span class="p">,</span>
+      <span class="s2">&quot;tx&quot;</span><span class="p">:</span><span class="s2">&quot;PB19&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;rx&quot;</span><span class="p">:</span><span class="s2">&quot;PB18&quot;</span>
+   <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Users can modify the property value of the interface to choose between using UART or SPI. The pins used in UART or SPI mode can also be customized.</p>
+<p>For the MCU Control mode of SPI, if you want to achieve better high-speed transmission performance, you need to enable the High TP Mode in menuconfig.
+The configuration process is as follows:</p>
+<figure class="align-center" id="id6">
+<a class="reference internal image-reference" href="../../../../_images/enable_wifi_high_tp_mode.png"><img alt="../../../../_images/enable_wifi_high_tp_mode.png" src="../../../../_images/enable_wifi_high_tp_mode.png" style="width: 316.8px; height: 291.6px;" /></a>
+<figcaption>
+<p><span class="caption-text">Enable Wifi High TP Mode</span><a class="headerlink" href="#id6" title="Link to this image"></a></p>
+</figcaption>
+</figure>
 </section>
 <section id="building">
 <h3>Building<a class="headerlink" href="#building" title="Link to this heading"></a></h3>
@@ -399,10 +461,10 @@ make menuconfig
 // ...
 </pre></div>
 </div>
-<figure class="align-center" id="id6">
+<figure class="align-center" id="id7">
 <a class="reference internal image-reference" href="../../../../_images/choice_mode.png"><img alt="../../../../_images/choice_mode.png" src="../../../../_images/choice_mode.png" style="width: 246.6px; height: 241.20000000000002px;" /></a>
 <figcaption>
-<p><span class="caption-text">Choice mode</span><a class="headerlink" href="#id6" title="Link to this image"></a></p>
+<p><span class="caption-text">Choice mode</span><a class="headerlink" href="#id7" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 </li>
@@ -410,16 +472,15 @@ make menuconfig
 <li><p>After building successfully, the image files can be found under <code class="docutils literal notranslate"><span class="pre">{ameba_name}</span></code> directory.</p></li>
 </ol>
 <p>If users want to use Bluetooth AT Commands, run <code class="docutils literal notranslate"><span class="pre">$make</span> <span class="pre">menuconfig</span></code> to enable BLE transfer module first.</p>
-<figure class="align-center" id="id7">
+<figure class="align-center" id="id8">
 <a class="reference internal image-reference" href="../../../../_images/enable_ble_transfer_module.png"><img alt="../../../../_images/enable_ble_transfer_module.png" src="../../../../_images/enable_ble_transfer_module.png" style="width: 381.6px; height: 488.7px;" /></a>
 <figcaption>
-<p><span class="caption-text">Enable BLE transfer module</span><a class="headerlink" href="#id7" title="Link to this image"></a></p>
+<p><span class="caption-text">Enable BLE transfer module</span><a class="headerlink" href="#id8" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 </section>
-</section>
-<section id="downloading-image">
-<h2>Downloading Image<a class="headerlink" href="#downloading-image" title="Link to this heading"></a></h2>
+<section id="downloading">
+<h3>Downloading<a class="headerlink" href="#downloading" title="Link to this heading"></a></h3>
 <p>There are two ways to download image to Flash:</p>
 <ul class="simple">
 <li><p>Image Tool, a software provided by Realtek (recommended).</p></li>
@@ -429,10 +490,10 @@ make menuconfig
 <p>The Image Tool is the official image download tool developed by Realtek for Ameba series SoC.
 It can be used to download images to the Flash of device through the UART download interface.</p>
 <p>When you lanuch the image tool, it is shown as the following figure.</p>
-<figure class="align-center" id="id8">
+<figure class="align-center" id="id9">
 <a class="reference internal image-reference" href="../../../../_images/image_tool.png"><img alt="../../../../_images/image_tool.png" src="../../../../_images/image_tool.png" style="width: 663.5999999999999px; height: 555.8px;" /></a>
 <figcaption>
-<p><span class="caption-text">Image Tool</span><a class="headerlink" href="#id8" title="Link to this image"></a></p>
+<p><span class="caption-text">Image Tool</span><a class="headerlink" href="#id9" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <p>The device profiles provide the necessary device information required for image download, with the naming rules:</p>
@@ -447,6 +508,7 @@ It can be used to download images to the Flash of device through the UART downlo
 <li><p>Release them both to let the chip enter download mode</p></li>
 <li><p>Connect the chip module to PC with USB cable, and press the <span class="guilabel">DOWNLOAD</span> button of Image Tool to start downloading the image files</p></li>
 </ol>
+</section>
 </section>
 </section>
 
