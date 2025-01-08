@@ -6,27 +6,32 @@ HTTP AT Commands
 The HTTP AT commands supports all the AT commands mentioned on this page. The HTTP AT commands is disabled by default.
 If you need |CHIP_NAME| to support HTTP AT commands, you can enable HTTP AT commands by the following steps:
 
-- Navigate to your target project and open configuration menu
+   - Navigate to your target project and open configuration menu.
 
-.. only:: RTL8721D
+      .. only:: RTL8721D
 
-   .. code-block::
+         .. code-block::
 
-      cd amebadplus_gcc_project
-      ./menuconfig.py
+            cd amebadplus_gcc_project
+            ./menuconfig.py
 
-.. only:: RTL8726EA
+      .. only:: RTL8726EA
 
-   .. code-block::
+         .. code-block::
 
-      cd amebalite_gcc_project
-      ./menuconfig.py
+            cd amebalite_gcc_project
+            ./menuconfig.py
 
-- Select :menuselection:`ATCMD Mode -> MCU Control`
+   - Select :menuselection:`CONFIG AT CMD -> ATCMD Mode -> MCU Control`
 
-- Select :menuselection:`CONFIG AT CMD -> Enable HTTP`
+   - Select :menuselection:`CONFIG AT CMD -> Enable HTTP`
 
-- Save and Exit.
+   - Save and Exit.
+
+.. note::
+   
+   The ``TT mode`` is only supported for MCU control mode. If you need use ``TT mode`` for AT commands, you need enable MCU control mode.
+   The details of ``TT mode`` refer to :ref:`Transparent Transmission <transparent_transmission>`.
 
 .. _http_at_httpconf:
 
@@ -36,9 +41,7 @@ Description
 ~~~~~~~~~~~~~~~~~~~~~~
 Set HTTP Configuration.
 
-.. note:: 
-   - The configuration is only valid for the next command.
-   - Connect to the AP before using the HTTP AT commands.
+.. note:: Connect to the AP before using the HTTP AT commands.
 
 Command
 ~~~~~~~~~~~~~~
@@ -142,9 +145,9 @@ Parameter
 
 Error Number
 ~~~~~~~~~~~~~~~~~~~~~~~~
-:1: Error parameters.
+:1: Parameters error.
 
-:2: Malloc failed.
+:2: Malloc error.
 
 :3: Read CA/certificate/PK failed.
 
@@ -258,9 +261,9 @@ Parameter
 
 Error Number
 ~~~~~~~~~~~~~~~~~~~~~~~~
-:1: Error parameters.
+:1: Parameters error.
 
-:2: Malloc failed.
+:2: Malloc error.
 
 :3: Read CA/Certificate/PK failed.
 
@@ -384,9 +387,9 @@ Parameter
 
 Error Number
 ~~~~~~~~~~~~~~~~~~~~~~~~
-:1: Error parameters.
+:1: Parameters error.
 
-:2: Malloc failed.
+:2: Malloc error.
 
 :3: Read CA/Certificate/PK failed.
 
@@ -502,9 +505,9 @@ Parameter
 
 Error Number
 ~~~~~~~~~~~~~~~~~~~~~~~~
-:1: Error parameters.
+:1: Parameters error.
 
-:2: Malloc failed.
+:2: Malloc error.
 
 :3: Read CA/certificate/PK failed.
 

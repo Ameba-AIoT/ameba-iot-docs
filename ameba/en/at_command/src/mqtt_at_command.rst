@@ -3,121 +3,201 @@
 MQTT AT Commands
 ================================
 
-.. _mqtt_at_mqttopen:
+The MQTT AT commands supports all the AT commands mentioned on this page. The MQTT AT commands is disabled by default.
+If you need |CHIP_NAME| to support MQTT AT commands, you can enable MQTT AT commands by the following steps:
 
-AT+MQTTOPEN
-----------------------
+   - Navigate to your target project and open configuration menu.
+
+      .. only:: RTL8721D
+
+         .. code-block::
+
+            cd amebadplus_gcc_project
+            ./menuconfig.py
+
+      .. only:: RTL8726EA
+
+         .. code-block::
+
+            cd amebalite_gcc_project
+            ./menuconfig.py
+
+   - Select :menuselection:`CONFIG AT CMD -> Enable MQTT`
+
+The default ATCMD mode is LOGUART. If you need |CHIP_NAME| to support MCU control mode, you can enable MCU control mode by the following selections:
+
+   - Select :menuselection:`CONFIG AT CMD -> ATCMD Mode -> MCU Control`
+
+   - Save and Exit.
+
+.. note::
+   
+   The ``TT mode`` is only supported for MCU control mode. If you need use ``TT mode`` for AT commands, you need enable MCU control mode.
+   The details of ``TT mode`` refer to :ref:`Transparent Transmission <transparent_transmission>`.
+
+.. _mqtt_at_mqttcfg:
+
+AT+MQTTUSERCFG
+--------------------
 Description
 ~~~~~~~~~~~~~~~~~~~~~~
-Create an MQTT entity.
+Set MQTT user configuration
+
+.. note:: 
+   - Connect to the AP before using the MQTT AT commands.
 
 Command
 ~~~~~~~~~~~~~~
 .. code-block::
 
-   AT+MQTTOPEN=<con_id>,<host>[,<port>]
+   AT+MQTTUSERCFG=<link_id>,<conn_type>,<client_id>,<username>,<password>,<certificate_index>
 
 Response
 ~~~~~~~~~~~~~~~~
 .. code-block::
 
-   +MQTTOPEN:OK
+   OK
 
 Or
 
 .. code-block::
 
-   +MQTTOPEN:ERROR:<error_no>
+   ERROR:<error_no>
 
 Parameter
 ~~~~~~~~~~~~~~~~~~
-:<con_id>: The connect entity id.
+:<link_id>: Link ID.
 
-   - [0,3]
+   - Range: [0,3]
 
-:<host>: The string of host name.
+:<conn_type>: MQTT connection type.
 
-   - Not longer than 490 bytes when longer command format, otherwise not longer than 97 bytes.
+   - 1: MQTT over TCP.
 
-:<port>: The connection port.
+   - 2: MQTT over TLS (no certificate verify).
 
-   - [1,65535]
+   - 3: MQTT over TLS (verify server certificate).
 
-   - It is 1883 as default if absent.
+   - 4: MQTT over TLS (provide client certificate).
+
+   - 5: MQTT over TLS (verify server certificate and provide client certificate).
+
+:<client_id>: MQTT client ID.
+
+:<username>: The username to login to the MQTT broker.
+
+:<password>: The password to login to the MQTT broker.
+
+:<certificate_index>: Certificate index. Default 0.
 
 Error Number
 ~~~~~~~~~~~~~~~~~~~~~~~~
-:1: Common error in software.
+:1: Parameters error.
 
-:2: Error parameters.
+:2: Malloc error.
 
-:3: Already existed connect id.
+:6: Read CA/certificate/PK failed.
 
-:4: Memory failure.
-
-:9: Invalid connect id.
-
-:18: Task failure.
-
-:19: Network is not connected yet.
+:8: MQTT client already connected to broker.
 
 Example
 ~~~~~~~~~~~~~~
+For the case set with ``<username>`` and ``<password>``:
 .. code-block::
 
-   // At first, you should connect a Wi-Fi
-   AT+MQTTOPEN=1,my_test_host,1883
-   +MQTTOPEN:OK
+   AT+MQTTUSERCFG=0,1,publisher,rs,12345678,0
+   OK
 
-.. _mqtt_at_mqttclose:
+For the case set without ``<username>`` and ``<password>``:
 
-AT+MQTTCLOSE
-------------------------
+.. code-block::
+
+   AT+MQTTUSERCFG=0,1,publisher,,,0
+   OK
+
+.. _mqtt_at_mqttconncfg:
+
+AT+MQTTCONNCFG
+----------------------
 Description
 ~~~~~~~~~~~~~~~~~~~~~~
-Delete an MQTT entity.
+Set MQTT connection configuration.
+
+.. note::
+   
+   It is optional. If user don't set connection configuration with this command, the connection configuration will set as default value.
 
 Command
 ~~~~~~~~~~~~~~
 .. code-block::
 
-   AT+MQTTCLOSE=<con_id>
+   AT+MQTTCONNCFG=<link_id>,<keepalive>,<timeout>,<disable_clean_session>[,<lwt_topic>,<lwt_msg>,<lwt_qos>,<lwt_retain>]
 
 Response
 ~~~~~~~~~~~~~~~~
 .. code-block::
 
-   +MQTTCLOSE:OK
+   OK
 
 Or
 
 .. code-block::
 
-   +MQTTCLOSE:ERROR:<error_no>
+   ERROR:<error_no>
 
 Parameter
 ~~~~~~~~~~~~~~~~~~
-:<con_id>: The connect entity id.
+:<link_id>: Link ID.
 
-   - [0,3]
+   - Range: [0,3]
+
+:<keepalive>: Timeout of MQTT ping.
+
+   - Unit: second. Default: 60s.
+
+:<timeout>: Timeout of MQTT send/receive.
+
+   - Unit: millisecond. Default: 60s.
+
+:<disable_clean_session>:  Set MQTT clean session.
+
+   - 0: enable clean session.
+
+   - 1: disable clean session.
+
+:<lwt_topic>: LWT (Last Will and Testament) message topic.
+
+:<lwt_msg>: LWT message.
+
+:<lwt_qos>: LWT QoS.
+
+   - Which can be set to 0, 1, or 2. Default: 0
+
+:<lwt_retain>: LWT retain.
+
+   - Which can be set to 0 or 1. Default: 0.
 
 Error Number
 ~~~~~~~~~~~~~~~~~~~~~~~~
-:1: Common error in software.
+:1: Parameters error.
 
-:2: Error parameters.
+:2: Malloc error.
 
-:3: Already existed connect id.
+Example
+~~~~~~~~~~~~~~
+For the case set with ``LWT``:
 
-:4: Memory failure.
+.. code-block::
 
-:6: This connect id has not been created.
+   AT+MQTTCONNCFG=0,20,1000,0,topic/lwt,This is a lwt message,0,0
+   OK
 
-:9: Invalid connect id.
+For the case set without ``LWT``:
 
-:11: Can not disconect.
+.. code-block::
 
-.. note:: If this MQTT entity has connected to the server, you'd better execute AT+MQTTDISCONN at first, then close this entity.
+   AT+MQTTCONNCFG=0,20,1000,0
+   OK
 
 .. _mqtt_at_mqttconn:
 
@@ -125,75 +205,63 @@ AT+MQTTCONN
 ----------------------
 Description
 ~~~~~~~~~~~~~~~~~~~~~~
-Connect to host server.
+Connect to MQTT broker.
 
 Command
 ~~~~~~~~~~~~~~
 .. code-block::
 
-   AT+MQTTCONN=<con_id>,<clientid>[,<username>,<password>]
+   AT+MQTTCONN=<link_id>,<host>,<port>
 
 Response
 ~~~~~~~~~~~~~~~~
 .. code-block::
 
-   // Here, this OK will be response immediately, if the command is correct.
-   +MQTTCONN:OK
-   // Here, once received ACK from host, it will response right now.
-   ACK
+   OK
+
+When AT receives ACK from host, it will prompt:
+
+.. code-block::
+
+   $ACK
 
 Or
 
 .. code-block::
 
-   +MQTTCONN:ERROR:<error_no>
+   ERROR:<error_no>
 
 Parameter
 ~~~~~~~~~~~~~~~~~~
-:<con_id>: The connect entity id.
+:<link_id>: Link ID.
 
-   - [0,3]
+   - Range: [0,3]
 
-:<clientid>: The string of client id.
+:<host>: MQTT broker domain.
 
-   - It has length not longer than 490 bytes when longer command format, otherwise not longer than 97 bytes.
+:<port>: MQTT broker port.
 
-:<username>: The string of username.
-
-   - It has length not longer than 490 bytes when longer command format, otherwise not longer than 97 bytes.
-
-:<password>: The string of pasword.
-
-   - It has length not longer than 490 bytes when longer command format, otherwise not longer than 97 bytes.
+   - Default: 1883 for MQTT over TCP, 8883 for MQTT over TLS. Range: [1,65535].
 
 Error Number
 ~~~~~~~~~~~~~~~~~~~~~~~~
-:1: Common error in software.
+:1: Parameters error.
 
-:2: Error parameters.
+:2: Malloc error.
 
-:5: Attach error.
+:3: Connection error.
 
-:6: This connect id has not been created.
+:14: MQTT main task create error.
 
-:7: Can not connect to host.
-
-:9: Invalid connect id.
-
-:17: Time out.
+:15: Not connect to a Wi-Fi.
 
 Example
 ~~~~~~~~~~~~~~
 .. code-block::
 
-   // Connect to a service with username and password
-   AT+MQTTCONN=1,my_test_host,user_test,pswd_test
-   +MQTTCONN:OK
-   ACK
-   // Connect to an anonymous service
-   AT+MQTTCONN=1,my_anonymous_host
-   +MQTTCONN:OK
-   ACK
+   AT+MQTTCONN=0,broker.hivemq.com,1883
+   OK
+   $ACK
 
 .. _mqtt_at_mqttdisconn:
 
@@ -201,45 +269,44 @@ AT+MQTTDISCONN
 ----------------------------
 Description
 ~~~~~~~~~~~~~~~~~~~~~~
-Disconnect from host server.
+Disconnect from MQTT broker and release the resource.
 
 Command
 ~~~~~~~~~~~~~~
 .. code-block::
 
-   AT+MQTTDISCONN=<con_id>
+   AT+MQTTDISCONN=<link_id>
 
 Response
 ~~~~~~~~~~~~~~~~
 .. code-block::
 
-   +MQTTDISCONN:OK
+   OK
 
 Or
 
 .. code-block::
 
-   +MQTTDISCONN:ERROR:<error_no>
+   ERROR:<error_no>
 
 Parameter
 ~~~~~~~~~~~~~~~~~~
-:<con_id>: The connect entity id.
+:<link_id>: Link ID.
 
-   - [0,3]
+   - Range: [0,3]
 
 Error Number
 ~~~~~~~~~~~~~~~~~~~~~~~~
-:1: Common error in software.
+:1: Parameters error.
 
-:2: Error parameters.
+:4: Disconnection error.
 
-:6: This connect id has not been created.
+Example
+~~~~~~~~~~~~~~
+.. code-block::
 
-:9: Invalid connect id.
-
-:10: It is not connected before.
-
-:17: Time out.
+   AT+MQTTDISCONN=0
+   OK
 
 .. _mqtt_at_mqttsub:
 
@@ -247,62 +314,81 @@ AT+MQTTSUB
 --------------------
 Description
 ~~~~~~~~~~~~~~~~~~~~~~
-Subscribe a topic from host server.
+Subscribe a topic from MQTT broker. Up to 5 topics can be subscribed.
 
 Command
 ~~~~~~~~~~~~~~
 .. code-block::
 
-   AT+MQTTSUB=<con_id>,<topic_string>[,<qos>]
+   AT+MQTTSUB=<link_id>,<topic>,<qos>
 
 Response
 ~~~~~~~~~~~~~~~~
 .. code-block::
 
-   // Here, this response will be output immediately once the command is correct.
-   +MQTTSUB:OK
-   // Here, once received ACK from host, it will response here.
-   ACK
+   OK
+
+If the topic has been subscribed before, it will prompt:
+
+.. code-block::
+
+   ALREADY SUBCRIBE
+
+When AT receives ACK from host, it will prompt:
+
+.. code-block::
+
+   $ACK
 
 Or
 
 .. code-block::
 
-   +MQTTSUB:ERROR:<error_no>
+   ERROR:<error_no>
+
+When AT receives MQTT messages of the subscribed topic, it will prompt:
+
+.. code-block::
+
+   $+MQTTSUBRECV:<link_id>,<msg_id>,<topic>,<msg>,<msg_len>,<qos>,<dup>,<retain>
 
 Parameter
 ~~~~~~~~~~~~~~~~~~
-:<con_id>: The connect entity id.
+:<link_id>: Link ID.
 
-   - [0,3]
+   - Range: [0,3]
 
-:<topic_string>: The string of topic to be subscibed.
-
-   - It has length not longer than 490 bytes when longer command format, otherwise not longer than 97 bytes.
+:<topic>: The string of topic to be subscibed.
 
 :<qos>: The QoS value.
 
-   - [0,2]
-
-   - It is 2 as default if absent.
+   - Which can be set to 0, 1, or 2. Default: 2
 
 Error Number
 ~~~~~~~~~~~~~~~~~~~~~~~~
-:1: Common error in software.
+:1: Parameters error.
 
-:2: Error parameters.
+:2: Malloc error.
 
-:6: This connect id has not been created.
+:7: Not connect to the host.
 
-:9: Invalid connect id.
+:10: Can not subscribe this topic.
 
-:10: It is not connected before.
+:13: Time out.
 
-:13: Can not subscribe this topic.
+Example
+~~~~~~~~~~~~~~
+.. code-block::
 
-:14: Has subscribed this topic already.
+   AT+MQTTSUB=0,LASS/Test/Pm25Ameba/#,1
+   OK
+   $ACK
 
-:17: Time out.
+When AT receives MQTT messages of the subscribed topic:
+
+.. code-block::
+
+   $+MQTTSUBRECV:0,401,LASS/Test/Pm25Ameba/FT1_018,hello from AMEBA 43,19,1,0,0
 
 .. _mqtt_at_mqttunsub:
 
@@ -310,54 +396,57 @@ AT+MQTTUNSUB
 ------------------------
 Description
 ~~~~~~~~~~~~~~~~~~~~~~
-Unsubscribe a topic from host server.
+Unsubscribe a topic from MQTT broker.
 
 Command
 ~~~~~~~~~~~~~~
 .. code-block::
 
-   AT+MQTTUSSUB=<con_id>,<topic_string>
+   AT+MQTTUSSUB=<link_id>,<topic>
 
 Response
 ~~~~~~~~~~~~~~~~
 .. code-block::
 
-   // Here, this response will be output immediately once the command is correct.
-   +MQTTUNSUB:OK
-   // Here, once received ACK from host, it will response here.
-   ACK
+   OK
+
+When AT receives ACK from host, it will prompt:
+
+.. code-block::
+
+   $ACK
 
 Or
 
 .. code-block::
 
-   +MQTTUNSUB:ERROR:<error_no>
+   ERROR:<error_no>
 
 Parameter
 ~~~~~~~~~~~~~~~~~~
-:<con_id>: The connect entity id.
+:<link_id>: Link ID.
 
-   - [0,3]
+   - Range: [0,3]
 
-:<topic_string>: The string of topic to be subscibed.
-
-   - It has length not longer than 490 bytes when longer command format, otherwise not longer than 97 bytes.
+:<topic>: The topic that is subscibed.
 
 Error Number
 ~~~~~~~~~~~~~~~~~~~~~~~~
-:1: Common error in software.
+:1: Parameters error.
 
-:2: Error parameters.
+:7: Not connect to the host.
 
-:6: This connect id has not been created.
+:11: Can not unsubscribe this topic.
 
-:9: Invalid connect id.
+:13: Time out.
 
-:10: It is not connected before.
+Example
+~~~~~~~~~~~~~~
+.. code-block::
 
-:16: Can not unsubscribe this topic.
-
-:17: Time out.
+   AT+MQTTUNSUB=0,LASS/Test/Pm25Ameba/#
+   OK
+   $ACK
 
 .. _mqtt_at_mqttpub:
 
@@ -371,229 +460,157 @@ Command
 ~~~~~~~~~~~~~~
 .. code-block::
 
-   AT+MQTTPUB=<con_id>,<messageid>[,<qos>,<retain>],<topic>,<message>
+   AT+MQTTPUB=<link_id>,<msg_id>,<topic>,<msg>,<qos>,<retain>
 
 Response
 ~~~~~~~~~~~~~~~~
 .. code-block::
 
-   // Here, this response will be output immediately once the command is correct.
-   +MQTTPUB:OK
-   // Here, there may be the message callback
-   +MQTTRECV:<conn_id>,<messageid>,<topic>,<message>,<length>,<qos>,<dup>,<retain>
-   // Here, once received ACK from host, it will response here.
-   ACK
+   OK
+
+When AT receives ACK from host, it will prompt:
+
+.. code-block::
+
+   $ACK
 
 Or
 
 .. code-block::
 
-   +MQTTPUB:ERROR:<error_no>
+   ERROR:<error_no>
 
 Parameter
 ~~~~~~~~~~~~~~~~~~
-:<con_id>: The connect entity id.
+:<link_id>: Link ID.
 
-   - [0,3]
+   - Range: [0,3]
 
-:<messageid>: The message id.
+:<msg_id>: MQTT message id.
 
-   - [1,65534]
+   - Range: [0,65535]
 
-:<qos>: (optional) QoS value.
-
-   - [0,2]
-
-   - It is 2 as default if absent.
-
-:<retain>: (optional) Retain value.
-
-   - [0,1]
-
-   - It is 0 as default if absent.
-
-:<topic>: The string of topic.
-
-   - It has length not longer than 490 bytes when longer command format, otherwise not longer than 97 bytes.
+:<topic>: MQTT topic.
 
    - It is suggested to fill a topic subscribed before.
 
-:<msg_string>: The message you will send.
+:<msg>: MQTT message.
 
-   - It has length not longer than 490 bytes when longer command format, otherwise not longer than 97 bytes.
+:<qos>: QoS of message.
+
+   - Which can be set to 0, 1, or 2. Default: 0.
+
+:<retain>: Retain value.
+
+   - Which can be set to 0 or 1. Default: 0.
 
 Error Number
 ~~~~~~~~~~~~~~~~~~~~~~~~
-:1: Common error in software.
+:1: Parameters error.
 
-:2: Error parameters.
+:2: Malloc error.
 
-:4: Memory failure.
+:7: Not connect to the host.
 
-:6: This connect id has not been created.
+:9: Publish failed.
 
-:9: Invalid connect id.
-
-:10: It is not connected before.
-
-:12: Can not publish successfully.
-
-:17: Time out.
-
-
+:13: Time out.
 
 Example
 ~~~~~~~~~~~~~~
 .. code-block::
 
-   // Normal message
-   AT+MQTTPUB=1,1,2,0,topic_test,my_message
-   +MQTTPUB:OK
-   +MQTTRECV:1,1,topic_test,my_message,10,0,0,0
-   ACK
-   // Json message, with commas in message, and ignore QoS and retain
-   AT+MQTTPUB=1,1,,,topic_test,{head\,{body}\,{tail}}
-   +MQTTPUB:OK
-   +MQTTRECV:1,1,topic_test,{head,{body},{tail}},20,2,0,0
-   ACK
+   AT+MQTTPUB=0,1,LASS/Test/Pm25Ameba/FT1_018,This is a test,1,1
+   OK
+   $ACK
 
-.. _mqtt_at_mqttcfg:
+.. _mqtt_at_mqttpubraw:
 
-AT+MQTTCFG
+AT+MQTTPUBRAW
 --------------------
 Description
 ~~~~~~~~~~~~~~~~~~~~~~
-Configure the parameters of MQTT entity.
+Publish a message for specific topic of specified length.
 
 Command
 ~~~~~~~~~~~~~~
 .. code-block::
 
-   AT+MQTTCFG=<con_id>,?
-   AT+MQTTCFG=<con_id>,version,<version>
-   AT+MQTTCFG=<con_id>,keepalive,<keepalive>
-   AT+MQTTCFG=<con_id>,session,<session>
-   AT+MQTTCFG=<con_id>,timeout,<timeout>
-   AT+MQTTCFG=<con_id>,will,0
-   AT+MQTTCFG=<con_id>,will,1,<qos>,<retain>,<topic>,<message>
-   AT+MQTTCFG=<con_id>,ssl,<ssl>
+   AT+MQTTPUBRAW=<link_id>,<msg_id>,<topic>,<length>,<qos>,<retain>
 
 Response
 ~~~~~~~~~~~~~~~~
+::
+
+   > > >
+
+The symbol ``>>>`` indicates that AT service is ready for receiving serial data, and you can enter the data now.
+When the requirement of message length determined by the parameter ``<length>`` is met, the transmission starts.
+If the transmission is successful, it returns:
+
 .. code-block::
 
-   // If execute sub-command "?"
-   +MQTTCFG:MQTTVersion <version>
-   +MQTTCFG:keepAliveInterval <timeout>
-   +MQTTCFG:cleansession <session>
-   +MQTTCFG:command_timeout_ms <timeout> (ms)
-   +MQTTCFG:willFlag <will>
-   +MQTTCFG:useSsl <ssl>
-   // Then OK
-   +MQTTCFG:OK
+   OK
+
+When AT receives ACK from host, it will prompt:
+
+.. code-block::
+
+   $ACK
 
 Or
 
 .. code-block::
 
-   +MQTTCFG:ERROR:<error_no>
+   ERROR:<error_no>
 
 Parameter
 ~~~~~~~~~~~~~~~~~~
-:<con_id>: The connect entity id.
+:<link_id>: Link ID.
 
-   - [0,3]
+   - Range: [0,3]
 
-? / version / keepalive / session / timeout / will / ssl: Sub-commands.
+:<msg_id>: MQTT message id.
 
-   - "?": Get the current parameters of <con_id> entity.
+   - Range: [0,65535]
 
-   - "version": Followed by <version>.
+:<topic>: MQTT topic.
 
-   - "session": Followed by <session>.
+   - It is suggested to fill a topic subscribed before.
 
-   - "timeout": Followed by <timeout>.
+:<length>: Length of MQTT message.
 
-   - "will": Followed by <will> and its sub parameters.
+:<qos>: QoS of message.
 
-   - "ssl": Followed by <ssl>.
+   - Which can be set to 0, 1, or 2. Default: 0.
 
-:<version>: MQTT version.
+:<retain>: Retain value.
 
-   - [3,4]
-
-:<keepalive>: Keepalive value.
-
-   - [1,3600]
-
-:<session>: Session value.
-
-   - [0,1]
-
-:<timeout>: The timeout value in millisecond.
-
-   - [10000,60000]
-
-:<will>: The will value.
-
-   - 0 or 1.
-
-   - When it is 1, it is followed by <qos>, <retain>, <topic> and <message>.
-
-:<qos>: QoS value for LWT message.
-
-   - [0,2]
-
-:<retain>: Retain value for LWT message.
-
-   - [0,1]
-
-:<topic>: The LWT topic.
-
-   - A string.
-
-:<message>: The LWT message.
-
-   - A string.
-
-:<ssl>: Whether support SSL.
-
-   - 0: Not support SSL.
-
-   - 1: Support SSL.
+   - Which can be set to 0 or 1. Default: 0.
 
 Error Number
 ~~~~~~~~~~~~~~~~~~~~~~~~
-:1: Common error in software.
+:1: Parameters error.
 
-:2: Error parameters.
+:2: Malloc error.
+
+:5: TT mode start failed.
+
+:7: Not connect to the host.
+
+:9: Publish failed.
+
+:13: Time out.
 
 Example
 ~~~~~~~~~~~~~~
 .. code-block::
 
-   // Create an MQTT entity with <con_id> = 1 at first.
-   // Inquiry the current parameter.
-   AT+MQTTCFG=1,?
-   +MQTTCFG:MQTTVersion 4
-   +MQTTCFG:keepAliveInterval 60
-   +MQTTCFG:cleansession 1
-   +MQTTCFG:command_timeout_ms 60000 (ms)
-   +MQTTCFG:willFlag 0
-   +MQTTCFG:useSsl 0
-   +MQTTCFG:OK
-   // Then modify the timeout to 50000
-   AT+MQTTCFG=1,timeout,50000
-   +MQTTCFG:OK
-   // Inquiry new parameters.
-   AT+MQTTCFG=1,?
-   +MQTTCFG:MQTTVersion 4
-   +MQTTCFG:keepAliveInterval 60
-   +MQTTCFG:cleansession 1
-   +MQTTCFG:command_timeout_ms 50000 (ms)
-   +MQTTCFG:willFlag 0
-   +MQTTCFG:useSsl 0
-   +MQTTCFG:OK
+   AT+MQTTPUBRAW=0,2,LASS/Test/Pm25Ameba/FT1_018,14,1,1
+   >>>
+   This is a test
+   OK
+   $ACK
 
 .. _mqtt_at_mqttreset:
 
@@ -601,7 +618,7 @@ AT+MQTTRESET
 ------------------------
 Description
 ~~~~~~~~~~~~~~~~~~~~~~
-Reset all MQTT entities.
+Reset all MQTT entities and release resource.
 
 Command
 ~~~~~~~~~~~~~~
@@ -613,6 +630,144 @@ Response
 ~~~~~~~~~~~~~~~~
 .. code-block::
 
-   +MQTTRESET:OK
+   OK
 
 .. note:: If there are any running MQTT entities, there will be all disconnected and deleted right now.
+
+Example
+~~~~~~~~~~~~~~
+.. code-block::
+
+   AT+MQTTRESET
+   OK
+
+.. _mqtt_at_mqttquery:
+
+AT+MQTTQUERY
+------------------------
+Description
+~~~~~~~~~~~~~~~~~~~~~~
+Query the connection status and configuration.
+
+Command
+~~~~~~~~~~~~~~
+.. code-block::
+
+   AT+MQTTQUERY=<link_id>
+
+Response
+~~~~~~~~~~~~~~~~
+.. code-block::
+
+   link_id: <link_id>
+   state: <isconnected>
+   conn_type: <conn_type>
+   host: <host>
+   port: <port>
+   clientId: <client_id>
+   userName: <username>
+   password: <password>
+   command_timeout_ms: <timeout>
+   keepAliveInterval: <keepalive>
+   cleansession: <disable_clean_session>
+   LWT: <lwt_flag>
+      qos: <lwt_qos>
+      retain: <lwt_retain>
+      topic: <lwt_topic>
+      message: <lwt_msg>
+
+   OK
+
+Or
+
+.. code-block::
+
+   ERROR:<error_no>
+
+Parameter
+~~~~~~~~~~~~~~~~~~
+:<link_id>: Link ID.
+
+   - Range: [0,3]
+
+Error Number
+~~~~~~~~~~~~~~~~~~~~~~~~
+:1: Parameters error.
+
+Example
+~~~~~~~~~~~~~~
+.. code-block::
+
+   AT+MQTTQUERY=0
+
+   link_id: 0
+   state: 1
+   conn_type: 1
+   host: broker.hivemq.com
+   port: 1883
+   clientId: publisher
+   userName: rs
+   password: 12345678
+   command_timeout_ms: 1000
+   keepAliveInterval: 10000
+   cleansession: 0
+   LWT: 1
+      qos: 0
+      retain: 0
+      topic: topic/lwt
+      message: This is a lwt message
+   
+   OK
+
+.. _mqtt_at_mqttsubquery:
+
+AT+MQTTSUBQUERY
+------------------------
+Description
+~~~~~~~~~~~~~~~~~~~~~~
+List all MQTT topics that have been already subscribed.
+
+Command
+~~~~~~~~~~~~~~
+.. code-block::
+
+   AT+MQTTSUBQUERY=<link_id>
+
+Response
+~~~~~~~~~~~~~~~~
+.. code-block::
+
+   link_id: <link_id>
+   state: <isconnected>
+   topic: <topic1>, qos: <topic1_qos>
+   topic: <topic2>, qos: <topic2_qos>
+   ...
+   OK
+
+Or
+
+.. code-block::
+
+   ERROR:<error_no>
+
+Parameter
+~~~~~~~~~~~~~~~~~~
+:<link_id>: Link ID.
+
+   - Range: [0,3]
+
+Error Number
+~~~~~~~~~~~~~~~~~~~~~~~~
+:1: Parameters error.
+
+Example
+~~~~~~~~~~~~~~
+::
+
+   AT+MQTTSUBQUERY=0
+
+   link_id: 0
+   state: 1
+   topic: LASS/Test/Pm25Ameba/#, qos: 1
+
+   OK
