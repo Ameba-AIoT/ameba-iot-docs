@@ -194,6 +194,20 @@ When the AT command using escapes character, the escapes characters such as ``\`
 
 You can modify the length limit by ``make menuconfig`` when compiling the SDK. If you select the option ``Enable Longer CMD``, the length limit will be larger.
 
+.. _transparent_transmission:
+
+Transparent Transmission
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In transparent transmission(tt) mode, the length of data transmitted by commands is limited only by the available heap size. 
+The transmitted data is not subject to format checks and will not terminate due to command end characters (``\r\n``). 
+After executing a command that supports tt mode, the AT module will return ``>>>`` to indicate that it has entered tt mode. 
+The MCU then needs to transmit the data of the length specified in the command. 
+Once the specified length of data is received, the AT module will automatically exit tt mode and return the result of the command execution.
+
+.. note::
+   TT mode only supports in MCU Control mode.
+
+
 AT Command List
 ------------------
 The AT commands supported now are listed below.
