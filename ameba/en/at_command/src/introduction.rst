@@ -29,14 +29,14 @@ There are two currently used AT command modes and scenarios, which can be called
    +--------------------+-------------------+-------------------+----------------------+
    | MCU Control Mode   | UART              | Ready             |                      |
    |                    +-------------------+-------------------+                      |
-   |                    | SPI               | Developing        | Product development  |
+   |                    | SPI               | Ready             | Product development  |
    |                    +-------------------+-------------------+                      |
    |                    | SDIO              | Developing        |                      |
    +--------------------+-------------------+-------------------+----------------------+
 
 We set the Ameba module as a slave, and the MCU as a host. The host can send AT commands to the slave and receive the corresponding AT response.
 Users can use AmebaLite, AmebaSmart, and AmebaDPlus as slaves for AT commands.   
-The AT commands consist of a wide range of types, such as Wi-Fi commands, MQTT commands, TCP/IP commands, and Bluetooth commands.
+The AT commands consist of a wide range of types, such as Wi-Fi commands, MQTT commands, WebSocket commands, TCP/IP commands, and Bluetooth commands.
 
 Hardware Connection
 --------------------
@@ -80,6 +80,9 @@ In case of MCU control mode, the input and response of AT commands can be separa
 
    In MCU Control mode, users should prepare the :file:`atcmd_config.json` file in advance, convert it into a bin file (refer to :ref:`Virtual File System <amebalite_virtual_file_system>` for detailed instructions), and download it to the module’s corresponding Flash partition along with the image.
    If no VFS AT command configuration file is provided, the default configuration of UART will be used.
+
+.. note::
+   When creating the VFS bin file, ``atcmd_config.json`` file should be placed in the ``KV`` directory.
 
 For different chips, the default UART input and output ports are listed in the following table.
 
@@ -201,9 +204,13 @@ The AT commands supported now are listed below.
 
 - :ref:`MQTT AT Commands <mqtt_at_commands>`
 
+- :ref:`WebSocket AT Commands <websocket_at_commands>`
+
 - :ref:`TCP/IP AT Commands <tcp_ip_at_commands>`
 
 - :ref:`Bluetooth AT Commands <bluetooth_at_commands>`
+
+- :ref:`File system AT Commands <file_system_at_commands>`
 
 Please refer to each section to look for more details about the command information of different AT commands.
 
@@ -235,11 +242,67 @@ Where:
    	ATCMD VERSION: v2.2.1
    	SDK VERSION: v3.5
 
-Building image
------------------
+Building and Downloading
+-------------------------
 Preparation
 ~~~~~~~~~~~~~~~
 Besides obtaining the release version from GitHub, users can also build images with ``{sdk}`` by self. For detailed building procedure, refer to the Application Note of the specific Ameba chips.
+
+.. _atcmd_mcu_control_mode_configuration:
+
+SSL Certificate
+~~~~~~~~~~~~~~~~
+If an SSL certificate is required during the use of AT Commands, the user has two options to prepare the certificate before executing the command:
+
+- 1. Store the pre-prepared certificate files in the VFS binary file with the names and formats of <client/server>_<ca/cert/key>_<1/2/3>.crt. 
+  Then, flash them to the AT module together with the application firmware.
+
+- 2. During the operation of the AT module, use the AT+FS command to write the certificate into the file system. 
+  For detailed usage of the AT+FS command to write files, please refer to :ref:`file_system_at_commands`.
+
+.. note::
+   When creating the VFS bin file, SSL certificates and ``atcmd_config.json`` file should be placed in the `KV` directory. 
+   The operations of the file system AT commands are also conducted in the ``KV`` directory.
+
+Configuration
+~~~~~~~~~~~~~~~
+For MCU Control mode, the configuration needs to be implemented via the ``atcmd_config.json`` file. 
+The specific format is as follows:
+
+.. code-block::
+   
+   {
+      "interface":"spi",
+      
+      "spi":
+      {
+         "mosi":"PA27",
+         "miso":"PA28",
+         "clk":"PA26",
+         "cs":"PA12",
+         "master_sync_pin":"PB30",
+         "slave_sync_pin":"PB31"
+      },
+      
+      "uart":
+      {
+         "baudrate":115200,
+         "tx":"PB19",
+         "rx":"PB18"
+      }
+   }
+
+Users can modify the property value of the interface to choose between using UART or SPI. The pins used in UART or SPI mode can also be customized.
+
+For the MCU Control mode of SPI, if you want to achieve better high-speed transmission performance, you need to enable the High TP Mode in menuconfig.
+The configuration process is as follows:
+
+.. figure:: ../figures/enable_wifi_high_tp_mode.png
+   :scale: 90%
+   :align: center
+
+   Enable Wifi High TP Mode
+
 
 Building
 ~~~~~~~~~~~~~~~~
@@ -274,8 +337,8 @@ If users want to use Bluetooth AT Commands, run ``$make menuconfig`` to enable B
 
    Enable BLE transfer module
 
-Downloading Image
-----------------------------
+Downloading
+~~~~~~~~~~~~~~~~
 There are two ways to download image to Flash:
 
 -  Image Tool, a software provided by Realtek (recommended).
