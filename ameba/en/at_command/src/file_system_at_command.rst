@@ -56,5 +56,4 @@ Error Number
 :2: operation failed.
 
 .. note::
-   When the `operation` is set to `write`, the system will enter TT mode upon receiving this command. 
-   At this point, you can input the data to be written, and the data length should match the `length` specified.
+   When the `operation` is set to `write`, the system will enter :ref:`TT mode <transparent_transmission>` upon receiving this command.
