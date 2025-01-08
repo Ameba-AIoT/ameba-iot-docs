@@ -2,29 +2,61 @@
 
 Introduction
 ------------------------
-The Wi-Fi FullMAC solution provides a standard wireless network interface for the host, allowing Wi-Fi applications (such as wpa_supplicant, TCP/IP stack, etc.) to run smoothly on the operating system.
+The FullMAC solution provides a standard wireless network interface for the host, allowing Wi-Fi and Bluetooth applications (such as wpa_supplicant, TCP/IP stack, etc.) to run smoothly on the operating system.
 
-The interfaces supported by Wi-Fi FullMAC are listed below:
+Transport Interface
+~~~~~~~~~~~~~~~~~~~
+The transport interfaces supported by FullMAC are listed below:
 
 .. table::
    :width: 100%
    :widths: auto
 
-   +------------+-----------------+---------------+
-   | Interface  | Host (Operating system)         |
-   |            +-----------------+---------------+
-   |            | Linux           | FreeRTOS      |
-   +============+=================+===============+
-   | SDIO       | Y               | Ongoing       |
-   +------------+-----------------+---------------+
-   | SPI        | Y               | Y             |
-   +------------+-----------------+---------------+
-   | USB        | Y               | N             |
-   +------------+-----------------+---------------+
-   | UART       | TBD             | TBD           |
-   +------------+-----------------+---------------+
+   +------------+--------------------------+-------------------------+-------+-----------+------------------------------------------------------+
+   | Ameba SoC  | Interface                | Host (Operating system) | Wi-Fi | Bluetooth | Transport description                                |
+   |            |                          +----------+--------------+       |           |                                                      |
+   |            |                          | Linux    | FreeRTOS     |       |           |                                                      |
+   +============+==========================+==========+==============+=======+===========+======================================================+
+   | AmebaDPlus | SDIO                     | Y        | Y            | Y     | Y         | Wi-Fi and Bluetooth, traffic for both runs over SDIO |
+   |            +--------------------------+----------+--------------+-------+-----------+------------------------------------------------------+
+   |            | SPI                      | Y        | Y            | Y     | Y         | Wi-Fi and Bluetooth, traffic for both runs over SPI  |
+   |            +--------------------------+----------+--------------+-------+-----------+------------------------------------------------------+
+   |            | USB                      | Y        | X            | Y     | Y         | Wi-Fi and Bluetooth, traffic for both runs over USB  |
+   |            +--------------------------+----------+--------------+-------+-----------+------------------------------------------------------+
+   |            | UART                     | TBD      | TBD          | X     | Y         | Bluetooth only runs over UART                        |
+   |            +--------------------------+----------+--------------+-------+-----------+------------------------------------------------------+
+   |            | SDIO (Wi-Fi) + UART (BT) | Y        | Y            | Y     | Y         | Wi-Fi runs over SDIO, and Bluetooth runs over UART   |
+   |            +--------------------------+----------+--------------+-------+-----------+------------------------------------------------------+
+   |            | SPI (Wi-Fi) + UART (BT)  | Y        | Y            | Y     | Y         | Wi-Fi runs over SPI, and Bluetooth runs over UART    |
+   +------------+--------------------------+----------+--------------+-------+-----------+------------------------------------------------------+
+   | AmebaLite  | SDIO                     |          |              |       |           |                                                      |
+   |            +--------------------------+----------+--------------+-------+-----------+------------------------------------------------------+
+   |            | SPI                      |          |              |       |           |                                                      |
+   |            +--------------------------+----------+--------------+-------+-----------+------------------------------------------------------+
+   |            | USB                      |          |              |       |           |                                                      |
+   |            +--------------------------+----------+--------------+-------+-----------+------------------------------------------------------+
+   |            | UART                     |          |              |       |           |                                                      |
+   |            +--------------------------+----------+--------------+-------+-----------+------------------------------------------------------+
+   |            | SDIO (Wi-Fi) + UART (BT) |          |              |       |           |                                                      |
+   |            +--------------------------+----------+--------------+-------+-----------+------------------------------------------------------+
+   |            | SPI (Wi-Fi) + UART (BT)  |          |              |       |           |                                                      |
+   +------------+--------------------------+----------+--------------+-------+-----------+------------------------------------------------------+
+   | AmebaSmart | SDIO                     |          |              |       |           |                                                      |
+   |            +--------------------------+----------+--------------+-------+-----------+------------------------------------------------------+
+   |            | SPI                      |          |              |       |           |                                                      |
+   |            +--------------------------+----------+--------------+-------+-----------+------------------------------------------------------+
+   |            | USB                      |          |              |       |           |                                                      |
+   |            +--------------------------+----------+--------------+-------+-----------+------------------------------------------------------+
+   |            | UART                     |          |              |       |           |                                                      |
+   |            +--------------------------+----------+--------------+-------+-----------+------------------------------------------------------+
+   |            | SDIO (Wi-Fi) + UART (BT) |          |              |       |           |                                                      |
+   |            +--------------------------+----------+--------------+-------+-----------+------------------------------------------------------+
+   |            | SPI (Wi-Fi) + UART (BT)  |          |              |       |           |                                                      |
+   +------------+--------------------------+----------+--------------+-------+-----------+------------------------------------------------------+
 
-The Wi-Fi FullMAC driver implements the following modules:
+Architecture
+~~~~~~~~~~~~~
+The FullMAC driver implements the following modules:
 
 - Provide a data transmission path between the host and the device based on a private transmission protocol via the SDIO/SPI interface
 - Adapt the cfg80211 layer and register the wireless network interface (wlan0/1) in the kernel to enable network data packet interaction between the Linux kernel and the |CHIP_NAME|
@@ -37,49 +69,69 @@ To clarify, in the following sections, the term ``host`` refers to the Linux PC 
    :scale: 130%
    :align: center
 
-   Wi-Fi FullMAC architecture
+   FullMAC architecture
 
 Features
-----------------
+~~~~~~~~~~
 .. table::
    :width: 100%
    :widths: auto
 
-   +------------+----------------------------------+-----------------------------------------------------------------------------+
-   | Item       | Detail                           | Description                                                                 |
-   +============+==================================+=============================================================================+
-   | Wi-Fi Mode | - STA                            | - The STA mode can coexist with any of the other three modes.               |
-   |            |                                  |                                                                             |
-   |            | - SoftAP                         | - The SoftAP mode and NAN mode cannot coexist with P2P GO mode.             |
-   |            |                                  |                                                                             |
-   |            | - NAN (Linux host only)          |                                                                             |
-   |            |                                  |                                                                             |
-   |            | - P2P GO (Linux host only)       |                                                                             |
-   +------------+----------------------------------+-----------------------------------------------------------------------------+
-   | Protocal   | 802.11 b/g/n                     |                                                                             |
-   +------------+----------------------------------+-----------------------------------------------------------------------------+
-   | Security   | Open/WPA/WPA2/WPA3               |                                                                             |
-   +------------+----------------------------------+-----------------------------------------------------------------------------+
-   | Power Save | Wowlan                           | | In the suspend state, the device can wake up to send and receive packets. |
-   |            |                                  | | The host will only be awakened when the device receives a packet that     |
-   |            |                                  | | matches a predefined pattern, thereby achieving power saving.             |
-   |            |                                  | | Some filtering conditions (patterns) can be customized as needed, for     |
-   |            |                                  | | example, wakeup packet type, MAC address, IP address, or port, etc.       |
-   |            +----------------------------------+-----------------------------------------------------------------------------+
-   |            | Proxy Offload:                   | | The host can offload some protocols to the device.                        |
-   |            |                                  | | In the suspend state, when the device receives an offloaded protocol      |
-   |            | - ARP Response                   | | request, it can handle the request autonomously and send a response       |
-   |            |                                  | | without waking up the host, thereby saving power.                         |
-   |            | - mDNS                           |                                                                             |
-   |            |                                  |                                                                             |
-   |            | - ICMP Response (TODO)           |                                                                             |
-   |            |                                  |                                                                             |
-   |            | - SNMP (TODO)                    |                                                                             |
-   |            |                                  |                                                                             |
-   |            | - LLMNR (TODO)                   |                                                                             |
-   |            |                                  |                                                                             |
-   |            | - SSDP/SLP/WSD/LLTD (TODO)       |                                                                             |
-   +------------+----------------------------------+-----------------------------------------------------------------------------+
+   +-------------------------------+----------------------------+----------------------------------------------------------------------------+
+   | Features                      | Ameba SoC                  | Description                                                                |
+   +===============================+============================+============================================================================+
+   | Supported platforms           | Linux host & FreeRTOS host |                                                                            |
+   +-------------------------------+----------------------------+----------------------------------------------------------------------------+
+   | Wi-Fi configuration mechanism | cfg80211                   |                                                                            |
+   +-------------------------------+----------------------------+----------------------------------------------------------------------------+
+   | Network interface available   | 802.11 Wi-Fi interface     |                                                                            |
+   +-------------------------------+----------------------------+----------------------------------------------------------------------------+
+   | Recommended host type         | Linux host                 |                                                                            |
+   +-------------------------------+----------------------------+----------------------------------------------------------------------------+
+   | Wi-Fi features                | 802.11 b/g/n               |                                                                            |
+   +-------------------------------+----------------------------+----------------------------------------------------------------------------+
+   | Transport interface           | - SDIO                     |                                                                            |
+   |                               | - SPI                      |                                                                            |
+   |                               | - USB                      |                                                                            |
+   |                               | - UART                     |                                                                            |
+   +-------------------------------+----------------------------+----------------------------------------------------------------------------+
+   | Transport combinations        | - SDIO only                |                                                                            |
+   |                               | - SPI only                 |                                                                            |
+   |                               | - USB only                 |                                                                            |
+   |                               | - SDIO + UART              |                                                                            |
+   |                               | - SPI + UART               |                                                                            |
+   +-------------------------------+----------------------------+----------------------------------------------------------------------------+
+   | Wi-Fi mode                    | - Station                  | - The STA mode can coexist with any of the other three modes.              |
+   |                               | - SoftAP                   | - The SoftAP mode and NAN mode cannot coexist with P2P GO mode.            |
+   |                               | - NAN (Linux host only)    |                                                                            |
+   |                               | - P2P GO (Linux host only) |                                                                            |
+   +-------------------------------+----------------------------+----------------------------------------------------------------------------+
+   | Wi-Fi security                | - Open                     |                                                                            |
+   |                               | - WPA                      |                                                                            |
+   |                               | - WPA2                     |                                                                            |
+   |                               | - WPA3                     |                                                                            |
+   +-------------------------------+----------------------------+----------------------------------------------------------------------------+
+   | Power saving                  | Wowlan                     | | In the suspend state, the device can wake up to send and receive packets.|
+   |                               |                            | | The host will only be awakened when the device eceives a packet that     |
+   |                               |                            | | matches a predefined pattern, thereby achieving power saving.            |
+   |                               |                            | | Some filtering conditions (patterns) can be customized as needed, for    |
+   |                               |                            | | example, wakeup packet type, MAC address, IP address, or port, etc.      |
+   |                               +----------------------------+----------------------------------------------------------------------------+
+   |                               | Proxy Offload:             | | The host can offload some protocols to the device.                       |
+   |                               |                            | | In the suspend state, when the device receives an offloaded protocol     |
+   |                               | - ARP Response             | | request, it can handle the request autonomously and send a response      |
+   |                               | - mDNS                     | | without  waking up the host, thereby saving power.                       |
+   |                               | - ICMP Response (TODO)     |                                                                            |
+   |                               | - SNMP (TODO)              |                                                                            |
+   |                               | - LLMNR (TODO)             |                                                                            |
+   |                               | - SSDP/SLP/WSD/LLTD (TODO) |                                                                            |
+   +-------------------------------+----------------------------+----------------------------------------------------------------------------+
+   | Bluetooth features            | - BLE 4.0                  |                                                                            |
+   |                               | - BLE 5.0                  |                                                                            |
+   |                               | - BLE 5.2                  |                                                                            |
+   +-------------------------------+----------------------------+----------------------------------------------------------------------------+
+   | SoC supported                 | AmebaDPlus                 |                                                                            |
+   +-------------------------------+----------------------------+----------------------------------------------------------------------------+
 
 File Tree
 ----------
@@ -255,16 +307,39 @@ Software Configuration
 ^^^^^^^^^^^^^^^^^^^^^^^
 Wi-Fi
 ******
-Software Configuration for Wi-Fi
+Device Driver
+#############
 
-xxxx
+1. Execute ``./menuconfig.py`` under the path ``{SDK}/amebadplus_gcc_project``
+
+   a. Click :menuselection:`CONFIG Link Option > IMG2(Application) running on FLASH or PSRAM?`, and select :menuselection:`PSRAM`
+
+      .. figure:: ../figures/sdio_config_flash_or_psram.png
+         :scale: 80%
+         :align: center
+
+   b. Click :menuselection:`CONFIG INIC ITNF > INIC Mode`, select :menuselection:`SDIO_FULLMAC` for SDIO interface or :menuselection:`SPI_FULLMAC` for SPI interface.
+
+      .. figure:: ../figures/wifi_sdio_spi_selection.png
+         :scale: 100%
+         :align: center
+
+2. Execute the make command to generate :file:`km4_boot_all.bin` and :file:`km0_km4_app.bin` after the build is successfully complete.
+
+3. Use the ImageTool to flash the bin files to |CHIP_NAME| and resst the device.
+
+Host Driver
+#############
 
 
 Bluetooth
 **********
-Software Configuration for Bluetooth
+Device Driver
+#############
 
-xxxxx
+
+Host Driver
+#############
 
 Linux
 ~~~~~~~~~
@@ -299,12 +374,14 @@ The FullMAC can be used on Linux PC or Raspberry Pi with different interfaces, w
    |            | PB23            | GPIO 11          | SPI_CLK       |                                                                 |
    |            +-----------------+------------------+---------------+                                                                 |
    |            | PB26            | GPIO 8           | SPI_CS        |                                                                 |
-   |            +-----------------+------------------+---------------+-----------------------------------------------------------------|
-   |            | PB8             | GPIO 23          | DEV_TX_REQ    | | An output pin for |CHIP_NAME|, used to indicate to the host   |
-   |            |                 |                  |               | | that it has a data packet to send with a rising edge.         |
-   |            +-----------------+------------------+---------------+-----------------------------------------------------------------|
-   |            | PB9             | GPIO 22          | DEV_READY     | | An output pin for |CHIP_NAME|, used to indicate its readiness |
-   |            |                 |                  |               | | for SPI transcation to host.                                  |
+   |            +-----------------+------------------+---------------+-----------------------------------------------------------------+
+   |            | PB8             | GPIO 23          | DEV_TX_REQ    | An output pin for |CHIP_NAME|, used to indicate to the host     |
+   |            |                 |                  |               |                                                                 |
+   |            |                 |                  |               | that it has a data packet to send with a rising edge.           |
+   |            +-----------------+------------------+---------------+-----------------------------------------------------------------+
+   |            | PB9             | GPIO 22          | DEV_READY     | An output pin for |CHIP_NAME|, used to indicate its readiness   |
+   |            |                 |                  |               |                                                                 |
+   |            |                 |                  |               | for SPI transcation to host.                                    |
    |            |                 |                  |               |                                                                 |
    |            |                 |                  |               | - 1: Device is ready.                                           |
    |            |                 |                  |               | - 0: Device is busy.                                            |
@@ -358,31 +435,17 @@ The FullMAC can be used on Linux PC or Raspberry Pi with different interfaces, w
 
 Software Configuration
 ^^^^^^^^^^^^^^^^^^^^^^^
-Device Driver
+Wi-Fi
 ***************
-1. Execute ``./menuconfig.py`` under the path ``{SDK}/amebadplus_gcc_project``
-
-   a. Click :menuselection:`CONFIG Link Option > IMG2(Application) running on FLASH or PSRAM?`, and select :menuselection:`PSRAM`
-
-      .. figure:: ../figures/sdio_config_flash_or_psram.png
-         :scale: 80%
-         :align: center
-
-   b. Click :menuselection:`CONFIG INIC ITNF > INIC Mode`, select :menuselection:`SDIO_FULLMAC` for SDIO interface or :menuselection:`SPI_FULLMAC` for SPI interface.
-
-      .. figure:: ../figures/wifi_sdio_spi_selection.png
-         :scale: 100%
-         :align: center
-
-2. Execute the make command to generate :file:`km4_boot_all.bin` and :file:`km0_km4_app.bin` after the build is successfully complete.
-
-3. Use the Image Tool to flash the bin files to |CHIP_NAME| and restart the device.
-
 Host Driver
-**************
-The FullMAC driver has been tested and verified to work on Linux kernel versions 5.4 and 5.10. If you encounter any compilation errors on other kernel versions, please contact us.
+#############
 
-1. Prerequisites: install the following software packages on Linux system.
+The FullMAC driver has been tested and verified to work on Linux kernel versions 5.4 and 5.10.
+If you encounter any compilation errors on other kernel versions, please contact us.
+
+.. admonition:: Prerequisites
+
+   Install the following software packages on Linux system first.
 
    .. code-block:: sh
 
@@ -391,17 +454,19 @@ The FullMAC driver has been tested and verified to work on Linux kernel versions
       sudo apt install hostapd
       sudo apt install dhcpd
 
-2. Enable the SDIO or SPI function.
+1. Enable the SDIO, SPI, or USB function.
 
    - For Linux PC, skip this step.
 
    - For Raspberry Pi:
-   
+
    .. tabs::
 
       .. tab:: SDIO
 
-         Use ``dtoverlay`` command to configure SDIO. For the Raspberry Pi 4, type the following command:
+         Use ``dtoverlay`` command to configure SDIO.
+
+         For Raspberry Pi 4, type the following command:
 
          .. code-block:: sh
 
@@ -409,31 +474,33 @@ The FullMAC driver has been tested and verified to work on Linux kernel versions
 
       .. tab:: SPI
 
-         i. Enable SPI peripheral
-  
+         i. Enable the SPI peripheral.
+
             .. code-block:: sh
-  
+
                sudo raspi-config
 
          ii. Select :menuselection:`Interface Options > SPI > Yes`
-  
+
             .. figure:: ../figures/raspberry_pi_spi_config.png
                :scale: 100%
                :align: center
-  
+
          iii. Generate and apply Device Tree Overlay
-  
+
             .. code-block:: sh
-  
+
                sudo su
                cd {driver_path}/cfg80211_fullmac/rtl8730e/spi
                dtc -@ -Hepapr -I dts -O dtb -o inic_spidev.dtbo spidev-overlay.dts
                cp inic_spidev.dtbo /boot/overlays/
                dtoverlay inic_spidev
 
-3. Build the module
+      .. tab:: USB
 
-   a. In the path ``/component/wifi/cfg80211_fullmac``, execute the following script with an interface parameter to configure host driver.
+2. Build the module.
+
+   a. In the path ``/component/wifi/cfg80211_fullmac``, execute the following script with an interface parameter to configure the host driver.
 
    .. tabs::
 
@@ -449,26 +516,32 @@ The FullMAC driver has been tested and verified to work on Linux kernel versions
 
             ./fullmac_setup.sh spi
 
+      .. tab:: USB
+
+         .. code-block::
+
+            ./fullmac_setup.sh usb
+
    b. Copy the folder of ``cfg80211_fullmac`` to the Linux system.
 
    c. Open the terminal and execute the following command:
 
       .. code-block::
 
-         cd {driver_path}/cfg80211_fullmac;make 
+         cd {driver_path}/cfg80211_fullmac;make
 
-.. _load_the_module_step_4:
+.. _load_the_module_step:
 
-4. Load the module.
+3. Load the module.
 
    .. tabs::
 
       .. tab:: SDIO
-   
+
          :file:`fullmac_sdio.ko` is generated in ``/cfg80211_fullmac/sdio``.
 
          .. code-block:: sh
-    
+
             sudo su
             cp sdio/fullmac_sdio.ko /lib/modules/XXX/
             depmod
@@ -479,11 +552,22 @@ The FullMAC driver has been tested and verified to work on Linux kernel versions
          :file:`fullmac_spi.ko` is generated in ``/cfg80211_fullmac/spi``.
 
          .. code-block::
-    
+
             sudo su
             cp spi/fullmac_spi.ko /lib/modules/XXX/
             depmod
             modprobe fullmac_spi
+
+      .. tab:: USB
+
+         :file:`fullmac_spi.ko` is generated in ``/cfg80211_fullmac/usb``.
+
+         .. code-block::
+
+            sudo su
+            cp usb/fullmac_spi.ko /lib/modules/XXX/
+            depmod
+            modprobe fullmac_usb
 
    When loading module is successful, use ``ifconfig`` command to get the information of net device.
    The net device whose MAC address starts with ``00:e0:4c`` is STA, and the net device whose MAC address starts with ``00:e1:4c is`` softAP.
@@ -494,7 +578,7 @@ The FullMAC driver has been tested and verified to work on Linux kernel versions
       :scale: 100%
       :align: center   
 
-5. Connect to STA.
+4. Connect to STA.
 
    a. Create :file:`wpa_supplicant.conf` under the path ``/etc/wpa_supplicant/`` and add AP information.
 
@@ -521,7 +605,7 @@ The FullMAC driver has been tested and verified to work on Linux kernel versions
          dhcpcd wlanX
 
    .. note::
-      - The *wlanX* in the above command refers to the name of STA obtained from :ref:`Step 4 <load_the_module_step_4>`.
+      - The *wlanX* in the above command refers to the name of STA obtained from :ref:`Step 3 <load_the_module_step>`.
       - The configuration files of OPEN and WPA3 are different, please refer to the official supplicant documentation for details.
       - For Ubuntu system, if you want to manually connect using command ``wpa_supplicant`` and obtain an IP address, first stop NetworkManager and DHCP service to avoid the influence of NetworkManager on *wpa_supplicant*.
 
@@ -532,7 +616,7 @@ The FullMAC driver has been tested and verified to work on Linux kernel versions
            systemctl disable NetworkManager
            systemctl stop dhcpcd.service
 
-6. Setup the softAP.
+5. Setup the softAP.
 
    a. Create :file:`hostapd.conf` under the path ``/etc/hostapd/`` and add the configuration information.
 
@@ -611,7 +695,13 @@ The FullMAC driver has been tested and verified to work on Linux kernel versions
          udhcpd -f /etc/udhcpd_wlanX.conf
 
    .. note::
-      The *wlanX* in the above command refers to the name of softAP obtained from :ref:`Step 4 <load_the_module_step_4>`.
+      The *wlanX* in the above command refers to the name of softAP obtained from :ref:`Step 3 <load_the_module_step>`.
+
+Bluetooth
+***************
+Host Driver
+#############
+
 
 Throughput
 --------------
