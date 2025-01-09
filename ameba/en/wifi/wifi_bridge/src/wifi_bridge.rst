@@ -159,6 +159,14 @@ Please connect |CHIP_NAME| to host with jumper cables as mentioned below.
    | PB_14    | SDIO_DATA1 |
    +----------+------------+
 
+.. note::
+   The above pins are the default pin configuration in the firmware code. If you need to change the pin configuration on the SDIO device side, modifications must be made in the SPDIO_Board_Init function to set the actual connected pins' pinmux to SDIO. This function is located in the following file:
+
+   ::
+
+      component/soc/amebadplus/hal/src/spdio_api.c
+
+   Currently, the host driver for OOB mode has not yet been developed; hence, the host side only supports SDIO interrupt mode. Consequently, the pinmux configuration for SDIO_DATA1 must be set to SDIO mode rather than GPIO mode.
 
 The |CHIP_NAME| can also convert to a standard SD card through the designed PCB board, as shown below. Some changes are nedded on |CHIP_NAME| demo board, please contact us about how to modify the demo board.
 
