@@ -73,16 +73,13 @@ In case of MCU control mode, the input and response of AT commands can be separa
 
 .. only:: RTL8721D
 
-   In MCU Control mode, users should prepare the :file:`atcmd_config.json` file in advance, convert it into a bin file (refer to :ref:`Virtual File System <amebadplus_virtual_file_system>` for detailed instructions), and download it to the module’s corresponding Flash partition along with the image.
+   In MCU Control mode, users should prepare the :file:`atcmd_config.json` file in advance(refer to :ref:`atcmd_mcu_control_mode_configuration` for detailed instructions).
    If no VFS AT command configuration file is provided, the default configuration of UART will be used.
 
 .. only:: RTL8726EA
 
-   In MCU Control mode, users should prepare the :file:`atcmd_config.json` file in advance, convert it into a bin file (refer to :ref:`Virtual File System <amebalite_virtual_file_system>` for detailed instructions), and download it to the module’s corresponding Flash partition along with the image.
+   In MCU Control mode, users should prepare the :file:`atcmd_config.json` file in advance(refer to :ref:`atcmd_mcu_control_mode_configuration` for detailed instructions).
    If no VFS AT command configuration file is provided, the default configuration of UART will be used.
-
-.. note::
-   When creating the VFS bin file, ``atcmd_config.json`` file should be placed in the ``KV`` directory.
 
 For different chips, the default UART input and output ports are listed in the following table.
 
@@ -262,8 +259,6 @@ Preparation
 ~~~~~~~~~~~~~~~
 Besides obtaining the release version from GitHub, users can also build images with ``{sdk}`` by self. For detailed building procedure, refer to the Application Note of the specific Ameba chips.
 
-.. _atcmd_mcu_control_mode_configuration:
-
 SSL Certificate
 ~~~~~~~~~~~~~~~~
 If an SSL certificate is required during the use of AT Commands, the user has two options to prepare the certificate before executing the command:
@@ -275,8 +270,9 @@ If an SSL certificate is required during the use of AT Commands, the user has tw
   For detailed usage of the AT+FS command to write files, please refer to :ref:`file_system_at_commands`.
 
 .. note::
-   When creating the VFS bin file, SSL certificates and ``atcmd_config.json`` file should be placed in the `KV` directory. 
-   The operations of the file system AT commands are also conducted in the ``KV`` directory.
+   When creating the VFS bin file, SSL certificates should be placed in the ``KV`` directory. The operations of the file system AT commands are also conducted in the ``KV`` directory.
+
+.. _atcmd_mcu_control_mode_configuration:
 
 Configuration
 ~~~~~~~~~~~~~~~
@@ -317,6 +313,45 @@ The configuration process is as follows:
 
    Enable Wifi High TP Mode
 
+Example
+^^^^^^^^
+This section demonstrates how to prepare a custom atcmd_config.json file and activate it:
+
+1. Create a new atcmd_config.json file with the following custom content:
+
+   .. code-block::
+      
+      {
+         "interface":"uart",
+         
+         "uart":
+         {
+            "baudrate":115200,
+            "tx":"PA26",
+            "rx":"PA27"
+         }
+      }
+
+2. Create a TEST/KV directory and place the atcmd_config.json file into the ``KV`` subdirectory.
+
+3. Use the LittleFS binary file creation tool to generate a LittleFS binary file (refer to :ref:`VFS Bin File <vfs_bin_file_generation>` for the specific command parameters).
+
+   .. code-block::
+      
+      linux@user:~$./mklittlefs -b 4096 -p 256 -s 131072 -c TEST lfs.bin
+      /KV/atcmd_config.json
+
+4. Flash the generated lfs.bin file into the VFS1 region of the AT module according to the flash layout(refer to :ref:`VFS on Flash <vfs_on_flash_section>` for the specific address).
+
+5. Flash the application firmware that enables MCU Control Mode (refer to :ref:`atcmd_image_building` for specific instructions).
+
+6. After powering on the AT module, you can observe the custom configuration printouts on the loguart port, indicating that the configuration has taken effect.
+
+   .. code-block::
+      
+      [AT-I] ATCMD MCU Control Mode : UART, tx:PA26, rx:PA27, baudrate:115200
+
+.. _atcmd_image_building:
 
 Building
 ~~~~~~~~~~~~~~~~

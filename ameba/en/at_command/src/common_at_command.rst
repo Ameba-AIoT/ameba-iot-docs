@@ -76,6 +76,9 @@ Description
 ~~~~~~~~~~~~~~~~~~~~~~
 User can clear the APP image OTA2 signature by this command.
 
+.. note::
+   Only support in LOGUART Mode.
+
 Command
 ~~~~~~~~~~~~~~
 .. code-block::
@@ -100,6 +103,9 @@ Description
 ~~~~~~~~~~~~~~~~~~~~~~
 User can recover the APP image OTA2 signature by this command.
 
+.. note::
+   Only support in LOGUART Mode.
+
 Command
 ~~~~~~~~~~~~~~
 .. code-block::
@@ -123,6 +129,9 @@ AT+CPULOAD
 Description
 ~~~~~~~~~~~~~~~~~~~~~~
 User can read the CPU load periodically.
+
+.. note::
+   Only support in LOGUART Mode.
 
 Command
 ~~~~~~~~~~~~~~
@@ -453,6 +462,9 @@ Description
 ~~~~~~~~~~~~~~~~~~~~~~
 Read the common register value.
 
+.. note::
+   Only support in LOGUART Mode.
+
 Command
 ~~~~~~~~~~~~~~
 .. code-block::
@@ -507,6 +519,9 @@ AT+WREG
 Description
 ~~~~~~~~~~~~~~~~~~~~~~
 Write data into register.
+
+.. note::
+   Only support in LOGUART Mode.
 
 Command
 ~~~~~~~~~~~~~~
