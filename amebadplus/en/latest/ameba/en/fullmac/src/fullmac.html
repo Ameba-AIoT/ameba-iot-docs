@@ -313,7 +313,7 @@
 <li><p>Adapt the cfg80211 layer and register the wireless network interface (wlan0/1) in the kernel to enable network data packet interaction between the Linux kernel and the AmebaDPlus</p></li>
 <li><p>Provide commonly-used and proprietary commands to configure the parameters of Wi-Fi interface</p></li>
 </ul>
-<p>To clarify, in the following sections, the term <code class="docutils literal notranslate"><span class="pre">host</span></code> refers to the Linux PC acting as the host, and the term <code class="docutils literal notranslate"><span class="pre">device</span></code> refers to the AmebaDPlus serving as the device.</p>
+<p>To clarify, in the following sections, the term <code class="docutils literal notranslate"><span class="pre">host</span></code> refers to the Linux PC/Rtos IC acting as the host, and the term <code class="docutils literal notranslate"><span class="pre">device</span></code> refers to the AmebaDPlus serving as the device.</p>
 <figure class="align-center" id="id11">
 <a class="reference internal image-reference" href="../../../../_images/wifi_fullmac_architecture.svg"><img alt="../../../../_images/wifi_fullmac_architecture.svg" height="466" src="../../../../_images/wifi_fullmac_architecture.svg" width="464" /></a>
 <figcaption>
@@ -587,6 +587,14 @@ Dev</p></td>
 </tr>
 </tbody>
 </table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The above pins of SDIO are the default pin configuration in the firmware code. If you need to change the pin configuration on the SDIO device side, modifications must be made in the SPDIO_Board_Init function to set the actual connected pins’ pinmux to SDIO. This function is located in the following file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">component</span><span class="o">/</span><span class="n">soc</span><span class="o">/</span><span class="n">amebadplus</span><span class="o">/</span><span class="n">hal</span><span class="o">/</span><span class="n">src</span><span class="o">/</span><span class="n">spdio_api</span><span class="o">.</span><span class="n">c</span>
+</pre></div>
+</div>
+<p>Currently, the host driver for OOB has not yet been developed; hence, the host side only supports SDIO interrupt mode. Consequently, the pinmux configuration for SDIO_DATA1 must be set to SDIO mode rather than GPIO mode.</p>
+</div>
 </section>
 <section id="software-configuration">
 <h3>Software Configuration<a class="headerlink" href="#software-configuration" title="Link to this heading"></a></h3>
@@ -790,6 +798,10 @@ In order to run at high speed, it’s strongly recommended to plug the demo boar
 <h5>Host Driver<a class="headerlink" href="#id8" title="Link to this heading"></a></h5>
 <p>The FullMAC driver has been tested and verified to work on Linux kernel versions 5.4 and 5.10.
 If you encounter any compilation errors on other kernel versions, please contact us.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The SPI operates using DMA, and the data for the SPI device is stored in RAM. When the nCS pin is asserted low, DMA transfers the data from RAM to the bus. Under normal conditions, this data transfer occurs without issues. However, if the bus is busy, a delay can occur during the data transfer, leading to potential problems. Our developer identified and tested this issue, determining that a delay of 7 microseconds provides sufficient time to ensure safe data transfer to the bus, even when it is busy. In some older versions of the Linux kernel, the SPI driver does not support the struct spi_delay, which prevents setting the delay between nCS and the clock signal through the interface. As a result, it may be necessary to modify the driver code directly to achieve the desired delay configuration.</p>
+</div>
 <div class="admonition-prerequisites admonition">
 <p class="admonition-title">Prerequisites</p>
 <p>Install the following software packages on Linux system first.</p>
