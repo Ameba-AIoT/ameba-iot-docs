@@ -68,7 +68,6 @@ The FullMAC driver implements the following modules:
 - Adapt the cfg80211 layer and register the wireless network interface (wlan0/1) in the kernel to enable network data packet interaction between the Linux kernel and the |CHIP_NAME|
 - Provide commonly-used and proprietary commands to configure the parameters of Wi-Fi interface
 
-
 To clarify, in the following sections, the term ``host`` refers to the Linux PC acting as the host, and the term ``device`` refers to the |CHIP_NAME| serving as the device.
 
 .. figure:: ../figures/wifi_fullmac_architecture.svg
@@ -83,56 +82,52 @@ Features
    :width: 100%
    :widths: auto
 
-   +-------------------------------+----------------------------+------------------------------+
-   | Features                      | Linux host                 | FreeRTOS host                |
-   +===============================+============================+==============================+
-   | Supported platforms           | Y                          | Y                            |
-   +-------------------------------+----------------------------+------------------------------+
-   | Wi-Fi configuration mechanism | Standard Linux APIs        | FreeRTOS Wi-Fi APIs          |
-   +-------------------------------+----------------------------+------------------------------+
-   | Recommended host type         | Y                          | X                            |
-   +-------------------------------+----------------------------+------------------------------+
-   | Wi-Fi features                | 802.11 a/b/g/n/ax                                         |
-   +-------------------------------+-----------------------------------------------------------+
-   | Transport interface           | - SDIO                                                    |
-   |                               | - SPI                                                     |
-   |                               | - USB                                                     |
-   |                               | - UART                                                    |
-   +-------------------------------+-----------------------------------------------------------+
-   | Transport combinations        | - SDIO only                                               |
-   |                               | - SPI only                                                |
-   |                               | - USB only                                                |
-   |                               | - SDIO + UART                                             |
-   |                               | - SPI + UART                                              |
-   |                               | - USB + UART                                              |
-   +-------------------------------+----------------------------+------------------------------+
-   | Wi-Fi mode                    | - Station                  | - Station                    |
-   |                               | - SoftAP                   | - SoftAP                     |
-   |                               | - NAN                      |                              |
-   |                               | - P2P GO                   |                              |
-   +-------------------------------+----------------------------+------------------------------+
-   | Wi-Fi security                | - Open                                                    |
-   |                               | - WPA                                                     |
-   |                               | - WPA2                                                    |
-   |                               | - WPA3                                                    |
-   +-------------------------------+-----------------------------------------------------------+
-   | Power saving                  | Wowlan                                                    |
-   |                               +----------------------------+------------------------------+
-   |                               | Proxy Offload:             | \-                           |
-   |                               |                            |                              |
-   |                               | - ARP Response             |                              |
-   |                               | - mDNS                     |                              |
-   |                               | - ICMP Response (TODO)     |                              |
-   |                               | - SNMP (TODO)              |                              |
-   |                               | - LLMNR (TODO)             |                              |
-   |                               | - SSDP/SLP/WSD/LLTD (TODO) |                              |
-   +-------------------------------+----------------------------+------------------------------+
-   | Bluetooth features            | - BLE 4.0                                                 |
-   |                               | - BLE 5.0                                                 |
-   |                               | - BLE 5.3                                                 |
-   +-------------------------------+----------------------------+------------------------------+
-   | SoC supported                 | AmebaDPlus                 | AmebaDPlus                   |
-   +-------------------------------+----------------------------+------------------------------+
+   +-----------------------------------+----------------------------+------------------------------+
+   | Features                          | Linux host                 | FreeRTOS host                |
+   +===================================+============================+==============================+
+   | Wi-Fi configuration mechanism     | Standard Linux APIs        | FreeRTOS Wi-Fi APIs          |
+   +-----------------------------------+----------------------------+------------------------------+
+   | Wi-Fi features                    | 802.11 a/b/g/n/ax                                         |
+   +-----------------------------------+-----------------------------------------------------------+
+   | Transport interface               | - SDIO                                                    |
+   |                                   | - SPI                                                     |
+   |                                   | - USB                                                     |
+   |                                   | - UART                                                    |
+   +-----------------------------------+-----------------------------------------------------------+
+   | Wi-Fi & BT transport combinations | - SDIO only                                               |
+   |                                   | - SPI only                                                |
+   |                                   | - USB only                                                |
+   |                                   | - SDIO + UART                                             |
+   |                                   | - SPI + UART                                              |
+   |                                   | - USB + UART                                              |
+   +---------------------------------- +----------------------------+------------------------------+
+   | Wi-Fi mode                        | - Station                  | - Station                    |
+   |                                   | - SoftAP                   | - SoftAP                     |
+   |                                   | - NAN                      |                              |
+   |                                   | - P2P GO                   |                              |
+   +---------------------------------- +----------------------------+------------------------------+
+   | Wi-Fi security                    | - Open                                                    |
+   |                                   | - WPA                                                     |
+   |                                   | - WPA2                                                    |
+   |                                   | - WPA3                                                    |
+   +---------------------------------- +-----------------------------------------------------------+
+   | Power saving                      | Wowlan                                                    |
+   |                                   +----------------------------+------------------------------+
+   |                                   | Proxy Offload:             | \-                           |
+   |                                   |                            |                              |
+   |                                   | - ARP Response             |                              |
+   |                                   | - mDNS                     |                              |
+   |                                   | - ICMP Response (TODO)     |                              |
+   |                                   | - SNMP (TODO)              |                              |
+   |                                   | - LLMNR (TODO)             |                              |
+   |                                   | - SSDP/SLP/WSD/LLTD (TODO) |                              |
+   +---------------------------------- +----------------------------+------------------------------+
+   | Bluetooth features                | - BLE 5.0                                                 |
+   |                                   | - BLE 5.2                                                 |
+   |                                   | - Bluetooth 5.3                                           |
+   +---------------------------------- +-----------------------------------------------------------+
+   | SoC supported                     | AmebaDPlus                                                |
+   +---------------------------------- +-----------------------------------------------------------+
 
 File Tree
 ----------
