@@ -301,6 +301,7 @@ For special storage security needs, users can configure encryption and decryptio
 .. note::
    Plaintext will be padded according to the length of grouped data. It will take more cost of memory space if using vfs encryption.
 
+.. _vfs_bin_file_generation:
 
 VFS Bin File Generation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

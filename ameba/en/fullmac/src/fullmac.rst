@@ -100,17 +100,17 @@ Features
    |                                   | - SDIO + UART                                             |
    |                                   | - SPI + UART                                              |
    |                                   | - USB + UART                                              |
-   +---------------------------------- +----------------------------+------------------------------+
+   +-----------------------------------+----------------------------+------------------------------+
    | Wi-Fi mode                        | - Station                  | - Station                    |
    |                                   | - SoftAP                   | - SoftAP                     |
    |                                   | - NAN                      |                              |
    |                                   | - P2P GO                   |                              |
-   +---------------------------------- +----------------------------+------------------------------+
+   +-----------------------------------+----------------------------+------------------------------+
    | Wi-Fi security                    | - Open                                                    |
    |                                   | - WPA                                                     |
    |                                   | - WPA2                                                    |
    |                                   | - WPA3                                                    |
-   +---------------------------------- +-----------------------------------------------------------+
+   +-----------------------------------+-----------------------------------------------------------+
    | Power saving                      | Wowlan                                                    |
    |                                   +----------------------------+------------------------------+
    |                                   | Proxy Offload:             | \-                           |
@@ -121,13 +121,13 @@ Features
    |                                   | - SNMP (TODO)              |                              |
    |                                   | - LLMNR (TODO)             |                              |
    |                                   | - SSDP/SLP/WSD/LLTD (TODO) |                              |
-   +---------------------------------- +----------------------------+------------------------------+
+   +-----------------------------------+----------------------------+------------------------------+
    | Bluetooth features                | - BLE 5.0                                                 |
    |                                   | - BLE 5.2                                                 |
    |                                   | - Bluetooth 5.3                                           |
-   +---------------------------------- +-----------------------------------------------------------+
+   +-----------------------------------+-----------------------------------------------------------+
    | SoC supported                     | AmebaDPlus                                                |
-   +---------------------------------- +-----------------------------------------------------------+
+   +-----------------------------------+-----------------------------------------------------------+
 
 File Tree
 ----------
@@ -138,75 +138,32 @@ Wi-Fi
 
    .. tab:: FreeRTOS
 
-      The FullMAC driver of FreeRTOS in the SDK is located at 
+      The FullMAC driver of FreeRTOS in the SDK is located at ``{SDK}/component/wifi/inic``. Users need to porting files in none_ipc_rtos if use other rtos IC as Host.
 
       ::
 
-         Low-level hardware driver
-         └── common
-             ├── rtw_ioctl.c
-             ├── rtw_ioctl.h
-             ├── rtw_llhw_event.h
-             ├── rtw_llhw_event_rx.c
-             ├── rtw_llhw_event_tx.c
-             ├── rtw_llhw_hci.c
-             ├── rtw_llhw_hci.h
-             ├── rtw_llhw_hci_memory.c
-             ├── rtw_llhw_ops.c
-             ├── rtw_llhw_pkt_rx.c
-             ├── rtw_llhw_pkt_tx.c
-             ├── rtw_llhw_trx.h
-             └── rtw_protocal_offload.c
+         Low-level driver
          └── sdio
-             ├── Kbuild
-             ├── rtw_sdio.h
-             ├── rtw_sdio_drvio.c
-             ├── rtw_sdio_drvio.h
-             ├── rtw_sdio_fwdl.c
-             ├── rtw_sdio_init.c
-             ├── rtw_sdio_ops.c
-             ├── rtw_sdio_ops.h
-             ├── rtw_sdio_probe.c
-             └── rtw_sdio_reg.h
+             └── inic_sdio_dev.c
          └── spi
-             ├── Kbuild
-             ├── rtw_spi.h
-             ├── rtw_spi_ops.c
-             ├── rtw_spi_probe.c
-             └── spidev-overlay.dts
+             ├── inic_spi_dev.c
+             ├── inic_spi_host.c
+             └── inic_spi_host_trx.c
          └── usb
-             ├── Kbuild
-             ├── rtw_usb.h
-             ├── rtw_usb_ops.c
-             └── rtw_usb_probe.c
+             └── inic_usb_dev.c
 
-         FullMAC driver
-         ├── rtw_acs.c
-         ├── rtw_acs.h
-         ├── rtw_cfg80211_fullmac.h
-         ├── rtw_cfg80211_ops.c
-         ├── rtw_cfg80211_ops_ap.c
-         ├── rtw_cfg80211_ops_key.c
-         ├── rtw_cfg80211_ops_nan.c
-         ├── rtw_cfg80211_ops_p2p.c
-         ├── rtw_cfgvendor.c
-         ├── rtw_cfgvendor.h
-         ├── rtw_drv_probe.c
-         ├── rtw_drv_probe.h
-         ├── rtw_ethtool_ops.c
-         ├── rtw_ethtool_ops.h
-         ├── rtw_functions.h
-         ├── rtw_netdev_ops.c
-         ├── rtw_netdev_ops.h
-         ├── rtw_netdev_ops_p2p.c
-         ├── rtw_proc.c
-         ├── rtw_proc.h
-         ├── rtw_promisc.c
-         ├── rtw_promisc.h
-         ├── rtw_regd.c
-         ├── rtw_regd.h
-         ├── rtw_wiphy.c
-         └── rtw_wiphy.h
+         FullMAC common driver
+         └── none_ipc_dev
+             ├── inic_dev_api.c
+             ├── inic_dev_bridge.c
+             ├── inic_dev_msg_queue.c
+             └── inic_dev_protocal_offload.c
+         └── none_ipc_host
+             ├── inic_host_api.c
+             ├── inic_host_api_basic.c
+             ├── inic_host_api_bt.c
+             └── inic_host_api_ext.c
+         └── none_ipc_rtos
 
    .. tab:: Linux
 
@@ -298,11 +255,52 @@ Hardware Configuration
 ^^^^^^^^^^^^^^^^^^^^^^^
 The FullMAC can be used on FreeRTOS with different interfaces, with different pins used for FullMAC function.
 
+.. table::
+   :width: 100%
+   :widths: auto
+   :name: amebadplus_fullmac_pins
+
+   +------------+-----------------+---------------+-----------------------------------------------------------------+
+   | Interface  | AmebaDPlus Pin  | Function      | Description                                                     |
+   +============+=================+===============+=================================================================+
+   | SPI        | PB24            | SPI_MOSI      | SPI pins                                                        |
+   | Host/Dev   +-----------------+---------------+                                                                 |
+   |            | PB25            | SPI_MISO      |                                                                 |
+   |            +-----------------+---------------+                                                                 |
+   |            | PB23            | SPI_CLK       |                                                                 |
+   |            +-----------------+---------------+                                                                 |
+   |            | PB26            | SPI_CS        |                                                                 |
+   |            +-----------------+---------------+-----------------------------------------------------------------+
+   |            | PB8             | DEV_TX_REQ    | A input pin for host, output pin for dev, Indicate a data pkt   |
+   |            |                 |               |                                                                 |
+   |            |                 |               | in dev wating to send to Host with a rising edge.               |
+   |            +-----------------+---------------+-----------------------------------------------------------------+
+   |            | PB9             | DEV_READY     | A input pin for host, output pin for dev, used to show that     |
+   |            |                 |               |                                                                 |
+   |            |                 |               | if dev is ready for SPI transcation.                            |
+   |            |                 |               |                                                                 |
+   |            |                 |               | - 1: Device is ready.                                           |
+   |            |                 |               | - 0: Device is busy.                                            |
+   +------------+-----------------+---------------+-----------------------------------------------------------------+
+   | SDIO       | PB6             | SDIO_DAT2     | SDIO pins                                                       |
+   | Dev        +-----------------+---------------+                                                                 |
+   |            | PB7             | SDIO_DAT3     |                                                                 |
+   |            +-----------------+---------------+                                                                 |
+   |            | PB8             | SDIO_CMD      |                                                                 |
+   |            +-----------------+---------------+                                                                 |
+   |            | PB9             | SDIO_CLK      |                                                                 |
+   |            +-----------------+---------------+                                                                 |
+   |            | PB13            | SDIO_DAT0     |                                                                 |
+   |            +-----------------+---------------+                                                                 |
+   |            | PB14            | SDIO_DAT1     |                                                                 |
+   +------------+-----------------+---------------+-----------------------------------------------------------------+
 
 Software Configuration
 ^^^^^^^^^^^^^^^^^^^^^^^
 Wi-Fi
 ******
+The FullMAC can be used on FreeRTOS with different interfaces, and |CHIP_NAME| can be used as SPI Host/Device, or SDIO Device.
+
 Device Driver
 #############
 
@@ -314,7 +312,7 @@ Device Driver
          :scale: 80%
          :align: center
 
-   b. Click :menuselection:`CONFIG INIC ITNF > INIC Mode`, select :menuselection:`SDIO_FULLMAC` for SDIO interface or :menuselection:`SPI_FULLMAC` for SPI interface.
+   b. Click :menuselection:`CONFIG INIC ITNF > INIC Mode > FULLMAC`, select :menuselection:`SDIO_FULLMAC` for SDIO interface or :menuselection:`SPI_FULLMAC` for SPI interface.
 
       .. figure:: ../figures/wifi_sdio_spi_selection.png
          :scale: 100%
@@ -327,6 +325,21 @@ Device Driver
 Host Driver
 #############
 
+If use |CHIP_NAME| as SPI Fullmac Host:
+
+1. Execute ``./menuconfig.py`` under the path ``{SDK}/amebadplus_gcc_project``
+
+   a. Click :menuselection:`CONFIG INIC ITNF > INIC Mode`, select :menuselection:`SPI_FULLMAC_HOST` for SPI interface.
+
+      .. figure:: ../figures/spi_config_fullmac_host.png
+         :scale: 80%
+         :align: center
+
+2. Execute the make command to generate :file:`km4_boot_all.bin` and :file:`km0_km4_app.bin` after the build is successfully complete.
+
+3. Use the ImageTool to flash the bin files to |CHIP_NAME| and resst the device.
+
+If use other rtos IC as SPI/SDIO Fullmac Host, files showed in file tree can be used.
 
 Bluetooth
 **********
