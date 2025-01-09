@@ -68,7 +68,7 @@ The FullMAC driver implements the following modules:
 - Adapt the cfg80211 layer and register the wireless network interface (wlan0/1) in the kernel to enable network data packet interaction between the Linux kernel and the |CHIP_NAME|
 - Provide commonly-used and proprietary commands to configure the parameters of Wi-Fi interface
 
-To clarify, in the following sections, the term ``host`` refers to the Linux PC acting as the host, and the term ``device`` refers to the |CHIP_NAME| serving as the device.
+To clarify, in the following sections, the term ``host`` refers to the Linux PC/Rtos IC acting as the host, and the term ``device`` refers to the |CHIP_NAME| serving as the device.
 
 .. figure:: ../figures/wifi_fullmac_architecture.svg
    :scale: 130%
@@ -295,6 +295,15 @@ The FullMAC can be used on FreeRTOS with different interfaces, with different pi
    |            | PB14            | SDIO_DAT1     |                                                                 |
    +------------+-----------------+---------------+-----------------------------------------------------------------+
 
+.. note::
+   The above pins of SDIO are the default pin configuration in the firmware code. If you need to change the pin configuration on the SDIO device side, modifications must be made in the SPDIO_Board_Init function to set the actual connected pins' pinmux to SDIO. This function is located in the following file:
+
+   ::
+
+      component/soc/amebadplus/hal/src/spdio_api.c
+
+   Currently, the host driver for OOB has not yet been developed; hence, the host side only supports SDIO interrupt mode. Consequently, the pinmux configuration for SDIO_DATA1 must be set to SDIO mode rather than GPIO mode.
+
 Software Configuration
 ^^^^^^^^^^^^^^^^^^^^^^^
 Wi-Fi
@@ -451,6 +460,9 @@ Host Driver
 
 The FullMAC driver has been tested and verified to work on Linux kernel versions 5.4 and 5.10.
 If you encounter any compilation errors on other kernel versions, please contact us.
+
+.. note::
+   The SPI operates using DMA, and the data for the SPI device is stored in RAM. When the nCS pin is asserted low, DMA transfers the data from RAM to the bus. Under normal conditions, this data transfer occurs without issues. However, if the bus is busy, a delay can occur during the data transfer, leading to potential problems. Our developer identified and tested this issue, determining that a delay of 7 microseconds provides sufficient time to ensure safe data transfer to the bus, even when it is busy. In some older versions of the Linux kernel, the SPI driver does not support the struct spi_delay, which prevents setting the delay between nCS and the clock signal through the interface. As a result, it may be necessary to modify the driver code directly to achieve the desired delay configuration.
 
 .. admonition:: Prerequisites
 
