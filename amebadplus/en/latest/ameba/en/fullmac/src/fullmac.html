@@ -315,7 +315,7 @@
 </ul>
 <p>To clarify, in the following sections, the term <code class="docutils literal notranslate"><span class="pre">host</span></code> refers to the Linux PC acting as the host, and the term <code class="docutils literal notranslate"><span class="pre">device</span></code> refers to the AmebaDPlus serving as the device.</p>
 <figure class="align-center" id="id11">
-<a class="reference internal image-reference" href="../../../../_images/wifi_fullmac_architecture.svg"><img alt="../../../../_images/wifi_fullmac_architecture.svg" height="466" src="../../../../_images/wifi_fullmac_architecture.svg" width="375" /></a>
+<a class="reference internal image-reference" href="../../../../_images/wifi_fullmac_architecture.svg"><img alt="../../../../_images/wifi_fullmac_architecture.svg" height="466" src="../../../../_images/wifi_fullmac_architecture.svg" width="464" /></a>
 <figcaption>
 <p><span class="caption-text">FullMAC architecture</span><a class="headerlink" href="#id11" title="Link to this image"></a></p>
 </figcaption>
@@ -323,6 +323,92 @@
 </section>
 <section id="features">
 <h2>Features<a class="headerlink" href="#features" title="Link to this heading"></a></h2>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Features</p></th>
+<th class="head"><p>Linux host</p></th>
+<th class="head"><p>FreeRTOS host</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Wi-Fi configuration mechanism</p></td>
+<td><p>Standard Linux APIs</p></td>
+<td><p>FreeRTOS Wi-Fi APIs</p></td>
+</tr>
+<tr class="row-odd"><td><p>Wi-Fi features</p></td>
+<td colspan="2"><p>802.11 a/b/g/n/ax</p></td>
+</tr>
+<tr class="row-even"><td><p>Transport interface</p></td>
+<td colspan="2"><ul class="simple">
+<li><p>SDIO</p></li>
+<li><p>SPI</p></li>
+<li><p>USB</p></li>
+<li><p>UART</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>Wi-Fi &amp; BT transport combinations</p></td>
+<td colspan="2"><ul class="simple">
+<li><p>SDIO only</p></li>
+<li><p>SPI only</p></li>
+<li><p>USB only</p></li>
+<li><p>SDIO + UART</p></li>
+<li><p>SPI + UART</p></li>
+<li><p>USB + UART</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>Wi-Fi mode</p></td>
+<td><ul class="simple">
+<li><p>Station</p></li>
+<li><p>SoftAP</p></li>
+<li><p>NAN</p></li>
+<li><p>P2P GO</p></li>
+</ul>
+</td>
+<td><ul class="simple">
+<li><p>Station</p></li>
+<li><p>SoftAP</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>Wi-Fi security</p></td>
+<td colspan="2"><ul class="simple">
+<li><p>Open</p></li>
+<li><p>WPA</p></li>
+<li><p>WPA2</p></li>
+<li><p>WPA3</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td rowspan="2"><p>Power saving</p></td>
+<td colspan="2"><p>Wowlan</p></td>
+</tr>
+<tr class="row-odd"><td><p>Proxy Offload:</p>
+<ul class="simple">
+<li><p>ARP Response</p></li>
+<li><p>mDNS</p></li>
+<li><p>ICMP Response (TODO)</p></li>
+<li><p>SNMP (TODO)</p></li>
+<li><p>LLMNR (TODO)</p></li>
+<li><p>SSDP/SLP/WSD/LLTD (TODO)</p></li>
+</ul>
+</td>
+<td><p>-</p></td>
+</tr>
+<tr class="row-even"><td><p>Bluetooth features</p></td>
+<td colspan="2"><ul class="simple">
+<li><p>BLE 5.0</p></li>
+<li><p>BLE 5.2</p></li>
+<li><p>Bluetooth 5.3</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>SoC supported</p></td>
+<td colspan="2"><p>AmebaDPlus</p></td>
+</tr>
+</tbody>
+</table>
 </section>
 </section>
 <section id="file-tree">
@@ -330,72 +416,29 @@
 <section id="wi-fi">
 <h2>Wi-Fi<a class="headerlink" href="#wi-fi" title="Link to this heading"></a></h2>
 <div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-0-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-0-0-0" name="0-0" role="tab" tabindex="0">FreeRTOS</button><button aria-controls="panel-0-0-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-1" name="0-1" role="tab" tabindex="-1">Linux</button></div><div aria-labelledby="tab-0-0-0" class="sphinx-tabs-panel" id="panel-0-0-0" name="0-0" role="tabpanel" tabindex="0"><p>The FullMAC driver of FreeRTOS in the SDK is located at</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Low-level hardware driver
-└── common
-    ├── rtw_ioctl.c
-    ├── rtw_ioctl.h
-    ├── rtw_llhw_event.h
-    ├── rtw_llhw_event_rx.c
-    ├── rtw_llhw_event_tx.c
-    ├── rtw_llhw_hci.c
-    ├── rtw_llhw_hci.h
-    ├── rtw_llhw_hci_memory.c
-    ├── rtw_llhw_ops.c
-    ├── rtw_llhw_pkt_rx.c
-    ├── rtw_llhw_pkt_tx.c
-    ├── rtw_llhw_trx.h
-    └── rtw_protocal_offload.c
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-0-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-0-0-0" name="0-0" role="tab" tabindex="0">FreeRTOS</button><button aria-controls="panel-0-0-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-1" name="0-1" role="tab" tabindex="-1">Linux</button></div><div aria-labelledby="tab-0-0-0" class="sphinx-tabs-panel" id="panel-0-0-0" name="0-0" role="tabpanel" tabindex="0"><p>The FullMAC driver of FreeRTOS in the SDK is located at <code class="docutils literal notranslate"><span class="pre">{SDK}/component/wifi/inic</span></code>. Users need to porting files in none_ipc_rtos if use other rtos IC as Host.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Low-level driver
 └── sdio
-    ├── Kbuild
-    ├── rtw_sdio.h
-    ├── rtw_sdio_drvio.c
-    ├── rtw_sdio_drvio.h
-    ├── rtw_sdio_fwdl.c
-    ├── rtw_sdio_init.c
-    ├── rtw_sdio_ops.c
-    ├── rtw_sdio_ops.h
-    ├── rtw_sdio_probe.c
-    └── rtw_sdio_reg.h
+    └── inic_sdio_dev.c
 └── spi
-    ├── Kbuild
-    ├── rtw_spi.h
-    ├── rtw_spi_ops.c
-    ├── rtw_spi_probe.c
-    └── spidev-overlay.dts
+    ├── inic_spi_dev.c
+    ├── inic_spi_host.c
+    └── inic_spi_host_trx.c
 └── usb
-    ├── Kbuild
-    ├── rtw_usb.h
-    ├── rtw_usb_ops.c
-    └── rtw_usb_probe.c
+    └── inic_usb_dev.c
 
-FullMAC driver
-├── rtw_acs.c
-├── rtw_acs.h
-├── rtw_cfg80211_fullmac.h
-├── rtw_cfg80211_ops.c
-├── rtw_cfg80211_ops_ap.c
-├── rtw_cfg80211_ops_key.c
-├── rtw_cfg80211_ops_nan.c
-├── rtw_cfg80211_ops_p2p.c
-├── rtw_cfgvendor.c
-├── rtw_cfgvendor.h
-├── rtw_drv_probe.c
-├── rtw_drv_probe.h
-├── rtw_ethtool_ops.c
-├── rtw_ethtool_ops.h
-├── rtw_functions.h
-├── rtw_netdev_ops.c
-├── rtw_netdev_ops.h
-├── rtw_netdev_ops_p2p.c
-├── rtw_proc.c
-├── rtw_proc.h
-├── rtw_promisc.c
-├── rtw_promisc.h
-├── rtw_regd.c
-├── rtw_regd.h
-├── rtw_wiphy.c
-└── rtw_wiphy.h
+FullMAC common driver
+└── none_ipc_dev
+    ├── inic_dev_api.c
+    ├── inic_dev_bridge.c
+    ├── inic_dev_msg_queue.c
+    └── inic_dev_protocal_offload.c
+└── none_ipc_host
+    ├── inic_host_api.c
+    ├── inic_host_api_basic.c
+    ├── inic_host_api_bt.c
+    └── inic_host_api_ext.c
+└── none_ipc_rtos
 </pre></div>
 </div>
 </div><div aria-labelledby="tab-0-0-1" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-1" name="0-1" role="tabpanel" tabindex="0"><p>The FullMAC driver of Linux in the SDK is located at <code class="docutils literal notranslate"><span class="pre">{SDK}/component/wifi/cfg80211_fullmac</span></code>. The main focus should be on the files below.</p>
@@ -481,11 +524,75 @@ FullMAC driver
 <section id="hardware-configuration">
 <h3>Hardware Configuration<a class="headerlink" href="#hardware-configuration" title="Link to this heading"></a></h3>
 <p>The FullMAC can be used on FreeRTOS with different interfaces, with different pins used for FullMAC function.</p>
+<table class="docutils align-default" id="amebadplus-fullmac-pins" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Interface</p></th>
+<th class="head"><p>AmebaDPlus Pin</p></th>
+<th class="head"><p>Function</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td rowspan="6"><p>SPI
+Host/Dev</p></td>
+<td><p>PB24</p></td>
+<td><p>SPI_MOSI</p></td>
+<td rowspan="4"><p>SPI pins</p></td>
+</tr>
+<tr class="row-odd"><td><p>PB25</p></td>
+<td><p>SPI_MISO</p></td>
+</tr>
+<tr class="row-even"><td><p>PB23</p></td>
+<td><p>SPI_CLK</p></td>
+</tr>
+<tr class="row-odd"><td><p>PB26</p></td>
+<td><p>SPI_CS</p></td>
+</tr>
+<tr class="row-even"><td><p>PB8</p></td>
+<td><p>DEV_TX_REQ</p></td>
+<td><p>A input pin for host, output pin for dev, Indicate a data pkt</p>
+<p>in dev wating to send to Host with a rising edge.</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p>PB9</p></td>
+<td><p>DEV_READY</p></td>
+<td><p>A input pin for host, output pin for dev, used to show that</p>
+<p>if dev is ready for SPI transcation.</p>
+<ul class="simple">
+<li><p>1: Device is ready.</p></li>
+<li><p>0: Device is busy.</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td rowspan="6"><p>SDIO
+Dev</p></td>
+<td><p>PB6</p></td>
+<td><p>SDIO_DAT2</p></td>
+<td rowspan="6"><p>SDIO pins</p></td>
+</tr>
+<tr class="row-odd"><td><p>PB7</p></td>
+<td><p>SDIO_DAT3</p></td>
+</tr>
+<tr class="row-even"><td><p>PB8</p></td>
+<td><p>SDIO_CMD</p></td>
+</tr>
+<tr class="row-odd"><td><p>PB9</p></td>
+<td><p>SDIO_CLK</p></td>
+</tr>
+<tr class="row-even"><td><p>PB13</p></td>
+<td><p>SDIO_DAT0</p></td>
+</tr>
+<tr class="row-odd"><td><p>PB14</p></td>
+<td><p>SDIO_DAT1</p></td>
+</tr>
+</tbody>
+</table>
 </section>
 <section id="software-configuration">
 <h3>Software Configuration<a class="headerlink" href="#software-configuration" title="Link to this heading"></a></h3>
 <section id="id1">
 <h4>Wi-Fi<a class="headerlink" href="#id1" title="Link to this heading"></a></h4>
+<p>The FullMAC can be used on FreeRTOS with different interfaces, and AmebaDPlus can be used as SPI Host/Device, or SDIO Device.</p>
 <section id="device-driver">
 <h5>Device Driver<a class="headerlink" href="#device-driver" title="Link to this heading"></a></h5>
 <ol class="arabic">
@@ -496,9 +603,9 @@ FullMAC driver
 <a class="reference internal image-reference" href="../../../../_images/sdio_config_flash_or_psram.png"><img alt="../../../../_images/sdio_config_flash_or_psram.png" src="../../../../_images/sdio_config_flash_or_psram.png" style="width: 920.8000000000001px; height: 264.0px;" /></a>
 </figure>
 </li>
-<li><p>Click <span class="menuselection">CONFIG INIC ITNF &gt; INIC Mode</span>, select <span class="menuselection">SDIO_FULLMAC</span> for SDIO interface or <span class="menuselection">SPI_FULLMAC</span> for SPI interface.</p>
+<li><p>Click <span class="menuselection">CONFIG INIC ITNF &gt; INIC Mode &gt; FULLMAC</span>, select <span class="menuselection">SDIO_FULLMAC</span> for SDIO interface or <span class="menuselection">SPI_FULLMAC</span> for SPI interface.</p>
 <figure class="align-center">
-<a class="reference internal image-reference" href="../../../../_images/wifi_sdio_spi_selection.png"><img alt="../../../../_images/wifi_sdio_spi_selection.png" src="../../../../_images/wifi_sdio_spi_selection.png" style="width: 951.0px; height: 379.0px;" /></a>
+<a class="reference internal image-reference" href="../../../../_images/wifi_sdio_spi_selection.png"><img alt="../../../../_images/wifi_sdio_spi_selection.png" src="../../../../_images/wifi_sdio_spi_selection.png" style="width: 380.0px; height: 127.0px;" /></a>
 </figure>
 </li>
 </ol>
@@ -509,6 +616,21 @@ FullMAC driver
 </section>
 <section id="host-driver">
 <h5>Host Driver<a class="headerlink" href="#host-driver" title="Link to this heading"></a></h5>
+<p>If use AmebaDPlus as SPI Fullmac Host:</p>
+<ol class="arabic">
+<li><p>Execute <code class="docutils literal notranslate"><span class="pre">./menuconfig.py</span></code> under the path <code class="docutils literal notranslate"><span class="pre">{SDK}/amebadplus_gcc_project</span></code></p>
+<ol class="loweralpha">
+<li><p>Click <span class="menuselection">CONFIG INIC ITNF &gt; INIC Mode</span>, select <span class="menuselection">SPI_FULLMAC_HOST</span> for SPI interface.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../../../_images/spi_config_fullmac_host.png"><img alt="../../../../_images/spi_config_fullmac_host.png" src="../../../../_images/spi_config_fullmac_host.png" style="width: 308.0px; height: 80.0px;" /></a>
+</figure>
+</li>
+</ol>
+</li>
+<li><p>Execute the make command to generate <code class="file docutils literal notranslate"><span class="pre">km4_boot_all.bin</span></code> and <code class="file docutils literal notranslate"><span class="pre">km0_km4_app.bin</span></code> after the build is successfully complete.</p></li>
+<li><p>Use the ImageTool to flash the bin files to AmebaDPlus and resst the device.</p></li>
+</ol>
+<p>If use other rtos IC as SPI/SDIO Fullmac Host, files showed in file tree can be used.</p>
 </section>
 </section>
 <section id="id2">

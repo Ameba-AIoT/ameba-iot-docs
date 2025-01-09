@@ -218,12 +218,8 @@ The AT commands consist of a wide range of types, such as Wi-Fi commands, MQTT c
 <p><span class="caption-text">MCU Control mode</span><a class="headerlink" href="#id4" title="Link to this image"></a></p>
 </figcaption>
 </figure>
-<p>In MCU Control mode, users should prepare the <code class="file docutils literal notranslate"><span class="pre">atcmd_config.json</span></code> file in advance, convert it into a bin file (refer to <a class="reference internal" href="../../../../application_note/file_system/src/file_system.html#amebadplus-virtual-file-system"><span class="std std-ref">Virtual File System</span></a> for detailed instructions), and download it to the module’s corresponding Flash partition along with the image.
+<p>In MCU Control mode, users should prepare the <code class="file docutils literal notranslate"><span class="pre">atcmd_config.json</span></code> file in advance(refer to <a class="reference internal" href="#atcmd-mcu-control-mode-configuration"><span class="std std-ref">Configuration</span></a> for detailed instructions).
 If no VFS AT command configuration file is provided, the default configuration of UART will be used.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>When creating the VFS bin file, <code class="docutils literal notranslate"><span class="pre">atcmd_config.json</span></code> file should be placed in the <code class="docutils literal notranslate"><span class="pre">KV</span></code> directory.</p>
-</div>
 <p>For different chips, the default UART input and output ports are listed in the following table.</p>
 <table class="docutils align-default" id="id5" style="width: 100%">
 <caption><span class="caption-text">Default UART port and baud rates for chips</span><a class="headerlink" href="#id5" title="Link to this table"></a></caption>
@@ -412,7 +408,7 @@ The version number employs a semantic versioning system, and its format is as fo
 <p>Besides obtaining the release version from GitHub, users can also build images with <code class="docutils literal notranslate"><span class="pre">{sdk}</span></code> by self. For detailed building procedure, refer to the Application Note of the specific Ameba chips.</p>
 </section>
 <section id="ssl-certificate">
-<span id="atcmd-mcu-control-mode-configuration"></span><h3>SSL Certificate<a class="headerlink" href="#ssl-certificate" title="Link to this heading"></a></h3>
+<h3>SSL Certificate<a class="headerlink" href="#ssl-certificate" title="Link to this heading"></a></h3>
 <p>If an SSL certificate is required during the use of AT Commands, the user has two options to prepare the certificate before executing the command:</p>
 <ul class="simple">
 <li><p>1. Store the pre-prepared certificate files in the VFS binary file with the names and formats of &lt;client/server&gt;_&lt;ca/cert/key&gt;_&lt;1/2/3&gt;.crt.
@@ -422,12 +418,11 @@ For detailed usage of the AT+FS command to write files, please refer to <a class
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>When creating the VFS bin file, SSL certificates and <code class="docutils literal notranslate"><span class="pre">atcmd_config.json</span></code> file should be placed in the <cite>KV</cite> directory.
-The operations of the file system AT commands are also conducted in the <code class="docutils literal notranslate"><span class="pre">KV</span></code> directory.</p>
+<p>When creating the VFS bin file, SSL certificates should be placed in the <code class="docutils literal notranslate"><span class="pre">KV</span></code> directory. The operations of the file system AT commands are also conducted in the <code class="docutils literal notranslate"><span class="pre">KV</span></code> directory.</p>
 </div>
 </section>
 <section id="configuration">
-<h3>Configuration<a class="headerlink" href="#configuration" title="Link to this heading"></a></h3>
+<span id="atcmd-mcu-control-mode-configuration"></span><h3>Configuration<a class="headerlink" href="#configuration" title="Link to this heading"></a></h3>
 <p>For MCU Control mode, the configuration needs to be implemented via the <code class="docutils literal notranslate"><span class="pre">atcmd_config.json</span></code> file.
 The specific format is as follows:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
@@ -461,9 +456,43 @@ The configuration process is as follows:</p>
 <p><span class="caption-text">Enable Wifi High TP Mode</span><a class="headerlink" href="#id7" title="Link to this image"></a></p>
 </figcaption>
 </figure>
+<section id="example">
+<h4>Example<a class="headerlink" href="#example" title="Link to this heading"></a></h4>
+<p>This section demonstrates how to prepare a custom atcmd_config.json file and activate it:</p>
+<ol class="arabic">
+<li><p>Create a new atcmd_config.json file with the following custom content:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+   <span class="s2">&quot;interface&quot;</span><span class="p">:</span><span class="s2">&quot;uart&quot;</span><span class="p">,</span>
+
+   <span class="s2">&quot;uart&quot;</span><span class="p">:</span>
+   <span class="p">{</span>
+      <span class="s2">&quot;baudrate&quot;</span><span class="p">:</span><span class="mi">115200</span><span class="p">,</span>
+      <span class="s2">&quot;tx&quot;</span><span class="p">:</span><span class="s2">&quot;PA26&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;rx&quot;</span><span class="p">:</span><span class="s2">&quot;PA27&quot;</span>
+   <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><p>Create a TEST/KV directory and place the atcmd_config.json file into the <code class="docutils literal notranslate"><span class="pre">KV</span></code> subdirectory.</p></li>
+<li><p>Use the LittleFS binary file creation tool to generate a LittleFS binary file (refer to <a class="reference internal" href="../../../../application_note/file_system/src/file_system.html#vfs-bin-file-generation"><span class="std std-ref">VFS Bin File</span></a> for the specific command parameters).</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>linux@user:~$./mklittlefs -b 4096 -p 256 -s 131072 -c TEST lfs.bin
+/KV/atcmd_config.json
+</pre></div>
+</div>
+</li>
+<li><p>Flash the generated lfs.bin file into the VFS1 region of the AT module according to the flash layout(refer to <a class="reference internal" href="../../../../application_note/file_system/src/file_system.html#vfs-on-flash-section"><span class="std std-ref">VFS on Flash</span></a> for the specific address).</p></li>
+<li><p>Flash the application firmware that enables MCU Control Mode (refer to <a class="reference internal" href="#atcmd-image-building"><span class="std std-ref">Building</span></a> for specific instructions).</p></li>
+<li><p>After powering on the AT module, you can observe the custom configuration printouts on the loguart port, indicating that the configuration has taken effect.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">AT</span><span class="o">-</span><span class="n">I</span><span class="p">]</span> <span class="n">ATCMD</span> <span class="n">MCU</span> <span class="n">Control</span> <span class="n">Mode</span> <span class="p">:</span> <span class="n">UART</span><span class="p">,</span> <span class="n">tx</span><span class="p">:</span><span class="n">PA26</span><span class="p">,</span> <span class="n">rx</span><span class="p">:</span><span class="n">PA27</span><span class="p">,</span> <span class="n">baudrate</span><span class="p">:</span><span class="mi">115200</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
 </section>
 <section id="building">
-<h3>Building<a class="headerlink" href="#building" title="Link to this heading"></a></h3>
+<span id="atcmd-image-building"></span><h3>Building<a class="headerlink" href="#building" title="Link to this heading"></a></h3>
 <p>After preparations above, users can build images in the <code class="docutils literal notranslate"><span class="pre">{sdk}</span></code> directory. The procedure is as follows:</p>
 <ol class="arabic">
 <li><p>Run <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">menuconfig</span></code> to choose MCU Control mode or LOGUART mode.</p>
