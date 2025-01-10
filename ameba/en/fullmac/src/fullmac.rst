@@ -302,7 +302,7 @@ The FullMAC can be used on FreeRTOS with different interfaces, with different pi
 
       component/soc/amebadplus/hal/src/spdio_api.c
 
-   Currently, the host driver for OOB has not yet been developed; hence, the host side only supports SDIO interrupt mode. Consequently, the pinmux configuration for SDIO_DATA1 must be set to SDIO mode rather than GPIO mode.
+   Currently, the host driver for OOB mode has not yet been developed; hence, the pinmux configuration for SDIO_DATA1 must be set to SDIO mode rather than GPIO mode. Users can use polling mode if interrupt in host is not supported.
 
 Software Configuration
 ^^^^^^^^^^^^^^^^^^^^^^^
@@ -418,6 +418,15 @@ The FullMAC can be used on Linux PC or Raspberry Pi with different interfaces, w
    +------------+-----------------+------------------+---------------+-----------------------------------------------------------------+
    | UART???    | PB14            | GPIO 25          | SDIO_DAT1     | SDIO_DAT1                                                       |
    +------------+-----------------+------------------+---------------+-----------------------------------------------------------------+
+
+.. note::
+   The above pins of SDIO are the default pin configuration in the firmware code. If you need to change the pin configuration on the SDIO device side, modifications must be made in the SPDIO_Board_Init function to set the actual connected pins' pinmux to SDIO. This function is located in the following file:
+
+   ::
+
+      component/soc/amebadplus/hal/src/spdio_api.c
+
+   Currently, the host driver for OOB mode has not yet been developed; hence, the pinmux configuration for SDIO_DATA1 must be set to SDIO mode rather than GPIO mode.
 
 .. tabs::
 
@@ -726,7 +735,26 @@ Host Driver
 
 Throughput
 --------------
+FreeRTOS
+~~~~~~~~~
+.. table::
+   :width: 100%
+   :widths: auto
 
+   +----------------+--------+---------------+---------------+
+   | Interface      | Item   | BW 20M (Mbps) | BW 40M (Mbps) |
+   +================+========+===============+===============+
+   | SPI            | TCP RX |               |               |
+   |                +--------+---------------+---------------+
+   |                | TCP TX |               |               |
+   |                +--------+---------------+---------------+
+   |                | UDP RX |               |               |
+   |                +--------+---------------+---------------+
+   |                | UDP TX |               |               |
+   +----------------+--------+---------------+---------------+
+
+Linux
+~~~~~~~~~
 .. table::
    :width: 100%
    :widths: auto
@@ -798,6 +826,25 @@ Take the Wi-Fi driver running on KM0 for an example:
 
 Host
 ~~~~~~~~
+FreeRTOS
+^^^^^^^^^
+
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +---------+------+-----------------+
+   | Host    | Item |     inic        |
+   +=========+======+=================+
+   | SPI     | txt  | 4.8KB           |
+   |         +------+-----------------+
+   |         | bss  | ~3.5KB          |
+   |         +------+-----------------+
+   |         | heap | ~5KB            |
+   +---------+------+-----------------+
+
+Linux
+^^^^^^^^^
 
 .. table::
    :width: 100%
