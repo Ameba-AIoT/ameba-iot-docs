@@ -2,13 +2,15 @@
 
 Introduction
 ------------------------
-Over-the-air (OTA) programming provides a methodology of updating device firmware remotely via TCP/IP network. For OTA via TCP/IP network, the |CHIP_NAME| provides solutions to implement OTA firmware upgrade from local server or cloud.
+Over-the-air (OTA) programming provides a methodology of updating device firmware remotely via TCP/IP network.
+For OTA via TCP/IP network, the |CHIP_NAME| provides solutions to implement OTA firmware upgrade from local server or cloud.
 
 .. _image_slot:
 
 Image Slot
 ~~~~~~~~~~~~~~~~~~~~
-There are two slots for all the images in the Flash layout as shown in the figure below, which named OTA1 and OTA2 respectively. Each image can be chosen to boot from OTA1 or OTA2.
+There are two slots for all the images in the Flash layout as shown in the figure below, which named OTA1 and OTA2 respectively.
+Each image can be chosen to boot from OTA1 or OTA2.
 
 .. figure:: ../figures/ota1_and_ota2_position.svg
    :scale: 140%
@@ -20,7 +22,8 @@ There are two slots for all the images in the Flash layout as shown in the figur
 
 Version Number
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-The device boot from OTA1 or OTA2 mainly depends on the version number in certificate and manifest. As shown in the figure below, there is a 2-byte major version and 2-byte minor version in manifest and certificate.
+The device boot from OTA1 or OTA2 mainly depends on the version number in certificate and manifest. As shown in the figure below,
+there is a 2-byte major version and 2-byte minor version in manifest and certificate.
 
 
 The combination of major version and minor version is the 4-byte version number. OTA select flow checks the whole version number.
@@ -42,7 +45,8 @@ The combination of major version and minor version is the 4-byte version number.
    - For detailed layouts of manifest and certificate, refer to :ref:`Secure Boot <secure_boot>` .
 
 
-As described in :ref:`Image Slot <image_slot>`, there are two slots (OTA1 and OTA2) for all the images in the Flash layout. When reboot after OTA upgrade finished, the device would check the image to determine to boot from OTA1 or OTA2.
+As described in :ref:`Image Slot <image_slot>`, there are two slots (OTA1 and OTA2) for all the images in the Flash layout.
+When reboot after OTA upgrade finished, the device would check the image to determine to boot from OTA1 or OTA2.
 
 
 The general principle of the OTA scheme is checking the image pattern first and then comparing the version number of OTA1 and OTA2.
@@ -70,10 +74,16 @@ The following items must be checked for each image:
 
 Anti-rollback
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
-Anti-rollback is the function to prevent version rollback attack. When the anti-rollback is enabled, the version number in certificate or manifest must not be smaller than the anti-rollback version stored in OTP. Otherwise, this image will be regarded as invalid and the chip will not boot from invalid image. Normally, if OTA update is security-related, user can program a bigger anti-rollback version number in OTP and update image with a bigger major version at the same time to prevent rollback attack.
+Anti-rollback is the function to prevent version rollback attack. When the anti-rollback is enabled,
+the version number in certificate or manifest must not be smaller than the anti-rollback version stored in OTP.
+Otherwise, this image will be regarded as invalid and the chip will not boot from invalid image. Normally,
+if OTA update is security-related, user can program a bigger anti-rollback version number in OTP and update image with
+a bigger major version at the same time to prevent rollback attack.
 
 
-The anti-rollback flow is shown below. Once the anti-rollback is enabled, the device will compare the major version numbers got from OTA1 and OTA2 images respectively with the anti-rollback version number in OTP. If the major version number in the image is smaller than the anti-rollback version number, this image will be regarded as invalid.
+The anti-rollback flow is shown below. Once the anti-rollback is enabled, the device will compare the major version numbers
+got from OTA1 and OTA2 images respectively with the anti-rollback version number in OTP. If the major version number in the image
+is smaller than the anti-rollback version number, this image will be regarded as invalid.
 
 .. figure:: ../figures/anti_rollback_flow.svg
    :scale: 130%
@@ -85,7 +95,8 @@ Bootloader
 --------------------
 OTA Image
 ~~~~~~~~~~~~~~~~~~
-The KM4 bootloader image :file:`km4_boot_all.bin` can be updated through OTA, which can be chosen to boot from OTA1 or OTA2. The layout of KM4 bootloader image is illustrated below.
+The KM4 bootloader image :file:`km4_boot_all.bin` can be updated through OTA, which can be chosen to boot from OTA1 or OTA2.
+The layout of KM4 bootloader image is illustrated below.
 
 .. figure:: ../figures/layout_of_bootloader_image.svg
    :scale: 130%
@@ -107,7 +118,8 @@ Application
 ----------------------
 OTA Image
 ~~~~~~~~~~~~~~~~~~
-The application image (:file:`kr4_km4_app.bin`, including KR4, KM4 non-secure application image and KM4 secure image) can be updated through OTA, which can be chosen to boot from OTA1 or OTA2. The layout of the whole application image is illustrated below.
+The application image (:file:`kr4_km4_app.bin`, including KR4, KM4 non-secure application image and KM4 secure image) can be updated through OTA,
+which can be chosen to boot from OTA1 or OTA2. The layout of the whole application image is illustrated below.
 
 .. figure:: ../figures/layout_of_application_image.svg
    :scale: 130%
@@ -134,78 +146,109 @@ The application image OTA select flow is illustrated below.
 .. _dsp_image :
 .. only:: RTL8726EA
    
-   DSP Image
-   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   The |CHIP_NAME| supports DSP and there are two schemes for users to load the DSP image.
+DSP Image
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The |CHIP_NAME| supports DSP and there are two schemes for users to load the DSP image.
    
-   DSP Image without Application Image
-   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-   In this scheme, there is only one slot in Flash layout called :mod:`IMG_DSP` for the DSP image. When the DSP application is modified, users only need to re-download the DSP image called \ ``dsp_all.bin``\  to :mod:`IMG_DSP` as shown below. So when in device DSP-development stage, we recommend this method to develop the DSP application conveniently and efficiently.
-   
+DSP Image without Application Image
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+In this scheme, there is only one slot in Flash layout called :mod:`IMG_DSP` for the DSP image.
+When the DSP application is modified, users only need to re-download the DSP image called ``dsp_all.bin`` to :mod:`IMG_DSP` as shown below.
+So when in device DSP-development stage, we recommend this method to develop the DSP application conveniently and efficiently.
+
    .. figure:: ../figures/download_dsp_image.png
       :scale: 100%
       :align: center
-   
-   To choose this scheme, users can disable the configuration of DSP within Image2 by command ``make menuconfig`` under ``{SDK}\amebalite_gcc_project``.
-   
-   .. figure:: ../figures/dsp_make_menuconfig.svg
-      :scale: 100%
-      :align: center
-      
-      DSP make menuconfig
 
-   .. note:: This scheme should be used only in device DSP-development stage.
-   
-   .. _ota_dsp_image_within_application_image:
+To choose this scheme, users can disable the configuration of ``DSP within APP image`` by the following steps:
 
-   DSP Image within Application Image
-   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-   In this scheme, there are two slots in Flash layout called :mod:`IMG_APP_OTA1` and :mod:`IMG_APP_OTA2` respectively. Since the DSP image is merged into the application image. In order to avoid issues such as DSP boot fail after the DSP image is updated through OTA application when there is only one slot for DSP. For MP devices, the scheme of the DSP image within application image is recommended, which DSP can choose to boot from OTA1 or OTA2.
+   a. Navigate to project and open configuration menu.
 
-   After choosing this scheme, there is only one application image called ``kr4_km4_dsp_app.bin`` needed to be downloaded as shown below.
+      .. code-block::
+
+         cd amebalite_gcc_project
+         ./menuconfig.py
    
+   b. Remove the selection :menuselection:`CONFIG OTA OPTION > DSP within APP image`.
+
+.. note:: This scheme should be used only in device DSP-development stage.
+
+.. _ota_dsp_image_within_application_image:
+
+DSP Image within Application Image
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+In this scheme, there are two slots in Flash layout called :mod:`IMG_APP_OTA1` and :mod:`IMG_APP_OTA2` respectively.
+Since the DSP image is merged into the application image. In order to avoid issues such as DSP boot fail after the DSP image
+is updated through OTA application when there is only one slot for DSP. For MP devices,
+the scheme of the DSP image within application image is recommended, which DSP can choose to boot from OTA1 or OTA2.
+
+After choosing this scheme, there is only one application image called ``kr4_km4_dsp_app.bin`` needed to be downloaded as shown below.
+
    .. figure:: ../figures/download_dsp_application_image.png
       :scale: 90%
       :align: center
 
+.. _steps_set_dsp_path:
 
-   Steps of generating ``kr4_km4_dsp_app.bin`` are:
-   
-   1. Enable the configuration of DSP within Image2 by command ``make menuconfig`` under ``{SDK}\amebalite_gcc_project``.
-   
-      .. figure:: ../figures/dsp_application_make_menuconfig.svg
+Steps of generating ``kr4_km4_dsp_app.bin`` are:
+
+   1. Navigate to project and open configuration menu.
+
+   2. Select :menuselection:`CONFIG OTA OPTION > Enable DSP > DSP within APP image` to enable the configuration of ``DSP within APP image``.
+
+   3. Select :menuselection:`DSP_IMAGE_TARGET_DIR` to set path of :file:`dsp.bin`, click Enter to save.
+
+      .. figure:: ../figures/set_dsp_path.png
          :scale: 90%
          :align: center
 
+      .. note:: The `DSP_IMAGE_TARGET_DIR` is relative to the amebalite_gcc_project.
+      
+   4. Save and exit.
 
-   2. Set the path of :file:`dsp.bin` in Makefile located in ``{SDK}\amebalite_gcc_project\project_kr4\asdk``.
-   
-      .. code-block:: make
-         :emphasize-lines: 3
+For example, after DSP SDK is compiled finished, there will be two images generated,
+named :file:`dsp.bin` and :file:`dsp_all.bin` respectively under the path of ``{DSP_SDK}/project/image``.
 
-         # Lets work out what the user wants, and if they have configured us yet
-         #
-         DSP_IMAGE_TARGET_DIR =
-         RAM_OBJS_LIST = ./build/ram/*.o
-   
-   3. For example, after DSP SDK is compiled finished, there will be two images generated, named :file:`dsp.bin` and :file:`dsp_all.bin` respectively under the path of ``{DSP_SDK}\project\image``. So the path of :file:`dsp.bin` is ``{DSP_SDK}\project\image``.
-   
-      a. Set the path in ``{SDK}\amebalite_gcc_project\project_kr4\asdk\Makefile``.
-   
-        .. code-block:: make
-           :emphasize-lines: 3
-  
-           # Lets work out what the user wants, and if they have configured us yet
-           #
-           DSP_IMAGE_TARGET_DIR = {DSPSDK}/project/image
-           RAM_OBJS_LIST = ./build/ram/*.o
-   
-      b. Rebuild project by command ``make all`` under ``{SDK}\amebalite_gcc_project``.
-   
-      :file:`kr4_km4_dsp_app.bin` will be found in ``{SDK}\amebalite_gcc_project``.
+1. Copy the `dsp.bin` into ``{SDK}/component/dsp``, so the path of :file:`dsp.bin` is ``../component/dsp``.
 
-   .. note:: We choose this scheme and use :file:`kr4_km4_dsp_app.bin` in the following operations.
-   
+2. Set the path as :ref:`Step 3 <steps_set_dsp_path>` above. Check the path in ``{SDK}/amebalite_gcc_project/menuconfig/.config``.
+
+   .. code-block:: c
+      :emphasize-lines: 5
+
+      # CONFIG DSP Enable
+      #
+      CONFIG_DSP_EN=y
+      CONFIG_DSP_WITHIN_APP_IMG=y
+      CONFIG_DSP_IMAGE_TARGET_DIR="../component/dsp"
+      # end of CONFIG DSP Enable
+
+3. Rebuild the project by the following commands, and :file:`kr4_km4_dsp_app.bin` will be found in ``{SDK}/amebalite_gcc_project``.
+
+   .. code-block::
+
+      cd amebalite_gcc_project
+      ./build.py
+
+.. note:: We choose this scheme and use :file:`kr4_km4_dsp_app.bin` in the following operations.
+
+.. _ota_compressed_image:
+
+OTA Compressed Image
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The |CHIP_NAME| supports OTA Image Compression. When OTA Image Compression is enabled, the OTA image will be compressed and 
+image size will be reduced, which can save the flash space effectively.
+
+The OTA Image Compression only compresses the APP image. Once the compressed APP image is download into one OTA slot,
+it will be decompressed into another OTA slot and boot from this slot. Which means there is always only one valid APP image between these two slots.
+
+Users can generate OTA Compressed Image by the following steps:
+
+   1. Navigate to project and open configuration menu.
+
+   2. Select :menuselection:`CONFIG OTA OPTION > Support Compressed APP Image`, then save and exit.
+
+   3. Build the project and :file:`ota_all.bin` which is compressed will be found in ``{SDK}/amebalite_gcc_project``.
 
 Building OTA Image
 ---------------------
@@ -314,7 +357,7 @@ Modifying Configurations
 
       - The above commands are used in the serial terminal tool.
 
-4. Rebuild project using ``make all`` command to generate the signed images.
+4. Rebuild the project.
 
 5. Download the images into Flash, and reset the board.
 
@@ -338,14 +381,16 @@ The OTA image called :file:`ota_all.bin`  will be generated automatically when b
    1. :file:`kr4_km4_dsp_app.bin` is included in :file:`ota_all.bin` by default.
    
    2. If the bootloader is needed to be upgraded,
-   
-      a. Type command ``make menuconfig`` under ``{SDK}\amebalite_gcc_project`` and choose :menuselection:`CONFIG OTA OPTION > Upgrade Bootloader`, save and exit.
-   
-      b. Modify the bootloader related configurations as described in :ref:`Modifying Configurations <ota_modifying_configurations>`.
-   
-   3. Rebuild the project by command ``make all`` under ``{SDK}\amebalite_gcc_project``.
 
-   The OTA image file :file:`ota_all.bin` will be generated in ``{SDK}\amebalite_gcc_project``.
+      a. Navigate to project and open configuration menu.
+   
+      b. Select :menuselection:`CONFIG OTA OPTION > Upgrade Bootloader`, then save and exit.
+   
+      c. Modify the bootloader related configurations as described in :ref:`Modifying Configurations <ota_modifying_configurations>`.
+   
+   3. If ota image compression is needed, follow the steps in :ref:`OTA Compressed Image <ota_compressed_image>`.
+
+   4. Rebuild the project. The OTA image file :file:`ota_all.bin` will be generated in ``{SDK}\amebalite_gcc_project``.
 
    .. note:: The steps of generating :file:`kr4_km4_dsp_app.bin` can be referred to :ref:`DSP Image within Application Image <ota_dsp_image_within_application_image>`.
 
@@ -447,12 +492,14 @@ Follow these steps to run the OTA demo to update from local server:
       
          ret = ota_update_init(ctx, (char *)host, PORT, (char *)resource, OTA_LOCAL);
 
-2. Rebuild the project with command ``make all EXAMPLE=ota`` and download the images to the device.
+2. Rebuild the project with command ``./build.py -a ota`` and download the images to the device.
 
 3. Modify the major and minor version number in Manifest to a bigger version as described in :ref:`Version Number <version_number>`.
 
-.. note::
-   The bootloader will select OTA image with a bigger version number by default. If users don't want to modify the version number, modify :mod:`OTA_CLEAR_PATTERN` to 1 defined in :file:`ameba_ota.h` before step 2. It should only be used in the development stage.
+   .. note::
+      The bootloader will select OTA image with a bigger version number by default.
+      If users don't want to modify the version number, modify :mod:`OTA_CLEAR_PATTERN` to 1 defined in :file:`ameba_ota.h` before step 2.
+      It should only be used in the development stage.
 
 4. Rebuild the project and copy :file:`ota_all.bin` into the folder ``{SDK}\tools\DownloadServer``.
 
