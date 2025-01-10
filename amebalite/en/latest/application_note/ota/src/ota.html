@@ -91,7 +91,8 @@
 <li class="toctree-l3"><a class="reference internal" href="#application">Application</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#id3">OTA Image</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#ota-select-flow">OTA Select Flow</a></li>
-<li><a class="reference internal" href="#id4">DSP Image</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id4">DSP Image</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ota-compressed-image">OTA Compressed Image</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#building-ota-image">Building OTA Image</a><ul>
@@ -167,28 +168,31 @@
              
   <section id="introduction">
 <span id="ota-firmware-update"></span><h1>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h1>
-<p>Over-the-air (OTA) programming provides a methodology of updating device firmware remotely via TCP/IP network. For OTA via TCP/IP network, the AmebaLite provides solutions to implement OTA firmware upgrade from local server or cloud.</p>
+<p>Over-the-air (OTA) programming provides a methodology of updating device firmware remotely via TCP/IP network.
+For OTA via TCP/IP network, the AmebaLite provides solutions to implement OTA firmware upgrade from local server or cloud.</p>
 <section id="image-slot">
 <span id="id1"></span><h2>Image Slot<a class="headerlink" href="#image-slot" title="Link to this heading"></a></h2>
-<p>There are two slots for all the images in the Flash layout as shown in the figure below, which named OTA1 and OTA2 respectively. Each image can be chosen to boot from OTA1 or OTA2.</p>
-<figure class="align-center" id="id5">
+<p>There are two slots for all the images in the Flash layout as shown in the figure below, which named OTA1 and OTA2 respectively.
+Each image can be chosen to boot from OTA1 or OTA2.</p>
+<figure class="align-center" id="id6">
 <a class="reference internal image-reference" href="../../../_images/ota1_and_ota2_position.svg"><img alt="../../../_images/ota1_and_ota2_position.svg" height="238" src="../../../_images/ota1_and_ota2_position.svg" width="176" /></a>
 <figcaption>
-<p><span class="caption-text">OTA1 and OTA2 position</span><a class="headerlink" href="#id5" title="Link to this image"></a></p>
+<p><span class="caption-text">OTA1 and OTA2 position</span><a class="headerlink" href="#id6" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 </section>
 <section id="version-number">
 <span id="id2"></span><h2>Version Number<a class="headerlink" href="#version-number" title="Link to this heading"></a></h2>
-<p>The device boot from OTA1 or OTA2 mainly depends on the version number in certificate and manifest. As shown in the figure below, there is a 2-byte major version and 2-byte minor version in manifest and certificate.</p>
+<p>The device boot from OTA1 or OTA2 mainly depends on the version number in certificate and manifest. As shown in the figure below,
+there is a 2-byte major version and 2-byte minor version in manifest and certificate.</p>
 <p>The combination of major version and minor version is the 4-byte version number. OTA select flow checks the whole version number.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Version</span> <span class="n">number</span> <span class="o">=</span> <span class="p">(</span><span class="n">Major</span> <span class="n">version</span> <span class="o">&lt;&lt;</span> <span class="mi">16</span><span class="p">)</span> <span class="o">|</span> <span class="n">Minor</span> <span class="n">version</span>
 </pre></div>
 </div>
-<figure class="align-center" id="id6">
+<figure class="align-center" id="id7">
 <a class="reference internal image-reference" href="../../../_images/major_and_minor_version.svg"><img alt="../../../_images/major_and_minor_version.svg" height="387" src="../../../_images/major_and_minor_version.svg" width="805" /></a>
 <figcaption>
-<p><span class="caption-text">Major and minor version</span><a class="headerlink" href="#id6" title="Link to this image"></a></p>
+<p><span class="caption-text">Major and minor version</span><a class="headerlink" href="#id7" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <div class="admonition note">
@@ -198,7 +202,8 @@
 <li><p>For detailed layouts of manifest and certificate, refer to <span class="xref std std-ref">Secure Boot</span> .</p></li>
 </ul>
 </div>
-<p>As described in <a class="reference internal" href="#image-slot"><span class="std std-ref">Image Slot</span></a>, there are two slots (OTA1 and OTA2) for all the images in the Flash layout. When reboot after OTA upgrade finished, the device would check the image to determine to boot from OTA1 or OTA2.</p>
+<p>As described in <a class="reference internal" href="#image-slot"><span class="std std-ref">Image Slot</span></a>, there are two slots (OTA1 and OTA2) for all the images in the Flash layout.
+When reboot after OTA upgrade finished, the device would check the image to determine to boot from OTA1 or OTA2.</p>
 <p>The general principle of the OTA scheme is checking the image pattern first and then comparing the version number of OTA1 and OTA2.</p>
 <p>The following items must be checked for each image:</p>
 <ol class="arabic simple">
@@ -215,21 +220,27 @@
 </ul>
 </li>
 </ol>
-<figure class="align-center" id="id7">
+<figure class="align-center" id="id8">
 <a class="reference internal image-reference" href="../../../_images/ota_select_diagram.svg"><img alt="../../../_images/ota_select_diagram.svg" height="249" src="../../../_images/ota_select_diagram.svg" width="669" /></a>
 <figcaption>
-<p><span class="caption-text">OTA select diagram</span><a class="headerlink" href="#id7" title="Link to this image"></a></p>
+<p><span class="caption-text">OTA select diagram</span><a class="headerlink" href="#id8" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 </section>
 <section id="anti-rollback">
 <h2>Anti-rollback<a class="headerlink" href="#anti-rollback" title="Link to this heading"></a></h2>
-<p>Anti-rollback is the function to prevent version rollback attack. When the anti-rollback is enabled, the version number in certificate or manifest must not be smaller than the anti-rollback version stored in OTP. Otherwise, this image will be regarded as invalid and the chip will not boot from invalid image. Normally, if OTA update is security-related, user can program a bigger anti-rollback version number in OTP and update image with a bigger major version at the same time to prevent rollback attack.</p>
-<p>The anti-rollback flow is shown below. Once the anti-rollback is enabled, the device will compare the major version numbers got from OTA1 and OTA2 images respectively with the anti-rollback version number in OTP. If the major version number in the image is smaller than the anti-rollback version number, this image will be regarded as invalid.</p>
-<figure class="align-center" id="id8">
+<p>Anti-rollback is the function to prevent version rollback attack. When the anti-rollback is enabled,
+the version number in certificate or manifest must not be smaller than the anti-rollback version stored in OTP.
+Otherwise, this image will be regarded as invalid and the chip will not boot from invalid image. Normally,
+if OTA update is security-related, user can program a bigger anti-rollback version number in OTP and update image with
+a bigger major version at the same time to prevent rollback attack.</p>
+<p>The anti-rollback flow is shown below. Once the anti-rollback is enabled, the device will compare the major version numbers
+got from OTA1 and OTA2 images respectively with the anti-rollback version number in OTP. If the major version number in the image
+is smaller than the anti-rollback version number, this image will be regarded as invalid.</p>
+<figure class="align-center" id="id9">
 <a class="reference internal image-reference" href="../../../_images/anti_rollback_flow.svg"><img alt="../../../_images/anti_rollback_flow.svg" height="302" src="../../../_images/anti_rollback_flow.svg" width="660" /></a>
 <figcaption>
-<p><span class="caption-text">Anti-rollback flow</span><a class="headerlink" href="#id8" title="Link to this image"></a></p>
+<p><span class="caption-text">Anti-rollback flow</span><a class="headerlink" href="#id9" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 </section>
@@ -238,21 +249,22 @@
 <h1>Bootloader<a class="headerlink" href="#bootloader" title="Link to this heading"></a></h1>
 <section id="ota-image">
 <h2>OTA Image<a class="headerlink" href="#ota-image" title="Link to this heading"></a></h2>
-<p>The KM4 bootloader image <code class="file docutils literal notranslate"><span class="pre">km4_boot_all.bin</span></code> can be updated through OTA, which can be chosen to boot from OTA1 or OTA2. The layout of KM4 bootloader image is illustrated below.</p>
-<figure class="align-center" id="id9">
+<p>The KM4 bootloader image <code class="file docutils literal notranslate"><span class="pre">km4_boot_all.bin</span></code> can be updated through OTA, which can be chosen to boot from OTA1 or OTA2.
+The layout of KM4 bootloader image is illustrated below.</p>
+<figure class="align-center" id="id10">
 <a class="reference internal image-reference" href="../../../_images/layout_of_bootloader_image.svg"><img alt="../../../_images/layout_of_bootloader_image.svg" height="66" src="../../../_images/layout_of_bootloader_image.svg" width="301" /></a>
 <figcaption>
-<p><span class="caption-text">Layout of bootloader image</span><a class="headerlink" href="#id9" title="Link to this image"></a></p>
+<p><span class="caption-text">Layout of bootloader image</span><a class="headerlink" href="#id10" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 </section>
 <section id="ota-selection-flow">
 <h2>OTA Selection Flow<a class="headerlink" href="#ota-selection-flow" title="Link to this heading"></a></h2>
 <p>The KM4 ROM will select OTA image according to the image version number in bootloader manifest.</p>
-<figure class="align-center" id="id10">
+<figure class="align-center" id="id11">
 <a class="reference internal image-reference" href="../../../_images/km4_bootloader_ota_select_flow.svg"><img alt="../../../_images/km4_bootloader_ota_select_flow.svg" height="958" src="../../../_images/km4_bootloader_ota_select_flow.svg" width="926" /></a>
 <figcaption>
-<p><span class="caption-text">KM4 bootloader OTA selection flow</span><a class="headerlink" href="#id10" title="Link to this image"></a></p>
+<p><span class="caption-text">KM4 bootloader OTA selection flow</span><a class="headerlink" href="#id11" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 </section>
@@ -261,11 +273,12 @@
 <h1>Application<a class="headerlink" href="#application" title="Link to this heading"></a></h1>
 <section id="id3">
 <h2>OTA Image<a class="headerlink" href="#id3" title="Link to this heading"></a></h2>
-<p>The application image (<code class="file docutils literal notranslate"><span class="pre">kr4_km4_app.bin</span></code>, including KR4, KM4 non-secure application image and KM4 secure image) can be updated through OTA, which can be chosen to boot from OTA1 or OTA2. The layout of the whole application image is illustrated below.</p>
-<figure class="align-center" id="id11">
+<p>The application image (<code class="file docutils literal notranslate"><span class="pre">kr4_km4_app.bin</span></code>, including KR4, KM4 non-secure application image and KM4 secure image) can be updated through OTA,
+which can be chosen to boot from OTA1 or OTA2. The layout of the whole application image is illustrated below.</p>
+<figure class="align-center" id="id12">
 <a class="reference internal image-reference" href="../../../_images/layout_of_application_image.svg"><img alt="../../../_images/layout_of_application_image.svg" height="115" src="../../../_images/layout_of_application_image.svg" width="301" /></a>
 <figcaption>
-<p><span class="caption-text">Layout of application image</span><a class="headerlink" href="#id11" title="Link to this image"></a></p>
+<p><span class="caption-text">Layout of application image</span><a class="headerlink" href="#id12" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <p>The AmebaLite supports DSP and there are two schemes to load DSP image. Refer to <a class="reference internal" href="#dsp-image"><span class="std std-ref">DSP Image</span></a> for details.</p>
@@ -273,29 +286,38 @@
 <section id="ota-select-flow">
 <h2>OTA Select Flow<a class="headerlink" href="#ota-select-flow" title="Link to this heading"></a></h2>
 <p>The application image OTA select flow is illustrated below.</p>
-<figure class="align-center" id="id12">
+<figure class="align-center" id="id13">
 <a class="reference internal image-reference" href="../../../_images/application_image_ota_select_flow.svg"><img alt="../../../_images/application_image_ota_select_flow.svg" height="764" src="../../../_images/application_image_ota_select_flow.svg" width="930" /></a>
 <figcaption>
-<p><span class="caption-text">Application image OTA select flow</span><a class="headerlink" href="#id12" title="Link to this image"></a></p>
+<p><span class="caption-text">Application image OTA select flow</span><a class="headerlink" href="#id13" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 </section>
 <section id="id4">
-<span id="dsp-image"></span><h2>DSP Image<a class="headerlink" href="#id4" title="Link to this heading"></a></h2>
+<h2>DSP Image<a class="headerlink" href="#id4" title="Link to this heading"></a></h2>
 <p>The AmebaLite supports DSP and there are two schemes for users to load the DSP image.</p>
 <section id="dsp-image-without-application-image">
 <h3>DSP Image without Application Image<a class="headerlink" href="#dsp-image-without-application-image" title="Link to this heading"></a></h3>
-<p>In this scheme, there is only one slot in Flash layout called <code class="xref py py-mod docutils literal notranslate"><span class="pre">IMG_DSP</span></code> for the DSP image. When the DSP application is modified, users only need to re-download the DSP image called <code class="docutils literal notranslate"><span class="pre">dsp_all.bin</span></code> to <code class="xref py py-mod docutils literal notranslate"><span class="pre">IMG_DSP</span></code> as shown below. So when in device DSP-development stage, we recommend this method to develop the DSP application conveniently and efficiently.</p>
-<figure class="align-center">
+<p>In this scheme, there is only one slot in Flash layout called <code class="xref py py-mod docutils literal notranslate"><span class="pre">IMG_DSP</span></code> for the DSP image.
+When the DSP application is modified, users only need to re-download the DSP image called <code class="docutils literal notranslate"><span class="pre">dsp_all.bin</span></code> to <code class="xref py py-mod docutils literal notranslate"><span class="pre">IMG_DSP</span></code> as shown below.
+So when in device DSP-development stage, we recommend this method to develop the DSP application conveniently and efficiently.</p>
+<blockquote>
+<div><figure class="align-center">
 <a class="reference internal image-reference" href="../../../_images/download_dsp_image.png"><img alt="../../../_images/download_dsp_image.png" src="../../../_images/download_dsp_image.png" style="width: 847.0px; height: 125.0px;" /></a>
 </figure>
-<p>To choose this scheme, users can disable the configuration of DSP within Image2 by command <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">menuconfig</span></code> under <code class="docutils literal notranslate"><span class="pre">{SDK}\amebalite_gcc_project</span></code>.</p>
-<figure class="align-center" id="id13">
-<a class="reference internal image-reference" href="../../../_images/dsp_make_menuconfig.svg"><img alt="../../../_images/dsp_make_menuconfig.svg" height="46" src="../../../_images/dsp_make_menuconfig.svg" width="853" /></a>
-<figcaption>
-<p><span class="caption-text">DSP make menuconfig</span><a class="headerlink" href="#id13" title="Link to this image"></a></p>
-</figcaption>
-</figure>
+</div></blockquote>
+<p>To choose this scheme, users can disable the configuration of <code class="docutils literal notranslate"><span class="pre">DSP</span> <span class="pre">within</span> <span class="pre">APP</span> <span class="pre">image</span></code> by the following steps:</p>
+<blockquote>
+<div><ol class="loweralpha">
+<li><p>Navigate to project and open configuration menu.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">amebalite_gcc_project</span>
+<span class="o">./</span><span class="n">menuconfig</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
+</li>
+<li><p>Remove the selection <span class="menuselection">CONFIG OTA OPTION &gt; DSP within APP image</span>.</p></li>
+</ol>
+</div></blockquote>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>This scheme should be used only in device DSP-development stage.</p>
@@ -303,42 +325,52 @@
 </section>
 <section id="dsp-image-within-application-image">
 <span id="ota-dsp-image-within-application-image"></span><h3>DSP Image within Application Image<a class="headerlink" href="#dsp-image-within-application-image" title="Link to this heading"></a></h3>
-<p>In this scheme, there are two slots in Flash layout called <code class="xref py py-mod docutils literal notranslate"><span class="pre">IMG_APP_OTA1</span></code> and <code class="xref py py-mod docutils literal notranslate"><span class="pre">IMG_APP_OTA2</span></code> respectively. Since the DSP image is merged into the application image. In order to avoid issues such as DSP boot fail after the DSP image is updated through OTA application when there is only one slot for DSP. For MP devices, the scheme of the DSP image within application image is recommended, which DSP can choose to boot from OTA1 or OTA2.</p>
+<p>In this scheme, there are two slots in Flash layout called <code class="xref py py-mod docutils literal notranslate"><span class="pre">IMG_APP_OTA1</span></code> and <code class="xref py py-mod docutils literal notranslate"><span class="pre">IMG_APP_OTA2</span></code> respectively.
+Since the DSP image is merged into the application image. In order to avoid issues such as DSP boot fail after the DSP image
+is updated through OTA application when there is only one slot for DSP. For MP devices,
+the scheme of the DSP image within application image is recommended, which DSP can choose to boot from OTA1 or OTA2.</p>
 <p>After choosing this scheme, there is only one application image called <code class="docutils literal notranslate"><span class="pre">kr4_km4_dsp_app.bin</span></code> needed to be downloaded as shown below.</p>
-<figure class="align-center">
+<blockquote>
+<div><figure class="align-center">
 <a class="reference internal image-reference" href="../../../_images/download_dsp_application_image.png"><img alt="../../../_images/download_dsp_application_image.png" src="../../../_images/download_dsp_application_image.png" style="width: 774.0px; height: 117.9px;" /></a>
 </figure>
-<p>Steps of generating <code class="docutils literal notranslate"><span class="pre">kr4_km4_dsp_app.bin</span></code> are:</p>
-<ol class="arabic">
-<li><p>Enable the configuration of DSP within Image2 by command <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">menuconfig</span></code> under <code class="docutils literal notranslate"><span class="pre">{SDK}\amebalite_gcc_project</span></code>.</p>
-<figure class="align-center">
-<a class="reference internal image-reference" href="../../../_images/dsp_application_make_menuconfig.svg"><img alt="../../../_images/dsp_application_make_menuconfig.svg" height="41" src="../../../_images/dsp_application_make_menuconfig.svg" width="767" /></a>
-</figure>
-</li>
-<li><p>Set the path of <code class="file docutils literal notranslate"><span class="pre">dsp.bin</span></code> in Makefile located in <code class="docutils literal notranslate"><span class="pre">{SDK}\amebalite_gcc_project\project_kr4\asdk</span></code>.</p>
-<div class="highlight-make notranslate"><div class="highlight"><pre><span></span><span class="c"># Lets work out what the user wants, and if they have configured us yet</span>
-<span class="c">#</span>
-<span class="hll"><span class="nv">DSP_IMAGE_TARGET_DIR</span><span class="w"> </span><span class="o">=</span>
-</span><span class="nv">RAM_OBJS_LIST</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>./build/ram/*.o
-</pre></div>
-</div>
-</li>
-<li><p>For example, after DSP SDK is compiled finished, there will be two images generated, named <code class="file docutils literal notranslate"><span class="pre">dsp.bin</span></code> and <code class="file docutils literal notranslate"><span class="pre">dsp_all.bin</span></code> respectively under the path of <code class="docutils literal notranslate"><span class="pre">{DSP_SDK}\project\image</span></code>. So the path of <code class="file docutils literal notranslate"><span class="pre">dsp.bin</span></code> is <code class="docutils literal notranslate"><span class="pre">{DSP_SDK}\project\image</span></code>.</p>
-<ol class="loweralpha simple">
-<li><p>Set the path in <code class="docutils literal notranslate"><span class="pre">{SDK}\amebalite_gcc_project\project_kr4\asdk\Makefile</span></code>.</p></li>
-</ol>
-<blockquote>
-<div><div class="highlight-make notranslate"><div class="highlight"><pre><span></span><span class="c"># Lets work out what the user wants, and if they have configured us yet</span>
-<span class="c">#</span>
-<span class="hll"><span class="nv">DSP_IMAGE_TARGET_DIR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">{</span>DSPSDK<span class="o">}</span>/project/image
-</span><span class="nv">RAM_OBJS_LIST</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>./build/ram/*.o
-</pre></div>
-</div>
 </div></blockquote>
-<ol class="loweralpha simple" start="2">
-<li><p>Rebuild project by command <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">all</span></code> under <code class="docutils literal notranslate"><span class="pre">{SDK}\amebalite_gcc_project</span></code>.</p></li>
+<p id="steps-set-dsp-path">Steps of generating <code class="docutils literal notranslate"><span class="pre">kr4_km4_dsp_app.bin</span></code> are:</p>
+<blockquote>
+<div><ol class="arabic">
+<li><p>Navigate to project and open configuration menu.</p></li>
+<li><p>Select <span class="menuselection">CONFIG OTA OPTION &gt; Enable DSP &gt; DSP within APP image</span> to enable the configuration of <code class="docutils literal notranslate"><span class="pre">DSP</span> <span class="pre">within</span> <span class="pre">APP</span> <span class="pre">image</span></code>.</p></li>
+<li><p>Select <span class="menuselection">DSP_IMAGE_TARGET_DIR</span> to set path of <code class="file docutils literal notranslate"><span class="pre">dsp.bin</span></code>, click Enter to save.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../../_images/set_dsp_path.png"><img alt="../../../_images/set_dsp_path.png" src="../../../_images/set_dsp_path.png" style="width: 579.6px; height: 211.5px;" /></a>
+</figure>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <cite>DSP_IMAGE_TARGET_DIR</cite> is relative to the amebalite_gcc_project.</p>
+</div>
+</li>
+<li><p>Save and exit.</p></li>
 </ol>
-<p><code class="file docutils literal notranslate"><span class="pre">kr4_km4_dsp_app.bin</span></code> will be found in <code class="docutils literal notranslate"><span class="pre">{SDK}\amebalite_gcc_project</span></code>.</p>
+</div></blockquote>
+<p>For example, after DSP SDK is compiled finished, there will be two images generated,
+named <code class="file docutils literal notranslate"><span class="pre">dsp.bin</span></code> and <code class="file docutils literal notranslate"><span class="pre">dsp_all.bin</span></code> respectively under the path of <code class="docutils literal notranslate"><span class="pre">{DSP_SDK}/project/image</span></code>.</p>
+<ol class="arabic">
+<li><p>Copy the <cite>dsp.bin</cite> into <code class="docutils literal notranslate"><span class="pre">{SDK}/component/dsp</span></code>, so the path of <code class="file docutils literal notranslate"><span class="pre">dsp.bin</span></code> is <code class="docutils literal notranslate"><span class="pre">../component/dsp</span></code>.</p></li>
+<li><p>Set the path as <a class="reference internal" href="#steps-set-dsp-path"><span class="std std-ref">Step 3</span></a> above. Check the path in <code class="docutils literal notranslate"><span class="pre">{SDK}/amebalite_gcc_project/menuconfig/.config</span></code>.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp"># CONFIG DSP Enable</span>
+<span class="cp">#</span>
+<span class="n">CONFIG_DSP_EN</span><span class="o">=</span><span class="n">y</span>
+<span class="n">CONFIG_DSP_WITHIN_APP_IMG</span><span class="o">=</span><span class="n">y</span>
+<span class="hll"><span class="n">CONFIG_DSP_IMAGE_TARGET_DIR</span><span class="o">=</span><span class="s">&quot;../component/dsp&quot;</span>
+</span><span class="cp"># end of CONFIG DSP Enable</span>
+</pre></div>
+</div>
+</li>
+<li><p>Rebuild the project by the following commands, and <code class="file docutils literal notranslate"><span class="pre">kr4_km4_dsp_app.bin</span></code> will be found in <code class="docutils literal notranslate"><span class="pre">{SDK}/amebalite_gcc_project</span></code>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">amebalite_gcc_project</span>
+<span class="o">./</span><span class="n">build</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
 </li>
 </ol>
 <div class="admonition note">
@@ -346,6 +378,21 @@
 <p>We choose this scheme and use <code class="file docutils literal notranslate"><span class="pre">kr4_km4_dsp_app.bin</span></code> in the following operations.</p>
 </div>
 </section>
+</section>
+<section id="ota-compressed-image">
+<span id="id5"></span><h2>OTA Compressed Image<a class="headerlink" href="#ota-compressed-image" title="Link to this heading"></a></h2>
+<p>The AmebaLite supports OTA Image Compression. When OTA Image Compression is enabled, the OTA image will be compressed and
+image size will be reduced, which can save the flash space effectively.</p>
+<p>The OTA Image Compression only compresses the APP image. Once the compressed APP image is download into one OTA slot,
+it will be decompressed into another OTA slot and boot from this slot. Which means there is always only one valid APP image between these two slots.</p>
+<p>Users can generate OTA Compressed Image by the following steps:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>Navigate to project and open configuration menu.</p></li>
+<li><p>Select <span class="menuselection">CONFIG OTA OPTION &gt; Support Compressed APP Image</span>, then save and exit.</p></li>
+<li><p>Build the project and <code class="file docutils literal notranslate"><span class="pre">ota_all.bin</span></code> which is compressed will be found in <code class="docutils literal notranslate"><span class="pre">{SDK}/amebalite_gcc_project</span></code>.</p></li>
+</ol>
+</div></blockquote>
 </section>
 </section>
 <section id="building-ota-image">
@@ -466,7 +513,7 @@ For example, users can program the bootloader version of anti-rollback to 1 by t
 </ul>
 </div>
 </li>
-<li><p>Rebuild project using <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">all</span></code> command to generate the signed images.</p></li>
+<li><p>Rebuild the project.</p></li>
 <li><p>Download the images into Flash, and reset the board.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">MODULE_BOOT</span><span class="o">-</span><span class="n">LEVEL_INFO</span><span class="p">]:</span> <span class="n">KR4</span> <span class="n">PMC</span><span class="p">[</span><span class="mi">20004</span><span class="n">c20</span><span class="p">:</span><span class="mi">160</span><span class="p">]</span>
 <span class="p">[</span><span class="n">MODULE_BOOT</span><span class="o">-</span><span class="n">LEVEL_INFO</span><span class="p">]:</span> <span class="n">KM4</span> <span class="n">XIP</span> <span class="n">IMG</span><span class="p">[</span><span class="mf">0e000000</span><span class="p">:</span><span class="mi">5</span><span class="n">fac0</span><span class="p">]</span>
@@ -487,13 +534,14 @@ For example, users can program the bootloader version of anti-rollback to 1 by t
 <li><p><code class="file docutils literal notranslate"><span class="pre">kr4_km4_dsp_app.bin</span></code> is included in <code class="file docutils literal notranslate"><span class="pre">ota_all.bin</span></code> by default.</p></li>
 <li><p>If the bootloader is needed to be upgraded,</p>
 <ol class="loweralpha simple">
-<li><p>Type command <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">menuconfig</span></code> under <code class="docutils literal notranslate"><span class="pre">{SDK}\amebalite_gcc_project</span></code> and choose <span class="menuselection">CONFIG OTA OPTION &gt; Upgrade Bootloader</span>, save and exit.</p></li>
+<li><p>Navigate to project and open configuration menu.</p></li>
+<li><p>Select <span class="menuselection">CONFIG OTA OPTION &gt; Upgrade Bootloader</span>, then save and exit.</p></li>
 <li><p>Modify the bootloader related configurations as described in <a class="reference internal" href="#ota-modifying-configurations"><span class="std std-ref">Modifying Configurations</span></a>.</p></li>
 </ol>
 </li>
-<li><p>Rebuild the project by command <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">all</span></code> under <code class="docutils literal notranslate"><span class="pre">{SDK}\amebalite_gcc_project</span></code>.</p></li>
+<li><p>If ota image compression is needed, follow the steps in <a class="reference internal" href="#ota-compressed-image"><span class="std std-ref">OTA Compressed Image</span></a>.</p></li>
+<li><p>Rebuild the project. The OTA image file <code class="file docutils literal notranslate"><span class="pre">ota_all.bin</span></code> will be generated in <code class="docutils literal notranslate"><span class="pre">{SDK}\amebalite_gcc_project</span></code>.</p></li>
 </ol>
-<p>The OTA image file <code class="file docutils literal notranslate"><span class="pre">ota_all.bin</span></code> will be generated in <code class="docutils literal notranslate"><span class="pre">{SDK}\amebalite_gcc_project</span></code>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The steps of generating <code class="file docutils literal notranslate"><span class="pre">kr4_km4_dsp_app.bin</span></code> can be referred to <a class="reference internal" href="#ota-dsp-image-within-application-image"><span class="std std-ref">DSP Image within Application Image</span></a>.</p>
@@ -619,14 +667,15 @@ For example, users can program the bootloader version of anti-rollback to 1 by t
 </li>
 </ol>
 </li>
-<li><p>Rebuild the project with command <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">all</span> <span class="pre">EXAMPLE=ota</span></code> and download the images to the device.</p></li>
-<li><p>Modify the major and minor version number in Manifest to a bigger version as described in <a class="reference internal" href="#version-number"><span class="std std-ref">Version Number</span></a>.</p></li>
-</ol>
+<li><p>Rebuild the project with command <code class="docutils literal notranslate"><span class="pre">./build.py</span> <span class="pre">-a</span> <span class="pre">ota</span></code> and download the images to the device.</p></li>
+<li><p>Modify the major and minor version number in Manifest to a bigger version as described in <a class="reference internal" href="#version-number"><span class="std std-ref">Version Number</span></a>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The bootloader will select OTA image with a bigger version number by default. If users don’t want to modify the version number, modify <code class="xref py py-mod docutils literal notranslate"><span class="pre">OTA_CLEAR_PATTERN</span></code> to 1 defined in <code class="file docutils literal notranslate"><span class="pre">ameba_ota.h</span></code> before step 2. It should only be used in the development stage.</p>
+<p>The bootloader will select OTA image with a bigger version number by default.
+If users don’t want to modify the version number, modify <code class="xref py py-mod docutils literal notranslate"><span class="pre">OTA_CLEAR_PATTERN</span></code> to 1 defined in <code class="file docutils literal notranslate"><span class="pre">ameba_ota.h</span></code> before step 2.
+It should only be used in the development stage.</p>
 </div>
-<ol class="arabic" start="4">
+</li>
 <li><p>Rebuild the project and copy <code class="file docutils literal notranslate"><span class="pre">ota_all.bin</span></code> into the folder <code class="docutils literal notranslate"><span class="pre">{SDK}\tools\DownloadServer</span></code>.</p></li>
 <li><p>Edit <code class="docutils literal notranslate"><span class="pre">{SDK}\tools\DownloadServer\start.bat</span></code>.</p>
 <ul class="simple">
