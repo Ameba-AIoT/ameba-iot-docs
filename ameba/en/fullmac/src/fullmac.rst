@@ -138,7 +138,7 @@ Wi-Fi
 
    .. tab:: FreeRTOS
 
-      The FullMAC driver of FreeRTOS in the SDK is located at ``{SDK}/component/wifi/inic``. Users need to porting files in none_ipc_rtos if use other rtos IC as Host.
+      The FullMAC driver of FreeRTOS in the SDK is located at ``{SDK}/component/wifi/inic``. Users need to porting files in none_ipc_rtos if use other FreeRtos IC as Host.
 
       ::
 
@@ -271,13 +271,13 @@ The FullMAC can be used on FreeRTOS with different interfaces, with different pi
    |            +-----------------+---------------+                                                                 |
    |            | PB26            | SPI_CS        |                                                                 |
    |            +-----------------+---------------+-----------------------------------------------------------------+
-   |            | PB8             | DEV_TX_REQ    | A input pin for host, output pin for dev, Indicate a data pkt   |
+   |            | PB8             | DEV_TX_REQ    | A input pin for host, output pin for dev, indicating that there |
    |            |                 |               |                                                                 |
-   |            |                 |               | in dev wating to send to Host with a rising edge.               |
+   |            |                 |               | is a packet in dev wating to send to Host with a rising edge.   |
    |            +-----------------+---------------+-----------------------------------------------------------------+
    |            | PB9             | DEV_READY     | A input pin for host, output pin for dev, used to show that     |
    |            |                 |               |                                                                 |
-   |            |                 |               | if dev is ready for SPI transcation.                            |
+   |            |                 |               | if dev is ready for a SPI transcation.                          |
    |            |                 |               |                                                                 |
    |            |                 |               | - 1: Device is ready.                                           |
    |            |                 |               | - 0: Device is busy.                                            |
@@ -324,7 +324,7 @@ Device Driver
    b. Click :menuselection:`CONFIG INIC ITNF > INIC Mode > FULLMAC`, select :menuselection:`SDIO_FULLMAC` for SDIO interface or :menuselection:`SPI_FULLMAC` for SPI interface.
 
       .. figure:: ../figures/wifi_sdio_spi_selection.png
-         :scale: 100%
+         :scale: 80%
          :align: center
 
 2. Execute the make command to generate :file:`km4_boot_all.bin` and :file:`km0_km4_app.bin` after the build is successfully complete.
@@ -741,17 +741,17 @@ FreeRTOS
    :width: 100%
    :widths: auto
 
-   +----------------+--------+---------------+---------------+
-   | Interface      | Item   | BW 20M (Mbps) | BW 40M (Mbps) |
-   +================+========+===============+===============+
-   | SPI            | TCP RX |               |               |
-   |                +--------+---------------+---------------+
-   |                | TCP TX |               |               |
-   |                +--------+---------------+---------------+
-   |                | UDP RX |               |               |
-   |                +--------+---------------+---------------+
-   |                | UDP TX |               |               |
-   +----------------+--------+---------------+---------------+
+   +----------------+--------+---------------+
+   | Interface      | Item   | BW 20M (Mbps) |
+   +================+========+===============+
+   | SPI            | TCP RX | 8.3           |
+   |                +--------+---------------+
+   |                | TCP TX | 9.9           |
+   |                +--------+---------------+
+   |                | UDP RX | 15.8          |
+   |                +--------+---------------+
+   |                | UDP TX | 17.6          |
+   +----------------+--------+---------------+
 
 Linux
 ~~~~~~~~~
