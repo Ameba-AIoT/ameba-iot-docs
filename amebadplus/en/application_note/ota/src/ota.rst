@@ -131,6 +131,34 @@ The application image OTA selection flow is illustrated below.
 
    Application image OTA selection flow
 
+.. _ota_compressed_image:
+
+OTA Compressed Image
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The |CHIP_NAME| supports OTA Image Compression. When OTA Image Compression is enabled, the OTA image will be compressed and 
+image size will be reduced, which can save the flash space effectively.
+
+The OTA Image Compression only compresses the APP image. Once the compressed APP image is download into one OTA slot,
+it will be decompressed into another OTA slot and boot from this slot. Which means there is always only one valid APP image between these two slots.
+
+Users can generate OTA Compressed Image by the following steps:
+
+   1. Navigate to project and open configuration menu.
+
+      .. code-block::
+
+         cd amebadplus_gcc_project
+         ./menuconfig.py
+
+   2. Select :menuselection:`CONFIG OTA OPTION > Support Compressed APP Image`, then save and exit.
+
+   3. Build the project by following commands and :file:`ota_all.bin` which is compressed will be found in ``{SDK}\amebadplus_gcc_project``.
+
+      .. code-block::
+
+         cd amebadplus_gcc_project
+         ./build.py
+
 Building OTA Image
 ------------------------------------
 .. _ota_modifying_configurations:
@@ -241,7 +269,7 @@ Modifying Configurations
       - The above commands are used in the serial terminal tool.
 
 
-4. Rebuild the project using ``make all`` command to generate the signed images.
+4. Rebuild the project.
 
 5. Download the images into Flash, and reset the board.
 
@@ -264,11 +292,15 @@ The OTA image will be generated automatically when building the project.
 
 2. If the bootloader is needed to be upgraded,
 
-   a. Type command ``make menuconfig`` under ``{SDK}\amebadplus_gcc_project`` and choose :menuselection:`CONFIG OTA OPTION -> Upgrade Bootloader`, save and exit.
+   a. Navigate to project and open configuration menu.
 
-   b. Modify the bootloader related configurations as described in Section :ref:`ota_modifying_configurations`.
+   b. Select :menuselection:`CONFIG OTA OPTION > Upgrade Bootloader`, save and exit.
 
-3. Rebuild the project by command ``make all`` under ``{SDK}\amebadplus_gcc_project``. The OTA image file called :file:`ota_all.bin` will be generated under ``{SDK}\amebadplus_gcc_project``.
+   c. Modify the bootloader related configurations as described in Section :ref:`ota_modifying_configurations`.
+
+3. If ota image compression is needed, follow the steps in :ref:`OTA Compressed Image <ota_compressed_image>`.
+
+4. Rebuild the project. The OTA image file called :file:`ota_all.bin` will be generated under ``{SDK}\amebadplus_gcc_project``.
 
 Updating from Local Server
 ----------------------------------------------------
@@ -377,11 +409,14 @@ Follow these steps to run the OTA demo to update from local server:
 
 .. _ota_demo_step_2:
 
-2. Rebuild the project with the command ``make all EXAMPLE=ota`` and download the images to the device.
+2. Rebuild the project with the command ``./build.py -a ota`` and download the images to the device.
 
 3. Modify the major and minor version number in Manifest to a bigger version as described in :ref:`Version Number <version_number>`.
 
-   .. note:: The bootloader will select OTA image with a bigger version number by default. If users don't want to modify the version number, modify *OTA_CLEAR_PATTERN* to 1 defined in :file:`ameba_ota.h` before :ref:`Step 2 <ota_demo_step_2>`. It should only be used in the development stage.
+   .. note::
+      The bootloader will select OTA image with a bigger version number by default.
+      If users don't want to modify the version number, modify *OTA_CLEAR_PATTERN* to 1 defined in :file:`ameba_ota.h` before :ref:`Step 2 <ota_demo_step_2>`.
+      It should only be used in the development stage.
 
 4. Rebuild the project and copy ``ota_all.bin`` into ``{SDK}\tools\DownloadServer``.
 
