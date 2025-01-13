@@ -10,15 +10,15 @@ Supported Realtek Ameba SoCs
    :width: 100%
    :widths: auto
 
-   +------------+---------+------------+------------------------------+-----------------------------------+
-   | Chip       | OS      | Processor  | aivoice_lib_dir              | aivoice_example_dir               |
-   +============+=========+============+==============================+===================================+
-   | AmebaSmart | Linux   | CA32       | {LINUXSDK}/apps/aivoice      | {LINUXSDK}/apps/aivoice/example   |
-   +------------+---------+------------+------------------------------+-----------------------------------+
-   | AmebaSmart | RTOS    | CA32       | {RTOSSDK}/component/aivoice  | {RTOSSDK}/example/aivoice         |
-   +------------+---------+------------+------------------------------+-----------------------------------+
-   | AmebaLite  | RTOS    | HiFi5 DSP  | {DSPSDK}/lib/aivoice         | {DSPSDK}/example/example_aivoice  |
-   +------------+---------+------------+------------------------------+-----------------------------------+
+   +-----------------------+----------+------------+------------------------------+-----------------------------------+
+   | Chip                  | OS       | Processor  | aivoice_lib_dir              | aivoice_example_dir               |
+   +=======================+==========+============+==============================+===================================+
+   | RTL8730E              | Linux    | CA32       | {LINUXSDK}/apps/aivoice      | {LINUXSDK}/apps/aivoice/example   |
+   +                       +----------+            +------------------------------+-----------------------------------+
+   |                       | FreeRTOS |            | {RTOSSDK}/component/aivoice  | {RTOSSDK}/example/aivoice         |
+   +-----------------------+----------+------------+------------------------------+-----------------------------------+
+   | RTL8713EC,RTL8726EA   | FreeRTOS | HiFi5 DSP  | {DSPSDK}/lib/aivoice         | {DSPSDK}/example/example_aivoice  |
+   +-----------------------+----------+------------+------------------------------+-----------------------------------+
 
 Modules
 ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -90,7 +90,7 @@ AIVoice
 Configurable parameters:
 
 :- no_cmd_timeout: ASR exits when no command word detected during this duration. **ONLY used in full flow.**
-:- memory_alloc_mode: Default mode uses SDK default heap. SRAM mode uses SDK default heap while also allocate space from SRAM for memory critical data. **SRAM mode is ONLY available on AmebaLite DSP now.**
+:- memory_alloc_mode: Default mode uses SDK default heap. SRAM mode uses SDK default heap while also allocate space from SRAM for memory critical data. **SRAM mode is ONLY available on RTL8713EC and RTL8726EA DSP now.**
 
 Please refer to ``${aivoice_lib_dir}/include/aivoice_sdk_config.h`` for details.
 
@@ -104,8 +104,8 @@ AFE configuration includes microphone array, working mode, submodule switches, e
 
        // AFE common parameter
        afe_mic_geometry_e  mic_array;          // microphone array. Make sure to choose the matched resource library
-   	int ref_num;                            // reference channel number, must be 0 or 1. AEC will be disabled if ref_num=0.
-   	int sample_rate;                        // sampling rate(Hz), must be 16000
+       int ref_num;                            // reference channel number, must be 0 or 1. AEC will be disabled if ref_num=0.
+       int sample_rate;                        // sampling rate(Hz), must be 16000
        int frame_size;                         // frame length(samples), must be 256
 
        afe_mode_e afe_mode;                    // AFE mode, for ASR or voice communication. Only support AFE for ASR in current version.
@@ -330,7 +330,7 @@ Steps of Using AIVoice
       aivoice_param.no_cmd_timeout = 10;
       config.common = &aivoice_param; // can be NULL
 
-3. Use **create()** to create and initialize aivoice instance with given configuration.
+3. Use :func:`create()` to create and initialize aivoice instance with given configuration.
 
    .. code-block:: c
 
@@ -406,7 +406,7 @@ Steps of Using AIVoice
           return 0;
       }
 
-5. Use **feed()** to input audio data to aivoice.
+5. Use :func:`feed()` to input audio data to aivoice.
 
    .. code-block:: c
 
@@ -429,9 +429,9 @@ Steps of Using AIVoice
               audio_offset += afe_frame_bytes;
       }
 
-6. (Optional) If need reset status, use **reset()**.
+6. (Optional) If need reset status, use :func:`reset()`.
 
-7. If aivoice no longer needed, use **destroy()** to destroy the instance.
+7. If aivoice no longer needed, use :func:`destroy()` to destroy the instance.
 
    .. code-block:: c
 
@@ -444,7 +444,6 @@ Please refer to ``${aivoice_example_dir}/full_flow_offline`` for more details.
 Build Example
 ^^^^^^^^^^^^^^^^^^^^^^^
 .. only:: RTL8726EA
-
    1. Build Tensorflow Lite Micro Library for DSP, refer to :ref:`build_tflm_lib`.
 
    2. Import ``{DSPSDK}/example/aivoice/full_flow_offline`` source in Xtensa Xplorer.
