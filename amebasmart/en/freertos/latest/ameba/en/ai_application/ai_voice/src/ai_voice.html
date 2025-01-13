@@ -165,20 +165,18 @@
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>AmebaSmart</p></td>
+<tr class="row-even"><td rowspan="2"><p>RTL8730E</p></td>
 <td><p>Linux</p></td>
-<td><p>CA32</p></td>
+<td rowspan="2"><p>CA32</p></td>
 <td><p>{LINUXSDK}/apps/aivoice</p></td>
 <td><p>{LINUXSDK}/apps/aivoice/example</p></td>
 </tr>
-<tr class="row-odd"><td><p>AmebaSmart</p></td>
-<td><p>RTOS</p></td>
-<td><p>CA32</p></td>
+<tr class="row-odd"><td><p>FreeRTOS</p></td>
 <td><p>{RTOSSDK}/component/aivoice</p></td>
 <td><p>{RTOSSDK}/example/aivoice</p></td>
 </tr>
-<tr class="row-even"><td><p>AmebaLite</p></td>
-<td><p>RTOS</p></td>
+<tr class="row-even"><td><p>RTL8713EC,RTL8726EA</p></td>
+<td><p>FreeRTOS</p></td>
 <td><p>HiFi5 DSP</p></td>
 <td><p>{DSPSDK}/lib/aivoice</p></td>
 <td><p>{DSPSDK}/example/example_aivoice</p></td>
@@ -267,7 +265,7 @@
 <dd class="field-odd"><p>ASR exits when no command word detected during this duration. <strong>ONLY used in full flow.</strong></p>
 </dd>
 <dt class="field-even">- memory_alloc_mode<span class="colon">:</span></dt>
-<dd class="field-even"><p>Default mode uses SDK default heap. SRAM mode uses SDK default heap while also allocate space from SRAM for memory critical data. <strong>SRAM mode is ONLY available on AmebaLite DSP now.</strong></p>
+<dd class="field-even"><p>Default mode uses SDK default heap. SRAM mode uses SDK default heap while also allocate space from SRAM for memory critical data. <strong>SRAM mode is ONLY available on RTL8713EC and RTL8726EA DSP now.</strong></p>
 </dd>
 </dl>
 <p>Please refer to <code class="docutils literal notranslate"><span class="pre">${aivoice_lib_dir}/include/aivoice_sdk_config.h</span></code> for details.</p>
@@ -279,8 +277,8 @@
 
 <span class="w">    </span><span class="c1">// AFE common parameter</span>
 <span class="w">    </span><span class="n">afe_mic_geometry_e</span><span class="w">  </span><span class="n">mic_array</span><span class="p">;</span><span class="w">          </span><span class="c1">// microphone array. Make sure to choose the matched resource library</span>
-<span class="w">     </span><span class="kt">int</span><span class="w"> </span><span class="n">ref_num</span><span class="p">;</span><span class="w">                            </span><span class="c1">// reference channel number, must be 0 or 1. AEC will be disabled if ref_num=0.</span>
-<span class="w">     </span><span class="kt">int</span><span class="w"> </span><span class="n">sample_rate</span><span class="p">;</span><span class="w">                        </span><span class="c1">// sampling rate(Hz), must be 16000</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">ref_num</span><span class="p">;</span><span class="w">                            </span><span class="c1">// reference channel number, must be 0 or 1. AEC will be disabled if ref_num=0.</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">sample_rate</span><span class="p">;</span><span class="w">                        </span><span class="c1">// sampling rate(Hz), must be 16000</span>
 <span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">frame_size</span><span class="p">;</span><span class="w">                         </span><span class="c1">// frame length(samples), must be 256</span>
 
 <span class="w">    </span><span class="n">afe_mode_e</span><span class="w"> </span><span class="n">afe_mode</span><span class="p">;</span><span class="w">                    </span><span class="c1">// AFE mode, for ASR or voice communication. Only support AFE for ASR in current version.</span>
@@ -552,7 +550,7 @@
 </pre></div>
 </div>
 </li>
-<li><p>Use <strong>create()</strong> to create and initialize aivoice instance with given configuration.</p>
+<li><p>Use <code class="xref py py-func docutils literal notranslate"><span class="pre">create()</span></code> to create and initialize aivoice instance with given configuration.</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* step 3:</span>
 <span class="cm"> * Create the aivoice instance.</span>
 <span class="cm"> */</span>
@@ -624,7 +622,7 @@
 </pre></div>
 </div>
 </li>
-<li><p>Use <strong>feed()</strong> to input audio data to aivoice.</p>
+<li><p>Use <code class="xref py py-func docutils literal notranslate"><span class="pre">feed()</span></code> to input audio data to aivoice.</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* when run on chips, we get online audio stream,</span>
 <span class="cm"> * here we use a fix audio.</span>
 <span class="cm"> * */</span>
@@ -646,8 +644,8 @@
 </pre></div>
 </div>
 </li>
-<li><p>(Optional) If need reset status, use <strong>reset()</strong>.</p></li>
-<li><p>If aivoice no longer needed, use <strong>destroy()</strong> to destroy the instance.</p>
+<li><p>(Optional) If need reset status, use <code class="xref py py-func docutils literal notranslate"><span class="pre">reset()</span></code>.</p></li>
+<li><p>If aivoice no longer needed, use <code class="xref py py-func docutils literal notranslate"><span class="pre">destroy()</span></code> to destroy the instance.</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* step 6:</span>
 <span class="cm">* Destroy the aivoice instance */</span>
 <span class="n">aivoice</span><span class="o">-&gt;</span><span class="n">destroy</span><span class="p">(</span><span class="n">handle</span><span class="p">);</span>
