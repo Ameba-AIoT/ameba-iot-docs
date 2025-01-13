@@ -47,10 +47,10 @@ for ign in exclude_patterns:
 # Settings by project
 # 项目设置
 language = "en" if en_or_cn == "en" else "cn"
-project = "amebalite_docs"
+project = "RTL8726EA Docs"
 
 # 宏替换
-CHIP_NAME = 'AmebaLite'
+CHIP_NAME = 'RTL8726EA'
 
 VERSION = '1.0.0'
 
