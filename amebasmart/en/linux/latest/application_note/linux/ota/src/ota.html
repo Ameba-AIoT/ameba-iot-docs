@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Overview &mdash; AmebaSmart Docs  documentation</title>
+  <title>Overview &mdash; RTL8730E Docs  documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/togglebutton.css?v=13237357" />
@@ -54,7 +54,7 @@
           
           
           <a href="../../../../index_linux.html" class="icon icon-home">
-            AmebaSmart Docs
+            RTL8730E Docs
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
@@ -127,7 +127,7 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../../../index_linux.html">AmebaSmart Docs</a>
+          <a href="../../../../index_linux.html">RTL8730E Docs</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -148,11 +148,11 @@
              
   <section id="overview">
 <span id="ota-firmware-update"></span><h1>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h1>
-<p>The over-the-air (OTA) programming provides a methodology for updating device firmware from various sources (e.g., via USB disk or TCP/IP network). Currently, the AmebaSmart provides a solution to implement OTA firmware upgrade from USB disk. Users can refer to the USB upgrade solution to easily implement their own OTA solutions.</p>
+<p>The over-the-air (OTA) programming provides a methodology for updating device firmware from various sources (e.g., via USB disk or TCP/IP network). Currently, the RTL8730E provides a solution to implement OTA firmware upgrade from USB disk. Users can refer to the USB upgrade solution to easily implement their own OTA solutions.</p>
 </section>
 <section id="architecture">
 <h1>Architecture<a class="headerlink" href="#architecture" title="Link to this heading"></a></h1>
-<p>The OTA firmware upgrade in AmebaSmart is achieved by the following system modules:</p>
+<p>The OTA firmware upgrade in RTL8730E is achieved by the following system modules:</p>
 <p>Main System</p>
 <p>The main system is the normal Linux system running user’s application. Normally it’s responsible for a new OTA package detected from a remote server or USB disk and downloading the OTA packages to a local storage. After detecting and verifying the OTA package, the main system will set the upgrade information in BCB (Bootloader Message Control Block) and reboot the system to notify the bootloader to boot up the system to a recovery system.</p>
 <p>Recovery System</p>
@@ -168,7 +168,7 @@
 </figure>
 <section id="partition-layout">
 <h2>Partition Layout<a class="headerlink" href="#partition-layout" title="Link to this heading"></a></h2>
-<p>In AmebaSmart, the partition layout is listed in figure shown below</p>
+<p>In RTL8730E, the partition layout is listed in figure shown below</p>
 <figure class="align-center" id="id2">
 <a class="reference internal image-reference" href="../../../../_images/partition_layout.svg"><img alt="../../../../_images/partition_layout.svg" height="116" src="../../../../_images/partition_layout.svg" width="873" /></a>
 <figcaption>
@@ -246,7 +246,7 @@
 <span class="p">};</span>
 </pre></div>
 </div>
-<p>In AmebaSmart, only “cmd” and “recovery” members are used.</p>
+<p>In RTL8730E, only “cmd” and “recovery” members are used.</p>
 <ul class="simple">
 <li><p>The member “cmd” indicates whether the board enters recovery system or main system. If it is set to “boot-recovery”, the board will enter recovery system when boots. Otherwise, the board will enter main system. The member will be reset when exiting recovery system.</p></li>
 <li><p>The member “recovery” stores the OTA path, the member will be set in main system when there is a new OTA package available.</p></li>
@@ -322,11 +322,11 @@
 </section>
 <section id="build-recovery-system">
 <h1>Build Recovery System<a class="headerlink" href="#build-recovery-system" title="Link to this heading"></a></h1>
-<p>In AmebaSmart, recovery system kernel configuration is defined in <code class="file docutils literal notranslate"><span class="pre">&lt;sdk&gt;/sources/yocto/meta-realtek/meta-realtek-bsp/recipes-kernel/linux-ameba_5.4.bb</span></code>.</p>
+<p>In RTL8730E, recovery system kernel configuration is defined in <code class="file docutils literal notranslate"><span class="pre">&lt;sdk&gt;/sources/yocto/meta-realtek/meta-realtek-bsp/recipes-kernel/linux-ameba_5.4.bb</span></code>.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>KBUILD_DEFCONFIG:rtl8730elh-recovery?= &quot;rtl8730elh_recovery_defconfig&quot;
 </pre></div>
 </div>
-<p>In AmebaSmart, recovery system has its own dtb and kernel images. Recovery images can be generated independently by the following commands:</p>
+<p>In RTL8730E, recovery system has its own dtb and kernel images. Recovery images can be generated independently by the following commands:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">source</span> <span class="n">envsetup</span><span class="o">.</span><span class="n">sh</span> <span class="o">-</span><span class="n">m</span> <span class="n">rtl8730elh</span><span class="o">-</span><span class="n">recovery</span> <span class="o">-</span><span class="n">d</span> <span class="n">poky</span> <span class="o">-</span><span class="n">b</span> <span class="o">&lt;</span><span class="n">recovery</span> <span class="n">out</span><span class="o">&gt;</span>
 <span class="n">mrecovery</span>
 </pre></div>
