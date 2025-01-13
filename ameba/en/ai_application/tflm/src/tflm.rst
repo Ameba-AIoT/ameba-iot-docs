@@ -17,17 +17,17 @@ Supported Realtek Ameba SoCs
    :width: 100%
    :widths: auto
 
-   +------------+-----------+-------------------+
-   | Chip       | OS        | Processor         |
-   +============+===========+===================+
-   | AmebaSmart | RTOS      | CA32              |
-   +------------+-----------+-------------------+
-   | AmebaLite  | RTOS      | HiFi5 DSP         |
-   +------------+-----------+-------------------+
-   | AmebaLite  | RTOS      | KM4               |
-   +------------+-----------+-------------------+
-   | AmebaDplus | RTOS      | KM4               |
-   +------------+-----------+-------------------+
+   +-----------+------------------------------------------+-------------------+
+   | OS        | Chip                                     | Processor         |
+   +===========+==========================================+===================+
+   | FreeRTOS  | RTL8730E                                 | CA32              |
+   +           +------------------------------------------+-------------------+
+   |           | RTL8713EC,RTL8726EA                      | HiFi5 DSP         |
+   +           +------------------------------------------+-------------------+
+   |           | RTL8710EC,RTL8713EC,RTL8720EA,RTL8726EA  | KM4               |
+   +           +------------------------------------------+-------------------+
+   |           | RTL8721Dx,RTL8711Dx                      | KM4               |
+   +-----------+------------------------------------------+-------------------+
 
 .. _build_tflm_lib:
 
@@ -35,7 +35,7 @@ Build Tensorflow Lite Micro Library
 --------------------------------------
 .. only:: RTL8726EA
 
-   AmebaLite DSP
+   DSP
    ~~~~~~~~~~~~~~~~~
    To build Tensorflow Lite Micro Library for DSP, import ``{DSPSDK}/lib/tflite_micro`` as a project to the workspace in Xtensa Xplorer.
 
@@ -56,7 +56,7 @@ Build Tensorflow Lite Micro Library
 
 .. only:: RTL8726EA
 
-   AmebaLite KM4
+   KM4
    ~~~~~~~~~~~~~~~~~
    To build Tensorflow Lite Micro Library for KM4, enable tflite_micro configuration in SDK menuconfig.
 
@@ -88,7 +88,7 @@ Build Tensorflow Lite Micro Library
 
 .. only:: RTL8721D
 
-   AmebaDplus KM4
+   KM4
    ~~~~~~~~~~~~~~~~~
    To build Tensorflow Lite Micro Library, enable tflite_micro configuration in SDK menuconfig.
 
@@ -123,21 +123,16 @@ Build Examples
 ------------------------
 .. only:: RTL8726EA
 
-   AmebaLite DSP
+   DSP
    ~~~~~~~~~~~~~~~~~
 
    TensorFlow Lite for Microcontrollers related examples for DSP are in the ``{DSPSDK}/example/tflite_micro`` directory.
 
    To build an example image, please refer to :ref:`dsp_build <build_environment_for_dsp>` for steps and the README in the example directory for software configurations.
 
-.. only:: RTL8726EA
+.. only:: RTL8726EA or RTL8721D
 
-   AmebaLite KM4
-   ~~~~~~~~~~~~~~~~~
-
-.. only:: RTL8721D
-
-   AmebaDplus KM4
+   KM4
    ~~~~~~~~~~~~~~~~~
 
 TensorFlow Lite for Microcontrollers related examples are in the ``{SDK}/component/example/tflite_micro`` directory. To build an example image such as tflm_hello_world:
@@ -161,29 +156,29 @@ Example codes are in the ``{SDK}/component/example/tflite_micro/tflm_mnist`` dir
 
 Step 1. Train a Model
 ^^^^^^^^^^^^^^^^^^^^^^
-First train and evaluate a classification model for 10 digits of MNIST dataset. You can choose either keras(tensorflow) or pytorch framework by running ``python keras_train_eval.py --output keras_mnist_conv`` or ``python torch_train_eval.py --output torch_mnist_conv``.
+First train and evaluate a classification model for 10 digits of MNIST dataset. You can choose either **keras(tensorflow)** or **pytorch** framework by running ``python keras_train_eval.py --output keras_mnist_conv`` or ``python torch_train_eval.py --output torch_mnist_conv``.
 
 A simple convolution based model will be trained for several epochs and then accuracy will be tested.
 
 Due to the limited **computation resources** and **memory** of microcontrollers, we recommend paying attention to **model size** and **operation numbers**.
 
-Use *keras_flops* library under tensorflow/keras framework:
+- Use *keras_flops* library under tensorflow/keras framework:
 
-.. code-block:: python
+  .. code-block:: python
 
-   from keras_flops import get_flops
+     from keras_flops import get_flops
 
-   model.summary()
-   flops = get_flops(model, batch_size=1)
+     model.summary()
+     flops = get_flops(model, batch_size=1)
 
 
-Use *ptflops* library under pytorch framework:
+- Use *ptflops* library under pytorch framework:
 
-.. code-block:: python
+  .. code-block:: python
 
-   from ptflops import get_model_complexity_info
+     from ptflops import get_model_complexity_info
 
-   macs, params = get_model_complexity_info(model, (1,28,28), as_strings=False)
+     macs, params = get_model_complexity_info(model, (1,28,28), as_strings=False)
 
 After training, keras model is saved in SavedModel format. Pytorch model is saved in .pt format, while a .onnx file is also exported for later conversion stage.
 
@@ -191,17 +186,17 @@ Step 2. Convert to Tflite
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 In this stage, **post-training integer quantization** is applied on the trained model and output .tflite format. Float model inference is also supported on Ameba SoCs, however, we recommend using integer quantization which can extremely reduce computation and memory with little performance degradation.
 
-For models trained by keras(tensorflow), run
+- For models trained by keras(tensorflow), run
 
-.. code-block::
+  .. code-block::
 
-   python convert.py --input-path keras_mnist_conv/saved_model --output-path keras_mnist_conv
+     python convert.py --input-path keras_mnist_conv/saved_model --output-path keras_mnist_conv
 
-For models trained by pytorch, run
+- For models trained by pytorch, run
 
-.. code-block::
+  .. code-block::
 
-   python convert.py --input-path torch_mnist_conv/model.onnx --output-path torch_mnist_conv
+     python convert.py --input-path torch_mnist_conv/model.onnx --output-path torch_mnist_conv
 
 An additional step will run to convert from .onnx to SavedModel format.
 
@@ -221,7 +216,7 @@ Refer to `tflite official site <https://ai.google.dev/edge/litert/models/post_tr
 
 After conversion, the performance on test set will be validated using int8 .tflite model and two .npy files containing input array and label array of 100 test images are generated for later use on SoC.
 
-In *convert.py*, `onnx_tf library <https://github.com/onnx/onnx-tensorflow>`_ is used for converting from onnx to SavedModel. Other convert libraries are available with similar purpose:
+In :file:`convert.py`, `onnx_tf library <https://github.com/onnx/onnx-tensorflow>`_ is used for converting from onnx to SavedModel. Other convert libraries are available with similar purpose:
 
 - `onnx2tf <https://github.com/PINTO0309/onnx2tf>`_
 
@@ -233,28 +228,28 @@ In *convert.py*, `onnx_tf library <https://github.com/onnx/onnx-tensorflow>`_ is
 
 Step 3. Optimize Tflite and Convert to C++
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Use **tflm_model_transforms** tool from official tflite-micro repository can reduce .tflite size by running some TFLM specific transformations. It also re-align the tflite flatbuffer via the C++ flatbuffer api which can speed up inference on some Ameba platforms. This step is optional, but we strongly recommend running it:
+1. Use **tflm_model_transforms** tool from official tflite-micro repository can reduce .tflite size by running some TFLM specific transformations. It also re-align the tflite flatbuffer via the C++ flatbuffer api which can speed up inference on some Ameba platforms. This step is optional, but we strongly recommend running it:
 
-.. code-block::
+   .. code-block::
 
-   git clone https://github.com/tensorflow/tflite-micro.git
-   cd tflite-micro
+      git clone https://github.com/tensorflow/tflite-micro.git
+      cd tflite-micro
 
-   bazel build tensorflow/lite/micro/tools:tflm_model_transforms
-   bazel-bin/tensorflow/lite/micro/tools/tflm_model_transforms --input_model_path=</path/to/my_model.tflite>
+      bazel build tensorflow/lite/micro/tools:tflm_model_transforms
+      bazel-bin/tensorflow/lite/micro/tools/tflm_model_transforms --input_model_path=</path/to/my_model.tflite>
 
-   # output will be located at: /path/to/my_model_tflm_optimized.tflite
+      # output will be located at: /path/to/my_model_tflm_optimized.tflite
 
-Convert .tflite model and .npy test data to .cc and .h files for deployment:
+2. Convert .tflite model and .npy test data to .cc and .h files for deployment:
 
-.. code-block::
+   .. code-block::
 
-   python generate_cc_arrays.py models int8_tflm_optimized.tflite
-   python generate_cc_arrays.py testdata input_int8.npy input_int8.npy label_int8.npy label_int8.npy
+      python generate_cc_arrays.py models int8_tflm_optimized.tflite
+      python generate_cc_arrays.py testdata input_int8.npy input_int8.npy label_int8.npy label_int8.npy
 
 Step 4. Inference on SoC with Tflite-Micro
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-*example_tflm_mnist.cc* shows how to run inference with the trained model on test data, calculate accuracy, profile memory and latency.
+:file:`example_tflm_mnist.cc` shows how to run inference with the trained model on test data, calculate accuracy, profile memory and latency.
 
 Use `netron <https://netron.app/>`_ to visualize the .tflite file and check the operations used by the model. Instantiate operations resolver to register and access the operations.
 
