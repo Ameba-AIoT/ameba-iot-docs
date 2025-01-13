@@ -131,6 +131,7 @@ Features
 
 File Tree
 ----------
+
 Wi-Fi
 ~~~~~~
 
@@ -264,7 +265,7 @@ The FullMAC can be used on FreeRTOS with different interfaces, with different pi
    | Interface  | AmebaDPlus Pin  | Function      | Description                                                     |
    +============+=================+===============+=================================================================+
    | SPI        | PB24            | SPI_MOSI      | SPI pins                                                        |
-   | Host/Dev   +-----------------+---------------+                                                                 |
+   | Host/Device+-----------------+---------------+                                                                 |
    |            | PB25            | SPI_MISO      |                                                                 |
    |            +-----------------+---------------+                                                                 |
    |            | PB23            | SPI_CLK       |                                                                 |
@@ -283,7 +284,7 @@ The FullMAC can be used on FreeRTOS with different interfaces, with different pi
    |            |                 |               | - 0: Device is busy.                                            |
    +------------+-----------------+---------------+-----------------------------------------------------------------+
    | SDIO       | PB6             | SDIO_DAT2     | SDIO pins                                                       |
-   | Dev        +-----------------+---------------+                                                                 |
+   | Device     +-----------------+---------------+                                                                 |
    |            | PB7             | SDIO_DAT3     |                                                                 |
    |            +-----------------+---------------+                                                                 |
    |            | PB8             | SDIO_CMD      |                                                                 |
@@ -440,7 +441,7 @@ The FullMAC can be used on Linux PC or Raspberry Pi with different interfaces, w
       .. This figure is located at ../../wifi_bridge/figures.
          If the figure name has been changed, make sure to update sdio_fullmac.rst accordingly.
 
-      .. figure:: ../../wifi/wifi_bridge/figures/sdio_adapter_board.jpg
+      .. figure:: ../../wifi_bridge/figures/sdio_adapter_board.jpg
          :align: center
          :scale: 50%
 
@@ -453,7 +454,7 @@ The FullMAC can be used on Linux PC or Raspberry Pi with different interfaces, w
 
       The pins used for SDIO FullMAC on Raspberry Pi are listed in :ref:`fullmac_pins`.
 
-      .. figure:: ../../wifi/wifi_bridge/figures/connection_with_raspberry_pi.jpg
+      .. figure:: ../../wifi_bridge/figures/connection_with_raspberry_pi.jpg
          :align: center
          :scale: 50%
 

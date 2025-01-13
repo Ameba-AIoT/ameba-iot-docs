@@ -277,6 +277,7 @@ If an SSL certificate is required during the use of AT Commands, the user has tw
 Configuration
 ~~~~~~~~~~~~~~~
 For MCU Control mode, the configuration needs to be implemented via the ``atcmd_config.json`` file. 
+The ``atcmd_config.json`` file needs to be converted into a littlefs bin file and placed in the KV directory(refer to :ref:`Example <atcmd_config_example>` for details).
 The specific format is as follows:
 
 .. code-block::
@@ -312,6 +313,8 @@ The configuration process is as follows:
    :align: center
 
    Enable Wifi High TP Mode
+
+.. _atcmd_config_example:
 
 Example
 ^^^^^^^^
