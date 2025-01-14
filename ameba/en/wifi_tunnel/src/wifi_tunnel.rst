@@ -76,6 +76,17 @@ The diagram below illustrates an example where the capacity is 4.
 
    Wi-Fi R-Mesh capacity
 
+Wi-Fi R-Mesh NAT (R-NAT)
+------------------------------------------
+
+The diagram below illustrates an example where the NAT is used to expand the R-MESH station number.
+
+.. figure:: ../figures/wifi_tunnel_nat.svg
+   :scale: 140%
+   :align: center
+
+   Wi-Fi R-Mesh NAT
+
 Wi-Fi R-Mesh Throughput
 ------------------------------
 .. table::
