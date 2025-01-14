@@ -1,12 +1,13 @@
 ## Reading the Docs
 Click the following URLs to view the documentations of the specific SoC.
+- Ameba SoCs: https://ameba-aiot.github.io/ameba-iot-docs/ameba/en/latest/
 - AmebaDPlus:
-  * RTL8721Dx series: https://ameba-aiot.github.io/ameba-iot-docs/amebadplus/en/latest/
+  * RTL8721Dx series: https://ameba-aiot.github.io/ameba-iot-docs/RTL8721Dx/en/latest/
 - AmebaLite:
-  * RTL8726EA series: https://ameba-aiot.github.io/ameba-iot-docs/amebalite/en/latest/
-  * RTL8720EA series: https://ameba-aiot.github.io/ameba-iot-docs/amebalite/en/latest/
+  * RTL8726EA series: https://ameba-aiot.github.io/ameba-iot-docs/RTL8726EA/en/latest/
+  * RTL8720EA series: https://ameba-aiot.github.io/ameba-iot-docs/RTL8720EA/en/latest/
 - AmebaSmart:
-  * RTL8730E series: https://ameba-aiot.github.io/ameba-iot-docs/amebasmart/en/latest/
+  * RTL8730E series: https://ameba-aiot.github.io/ameba-iot-docs/RTL8730E/en/freertos/latest/
 
 -----------------------------------------------------------------------------------------
 
