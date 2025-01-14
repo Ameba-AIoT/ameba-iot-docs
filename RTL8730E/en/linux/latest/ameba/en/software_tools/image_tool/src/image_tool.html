@@ -22,7 +22,6 @@
         <script src="../../../../../_static/doctools.js?v=9a2dae69"></script>
         <script src="../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script src="../../../../../_static/toggleprompt.js?v=d7ede5d2"></script>
-        <script src="../../../../../_static/tabs.js?v=3030b3cb"></script>
         <script>let toggleHintShow = 'Click to show';</script>
         <script>let toggleHintHide = 'Click to hide';</script>
         <script>let toggleOpenOnPrint = 'true';</script>
@@ -134,30 +133,38 @@
 <p>The Image Tool is the official image download tool developed by Realtek for Ameba series SoC.
 It can be used to download images to the Flash of the device through the interfaces below.</p>
 <table class="docutils align-default" id="id2" style="width: 100%">
-<caption><span class="caption-text">Download interface supported by different Ameba ICs</span><a class="headerlink" href="#id2" title="Link to this table"></a></caption>
+<caption><span class="caption-text">Download interface supported by different Ameba SoCs</span><a class="headerlink" href="#id2" title="Link to this table"></a></caption>
 <thead>
-<tr class="row-odd"><th class="head"><p>Ameba IC</p></th>
-<th class="head"><p>Flash type</p></th>
-<th class="head"><p>UART download interface</p></th>
-<th class="head"><p>USB download interface</p></th>
+<tr class="row-odd"><th class="head" rowspan="2"><p>Ameba SoC</p></th>
+<th class="head" rowspan="2"><p>Flash type</p></th>
+<th class="head" colspan="2"><p>Download interface</p></th>
+</tr>
+<tr class="row-even"><th class="head"><p>UART</p></th>
+<th class="head"><p>USB</p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td rowspan="2"><p>AmebaSmart</p></td>
+<tr class="row-odd"><td rowspan="2"><p>RTL8730E</p></td>
 <td><p>NOR Flash</p></td>
 <td><p>√</p></td>
 <td><p>√</p></td>
 </tr>
-<tr class="row-odd"><td><p>NAND Flash</p></td>
+<tr class="row-even"><td><p>NAND Flash</p></td>
 <td><p>X</p></td>
 <td><p>√</p></td>
 </tr>
-<tr class="row-even"><td><p>AmebaDPlus</p></td>
+<tr class="row-odd"><td><p>RTL8721Dx</p>
+<p>RTL8711Dx</p>
+</td>
 <td><p>NOR Flash</p></td>
 <td><p>√</p></td>
 <td><p>√</p></td>
 </tr>
-<tr class="row-odd"><td><p>AmebaLite</p></td>
+<tr class="row-even"><td><p>RTL8726EA</p>
+<p>RTL8713EC</p>
+<p>RTL8720EA</p>
+<p>RTL8710EC</p>
+</td>
 <td><p>NOR Flash</p></td>
 <td><p>√</p></td>
 <td><p>X</p></td>
@@ -177,26 +184,12 @@ It can be used to download images to the Flash of the device through the interfa
 <section id="hardware-setup">
 <h2>Hardware Setup<a class="headerlink" href="#hardware-setup" title="Link to this heading"></a></h2>
 <p>The hardware setup for image download is shown below.</p>
-<div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-0-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-0-0-0" name="0-0" role="tab" tabindex="0">AmebaSmart</button><button aria-controls="panel-0-0-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-1" name="0-1" role="tab" tabindex="-1">AmebaLite</button><button aria-controls="panel-0-0-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-2" name="0-2" role="tab" tabindex="-1">AmebaDPlus</button></div><div aria-labelledby="tab-0-0-0" class="sphinx-tabs-panel" id="panel-0-0-0" name="0-0" role="tabpanel" tabindex="0"><figure class="align-center" id="id5">
+<figure class="align-center" id="id5">
 <a class="reference internal image-reference" href="../../../../../_images/hardware_setup_for_image_download_smart.svg"><img alt="../../../../../_images/hardware_setup_for_image_download_smart.svg" height="204" src="../../../../../_images/hardware_setup_for_image_download_smart.svg" width="643" /></a>
 <figcaption>
 <p><span class="caption-text">Hardware setup for image download</span><a class="headerlink" href="#id5" title="Link to this image"></a></p>
 </figcaption>
 </figure>
-</div><div aria-labelledby="tab-0-0-1" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-1" name="0-1" role="tabpanel" tabindex="0"><figure class="align-center" id="id6">
-<a class="reference internal image-reference" href="../../../../../_images/hardware_setup_for_image_download_lite.svg"><img alt="../../../../../_images/hardware_setup_for_image_download_lite.svg" height="204" src="../../../../../_images/hardware_setup_for_image_download_lite.svg" width="574" /></a>
-<figcaption>
-<p><span class="caption-text">Hardware setup for image download</span><a class="headerlink" href="#id6" title="Link to this image"></a></p>
-</figcaption>
-</figure>
-</div><div aria-labelledby="tab-0-0-2" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-2" name="0-2" role="tabpanel" tabindex="0"><figure class="align-center" id="id7">
-<a class="reference internal image-reference" href="../../../../../_images/hardware_setup_for_image_download_dplus.svg"><img alt="../../../../../_images/hardware_setup_for_image_download_dplus.svg" height="204" src="../../../../../_images/hardware_setup_for_image_download_dplus.svg" width="643" /></a>
-<figcaption>
-<p><span class="caption-text">Hardware setup for image download</span><a class="headerlink" href="#id7" title="Link to this image"></a></p>
-</figcaption>
-</figure>
-</div></div>
 </section>
 <section id="software-setup">
 <h2>Software Setup<a class="headerlink" href="#software-setup" title="Link to this heading"></a></h2>
@@ -215,8 +208,7 @@ It can be used to download images to the Flash of the device through the interfa
 </pre></div>
 </div>
 <p>Where:</p>
-<blockquote>
-<div><dl class="field-list simple">
+<dl class="field-list simple">
 <dt class="field-odd">SoC name<span class="colon">:</span></dt>
 <dd class="field-odd"><p>the name of Realtek Ameba SoC</p>
 </dd>
@@ -230,7 +222,6 @@ It can be used to download images to the Flash of the device through the interfa
 <dd class="field-even"><p>extra information like Flash size, application, etc.</p>
 </dd>
 </dl>
-</div></blockquote>
 </li>
 </ul>
 </div></blockquote>
@@ -253,14 +244,14 @@ It can be used to download images to the Flash of the device through the interfa
 <p>For an empty chip, the following mandatory images shall be downloaded:</p>
 <table class="docutils align-default" style="width: 100%">
 <thead>
-<tr class="row-odd"><th class="head"><p>IC</p></th>
+<tr class="row-odd"><th class="head"><p>Ameba SoC</p></th>
 <th class="head"><p>Image name</p></th>
 <th class="head"><p>Description</p></th>
 <th class="head"><p>Mandatory?</p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td rowspan="14"><p>AmebaSmart</p></td>
+<tr class="row-even"><td rowspan="14"><p>RTL8730E</p></td>
 <td><p>A: km4_boot_all.bin</p></td>
 <td><p>A slot: KM4 bootloader</p></td>
 <td><p>√</p></td>
@@ -321,9 +312,7 @@ It can be used to download images to the Flash of the device through the interfa
 </table>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<ul class="simple">
-<li><p>For DTB image, Yocto will build all available DTS files in SDK into DTB images for users to select as required.</p></li>
-</ul>
+<p>For DTB image, Yocto will build all available DTS files in SDK into DTB images for users to select as required.</p>
 </div>
 <table class="docutils align-default" style="width: 100%">
 <thead>
@@ -562,7 +551,7 @@ Refer to Section <a class="reference internal" href="#image-tool-modifying-devic
 <section id="write-nand-flash-register">
 <h3>Write NAND Flash Register<a class="headerlink" href="#write-nand-flash-register" title="Link to this heading"></a></h3>
 <p>After the common pre-steps, next steps to write NAND Flash register:</p>
-<ol class="arabic" start="4">
+<ol class="arabic">
 <li><p>Select the write command.</p></li>
 <li><p>Select the register address.</p></li>
 <li><p>Input the register value.</p></li>
@@ -670,7 +659,8 @@ Refer to Section <a class="reference internal" href="#image-tool-modifying-devic
 <p class="admonition-title">Caution</p>
 <p>Be careful to change the status of a block, especially mark a bad block to good.</p>
 </div>
-<p>To mark the status of non-bad block(s) to bad:</p>
+<ul>
+<li><p>To mark the status of non-bad block(s) to bad:</p>
 <ol class="arabic">
 <li><p>Select one or more non-bad blocks.</p></li>
 <li><p>Click the <span class="menuselection">Mark Bad</span> button and confirm the operation.</p>
@@ -682,7 +672,8 @@ Refer to Section <a class="reference internal" href="#image-tool-modifying-devic
 </figure>
 </li>
 </ol>
-<p>To mark the status of bad block(s) to good:</p>
+</li>
+<li><p>To mark the status of bad block(s) to good:</p>
 <ol class="arabic">
 <li><p>Select one or more bad blocks.</p></li>
 <li><p>Click the <span class="menuselection">Mark Good</span> button and confirm the operation.</p>
@@ -694,6 +685,8 @@ Refer to Section <a class="reference internal" href="#image-tool-modifying-devic
 </figure>
 </li>
 </ol>
+</li>
+</ul>
 </section>
 </section>
 <section id="flash-block-protection-process">
