@@ -22,7 +22,6 @@
         <script src="../../../../../_static/doctools.js?v=9a2dae69"></script>
         <script src="../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script src="../../../../../_static/toggleprompt.js?v=d7ede5d2"></script>
-        <script src="../../../../../_static/tabs.js?v=3030b3cb"></script>
         <script>let toggleHintShow = 'Click to show';</script>
         <script>let toggleHintHide = 'Click to hide';</script>
         <script>let toggleOpenOnPrint = 'true';</script>
@@ -143,30 +142,38 @@
 <p>The Image Tool is the official image download tool developed by Realtek for Ameba series SoC.
 It can be used to download images to the Flash of the device through the interfaces below.</p>
 <table class="docutils align-default" id="id2" style="width: 100%">
-<caption><span class="caption-text">Download interface supported by different Ameba ICs</span><a class="headerlink" href="#id2" title="Link to this table"></a></caption>
+<caption><span class="caption-text">Download interface supported by different Ameba SoCs</span><a class="headerlink" href="#id2" title="Link to this table"></a></caption>
 <thead>
-<tr class="row-odd"><th class="head"><p>Ameba IC</p></th>
-<th class="head"><p>Flash type</p></th>
-<th class="head"><p>UART download interface</p></th>
-<th class="head"><p>USB download interface</p></th>
+<tr class="row-odd"><th class="head" rowspan="2"><p>Ameba SoC</p></th>
+<th class="head" rowspan="2"><p>Flash type</p></th>
+<th class="head" colspan="2"><p>Download interface</p></th>
+</tr>
+<tr class="row-even"><th class="head"><p>UART</p></th>
+<th class="head"><p>USB</p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td rowspan="2"><p>AmebaSmart</p></td>
+<tr class="row-odd"><td rowspan="2"><p>RTL8730E</p></td>
 <td><p>NOR Flash</p></td>
 <td><p>√</p></td>
 <td><p>√</p></td>
 </tr>
-<tr class="row-odd"><td><p>NAND Flash</p></td>
+<tr class="row-even"><td><p>NAND Flash</p></td>
 <td><p>X</p></td>
 <td><p>√</p></td>
 </tr>
-<tr class="row-even"><td><p>AmebaDPlus</p></td>
+<tr class="row-odd"><td><p>RTL8721Dx</p>
+<p>RTL8711Dx</p>
+</td>
 <td><p>NOR Flash</p></td>
 <td><p>√</p></td>
 <td><p>√</p></td>
 </tr>
-<tr class="row-odd"><td><p>AmebaLite</p></td>
+<tr class="row-even"><td><p>RTL8726EA</p>
+<p>RTL8713EC</p>
+<p>RTL8720EA</p>
+<p>RTL8710EC</p>
+</td>
 <td><p>NOR Flash</p></td>
 <td><p>√</p></td>
 <td><p>X</p></td>
@@ -186,26 +193,12 @@ It can be used to download images to the Flash of the device through the interfa
 <section id="hardware-setup">
 <h2>Hardware Setup<a class="headerlink" href="#hardware-setup" title="Link to this heading"></a></h2>
 <p>The hardware setup for image download is shown below.</p>
-<div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-0-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-0-0-0" name="0-0" role="tab" tabindex="0">AmebaSmart</button><button aria-controls="panel-0-0-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-1" name="0-1" role="tab" tabindex="-1">AmebaLite</button><button aria-controls="panel-0-0-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-2" name="0-2" role="tab" tabindex="-1">AmebaDPlus</button></div><div aria-labelledby="tab-0-0-0" class="sphinx-tabs-panel" id="panel-0-0-0" name="0-0" role="tabpanel" tabindex="0"><figure class="align-center" id="id5">
-<a class="reference internal image-reference" href="../../../../../_images/hardware_setup_for_image_download_smart.svg"><img alt="../../../../../_images/hardware_setup_for_image_download_smart.svg" height="204" src="../../../../../_images/hardware_setup_for_image_download_smart.svg" width="643" /></a>
-<figcaption>
-<p><span class="caption-text">Hardware setup for image download</span><a class="headerlink" href="#id5" title="Link to this image"></a></p>
-</figcaption>
-</figure>
-</div><div aria-labelledby="tab-0-0-1" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-1" name="0-1" role="tabpanel" tabindex="0"><figure class="align-center" id="id6">
-<a class="reference internal image-reference" href="../../../../../_images/hardware_setup_for_image_download_lite.svg"><img alt="../../../../../_images/hardware_setup_for_image_download_lite.svg" height="204" src="../../../../../_images/hardware_setup_for_image_download_lite.svg" width="574" /></a>
-<figcaption>
-<p><span class="caption-text">Hardware setup for image download</span><a class="headerlink" href="#id6" title="Link to this image"></a></p>
-</figcaption>
-</figure>
-</div><div aria-labelledby="tab-0-0-2" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-2" name="0-2" role="tabpanel" tabindex="0"><figure class="align-center" id="id7">
+<figure class="align-center" id="id7">
 <a class="reference internal image-reference" href="../../../../../_images/hardware_setup_for_image_download_dplus.svg"><img alt="../../../../../_images/hardware_setup_for_image_download_dplus.svg" height="204" src="../../../../../_images/hardware_setup_for_image_download_dplus.svg" width="643" /></a>
 <figcaption>
 <p><span class="caption-text">Hardware setup for image download</span><a class="headerlink" href="#id7" title="Link to this image"></a></p>
 </figcaption>
 </figure>
-</div></div>
 </section>
 <section id="software-setup">
 <h2>Software Setup<a class="headerlink" href="#software-setup" title="Link to this heading"></a></h2>
@@ -224,8 +217,7 @@ It can be used to download images to the Flash of the device through the interfa
 </pre></div>
 </div>
 <p>Where:</p>
-<blockquote>
-<div><dl class="field-list simple">
+<dl class="field-list simple">
 <dt class="field-odd">SoC name<span class="colon">:</span></dt>
 <dd class="field-odd"><p>the name of Realtek Ameba SoC</p>
 </dd>
@@ -239,7 +231,6 @@ It can be used to download images to the Flash of the device through the interfa
 <dd class="field-even"><p>extra information like Flash size, application, etc.</p>
 </dd>
 </dl>
-</div></blockquote>
 </li>
 </ul>
 </div></blockquote>
@@ -262,14 +253,14 @@ It can be used to download images to the Flash of the device through the interfa
 <p>For an empty chip, the following mandatory images shall be downloaded:</p>
 <table class="docutils align-default" style="width: 100%">
 <thead>
-<tr class="row-odd"><th class="head"><p>IC</p></th>
+<tr class="row-odd"><th class="head"><p>Ameba SoC</p></th>
 <th class="head"><p>Image name</p></th>
 <th class="head"><p>Description</p></th>
 <th class="head"><p>Mandatory?</p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td rowspan="2"><p>AmebaSmart</p></td>
+<tr class="row-even"><td rowspan="2"><p>RTL8730E</p></td>
 <td><p>km4_boot_all.bin</p></td>
 <td><p>KM4 bootloader</p></td>
 <td><p>√</p></td>
@@ -278,7 +269,13 @@ It can be used to download images to the Flash of the device through the interfa
 <td><p>KM0/KM4/CA32 applications</p></td>
 <td><p>√</p></td>
 </tr>
-<tr class="row-even"><td rowspan="3"><p>AmebaLite</p></td>
+<tr class="row-even"><td rowspan="2"><div class="line-block">
+<div class="line">RTL8726EA</div>
+<div class="line">RTL8713EC</div>
+<div class="line">RTL8720EA</div>
+<div class="line">RTL8710EC</div>
+</div>
+</td>
 <td><p>km4_boot_all.bin</p></td>
 <td><p>KM4 bootloader</p></td>
 <td><p>√</p></td>
@@ -287,16 +284,22 @@ It can be used to download images to the Flash of the device through the interfa
 <td><p>KR4/KM4 applications</p></td>
 <td><p>√</p></td>
 </tr>
-<tr class="row-even"><td><p>dsp_all.bin</p></td>
+<tr class="row-even"><td><p>RTL8726EA/RTL8713EC</p></td>
+<td><p>dsp_all.bin</p></td>
 <td><p>DSP image</p></td>
-<td><p>x (only for IC series with DSP)</p></td>
+<td><p>√</p></td>
 </tr>
-<tr class="row-odd"><td rowspan="2"><p>AmebaDPlus</p></td>
+<tr class="row-odd"><td><p>RTL8720EA/RTL8710EC</p></td>
+<td><p>dsp_all.bin</p></td>
+<td><p>DSP image</p></td>
+<td><p>X</p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><p>RTL8721Dx/RTL8711Dx</p></td>
 <td><p>km4_boot_all.bin</p></td>
 <td><p>KM4 bootloader</p></td>
 <td><p>√</p></td>
 </tr>
-<tr class="row-even"><td><p>km0_km4_app.bin</p></td>
+<tr class="row-odd"><td><p>km0_km4_app.bin</p></td>
 <td><p>KM0/KM4 applications</p></td>
 <td><p>√</p></td>
 </tr>
@@ -309,8 +312,7 @@ It can be used to download images to the Flash of the device through the interfa
 <ol class="arabic">
 <li><p>Enter into download mode.</p>
 <p>There are two ways to enter into download mode.</p>
-<blockquote>
-<div><ol class="upperalpha simple">
+<ol class="upperalpha simple">
 <li><p>The first and recommended way is to push the hardware <span class="guilabel">Download</span> and <span class="guilabel">CHIP_EN</span> buttons.</p>
 <ol class="loweralpha simple">
 <li><p>Push the <span class="guilabel">Download</span> button and keep it pressed.</p></li>
@@ -320,26 +322,12 @@ It can be used to download images to the Flash of the device through the interfa
 </li>
 <li><p>The alternate way is to type the <code class="docutils literal notranslate"><span class="pre">reboot</span> <span class="pre">uartburn</span></code> command from the UART console if this command is not removed from SDK and AP is running normally.</p></li>
 </ol>
-</div></blockquote>
 <p>Now, the device goes into download mode and is ready to receive data.</p>
-</li>
-</ol>
-<div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-1-1-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-1-1-0" name="1-0" role="tab" tabindex="0">AmebaSmart</button><button aria-controls="panel-1-1-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-1-1-1" name="1-1" role="tab" tabindex="-1">AmebaLite</button><button aria-controls="panel-1-1-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-1-1-2" name="1-2" role="tab" tabindex="-1">AmebaDPlus</button></div><div aria-labelledby="tab-1-1-0" class="sphinx-tabs-panel" id="panel-1-1-0" name="1-0" role="tabpanel" tabindex="0"><ol class="arabic simple" start="2">
-<li><p>Open Image Tool, click <span class="menuselection">File &gt; Open</span> and select the proper device profile.</p>
-<ul class="simple">
-<li><p>For IC series with NOR Flash, select <code class="file docutils literal notranslate"><span class="pre">AmebaSmart_FreeRTOS_NOR.rdev</span></code>.</p></li>
-<li><p>For IC series with NAND Flash, select <code class="file docutils literal notranslate"><span class="pre">AmebaSmart_FreeRTOS_NAND.rdev</span></code>.</p></li>
-</ul>
-</li>
-</ol>
-</div><div aria-labelledby="tab-1-1-1" class="sphinx-tabs-panel" hidden="true" id="panel-1-1-1" name="1-1" role="tabpanel" tabindex="0"><ol class="arabic simple" start="2">
-<li><p>Open Image Tool, click <span class="menuselection">File &gt; Open</span> and select the device profile <code class="file docutils literal notranslate"><span class="pre">AmebaLite_FreeRTOS_NOR.rdev</span></code>.</p></li>
-</ol>
-</div><div aria-labelledby="tab-1-1-2" class="sphinx-tabs-panel" hidden="true" id="panel-1-1-2" name="1-2" role="tabpanel" tabindex="0"><ol class="arabic simple" start="2">
+<ol class="arabic simple" start="2">
 <li><p>Open Image Tool, click <span class="menuselection">File &gt; Open</span> and select the device profile <code class="file docutils literal notranslate"><span class="pre">AmebaDplus_FreeRTOS_NOR.rdev</span></code>.</p></li>
 </ol>
-</div></div>
+</li>
+</ol>
 <ol class="arabic" start="3">
 <li><p>Select the corresponding serial port and transmission baud rate. The default baud rate is 1500000.</p>
 <div class="admonition note">
@@ -351,32 +339,18 @@ It can be used to download images to the Flash of the device through the interfa
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Flash layout is allowed to be changed via Image Tool if indeed necessary.
-However, to formally change the Flash layout, it is suggested to use <code class="xref py py-mod docutils literal notranslate"><span class="pre">Device</span> <span class="pre">Profile</span> <span class="pre">Editor</span></code> other than <code class="xref py py-mod docutils literal notranslate"><span class="pre">Image</span> <span class="pre">Tool</span></code> and the Flash layout in SDK shall be changed accordingly.
+However, to formally change the Flash layout, it is suggested to use <code class="xref py py-mod docutils literal notranslate"><span class="pre">Device</span> <span class="pre">Profile</span> <span class="pre">Editor</span></code> other than <code class="xref py py-mod docutils literal notranslate"><span class="pre">Image</span> <span class="pre">Tool</span></code> and the Flash layout in SDK shall bechanged accordingly.
 Refer to Section <a class="reference internal" href="#image-tool-modifying-device-profile"><span class="std std-ref">Modifying Device Profile</span></a> for details.</p>
 </div>
 </li>
 <li><p>Click the <span class="menuselection">Download</span> button to start.</p>
 <p>The progress bar will show the download progress of each image and the log widget will show the operation status.</p>
-<div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-2-2-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-2-2-0" name="2-0" role="tab" tabindex="0">AmebaSmart</button><button aria-controls="panel-2-2-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-2-2-1" name="2-1" role="tab" tabindex="-1">AmebaLite</button><button aria-controls="panel-2-2-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-2-2-2" name="2-2" role="tab" tabindex="-1">AmebaDPlus</button></div><div aria-labelledby="tab-2-2-0" class="sphinx-tabs-panel" id="panel-2-2-0" name="2-0" role="tabpanel" tabindex="0"><figure class="align-center" id="id8">
-<a class="reference internal image-reference" href="../../../../../_images/image_download_operation_smart_freertos.png"><img alt="../../../../../_images/image_download_operation_smart_freertos.png" src="../../../../../_images/image_download_operation_smart_freertos.png" style="width: 851.4px; height: 713.7px;" /></a>
-<figcaption>
-<p><span class="caption-text">Image download operation</span><a class="headerlink" href="#id8" title="Link to this image"></a></p>
-</figcaption>
-</figure>
-</div><div aria-labelledby="tab-2-2-1" class="sphinx-tabs-panel" hidden="true" id="panel-2-2-1" name="2-1" role="tabpanel" tabindex="0"><figure class="align-center" id="id9">
-<a class="reference internal image-reference" href="../../../../../_images/image_download_operation_lite.png"><img alt="../../../../../_images/image_download_operation_lite.png" src="../../../../../_images/image_download_operation_lite.png" style="width: 851.4px; height: 713.7px;" /></a>
-<figcaption>
-<p><span class="caption-text">Image download operation</span><a class="headerlink" href="#id9" title="Link to this image"></a></p>
-</figcaption>
-</figure>
-</div><div aria-labelledby="tab-2-2-2" class="sphinx-tabs-panel" hidden="true" id="panel-2-2-2" name="2-2" role="tabpanel" tabindex="0"><figure class="align-center" id="id10">
+<figure class="align-center" id="id10">
 <a class="reference internal image-reference" href="../../../../../_images/image_download_operation_dplus.png"><img alt="../../../../../_images/image_download_operation_dplus.png" src="../../../../../_images/image_download_operation_dplus.png" style="width: 851.4px; height: 713.7px;" /></a>
 <figcaption>
 <p><span class="caption-text">Image download operation</span><a class="headerlink" href="#id10" title="Link to this image"></a></p>
 </figcaption>
 </figure>
-</div></div>
 </li>
 </ol>
 </section>
