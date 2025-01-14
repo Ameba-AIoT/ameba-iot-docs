@@ -16,58 +16,46 @@ The well-designed Wi-Fi R-Mesh has the following advantages:
 
 - A software-unsensible mesh network:
 
-   - Wi-Fi R-Mesh is implemented entirely through the Wi-Fi driver. Whether it's a root node or its child node, each node regards itself as a regular station connected to the AP.
-
-   - It is no need to upgrade configuration programs or connection programs, and each node can be configured and connected as a regular station.
-
-   - The application development of each station has no difference with that of a regular station, and the application does not need to be concerned with routing information.
+  - Wi-Fi R-Mesh is implemented entirely through the Wi-Fi driver. Whether it's a root node or its child node, each node regards itself as a regular station connected to the AP.
+  - It is no need to upgrade configuration programs or connection programs, and each node can be configured and connected as a regular station.
+  - The application development of each station has no difference with that of a regular station, and the application does not need to be concerned with routing information.
 
 - Rapid networking:
 
-   - With an optimized algorithm, nodes can quickly form a mesh network.
-
-   - In the event of a parent node fault (power down or crash), child nodes can quickly switch to a new parent node with nearly no impact on their data communication.
-
-   - Child nodes can also quickly switch to an appropriate parent node as a group, without each child node switching individually.
+  - With an optimized algorithm, nodes can quickly form a mesh network.
+  - In the event of a parent node fault (power down or crash), child nodes can quickly switch to a new parent node with nearly no impact on their data communication.
+  - Child nodes can also quickly switch to an appropriate parent node as a group, without each child node switching individually.
 
 - High througput for child nodes:
 
-   - Data forwarding is directly implemented through the Wi-Fi driver, utilizing less RAM and CPU resources.
-
-   - Compared to a traditional mesh network, Wi-Fi R-Mesh requires minimal software processing, so even nodes several hops away can achieve a good throughput.
+  - Data forwarding is directly implemented through the Wi-Fi driver, utilizing less RAM and CPU resources.
+  - Compared to a traditional mesh network, Wi-Fi R-Mesh requires minimal software processing, so even nodes several hops away can achieve a good throughput.
 
 - Network stability:
 
-   - Due to minimal software processing and the upper layer not needing to be concerned with routing, the entire mesh network is highly stable.
-
-   - Common mesh network issues like loops do not occur.
+  - Due to minimal software processing and the upper layer not needing to be concerned with routing, the entire mesh network is highly stable.
+  - Common mesh network issues like loops do not occur.
 
 Wi-Fi R-Mesh Data Flow
 --------------------------------------------
-In traditional mesh network, data forwarding typically passes through the application or TCP/IP stack.
-In contrast, Wi-Fi R-Mesh handles data forwarding directly via the Wi-Fi driver, requiring minimal software-processing flow, which can significantly save computing power and RAM resources.
+Wi-Fi R-Mesh handles data forwarding directly via the Wi-Fi driver, requiring minimal software-processing flow, which can significantly save computing power and RAM resources.
 
 As a result of minimal software-processing flow, the software-processing time is also greatly reduced. Consequently, even nodes several hops away communicating with the AP can achieve good throughput.
 
-+------------------------------------------------------+-------------------------------------------------+
-| .. image:: ../figures/wifi_traditional_data_flow.svg | .. image:: ../figures/wifi_tunnel_data_flow.svg |
-|    :width: 450px                                     |    :width: 450px                                |
-+------------------------------------------------------+-------------------------------------------------+
-| Wi-Fi traditional data flow                          | Wi-Fi R-Mesh data flow                          |
-+------------------------------------------------------+-------------------------------------------------+
+.. figure:: ../figures/wifi_tunnel_data_flow.svg
+   :scale: 90px
+   :align: center
 
+   Wi-Fi R-Mesh data flow
 
 Wi-Fi R-Mesh Capacity
 ------------------------------------------
 Wi-Fi R-Mesh capacity refers to the number of child nodes that each root node connected to the AP can accommodate. Note that it is the total number of child nodes across all layers, regardless of the number of the layer.
 
-
 The diagram below illustrates an example where the capacity is 4.
 
 - Topology 0: All four nodes are directly connected to the root node
-
 - Topology 3: The four nodes form a 4-hop network
-
 - Can also be any intermediate topology between Topology 0 and Topology 3
 
 .. figure:: ../figures/wifi_tunnel_topology_capacity.svg
@@ -78,8 +66,11 @@ The diagram below illustrates an example where the capacity is 4.
 
 Wi-Fi R-Mesh NAT (R-NAT)
 ------------------------------------------
+In the R-Mesh network, each node establishes a genuine Wi-Fi connection with the Access Point (AP). Consequently, the number of nodes that R-Mesh can support is constrained by the limited capacity of stations the AP can connect to. To address this limitation, we can implement a station + SoftAP solution based on the Network Address Translation (NAT) protocol to expand the node capacity of the R-Mesh network.
 
-The diagram below illustrates an example where the NAT is used to expand the R-MESH station number.
+In this solution, the root node and its child nodes are connected to the SoftAP, rather than directly to the AP; while the NAT protocol is utilized for data forwarding between the AP network and the R-Mesh network.
+
+The diagram below illustrates an example where the NAT is used to expand the R-Mesh station number.
 
 .. figure:: ../figures/wifi_tunnel_nat.svg
    :scale: 140%
@@ -144,11 +135,20 @@ The Wi-Fi R-Mesh Round-Trip Latency is illustrated in the following figure.
    :align: center
 
 
-
 Wi-Fi R-Mesh Demo Tool
 ----------------------------
+Hardware Connection
+~~~~~~~~~~~~~~~~~~~~~~
+The AP and PC are connected via the network, and the demo tool is executed on the PC.
+
+.. figure:: ../figures/rmesh_demo_tool_connection.svg
+   :scale: 135%
+   :align: center
+
+   Hardware connection of using Demo Tool
+
 Introduction
-~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~
 To effectively test and demonstrate Wi-Fi R-Mesh, we have specifically developed a software tool.
 R-mesh nodes will periodically communicate with the tool by socket to update the current network status.
 
@@ -158,21 +158,19 @@ R-mesh nodes will periodically communicate with the tool by socket to update the
 
    Wi-Fi R-Mesh Demo Tool
 
-Node related information is shown above the node as the format "MAC_Addr : IP (report_time)".
-Only the last byte of MAC address is shown, report_time is in "minute:second" format.
-For example "CE:192.168.1.100(5:6)" means the last byte of MAC address is 0xCE for this node, and it's IP address is 192.168.1.100.
+The related information of the node is shown above the node as the format ``MAC_Addr:IP (report_time)``.
+Only the last byte of MAC address is shown, report_time is in ``minute:second`` format.
+For example ``CE:192.168.1.100(5:6)`` means the last byte of MAC address is **0xCE** for this node, and it's IP address is **192.168.1.100**.
 
 The main features of this tool are as follows:
 
 - Users can see the real-time network topology.
-
 - Users can do ping test.
 
-
 User Guide
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~
 Prerequisites
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^
 Wi-Fi R-Mesh Demo Tool runs on Windows.
 
 The R-Mesh Demo Tool is in below path:
@@ -182,7 +180,7 @@ The R-Mesh Demo Tool is in below path:
    sdk/tools/R-Mesh_Demo_Tool
 
 Usage
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^
 1. Wi-Fi R-Mesh Demo Tool will obtain the computer's IP address when it starts, so before starting the tool, make sure the computer and the target AP are successfully connected via the network cable.
 
 2. When run gravitation.exe first time, it will generate a file named "config.yaml" in the tool folder, it can be used to config serveral parameters, such as ap mac, ping interval and ping size.
