@@ -1,6 +1,8 @@
 ## Reading the Docs
 Click the following URLs to view the documentations of the specific SoC.
-- Ameba SoCs: https://ameba-aiot.github.io/ameba-iot-docs/ameba/en/latest/
+- Ameba SoCs:
+  * English: https://ameba-aiot.github.io/ameba-iot-docs/ameba/en/latest/
+  * Chinese: https://ameba-aiot.github.io/ameba-iot-docs/ameba/cn/latest/
 - AmebaDPlus:
   * RTL8721Dx series: https://ameba-aiot.github.io/ameba-iot-docs/RTL8721Dx/en/latest/
 - AmebaLite:
