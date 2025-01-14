@@ -346,6 +346,74 @@
 </tr>
 </tbody>
 </table>
+<p>Throughput can be tested via iperf. Normally, a PC will be used as the test peer, and the PC need connect to target AP via the network cable.
+In R-mesh, each R-mesh node will obtain an IP from the target AP, thus each R-mesh node can use the same iperf test method as a normal STA.</p>
+<ul>
+<li><p>For UDP TX test:</p>
+<blockquote>
+<div><ul>
+<li><p>At R-mesh node, AT Command can be used, input the below cmd:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">IPERF</span><span class="o">=-</span><span class="n">c</span><span class="p">,</span><span class="o">&lt;</span><span class="n">server</span> <span class="n">IP</span><span class="o">&gt;</span><span class="p">,</span><span class="o">-</span><span class="n">i</span><span class="p">,</span><span class="o">&lt;</span><span class="n">periodic</span><span class="o">&gt;</span><span class="p">,</span><span class="o">-</span><span class="n">u</span><span class="p">,</span><span class="o">-</span><span class="n">b</span><span class="p">,</span><span class="o">&lt;</span><span class="n">bandwidth</span><span class="o">&gt;</span><span class="p">,</span><span class="o">-</span><span class="n">t</span><span class="p">,</span><span class="o">&lt;</span><span class="n">transtime</span><span class="o">&gt;</span><span class="p">,</span><span class="o">-</span><span class="n">p</span><span class="p">,</span><span class="o">&lt;</span><span class="n">port</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</li>
+<li><p>At server side(normally a PC), input the below cmd:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">iperf</span> <span class="o">-</span><span class="n">s</span> <span class="o">-</span><span class="n">i</span> <span class="o">&lt;</span><span class="n">periodic</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">u</span> <span class="o">-</span><span class="n">p</span> <span class="o">&lt;</span><span class="n">port</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>For UDP RX test:</p>
+<blockquote>
+<div><ul>
+<li><p>At R-mesh node, AT Command can be used, input the below cmd:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">IPERF</span><span class="o">=-</span><span class="n">s</span><span class="p">,</span><span class="o">-</span><span class="n">i</span><span class="p">,</span><span class="o">&lt;</span><span class="n">periodic</span><span class="o">&gt;</span><span class="p">,</span><span class="o">-</span><span class="n">u</span><span class="p">,</span><span class="o">-</span><span class="n">p</span><span class="p">,</span><span class="o">&lt;</span><span class="n">port</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</li>
+<li><p>At client side(normally a PC), input the below cmd:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">iperf</span> <span class="o">-</span><span class="n">c</span> <span class="o">&lt;</span><span class="n">R</span><span class="o">-</span><span class="n">mesh</span> <span class="n">node</span> <span class="n">IP</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">i</span> <span class="o">&lt;</span><span class="n">periodic</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">u</span> <span class="o">-</span><span class="n">b</span> <span class="o">&lt;</span><span class="n">bandwidth</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">t</span> <span class="o">&lt;</span><span class="n">transtime</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">p</span> <span class="o">&lt;</span><span class="n">port</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>For TCP TX test:</p>
+<blockquote>
+<div><ul>
+<li><p>At R-mesh node, AT Command can be used, input the below cmd:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">IPERF</span><span class="o">=-</span><span class="n">c</span><span class="p">,</span><span class="o">&lt;</span><span class="n">server</span> <span class="n">IP</span><span class="o">&gt;</span><span class="p">,</span><span class="o">-</span><span class="n">i</span><span class="p">,</span><span class="o">&lt;</span><span class="n">periodic</span><span class="o">&gt;</span><span class="p">,</span><span class="o">-</span><span class="n">t</span><span class="p">,</span><span class="o">&lt;</span><span class="n">transtime</span><span class="o">&gt;</span><span class="p">,</span><span class="o">-</span><span class="n">p</span><span class="p">,</span><span class="o">&lt;</span><span class="n">port</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</li>
+<li><p>At server side(normally a PC), input the below cmd:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">iperf</span> <span class="o">-</span><span class="n">s</span> <span class="o">-</span><span class="n">i</span> <span class="o">&lt;</span><span class="n">periodic</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">p</span> <span class="o">&lt;</span><span class="n">port</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>For TCP RX test:</p>
+<blockquote>
+<div><ul>
+<li><p>At R-mesh node, AT Command can be used, iinput the below cmd:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">IPERF</span><span class="o">=-</span><span class="n">s</span><span class="p">,</span><span class="o">-</span><span class="n">i</span><span class="p">,</span><span class="o">&lt;</span><span class="n">periodic</span><span class="o">&gt;</span><span class="p">,</span><span class="o">-</span><span class="n">p</span><span class="p">,</span><span class="o">&lt;</span><span class="n">port</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</li>
+<li><p>At client side(normally a PC), input the below cmd:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">iperf</span> <span class="o">-</span><span class="n">c</span> <span class="o">&lt;</span><span class="n">R</span><span class="o">-</span><span class="n">mesh</span> <span class="n">node</span> <span class="n">IP</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">i</span> <span class="o">&lt;</span><span class="n">periodic</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">t</span> <span class="o">&lt;</span><span class="n">transtime</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">p</span> <span class="o">&lt;</span><span class="n">port</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
 </section>
 <section id="wi-fi-r-mesh-rtt">
 <h1>Wi-Fi R-Mesh RTT<a class="headerlink" href="#wi-fi-r-mesh-rtt" title="Link to this heading"></a></h1>
