@@ -43,7 +43,8 @@ to distinguish multi-path data that from different cores.
 - When the AGG function is disabled, no AGG header is attached. In this case, users can use other tools to print log as long as there is no BT trace and BT FW logs.
   But disordered logs may appear when more than one CPU are printing logs.
 
-.. note:: The AGG function can be enabled by setting *Boot_Agg_En* to TRUE in :file:`ameba_bootcfg.c`.
+.. note::
+   The AGG function can be enabled by setting *Boot_Agg_En* to TRUE in :file:`ameba_bootcfg.c`.
 
 .. _trace_tool_environment_setup:
 
@@ -69,15 +70,15 @@ The hardware connection is illustrated below.
 
       Hardware connection
 
-.. note:: If external UART is used to download images, the USB to UART dongle must be used.
+.. note::
+   If external UART is used to download images, the USB to UART dongle must be used.
 
 Software Setup
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~
    
 - Environment requirements:
 
   - WinXP above
-  
   - .NET Framework 4.0
 
 - Software location: ``{SDK}/tools/ameba/TraceTool/AmebaTraceTool.exe``
@@ -85,7 +86,6 @@ Software Setup
 .. note::
    The host driver for USB to UART adapter (e.g. PL2303GC) on the board shall be installed first; otherwise, the LOGUART port cannot be recognized by the host.
    Please find the exact driver from the official website of corresponding vendor of the USB to UART adapter.
-
 
 Usage
 ----------
@@ -110,13 +110,9 @@ After setting the environment mentioned in Section :ref:`trace_tool_environment_
 2. Set the format.
 
    - *Baudrate*: default is 1500000bps.
-
    - *Data Bits*: default is 8.
-
    - *Parity*: default is "None".
-
    - *Stop Bits*: default is 1.
-
    - *Encoding*: default is UTF8.
 
    These settings should not be changed freely. If users have to change the format setting for some reasons, the loguart format needs 
@@ -127,7 +123,6 @@ After setting the environment mentioned in Section :ref:`trace_tool_environment_
    Note that the timestamp is not very accurate because log processing takes time so there is a slight time interval between receiving logs and displaying logs.
 
    - When COM port is open, the Trace Tool starts to receive logs from the device. Log is shown in Log window. By default, the timestamp is inserted at the start of each log.
-
    - If COM port is closed, the Trace Tool will not display logs and the commands can't be sent.
 
    .. figure:: ../figures/log.png
@@ -166,9 +161,7 @@ When COM port is open, you can send commands to the device through Trace Tool. T
 The history command box records the commands have been sent before.
 
 - Click the command, it will be displayed in the command box.
-
 - Double-click the command, it will be sent to the chip.
-
 - Click the command then click :guilabel:`delete`, the command will be deleted from the history command box.
 
 .. _command_prefix:
@@ -226,9 +219,7 @@ Register Access
 The REG function is used to read and write registers by register address.
 
 - ``Type``: used to select the register type. Wifi MAC/Wifi BB/Wifi RF options are used for Wi-Fi function, which have different base addresses. Select the corresponding options according to your needs.
-
 - ``Read/Write Register``: enter the register address to ``Read`` or ``Write`` the register value. ``Dump`` means batch printing register values, only Wifi MAC/Wifi BB/Wifi RF registers are supported to be dump.
-
 - ``Bit Value``: bitwise accessing the register specified by address.
 
   .. figure:: ../figures/register.png
@@ -240,7 +231,6 @@ Scope Illustration
 The scope function is used to capture specific data in log and illustrate waveform dynamically.
 
 1. Enter *X* and *Y* pattern, *X* default value is time.
-
 2. Click :guilabel:`Start` button.
 
 .. figure:: ../figures/scope_1.png
@@ -256,11 +246,8 @@ In the scope interface, waveform will be illustrated synchronously.
 WiFi Debug
 ^^^^^^^^^^^^^^^^^^^^
 - ``DIG_MARGIN``: set WiFi DIG margin, available address: [0x00,0x3c].
-
 - ``EDCCA``: set MAC EDCCA mode, available value: 0/1/9.
-
 - ``DBG``: set Wi-Fi RA debug, avilable address: [0,0xff], and illustrate *CCK_FA* and *OFDM_FA* average value.
-
 - ``Power Save``: enable or disable Wi-Fi power saving mode.
 
 .. figure:: ../figures/wifi_debug.png
@@ -274,7 +261,6 @@ Usage
 The AUTO feature is used for automatic script execution.
 
 1. Click ``Browse`` button to choose the script you want to execute.
-
 2. Click ``Execute`` button to execute the script.
 
 .. figure:: ../figures/auto_script_1.png
@@ -307,13 +293,9 @@ The format of script.txt which is used in auto mode is as follows:
   For a loop, three key words are necessary:
 
   - ``Loop``: The number after ``loop=`` means loop times.
-
   - ``loop_start``: Used to mark the beginning of the loop.
-
   - ``loop_end``: Used to mark the end of the loop.
-
   - ``loop_start`` and ``loop_end`` have to appear in pairs.
-
   - ``sleep``: Used to delay some time between commands, and unit is millisecond. ``sleep 1000`` means to delay 1000ms. There should be a blank space between sleep and sleep time.
 
 - Nested loop is supported as below:
@@ -356,23 +338,17 @@ The format of script.txt which is used in auto mode is as follows:
        :align: center
 
   - The number after ``timeout=`` means the time frame you want to catch log to match the pattern. It can be set to different values according to needs (unit: millisecond), and default value is 5000.
-
   - The string after ``pass_pattern=`` means the pass_pattern, and the string after ``fail_pattern=`` means the fail_pattern, which is used to indicate the result of the CMD execution.
-
 
   When the corresponding pattern is matched or not during CMD execution, there will be three results:
 
   - ``Pass``: *pass_pattern* matched within timeout in CMD execution results.
-
   - ``Fail``: *fail_pattern* matched within timeout in CMD execution results.
-
   - ``Timeout``: no *pass_pattern*/*fail_pattern* matched within timeout in CMD execution results.
 
 .. caution::
 
-      - One command in a single line.
-
-      - TAB is used to indent a line. Only TAB can be used, WHITE SPACE is not allowed.
-
-      - WHITE SPACE before or after ``=`` is not allowed.
+   - One command in a single line.
+   - TAB is used to indent a line. Only TAB can be used, WHITE SPACE is not allowed.
+   - WHITE SPACE before or after ``=`` is not allowed.
 
