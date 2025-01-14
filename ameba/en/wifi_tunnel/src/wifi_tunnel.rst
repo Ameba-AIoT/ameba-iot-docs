@@ -126,6 +126,66 @@ Wi-Fi R-Mesh Throughput
    |               | Layer5  | 1.8           | 2.1           |               |               |
    +---------------+---------+---------------+---------------+---------------+---------------+
 
+Throughput can be tested via iperf. Normally, a PC will be used as the test peer, and the PC need connect to target AP via the network cable.
+In R-mesh, each R-mesh node will obtain an IP from the target AP, thus each R-mesh node can use the same iperf test method as a normal STA.
+
+- For UDP TX test:
+
+   - At R-mesh node, AT Command can be used, input the below cmd:
+
+     .. code-block::
+
+        AT+IPERF=-c,<server IP>,-i,<periodic>,-u,-b,<bandwidth>,-t,<transtime>,-p,<port>
+
+   - At server side(normally a PC), input the below cmd:
+   
+     .. code-block::
+
+        iperf -s -i <periodic> -u -p <port>
+
+- For UDP RX test:
+
+   - At R-mesh node, AT Command can be used, input the below cmd:
+
+     .. code-block::
+
+        AT+IPERF=-s,-i,<periodic>,-u,-p,<port>
+
+   - At client side(normally a PC), input the below cmd:
+
+     .. code-block::
+
+        iperf -c <R-mesh node IP> -i <periodic> -u -b <bandwidth> -t <transtime> -p <port>
+
+- For TCP TX test:
+
+   - At R-mesh node, AT Command can be used, input the below cmd:
+
+     .. code-block::
+
+        AT+IPERF=-c,<server IP>,-i,<periodic>,-t,<transtime>,-p,<port>
+
+   - At server side(normally a PC), input the below cmd:
+ 
+     .. code-block::
+
+        iperf -s -i <periodic> -p <port>
+
+- For TCP RX test:
+
+   - At R-mesh node, AT Command can be used, iinput the below cmd:
+
+     .. code-block::
+
+        AT+IPERF=-s,-i,<periodic>,-p,<port>
+
+   - At client side(normally a PC), input the below cmd:
+   
+     .. code-block::
+
+        iperf -c <R-mesh node IP> -i <periodic> -t <transtime> -p <port>
+
+
 Wi-Fi R-Mesh RTT
 ------------------------------
 The Wi-Fi R-Mesh Round-Trip Latency is illustrated in the following figure.
