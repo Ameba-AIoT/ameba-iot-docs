@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Introduction &mdash; RTL8730E Docs  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/togglebutton.css?v=13237357" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/tabs.css?v=a5c4661c" />
+
+  
+    <link rel="shortcut icon" href="../../../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../../../_static/toggleprompt.js?v=d7ede5d2"></script>
+        <script>let toggleHintShow = 'Click to show';</script>
+        <script>let toggleHintHide = 'Click to hide';</script>
+        <script>let toggleOpenOnPrint = 'true';</script>
+        <script src="../../../../_static/togglebutton.js?v=4a39c7ea"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="SDK Architecture" href="../../sdk_architecture/src/index.html" />
+    <link rel="prev" title="Build Environment" href="index.html" />  
+     
+  <script type="text/javascript" src="../../../../_static/js/selector.js"></script>
+<style>
+      .wy-nav-content {
+      max-width: 1000px; /* 设置最大宽度 */
+      }
+</style>
+
+
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            RTL8730E Docs
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../product_overview/src/index.html">Product Overview</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Application Note</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Build Environment</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#preparing-gcc-environment">Preparing GCC Environment</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#windows">Windows</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#linux">Linux</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#troubleshooting">Troubleshooting</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#installing-toolchain">Installing Toolchain</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">Windows</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">Linux</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#configuring-sdk">Configuring SDK</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#building-code">Building Code</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#build-one-by-one">Build One by One</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#build-together">Build Together</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id5">Troubleshooting</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#setting-debugger">Setting Debugger</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#j-link">J-Link</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#downloading-image-to-flash">Downloading Image to Flash</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#entering-debug-mode">Entering Debug Mode</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#gdb-server">GDB Server</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id15">J-Link</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#command-lists">Command Lists</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gdb-debugger-basic-usage">GDB Debugger Basic Usage</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../sdk_architecture/src/index.html">SDK Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gcc_makefile/src/index.html">GCC Makefile</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../sdk_example/src/index.html">SDK Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../memory_layout/src/index.html">Memory Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../mpu_cache/src/mpu_cache.html">MPU</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../mpu_cache/src/mpu_cache.html#cache">Cache</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../file_system/src/index.html">File System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../mp_image/src/index.html">MP Image</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ota/src/index.html">OTA Firmware Update</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chipen/src/index.html">Chip Enable</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../boot_process/src/index.html">Boot Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../hardware_crypto_engine/src/index.html">Hardware Crypto Engine</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../hardware_ecdsa/src/index.html">ECDSA Engine</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../hardware_eddsa/src/index.html">EdDSA Engine</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../hardware_rsa/src/index.html">RSA Engine</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../otpc/src/index.html">One-time Programmable Controller (OTPC)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dmac/src/index.html">Direct Memory Access Controller (DMAC)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ipc/src/index.html">Inter-Processor Communication (IPC)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../psram/src/index.html">Pseudo-Static Random Access Memory (PSRAM)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gpio/gpio/src/index.html">General Purpose Input/Output (GPIO)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gpio/pinctrl/src/index.html">Pin Controller (Pinctrl)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pinmux/src/index.html">Pin Multiplexing Instructions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../power_save/src/index.html">Power Saving</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ir/src/index.html">Infrared Radiation (IR)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ledc/src/index.html">Light Emitting Diode Controller (LEDC)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../lcdc/src/index.html">Liquid Crystal Display Controller (LCDC)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../adc/src/index.html">Analog-to-Digital Converter (ADC)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cap_touch/src/index.html">Cap-Touch Controller (CTC)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../thermal/src/index.html">Thermal Sensor</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../ameba/en/fullmac/src/index.html">FullMAC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../ameba/en/wifi/index.html">Wi-Fi Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../ameba/en/wifi_tunnel/src/index.html">Wi-Fi R-Mesh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../ameba/en/wifi_bridge/src/index.html">Wi-Fi Bridge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../ameba/en/wifi_csi/src/index.html">Wi-Fi CSI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../ameba/en/usb/usb_otg/src/index.html">USB Host &amp; Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../ameba/en/audio/src/index.html">Audio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../ameba/en/multimedia/src/index.html">Multimedia</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../ameba/en/gui/src/index.html">GUI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../ameba/en/ai/index.html">AI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../ameba/en/ai_voice/src/index.html">AIVoice</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../ameba/en/low_power/src/index.html">Low Power Solution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../ameba/en/security_encryption/src/index.html">Security &amp; Encryption</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../ameba/en/at_command/src/index.html">AT Command</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../ameba/en/software_tools/index.html">Software Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../ameba/en/mp_tools/src/index.html">MP Tools</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">RTL8730E Docs</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Application Note</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Build Environment</a></li>
+      <li class="breadcrumb-item active">Introduction</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="introduction">
+<span id="build-environment"></span><h1>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h1>
+<p>This chapter illustrates how to build Realtek’s SDK under GCC environment. It focuses on both Windows and Linux platform. The build and download procedures are quite similar between Windows and Linux operating systems.</p>
+<ul class="simple">
+<li><p>For Windows, Windows 10 64-bit is used as a platform.</p></li>
+<li><p>For Linux, Ubuntu 16.04 64-bit is used as a platform.</p></li>
+</ul>
+</section>
+<section id="preparing-gcc-environment">
+<h1>Preparing GCC Environment<a class="headerlink" href="#preparing-gcc-environment" title="Link to this heading"></a></h1>
+<section id="windows">
+<span id="windows-gcc-environment"></span><h2>Windows<a class="headerlink" href="#windows" title="Link to this heading"></a></h2>
+<p>On Windows, you can use MSYS2 + MinGW as the GCC environment.</p>
+<ul class="simple">
+<li><p>MSYS2 is a collection of tools and libraries providing you with an easy-to-use environment for building, installing, and running native Windows software.</p></li>
+<li><p>MinGW is an advancement of the original mingw.org project, created to support the GCC compiler on Windows system.</p></li>
+</ul>
+<p>The steps to prepare GCC environment are as follows:</p>
+<ol class="arabic simple">
+<li><p>Download MSYS2 on <a class="reference external" href="https://www.msys2.org">https://www.msys2.org</a>.</p></li>
+<li><p>Run the installer. MSYS2 requires 64-bit Windows 7 or newer.</p></li>
+</ol>
+<ol class="arabic simple" id="windows-preparing-gcc-environment-step-3" start="3">
+<li><p>Enter your desired <code class="docutils literal notranslate"><span class="pre">Installation</span> <span class="pre">Folder</span></code> (short ASCII-only path, no accents, spaces, symlinks nor network drives).</p></li>
+<li><p>When done, tick <span class="guilabel">Run MSYS2 now</span> and click <span class="guilabel">Finish</span>. Now MSYS2 is ready for you and a terminal will launch.</p></li>
+</ol>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../../../_images/windows_gcc_msy32_installation.svg"><img alt="../../../../_images/windows_gcc_msy32_installation.svg" height="295" src="../../../../_images/windows_gcc_msy32_installation.svg" width="856" /></a>
+</figure>
+<ol class="arabic" start="5">
+<li><p>Update the package database and core system packages with:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pacman</span> <span class="o">-</span><span class="n">Syu</span>
+</pre></div>
+</div>
+<p>When <code class="docutils literal notranslate"><span class="pre">Proceed</span> <span class="pre">with</span> <span class="pre">installation?</span> <span class="pre">[Y/n]</span></code> is displayed, type <code class="docutils literal notranslate"><span class="pre">Y</span></code> and continue until the package installation is done.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../../../_images/proceed_with_installation.svg"><img alt="../../../../_images/proceed_with_installation.svg" height="339" src="../../../../_images/proceed_with_installation.svg" width="514" /></a>
+</figure>
+<div class="admonition caution">
+<p class="admonition-title">Caution</p>
+<p>After installation of MSYS2, there will be four start modes:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>MSYS2 MinGW 32-bit</p></li>
+<li><p>MSYS2 MinGW 64-bit</p></li>
+<li><p>MSYS2 MinGW UCRT 64-bit</p></li>
+<li><p>MSYS2 MSYS</p></li>
+</ul>
+</div></blockquote>
+<p>Because the toolchain release is based on 64-bit MinGW, choose <span class="guilabel">MSYS2 MinGW 64-bit</span> when starting the MinGW terminal.</p>
+</div>
+</li>
+<li><p>Launch <span class="guilabel">MSYS2 MinGW 64-bit</span> from  <code class="docutils literal notranslate"><span class="pre">Start</span></code> menu. Update the rest with:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pacman</span> <span class="o">-</span><span class="n">Su</span>
+</pre></div>
+</div>
+<p>When <code class="docutils literal notranslate"><span class="pre">Proceed</span> <span class="pre">with</span> <span class="pre">installation?</span> <span class="pre">[Y/n]</span></code> is displayed, type <code class="docutils literal notranslate"><span class="pre">Y</span></code> and continue until the package installation is done.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../../../_images/proceed_with_installation_y.png"><img alt="../../../../_images/proceed_with_installation_y.png" src="../../../../_images/proceed_with_installation_y.png" style="width: 521.1px; height: 355.5px;" /></a>
+</figure>
+</li>
+<li><p>Install the necessary software packages with:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>pacman –S make
+pacman –S unzip
+pacman –S gcc
+pacman –S python
+pacman –S ncurses-devel
+pacman –S openssl-devel
+pacman -S mingw-w64-x86_64-gcc-libs
+</pre></div>
+</div>
+<p>When <code class="docutils literal notranslate"><span class="pre">Proceed</span> <span class="pre">with</span> <span class="pre">installation?</span> <span class="pre">[Y/n]</span></code> is displayed, type <code class="docutils literal notranslate"><span class="pre">Y</span></code> and continue until each software package installation is done.</p>
+</li>
+<li><p>Remove the file path length limit by editing the registry to allow the file paths longer than 260 characters.</p>
+<ol class="loweralpha simple">
+<li><p>Press <kbd class="kbd compound docutils literal notranslate"><kbd class="kbd docutils literal notranslate">Win</kbd>+<kbd class="kbd docutils literal notranslate">R</kbd></kbd>  keys to open the <span class="guilabel">Run</span> dialog box, then type <code class="docutils literal notranslate"><span class="pre">regedit</span></code> and press <span class="guilabel">Enter</span> to open the <code class="docutils literal notranslate"><span class="pre">Registry</span> <span class="pre">Editor</span></code>.</p></li>
+<li><p>Navigate to the registry key: <code class="docutils literal notranslate"><span class="pre">Computer\HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\FileSystem</span></code>.</p></li>
+<li><p>Search and check if the <span class="guilabel">LongPathsEnabled</span> item exists. If not, go to Step <a class="reference internal" href="#windows-preparing-gcc-environment-step-8-d"><span class="std std-ref">d</span></a>; otherwise, go to Step <a class="reference internal" href="#windows-preparing-gcc-environment-step-8-e"><span class="std std-ref">e</span></a>.</p></li>
+</ol>
+<ol class="loweralpha simple" id="windows-preparing-gcc-environment-step-8-d" start="4">
+<li><p>Right-click on an empty space in the right pane, then select <span class="menuselection">New &gt; DWORD (32-bit) Value</span>, and name it <code class="docutils literal notranslate"><span class="pre">LongPathsEnabled</span></code>.</p></li>
+</ol>
+<ol class="loweralpha simple" id="windows-preparing-gcc-environment-step-8-e" start="5">
+<li><p>Double-click on <span class="guilabel">LongPathsEnabled</span> and set its value to 1, then click <span class="guilabel">OK</span> to save.</p></li>
+</ol>
+</li>
+</ol>
+</section>
+<section id="linux">
+<h2>Linux<a class="headerlink" href="#linux" title="Link to this heading"></a></h2>
+<p>On Linux, 32-bit Linux is not supported because of the toolchain.</p>
+<p>The packages listed below should be installed for the GCC environment:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">gcc</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">libncurses5</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">make</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">libssl-dev</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bash</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">binutils</span></code></p></li>
+</ul>
+<p>Some of these packages may have been pre-installed in your operating system.
+You can either use package manager or type the corresponding version command on terminal to check whether these packages have already existed. If not, make them installed.</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">$ls</span> <span class="pre">-l</span> <span class="pre">/bin/sh</span></code></p>
+<p>Starting from Ubuntu 6.10, dash is used by default instead of bash. You can check by using <code class="docutils literal notranslate"><span class="pre">$ls</span> <span class="pre">-l</span> <span class="pre">/bin/sh</span></code> command to check whether the system shell is bash or dash.</p>
+<ul class="simple">
+<li><p>(Optional) If the system shell is dash, use <code class="docutils literal notranslate"><span class="pre">$sudo</span> <span class="pre">dpkg-reconfigure</span> <span class="pre">dash</span></code> command to switch from dash to bash.</p></li>
+<li><p>If the system shell is bash, continue to do the subsequent operations.</p></li>
+</ul>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../../../_images/switching_from_dash_to_bash.png"><img alt="../../../../_images/switching_from_dash_to_bash.png" src="../../../../_images/switching_from_dash_to_bash.png" style="width: 757.35px; height: 141.95px;" /></a>
+</figure>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">$make</span> <span class="pre">-v</span></code></p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../../../_images/make_v.png"><img alt="../../../../_images/make_v.png" src="../../../../_images/make_v.png" style="width: 599.25px; height: 104.55px;" /></a>
+</figure>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">$sudo</span> <span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">libssl-dev</span></code></p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../../../_images/libssl_dev.png"><img alt="../../../../_images/libssl_dev.png" src="../../../../_images/libssl_dev.png" style="width: 779.25px; height: 384.75px;" /></a>
+</figure>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">binutils</span></code></p>
+<p>Using <code class="docutils literal notranslate"><span class="pre">ld</span> <span class="pre">-v</span></code> command to check if binutils has been installed. If not, the following error may occur.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../../../_images/binutils.png"><img alt="../../../../_images/binutils.png" src="../../../../_images/binutils.png" style="width: 808.5px; height: 485.79999999999995px;" /></a>
+</figure>
+</li>
+</ul>
+</section>
+<section id="troubleshooting">
+<h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>MSYS2 pacman is responsible for managing and installing software, which is similar to apt-get in ubuntu. When <code class="docutils literal notranslate"><span class="pre">bash:XXX:command</span> <span class="pre">not</span> <span class="pre">found</span></code> appears, you can try instruction <code class="docutils literal notranslate"><span class="pre">pacman</span> <span class="pre">-S</span> <span class="pre">&lt;package_name&gt;</span></code> to install.</p></li>
+<li><p>For the detailed information of one package, try <code class="docutils literal notranslate"><span class="pre">pacman</span> <span class="pre">-Si</span> <span class="pre">&lt;package_name&gt;</span></code>.</p></li>
+<li><p>If the system head files are not found when building tool, <code class="docutils literal notranslate"><span class="pre">No</span> <span class="pre">such</span> <span class="pre">file</span> <span class="pre">or</span> <span class="pre">directory</span></code> error will show up. You can try <code class="docutils literal notranslate"><span class="pre">pacman</span> <span class="pre">-Fy</span> <span class="pre">&lt;FILE_NAME&gt;</span></code> to check which package is lost, and install the lost package. If too many packages are lost, look for the detailed information about the packages to decide which to install.</p></li>
+<li><p>For multi-version python host, command <code class="docutils literal notranslate"><span class="pre">update-alternatives</span> <span class="pre">--install/usr/bin/python</span> <span class="pre">python/usr/bin/python3.x</span> <span class="pre">1</span></code> can be used to select python of specific version 3.x, where x represents a desired version number.</p></li>
+<li><p>If the error <code class="docutils literal notranslate"><span class="pre">command</span> <span class="pre">'python'</span> <span class="pre">not</span> <span class="pre">found</span></code> appears during compilation, type command <code class="docutils literal notranslate"><span class="pre">ln</span> <span class="pre">-s</span> <span class="pre">/usr/bin/python3</span> <span class="pre">/usr/bin/python</span></code> first to make sure that python3 is used when running python.</p></li>
+</ul>
+</section>
+</section>
+<section id="installing-toolchain">
+<h1>Installing Toolchain<a class="headerlink" href="#installing-toolchain" title="Link to this heading"></a></h1>
+<section id="id1">
+<h2>Windows<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<p>This section introduces the steps to prepare the toolchain environment.</p>
+<ol class="arabic simple">
+<li><p>Acquire the zip files of RTL8730E toolchain from Realtek.</p></li>
+</ol>
+<ol class="arabic" id="windows-installing-toolchain-step-2" start="2">
+<li><p>Create a new directory <code class="docutils literal notranslate"><span class="pre">rtk-toolchain</span></code> under the path <code class="docutils literal notranslate"><span class="pre">{MSYS2_path}\opt</span></code>.</p>
+<p>For example, if your MSYS2 installation path is as set in <a class="reference internal" href="#windows-gcc-environment"><span class="std std-ref">Windows</span></a> <a class="reference internal" href="#windows-preparing-gcc-environment-step-3"><span class="std std-ref">Step 3</span></a>, the <code class="docutils literal notranslate"><span class="pre">rtk-toolchain</span></code> should be in <code class="docutils literal notranslate"><span class="pre">C:\msys64\opt</span></code>.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../../../_images/windows_rtk_toolchain_1.png"><img alt="../../../../_images/windows_rtk_toolchain_1.png" src="../../../../_images/windows_rtk_toolchain_1.png" style="width: 202.0px; height: 86.0px;" /></a>
+</figure>
+</li>
+<li><p>Unzip <code class="docutils literal notranslate"><span class="pre">asdk-10.3.x-mingw32-newlib-build-xxxx.zip</span></code> and place the toolchain folder <code class="docutils literal notranslate"><span class="pre">asdk-10.3.x</span></code> to the folder <code class="docutils literal notranslate"><span class="pre">rtk-toolchain</span></code> created in <a class="reference internal" href="#windows-installing-toolchain-step-2"><span class="std std-ref">Step 2</span></a>.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../../../_images/windows_rtk_toolchain_2.png"><img alt="../../../../_images/windows_rtk_toolchain_2.png" src="../../../../_images/windows_rtk_toolchain_2.png" style="width: 310.40000000000003px; height: 102.4px;" /></a>
+</figure>
+</li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>The unzip folders should stay the same with the figure above and do NOT change them, otherwise you need to modify the toolchain directory in makefile to customize the path.</p></li>
+<li><p>If an error of the toolchain, just like the log <code class="docutils literal notranslate"><span class="pre">Error:</span> <span class="pre">No</span> <span class="pre">Toolchain</span> <span class="pre">in</span> <span class="pre">\opt\rtk-toolchain\vsdk-10.2.0\mingw32\newlib</span></code> appears when building the project, find out if your toolchain files directory are not the same with the directory in the log. Place the toolchain files correctly and try again.</p></li>
+</ul>
+</div>
+</section>
+<section id="id2">
+<h2>Linux<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+<p>This section introduces the steps to prepare the toolchain environment.</p>
+<ol class="arabic">
+<li><p>Acquire the zip files of RTL8730E toolchain from Realtek.</p></li>
+<li><p>Create a new directory <code class="docutils literal notranslate"><span class="pre">rtk-toolchain</span></code> under <code class="docutils literal notranslate"><span class="pre">/opt</span></code>.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../../../_images/linux_rtk_toolchain_1.png"><img alt="../../../../_images/linux_rtk_toolchain_1.png" src="../../../../_images/linux_rtk_toolchain_1.png" style="width: 672.8000000000001px; height: 47.2px;" /></a>
+</figure>
+</li>
+<li><p>Unzip <code class="file docutils literal notranslate"><span class="pre">asdk-10.3.x-linux-newlib-build-xxxx.tar.bz2</span></code> to <code class="docutils literal notranslate"><span class="pre">\opt\rtk-toolchain</span></code>, then you can get the directory below:</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../../../_images/linux_rtk_toolchain_2.png"><img alt="../../../../_images/linux_rtk_toolchain_2.png" src="../../../../_images/linux_rtk_toolchain_2.png" style="width: 388.5px; height: 77.25px;" /></a>
+</figure>
+</li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The unzip folders should stay the same with the figure above and do NOT change them, otherwise you need to modify the toolchain directory in makefile to customize the path.</p>
+</div>
+</section>
+</section>
+<section id="configuring-sdk">
+<span id="id3"></span><h1>Configuring SDK<a class="headerlink" href="#configuring-sdk" title="Link to this heading"></a></h1>
+<p>This section illustrates how to change SDK configurations.</p>
+<p>Users can configure SDK options for KM0/KM4/CA32 at the same time through <code class="docutils literal notranslate"><span class="pre">$make</span> <span class="pre">menuconfig</span></code> command.</p>
+<ol class="arabic">
+<li><p>Switch to the directory <code class="docutils literal notranslate"><span class="pre">{SDK}\amebasmart_gcc_project</span></code>.</p></li>
+<li><p>Run <code class="docutils literal notranslate"><span class="pre">$make</span> <span class="pre">menuconfig</span></code> command on MSYS2 MinGW 64-bit (Windows) or terminal (Linux)</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code class="docutils literal notranslate"><span class="pre">$make</span> <span class="pre">menuconfig</span></code> command is only supported under <code class="docutils literal notranslate"><span class="pre">{SDK}\amebasmart_gcc_project</span></code>, but not supported under other paths.</p>
+</div>
+</li>
+</ol>
+<p>The main configurable options are divided into five parts:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">General</span> <span class="pre">Config</span></code>: the shared kernel configurations for KM0/KM4/CA32. The configurations will take effect in all CPUs.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Network</span> <span class="pre">Config</span></code>: the incompatible kernel configurations for KM4 and CA32. Take Wi-Fi as an example, it can be set to INIC mode (KM4 is NP and CA32 is AP) and single core mode (KM4 is both NP and AP). The configurations will take effect in KM4 and CA32.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">KM0</span> <span class="pre">Config</span></code>: the configurations will take effect only in KM0.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">KM4</span> <span class="pre">Config</span></code>: the configurations will take effect only in KM4.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CA32</span> <span class="pre">Config</span></code>: the configurations will take effect only in CA32.</p></li>
+</ul>
+<p>The following figure is the menuconfig UI, and the options in red may be used frequently.</p>
+<figure class="align-center" id="id17">
+<a class="reference internal image-reference" href="../../../../_images/menuconfig_ui.svg"><img alt="../../../../_images/menuconfig_ui.svg" height="714" src="../../../../_images/menuconfig_ui.svg" width="772" /></a>
+<figcaption>
+<p><span class="caption-text">menuconfig UI</span><a class="headerlink" href="#id17" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="building-code">
+<span id="id4"></span><h1>Building Code<a class="headerlink" href="#building-code" title="Link to this heading"></a></h1>
+<p>This section illustrates how to build SDK for both Window and Linux.</p>
+<table class="docutils align-default" id="id18" style="width: 100%">
+<caption><span class="caption-text">GCC project directory</span><a class="headerlink" href="#id18" title="Link to this table"></a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>GCC project</p></th>
+<th class="head"><p>Directory</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>CA32</p></td>
+<td><p>{SDK}\amebasmart_gcc_project\project_ap</p></td>
+</tr>
+<tr class="row-odd"><td><p>KM4</p></td>
+<td><p>{SDK}\amebasmart_gcc_project\project_hp</p></td>
+</tr>
+<tr class="row-even"><td><p>KM0</p></td>
+<td><p>{SDK}\amebasmart_gcc_project\project_lp</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Replace the <code class="docutils literal notranslate"><span class="pre">{SDK}</span></code> with your own SDK path.</p>
+</div>
+<p>There are two ways to build the SDK, you can choose either of them.</p>
+<section id="build-one-by-one">
+<h2>Build One by One<a class="headerlink" href="#build-one-by-one" title="Link to this heading"></a></h2>
+<p>Follow the steps below to build SDK of all the projects one by one:</p>
+<ol class="arabic">
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">$cd</span></code> command to switch to the project directories of SDK.</p>
+<ul class="simple">
+<li><p>On Windows, open MSYS2 MinGW 64-bit terminal and use <code class="docutils literal notranslate"><span class="pre">$cd</span></code> command.</p></li>
+<li><p>On Linux, open its own terminal and use <code class="docutils literal notranslate"><span class="pre">$cd</span></code> command.</p></li>
+</ul>
+<p>For example, you can type <code class="docutils literal notranslate"><span class="pre">$cd</span> <span class="pre">{SDK}\amebasmart_gcc_project\project_hp</span></code> to switch to the KM4 project directory, the same operation for other projects.</p>
+</li>
+<li><p>Build SDK under the project directory on Windows or Linux.</p>
+<ul class="simple">
+<li><p>For normal image, simply use <code class="docutils literal notranslate"><span class="pre">$make</span> <span class="pre">all</span></code> command to build SDK.</p></li>
+<li><p>For MP image, refer to Section <a class="reference internal" href="../../mp_image/src/mp_image.html#how-to-build-mp-image"><span class="std std-ref">How to Build MP Image</span></a> to build SDK.</p></li>
+</ul>
+</li>
+<li><p>Check the command execution results. If somehow failed, type <code class="docutils literal notranslate"><span class="pre">$make</span> <span class="pre">clean</span></code> to clean and then redo the make procedure.</p>
+<ul>
+<li><p>For KM4 project, if the terminal contains <code class="docutils literal notranslate"><span class="pre">target_img2.axf</span></code> and <code class="docutils literal notranslate"><span class="pre">Image</span> <span class="pre">manipulating</span> <span class="pre">end</span></code> messages, it means that the images have been built successfully. You can find them under <code class="docutils literal notranslate"><span class="pre">{SDK}\amebasmart_gcc_project\project_hp\asdk\image</span></code>, as shown in <a class="reference internal" href="#km4-project-make-all"><span class="std std-ref">KM4 project make all</span></a> and <a class="reference internal" href="#km4-image-generation"><span class="std std-ref">KM4 image generation</span></a>.</p>
+<figure class="align-center" id="km4-project-make-all">
+<a class="reference internal image-reference" href="../../../../_images/km4_project_make_all.PNG"><img alt="../../../../_images/km4_project_make_all.PNG" src="../../../../_images/km4_project_make_all.PNG" style="width: 975.6px; height: 163.8px;" /></a>
+<figcaption>
+<p><span class="caption-text">KM4 project make all</span><a class="headerlink" href="#km4-project-make-all" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<figure class="align-center" id="km4-image-generation">
+<a class="reference internal image-reference" href="../../../../_images/km4_image_generation.PNG"><img alt="../../../../_images/km4_image_generation.PNG" src="../../../../_images/km4_image_generation.PNG" style="width: 319.5px; height: 182.70000000000002px;" /></a>
+<figcaption>
+<p><span class="caption-text">KM4 image generation</span><a class="headerlink" href="#km4-image-generation" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</li>
+<li><p>For KM0 project, if the terminal contains <code class="docutils literal notranslate"><span class="pre">target_img2.axf</span></code> and <code class="docutils literal notranslate"><span class="pre">Image</span> <span class="pre">manipulating</span> <span class="pre">end</span></code> messages, it means that the images have been built successfully. You can find them under <code class="docutils literal notranslate"><span class="pre">{SDK}\amebasmart_gcc_project\project_lp\asdk\image</span></code>, as shown in <a class="reference internal" href="#km0-project-make-all"><span class="std std-ref">KM0 project make all</span></a> and <a class="reference internal" href="#km0-image-generation"><span class="std std-ref">KM0 image generation</span></a>.</p>
+<figure class="align-center" id="km0-project-make-all">
+<a class="reference internal image-reference" href="../../../../_images/km0_project_make_all.PNG"><img alt="../../../../_images/km0_project_make_all.PNG" src="../../../../_images/km0_project_make_all.PNG" style="width: 974.7px; height: 119.7px;" /></a>
+<figcaption>
+<p><span class="caption-text">KM0 project make all</span><a class="headerlink" href="#km0-project-make-all" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<figure class="align-center" id="km0-image-generation">
+<a class="reference internal image-reference" href="../../../../_images/km0_image_generation.PNG"><img alt="../../../../_images/km0_image_generation.PNG" src="../../../../_images/km0_image_generation.PNG" style="width: 315.0px; height: 108.0px;" /></a>
+<figcaption>
+<p><span class="caption-text">KM0 image generation</span><a class="headerlink" href="#km0-image-generation" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</li>
+<li><p>For CA32 project, if the terminal contains <code class="docutils literal notranslate"><span class="pre">fip.bin</span></code> and <code class="docutils literal notranslate"><span class="pre">Image</span> <span class="pre">manipulating</span> <span class="pre">end</span></code> messages, it means that the images have been built successfully. You can find them under <code class="docutils literal notranslate"><span class="pre">{SDK}\amebasmart_gcc_project\project_ap\asdk\image</span></code>, as shown in <a class="reference internal" href="#ca32-project-make-all"><span class="std std-ref">CA32 project make all</span></a> and <a class="reference internal" href="#ca32-image-generation"><span class="std std-ref">CA32 image generation</span></a>.</p>
+<figure class="align-center" id="ca32-project-make-all">
+<a class="reference internal image-reference" href="../../../../_images/ca32_project_make_all.PNG"><img alt="../../../../_images/ca32_project_make_all.PNG" src="../../../../_images/ca32_project_make_all.PNG" style="width: 799.2px; height: 151.20000000000002px;" /></a>
+<figcaption>
+<p><span class="caption-text">CA32 project make all</span><a class="headerlink" href="#ca32-project-make-all" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<figure class="align-center" id="ca32-image-generation">
+<a class="reference internal image-reference" href="../../../../_images/ca32_image_generation.PNG"><img alt="../../../../_images/ca32_image_generation.PNG" src="../../../../_images/ca32_image_generation.PNG" style="width: 329.40000000000003px; height: 109.8px;" /></a>
+<figcaption>
+<p><span class="caption-text">CA32 image generation</span><a class="headerlink" href="#ca32-image-generation" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="build-together">
+<h2>Build Together<a class="headerlink" href="#build-together" title="Link to this heading"></a></h2>
+<p>In order to improve the efficiency of building SDK, you can also execute <code class="docutils literal notranslate"><span class="pre">$make</span> <span class="pre">all</span></code> command once under <code class="docutils literal notranslate"><span class="pre">{SDK}\amebasmart_gcc_project</span></code>, instead of executing <code class="docutils literal notranslate"><span class="pre">$make</span> <span class="pre">all</span></code> command separately under each project.</p>
+<ul class="simple">
+<li><p>If the terminal contains <code class="docutils literal notranslate"><span class="pre">target_img2.axf</span></code> and <code class="docutils literal notranslate"><span class="pre">Image</span> <span class="pre">manipulating</span> <span class="pre">end</span></code> messages (see <a class="reference internal" href="#all-projects-make-all"><span class="std std-ref">All projects make all</span></a>), it means that the images have been built successfully. The images are generated in <code class="docutils literal notranslate"><span class="pre">{SDK}\amebasmart_gcc_project</span></code>, as shown in <a class="reference internal" href="#km4-km0-ca32-image-generation"><span class="std std-ref">KM4 &amp; KM0 &amp; CA32 image generation</span></a>. You can also find other generated images under <code class="docutils literal notranslate"><span class="pre">\project_hp\asdk\image</span></code>, <code class="docutils literal notranslate"><span class="pre">\project_lp\asdk\image</span></code>, and <code class="docutils literal notranslate"><span class="pre">\project_ap\asdk\image</span></code>.</p></li>
+<li><p>If somehow failed, type <code class="docutils literal notranslate"><span class="pre">$make</span> <span class="pre">clean</span></code> to clean and then redo the make procedure.</p></li>
+</ul>
+<figure class="align-center" id="all-projects-make-all">
+<a class="reference internal image-reference" href="../../../../_images/all_projects_make_all.PNG"><img alt="../../../../_images/all_projects_make_all.PNG" src="../../../../_images/all_projects_make_all.PNG" style="width: 811.5px; height: 160.5px;" /></a>
+<figcaption>
+<p><span class="caption-text">All projects make all</span><a class="headerlink" href="#all-projects-make-all" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<figure class="align-center" id="km4-km0-ca32-image-generation">
+<a class="reference internal image-reference" href="../../../../_images/km4_km0_ca32_image_generation.PNG"><img alt="../../../../_images/km4_km0_ca32_image_generation.PNG" src="../../../../_images/km4_km0_ca32_image_generation.PNG" style="width: 268.2px; height: 237.6px;" /></a>
+<figcaption>
+<p><span class="caption-text">KM4 &amp; KM0 &amp; CA32 image generation</span><a class="headerlink" href="#km4-km0-ca32-image-generation" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you want to search some <code class="docutils literal notranslate"><span class="pre">.map</span></code> files for debug, get them under <code class="docutils literal notranslate"><span class="pre">\project_hp\asdk\image</span></code>, <code class="docutils literal notranslate"><span class="pre">\project_lp\asdk\image</span></code>, or <code class="docutils literal notranslate"><span class="pre">\project_ap\asdk\image</span></code>.</p>
+</div>
+</section>
+<section id="id5">
+<h2>Troubleshooting<a class="headerlink" href="#id5" title="Link to this heading"></a></h2>
+<p>If compilation result shows that some files can’t be found, like <code class="docutils literal notranslate"><span class="pre">fatal</span> <span class="pre">error:</span> <span class="pre">machine\_default_types.h:</span> <span class="pre">No</span> <span class="pre">such</span> <span class="pre">file</span> <span class="pre">or</span> <span class="pre">directory</span> <span class="pre">12</span> <span class="pre">|</span> <span class="pre">#include</span> <span class="pre">&lt;machine/_default_types.h&gt;</span></code>, you can check your SDK path. When SDK path is too long, it may be truncated, so the file cannot be found. You can move the SDK to the root path of the disk and try again.</p>
+</section>
+</section>
+<section id="setting-debugger">
+<span id="id6"></span><h1>Setting Debugger<a class="headerlink" href="#setting-debugger" title="Link to this heading"></a></h1>
+<section id="j-link">
+<h2>J-Link<a class="headerlink" href="#j-link" title="Link to this heading"></a></h2>
+<p>The RTL8730E supports J-Link debugger. Before setting J-Link debugger, you need to do some hardware configuration and download images to the RTL8730E device first.</p>
+<ol class="arabic">
+<li><p>Connect J-Link to the SWD of RTL8730E.</p>
+<ol class="loweralpha simple">
+<li><p>Refer to the following figure to connect SWCLK pin of J-Link to SWD CLK pin of RTL8730E, and SWDIO pin of J-Link to SWD DATA pin of RTL8730E.</p></li>
+<li><p>Connect the RTL8730E device to PC after finishing these configurations.</p></li>
+</ol>
+<figure class="align-center" id="id24">
+<a class="reference internal image-reference" href="../../../../_images/wiring_diagram_of_connecting_jlink_to_swd.svg"><img alt="../../../../_images/wiring_diagram_of_connecting_jlink_to_swd.svg" height="178" src="../../../../_images/wiring_diagram_of_connecting_jlink_to_swd.svg" width="495" /></a>
+<figcaption>
+<p><span class="caption-text">Wiring diagram of connecting J-Link to SWD</span><a class="headerlink" href="#id24" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For RTL8730E, the J-Link version must be v9 or higher. If Virtual Machine (VM) is used as your platform, make sure that the USB connection setting between VM host and client is correct, so that the VM host can detect the device.</p>
+</div>
+</li>
+<li><p>Download images to the RTL8730E device via Image Tool.</p>
+<p>ImageTool is a software tool provided by Realtek. For more information, refer to <a class="reference internal" href="../../../../ameba/en/software_tools/image_tool/src/image_tool.html#image-tool"><span class="std std-ref">Image Tool</span></a>.</p>
+</li>
+</ol>
+<section id="id7">
+<h3>Windows<a class="headerlink" href="#id7" title="Link to this heading"></a></h3>
+<p>Besides the hardware configuration, J-Link GDB server is also required to install.</p>
+<p>For Windows, click <a class="reference external" href="https://www.segger.com/downloads/jlink">https://www.segger.com/downloads/jlink</a> and download the software in <code class="docutils literal notranslate"><span class="pre">J-Link</span> <span class="pre">Software</span> <span class="pre">and</span> <span class="pre">Documentation</span> <span class="pre">Pack</span></code>, then install it correctly.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The version of J-Link GDB server below is just an example, you can select the latest version to download.</p>
+</div>
+<section id="id8">
+<h4>KM4 Setup<a class="headerlink" href="#id8" title="Link to this heading"></a></h4>
+<ol class="arabic">
+<li><p>Execute the <code class="file docutils literal notranslate"><span class="pre">cm4_jlink.bat</span></code></p>
+<p>Double-click the <code class="file docutils literal notranslate"><span class="pre">cm4_jlink.bat</span></code> under <code class="docutils literal notranslate"><span class="pre">{SDK}\amebasmart_gcc_project\utils\jlink_script</span></code>. You may have to change the path of <code class="file docutils literal notranslate"><span class="pre">JLinkGDBServer.exe</span></code> in the <code class="file docutils literal notranslate"><span class="pre">cm4_jlink.bat</span></code> script according to your own settings.</p>
+<p>The started J-Link GDB server looks like below. This window should NOT be closed if you want to download the image or enter debug mode.</p>
+<figure class="align-center" id="id25">
+<a class="reference internal image-reference" href="../../../../_images/km4_j_link_gdb_server_connection_under_windows.png"><img alt="../../../../_images/km4_j_link_gdb_server_connection_under_windows.png" src="../../../../_images/km4_j_link_gdb_server_connection_under_windows.png" style="width: 732.6px; height: 433.8px;" /></a>
+<figcaption>
+<p><span class="caption-text">KM4 J-Link GDB server connection under Windows</span><a class="headerlink" href="#id25" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<div class="admonition caution">
+<p class="admonition-title">Caution</p>
+<p>Keep this window active to download the images to target.</p>
+</div>
+</li>
+<li><p>Switch directory to project_hp for KM4</p>
+<p>Use <code class="docutils literal notranslate"><span class="pre">$cd</span></code> command to change the directory to project_hp, then you can input commands in section <a class="reference internal" href="#command-lists"><span class="std std-ref">Command Lists</span></a> or <a class="reference internal" href="#gdb-command-lists"><span class="std std-ref">GDB Debugger Basic Usage</span></a>.</p>
+</li>
+</ol>
+</section>
+<section id="km0-setup">
+<h4>KM0 Setup<a class="headerlink" href="#km0-setup" title="Link to this heading"></a></h4>
+<ol class="arabic">
+<li><p>Execute the <code class="file docutils literal notranslate"><span class="pre">cm0_jlink.bat</span></code></p>
+<p>Double-click the <code class="file docutils literal notranslate"><span class="pre">cm0_jlink.bat</span></code> under <code class="docutils literal notranslate"><span class="pre">{SDK}\amebasmart_gcc_project\utils\jlink_script</span></code>, the same as executing the <code class="file docutils literal notranslate"><span class="pre">cm4_jlink.bat</span></code>.</p>
+<p>The started J-Link GDB server looks like below. This window should NOT be closed if you want to download the image or enter debug mode. Because KM4 will download all the images, you don’t need to connect J-Link to KM0 when downloading images. J-Link can connect to KM0 when debugging.</p>
+<figure class="align-center" id="id26">
+<a class="reference internal image-reference" href="../../../../_images/km0_j_link_gdb_server_connection_under_windows.png"><img alt="../../../../_images/km0_j_link_gdb_server_connection_under_windows.png" src="../../../../_images/km0_j_link_gdb_server_connection_under_windows.png" style="width: 728.1px; height: 433.8px;" /></a>
+<figcaption>
+<p><span class="caption-text">KM0 J-Link GDB server connection under Windows</span><a class="headerlink" href="#id26" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</li>
+<li><p>Switch directory to project_lp for KM0</p>
+<p>Use <code class="docutils literal notranslate"><span class="pre">$cd</span></code> command to change the directory to project_lp, then you can input command in section <a class="reference internal" href="#command-lists"><span class="std std-ref">Command Lists</span></a> or <a class="reference internal" href="#gdb-command-lists"><span class="std std-ref">GDB Debugger Basic Usage</span></a>.</p>
+</li>
+</ol>
+</section>
+<section id="id9">
+<h4>CA32 Setup<a class="headerlink" href="#id9" title="Link to this heading"></a></h4>
+<p>The CA32 has two cores named core0 and core1, which can be debugged separately. By default, <code class="file docutils literal notranslate"><span class="pre">ca32_jlink_core0.bat</span></code> is for core0 and <code class="file docutils literal notranslate"><span class="pre">ca32_jlink_core1.bat</span></code> is for core1.</p>
+<ol class="arabic">
+<li><p>Double-click the <code class="file docutils literal notranslate"><span class="pre">ca32_jlink_core0.bat</span></code> under <code class="docutils literal notranslate"><span class="pre">{SDK}\amebasmart_gcc_project\utils\jlink_script</span></code>.</p>
+<p>The started J-Link GDB server looks like below. CA32 core0 listens on port 2337 by default. This GDB Server window should NOT be closed if you want to enter debug mode.</p>
+<figure class="align-center" id="id27">
+<a class="reference internal image-reference" href="../../../../_images/ca32_core0_j_link_gdb_server_connection_under_windows.png"><img alt="../../../../_images/ca32_core0_j_link_gdb_server_connection_under_windows.png" src="../../../../_images/ca32_core0_j_link_gdb_server_connection_under_windows.png" style="width: 724.5px; height: 431.1px;" /></a>
+<figcaption>
+<p><span class="caption-text">CA32 core0 J-Link GDB server connection under Windows</span><a class="headerlink" href="#id27" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</li>
+<li><p>Double click the <code class="file docutils literal notranslate"><span class="pre">ca32_jlink_core1.bat</span></code> under <code class="docutils literal notranslate"><span class="pre">{SDK}\amebasmart_gcc_project\utils\jlink_script</span></code>.</p>
+<p>The started J-Link GDB server looks like below. CA32 core1 listens on port 2339 by default.</p>
+<figure class="align-center" id="id28">
+<a class="reference internal image-reference" href="../../../../_images/ca32_core1_j_link_gdb_server_connection_under_windows.png"><img alt="../../../../_images/ca32_core1_j_link_gdb_server_connection_under_windows.png" src="../../../../_images/ca32_core1_j_link_gdb_server_connection_under_windows.png" style="width: 727.2px; height: 432.0px;" /></a>
+<figcaption>
+<p><span class="caption-text">CA32 core1 J-Link GDB server connection under Windows</span><a class="headerlink" href="#id28" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</li>
+</ol>
+<div class="admonition caution">
+<p class="admonition-title">Caution</p>
+<ul>
+<li><p>When opening core1 GDB server, core0 and core1 will halt and can’t run together. Open this window only when you want to debug two cores together, and you know what you are doing.</p></li>
+<li><p>To debug core0 and core1 separately, make sure that function <code class="xref py py-func docutils literal notranslate"><span class="pre">EnabelCrossTrigger()</span></code> is commented out as below.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>void InitTarget(void) {
+   Report(&quot;******************************************************&quot;);
+   Report(&quot;J-Link script: AmebaSmart (Cortex-A32 CPU0) J-Link script&quot;);
+   Report(&quot;******************************************************&quot;);
+   …
+   //EnabelCrossTrigger();  // comment out if needed
+}
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+</section>
+</section>
+<section id="id10">
+<h3>Linux<a class="headerlink" href="#id10" title="Link to this heading"></a></h3>
+<p>For J-Link GDB server, click <a class="reference external" href="https://www.segger.com/downloads/jlink">https://www.segger.com/downloads/jlink</a> and download the software in <code class="docutils literal notranslate"><span class="pre">J-Link</span> <span class="pre">Software</span> <span class="pre">and</span> <span class="pre">Documentation</span> <span class="pre">Pack</span></code>. It is suggested to use Debian package manager to install the Debian version.</p>
+<p>Open a new terminal and type the following command to install GDB server where J-Link version is up to the downloaded software. After the installation of software package, there is a tool named <code class="docutils literal notranslate"><span class="pre">JLinkGDBServer</span></code> under the J-Link directory. Take Ubuntu 18.04 as example, the JLinkGDBServer can be found at <code class="docutils literal notranslate"><span class="pre">/opt/SEGGER/JLink/</span></code>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$dpkg -i jlink_6.0.7_x86_64.deb
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The version of J-Link GDB server below is just an example, you can select the latest version to download.</p>
+</div>
+<section id="id11">
+<h4>KM4 Setup<a class="headerlink" href="#id11" title="Link to this heading"></a></h4>
+<ol class="arabic simple">
+<li><p>Open a new terminal under <code class="docutils literal notranslate"><span class="pre">{SDK}/amebasmart_gcc_project/utils/jlink_script</span></code>.</p></li>
+<li><p>Type <code class="docutils literal notranslate"><span class="pre">$/opt/SEGGER/JLink/JLinkGDBServer</span> <span class="pre">-device</span> <span class="pre">cortex-m33</span> <span class="pre">-if</span> <span class="pre">SWD</span> <span class="pre">-scriptfile</span> <span class="pre">AP1_KM4.JLinkScript</span> <span class="pre">-port</span> <span class="pre">2335</span></code>. This terminal should NOT be closed if you want to download software or enter GDB debugger mode.</p></li>
+</ol>
+<p>If the connection is successful, the log is shown as below.</p>
+<figure class="align-center" id="id29">
+<a class="reference internal image-reference" href="../../../../_images/km4_j_link_gdb_server_connection_success.png"><img alt="../../../../_images/km4_j_link_gdb_server_connection_success.png" src="../../../../_images/km4_j_link_gdb_server_connection_success.png" style="width: 720.8px; height: 625.6px;" /></a>
+<figcaption>
+<p><span class="caption-text">KM4 J-Link GDB server connection success</span><a class="headerlink" href="#id29" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="id12">
+<h4>KM0 Setup<a class="headerlink" href="#id12" title="Link to this heading"></a></h4>
+<ol class="arabic simple">
+<li><p>Open a new terminal under <code class="docutils literal notranslate"><span class="pre">{SDK}/amebasmart_gcc_project/utils/jlink_script</span></code>.</p></li>
+<li><p>Type <code class="docutils literal notranslate"><span class="pre">$/opt/SEGGER/JLink/JLinkGDBServer</span> <span class="pre">-device</span> <span class="pre">cortex-m23</span> <span class="pre">-if</span> <span class="pre">SWD</span> <span class="pre">-scriptfile</span> <span class="pre">AP0_KM0.JLinkScript</span> <span class="pre">-port</span> <span class="pre">2331</span></code>. This terminal should NOT be closed if you want to download software or enter GDB debugger mode.</p></li>
+</ol>
+<p>If the connection is successful, the log is shown as below.</p>
+<figure class="align-center" id="id30">
+<a class="reference internal image-reference" href="../../../../_images/km0_j_link_gdb_server_connection_success.png"><img alt="../../../../_images/km0_j_link_gdb_server_connection_success.png" src="../../../../_images/km0_j_link_gdb_server_connection_success.png" style="width: 720.8px; height: 629.85px;" /></a>
+<figcaption>
+<p><span class="caption-text">KM0 J-Link GDB server connection success</span><a class="headerlink" href="#id30" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="id13">
+<h4>CA32 Setup<a class="headerlink" href="#id13" title="Link to this heading"></a></h4>
+<p>For CA32 core0:</p>
+<ol class="arabic simple">
+<li><p>Open a new terminal under <code class="docutils literal notranslate"><span class="pre">{SDK}/amebasmart_gcc_project/utils/jlink_script</span></code>.</p></li>
+<li><p>Type <code class="docutils literal notranslate"><span class="pre">$/opt/SEGGER/JLink/JLinkGDBServer</span> <span class="pre">-device</span> <span class="pre">cortex-a32</span> <span class="pre">-if</span> <span class="pre">SWD</span> <span class="pre">-scriptfile</span> <span class="pre">AP3_CA32_Core0.JLinkScript</span> <span class="pre">-port</span> <span class="pre">2337</span></code>. This terminal should NOT be closed if you want to download software or enter GDB debugger mode.</p></li>
+</ol>
+<p>If the connection is successful, the log is shown as below.</p>
+<figure class="align-center" id="id31">
+<a class="reference internal image-reference" href="../../../../_images/ca32_core0_j_link_gdb_server_connection.png"><img alt="../../../../_images/ca32_core0_j_link_gdb_server_connection.png" src="../../../../_images/ca32_core0_j_link_gdb_server_connection.png" style="width: 717.4px; height: 642.6px;" /></a>
+<figcaption>
+<p><span class="caption-text">CA32 core0 J-Link GDB server connection</span><a class="headerlink" href="#id31" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p>For CA32 core1:</p>
+<ol class="arabic simple">
+<li><p>Open a new terminal under <code class="docutils literal notranslate"><span class="pre">{SDK}/amebasmart_gcc_project/utils/jlink_script</span></code>.</p></li>
+<li><p>Type <code class="docutils literal notranslate"><span class="pre">$/opt/SEGGER/JLink/JLinkGDBServer</span> <span class="pre">-device</span> <span class="pre">cortex-a32</span> <span class="pre">-if</span> <span class="pre">SWD</span> <span class="pre">-scriptfile</span> <span class="pre">AP3_CA32_Core1.JLinkScript</span> <span class="pre">-port</span> <span class="pre">2339</span></code>. This terminal should NOT be closed if you want to download software or enter GDB debugger mode.</p></li>
+</ol>
+<p>If the connection is successful, the log is shown as below.</p>
+<figure class="align-center" id="id32">
+<a class="reference internal image-reference" href="../../../../_images/ca32_core1_j_link_gdb_server_connection_under_linux.png"><img alt="../../../../_images/ca32_core1_j_link_gdb_server_connection_under_linux.png" src="../../../../_images/ca32_core1_j_link_gdb_server_connection_under_linux.png" style="width: 724.1999999999999px; height: 641.75px;" /></a>
+<figcaption>
+<p><span class="caption-text">CA32 core1 J-Link GDB server connection under Linux</span><a class="headerlink" href="#id32" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+</section>
+</section>
+</section>
+<section id="downloading-image-to-flash">
+<h1>Downloading Image to Flash<a class="headerlink" href="#downloading-image-to-flash" title="Link to this heading"></a></h1>
+<p>There are two ways to download image to flash:</p>
+<ul class="simple">
+<li><p>Image Tool, a software provided by Realtek. For more information, refer to <a class="reference internal" href="../../../../ameba/en/software_tools/image_tool/src/image_tool.html#image-tool"><span class="std std-ref">Image Tool</span></a>.</p></li>
+<li><p>GDB Server, mainly used for GDB debug user case.</p></li>
+</ul>
+<p>This section illustrates the second method to download images to Flash.</p>
+<p>To download software into Device Board, make sure steps mentioned in section <a class="reference internal" href="#building-code"><span class="std std-ref">Building Code</span></a> are done and then type <code class="docutils literal notranslate"><span class="pre">$make</span> <span class="pre">flash</span></code> command on MSYS2 (Windows) or terminal (Linux).</p>
+<p>Images are downloaded only under KM4 by this command. This command downloads the software into Flash and it will take several seconds to finish, as shown in the following figure.</p>
+<figure class="align-center" id="id33">
+<a class="reference internal image-reference" href="../../../../_images/downloading_image_to_flash.png"><img alt="../../../../_images/downloading_image_to_flash.png" src="../../../../_images/downloading_image_to_flash.png" style="width: 950.4px; height: 342.0px;" /></a>
+<figcaption>
+<p><span class="caption-text">Downloading Image to Flash</span><a class="headerlink" href="#id33" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<figure class="align-center" id="id34">
+<a class="reference internal image-reference" href="../../../../_images/download_codes_success_log.png"><img alt="../../../../_images/download_codes_success_log.png" src="../../../../_images/download_codes_success_log.png" style="width: 490.40000000000003px; height: 140.8px;" /></a>
+<figcaption>
+<p><span class="caption-text">Download codes success log</span><a class="headerlink" href="#id34" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p>To check whether the image is downloaded correctly into memory, you can select “verify download” before downloading images, and during image download process, “verified OK” log will be shown.</p>
+<figure class="align-center" id="id35">
+<a class="reference internal image-reference" href="../../../../_images/verify_download.png"><img alt="../../../../_images/verify_download.png" src="../../../../_images/verify_download.png" style="width: 508.5px; height: 409.5px;" /></a>
+<figcaption>
+<p><span class="caption-text">Verify download</span><a class="headerlink" href="#id35" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p>After download is successful, press the <span class="guilabel">Reset</span> button and you will see that the device boots with the new image.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Only executing command under KM4 project is needed for downloading images, because KM4 will download all the images.</p>
+</div>
+</section>
+<section id="entering-debug-mode">
+<span id="id14"></span><h1>Entering Debug Mode<a class="headerlink" href="#entering-debug-mode" title="Link to this heading"></a></h1>
+<section id="gdb-server">
+<h2>GDB Server<a class="headerlink" href="#gdb-server" title="Link to this heading"></a></h2>
+<p>To enter GDB debugger mode, follow the steps below:</p>
+<ol class="arabic simple">
+<li><p>Make sure that the steps mentioned in sections <a class="reference internal" href="#configuring-sdk"><span class="std std-ref">Configuring SDK</span></a> to <a class="reference internal" href="#setting-debugger"><span class="std std-ref">Setting Debugger</span></a> are finished, then reset the device.</p></li>
+<li><p>Change directory to target project which can be project_lp, project_hp or project_ap, and type <code class="docutils literal notranslate"><span class="pre">$make</span> <span class="pre">debug</span></code> command on MSYS2 (Windows) or terminal (Linux).</p></li>
+</ol>
+</section>
+<section id="id15">
+<h2>J-Link<a class="headerlink" href="#id15" title="Link to this heading"></a></h2>
+<ol class="arabic">
+<li><p>Press <kbd class="kbd compound docutils literal notranslate"><kbd class="kbd docutils literal notranslate">Win</kbd>+<kbd class="kbd docutils literal notranslate">R</kbd></kbd> on your keyboard. Hold down the Windows key on your keyboard, and press the <span class="guilabel">R</span> button. This will open the <code class="docutils literal notranslate"><span class="pre">Run</span></code> tool in a new pop-up window. Alternatively, you can find and click <span class="guilabel">Run</span>  on the Start menu.</p></li>
+<li><p>Type <code class="docutils literal notranslate"><span class="pre">cmd</span></code> in the Run window. This shortcut will open the Command Prompt terminal.</p></li>
+<li><p>Click <span class="guilabel">OK</span> in the Run window. This will run your shortcut command, and open the <code class="docutils literal notranslate"><span class="pre">Command</span> <span class="pre">Prompt</span></code> terminal in a new window.</p></li>
+<li><p>Copy the J-Link script commad below for specific target:</p>
+<ul>
+<li><p>For KM4:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;</span><span class="si">{Jlink_path}</span><span class="s2">\JLink.exe&quot;</span> <span class="o">-</span><span class="n">device</span> <span class="n">Cortex</span><span class="o">-</span><span class="n">M33</span> <span class="o">-</span><span class="k">if</span> <span class="n">SWD</span> <span class="o">-</span><span class="n">speed</span> <span class="mi">4000</span> <span class="o">-</span><span class="n">autoconnect</span> <span class="mi">1</span> <span class="o">-</span><span class="n">JLinkScriptFile</span> <span class="p">{</span><span class="n">script_path</span><span class="p">}</span>\<span class="n">AP1_KM4</span><span class="o">.</span><span class="n">JLinkScript</span>
+</pre></div>
+</div>
+</li>
+<li><p>For KM0:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;</span><span class="si">{Jlink_path}</span><span class="s2">\JLink.exe&quot;</span> <span class="o">-</span><span class="n">device</span> <span class="n">Cortex</span><span class="o">-</span><span class="n">M23</span> <span class="o">-</span><span class="k">if</span> <span class="n">SWD</span> <span class="o">-</span><span class="n">speed</span> <span class="mi">4000</span> <span class="o">-</span><span class="n">autoconnect</span> <span class="mi">1</span> <span class="o">-</span><span class="n">JLinkScriptFile</span> <span class="p">{</span><span class="n">script_path</span><span class="p">}</span>\<span class="n">AP0_KM0</span><span class="o">.</span><span class="n">JLinkScript</span>
+</pre></div>
+</div>
+</li>
+<li><p>For CA32 core0:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;</span><span class="si">{Jlink_path}</span><span class="s2">\JLink.exe&quot;</span> <span class="o">-</span><span class="n">device</span> <span class="n">Cortex</span><span class="o">-</span><span class="n">A32</span> <span class="o">-</span><span class="k">if</span> <span class="n">SWD</span> <span class="o">-</span><span class="n">speed</span> <span class="mi">4000</span> <span class="o">-</span><span class="n">autoconnect</span> <span class="mi">1</span> <span class="o">-</span><span class="n">JLinkScriptFile</span> <span class="p">{</span><span class="n">script_path</span><span class="p">}</span>\<span class="n">AP3_CA32_Core0</span><span class="o">.</span><span class="n">JLinkScript</span>
+</pre></div>
+</div>
+</li>
+<li><p>For CA32 core1:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;</span><span class="si">{Jlink_path}</span><span class="s2">\JLink.exe&quot;</span> <span class="o">-</span><span class="n">device</span> <span class="n">Cortex</span><span class="o">-</span><span class="n">A32</span> <span class="o">-</span><span class="k">if</span> <span class="n">SWD</span> <span class="o">-</span><span class="n">speed</span> <span class="mi">4000</span> <span class="o">-</span><span class="n">autoconnect</span> <span class="mi">1</span> <span class="o">-</span><span class="n">JLinkScriptFile</span> <span class="p">{</span><span class="n">script_path</span><span class="p">}</span>\<span class="n">AP3_CA32_Core1</span><span class="o">.</span><span class="n">JlinkScript</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p><cite>{Jlink_path}</cite>: the path your Segger J-Link installed. The default is <code class="docutils literal notranslate"><span class="pre">C:\Program</span> <span class="pre">Files</span> <span class="pre">(x86)\SEGGER\JLink</span></code>.</p></li>
+<li><p><cite>{script_path}</cite>: <code class="docutils literal notranslate"><span class="pre">{SDK}\amebasmart_gcc_project\utils\jlink_script</span></code> of your SDK.</p></li>
+</ul>
+</div>
+</section>
+</section>
+<section id="command-lists">
+<span id="id16"></span><h1>Command Lists<a class="headerlink" href="#command-lists" title="Link to this heading"></a></h1>
+<p>The commands mentioned above are listed in the following list.</p>
+<table class="docutils align-default" id="id36" style="width: 100%">
+<caption><span class="caption-text">Command lists</span><a class="headerlink" href="#id36" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 10.0%" />
+<col style="width: 30.0%" />
+<col style="width: 60.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Usage</p></th>
+<th class="head"><p>Command</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>all</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">$make</span> <span class="pre">all</span></code></p></td>
+<td><p>Compile the project to generate ram_all.bin</p></td>
+</tr>
+<tr class="row-odd"><td><p>flash</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">$make</span> <span class="pre">flash</span></code></p></td>
+<td><p>Download ram_all.bin to Flash</p></td>
+</tr>
+<tr class="row-even"><td><p>clean</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">$make</span> <span class="pre">clean</span></code></p></td>
+<td><p>Remove compile file (.bin, .o, …)</p></td>
+</tr>
+<tr class="row-odd"><td><p>debug</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">$make</span> <span class="pre">debug</span></code></p></td>
+<td><p>Enter debug mode</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="gdb-debugger-basic-usage">
+<span id="gdb-command-lists"></span><h1>GDB Debugger Basic Usage<a class="headerlink" href="#gdb-debugger-basic-usage" title="Link to this heading"></a></h1>
+<p>GDB, the GNU project debugger, allows you to examine the program while it executes, and it helps catch bugs. Section <a class="reference internal" href="#entering-debug-mode"><span class="std std-ref">Entering Debug Mode</span></a> has described how to enter GDB debugger mode, this section illustrates some basic usages of GDB commands.</p>
+<p>For more information about GDB debugger, click <a class="reference external" href="https://www.gnu.org/software/gdb/">https://www.gnu.org/software/gdb/</a>. The following table describes commonly used instructions and their functions, and specific usage can be found in <code class="docutils literal notranslate"><span class="pre">GDB</span> <span class="pre">User</span> <span class="pre">Manual</span></code> of website <a class="reference external" href="https://www.sourceware.org/gdb/documentation/">https://www.sourceware.org/gdb/documentation/</a>.</p>
+<table class="docutils align-default" id="id37" style="width: 100%">
+<caption><span class="caption-text">GDB debugger command list</span><a class="headerlink" href="#id37" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 10.0%" />
+<col style="width: 70.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Usage</p></th>
+<th class="head"><p>Command</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Breakpoint</p></td>
+<td><p>$break</p></td>
+<td><p>Breakpoints are set with the break command (abbreviated b).</p>
+<p>The usage can be found at <code class="docutils literal notranslate"><span class="pre">Setting</span> <span class="pre">Breakpoints</span></code> section.</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p>Watchpoint</p></td>
+<td><p>$watch</p></td>
+<td><p>You can use a watchpoint to stop execution whenever the value of an expression changes. The related commands include watch, rwatch, and awatch.</p>
+<p>The usage of these commands can be found at <code class="docutils literal notranslate"><span class="pre">Setting</span> <span class="pre">Watchpoints</span></code> section.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Keep the range of watchpoints less than 20 bytes.</p>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p>Print breakpoints &amp; watchpoints</p></td>
+<td><p>$info</p></td>
+<td><p>To print a table of all breakpoints, watchpoints set and not deleted, use the info command. You can simply type info to know its usage.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Delete breakpoints</p></td>
+<td><p>$delete</p></td>
+<td><p>To eliminate the breakpoints, use the delete command (abbreviated d).</p>
+<p>The usage can be found at <code class="docutils literal notranslate"><span class="pre">Deleting</span> <span class="pre">Breakpoints</span></code> section.</p>
+</td>
+</tr>
+<tr class="row-even"><td><p>Continue</p></td>
+<td><p>$continue</p></td>
+<td><p>To resume program execution, use the continue command (abbreviated c).</p>
+<p>The usage can be found at <code class="docutils literal notranslate"><span class="pre">Continue</span> <span class="pre">and</span> <span class="pre">Stepping</span></code> section.</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p>Step</p></td>
+<td><p>$step</p></td>
+<td><p>To step into a function call, use the step command (abbreviated s). It will continue running your program until the control reaches a different source line.</p>
+<p>The usage can be found at <code class="docutils literal notranslate"><span class="pre">Continue</span> <span class="pre">and</span> <span class="pre">Stepping</span></code> section.</p>
+</td>
+</tr>
+<tr class="row-even"><td><p>Next</p></td>
+<td><p>$next</p></td>
+<td><p>To step through the program, use the next command (abbreviated n). The execution will stop when the control reaches a different line of code at the original stack level.</p>
+<p>The usage can be found at <code class="docutils literal notranslate"><span class="pre">Continue</span> <span class="pre">and</span> <span class="pre">Stepping</span></code> section.</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p>Quit</p></td>
+<td><p>$quit</p></td>
+<td><p>To exit GDB debugger, use the quit command (abbreviated q), or type an end-of-file character (usually Ctrl-d). The usage can be found at <code class="docutils literal notranslate"><span class="pre">Quitting</span> <span class="pre">GDB</span></code> section.</p></td>
+</tr>
+<tr class="row-even"><td><p>Backtrace</p></td>
+<td><p>$backtrace</p></td>
+<td><p>A backtrace is a summary of how your program got where it is. You can use backtrace command (abbreviated bt) to print a backtrace of the entire stack.</p>
+<p>The usage can be found a <code class="docutils literal notranslate"><span class="pre">Backtraces</span></code> section.</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p>Print source lines</p></td>
+<td><p>$list</p></td>
+<td><p>To print lines from a source file, use the list command (abbreviated l).</p>
+<p>The usage can be found at <code class="docutils literal notranslate"><span class="pre">Printing</span> <span class="pre">Source</span> <span class="pre">Lines</span></code> section.</p>
+</td>
+</tr>
+<tr class="row-even"><td><p>Examine data</p></td>
+<td><p>$print</p></td>
+<td><p>To examine data in your program, you can use print command (abbreviated p). It evaluates and prints the value of an expression.</p>
+<p>The usage can be found at <code class="docutils literal notranslate"><span class="pre">Examining</span> <span class="pre">Data</span></code> section.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Build Environment" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../../sdk_architecture/src/index.html" class="btn btn-neutral float-right" title="SDK Architecture" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Realsil.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
