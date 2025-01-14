@@ -47,12 +47,12 @@ for ign in exclude_patterns:
 # Settings by project
 # 项目设置
 language = "en" if en_or_cn == "en" else "cn"
-project = "RTL8726EA Docs"
 
 # 宏替换
-CHIP_NAME = 'RTL8726EA'
+CHIP_NAME = "RTL8726EA" if tags.has("RTL8726EA") else "RTL8720EA"
 
 VERSION = '1.0.0'
+project = f"{CHIP_NAME} Docs"
 
 rst_prolog = """
 .. |CHIP_NAME| replace:: {0}
