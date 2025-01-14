@@ -22,4 +22,4 @@ TCPIP stack will be just in host, you can used socket in your application develo
       :columns: 2
 
       * |finger_icon| `Wi-Fi FullMAC SDK <https://github.com/Ameba-AIoT/ameba-rtos>`_
-      * |finger_icon| `Wi-Fi FullMAC DoC <https://ameba-aiot.github.io/ameba-iot-docs/amebadplus/en/latest/ameba/en/fullmac/src/index.html>`_
+      * |finger_icon| `Wi-Fi FullMAC DoC <https://ameba-aiot.github.io/ameba-iot-docs/RTL8721Dx/en/latest/ameba/en/fullmac/src/index.html>`_

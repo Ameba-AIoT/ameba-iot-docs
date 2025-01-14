@@ -20,4 +20,4 @@ Compared with FullMAC solution, in Wi-Fi Bridge TCPIP have been offloaded to SoC
       :columns: 2
 
       * |finger_icon| `Wi-Fi Bridge SDK <https://github.com/Ameba-AIoT/ameba-rtos>`_
-      * |finger_icon| `Wi-Fi Bridge DoC <https://ameba-aiot.github.io/ameba-iot-docs/amebadplus/en/latest/ameba/en/wifi_bridge/src/index.html>`_
+      * |finger_icon| `Wi-Fi Bridge DoC <https://ameba-aiot.github.io/ameba-iot-docs/RTL8721Dx/en/latest/ameba/en/wifi_bridge/src/index.html>`_

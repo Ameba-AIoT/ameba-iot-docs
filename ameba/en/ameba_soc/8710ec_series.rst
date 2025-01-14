@@ -40,8 +40,8 @@ With dual RISC cores running up to 400MHz, enhanced computing capability, stable
         :columns: 3
 
         * |finger_icon| `Datasheet <https://www.realmcu.com/zh/Home/DownloadList/2f034d6d-e85d-448d-9788-5c04afedb99d>`_
-        * |finger_icon| `Application Note <https://ameba-aiot.github.io/ameba-iot-docs/amebalite/en/latest/application_note/index.html>`_
-        * |finger_icon| `Wi-Fi Guide <https://ameba-aiot.github.io/ameba-iot-docs/amebalite/en/latest/ameba/en/wifi/index.html>`_
-        * |finger_icon| `AT Command <https://ameba-aiot.github.io/ameba-iot-docs/amebalite/en/latest/ameba/en/at_command/src/index.html>`_
-        * |finger_icon| `Software Tools <https://ameba-aiot.github.io/ameba-iot-docs/amebalite/en/latest/ameba/en/software_tools/index.html>`_
-        * |finger_icon| `MP Tools <https://ameba-aiot.github.io/ameba-iot-docs/amebalite/en/latest/ameba/en/mp_tools/src/index.html>`_
+        * |finger_icon| `Application Note <https://ameba-aiot.github.io/ameba-iot-docs/RTL8720EA/en/latest/application_note/index.html>`_
+        * |finger_icon| `Wi-Fi Guide <https://ameba-aiot.github.io/ameba-iot-docs/RTL8720EA/en/latest/ameba/en/wifi/index.html>`_
+        * |finger_icon| `AT Command <https://ameba-aiot.github.io/ameba-iot-docs/RTL8720EA/en/latest/ameba/en/at_command/src/index.html>`_
+        * |finger_icon| `Software Tools <https://ameba-aiot.github.io/ameba-iot-docs/RTL8720EA/en/latest/ameba/en/software_tools/index.html>`_
+        * |finger_icon| `MP Tools <https://ameba-aiot.github.io/ameba-iot-docs/RTL8720EA/en/latest/ameba/en/mp_tools/src/index.html>`_

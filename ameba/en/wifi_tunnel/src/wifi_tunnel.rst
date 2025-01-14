@@ -43,7 +43,7 @@ Wi-Fi R-Mesh handles data forwarding directly via the Wi-Fi driver, requiring mi
 As a result of minimal software-processing flow, the software-processing time is also greatly reduced. Consequently, even nodes several hops away communicating with the AP can achieve good throughput.
 
 .. figure:: ../figures/wifi_tunnel_data_flow.svg
-   :scale: 90px
+   :scale: 130%
    :align: center
 
    Wi-Fi R-Mesh data flow
