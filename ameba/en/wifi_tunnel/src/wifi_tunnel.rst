@@ -79,7 +79,10 @@ The diagram below illustrates an example where the NAT is used to expand the R-M
    Wi-Fi R-Mesh NAT
 
 Wi-Fi R-Mesh Throughput
-------------------------------
+---------------------------
+Throughput
+~~~~~~~~~~~
+
 .. table::
    :width: 100%
    :widths: auto
@@ -126,64 +129,72 @@ Wi-Fi R-Mesh Throughput
    |               | Layer5  | 1.8           | 2.1           |               |               |
    +---------------+---------+---------------+---------------+---------------+---------------+
 
-Throughput can be tested via iperf. Normally, a PC will be used as the test peer, and the PC need connect to target AP via the network cable.
+Throughput Test via ipref Command
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The throughput can be tested via iperf. Normally, a PC will be used as the test peer, and the PC need connect to target AP via the network cable.
 In R-mesh, each R-mesh node will obtain an IP from the target AP, thus each R-mesh node can use the same iperf test method as a normal STA.
 
-- For UDP TX test:
+.. figure:: ../figures/tp_test_ipref.svg
+   :scale: 140%
+   :align: center
 
-   - At R-mesh node, AT Command can be used, input the below cmd:
+   Throughput test network
 
-     .. code-block::
+**UDP Tx Test**
 
-        AT+IPERF=-c,<server IP>,-i,<periodic>,-u,-b,<bandwidth>,-t,<transtime>,-p,<port>
+- At R-mesh node, AT Command can be used, input the following command:
 
-   - At server side(normally a PC), input the below cmd:
-   
-     .. code-block::
+  .. code-block::
 
-        iperf -s -i <periodic> -u -p <port>
+     AT+IPERF=-c,<server IP>,-i,<periodic>,-u,-b,<bandwidth>,-t,<transtime>,-p,<port>
 
-- For UDP RX test:
+- At server side (normally a PC), input the following command:
 
-   - At R-mesh node, AT Command can be used, input the below cmd:
+  .. code-block::
 
-     .. code-block::
+     iperf -s -i <periodic> -u -p <port>
 
-        AT+IPERF=-s,-i,<periodic>,-u,-p,<port>
+**UDP Rx Test**
 
-   - At client side(normally a PC), input the below cmd:
+- At R-mesh node, AT Command can be used, input the following command:
 
-     .. code-block::
+  .. code-block::
 
-        iperf -c <R-mesh node IP> -i <periodic> -u -b <bandwidth> -t <transtime> -p <port>
+     AT+IPERF=-s,-i,<periodic>,-u,-p,<port>
 
-- For TCP TX test:
+- At client side (normally a PC), input the following command:
 
-   - At R-mesh node, AT Command can be used, input the below cmd:
+  .. code-block::
 
-     .. code-block::
+     iperf -c <R-mesh node IP> -i <periodic> -u -b <bandwidth> -t <transtime> -p <port>
 
-        AT+IPERF=-c,<server IP>,-i,<periodic>,-t,<transtime>,-p,<port>
+**TCP Tx Test**
 
-   - At server side(normally a PC), input the below cmd:
- 
-     .. code-block::
+- At R-mesh node, AT Command can be used, input the following command:
 
-        iperf -s -i <periodic> -p <port>
+  .. code-block::
 
-- For TCP RX test:
+     AT+IPERF=-c,<server IP>,-i,<periodic>,-t,<transtime>,-p,<port>
 
-   - At R-mesh node, AT Command can be used, iinput the below cmd:
+- At server side (normally a PC), input the following command:
 
-     .. code-block::
+  .. code-block::
 
-        AT+IPERF=-s,-i,<periodic>,-p,<port>
+     iperf -s -i <periodic> -p <port>
 
-   - At client side(normally a PC), input the below cmd:
-   
-     .. code-block::
+**TCP Rx Test**
 
-        iperf -c <R-mesh node IP> -i <periodic> -t <transtime> -p <port>
+- At R-mesh node, AT Command can be used, input the following command:
+
+  .. code-block::
+
+     AT+IPERF=-s,-i,<periodic>,-p,<port>
+
+- At client side (normally a PC), input the following command:
+
+  .. code-block::
+
+     iperf -c <R-mesh node IP> -i <periodic> -t <transtime> -p <port>
 
 
 Wi-Fi R-Mesh RTT
@@ -233,59 +244,49 @@ Prerequisites
 ^^^^^^^^^^^^^^^^
 Wi-Fi R-Mesh Demo Tool runs on Windows.
 
-The R-Mesh Demo Tool is in below path:
-
-.. code-block::
-
-   sdk/tools/R-Mesh_Demo_Tool
+The R-Mesh Demo Tool locates at the path: ``{sdk}/tools/R-Mesh_Demo_Tool``.
 
 Usage
 ^^^^^^^
-1. Wi-Fi R-Mesh Demo Tool will obtain the computer's IP address when it starts, so before starting the tool, make sure the computer and the target AP are successfully connected via the network cable.
+- Wi-Fi R-Mesh Demo Tool will obtain the computer's IP address when it starts, so before starting the tool, make sure the computer and the target AP are successfully connected via the network cable.
 
-2. When run gravitation.exe first time, it will generate a file named "config.yaml" in the tool folder, it can be used to config serveral parameters, such as ap mac, ping interval and ping size.
+- When run gravitation.exe first time, it will generate a file named :file:`config.yaml` in the tool folder, it can be used to config serveral parameters, such as ap mac, ping interval and ping size.
 
-   .. figure:: ../figures/rmesh_demo_tool_config_file.png
-      :scale: 70%
-      :align: center
+  In order to show topology correctly, ap mac of your AP need be configured by editing the "ap_mac_list" entry in config.yaml, after editing config.yaml, please restart the gravitation.exe again:
 
-      Wi-Fi R-Mesh Demo Tool Config File
+  .. code-block::
 
-   In order to show topology correctly, ap mac of your AP need be configured by editing the "ap_mac_list" entry in config.yaml, after editing config.yaml, please restart the gravitation.exe again:
+     ap_mac_list:
+     - 00:11:22:33:44:55
 
-   .. code-block::
+- For each R-Mesh node, use AT Command to start connect, the ssid and password in AT Command are the target AP's ssid and password.
+  R-Mesh node will automatically decide whether connect to target AP directly or pair with other available R-Mesh node, and then the topology will shown in Wi-Fi R-Mesh Demo Tool.
 
-      ap_mac_list:
-      - 00:11:22:33:44:55
+  .. code-block::
 
-3. For each R-Mesh node, use AT Command to start connect, the ssid and password in AT Command are the target AP's ssid and password.
-   R-Mesh node will automatically decide whether connect to target AP directly or pair with other available R-Mesh node, and then the topology will shown in Wi-Fi R-Mesh Demo Tool.
+     AT+WLCONN=ssid,rmesh_test,pw,12345678
 
-   .. code-block::
+- ``ping start`` and ``ping stop`` button in tool can be used to do ping test, and the ping interval and ping size can be configured by :file:`config.yaml` as follows:
 
-      AT+WLCONN=ssid,rmesh_test,pw,12345678
+  .. code-block::
 
-4. "ping start" and "ping stop" button in tool can be used to do ping test, and the ping interval and ping size can be configured by "config.yaml" as follow:
+     ping:
+     interval: 500
+     packet_size: 64
 
-   .. code-block::
+  The ping interval can also be configured directly on the bottom of tool menu:
 
-      ping:
-      interval: 500
-      packet_size: 64
+  .. figure:: ../figures/ping_interval.png
+     :scale: 50%
+     :align: center
 
-   The ping interval can also be configured directly on the bottom of tool menu:
-
-      .. figure:: ../figures/ping_interval.png
-         :scale: 50%
-         :align: center
-
-         Ping Interval configuration
+     Ping interval configuration
 
 
-Wi-Fi R-Mesh User Config
---------------------------------------------
+Wi-Fi R-Mesh User Configuration
+--------------------------------
 In R-Mesh, when the signal strength of the actual AP is larger than a threshold, R-Mesh nodes will prefer to connect to AP directly or switch from other R-Mesh node to AP.
-This threshold can be configured in "sdk/component/soc/amebadplus/ameba_wificfg.c", and the default value is -50.
+This threshold can be configured in ``{sdk}/component/soc/amebadplus/ameba_wificfg.c``, and the default value is -50.
 
 .. code-block::
 
@@ -293,6 +294,5 @@ This threshold can be configured in "sdk/component/soc/amebadplus/ameba_wificfg.
 	wifi_user_config.wtn_strong_rssi_thresh = -50;
 
 .. note::
-
    Currently R-Mesh needs special wlan lib to run, please contact us to get the specified version of wlan lib.
 

@@ -94,15 +94,15 @@ The file for setting the EDCCA mode is in the following path, and it will be wri
 
 - FreeRTOS:
 
-  * AmebaSmart: ``/component/soc/amebasmart/usrcfg/Ameba_wificfg.c``
-  
-  * AmebaLite: ``/component/soc/amebalite/usrcfg/Ameba_wificfg.c``
-  
-  * AmebaDPlus: ``/component/soc/amebadplus/usrcfg/Ameba_wificfg.c``
+  * RTL8730E: ``/component/soc/amebasmart/usrcfg/Ameba_wificfg.c``
+
+  * RTL8726EA/RTL8713EC/RTL8720EA/RTL8710EC: ``/component/soc/amebalite/usrcfg/Ameba_wificfg.c``
+
+  * RTL8721Dx/RTL8711Dx: ``/component/soc/amebadplus/usrcfg/Ameba_wificfg.c``
 
 - Linux:
 
-  * AmebaSmart: ``/firmware/component/wifi/cfg80211_fullmac/rtl8730e/ipc/Ameba_wificfg.c``
+  * RTL8730E: ``/firmware/component/wifi/cfg80211_fullmac/rtl8730e/ipc/Ameba_wificfg.c``
 
 Function name: :func:`wifi_set_user_config`
 
@@ -165,7 +165,7 @@ After connection with AP, you can get the current EDCCA threshold by the followi
 - Linux
 
   .. code-block::
-      
+
      ATWZ get_edcca_th
 
 In most cases, the default values are sufficient to pass Adaptivity certification. If it doesn't work, you can modify the EDCCA threshold by the following command:
@@ -173,7 +173,7 @@ In most cases, the default values are sufficient to pass Adaptivity certificatio
 - FreeRTOS:
 
   .. code-block::
-        
+
      AT+WLDBG=fix_edcca_th <value>
 
 - Linux:
@@ -192,7 +192,7 @@ The examples of getting or setting the EDCCA threshold are as follows:
 
   .. toggle::
   
-     - AmebaDPlus 5G:
+     - RTL8721Dx/RTL8711Dx 5G:
      
        .. code-block::
        
@@ -205,7 +205,7 @@ The examples of getting or setting the EDCCA threshold are as follows:
           [WLDBG]: _AT_WLAN_IWPRIV_
           [WLAN-A] [iwpriv_command] cmd name: fix_edcca_th
      
-     - AmebaSmart 2G:
+     - RTL8730E 2G:
      
        .. code-block::
        
@@ -222,7 +222,7 @@ The examples of getting or setting the EDCCA threshold are as follows:
 
   .. toggle::
   
-     - AmebaSmart:
+     - RTL8730E:
      
        .. code-block::
   
