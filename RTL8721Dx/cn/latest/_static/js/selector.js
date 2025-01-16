@@ -120,7 +120,19 @@ function add_selector() {
 function change_ic() {
     const next_ic = document.getElementById("ic-selector").value;
 
-    const default_lang = get_language(window.res, next_ic);
+    var default_lang = get_language(window.res, next_ic);
+    const current_language = document.getElementById("language-selector").value;
+    const all_available_languages = get_languages(window.res, next_ic)
+    if (all_available_languages.includes(current_language)){
+        default_lang = current_language
+    }else{
+        Swal.fire({
+            title: '提示',
+            text: `暂无${next_ic} ${current_language === "cn" ? "中文" : current_language}版本，陆续开放中......`,
+            icon: 'info',
+            confirmButtonText: '确定'
+        });
+    }
     const default_os = get_os(window.res, next_ic, default_lang);
     const default_version = get_version(window.res, next_ic, default_os, default_lang);
     const has_os = check_hasos(window.res, next_ic, default_lang)
