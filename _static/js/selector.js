@@ -117,7 +117,7 @@ function add_selector() {
 }
 
 /* ============= Toggle IC ============= */
-function change_ic() {
+async function change_ic() {
     const next_ic = document.getElementById("ic-selector").value;
 
     var default_lang = get_language(window.res, next_ic);
@@ -126,7 +126,7 @@ function change_ic() {
     if (all_available_languages.includes(current_language)){
         default_lang = current_language
     }else{
-        Swal.fire({
+        await Swal.fire({
             title: '提示',
             text: `暂无${next_ic} ${current_language === "cn" ? "中文" : current_language}版本，陆续开放中......`,
             icon: 'info',
