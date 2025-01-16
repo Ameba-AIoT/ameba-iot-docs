@@ -23,7 +23,7 @@ function check_hasos(data, ic, language) {
 
 // 获取所有的 IC 名称
 function get_ics(data) {
-    return Object.keys(res).map(key => res[key].name);;
+    return Object.keys(data).map(key => res[key].name);;
 }
 
 // 获取指定 IC 中所有的语言
@@ -92,7 +92,7 @@ function add_selector() {
 
 
             const labels = {
-                ic: cur_language === 'cn' ? '芯片' : 'IC',
+                ic: cur_language === 'cn' ? '系列' : 'Series',
                 language: cur_language === 'cn' ? '语言' : 'Language',
                 version: cur_language === 'cn' ? '版本' : 'Version',
                 os: cur_language === 'cn' ? '系统' : 'OS'
@@ -118,7 +118,7 @@ function add_selector() {
 
 /* ============= Toggle IC ============= */
 function change_ic() {
-    const next_ic = document.getElementById("ic-selector").value.toLowerCase();
+    const next_ic = document.getElementById("ic-selector").value;
 
     const default_lang = get_language(window.res, next_ic);
     const default_os = get_os(window.res, next_ic, default_lang);
