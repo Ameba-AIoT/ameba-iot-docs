@@ -92,7 +92,7 @@ function add_selector() {
 
 
             const labels = {
-                ic: cur_language === 'cn' ? '系列' : 'Series',
+                ic: cur_language === 'cn' ? 'IC系列' : 'IC Series',
                 language: cur_language === 'cn' ? '语言' : 'Language',
                 version: cur_language === 'cn' ? '版本' : 'Version',
                 os: cur_language === 'cn' ? '系统' : 'OS'
