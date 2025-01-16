@@ -143,8 +143,8 @@ If no pins are configured, the AT Command module will use the default pins, incl
 <section id="default-spi-at-command-module-pins">
 <h2>Default SPI AT Command Module Pins<a class="headerlink" href="#default-spi-at-command-module-pins" title="Link to this heading"></a></h2>
 <p>For different chips, the default SPI AT Command module pins are listed in the following table.</p>
-<table class="docutils align-default" id="id1" style="width: 100%">
-<caption><span class="caption-text">Default SPI AT Command module pins for chips</span><a class="headerlink" href="#id1" title="Link to this table"></a></caption>
+<table class="docutils align-default" id="id3" style="width: 100%">
+<caption><span class="caption-text">Default SPI AT Command module pins for chips</span><a class="headerlink" href="#id3" title="Link to this table"></a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p>Chip name</p></th>
 <th class="head"><p>SPI MOSI</p></th>
@@ -156,25 +156,13 @@ If no pins are configured, the AT Command module will use the default pins, incl
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>AmebaSmart</p></td>
+<tr class="row-even"><td><p>RTL8730E</p></td>
 <td><p>PA_13</p></td>
 <td><p>PA_14</p></td>
 <td><p>PA_15</p></td>
 <td><p>PA_16</p></td>
-<td rowspan="3"><p>PA_26</p></td>
-<td rowspan="3"><p>PA_27</p></td>
-</tr>
-<tr class="row-odd"><td><p>AmebaLite</p></td>
-<td><p>PA_29</p></td>
-<td><p>PA_30</p></td>
-<td><p>PA_28</p></td>
-<td><p>PA_31</p></td>
-</tr>
-<tr class="row-even"><td><p>AmebaDPlus</p></td>
-<td><p>PB_24</p></td>
-<td><p>PB_25</p></td>
-<td><p>PB_23</p></td>
-<td><p>PB_26</p></td>
+<td><p>PA_20</p></td>
+<td><p>PA_21</p></td>
 </tr>
 </tbody>
 </table>
@@ -185,17 +173,17 @@ If no pins are configured, the AT Command module will use the default pins, incl
 Before starting development on an MCU, it is highly recommended to run the example code to verify that the wiring and configuration are correct.
 After this, you can refer to our host example to adapt it to the specific MCU platform application you intend to use.</p>
 <p>In the example code, we added an UART task to receive AT commands and print the AT responses.The overall data flow diagram is as follows:</p>
-<figure class="align-center" id="id2">
+<figure class="align-center" id="id4">
 <a class="reference internal image-reference" href="../../../../_images/spi_at_data_flow.svg"><img alt="../../../../_images/spi_at_data_flow.svg" height="79" src="../../../../_images/spi_at_data_flow.svg" width="588" /></a>
 <figcaption>
-<p><span class="caption-text">SPI AT Command data flow</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
+<p><span class="caption-text">SPI AT Command data flow</span><a class="headerlink" href="#id4" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <section id="communication-format">
 <h3>Communication Format<a class="headerlink" href="#communication-format" title="Link to this heading"></a></h3>
 <p>When the SPI AT Command host sends AT commands or transparent data, or receives AT responses from the AT Command module, the following format must be used.</p>
-<table class="docutils align-default" id="id3" style="width: 100%">
-<caption><span class="caption-text">SPI AT Command communication format</span><a class="headerlink" href="#id3" title="Link to this table"></a></caption>
+<table class="docutils align-default" id="id5" style="width: 100%">
+<caption><span class="caption-text">SPI AT Command communication format</span><a class="headerlink" href="#id5" title="Link to this table"></a></caption>
 <tbody>
 <tr class="row-odd"><td><p>Magic Number(2 bytes)</p></td>
 <td><p>Data Len(2 bytes)</p></td>
@@ -217,10 +205,10 @@ After this, you can refer to our host example to adapt it to the specific MCU pl
 <ul class="simple">
 <li><p>SPI master sends AT command to slave:</p></li>
 </ul>
-<figure class="align-center" id="id4">
+<figure class="align-center" id="id6">
 <a class="reference internal image-reference" href="../../../../_images/spi_master_send_at_command_to_slave.svg"><img alt="../../../../_images/spi_master_send_at_command_to_slave.svg" height="231" src="../../../../_images/spi_master_send_at_command_to_slave.svg" width="397" /></a>
 <figcaption>
-<p><span class="caption-text">SPI master sends AT command to slave</span><a class="headerlink" href="#id4" title="Link to this image"></a></p>
+<p><span class="caption-text">SPI master sends AT command to slave</span><a class="headerlink" href="#id6" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <p>The specific instructions for each step are as follows:</p>
@@ -234,10 +222,10 @@ and the slave reset their respective Sync Pins to their initial states.</p>
 <ul class="simple">
 <li><p>SPI slave sends AT command response to master:</p></li>
 </ul>
-<figure class="align-center" id="id5">
+<figure class="align-center" id="id7">
 <a class="reference internal image-reference" href="../../../../_images/spi_slave_send_response_to_master.svg"><img alt="../../../../_images/spi_slave_send_response_to_master.svg" height="207" src="../../../../_images/spi_slave_send_response_to_master.svg" width="397" /></a>
 <figcaption>
-<p><span class="caption-text">SPI slave sends AT command response to master</span><a class="headerlink" href="#id5" title="Link to this image"></a></p>
+<p><span class="caption-text">SPI slave sends AT command response to master</span><a class="headerlink" href="#id7" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <p>The specific instructions for each step are as follows:</p>
