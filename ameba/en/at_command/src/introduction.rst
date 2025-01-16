@@ -35,7 +35,6 @@ There are two currently used AT command modes and scenarios, which can be called
    +--------------------+-------------------+-------------------+----------------------+
 
 We set the Ameba module as a slave, and the MCU as a host. The host can send AT commands to the slave and receive the corresponding AT response.
-Users can use AmebaLite, AmebaSmart, and AmebaDPlus as slaves for AT commands.   
 The AT commands consist of a wide range of types, such as Wi-Fi commands, MQTT commands, WebSocket commands, TCP/IP commands, and Bluetooth commands.
 
 Hardware Connection
@@ -71,31 +70,40 @@ In case of MCU control mode, the input and response of AT commands can be separa
 
    MCU Control mode
 
+In MCU Control mode, users should prepare the :file:`atcmd_config.json` file in advance(refer to :ref:`atcmd_mcu_control_mode_configuration` for detailed instructions).
+If no VFS AT command configuration file is provided, the default configuration of UART will be used.
+
 .. only:: RTL8721D
 
-   In MCU Control mode, users should prepare the :file:`atcmd_config.json` file in advance(refer to :ref:`atcmd_mcu_control_mode_configuration` for detailed instructions).
-   If no VFS AT command configuration file is provided, the default configuration of UART will be used.
+   .. table:: Default UART port and baud rates for chips
+      :width: 100%
+      :widths: auto
+
+      +-------------+---------+---------+-------------------+
+      | Chip name   | UART Tx | UART Rx | Default baud rate |
+      +=============+=========+=========+===================+
+      | RTL8721D    | PA_26   | PA_27   | 38400             |
+      +             +         +         +                   +
+      | RTL8711D    |         |         |                   |
+      +-------------+---------+---------+-------------------+
 
 .. only:: RTL8726EA
 
-   In MCU Control mode, users should prepare the :file:`atcmd_config.json` file in advance(refer to :ref:`atcmd_mcu_control_mode_configuration` for detailed instructions).
-   If no VFS AT command configuration file is provided, the default configuration of UART will be used.
+   .. table:: Default UART port and baud rates
+      :width: 100%
+      :widths: auto
 
-For different chips, the default UART input and output ports are listed in the following table.
-
-.. table:: Default UART port and baud rates for chips
-   :width: 100%
-   :widths: auto
-
-   +-------------+---------+---------+-------------------+
-   | Chip name   | UART Tx | UART Rx | Default baud rate |
-   +=============+=========+=========+===================+
-   | AmebaSmart  | PA_3    | PA_2    | 38400             |
-   +-------------+---------+---------+-------------------+
-   | AmebaLite   | PA_28   | PA_29   | 38400             |
-   +-------------+---------+---------+-------------------+
-   | AmebaDPlus  | PA_26   | PA_27   | 38400             |
-   +-------------+---------+---------+-------------------+
+      +-------------+---------+---------+-------------------+
+      | Chip name   | UART Tx | UART Rx | Default baud rate |
+      +=============+=========+=========+===================+
+      | RTL8726EA   | PA_28   | PA_29   | 38400             |
+      +             +         +         +                   +
+      | RTL8713EC   |         |         |                   |
+      +             +         +         +                   +
+      | RTL8720EA   |         |         |                   |
+      +             +         +         +                   +
+      | RTL8710EC   |         |         |                   |
+      +-------------+---------+---------+-------------------+
 
 Command Description
 --------------------
@@ -404,11 +412,21 @@ It can be used to download images to the Flash of device through the UART downlo
 
 When you lanuch the image tool, it is shown as the following figure.
 
-.. figure:: ../figures/image_tool.png
-   :scale: 70%
-   :align: center
+.. only:: RTL8721D
 
-   Image Tool
+   .. figure:: ../figures/image_tool_amebadplus.png
+      :scale: 70%
+      :align: center
+
+      Image Tool
+
+.. only:: RTL8726EA
+
+   .. figure:: ../figures/image_tool_amebalite.png
+      :scale: 70%
+      :align: center
+
+      Image Tool
 
 The device profiles provide the necessary device information required for image download, with the naming rules:
 

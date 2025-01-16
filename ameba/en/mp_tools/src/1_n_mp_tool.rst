@@ -632,26 +632,21 @@ And the mp image layout in sram is:
    +------------+------------------+--------------+------------+
    | IC         | ImageType        | StartAddress | EndAddress |
    +============+==================+==============+============+
-   | AmebaDplus | km4_boot_all.bin | 0x20012000   | 0x2001A000 |
+   | RTL8721Dx  | km4_boot_all.bin | 0x20012000   | 0x2001A000 |
+   |            +------------------+--------------+------------+
+   | RTL8711Dx  | km0_km4_app.bin  | 0x2001A000   | 0x20080000 |
    +------------+------------------+--------------+------------+
-   | AmebaDplus | km0_km4_app.bin  | 0x2001A000   | 0x20080000 |
+   | | RTL8726EA| km4_boot_all.bin | 0x20012000   | 0x2001A000 |
+   | | RTL8713EC+------------------+--------------+------------+
+   | | RTL8720EA| kr4_km4_app.bin  | 0x2001A000   | 0x20080000 |
+   | | RTL8710EC|                  |              |            |
    +------------+------------------+--------------+------------+
-   | AmebaLite  | km4_boot_all.bin | 0x20012000   | 0x2001A000 |
-   +------------+------------------+--------------+------------+
-   | AmebaLite  | kr4_km4_app.bin  | 0x2001A000   | 0x20080000 |
-   +------------+------------------+--------------+------------+
-
 
 .. figure:: ../figures/mp_shrink_image_address_setting.png
    :scale: 90%
    :align: center
 
-   MP Shrink Image Address Setting
-
-
-.. note::
-   Note: This function only supports AmebaLite and AmebaDplus.
-
+   MP shrink image address setting
 
 .. _troubleshooting:
 
@@ -660,7 +655,6 @@ Troubleshooting
 Download Fail
 --------------------------
 If image download is failed, enter the ``UART_DOWNLOAD`` mode to try again.
-
 
 When transmission interrupts or verification fails, a red error sign shows up, you need to check the error log and try again. There are two ways to get the error messages:
 

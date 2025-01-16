@@ -14,19 +14,39 @@ Default SPI AT Command Module Pins
 ----------------------------------
 For different chips, the default SPI AT Command module pins are listed in the following table.
 
-.. table:: Default SPI AT Command module pins for chips
-   :width: 100%
-   :widths: auto
 
-   +-------------+----------+----------+---------+--------+-----------------+----------------+
-   | Chip name   | SPI MOSI | SPI MISO | SPI CLK | SPI CS | MASTER SYNC PIN | SLAVE SYNC PIN |
-   +=============+==========+==========+=========+========+=================+================+
-   | AmebaSmart  | PA_13    | PA_14    | PA_15   | PA_16  |                 |                |
-   +-------------+----------+----------+---------+--------+                 +                +
-   | AmebaLite   | PA_29    | PA_30    | PA_28   | PA_31  | PA_26           | PA_27          |
-   +-------------+----------+----------+---------+--------+                 +                +
-   | AmebaDPlus  | PB_24    | PB_25    | PB_23   | PB_26  |                 |                |
-   +-------------+----------+----------+---------+--------+-----------------+----------------+
+
+.. only:: RTL8721D
+
+   .. table:: Default SPI AT Command module pins for chips
+      :width: 100%
+      :widths: auto
+
+      +-------------+----------+----------+---------+--------+-----------------+----------------+
+      | Chip name   | SPI MOSI | SPI MISO | SPI CLK | SPI CS | MASTER SYNC PIN | SLAVE SYNC PIN |
+      +=============+==========+==========+=========+========+=================+================+
+      | RTL8721Dx   |          |          |         |        |                 |                |
+      +             + PA_27    + PA_28    + PA_26   + PA_26  + PB_30           + PB_31          +
+      | RTL8711Dx   |          |          |         |        |                 |                |
+      +-------------+----------+----------+---------+--------+-----------------+----------------+
+
+.. only:: RTL8726EA
+
+   .. table:: Default SPI AT Command module pins for chips
+      :width: 100%
+      :widths: auto
+
+      +-------------+----------+----------+---------+--------+-----------------+----------------+
+      | Chip name   | SPI MOSI | SPI MISO | SPI CLK | SPI CS | MASTER SYNC PIN | SLAVE SYNC PIN |
+      +=============+==========+==========+=========+========+=================+================+
+      | RTL8726EA   |          |          |         |        |                 |                |
+      +             +          +          +         +        +                 +                +
+      | RTL8713EC   |          |          |         |        |                 |                |
+      +             + PA_29    + PA_30    + PA_28   + PA_31  + PB_2            + PB_3           +
+      | RTL8720EA   |          |          |         |        |                 |                |
+      +             +          +          +         +        +                 +                +
+      | RTL8710EC   |          |          |         |        |                 |                |
+      +-------------+----------+----------+---------+--------+-----------------+----------------+
 
 Use AT Command with SPI
 ------------------------
