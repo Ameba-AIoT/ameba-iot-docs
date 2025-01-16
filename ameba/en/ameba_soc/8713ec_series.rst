@@ -94,7 +94,7 @@ The RTL8713EC series is a Combo SoC that supports Wi-Fi 6 (2.4GHz) and Bluetooth
 
 **Applications**
 
-With dual RISC cores running up to 400MHz, enhanced computing capability, stable security performance and abundant peripheral resources, the RTL8726EA series is widely used in various fields, such as:
+With multi RISC cores running up to 500MHz, enhanced computing capability, stable security performance and abundant peripheral resources, the RTL8726EA series is widely used in various fields, such as:
 
 - Home appliance
 - Line controller
