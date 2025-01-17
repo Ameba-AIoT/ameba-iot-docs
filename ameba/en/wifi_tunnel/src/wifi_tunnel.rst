@@ -1,8 +1,8 @@
-.. _wifi_R-Mesh:
+.. _wifi_rmesh:
 
 Wi-Fi R-Mesh Topology
 ------------------------------------------
-As shown in the figure below, Wi-Fi R-Mesh is a mesh network with tree topology used to extend the transmission distance of Wi-Fi, allowing stations that are relatively far from the AP to maintain a stable online status.
+As shown in the figure below, Wi-Fi R-Mesh is a tree-topology mesh network used to increase the Wi-Fi coverage, allowing stations that are far from the AP to also obtain a stable network connection.
 
 .. figure:: ../figures/wifi_tunnel_topology_capacity.svg
    :scale: 140%

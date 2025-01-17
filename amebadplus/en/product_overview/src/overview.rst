@@ -38,4 +38,4 @@ The functional block diagram is illustrated below, which provides a view of the 
 
 .. note::
 
-   For different series of |CHIP_NAME|, the modules, functions and peripherals may differ. Refer to :ref:`Products <products>` for more details.
+   For different series of |CHIP_NAME|, the modules, functions and peripherals may differ. Refer to :ref:`Products <https://ameba-aiot.github.io/ameba-iot-docs/ameba/en/latest/>`_ for more details.
