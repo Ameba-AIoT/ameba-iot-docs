@@ -93,8 +93,8 @@
 <li class="toctree-l3"><a class="reference internal" href="#application">Application</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#id3">OTA Image</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#ota-select-flow">OTA Select Flow</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id4">DSP Image</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#ota-compressed-image">OTA Compressed Image</a></li>
+<li><a class="reference internal" href="#id4">DSP Image</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id5">OTA Compressed Image</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#building-ota-image">Building OTA Image</a><ul>
@@ -283,8 +283,8 @@ The layout of KM4 bootloader image is illustrated below.</p>
 <h1>Application<a class="headerlink" href="#application" title="Link to this heading"></a></h1>
 <section id="id3">
 <h2>OTA Image<a class="headerlink" href="#id3" title="Link to this heading"></a></h2>
-<p>The application image (<code class="file docutils literal notranslate"><span class="pre">kr4_km4_app.bin</span></code>, including KR4, KM4 non-secure application image and KM4 secure image) can be updated through OTA,
-which can be chosen to boot from OTA1 or OTA2. The layout of the whole application image is illustrated below.</p>
+<p>The application image (<code class="file docutils literal notranslate"><span class="pre">kr4_km4_app.bin</span></code>, including KR4, KM4 non-secure application image and KM4 secure image) can be updated through OTA, which can be chosen to boot from OTA1 or OTA2. The layout of the whole application image is illustrated below.</p>
+<p>The application image (<code class="file docutils literal notranslate"><span class="pre">kr4_km4_app.bin</span></code>, including KR4, KM4 non-secure application image) can be updated through OTA, which can be chosen to boot from OTA1 or OTA2. The layout of the whole application image is illustrated below.</p>
 <figure class="align-center" id="id12">
 <a class="reference internal image-reference" href="../../../_images/layout_of_application_image.svg"><img alt="../../../_images/layout_of_application_image.svg" height="115" src="../../../_images/layout_of_application_image.svg" width="301" /></a>
 <figcaption>
@@ -302,9 +302,61 @@ which can be chosen to boot from OTA1 or OTA2. The layout of the whole applicati
 <p><span class="caption-text">Application image OTA select flow</span><a class="headerlink" href="#id13" title="Link to this image"></a></p>
 </figcaption>
 </figure>
+<blockquote id="ota-dsp-image-within-application-image">
+<span id="dsp-image"></span><div><p>In this scheme, there are two slots in Flash layout called <code class="xref py py-mod docutils literal notranslate"><span class="pre">IMG_APP_OTA1</span></code> and <code class="xref py py-mod docutils literal notranslate"><span class="pre">IMG_APP_OTA2</span></code> respectively.
+Since the DSP image is merged into the application image. In order to avoid issues such as DSP boot fail after the DSP image
+is updated through OTA application when there is only one slot for DSP. For MP devices,
+the scheme of the DSP image within application image is recommended, which DSP can choose to boot from OTA1 or OTA2.</p>
+<p>After choosing this scheme, there is only one application image called <code class="docutils literal notranslate"><span class="pre">kr4_km4_dsp_app.bin</span></code> needed to be downloaded as shown below.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../../_images/download_dsp_application_image.png"><img alt="../../../_images/download_dsp_application_image.png" src="../../../_images/download_dsp_application_image.png" style="width: 774.0px; height: 117.9px;" /></a>
+</figure>
+</div></blockquote>
+<blockquote id="steps-set-dsp-path">
+<div><p>Steps of generating <code class="docutils literal notranslate"><span class="pre">kr4_km4_dsp_app.bin</span></code> are:</p>
+<ol class="arabic">
+<li><p>Navigate to project and open configuration menu.</p></li>
+<li><p>Select <span class="menuselection">CONFIG OTA OPTION &gt; Enable DSP &gt; DSP within APP image</span> to enable the configuration of <code class="docutils literal notranslate"><span class="pre">DSP</span> <span class="pre">within</span> <span class="pre">APP</span> <span class="pre">image</span></code>.</p></li>
+<li><p>Select <span class="menuselection">DSP_IMAGE_TARGET_DIR</span> to set path of <code class="file docutils literal notranslate"><span class="pre">dsp.bin</span></code>, click Enter to save.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../../_images/set_dsp_path.png"><img alt="../../../_images/set_dsp_path.png" src="../../../_images/set_dsp_path.png" style="width: 579.6px; height: 211.5px;" /></a>
+</figure>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <cite>DSP_IMAGE_TARGET_DIR</cite> is relative to the amebalite_gcc_project.</p>
+</div>
+</li>
+<li><p>Save and exit.</p></li>
+</ol>
+<p>For example, after DSP SDK is compiled finished, there will be two images generated,
+named <code class="file docutils literal notranslate"><span class="pre">dsp.bin</span></code> and <code class="file docutils literal notranslate"><span class="pre">dsp_all.bin</span></code> respectively under the path of <code class="docutils literal notranslate"><span class="pre">{DSP_SDK}/project/image</span></code>.</p>
+<ol class="arabic">
+<li><p>Copy the <cite>dsp.bin</cite> into <code class="docutils literal notranslate"><span class="pre">{SDK}/component/dsp</span></code>, so the path of <code class="file docutils literal notranslate"><span class="pre">dsp.bin</span></code> is <code class="docutils literal notranslate"><span class="pre">../component/dsp</span></code>.</p></li>
+<li><p>Set the path as <a class="reference internal" href="#steps-set-dsp-path"><span class="std std-ref">Step 3</span></a> above. Check the path in <code class="docutils literal notranslate"><span class="pre">{SDK}/amebalite_gcc_project/menuconfig/.config</span></code>.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp"># CONFIG DSP Enable</span>
+<span class="cp">#</span>
+<span class="n">CONFIG_DSP_EN</span><span class="o">=</span><span class="n">y</span>
+<span class="n">CONFIG_DSP_WITHIN_APP_IMG</span><span class="o">=</span><span class="n">y</span>
+<span class="hll"><span class="n">CONFIG_DSP_IMAGE_TARGET_DIR</span><span class="o">=</span><span class="s">&quot;../component/dsp&quot;</span>
+</span><span class="cp"># end of CONFIG DSP Enable</span>
+</pre></div>
+</div>
+</li>
+<li><p>Rebuild the project by the following commands, and <code class="file docutils literal notranslate"><span class="pre">kr4_km4_dsp_app.bin</span></code> will be found in <code class="docutils literal notranslate"><span class="pre">{SDK}/amebalite_gcc_project</span></code>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">amebalite_gcc_project</span>
+<span class="o">./</span><span class="n">build</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>We choose this scheme and use <code class="file docutils literal notranslate"><span class="pre">kr4_km4_dsp_app.bin</span></code> in the following operations.</p>
+</div>
+</div></blockquote>
 </section>
 <section id="id4">
-<h2>DSP Image<a class="headerlink" href="#id4" title="Link to this heading"></a></h2>
+<span id="ota-compressed-image"></span><h2>DSP Image<a class="headerlink" href="#id4" title="Link to this heading"></a></h2>
 <p>The RTL8726EA supports DSP and there are two schemes for users to load the DSP image.</p>
 <section id="dsp-image-without-application-image">
 <h3>DSP Image without Application Image<a class="headerlink" href="#dsp-image-without-application-image" title="Link to this heading"></a></h3>
@@ -333,76 +385,18 @@ So when in device DSP-development stage, we recommend this method to develop the
 <p>This scheme should be used only in device DSP-development stage.</p>
 </div>
 </section>
-<section id="dsp-image-within-application-image">
-<span id="ota-dsp-image-within-application-image"></span><h3>DSP Image within Application Image<a class="headerlink" href="#dsp-image-within-application-image" title="Link to this heading"></a></h3>
-<p>In this scheme, there are two slots in Flash layout called <code class="xref py py-mod docutils literal notranslate"><span class="pre">IMG_APP_OTA1</span></code> and <code class="xref py py-mod docutils literal notranslate"><span class="pre">IMG_APP_OTA2</span></code> respectively.
-Since the DSP image is merged into the application image. In order to avoid issues such as DSP boot fail after the DSP image
-is updated through OTA application when there is only one slot for DSP. For MP devices,
-the scheme of the DSP image within application image is recommended, which DSP can choose to boot from OTA1 or OTA2.</p>
-<p>After choosing this scheme, there is only one application image called <code class="docutils literal notranslate"><span class="pre">kr4_km4_dsp_app.bin</span></code> needed to be downloaded as shown below.</p>
-<blockquote>
-<div><figure class="align-center">
-<a class="reference internal image-reference" href="../../../_images/download_dsp_application_image.png"><img alt="../../../_images/download_dsp_application_image.png" src="../../../_images/download_dsp_application_image.png" style="width: 774.0px; height: 117.9px;" /></a>
-</figure>
-</div></blockquote>
-<p id="steps-set-dsp-path">Steps of generating <code class="docutils literal notranslate"><span class="pre">kr4_km4_dsp_app.bin</span></code> are:</p>
-<blockquote>
-<div><ol class="arabic">
-<li><p>Navigate to project and open configuration menu.</p></li>
-<li><p>Select <span class="menuselection">CONFIG OTA OPTION &gt; Enable DSP &gt; DSP within APP image</span> to enable the configuration of <code class="docutils literal notranslate"><span class="pre">DSP</span> <span class="pre">within</span> <span class="pre">APP</span> <span class="pre">image</span></code>.</p></li>
-<li><p>Select <span class="menuselection">DSP_IMAGE_TARGET_DIR</span> to set path of <code class="file docutils literal notranslate"><span class="pre">dsp.bin</span></code>, click Enter to save.</p>
-<figure class="align-center">
-<a class="reference internal image-reference" href="../../../_images/set_dsp_path.png"><img alt="../../../_images/set_dsp_path.png" src="../../../_images/set_dsp_path.png" style="width: 579.6px; height: 211.5px;" /></a>
-</figure>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The <cite>DSP_IMAGE_TARGET_DIR</cite> is relative to the amebalite_gcc_project.</p>
-</div>
-</li>
-<li><p>Save and exit.</p></li>
-</ol>
-</div></blockquote>
-<p>For example, after DSP SDK is compiled finished, there will be two images generated,
-named <code class="file docutils literal notranslate"><span class="pre">dsp.bin</span></code> and <code class="file docutils literal notranslate"><span class="pre">dsp_all.bin</span></code> respectively under the path of <code class="docutils literal notranslate"><span class="pre">{DSP_SDK}/project/image</span></code>.</p>
-<ol class="arabic">
-<li><p>Copy the <cite>dsp.bin</cite> into <code class="docutils literal notranslate"><span class="pre">{SDK}/component/dsp</span></code>, so the path of <code class="file docutils literal notranslate"><span class="pre">dsp.bin</span></code> is <code class="docutils literal notranslate"><span class="pre">../component/dsp</span></code>.</p></li>
-<li><p>Set the path as <a class="reference internal" href="#steps-set-dsp-path"><span class="std std-ref">Step 3</span></a> above. Check the path in <code class="docutils literal notranslate"><span class="pre">{SDK}/amebalite_gcc_project/menuconfig/.config</span></code>.</p>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp"># CONFIG DSP Enable</span>
-<span class="cp">#</span>
-<span class="n">CONFIG_DSP_EN</span><span class="o">=</span><span class="n">y</span>
-<span class="n">CONFIG_DSP_WITHIN_APP_IMG</span><span class="o">=</span><span class="n">y</span>
-<span class="hll"><span class="n">CONFIG_DSP_IMAGE_TARGET_DIR</span><span class="o">=</span><span class="s">&quot;../component/dsp&quot;</span>
-</span><span class="cp"># end of CONFIG DSP Enable</span>
-</pre></div>
-</div>
-</li>
-<li><p>Rebuild the project by the following commands, and <code class="file docutils literal notranslate"><span class="pre">kr4_km4_dsp_app.bin</span></code> will be found in <code class="docutils literal notranslate"><span class="pre">{SDK}/amebalite_gcc_project</span></code>.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">amebalite_gcc_project</span>
-<span class="o">./</span><span class="n">build</span><span class="o">.</span><span class="n">py</span>
-</pre></div>
-</div>
-</li>
-</ol>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>We choose this scheme and use <code class="file docutils literal notranslate"><span class="pre">kr4_km4_dsp_app.bin</span></code> in the following operations.</p>
-</div>
 </section>
-</section>
-<section id="ota-compressed-image">
-<span id="id5"></span><h2>OTA Compressed Image<a class="headerlink" href="#ota-compressed-image" title="Link to this heading"></a></h2>
-<p>The RTL8726EA supports OTA Image Compression. When OTA Image Compression is enabled, the OTA image will be compressed and
-image size will be reduced, which can save the flash space effectively.</p>
+<section id="id5">
+<h2>OTA Compressed Image<a class="headerlink" href="#id5" title="Link to this heading"></a></h2>
+<p>The RTL8726EA supports OTA Image Compression. When OTA Image Compression is enabled, the OTA image will be compressed and image size will be reduced, which can save the flash space effectively.</p>
 <p>The OTA Image Compression only compresses the APP image. Once the compressed APP image is download into one OTA slot,
 it will be decompressed into another OTA slot and boot from this slot. Which means there is always only one valid APP image between these two slots.</p>
 <p>Users can generate OTA Compressed Image by the following steps:</p>
-<blockquote>
-<div><ol class="arabic simple">
+<ol class="arabic simple">
 <li><p>Navigate to project and open configuration menu.</p></li>
 <li><p>Select <span class="menuselection">CONFIG OTA OPTION &gt; Support Compressed APP Image</span>, then save and exit.</p></li>
 <li><p>Build the project and <code class="file docutils literal notranslate"><span class="pre">ota_all.bin</span></code> which is compressed will be found in <code class="docutils literal notranslate"><span class="pre">{SDK}/amebalite_gcc_project</span></code>.</p></li>
 </ol>
-</div></blockquote>
 </section>
 </section>
 <section id="building-ota-image">
