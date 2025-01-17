@@ -2,7 +2,9 @@
 
 Preparation
 ----------------------
-In order to develop HiFi5 DSP, you need to downoad the software packages and prepare the Xtensa Xplorer license first.
+In order to develop HiFi5 DSP, you need to downoad :ref:`dsp_software packages` and prepare :ref:`xtensa_xplorer_license` first.
+
+.. _dsp_software packages:
 
 Software Packages
 ~~~~~~~~~~~~~~~~~~
@@ -12,23 +14,21 @@ Download the software packages according to your operating system.
    :width: 100%
    :widths: auto
 
-   +------------------------+----------------------------------------------------------+------------------------------------------+
-   | Item                   | Packages                                                 | Comment                                  |
-   +========================+==========================================================+==========================================+
-   | Xtensa Xplorer         | Linux    | - Xplorer-9.0.18-linux-x64-installer.bin      |                                          |
-   |                        |          |                                               |                                          |
-   | installer              |          | - XtensaTools_RI_2021_8_patch734507_linux.tgz |                                          |
-   |                        +----------+-----------------------------------------------+------------------------------------------+
-   |                        | Windows  | Xplorer-9.0.18-windows-installer.exe          |                                          |
-   +------------------------+----------+-----------------------------------------------+------------------------------------------+
-   | HiFi5 DSP              | Linux    | - HIFI5_PROD_1123_asic_UPG_linux_redist.tgz   |                                          |
-   |                        |          | - HIFI5_PROD_1123_asic_wUPG_linux_redist.tgz  |                                          |
-   | configurations         +----------+-----------------------------------------------+------------------------------------------+
-   |                        | Windows  | - HIFI5_PROD_1123_asic_UPG_win32_redist.tgz   | | Get them from Realtek released         |
-   |                        |          | - HIFI5_PROD_1123_asic_wUPG_win32_redist.tgz  | | DSP SDK (``configurations`` folder)    |
-   +------------------------+----------+-----------------------------------------------+------------------------------------------+
-   | Xtensa Xplorer license | \-                                                       | Apply :ref:`xtensa_xplorer_license`      |
-   +------------------------+----------------------------------------------------------+------------------------------------------+
+   +------------------+----------------------------------------------------------+------------------------------------------+
+   | Item             | Packages                                                 | Comment                                  |
+   +==================+==========+===============================================+==========================================+
+   | Xtensa Xplorer   | Linux    | - Xplorer-9.0.18-linux-x64-installer.bin      |                                          |
+   |                  |          |                                               |                                          |
+   | installer        |          | - XtensaTools_RI_2021_8_patch734507_linux.tgz |                                          |
+   |                  +----------+-----------------------------------------------+------------------------------------------+
+   |                  | Windows  | Xplorer-9.0.18-windows-installer.exe          |                                          |
+   +------------------+----------+-----------------------------------------------+------------------------------------------+
+   | HiFi5 DSP        | Linux    | - HIFI5_PROD_1123_asic_UPG_linux_redist.tgz   |                                          |
+   |                  |          | - HIFI5_PROD_1123_asic_wUPG_linux_redist.tgz  |                                          |
+   | configurations   +----------+-----------------------------------------------+------------------------------------------+
+   |                  | Windows  | - HIFI5_PROD_1123_asic_UPG_win32_redist.tgz   | | Get them from Realtek released         |
+   |                  |          | - HIFI5_PROD_1123_asic_wUPG_win32_redist.tgz  | | DSP SDK (``configurations`` folder)    |
+   +------------------+----------+-----------------------------------------------+------------------------------------------+
 
 .. _xtensa_xplorer_license:
 
@@ -36,13 +36,16 @@ Xtensa Xplorer License
 ~~~~~~~~~~~~~~~~~~~~~~~
 Xtensa Xplorer license is also essential along with the software packages.
 
-You can send an E-mail to <claire_wang@realsil.com.cn> to apply for a temporary license.
+You can send an E-mail to <claire_wang@realsil.com.cn> to apply for a temporary license. The E-mail should be like this:
+
+.. figure:: ../figures/apply_for_license_email.png
+   :scale: 100%
+   :align: center
 
 .. important::
    - The **MAC address** is necessary when applying for a license.
    - One cunstomer can only apply for one license.
    - The validity period of the temporary license is 3 months.
-
 
 Installing Toolchains
 ----------------------
