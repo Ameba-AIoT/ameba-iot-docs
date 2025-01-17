@@ -2,7 +2,7 @@
 
 echo "build amebadplus"
 cd ../amebadplus
-make cn
+make cn RTL8721D
 
 counter=5
 until [ $counter -eq 0 ]
