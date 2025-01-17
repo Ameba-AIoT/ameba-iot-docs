@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wakeup Source &mdash; RTL8720EA Docs  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=13237357" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/tabs.css?v=a5c4661c" />
+
+  
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../../_static/toggleprompt.js?v=d7ede5d2"></script>
+        <script>let toggleHintShow = 'Click to show';</script>
+        <script>let toggleHintHide = 'Click to hide';</script>
+        <script>let toggleOpenOnPrint = 'true';</script>
+        <script src="../../../_static/togglebutton.js?v=4a39c7ea"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Inter-Processor Communication (IPC)" href="../../ipc/src/index.html" />
+    <link rel="prev" title="Power Saving Mode" href="summary.html" />  
+     
+  <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script type="text/javascript" src="../../../_static/js/selector.js"></script>
+<style>
+      .wy-nav-content {
+      max-width: 1000px; /* 设置最大宽度 */
+      }
+</style>
+
+
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            RTL8720EA Docs
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../product_overview/src/index.html">Product Overview</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Application Note</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../gcc_build_environment/src/index.html">Build Environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../sdk_architecture/src/index.html">SDK Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gcc_makefile/src/index.html">GCC Makefile</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../sdk_example/src/index.html">SDK Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../flash_memory_layout/index.html">Flash and Memory Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../mpu_cache/src/index.html">MPU and Cache</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../file_system/src/index.html">Virtual File System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../mp_image/src/index.html">MP Image</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ota/src/index.html">OTA Firmware Update</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chipen/src/index.html">CHIP Enable</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../boot_process/src/index.html">Boot Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../user_config/src/index.html">User Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../hardware_ecdsa/src/index.html">ECDSA Engine</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../hardware_crypto_engine/src/index.html">Hardware Crypto Engine</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../otpc/src/index.html">One-time Programmable Controller (OTPC)</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Power Saving</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="summary.html">Power Saving Mode</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Wakeup Source</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#entering-sleep-mode">Entering Sleep Mode</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#uart">UART</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#loguart">LOGUART</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#entering-deep-sleep-mode">Entering Deep-Sleep Mode</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#power-saving-configuration">Power-Saving Configuration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#wakeup-mask-setup">Wakeup Mask Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#aon-wakepin-configuration">AON Wakepin Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#clock-and-voltage-configuration">Clock and Voltage Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sleep-type-configuration">Sleep Type Configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#power-saving-related-apis">Power Saving Related APIs</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#wakelock-apis">Wakelock APIs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pmu-set-sysactive-time">pmu_set_sysactive_time</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sleep-wake-callback-apis">Sleep/Wake Callback APIs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pmu-set-max-sleep-time">pmu_set_max_sleep_time</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#wi-fi-power-saving">Wi-Fi Power Saving</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../ipc/src/index.html">Inter-Processor Communication (IPC)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dmac/src/index.html">Direct Memory Access Controller (DMAC)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../psram/src/index.html">Pseudo-Static Random Access Memory (PSRAM)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pad/src/index.html">Pad Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pinmux/src/index.html">Pin Multiplexing Instructions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gpio/gpio/src/index.html">General Purpose Input/Output (GPIO)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gpio/pinctrl/src/pinctrl.html">Pin Controller (Pinctrl)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ledc/src/index.html">Light Emitting Diode Controller (LEDC)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../trng/src/index.html">True Random Number Generator (TRNG)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../adc/src/index.html">Analog-to-Digital Converter (ADC)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cap_touch/src/index.html">Cap-Touch Controller (CTC)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../thermal/src/index.html">Thermal Senor</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../ameba/en/fullmac/src/index.html">FullMAC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../ameba/en/wifi/index.html">Wi-Fi Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../ameba/en/wifi_tunnel/src/index.html">Wi-Fi R-Mesh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../ameba/en/wifi_bridge/src/index.html">Wi-Fi Bridge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../ameba/en/wifi_csi/src/index.html">Wi-Fi CSI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../ameba/en/dsp/index.html">DSP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../ameba/en/usb/usb_otg/src/index.html">USB Host &amp; Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../ameba/en/audio/src/index.html">Audio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../ameba/en/multimedia/src/index.html">Multimedia</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../ameba/en/gui/src/index.html">GUI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../ameba/en/ai/index.html">AI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../ameba/en/ai_voice/src/index.html">AIVoice</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../ameba/en/low_power/src/index.html">Low Power Solution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../ameba/en/security_encryption/src/index.html">Security &amp; Encryption</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../ameba/en/at_command/src/index.html">AT Command</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../ameba/en/software_tools/index.html">Software Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../ameba/en/mp_tools/src/index.html">MP Tools</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">RTL8720EA Docs</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Application Note</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Power Saving</a></li>
+      <li class="breadcrumb-item active">Wakeup Source</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="wakeup-source">
+<h1>Wakeup Source<a class="headerlink" href="#wakeup-source" title="Link to this heading"></a></h1>
+<p>A hardware SYSON power management control module (SYSON PMC) is designed to control the clock and power of NP, and then NP controls the clock and power of AP.
+When the system enters sleep mode, CPUs can select to enter clock-gating (CG) or power-gating (PG) mode, while SYSON PMC maintained active to wake up NP when wakeup sources are triggered.</p>
+<p>Sleep and wakeup flow of sleep mode can be described as:</p>
+<ul class="simple">
+<li><p>In terms of sleep flow, NP helps close the clock or power of AP, and SYSON PMC helps close the clock or power of NP.</p></li>
+<li><p>In terms of wakeup flow, SYSON PMC helps open the clock or power of NP, and NP helps open the power or clock of AP.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>Both KM4 and KR4 can be configured as NP. If KR4 is configured as NP, KM4 is considered as AP.</p></li>
+<li><p>The mode of memory is configurable when the system enters sleep mode. The retention mode is recommended for the balance between power saving and data retention.</p></li>
+</ul>
+</div>
+<p>In deep-sleep mode, only the memory in AON domain can be maintained, while memory in other domains will be shut down. So CPU cannot restore the stack status.</p>
+<p>Various wakeup sources are provided and every wakeup source can be configured to wake up NP or AP according to user’s requirement.
+AON is special because it is mater switch that manages all the wake-up sources in AON domain. Only wakeup sources in AON domain can wake up the system from deep-sleep mode.</p>
+<p>The following table lists the wakeup sources that can be used to wake up the system under different power modes.</p>
+<table class="docutils align-default" id="id1" style="width: 100%">
+<caption><span class="caption-text">Wakeup sources</span><a class="headerlink" href="#id1" title="Link to this table"></a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>Wakeup source</p></th>
+<th class="head"><p>Sleep CG</p></th>
+<th class="head"><p>Sleep PG</p></th>
+<th class="head"><p>Deep-sleep</p></th>
+<th class="head"><p>Restriction</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>WLAN</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p>X</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>BT</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p>X</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>IWDG</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p>X</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>IPC</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p>X</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>Basic Timer</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p>X</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>UART</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p>X</p></td>
+<td><ul class="simple">
+<li><p>When using UART as a wakeup source, if the Rx clock source is XTAL40M, do not turn off XTAL during sleep.</p></li>
+<li><p>The portion of the command used to wake up that exceeds the FIFO depth (64B) will be lost.</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>LOGUART</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p>X</p></td>
+<td><ul class="simple">
+<li><p>When using LOGUART as a wakeup source, if the Rx clock source is XTAL40M, do not turn off XTAL during sleep.</p></li>
+<li><p>The portion of the command used to wake up that exceeds the FIFO depth (16B) will be lost.</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>GPIO</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p>X</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>SPI</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p>X</p></td>
+<td><ul class="simple">
+<li><p>When using SPI as a wakeup source, do not turn off the power and clock of SOC domain.</p></li>
+<li><p>Only when the NP core is active and AP core is sleep, NP can use the SPI to wake up AP.</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>CAP_TOUCH</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p>X</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>ADC</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p>X</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>VAD</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p>X</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>BOR</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>PWR_DOWN</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>AON_TIMER</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>AON_WAKEPIN</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>RTC</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="entering-sleep-mode">
+<h1>Entering Sleep Mode<a class="headerlink" href="#entering-sleep-mode" title="Link to this heading"></a></h1>
+<p>Sleep mode is based on FreeRTOS tickless, thus it is recommended to enter sleep mode by releasing the wakelock.</p>
+<ol class="arabic simple">
+<li><p>Initialize the specific peripheral.</p></li>
+<li><p>Enable and register the peripheral’s interrupt.</p></li>
+<li><p>Set <code class="docutils literal notranslate"><span class="pre">sleep_wevent_config[]</span></code> in <code class="file docutils literal notranslate"><span class="pre">ambea_sleepcfg.c</span></code>, and the interrupt should be registered on the same CPU selected by <code class="docutils literal notranslate"><span class="pre">sleep_wevent_config[]</span></code>.</p></li>
+<li><p>For peripherals that need special clock settings, set <code class="docutils literal notranslate"><span class="pre">ps_config[]</span></code> in <code class="file docutils literal notranslate"><span class="pre">ameba_sleepcfg.c</span></code> if needed.</p></li>
+<li><p>Register sleep/wakeup callback if needed.</p></li>
+<li><p>Enter sleep mode by releasing the wakelock in AP (<cite>PMU_OS</cite> needs to be released since it is acquired by default when boot).</p></li>
+<li><p>Clear the peripheral’s interrupt when wakeup.</p></li>
+</ol>
+<p>For peripherals that need specific clock settings, such as UART and LOGUART, their setting flows are described in Section <a class="reference internal" href="#power-saving-uart"><span class="std std-ref">UART</span></a> and <a class="reference internal" href="#power-saving-loguart"><span class="std std-ref">LOGUART</span></a>.</p>
+<section id="uart">
+<span id="power-saving-uart"></span><h2>UART<a class="headerlink" href="#uart" title="Link to this heading"></a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>When using UART as a wakeup source:</p>
+<ul class="simple">
+<li><p>If the Rx clock source is XTAL40M, do not turn off XTAL during sleep.</p></li>
+<li><p>The portion of the command used to wake up that exceeds the FIFO depth (64B) will be lost.</p></li>
+</ul>
+</div>
+<p><strong>Configuration:</strong></p>
+<ol class="arabic simple">
+<li><p>Initialize UART and enable its interrupt.</p></li>
+<li><p>Set the related wakeup source (<code class="docutils literal notranslate"><span class="pre">WAKE_SRC_UART0/WAKE_SRC_UART1/WAKE_SRC_UART2_BT</span></code>) in <code class="docutils literal notranslate"><span class="pre">sleep_wevent_config[]</span></code> to <cite>WAKEUP_KM4</cite> or <cite>WAKEUP_KM0</cite> (based on which CPU you want to wake). The interrupt should be registered on the same CPU selected by <code class="docutils literal notranslate"><span class="pre">sleep_wevent_config[]</span></code>.</p></li>
+<li><p>Set the corresponding entry of <code class="docutils literal notranslate"><span class="pre">uart_config[]</span></code> in <code class="file docutils literal notranslate"><span class="pre">ameba_sleepcfg.c</span></code> to <strong>ENABLE</strong>.</p></li>
+<li><p>Set <cite>keep_OSC4M_on</cite> in <code class="docutils literal notranslate"><span class="pre">ps_config[]</span></code> to <strong>TRUE</strong> to keep OSC4M enabled during sleep mode.</p></li>
+<li><p>Enter sleep mode by releasing the wakelock in KM4 (PMU_OS needs to be released since it is acquired by default when boot).</p></li>
+<li><p>Clear the UART interrupt when wakeup.</p></li>
+</ol>
+</section>
+<section id="loguart">
+<span id="power-saving-loguart"></span><h2>LOGUART<a class="headerlink" href="#loguart" title="Link to this heading"></a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>When using LOGUART as a wakeup source:</p>
+<ul class="simple">
+<li><p>If the Rx clock source is XTAL40M, do not turn off XTAL during sleep.</p></li>
+<li><p>The portion of the command used to wake up that exceeds the FIFO depth (16B) will be lost.</p></li>
+</ul>
+</div>
+<p><strong>Configuration:</strong></p>
+<ol class="arabic simple">
+<li><p>Initialize LOGUART and enable its interrupt.</p></li>
+<li><p>Set <code class="docutils literal notranslate"><span class="pre">WAKE_SRC_UART_LOG</span></code> in <code class="docutils literal notranslate"><span class="pre">sleep_wevent_config[]</span></code> to <cite>WAKEUP_KM4</cite> or <cite>WAKEUP_KM0</cite> (based on which CPU you want to wake). The interrupt should be registered on the same CPU selected by <code class="docutils literal notranslate"><span class="pre">sleep_wevent_config[]</span></code>.</p></li>
+<li><p>Set <code class="docutils literal notranslate"><span class="pre">xtal_mode_in_sleep</span></code> to <strong>XTAL_Normal</strong> in <code class="docutils literal notranslate"><span class="pre">ps_config[]</span></code>.</p></li>
+<li><p>Enter sleep mode by releasing the wakelock in KM4 (PMU_OS needs to be released since it is acquired by default when boot).</p></li>
+<li><p>Clear the LOGUART interrupt when wakeup.</p></li>
+</ol>
+</section>
+</section>
+<section id="entering-deep-sleep-mode">
+<h1>Entering Deep-Sleep Mode<a class="headerlink" href="#entering-deep-sleep-mode" title="Link to this heading"></a></h1>
+<p>Deep-sleep can also be entered from FreeRTOS tickless flow.</p>
+<p>When the system boots, KM4 holds the deepwakelock PMU_OS, thus <code class="xref py py-func docutils literal notranslate"><span class="pre">freertos_ready_to_dsleep()</span></code> will be checked fail and the system does not enter deep-sleep mode in idle task by default. Since <code class="xref py py-func docutils literal notranslate"><span class="pre">freertos_ready_to_dsleep()</span></code> will be checked only after <code class="xref py py-func docutils literal notranslate"><span class="pre">freertos_ready_to_sleep()</span></code> is checked pass, both the wakelock and deepwakelock need to be released for entering deep-sleep mode.</p>
+<p><strong>Configuration:</strong></p>
+<ol class="arabic simple">
+<li><p>Initialize the related peripheral and enable its interrupt.</p></li>
+<li><p>Set <code class="docutils literal notranslate"><span class="pre">sleep_wakepin_config[]</span></code> in <code class="file docutils literal notranslate"><span class="pre">ameba_sleepcfg.c</span></code> when using AON wakepin as a wakeup source.</p></li>
+<li><p>Enter deep-sleep mode by releasing the deepwakelock and wakelock in AP.</p></li>
+</ol>
+</section>
+<section id="power-saving-configuration">
+<h1>Power-Saving Configuration<a class="headerlink" href="#power-saving-configuration" title="Link to this heading"></a></h1>
+<section id="wakeup-mask-setup">
+<h2>Wakeup Mask Setup<a class="headerlink" href="#wakeup-mask-setup" title="Link to this heading"></a></h2>
+<p>To enable a specific wakeup source, the corresponding status in array <code class="docutils literal notranslate"><span class="pre">sleep_wevent_config[]</span></code> in <code class="file docutils literal notranslate"><span class="pre">ameba_sleepcfg.c</span></code> should be set. Each module can be set to <code class="docutils literal notranslate"><span class="pre">WAKEUP_NULL/WAKEUP_NP/WAKEUP_AP</span></code>. For example, if the <code class="xref py py-mod docutils literal notranslate"><span class="pre">WAKE_SRC_AON_WAKEPIN</span></code> module is set to <cite>WAKEUP_NP</cite>, it means that when the system is in sleep mode, KR4 will be woken up at the time that an aon_wakepin interrupt happens.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/*wakeup attribute can be set to WAKEUP_NULL/WAKEUP_NP/WAKEUP_AP/WAKEUP_DSP*/</span>
+<span class="n">WakeEvent_TypeDef</span><span class="w"> </span><span class="n">sleep_wevent_config</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="c1">//  Module                       wakeup</span>
+<span class="w">   </span><span class="p">{</span><span class="n">WAKE_SRC_VAD</span><span class="p">,</span><span class="w">                   </span><span class="n">WAKEUP_NULL</span><span class="p">},</span>
+<span class="w">   </span><span class="p">{</span><span class="n">WAKE_SRC_AON_WAKEPIN</span><span class="p">,</span><span class="w">           </span><span class="n">WAKEUP_NULL</span><span class="p">},</span>
+<span class="w">   </span><span class="p">{</span><span class="n">WAKE_SRC_AON_TIM</span><span class="p">,</span><span class="w">               </span><span class="n">WAKEUP_NULL</span><span class="p">},</span>
+<span class="w">   </span><span class="p">{</span><span class="n">WAKE_SRC_PWR_DOWN</span><span class="p">,</span><span class="w">              </span><span class="n">WAKEUP_NULL</span><span class="p">},</span>
+<span class="w">   </span><span class="p">{</span><span class="n">WAKE_SRC_BOR</span><span class="p">,</span><span class="w">                   </span><span class="n">WAKEUP_NULL</span><span class="p">},</span>
+<span class="w">   </span><span class="p">{</span><span class="n">WAKE_SRC_ADC</span><span class="p">,</span><span class="w">                   </span><span class="n">WAKEUP_NULL</span><span class="p">},</span>
+<span class="w">   </span><span class="p">{</span><span class="n">WAKE_SRC_AON_RTC</span><span class="p">,</span><span class="w">               </span><span class="n">WAKEUP_NULL</span><span class="p">},</span>
+<span class="w">   </span><span class="p">{</span><span class="n">WAKE_SRC_SPI1</span><span class="p">,</span><span class="w">                  </span><span class="n">WAKEUP_NULL</span><span class="p">},</span>
+<span class="w">   </span><span class="p">{</span><span class="n">WAKE_SRC_SPI0</span><span class="p">,</span><span class="w">                  </span><span class="n">WAKEUP_NULL</span><span class="p">},</span>
+<span class="w">   </span><span class="p">{</span><span class="n">WAKE_SRC_CTOUCH</span><span class="p">,</span><span class="w">                </span><span class="n">WAKEUP_NULL</span><span class="p">},</span>
+<span class="w">   </span><span class="p">{</span><span class="n">WAKE_SRC_GPIOB</span><span class="p">,</span><span class="w">                 </span><span class="n">WAKEUP_NULL</span><span class="p">},</span>
+<span class="w">   </span><span class="p">{</span><span class="n">WAKE_SRC_GPIOA</span><span class="p">,</span><span class="w">                 </span><span class="n">WAKEUP_NULL</span><span class="p">},</span>
+<span class="w">   </span><span class="p">{</span><span class="n">WAKE_SRC_UART_LOG</span><span class="p">,</span><span class="w">              </span><span class="n">WAKEUP_AP</span><span class="p">},</span>
+<span class="w">   </span><span class="p">{</span><span class="n">WAKE_SRC_UART3</span><span class="p">,</span><span class="w">                 </span><span class="n">WAKEUP_NULL</span><span class="p">},</span>
+<span class="w">   </span><span class="p">{</span><span class="n">WAKE_SRC_UART2</span><span class="p">,</span><span class="w">                 </span><span class="n">WAKEUP_NULL</span><span class="p">},</span>
+<span class="w">   </span><span class="p">{</span><span class="n">WAKE_SRC_UART1</span><span class="p">,</span><span class="w">                 </span><span class="n">WAKEUP_NULL</span><span class="p">},</span>
+<span class="w">   </span><span class="p">{</span><span class="n">WAKE_SRC_UART0</span><span class="p">,</span><span class="w">                 </span><span class="n">WAKEUP_NULL</span><span class="p">},</span>
+<span class="w">   </span><span class="p">{</span><span class="n">WAKE_SRC_Timer7</span><span class="p">,</span><span class="w">                </span><span class="n">WAKEUP_NULL</span><span class="p">},</span>
+<span class="w">   </span><span class="p">{</span><span class="n">WAKE_SRC_Timer6</span><span class="p">,</span><span class="w">                </span><span class="n">WAKEUP_NULL</span><span class="p">},</span>
+<span class="w">   </span><span class="p">{</span><span class="n">WAKE_SRC_Timer5</span><span class="p">,</span><span class="w">                </span><span class="n">WAKEUP_NULL</span><span class="p">},</span>
+<span class="w">   </span><span class="p">{</span><span class="n">WAKE_SRC_Timer4</span><span class="p">,</span><span class="w">                </span><span class="n">WAKEUP_NULL</span><span class="p">},</span>
+<span class="w">   </span><span class="p">{</span><span class="n">WAKE_SRC_Timer3</span><span class="p">,</span><span class="w">                </span><span class="n">WAKEUP_NULL</span><span class="p">},</span>
+<span class="w">   </span><span class="p">{</span><span class="n">WAKE_SRC_Timer2</span><span class="p">,</span><span class="w">                </span><span class="n">WAKEUP_NULL</span><span class="p">},</span>
+<span class="w">   </span><span class="p">{</span><span class="n">WAKE_SRC_Timer1</span><span class="p">,</span><span class="w">                </span><span class="n">WAKEUP_NULL</span><span class="p">},</span>
+<span class="w">   </span><span class="p">{</span><span class="n">WAKE_SRC_Timer0</span><span class="p">,</span><span class="w">                </span><span class="n">WAKEUP_NULL</span><span class="p">},</span>
+<span class="w">   </span><span class="p">{</span><span class="n">WAKE_SRC_WDG0</span><span class="p">,</span><span class="w">                  </span><span class="n">WAKEUP_NULL</span><span class="p">},</span>
+<span class="w">   </span><span class="p">{</span><span class="n">WAKE_SRC_BT_WAKE_HOST</span><span class="p">,</span><span class="w">          </span><span class="n">WAKEUP_NULL</span><span class="p">},</span>
+<span class="w">   </span><span class="p">{</span><span class="n">WAKE_SRC_AP_WAKE</span><span class="p">,</span><span class="w">               </span><span class="n">WAKEUP_NULL</span><span class="p">},</span>
+<span class="w">   </span><span class="p">{</span><span class="n">WAKE_SRC_WIFI_FTSR_MAILBOX</span><span class="p">,</span><span class="w">     </span><span class="n">WAKEUP_NP</span><span class="p">},</span>
+<span class="w">   </span><span class="p">{</span><span class="n">WAKE_SRC_WIFI_FISR_FESR</span><span class="p">,</span><span class="w">        </span><span class="n">WAKEUP_NP</span><span class="p">},</span>
+<span class="w">   </span><span class="p">{</span><span class="mh">0xFFFFFFFF</span><span class="p">,</span><span class="w">                     </span><span class="n">WAKEUP_NULL</span><span class="p">},</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</section>
+<section id="aon-wakepin-configuration">
+<h2>AON Wakepin Configuration<a class="headerlink" href="#aon-wakepin-configuration" title="Link to this heading"></a></h2>
+<p>AON wakepin is one of the peripherals that can be set as a wakeup source. The RTL8720EA has two AON wakepins (PA0 and PA1), which can be configured in <code class="docutils literal notranslate"><span class="pre">sleep_wakepin_config[]</span></code> in <code class="file docutils literal notranslate"><span class="pre">ameba_sleepcfg.c</span></code>. The config attribute can be set to <cite>DISABLE_WAKEPIN</cite> or <cite>HIGH_LEVEL_WAKEUP</cite> or <cite>LOW_LEVEL_WAKEUP</cite>, meaning not wake up, or GPIO level high will wake up, or GPIO level low will wake up respectively.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* can be used by sleep mode &amp; deep sleep mode */</span>
+<span class="cm">/* config can be set to DISABLE_WAKEPIN/HIGH_LEVEL_WAKEUP/LOW_LEVEL_WAKEUP */</span>
+<span class="n">WAKEPIN_TypeDef</span><span class="w"> </span><span class="n">sleep_wakepin_config</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="c1">//   wakepin      config</span>
+<span class="w">   </span><span class="p">{</span><span class="n">WAKEPIN_0</span><span class="p">,</span><span class="w">    </span><span class="n">DISABLE_WAKEPIN</span><span class="p">},</span><span class="w">  </span><span class="cm">/* WAKEPIN_0 corresponding to _PA_0 */</span>
+<span class="w">   </span><span class="p">{</span><span class="n">WAKEPIN_1</span><span class="p">,</span><span class="w">    </span><span class="n">DISABLE_WAKEPIN</span><span class="p">},</span><span class="w">  </span><span class="cm">/* WAKEPIN_1 corresponding to _PA_1 */</span>
+<span class="w">   </span><span class="p">{</span><span class="mh">0xFFFFFFFF</span><span class="p">,</span><span class="w">  </span><span class="n">DISABLE_WAKEPIN</span><span class="p">},</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>By default, <cite>AON_WAKEPIN_IRQ</cite> will not be enabled in <code class="docutils literal notranslate"><span class="pre">sleep_wakepin_config[]</span></code>, and users need to enable it by themselves.</p></li>
+<li><p>The wakeup mask will not be set in <code class="docutils literal notranslate"><span class="pre">sleep_wakepin_config[]</span></code>. If wakepin is used for sleep mode, <cite>WAKE_SRC_AON_WAKEPIN</cite> entry needs to be set in <code class="docutils literal notranslate"><span class="pre">sleep_wevent_config[]</span></code>.</p></li>
+</ul>
+</div>
+</section>
+<section id="clock-and-voltage-configuration">
+<h2>Clock and Voltage Configuration<a class="headerlink" href="#clock-and-voltage-configuration" title="Link to this heading"></a></h2>
+<p>The XTAL, OSC4M state, and sleep mode voltage are configurable in <code class="docutils literal notranslate"><span class="pre">ps_config[]</span></code> in <code class="file docutils literal notranslate"><span class="pre">ameba_sleepcfg.c</span></code>. Users can use this configuration for peripherals that need XTAL or OSC4M on in sleep mode.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">PSCFG_TypeDef</span><span class="w"> </span><span class="n">ps_config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="p">.</span><span class="n">keep_OSC4M_on</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FALSE</span><span class="p">,</span><span class="w">       </span><span class="cm">/* keep OSC4M on or off for sleep */</span>
+<span class="w">   </span><span class="p">.</span><span class="n">xtal_mode_in_sleep</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">XTAL_OFF</span><span class="p">,</span><span class="w">   </span><span class="cm">/* set xtal mode during sleep mode, see enum xtal_mode_sleep for detail */</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</section>
+<section id="sleep-type-configuration">
+<h2>Sleep Type Configuration<a class="headerlink" href="#sleep-type-configuration" title="Link to this heading"></a></h2>
+<p>Users can set sleep mode to CG or PG by calling the function <code class="xref py py-func docutils literal notranslate"><span class="pre">pmu_set_sleep_type(uint32_t</span> <span class="pre">type)()</span></code>, and users can get CPU’s sleep mode by calling the function <code class="xref py py-func docutils literal notranslate"><span class="pre">pmu_get_sleep_type()</span></code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>KR4 and KM4 are in the same power domain, so they will have the same sleep type, thus <code class="xref py py-func docutils literal notranslate"><span class="pre">pmu_set_sleep_type()</span></code> should be set to AP, and NP will follow AP’s sleep mode type.</p></li>
+<li><p>Sleep mode is set to PG by default. If users want to change the sleep type, <code class="xref py py-func docutils literal notranslate"><span class="pre">pmu_set_sleep_type()</span></code> needs to be called before sleep.</p></li>
+</ul>
+</div>
+</section>
+</section>
+<section id="power-saving-related-apis">
+<h1>Power Saving Related APIs<a class="headerlink" href="#power-saving-related-apis" title="Link to this heading"></a></h1>
+<section id="wakelock-apis">
+<h2>Wakelock APIs<a class="headerlink" href="#wakelock-apis" title="Link to this heading"></a></h2>
+<p>In some situations, the system needs to keep awake to receive certain events. Otherwise, event may be missed when the system is in sleep. An idea of wakelock is introduced that the system cannot sleep if some module is holding wakelock.</p>
+<p>A wakelock bit map is used to store the wakelock status. Each module has its own bit in wakelock bit map (see enum <cite>PMU_DEVICE</cite>). Users can also add wakelock in enum <cite>PMU_DEVICE</cite>. If the wakelock bit map equals zero, it means that there is no module holding wakelock. If the wakelock bit map is larger than zero, it means that there is some module holding wakelock.</p>
+<p>Wakelock is a judging condition in the function <code class="xref py py-func docutils literal notranslate"><span class="pre">freertos_ready_to_sleep()</span></code>. When the system boots on, AP holds wakelock <cite>PMU_OS</cite>, NP holds wakelock <cite>PMU_OS</cite> and <cite>PMU_AP_RUN</cite>. Only if all wakelocks are released, NP or AP are permitted to enter sleep mode. The function <code class="xref py py-func docutils literal notranslate"><span class="pre">freertos_ready_to_sleep()</span></code> will judge the value of wakelock.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">enum</span><span class="w"> </span><span class="n">PMU_DEVICE</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="n">PMU_OS</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">   </span><span class="n">PMU_WLAN_DEVICE</span><span class="p">,</span>
+<span class="w">   </span><span class="n">PMU_KM4_RUN</span><span class="p">,</span>
+<span class="w">   </span><span class="n">PMU_KR4_RUN</span><span class="p">,</span>
+<span class="w">   </span><span class="n">PMU_DSP_RUN</span><span class="p">,</span>
+<span class="w">   </span><span class="n">PMU_WLAN_FW_DEVICE</span><span class="p">,</span>
+<span class="w">   </span><span class="n">PMU_BT_DEVICE</span><span class="p">,</span>
+<span class="w">   </span><span class="n">PMU_DEV_USER_BASE</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="mi">7</span><span class="p">,</span><span class="w"> </span><span class="cm">/*number 7 ~ 31 is reserved for customer use*/</span>
+<span class="w">   </span><span class="n">PMU_MAX</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="mi">31</span><span class="p">,</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>It is recommended to enter sleep mode by releasing wakelock. After <cite>PMU_OS</cite> wakelock of AP is released, AP will enter sleep mode in idle task and send IPC to NP. NP will power-gate or clock-gate AP and then release <cite>PMU_OS</cite> and <cite>PMU_AP_RUN</cite>.</p>
+<p>When the system wakes up, it will enter sleep mode again quickly unless it acquires wakelock.</p>
+<p>Similar to the wakelock for sleep mode, there is a 32-bit deepwakelock map for deep-sleep mode. If the deepwakelock bit map is larger than zero, it means that some modules are holding the deepwakelock, and the system is not allowed to enter deep-sleep mode. When the system boots, AP holds the deepwakelock <cite>PMU_OS</cite>.</p>
+<p>Deepwakelock is a judging condition in the function <code class="xref py py-func docutils literal notranslate"><span class="pre">freertos_ready_to_dsleep()</span></code>. After the deepwakelock <cite>PMU_OS</cite> of AP is released, and all wakelocks of AP are released, AP will be allowed to enter deep-sleep mode and send IPC to NP in idle task. NP will send a deep-sleep request and let the chip finally enter deep-sleep mode.</p>
+<p>APIs in the following sections are provided to control the wakelock or deepwakelock.</p>
+<section id="pmu-acquire-wakelock">
+<h3>pmu_acquire_wakelock<a class="headerlink" href="#pmu-acquire-wakelock" title="Link to this heading"></a></h3>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Items</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Introduction</p></td>
+<td><p>Acquire the wakelock for one module</p></td>
+</tr>
+<tr class="row-odd"><td><p>Parameter</p></td>
+<td><p>nDeviceId: Device ID of the corresponding module</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">enum</span><span class="w"> </span><span class="n">DEVICE</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="n">PMU_OS</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">   </span><span class="p">...</span>
+<span class="w">   </span><span class="n">PMU_MAX</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">31</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p>Return</p></td>
+<td><p>None</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="pmu-release-wakelock">
+<h3>pmu_release_wakelock<a class="headerlink" href="#pmu-release-wakelock" title="Link to this heading"></a></h3>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Items</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Introduction</p></td>
+<td><p>Release the wakelock for one module</p></td>
+</tr>
+<tr class="row-odd"><td><p>Parameter</p></td>
+<td><p>nDeviceId: Device ID of the corresponding module</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">enum</span><span class="w"> </span><span class="n">DEVICE</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="n">PMU_OS</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">   </span><span class="p">...</span>
+<span class="w">   </span><span class="n">PMU_MAX</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">31</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p>Return</p></td>
+<td><p>None</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="pmu-acquire-deepwakelock">
+<h3>pmu_acquire_deepwakelock<a class="headerlink" href="#pmu-acquire-deepwakelock" title="Link to this heading"></a></h3>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Items</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Introduction</p></td>
+<td><p>Acquire the deepwakelock for one module</p></td>
+</tr>
+<tr class="row-odd"><td><p>Parameter</p></td>
+<td><p>nDeviceId: Device ID of the corresponding module</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">enum</span><span class="w"> </span><span class="n">DEVICE</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="n">PMU_OS</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">   </span><span class="p">...</span>
+<span class="w">   </span><span class="n">PMU_MAX</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">31</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p>Return</p></td>
+<td><p>None</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="pmu-release-deepwakelock">
+<h3>pmu_release_deepwakelock<a class="headerlink" href="#pmu-release-deepwakelock" title="Link to this heading"></a></h3>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Items</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Introduction</p></td>
+<td><p>Release the deepwakelock for one module</p></td>
+</tr>
+<tr class="row-odd"><td><p>Parameter</p></td>
+<td><p>nDeviceId: Device ID of the corresponding module</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">enum</span><span class="w"> </span><span class="n">DEVICE</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="n">PMU_OS</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">   </span><span class="p">...</span>
+<span class="w">   </span><span class="n">PMU_MAX</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">31</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p>Return</p></td>
+<td><p>None</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="pmu-set-sysactive-time">
+<h2>pmu_set_sysactive_time<a class="headerlink" href="#pmu-set-sysactive-time" title="Link to this heading"></a></h2>
+<p>Set the system active time. The system cannot sleep before timeout.</p>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Items</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Introduction</p></td>
+<td><p>Set a period of time that the system will keep active</p></td>
+</tr>
+<tr class="row-odd"><td><p>Parameter</p></td>
+<td><p>timeout: time value, unit is ms.</p>
+<p>The system will keep active for this time value from now on.</p>
+</td>
+</tr>
+<tr class="row-even"><td><p>Return</p></td>
+<td><p>0</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><em>pmu_set_sysactive_time</em> is not permitted in suspend callback function as it is ineffective, while permitted in the resume callback function.</p>
+</div>
+</section>
+<section id="sleep-wake-callback-apis">
+<h2>Sleep/Wake Callback APIs<a class="headerlink" href="#sleep-wake-callback-apis" title="Link to this heading"></a></h2>
+<p>These APIs are used to register suspend/resume callback function for <em>&lt;nDeviceId&gt;</em>. The suspend callback function will be called in idle task before the system enters sleep mode, and the resume callback function will be called after the system resumes.</p>
+<p>It is a good way to use the suspend and resume function if there is something to do before the chip sleeps or after the chip wakes. A typical application of the resume function is to acquire the wakelock to prevent the chip from sleeping again. Also, if the CPU chooses PG, some peripherals will lose power so they need to be reinitialized. This can be implemented in the resume function.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Yield OS is not permitted in the suspend/resume callback functions, thus RTOS APIs which may cause OS yield such as <code class="xref py py-func docutils literal notranslate"><span class="pre">rtos_task_yield()</span></code>, <code class="xref py py-func docutils literal notranslate"><span class="pre">rtos_time_delay_ms()</span></code>, or mutex, semaphore related APIs are not recommended to use.</p>
+</div>
+<section id="pmu-register-sleep-callback">
+<h3>pmu_register_sleep_callback<a class="headerlink" href="#pmu-register-sleep-callback" title="Link to this heading"></a></h3>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Items</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Introduction</p></td>
+<td><p>Register the suspend/resume callback function for one module</p></td>
+</tr>
+<tr class="row-odd"><td><p>Parameter</p></td>
+<td><ul>
+<li><p>nDeviceId: Device ID needs suspend/resume callback</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">enum</span><span class="w"> </span><span class="n">DEVICE</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="n">PMU_OS</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">   </span><span class="p">...</span>
+<span class="w">   </span><span class="n">PMU_MAX</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">31</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</li>
+<li><p>sleep_hook_fun: Suspend callback function</p></li>
+<li><p>sleep_param_ptr: Suspend callback function parameter</p></li>
+<li><p>wakeup_hook_fun: Resume callback function</p></li>
+<li><p>wakeup_param_ptr: Resume callback function parameter</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>Return</p></td>
+<td><p>None</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="pmu-unregister-sleep-callback">
+<h3>pmu_unregister_sleep_callback<a class="headerlink" href="#pmu-unregister-sleep-callback" title="Link to this heading"></a></h3>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Items</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Introduction</p></td>
+<td><p>Register the suspend/resume callback function for one module</p></td>
+</tr>
+<tr class="row-odd"><td><p>Parameter</p></td>
+<td><ul>
+<li><p>nDeviceId: Device ID needs suspend/resume callback</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">enum</span><span class="w"> </span><span class="n">DEVICE</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="n">PMU_OS</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">   </span><span class="p">...</span>
+<span class="w">   </span><span class="n">PMU_MAX</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">31</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</li>
+<li><p>sleep_hook_fun: Suspend callback function</p></li>
+<li><p>sleep_param_ptr: Suspend callback function parameter</p></li>
+<li><p>wakeup_hook_fun: Resume callback function</p></li>
+<li><p>wakeup_param_ptr: Resume callback function parameter</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>Return</p></td>
+<td><p>None</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="pmu-set-max-sleep-time">
+<h2>pmu_set_max_sleep_time<a class="headerlink" href="#pmu-set-max-sleep-time" title="Link to this heading"></a></h2>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Items</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Introduction</p></td>
+<td><p>Set the maximum sleep time</p></td>
+</tr>
+<tr class="row-odd"><td><p>Parameter</p></td>
+<td><p>timer_ms: system maximum sleep timeout, unit is ms.</p></td>
+</tr>
+<tr class="row-even"><td><p>Return</p></td>
+<td><p>None</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>The system will be woken up after the timeout.</p></li>
+<li><p>The system may be woken up by other wake events before this timer is timeout.</p></li>
+<li><p>This setting only works once. The timer will be cleared after the system wakeup.</p></li>
+</ul>
+</div>
+</section>
+</section>
+<section id="wi-fi-power-saving">
+<h1>Wi-Fi Power Saving<a class="headerlink" href="#wi-fi-power-saving" title="Link to this heading"></a></h1>
+<p>IEEE 802.11 power-saving management allows the station to enter its own sleep state. It defines that the station needs to keep awake at a certain timestamp and enters a sleep state otherwise.</p>
+<p>WLAN driver acquires the wakelock to avoid the system entering sleep mode when WLAN needs to keep awake. And it releases wakelock when it is permitted to enter the sleep state.</p>
+<p>IEEE 802.11 power management allows the station to enter power-saving mode. The station cannot receive any frame during power saving. Thus AP needs to buffer these frames and requires the station periodically wake up to check the beacon which has the information of buffered frames.</p>
+<figure class="align-center" id="id2">
+<a class="reference internal image-reference" href="../../../_images/timeline_of_power_saving.png"><img alt="../../../_images/timeline_of_power_saving.png" src="../../../_images/timeline_of_power_saving.png" style="width: 741.0px; height: 256.0px;" /></a>
+<figcaption>
+<p><span class="caption-text">Timeline of power saving</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p>In SDK IEEE 802.11 power management is called LPS, and if NP enters sleep mode when Wi-Fi is in LPS mode, we call it WoWLAN mode.</p>
+<p>In WoWLAN mode, a timer with a period of about 102ms will be set in the suspend function, and LP will wake up every 102ms to receive the beacon to maintain the connection.</p>
+<p>Except for LPS and WoWLAN, we also have IPS, which can be used when Wi-Fi is not connected.
+The following tables list all three power-saving modes for Wi-Fi and the relationship between the system power mode and Wi-Fi power mode.</p>
+<table class="docutils align-default" id="id3" style="width: 100%">
+<caption><span class="caption-text">WiFi power saving mode</span><a class="headerlink" href="#id3" title="Link to this table"></a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>Mode</p></th>
+<th class="head"><p>Wi-Fi status</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>SDK</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>IPS</p></td>
+<td><p>Not associated:</p>
+<ul class="simple">
+<li><p>RF/BB/MAC OFF</p></li>
+</ul>
+</td>
+<td><p>Wi-Fi driver automatically turns Wi-Fi off to save power.</p></td>
+<td><p>IPS mode is enabled in SDK by default and is not</p>
+<p>recommended to be disabled.</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p>LPS</p></td>
+<td><p>Associated:</p>
+<ul class="simple">
+<li><p>RF periodically ON/OFF</p></li>
+<li><p>MAC/BB always ON</p></li>
+</ul>
+</td>
+<td><p>LPS mode is used to implement IEEE 802.11 power management.</p>
+<p>NP will control RF ON/OFF based on TSF and TIM IE in the beacon.</p>
+</td>
+<td><p>LPS mode is enabled in SDK by default but can be</p>
+<p>disabled through API <code class="xref py py-func docutils literal notranslate"><span class="pre">wifi_set_lps_enable()</span></code>.</p>
+</td>
+</tr>
+<tr class="row-even"><td><p>WoWLAN</p></td>
+<td><p>Associated:</p>
+<ul class="simple">
+<li><p>RF and BB periodically ON/OFF</p></li>
+<li><p>MAC periodically enters/ exits CG/PG</p></li>
+</ul>
+</td>
+<td><p>NP is waked up at each beacon early interrupt to receive a beacon</p>
+<p>from the associated AP.</p>
+<p>NP will wake up AP when receiving a data packet.</p>
+</td>
+<td><p>WoWLAN mode is enabled in SDK by default.</p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default" id="id4" style="width: 100%">
+<caption><span class="caption-text">Relationship between system and Wi-Fi power mode</span><a class="headerlink" href="#id4" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 20.0%" />
+<col style="width: 60.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>System power mode</p></th>
+<th class="head"><p>Wi-Fi power mode</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Active</p></td>
+<td><p>IPS</p></td>
+<td><p>Wi-Fi is on, but not connected</p></td>
+</tr>
+<tr class="row-odd"><td><p>Active</p></td>
+<td><p>LPS</p></td>
+<td><p>Wi-Fi is connected and enters IEEE 802.11 power management mechanism</p></td>
+</tr>
+<tr class="row-even"><td><p>Sleep</p></td>
+<td><p>Wi-Fi OFF/IPS</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>Sleep</p></td>
+<td><p>WoWLAN</p></td>
+<td><p>Wi-Fi keeps associating.</p></td>
+</tr>
+<tr class="row-even"><td><p>Deep-sleep</p></td>
+<td><p>Wi-Fi OFF</p></td>
+<td><p>Deep-sleep is not recommended if Wi-Fi needs to keep on or associated.</p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default" id="id5" style="width: 100%">
+<caption><span class="caption-text">API to enable/disable LPS</span><a class="headerlink" href="#id5" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 40.0%" />
+<col style="width: 60.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>API</p></th>
+<th class="head"><p>Parameters</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>int wifi_set_lps_enable(u8 enable)</p></td>
+<td><ul class="simple">
+<li><p>TRUE: enable LPS</p></li>
+<li><p>FALSE: disable LPS</p></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>When Wi-Fi is connected and the system enters sleep mode, WoWLAN mode will be entered automatically, and KM0 will periodically wake up to receive the beacon to maintain the connection, this will consume some power.
+If you are more concerned about the system power consumption during sleep mode, and Wi-Fi is not a necessary function in your application, it is recommended to set Wi-Fi off or choose Wi-Fi IPS mode.</p>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="summary.html" class="btn btn-neutral float-left" title="Power Saving Mode" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../../ipc/src/index.html" class="btn btn-neutral float-right" title="Inter-Processor Communication (IPC)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Realsil.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

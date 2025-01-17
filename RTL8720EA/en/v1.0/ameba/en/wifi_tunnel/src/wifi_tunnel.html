@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wi-Fi R-Mesh Topology &mdash; RTL8720EA Docs  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/togglebutton.css?v=13237357" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/tabs.css?v=a5c4661c" />
+
+  
+    <link rel="shortcut icon" href="../../../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../../../_static/toggleprompt.js?v=d7ede5d2"></script>
+        <script>let toggleHintShow = 'Click to show';</script>
+        <script>let toggleHintHide = 'Click to hide';</script>
+        <script>let toggleOpenOnPrint = 'true';</script>
+        <script src="../../../../_static/togglebutton.js?v=4a39c7ea"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="Wi-Fi Bridge" href="../../wifi_bridge/src/index.html" />
+    <link rel="prev" title="Wi-Fi R-Mesh" href="index.html" />  
+     
+  <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script type="text/javascript" src="../../../../_static/js/selector.js"></script>
+<style>
+      .wy-nav-content {
+      max-width: 1000px; /* 设置最大宽度 */
+      }
+</style>
+
+
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            RTL8720EA Docs
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../product_overview/src/index.html">Product Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../application_note/index.html">Application Note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../fullmac/src/index.html">FullMAC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../wifi/index.html">Wi-Fi Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Wi-Fi R-Mesh</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Wi-Fi R-Mesh Topology</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#wi-fi-r-mesh-advantage">Wi-Fi R-Mesh Advantage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#wi-fi-r-mesh-data-flow">Wi-Fi R-Mesh Data Flow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#wi-fi-r-mesh-capacity">Wi-Fi R-Mesh Capacity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#wi-fi-r-mesh-nat-r-nat">Wi-Fi R-Mesh NAT (R-NAT)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#wi-fi-r-mesh-throughput">Wi-Fi R-Mesh Throughput</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#throughput">Throughput</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#throughput-test-via-ipref-command">Throughput Test via ipref Command</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#wi-fi-r-mesh-rtt">Wi-Fi R-Mesh RTT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#wi-fi-r-mesh-demo-tool">Wi-Fi R-Mesh Demo Tool</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#hardware-connection">Hardware Connection</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#introduction">Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#user-guide">User Guide</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#usage">Usage</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#wi-fi-r-mesh-user-configuration">Wi-Fi R-Mesh User Configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../wifi_bridge/src/index.html">Wi-Fi Bridge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../wifi_csi/src/index.html">Wi-Fi CSI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dsp/index.html">DSP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usb/usb_otg/src/index.html">USB Host &amp; Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../audio/src/index.html">Audio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../multimedia/src/index.html">Multimedia</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gui/src/index.html">GUI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ai/index.html">AI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ai_voice/src/index.html">AIVoice</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../low_power/src/index.html">Low Power Solution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../security_encryption/src/index.html">Security &amp; Encryption</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../at_command/src/index.html">AT Command</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../software_tools/index.html">Software Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mp_tools/src/index.html">MP Tools</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">RTL8720EA Docs</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Wi-Fi R-Mesh</a></li>
+      <li class="breadcrumb-item active">Wi-Fi R-Mesh Topology</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="wi-fi-r-mesh-topology">
+<span id="wifi-rmesh"></span><h1>Wi-Fi R-Mesh Topology<a class="headerlink" href="#wi-fi-r-mesh-topology" title="Link to this heading"></a></h1>
+<p>As shown in the figure below, Wi-Fi R-Mesh is a tree-topology mesh network used to increase the Wi-Fi coverage, allowing stations that are far from the AP to also obtain a stable network connection.</p>
+<figure class="align-center" id="id1">
+<a class="reference internal image-reference" href="../../../../_images/wifi_tunnel_topology_capacity.svg"><img alt="../../../../_images/wifi_tunnel_topology_capacity.svg" height="540" src="../../../../_images/wifi_tunnel_topology_capacity.svg" width="624" /></a>
+<figcaption>
+<p><span class="caption-text">Wi-Fi R-Mesh topology</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="wi-fi-r-mesh-advantage">
+<h1>Wi-Fi R-Mesh Advantage<a class="headerlink" href="#wi-fi-r-mesh-advantage" title="Link to this heading"></a></h1>
+<p>The well-designed Wi-Fi R-Mesh has the following advantages:</p>
+<ul class="simple">
+<li><p>A software-unsensible mesh network:</p>
+<ul>
+<li><p>Wi-Fi R-Mesh is implemented entirely through the Wi-Fi driver. Whether it’s a root node or its child node, each node regards itself as a regular station connected to the AP.</p></li>
+<li><p>It is no need to upgrade configuration programs or connection programs, and each node can be configured and connected as a regular station.</p></li>
+<li><p>The application development of each station has no difference with that of a regular station, and the application does not need to be concerned with routing information.</p></li>
+</ul>
+</li>
+<li><p>Rapid networking:</p>
+<ul>
+<li><p>With an optimized algorithm, nodes can quickly form a mesh network.</p></li>
+<li><p>In the event of a parent node fault (power down or crash), child nodes can quickly switch to a new parent node with nearly no impact on their data communication.</p></li>
+<li><p>Child nodes can also quickly switch to an appropriate parent node as a group, without each child node switching individually.</p></li>
+</ul>
+</li>
+<li><p>High througput for child nodes:</p>
+<ul>
+<li><p>Data forwarding is directly implemented through the Wi-Fi driver, utilizing less RAM and CPU resources.</p></li>
+<li><p>Compared to a traditional mesh network, Wi-Fi R-Mesh requires minimal software processing, so even nodes several hops away can achieve a good throughput.</p></li>
+</ul>
+</li>
+<li><p>Network stability:</p>
+<ul>
+<li><p>Due to minimal software processing and the upper layer not needing to be concerned with routing, the entire mesh network is highly stable.</p></li>
+<li><p>Common mesh network issues like loops do not occur.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="wi-fi-r-mesh-data-flow">
+<h1>Wi-Fi R-Mesh Data Flow<a class="headerlink" href="#wi-fi-r-mesh-data-flow" title="Link to this heading"></a></h1>
+<p>Wi-Fi R-Mesh handles data forwarding directly via the Wi-Fi driver, requiring minimal software-processing flow, which can significantly save computing power and RAM resources.</p>
+<p>As a result of minimal software-processing flow, the software-processing time is also greatly reduced. Consequently, even nodes several hops away communicating with the AP can achieve good throughput.</p>
+<figure class="align-center" id="id2">
+<a class="reference internal image-reference" href="../../../../_images/wifi_tunnel_data_flow.svg"><img alt="../../../../_images/wifi_tunnel_data_flow.svg" height="196" src="../../../../_images/wifi_tunnel_data_flow.svg" width="464" /></a>
+<figcaption>
+<p><span class="caption-text">Wi-Fi R-Mesh data flow</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="wi-fi-r-mesh-capacity">
+<h1>Wi-Fi R-Mesh Capacity<a class="headerlink" href="#wi-fi-r-mesh-capacity" title="Link to this heading"></a></h1>
+<p>Wi-Fi R-Mesh capacity refers to the number of child nodes that each root node connected to the AP can accommodate. Note that it is the total number of child nodes across all layers, regardless of the number of the layer.</p>
+<p>The diagram below illustrates an example where the capacity is 4.</p>
+<ul class="simple">
+<li><p>Topology 0: All four nodes are directly connected to the root node</p></li>
+<li><p>Topology 3: The four nodes form a 4-hop network</p></li>
+<li><p>Can also be any intermediate topology between Topology 0 and Topology 3</p></li>
+</ul>
+<figure class="align-center" id="id3">
+<a class="reference internal image-reference" href="../../../../_images/wifi_tunnel_topology_capacity.svg"><img alt="../../../../_images/wifi_tunnel_topology_capacity.svg" height="540" src="../../../../_images/wifi_tunnel_topology_capacity.svg" width="624" /></a>
+<figcaption>
+<p><span class="caption-text">Wi-Fi R-Mesh capacity</span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="wi-fi-r-mesh-nat-r-nat">
+<h1>Wi-Fi R-Mesh NAT (R-NAT)<a class="headerlink" href="#wi-fi-r-mesh-nat-r-nat" title="Link to this heading"></a></h1>
+<p>In the R-Mesh network, each node establishes a genuine Wi-Fi connection with the Access Point (AP). Consequently, the number of nodes that R-Mesh can support is constrained by the limited capacity of stations the AP can connect to. To address this limitation, we can implement a station + SoftAP solution based on the Network Address Translation (NAT) protocol to expand the node capacity of the R-Mesh network.</p>
+<p>In this solution, the root node and its child nodes are connected to the SoftAP, rather than directly to the AP; while the NAT protocol is utilized for data forwarding between the AP network and the R-Mesh network.</p>
+<p>The diagram below illustrates an example where the NAT is used to expand the R-Mesh station number.</p>
+<figure class="align-center" id="id4">
+<a class="reference internal image-reference" href="../../../../_images/wifi_tunnel_nat.svg"><img alt="../../../../_images/wifi_tunnel_nat.svg" height="501" src="../../../../_images/wifi_tunnel_nat.svg" width="939" /></a>
+<figcaption>
+<p><span class="caption-text">Wi-Fi R-Mesh NAT</span><a class="headerlink" href="#id4" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="wi-fi-r-mesh-throughput">
+<h1>Wi-Fi R-Mesh Throughput<a class="headerlink" href="#wi-fi-r-mesh-throughput" title="Link to this heading"></a></h1>
+<section id="throughput">
+<h2>Throughput<a class="headerlink" href="#throughput" title="Link to this heading"></a></h2>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Test scenario</p></th>
+<th class="head"><p>Layer</p></th>
+<th class="head"><p>UDP Tx (Mbps)</p></th>
+<th class="head"><p>UDP Rx (Mbps)</p></th>
+<th class="head"><p>TCP Tx (Mbps)</p></th>
+<th class="head"><p>TCP Rx (Mbps)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td rowspan="5"><p>Single Node</p></td>
+<td><p>Layer1</p></td>
+<td><p>54.2</p></td>
+<td><p>39.5</p></td>
+<td><p>17.0</p></td>
+<td><p>15.7</p></td>
+</tr>
+<tr class="row-odd"><td><p>Layer2</p></td>
+<td><p>19.6</p></td>
+<td><p>18.8</p></td>
+<td><p>9.6</p></td>
+<td><p>10.0</p></td>
+</tr>
+<tr class="row-even"><td><p>Layer3</p></td>
+<td><p>12.8</p></td>
+<td><p>11.6</p></td>
+<td><p>6.9</p></td>
+<td><p>7.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>Layer4</p></td>
+<td><p>9.4</p></td>
+<td><p>8.2</p></td>
+<td><p>5.4</p></td>
+<td><p>5.2</p></td>
+</tr>
+<tr class="row-even"><td><p>Layer5</p></td>
+<td><p>7.5</p></td>
+<td><p>6.2</p></td>
+<td><p>4.4</p></td>
+<td><p>4.3</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="2"><p>L1 + L2</p></td>
+<td><p>Layer1</p></td>
+<td><p>21.0</p></td>
+<td><p>21.2</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>Layer2</p></td>
+<td><p>12.5</p></td>
+<td><p>14.0</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><p>L1 + L2 + L3</p></td>
+<td><p>Layer1</p></td>
+<td><p>14.0</p></td>
+<td><p>13.3</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>Layer2</p></td>
+<td><p>7.0</p></td>
+<td><p>7.2</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>Layer3</p></td>
+<td><p>5.1</p></td>
+<td><p>6.4</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><td rowspan="4"><p>L1 + L2 + L3
++ L4</p></td>
+<td><p>Layer1</p></td>
+<td><p>10.0</p></td>
+<td><p>12.1</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>Layer2</p></td>
+<td><p>4.0</p></td>
+<td><p>8.4</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>Layer3</p></td>
+<td><p>3.6</p></td>
+<td><p>6.7</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>Layer4</p></td>
+<td><p>3.0</p></td>
+<td><p>4.0</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><td rowspan="5"><p>L1 + L2 + L3
++ L4 + L5</p></td>
+<td><p>Layer1</p></td>
+<td><p>9.0</p></td>
+<td><p>10.4</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>Layer2</p></td>
+<td><p>3.2</p></td>
+<td><p>3.7</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>Layer3</p></td>
+<td><p>2.5</p></td>
+<td><p>2.9</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>Layer4</p></td>
+<td><p>2.3</p></td>
+<td><p>1.8</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>Layer5</p></td>
+<td><p>1.8</p></td>
+<td><p>2.1</p></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="throughput-test-via-ipref-command">
+<h2>Throughput Test via ipref Command<a class="headerlink" href="#throughput-test-via-ipref-command" title="Link to this heading"></a></h2>
+<p>The throughput can be tested via iperf. Normally, a PC will be used as the test peer, and the PC need connect to target AP via the network cable.
+In R-mesh, each R-mesh node will obtain an IP from the target AP, thus each R-mesh node can use the same iperf test method as a normal STA.</p>
+<figure class="align-center" id="id5">
+<a class="reference internal image-reference" href="../../../../_images/tp_test_ipref.svg"><img alt="../../../../_images/tp_test_ipref.svg" height="131" src="../../../../_images/tp_test_ipref.svg" width="688" /></a>
+<figcaption>
+<p><span class="caption-text">Throughput test network</span><a class="headerlink" href="#id5" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p><strong>UDP Tx Test</strong></p>
+<ul>
+<li><p>At R-mesh node, AT Command can be used, input the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">IPERF</span><span class="o">=-</span><span class="n">c</span><span class="p">,</span><span class="o">&lt;</span><span class="n">server</span> <span class="n">IP</span><span class="o">&gt;</span><span class="p">,</span><span class="o">-</span><span class="n">i</span><span class="p">,</span><span class="o">&lt;</span><span class="n">periodic</span><span class="o">&gt;</span><span class="p">,</span><span class="o">-</span><span class="n">u</span><span class="p">,</span><span class="o">-</span><span class="n">b</span><span class="p">,</span><span class="o">&lt;</span><span class="n">bandwidth</span><span class="o">&gt;</span><span class="p">,</span><span class="o">-</span><span class="n">t</span><span class="p">,</span><span class="o">&lt;</span><span class="n">transtime</span><span class="o">&gt;</span><span class="p">,</span><span class="o">-</span><span class="n">p</span><span class="p">,</span><span class="o">&lt;</span><span class="n">port</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</li>
+<li><p>At server side (normally a PC), input the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">iperf</span> <span class="o">-</span><span class="n">s</span> <span class="o">-</span><span class="n">i</span> <span class="o">&lt;</span><span class="n">periodic</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">u</span> <span class="o">-</span><span class="n">p</span> <span class="o">&lt;</span><span class="n">port</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p><strong>UDP Rx Test</strong></p>
+<ul>
+<li><p>At R-mesh node, AT Command can be used, input the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">IPERF</span><span class="o">=-</span><span class="n">s</span><span class="p">,</span><span class="o">-</span><span class="n">i</span><span class="p">,</span><span class="o">&lt;</span><span class="n">periodic</span><span class="o">&gt;</span><span class="p">,</span><span class="o">-</span><span class="n">u</span><span class="p">,</span><span class="o">-</span><span class="n">p</span><span class="p">,</span><span class="o">&lt;</span><span class="n">port</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</li>
+<li><p>At client side (normally a PC), input the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">iperf</span> <span class="o">-</span><span class="n">c</span> <span class="o">&lt;</span><span class="n">R</span><span class="o">-</span><span class="n">mesh</span> <span class="n">node</span> <span class="n">IP</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">i</span> <span class="o">&lt;</span><span class="n">periodic</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">u</span> <span class="o">-</span><span class="n">b</span> <span class="o">&lt;</span><span class="n">bandwidth</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">t</span> <span class="o">&lt;</span><span class="n">transtime</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">p</span> <span class="o">&lt;</span><span class="n">port</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p><strong>TCP Tx Test</strong></p>
+<ul>
+<li><p>At R-mesh node, AT Command can be used, input the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">IPERF</span><span class="o">=-</span><span class="n">c</span><span class="p">,</span><span class="o">&lt;</span><span class="n">server</span> <span class="n">IP</span><span class="o">&gt;</span><span class="p">,</span><span class="o">-</span><span class="n">i</span><span class="p">,</span><span class="o">&lt;</span><span class="n">periodic</span><span class="o">&gt;</span><span class="p">,</span><span class="o">-</span><span class="n">t</span><span class="p">,</span><span class="o">&lt;</span><span class="n">transtime</span><span class="o">&gt;</span><span class="p">,</span><span class="o">-</span><span class="n">p</span><span class="p">,</span><span class="o">&lt;</span><span class="n">port</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</li>
+<li><p>At server side (normally a PC), input the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">iperf</span> <span class="o">-</span><span class="n">s</span> <span class="o">-</span><span class="n">i</span> <span class="o">&lt;</span><span class="n">periodic</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">p</span> <span class="o">&lt;</span><span class="n">port</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p><strong>TCP Rx Test</strong></p>
+<ul>
+<li><p>At R-mesh node, AT Command can be used, input the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">IPERF</span><span class="o">=-</span><span class="n">s</span><span class="p">,</span><span class="o">-</span><span class="n">i</span><span class="p">,</span><span class="o">&lt;</span><span class="n">periodic</span><span class="o">&gt;</span><span class="p">,</span><span class="o">-</span><span class="n">p</span><span class="p">,</span><span class="o">&lt;</span><span class="n">port</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</li>
+<li><p>At client side (normally a PC), input the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">iperf</span> <span class="o">-</span><span class="n">c</span> <span class="o">&lt;</span><span class="n">R</span><span class="o">-</span><span class="n">mesh</span> <span class="n">node</span> <span class="n">IP</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">i</span> <span class="o">&lt;</span><span class="n">periodic</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">t</span> <span class="o">&lt;</span><span class="n">transtime</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">p</span> <span class="o">&lt;</span><span class="n">port</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</section>
+</section>
+<section id="wi-fi-r-mesh-rtt">
+<h1>Wi-Fi R-Mesh RTT<a class="headerlink" href="#wi-fi-r-mesh-rtt" title="Link to this heading"></a></h1>
+<p>The Wi-Fi R-Mesh Round-Trip Latency is illustrated in the following figure.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../../../_images/rmesh_rtt.png"><img alt="../../../../_images/rmesh_rtt.png" src="../../../../_images/rmesh_rtt.png" style="width: 702.4000000000001px; height: 373.6px;" /></a>
+</figure>
+</section>
+<section id="wi-fi-r-mesh-demo-tool">
+<h1>Wi-Fi R-Mesh Demo Tool<a class="headerlink" href="#wi-fi-r-mesh-demo-tool" title="Link to this heading"></a></h1>
+<section id="hardware-connection">
+<h2>Hardware Connection<a class="headerlink" href="#hardware-connection" title="Link to this heading"></a></h2>
+<p>The AP and PC are connected via the network, and the demo tool is executed on the PC.</p>
+<figure class="align-center" id="id6">
+<a class="reference internal image-reference" href="../../../../_images/rmesh_demo_tool_connection.svg"><img alt="../../../../_images/rmesh_demo_tool_connection.svg" height="137" src="../../../../_images/rmesh_demo_tool_connection.svg" width="560" /></a>
+<figcaption>
+<p><span class="caption-text">Hardware connection of using Demo Tool</span><a class="headerlink" href="#id6" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
+<p>To effectively test and demonstrate Wi-Fi R-Mesh, we have specifically developed a software tool.
+R-mesh nodes will periodically communicate with the tool by socket to update the current network status.</p>
+<figure class="align-center" id="id7">
+<a class="reference internal image-reference" href="../../../../_images/rmesh_demo_tool.png"><img alt="../../../../_images/rmesh_demo_tool.png" src="../../../../_images/rmesh_demo_tool.png" style="width: 954.0px; height: 511.5px;" /></a>
+<figcaption>
+<p><span class="caption-text">Wi-Fi R-Mesh Demo Tool</span><a class="headerlink" href="#id7" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p>The related information of the node is shown above the node as the format <code class="docutils literal notranslate"><span class="pre">MAC_Addr:IP</span> <span class="pre">(report_time)</span></code>.
+Only the last byte of MAC address is shown, report_time is in <code class="docutils literal notranslate"><span class="pre">minute:second</span></code> format.
+For example <code class="docutils literal notranslate"><span class="pre">CE:192.168.1.100(5:6)</span></code> means the last byte of MAC address is <strong>0xCE</strong> for this node, and it’s IP address is <strong>192.168.1.100</strong>.</p>
+<p>The main features of this tool are as follows:</p>
+<ul class="simple">
+<li><p>Users can see the real-time network topology.</p></li>
+<li><p>Users can do ping test.</p></li>
+</ul>
+</section>
+<section id="user-guide">
+<h2>User Guide<a class="headerlink" href="#user-guide" title="Link to this heading"></a></h2>
+<section id="prerequisites">
+<h3>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading"></a></h3>
+<p>Wi-Fi R-Mesh Demo Tool runs on Windows.</p>
+<p>The R-Mesh Demo Tool locates at the path: <code class="docutils literal notranslate"><span class="pre">{sdk}/tools/R-Mesh_Demo_Tool</span></code>.</p>
+</section>
+<section id="usage">
+<h3>Usage<a class="headerlink" href="#usage" title="Link to this heading"></a></h3>
+<ul>
+<li><p>Wi-Fi R-Mesh Demo Tool will obtain the computer’s IP address when it starts, so before starting the tool, make sure the computer and the target AP are successfully connected via the network cable.</p></li>
+<li><p>When run gravitation.exe first time, it will generate a file named <code class="file docutils literal notranslate"><span class="pre">config.yaml</span></code> in the tool folder, it can be used to config serveral parameters, such as ap mac, ping interval and ping size.</p>
+<p>In order to show topology correctly, ap mac of your AP need be configured by editing the “ap_mac_list” entry in config.yaml, after editing config.yaml, please restart the gravitation.exe again:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ap_mac_list</span><span class="p">:</span>
+<span class="o">-</span> <span class="mi">00</span><span class="p">:</span><span class="mi">11</span><span class="p">:</span><span class="mi">22</span><span class="p">:</span><span class="mi">33</span><span class="p">:</span><span class="mi">44</span><span class="p">:</span><span class="mi">55</span>
+</pre></div>
+</div>
+</li>
+<li><p>For each R-Mesh node, use AT Command to start connect, the ssid and password in AT Command are the target AP’s ssid and password.
+R-Mesh node will automatically decide whether connect to target AP directly or pair with other available R-Mesh node, and then the topology will shown in Wi-Fi R-Mesh Demo Tool.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">WLCONN</span><span class="o">=</span><span class="n">ssid</span><span class="p">,</span><span class="n">rmesh_test</span><span class="p">,</span><span class="n">pw</span><span class="p">,</span><span class="mi">12345678</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ping</span> <span class="pre">start</span></code> and <code class="docutils literal notranslate"><span class="pre">ping</span> <span class="pre">stop</span></code> button in tool can be used to do ping test, and the ping interval and ping size can be configured by <code class="file docutils literal notranslate"><span class="pre">config.yaml</span></code> as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ping</span><span class="p">:</span>
+<span class="n">interval</span><span class="p">:</span> <span class="mi">500</span>
+<span class="n">packet_size</span><span class="p">:</span> <span class="mi">64</span>
+</pre></div>
+</div>
+<p>The ping interval can also be configured directly on the bottom of tool menu:</p>
+<figure class="align-center" id="id8">
+<a class="reference internal image-reference" href="../../../../_images/ping_interval.png"><img alt="../../../../_images/ping_interval.png" src="../../../../_images/ping_interval.png" style="width: 954.0px; height: 511.5px;" /></a>
+<figcaption>
+<p><span class="caption-text">Ping interval configuration</span><a class="headerlink" href="#id8" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</li>
+</ul>
+</section>
+</section>
+</section>
+<section id="wi-fi-r-mesh-user-configuration">
+<h1>Wi-Fi R-Mesh User Configuration<a class="headerlink" href="#wi-fi-r-mesh-user-configuration" title="Link to this heading"></a></h1>
+<p>In R-Mesh, when the signal strength of the actual AP is larger than a threshold, R-Mesh nodes will prefer to connect to AP directly or switch from other R-Mesh node to AP.
+This threshold can be configured in <code class="docutils literal notranslate"><span class="pre">{sdk}/component/soc/amebadplus/ameba_wificfg.c</span></code>, and the default value is -50.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/*</span><span class="n">R</span><span class="o">-</span><span class="n">mesh</span><span class="o">*/</span>
+<span class="n">wifi_user_config</span><span class="o">.</span><span class="n">wtn_strong_rssi_thresh</span> <span class="o">=</span> <span class="o">-</span><span class="mi">50</span><span class="p">;</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Currently R-Mesh needs special wlan lib to run, please contact us to get the specified version of wlan lib.</p>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Wi-Fi R-Mesh" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../../wifi_bridge/src/index.html" class="btn btn-neutral float-right" title="Wi-Fi Bridge" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Realsil.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
