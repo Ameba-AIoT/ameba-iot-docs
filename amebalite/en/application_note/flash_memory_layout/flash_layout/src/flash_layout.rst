@@ -9,7 +9,7 @@ The layout takes 8MB Flash as an example. The start address of boot manifest is 
 
 .. note::
 
-   The RTL8720EA series and RTL8710EC series do not have DSP, and the address from 0x0840_0000 to 0x086F_FFFF is reserved. Refer to Section :ref:`Series Comparison <ameba_soc_family>` for more details of different series.
+   The RTL8720EA series and RTL8710EC series do not have DSP, and the address from 0x0840_0000 to 0x086F_FFFF is reserved. Refer to Section :ref:`Products <products>` for more details of different series.
 
 .. figure:: ../figures/flash_layout.svg
    :scale: 125%
@@ -56,7 +56,7 @@ The layout takes 8MB Flash as an example. The start address of boot manifest is 
    |                              |                  |        |                                                                                                       |           |
    |                              |                  |        | - KM4_IMG3\ :sup:`[1]`: secure image (code/data)                                                      |           |
    +------------------------------+------------------+--------+-------------------------------------------------------------------------------------------------------+-----------+
-   | DSP_IMG                      | 0x0840_0000      | 3072KB | DSP image (code/data), mapped to the virtual address 0x0D00_0000.                                     | √         |
+   | DSP_IMG :sup:`[2]`:          | 0x0840_0000      | 3072KB | DSP image (code/data), mapped to the virtual address 0x0D00_0000.                                     | √         |
    +------------------------------+------------------+--------+-------------------------------------------------------------------------------------------------------+-----------+
    | FTL                          | 0x0870_0000      | 12KB   | For Bluetooth                                                                                         | ×         |
    +------------------------------+------------------+--------+-------------------------------------------------------------------------------------------------------+-----------+
@@ -66,6 +66,7 @@ The layout takes 8MB Flash as an example. The start address of boot manifest is 
 .. note::
    
    [1] KM4_IMG3 only exists in the RTL8726EA and RTL8720EA series.
+   [2] DSP_IMG only exists and is mandatory in the RTL8726EA and RTL8713EC series. For other series, this address space is reserved.
 
 Memory Management Unit (MMU)
 --------------------------------------------------------
@@ -240,9 +241,11 @@ Follow the steps to modify the location of APP OTA2:
 
 After burning the APP OTA2 into Flash through OTA, the bootloader will load the image from the new location of APP OTA2 if the version of APP OTA2 is bigger.
 
-Modifying DSP IMG Location
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Refer to :ref:`flash_layout_app_ota1` to modify the location of DSP IMG.
+.. only:: RTL8726EA
+
+   Modifying DSP IMG Location
+   ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   Refer to :ref:`flash_layout_app_ota1` to modify the location of DSP IMG.
 
 Modifying FTL/VFS Location
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -319,14 +322,12 @@ If only the Quad Enable (QE) bit is set in the output of bitwise AND between Sta
    };
 
 .. note::
-   
    By default, setting the ``QE`` bit will unlock all the Block Protect bits. To avoid this operation, set Block Protect bits corresponding to ``status_mask`` in ``Flash_AVL`` to 0.
    For example, change the ``status_mask`` of winbond in ``Flash_AVL`` to 0x000043C0.
 
 In order to avoid the mirror being damaged due to improper operation when using Littlefs to write user data, it is recommended to modify the location of FTL/Littlefs to the last 64KB area of Flash, and set the `Block Protect` Bit in the Status Register of Flash at the same time.
 
 .. note::
-
    - Only the last 64KB area of Flash can be modified, and the other areas are protected. Remember to unlock the Flash during OTA upgrade, and keep it locked when OTA is completed.
    - If you cannot set the Flash to allow only the last block to be modified through Block Protect bit, it is recommended to enable the Flash block protection of the first half part.
 

@@ -54,7 +54,6 @@ The steps of building MP image are depicted below:
    .. note::
       For details of mergeing DSP image into application image, refer to :ref:`OTA Firmware Update <ota_firmware_update>`.
 
-
 .. _how_to_combine_images:
 
 How to Combine Images
@@ -123,12 +122,9 @@ The steps of combining images are depicted below:
          :scale: 90%
          :align: center
 
-
-
 Boot Flow
 ------------------
 1. Reset the device after downloading image is finished.
-
 2. Check if the device boots from MP image successfully.
 
    .. code-block::
@@ -169,7 +165,6 @@ Boot Flow
       RTL8720E[Driver]: The driver is for MP Firmware Enable
 
       _init_thread(39), Available heap Ox2db60
-
 
 3. Start the massive production flow if the device boots from MP image successfully.
 

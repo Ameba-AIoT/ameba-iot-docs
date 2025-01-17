@@ -18,23 +18,21 @@ Boot Address
 --------------
 After reset, CPU will boot from the vector table start address, which is fixed by hardware. Both KM4 and KR4 boot from the address ``0x0000_0000``.
    
-.. table:: Boot address
-   :width: 100%
-   :widths: auto
+.. only:: RTL8726EA
 
-   +-----+----------------+------------------+
-   | CPU | Address        | Type             |
-   +=====+================+==================+
-   | KM4 | 0x0000_0000    | KM4 ITCM ROM     |
-   +-----+----------------+------------------+
-   | KR4 | 0x0000_0000    | KR4 ITCM ROM     |
-   +-----+----------------+------------------+
-   | DSP | User Configure | Flash/SRAM/PSRAM |
-   +-----+----------------+------------------+
-
-.. note::
+   .. table:: Boot address
+      :width: 100%
+      :widths: auto
    
-   The RTL8720EA series and RTL8710EC series do not have DSP. Refer to Section :ref:`Series Comparison <ameba_soc_family>` for more details of different series.
+      +-----+----------------+------------------+
+      | CPU | Address        | Type             |
+      +=====+================+==================+
+      | KM4 | 0x0000_0000    | KM4 ITCM ROM     |
+      +-----+----------------+------------------+
+      | KR4 | 0x0000_0000    | KR4 ITCM ROM     |
+      +-----+----------------+------------------+
+      | DSP | User Configure | Flash/SRAM/PSRAM |
+      +-----+----------------+------------------+
 
 Pin Description
 ----------------

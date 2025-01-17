@@ -6,19 +6,18 @@ This chapter introduces the default memory layout of |CHIP_NAME| and how to modi
    
 RAM Layout
 ----------------
-In total, there are 512KB or 768KB (depending on different series) SRAM on chip, and the size of PSRAM can be 0MB/4MB/8MB/16MB…, which is decided by users. The default RAM layout is illustrated below.
+.. only:: RTL8726EA
 
-.. figure:: ../figures/ram_layout.svg
-   :scale: 130%
-   :align: center
-
-   RAM layout
-
-.. note:: 
-   Refer to Section :ref:`Series Comparison <ameba_soc_family>` for more information about the SRAM size of different series.
+   In total, there are 512KB SRAM on chip, and the size of PSRAM can be 0MB/4MB/8MB/16MB/32MB, which is decided by users. The default RAM layout is illustrated below.
+   
+   .. figure:: ../figures/ram_layout_other.svg
+      :scale: 130%
+      :align: center
+   
+      RAM layout
 
 SRAM0 (First 40KB) Layout
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 The first 40KB SRAM0 layout is illustrated in the following figure and table. It is the same for all situations.
 
 .. figure:: ../figures/sram0_layout.svg
@@ -60,18 +59,17 @@ The first 40KB SRAM0 layout is illustrated in the following figure and table. It
    +---------------------------+---------------+--------+-----------------------------------------------------+-----------+
    | KM4_MSP_S                 | 0x3000_8000   | 8KB    | KM4 secure Main Stack Pointer                       | √         |
    +---------------------------+---------------+--------+-----------------------------------------------------+-----------+
-      
-RAM & PSRAM Layout
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+RAM & PSRAM Layout
+~~~~~~~~~~~~~~~~~~~~
 .. only:: RTL8726EA
 
    The following figure and table illustrate the default RAM layout with PSRAM.
 
-   .. figure:: ../figures/ram_psram_layout_26EA.svg
+   .. figure:: ../figures/ram_psram_layout_8726.svg
       :scale: 120%
       :align: center
-   
+
       RAM & PSRAM layout
 
    .. table:: RAM & PSRAM layout
