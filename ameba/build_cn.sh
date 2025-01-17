@@ -4,7 +4,7 @@ echo "build amebadplus"
 cd ../amebadplus
 make cn RTL8721D
 
-counter=5
+counter=1
 until [ $counter -eq 0 ]
 do
     sleep 1
