@@ -1,3 +1,5 @@
+.. _wifi_sdio_bridge:
+
 Introduction
 ------------------------
 SDIO bridge 的架构图如下图所示.
