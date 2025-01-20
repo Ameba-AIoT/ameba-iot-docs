@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>FullMAC简介 &mdash; RTL8721Dx 文档  documentation</title>
+  <title>&lt;no title&gt; &mdash; RTL8721Dx 文档  documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/togglebutton.css?v=13237357" />
@@ -22,7 +22,6 @@
         <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
         <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script src="../../../../_static/toggleprompt.js?v=d7ede5d2"></script>
-        <script src="../../../../_static/tabs.js?v=3030b3cb"></script>
         <script>let toggleHintShow = 'Click to show';</script>
         <script>let toggleHintHide = 'Click to hide';</script>
         <script>let toggleOpenOnPrint = 'true';</script>
@@ -67,35 +66,8 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">FullMAC</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">FullMAC简介</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id2">FullMAC架构</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id3">FullMAC的特点</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id4">FullMAC传输接口</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id5">FullMAC文件目录</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#wi-fi">Wi-Fi</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#bluetooth">Bluetooth</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#id6">FullMAC硬件配置</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#id7">接口连接</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#sdio">SDIO转接板</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id8">树莓派</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#fullmac-wifi-device">FullMAC WiFi Device 驱动移植指南</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#fullmac-wi-fi-host">FullMAC Wi-Fi Host 驱动移植指南</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#fullmac-bt-device">FullMAC BT Device 驱动移植指南</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#fullmac-bt-host">FullMAC BT Host 驱动移植指南</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#fullmac-wifi">FullMAC WiFi 吞吐量</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id9">FullMAC 内存需求</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#device">Device</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#host">Host</a></li>
-</ul>
-</li>
-</ul>
-</li>
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="index.html">FullMAC</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../wifi_tunnel/src/index.html">Wi-Fi R-Mesh</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../wifi_bridge/src/index.html">Wi-Fi Bridge</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../wifi_csi/src/index.html">Wi-Fi CSI</a></li>
@@ -117,7 +89,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="index.html">FullMAC</a></li>
-      <li class="breadcrumb-item active">FullMAC简介</li>
+      <li class="breadcrumb-item active">&lt;no title&gt;</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -126,127 +98,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="fullmac">
-<span id="id1"></span><h1>FullMAC简介<a class="headerlink" href="#fullmac" title="Link to this heading"></a></h1>
-<p>在Wi-Fi FullMAC 方案中, Ameba作为网卡, 通过UART/SPI/SDIO/USB与主机MCU连接, 为主机MCU提供网络连接功能.</p>
-</section>
-<section id="id2">
-<h1>FullMAC架构<a class="headerlink" href="#id2" title="Link to this heading"></a></h1>
-<p>FullMAC 提供如下功能:</p>
-<ul class="simple">
-<li><p>提供了host和device之间基于UART/SPI/SDIO/USB的传输通路</p></li>
-<li><p>支持标准的Linux wpa_supplicant 和 cfg80211 无线架构</p></li>
-<li><p>传输接口除了可以用于传输WiFi/BT 相关的指令数据，还为客户提供了定制命令接口</p></li>
-</ul>
-<p>如下图所示 <code class="docutils literal notranslate"><span class="pre">host</span></code> 可以是Linux/Rtos/Zephyr OS, <code class="docutils literal notranslate"><span class="pre">device</span></code> 是指支持FullMAC的Ameba SoC。</p>
-</section>
-<section id="id3">
-<h1>FullMAC的特点<a class="headerlink" href="#id3" title="Link to this heading"></a></h1>
-</section>
-<section id="id4">
-<h1>FullMAC传输接口<a class="headerlink" href="#id4" title="Link to this heading"></a></h1>
-<div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"></div></div>
-</section>
-<section id="id5">
-<h1>FullMAC文件目录<a class="headerlink" href="#id5" title="Link to this heading"></a></h1>
-<section id="wi-fi">
-<h2>Wi-Fi<a class="headerlink" href="#wi-fi" title="Link to this heading"></a></h2>
-<div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"></div></div>
-</section>
-<section id="bluetooth">
-<h2>Bluetooth<a class="headerlink" href="#bluetooth" title="Link to this heading"></a></h2>
-<div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-2-2-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-2-2-0" name="2-0" role="tab" tabindex="0">Device驱动</button><button aria-controls="panel-2-2-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-2-2-1" name="2-1" role="tab" tabindex="-1">RTOS Host驱动</button><button aria-controls="panel-2-2-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-2-2-2" name="2-2" role="tab" tabindex="-1">Linux驱动</button></div><div aria-labelledby="tab-2-2-0" class="sphinx-tabs-panel" id="panel-2-2-0" name="2-0" role="tabpanel" tabindex="0"></div><div aria-labelledby="tab-2-2-1" class="sphinx-tabs-panel" hidden="true" id="panel-2-2-1" name="2-1" role="tabpanel" tabindex="0"></div><div aria-labelledby="tab-2-2-2" class="sphinx-tabs-panel" hidden="true" id="panel-2-2-2" name="2-2" role="tabpanel" tabindex="0"></div></div>
-</section>
-</section>
-<section id="id6">
-<h1>FullMAC硬件配置<a class="headerlink" href="#id6" title="Link to this heading"></a></h1>
-<section id="id7">
-<h2>接口连接<a class="headerlink" href="#id7" title="Link to this heading"></a></h2>
-<p>FullMAC 目前经过测试的Host有：Linux &#64; PC/Linux &#64; Raspberry Pi/RTOS &#64; STM32。 下表所示是Ameba 和 Raspberry Pi的pin脚连接。</p>
-<div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"></div></div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>以上Ameba的SDIO pin是 SDK的默认pin脚，如果开发者使用另外的pin脚做SDIO，则需要修改SPDIO_Board_Init 中的SDIO pinmux配置。</p>
-<p>这个文件位于如下位置:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">component</span><span class="o">/</span><span class="n">soc</span><span class="o">/</span><span class="n">amebadplus</span><span class="o">/</span><span class="n">hal</span><span class="o">/</span><span class="n">src</span><span class="o">/</span><span class="n">spdio_api</span><span class="o">.</span><span class="n">c</span>
-</pre></div>
-</div>
-<p>目前Host端的SDIO interrupt实现的是标准SDIO 中断模式, SDIO_DATA1必须配置为SDIO而不是GPIO。如果Host端不支持SDIO 中断，开发者可以考虑使用polling模。</p>
-</div>
-</section>
-<section id="sdio">
-<h2>SDIO转接板<a class="headerlink" href="#sdio" title="Link to this heading"></a></h2>
-<p>由于SDIO 飞线可能会导致信号传输质量差，无法使用较高的频率传输。可以购买SDIO转接板连接到Ameba的SDIO pin脚，如下图所示：</p>
-<blockquote>
-<div><figure class="align-center" id="id10">
-<a class="reference internal image-reference" href="../../../../_images/sdio_adapter_board.jpg"><img alt="../../../../_images/sdio_adapter_board.jpg" src="../../../../_images/sdio_adapter_board.jpg" style="width: 335.5px; height: 248.5px;" /></a>
-<figcaption>
-<p><span class="caption-text">FullMAC SDIO 转接板</span><a class="headerlink" href="#id10" title="Link to this image"></a></p>
-</figcaption>
-</figure>
-</div></blockquote>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>瑞昱的SDIO转接板也即将上线销售，当前可以先直接联系&lt;<a class="reference external" href="mailto:claire_wang&#37;&#52;&#48;realsil&#46;com&#46;cn">claire_wang<span>&#64;</span>realsil<span>&#46;</span>com<span>&#46;</span>cn</a>&gt;索取。</p>
-</div>
-</section>
-<section id="id8">
-<h2>树莓派<a class="headerlink" href="#id8" title="Link to this heading"></a></h2>
-<p>为了实现高速传输，建议将Amaba的Demo板的 SDIO pin脚直接焊接到树莓派对应的pin脚，如下图所示：</p>
-<blockquote>
-<div><figure class="align-center" id="id11">
-<a class="reference internal image-reference" href="../../../../_images/connection_with_raspberry_pi.jpg"><img alt="../../../../_images/connection_with_raspberry_pi.jpg" src="../../../../_images/connection_with_raspberry_pi.jpg" style="width: 254.5px; height: 227.0px;" /></a>
-<figcaption>
-<p><span class="caption-text">RTL8721Dx connection with Raspberry Pi</span><a class="headerlink" href="#id11" title="Link to this image"></a></p>
-</figcaption>
-</figure>
-</div></blockquote>
-</section>
-</section>
-<section id="fullmac-wifi-device">
-<h1>FullMAC WiFi Device 驱动移植指南<a class="headerlink" href="#fullmac-wifi-device" title="Link to this heading"></a></h1>
-</section>
-<section id="fullmac-wi-fi-host">
-<h1>FullMAC Wi-Fi Host 驱动移植指南<a class="headerlink" href="#fullmac-wi-fi-host" title="Link to this heading"></a></h1>
-<div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"></div></div>
-</section>
-<section id="fullmac-bt-device">
-<h1>FullMAC BT Device 驱动移植指南<a class="headerlink" href="#fullmac-bt-device" title="Link to this heading"></a></h1>
-</section>
-<section id="fullmac-bt-host">
-<h1>FullMAC BT Host 驱动移植指南<a class="headerlink" href="#fullmac-bt-host" title="Link to this heading"></a></h1>
-<div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"></div></div>
-</section>
-<section id="fullmac-wifi">
-<h1>FullMAC WiFi 吞吐量<a class="headerlink" href="#fullmac-wifi" title="Link to this heading"></a></h1>
-<div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"></div><ul class="simple">
-<li><p>[1] The data is the test result of device code running in PSRAM, host driver running on Dell Optiplex 3080 MT.</p></li>
-<li><p>[2] The data is the test result of device code running in PSRAM, host driver running on Raspberry Pi 4.</p></li>
-<li><p>[3] The data is the test result of device code running in</p></li>
-</ul>
-</div>
-</section>
-<section id="id9">
-<h1>FullMAC 内存需求<a class="headerlink" href="#id9" title="Link to this heading"></a></h1>
-<section id="device">
-<h2>Device<a class="headerlink" href="#device" title="Link to this heading"></a></h2>
-<div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"></div></div>
-</section>
-<section id="host">
-<h2>Host<a class="headerlink" href="#host" title="Link to this heading"></a></h2>
-<div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"></div></div>
-</section>
-</section>
-
+  <span class="target" id="fullmac"></span>
 
            </div>
           </div>
