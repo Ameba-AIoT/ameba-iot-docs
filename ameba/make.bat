@@ -31,8 +31,6 @@ if "%1" == "" (
     echo "..\sphinx_venv\Windows\Scripts\sphinx-build.exe -b html %1 build/%1/latest -c %1"
     python ..\sphinx_venv\Windows\Scripts\sphinx-build.exe -b html %1 build/%1/latest -c %1
 ) else if "%1" == "cn" (
-    echo "python .\cn\sync_figure.py en cn"
-    python .\cn\sync_figure.py en cn
     echo "..\sphinx_venv\Windows\Scripts\sphinx-build.exe -b html %1 build/%1/latest -c %1"
     python ..\sphinx_venv\Windows\Scripts\sphinx-build.exe -b html %1 build/%1/latest -c %1
 ) else (
