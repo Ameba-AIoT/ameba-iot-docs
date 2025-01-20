@@ -1,5 +1,3 @@
-.. _fullmac:
-
 FullMAC简介
 ------------------------
 在Wi-Fi FullMAC 方案中, Ameba作为网卡, 通过UART/SPI/SDIO/USB与主机MCU连接, 为主机MCU提供网络连接功能.
