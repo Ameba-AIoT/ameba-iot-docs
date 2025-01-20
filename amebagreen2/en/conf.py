@@ -28,11 +28,6 @@ master_doc = get_master_doc(tags)
 master_doc_path = source_dir / f"{master_doc}.rst"
 print(f"MASTER_DOC: {master_doc_path}")
 
-# 更新需要排除的目录
-if en_or_cn == "en":
-    exclude_patterns.append("**/cn")
-else:
-    exclude_patterns.append("**/en")
 
 exclude_rst = get_exclude_rst(master_doc_path, source_dir, exclude_patterns, tags)
 exclude_patterns.extend(exclude_rst)
