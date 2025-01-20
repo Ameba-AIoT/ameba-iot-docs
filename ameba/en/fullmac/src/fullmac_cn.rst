@@ -48,7 +48,7 @@ Bluetooth
 
    .. tab:: RTOS Host驱动
 
-   .. tab:: Linux驱动
+   .. tab:: Linux Host驱动
 
 FullMAC硬件配置
 ----------------------
@@ -77,10 +77,10 @@ SDIO转接板
 ~~~~~~~~~~~~~~~~~~~~~~
 由于SDIO 飞线可能会导致信号传输质量差，无法使用较高的频率传输。可以购买SDIO转接板连接到Ameba的SDIO pin脚，如下图所示：
 
-   .. This figure is located at ../../wifi_bridge/figures.
+   .. This figure is located at ../../../en/wifi_bridge/figures.
       If the figure name has been changed, make sure to update sdio_fullmac.rst accordingly.
 
-   .. figure:: ../../wifi_bridge/figures/sdio_adapter_board.jpg
+   .. figure:: ../../../en/wifi_bridge/figures/sdio_adapter_board.jpg
       :align: center
       :scale: 50%
 
@@ -93,7 +93,7 @@ SDIO转接板
 ~~~~~~~~~~~~~~~~~~~~~~
 为了实现高速传输，建议将Amaba的Demo板的 SDIO pin脚直接焊接到树莓派对应的pin脚，如下图所示：
 
-   .. figure:: ../../wifi_bridge/figures/connection_with_raspberry_pi.jpg
+   .. figure:: ../../../en/wifi_bridge/figures/connection_with_raspberry_pi.jpg
       :align: center
       :scale: 50%
 

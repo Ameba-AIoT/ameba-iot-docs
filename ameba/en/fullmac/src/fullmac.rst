@@ -4,10 +4,7 @@ Introduction
 ------------------------
 The FullMAC solution provides a standard wireless network interface for the host, allowing Wi-Fi and Bluetooth applications (such as wpa_supplicant, TCP/IP stack, etc.) to run smoothly on the operating system.
 
-Transport Interface
-------------------------
 
-.. include:: fullmac_interface.rst
 
 Architecture
 ------------------------
@@ -19,11 +16,18 @@ The FullMAC driver implements the following modules:
 
 To clarify, in the following sections, the term ``host`` refers to the Linux PC/Rtos IC acting as the host, and the term ``device`` refers to the |CHIP_NAME| serving as the device.
 
-.. include:: fullmac_interface.rst
+.. include:: fullmac_architecture.rst
 
 Features
 ------------------------
-.. include:: fullmac_architecture.rst
+.. include:: fullmac_features.rst
+
+Transport Interface
+------------------------
+
+.. tabs::
+
+   .. include:: fullmac_interface.rst
 
 File Tree
 ----------
@@ -42,10 +46,11 @@ Bluetooth
 
 .. tabs::
 
-   .. tab:: FreeRTOS
+   .. tab:: Device Driver
 
+   .. tab:: RTOS Host Driver
 
-   .. tab:: Linux
+   .. tab:: Linux Host Driver
 
 Hardware Configuration
 ----------------------

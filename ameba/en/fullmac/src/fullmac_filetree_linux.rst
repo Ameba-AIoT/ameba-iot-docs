@@ -1,4 +1,4 @@
-.. tab:: Linux
+.. tab:: Linux Host Driver
 
    The FullMAC driver of Linux in the SDK is located at ``{SDK}/component/wifi/cfg80211_fullmac``. The main focus should be on the files below.
 
