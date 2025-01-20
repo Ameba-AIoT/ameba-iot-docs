@@ -42,7 +42,6 @@ en:
 	python ../sphinx_venv/Linux/bin/sphinx-build -b html $@ build/$@/latest -c $@ ${tag}
 
 cn:
-	python ./cn/sync_figure.py en cn
 	python ../sphinx_venv/Linux/bin/sphinx-build -b html $@ build/$@/latest -c $@ ${tag}
 
 clean:

@@ -6,7 +6,7 @@
 
 主机MCU负责运行TCPIP协议栈, 用户可以在主机MCU通过scoket接口开发应用程序.
 
-.. figure:: fullmac/figures/wifi_fullmac_4solutions.svg
+.. figure:: ../en/fullmac/figures/wifi_fullmac_4solutions.svg
    :scale: 120%
    :align: center
 
