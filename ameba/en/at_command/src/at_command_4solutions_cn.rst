@@ -2,7 +2,7 @@
 
 如图所示，Ameba通过UART/SPI等接口和主机MCU连接，主机MCU通过AT指令控制网络设备和传输网络数据。
 
-.. figure:: ../../../en/at_command/figures/at_command_4solutions.svg
+.. figure:: ../en/at_command/figures/at_command_4solutions.svg
    :scale: 120%
    :align: center
 
