@@ -5,17 +5,25 @@ Introduction
 The FullMAC solution provides a standard wireless network interface for the host, allowing Wi-Fi and Bluetooth applications (such as wpa_supplicant, TCP/IP stack, etc.) to run smoothly on the operating system.
 
 Transport Interface
-~~~~~~~~~~~~~~~~~~~
+------------------------
 
 .. include:: fullmac_interface.rst
 
 Architecture
-~~~~~~~~~~~~~
+------------------------
+The FullMAC driver implements the following modules:
+
+- Provide a data transmission path between the host and the device based on a private transmission protocol via the SDIO/SPI interface
+- Adapt the cfg80211 layer and register the wireless network interface (wlan0/1) in the kernel to enable network data packet interaction between the Linux kernel and the |CHIP_NAME|
+- Provide commonly-used and proprietary commands to configure the parameters of Wi-Fi interface
+
+To clarify, in the following sections, the term ``host`` refers to the Linux PC/Rtos IC acting as the host, and the term ``device`` refers to the |CHIP_NAME| serving as the device.
+
 .. include:: fullmac_interface.rst
 
 Features
-~~~~~~~~~~
-.. include:: fullmac_features.rst
+------------------------
+.. include:: fullmac_architecture.rst
 
 File Tree
 ----------

@@ -2,7 +2,7 @@
 
 echo "build amebadplus"
 cd ../amebadplus
-make en
+make en RTL8721D
 
 counter=1
 until [ $counter -eq 0 ]
@@ -13,4 +13,4 @@ do
 done
 
 cd -
-make en
+make en RTL8721D
