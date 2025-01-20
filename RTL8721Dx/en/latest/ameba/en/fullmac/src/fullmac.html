@@ -71,12 +71,10 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../product_overview/src/index.html">Product Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../application_note/index.html">Application Note</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">FullMAC</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Introduction</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#transport-interface">Transport Interface</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#architecture">Architecture</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#features">Features</a></li>
-</ul>
-</li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#architecture">Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#features">Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#transport-interface">Transport Interface</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#file-tree">File Tree</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#wi-fi">Wi-Fi</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#bluetooth">Bluetooth</a></li>
@@ -144,404 +142,90 @@
   <section id="introduction">
 <span id="fullmac"></span><h1>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h1>
 <p>The FullMAC solution provides a standard wireless network interface for the host, allowing Wi-Fi and Bluetooth applications (such as wpa_supplicant, TCP/IP stack, etc.) to run smoothly on the operating system.</p>
-<section id="transport-interface">
-<h2>Transport Interface<a class="headerlink" href="#transport-interface" title="Link to this heading"></a></h2>
-<p>The transport interfaces supported by FullMAC are listed below:</p>
-<table class="docutils align-default" style="width: 100%">
-<thead>
-<tr class="row-odd"><th class="head" rowspan="2"><p>Ameba SoC</p></th>
-<th class="head" rowspan="2"><p>Interface</p></th>
-<th class="head" colspan="2"><p>Host (Operating system)</p></th>
-<th class="head" rowspan="2"><p>Wi-Fi</p></th>
-<th class="head" rowspan="2"><p>Bluetooth</p></th>
-<th class="head" rowspan="2"><p>Transport description</p></th>
-</tr>
-<tr class="row-even"><th class="head"><p>Linux</p></th>
-<th class="head"><p>FreeRTOS</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-odd"><td rowspan="7"><div class="line-block">
-<div class="line">RTL8721Dx</div>
-<div class="line">RTL8711Dx</div>
-</div>
-</td>
-<td><p>SDIO</p></td>
-<td><p>Y</p></td>
-<td><p>Y</p></td>
-<td><p>Y</p></td>
-<td><p>Y</p></td>
-<td><p>Wi-Fi and Bluetooth, traffic for both runs over SDIO</p></td>
-</tr>
-<tr class="row-even"><td><p>SPI</p></td>
-<td><p>Y</p></td>
-<td><p>Y</p></td>
-<td><p>Y</p></td>
-<td><p>Y</p></td>
-<td><p>Wi-Fi and Bluetooth, traffic for both runs over SPI</p></td>
-</tr>
-<tr class="row-odd"><td><p>USB</p></td>
-<td><p>Y</p></td>
-<td><p>X</p></td>
-<td><p>Y</p></td>
-<td><p>X</p></td>
-<td><p>Wi-Fi and Bluetooth, traffic for both runs over USB</p></td>
-</tr>
-<tr class="row-even"><td><p>UART</p></td>
-<td><p>TBD</p></td>
-<td><p>TBD</p></td>
-<td></td>
-<td></td>
-<td><p>Bluetooth only runs over UART</p></td>
-</tr>
-<tr class="row-odd"><td><p>SDIO (Wi-Fi) + UART (BT)</p></td>
-<td><p>Y</p></td>
-<td><p>Y</p></td>
-<td><p>Y</p></td>
-<td><p>Y</p></td>
-<td><p>Wi-Fi runs over SDIO, and Bluetooth runs over UART</p></td>
-</tr>
-<tr class="row-even"><td><p>SPI (Wi-Fi) + UART (BT)</p></td>
-<td><p>Y</p></td>
-<td><p>Y</p></td>
-<td><p>Y</p></td>
-<td><p>Y</p></td>
-<td><p>Wi-Fi runs over SPI, and Bluetooth runs over UART</p></td>
-</tr>
-<tr class="row-odd"><td><p>USB (Wi-Fi) + UART (BT)</p></td>
-<td><p>TBD</p></td>
-<td><p>TBD</p></td>
-<td></td>
-<td></td>
-<td><p>Wi-Fi runs over USB, and Bluetooth runs over UART</p></td>
-</tr>
-<tr class="row-even"><td rowspan="7"><div class="line-block">
-<div class="line">RTL8726EA</div>
-<div class="line">RTL8713EC</div>
-<div class="line">RTL8720EA</div>
-<div class="line">RTL8710EC</div>
-</div>
-</td>
-<td><p>SDIO</p></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="row-odd"><td><p>SPI</p></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="row-even"><td><p>USB</p></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="row-odd"><td><p>UART</p></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="row-even"><td><p>SDIO (Wi-Fi) + UART (BT)</p></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="row-odd"><td><p>SPI (Wi-Fi) + UART (BT)</p></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="row-even"><td><p>USB (Wi-Fi) + UART (BT)</p></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="row-odd"><td rowspan="7"><p>RTL8730E</p></td>
-<td><p>SDIO</p></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="row-even"><td><p>SPI</p></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="row-odd"><td><p>USB</p></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="row-even"><td><p>UART</p></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="row-odd"><td><p>SDIO (Wi-Fi) + UART (BT)</p></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="row-even"><td><p>SPI (Wi-Fi) + UART (BT)</p></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="row-odd"><td><p>USB (Wi-Fi) + UART (BT)</p></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-</tbody>
-</table>
 </section>
 <section id="architecture">
-<h2>Architecture<a class="headerlink" href="#architecture" title="Link to this heading"></a></h2>
-<p>The transport interfaces supported by FullMAC are listed below:</p>
-<table class="docutils align-default" style="width: 100%">
-<thead>
-<tr class="row-odd"><th class="head" rowspan="2"><p>Ameba SoC</p></th>
-<th class="head" rowspan="2"><p>Interface</p></th>
-<th class="head" colspan="2"><p>Host (Operating system)</p></th>
-<th class="head" rowspan="2"><p>Wi-Fi</p></th>
-<th class="head" rowspan="2"><p>Bluetooth</p></th>
-<th class="head" rowspan="2"><p>Transport description</p></th>
-</tr>
-<tr class="row-even"><th class="head"><p>Linux</p></th>
-<th class="head"><p>FreeRTOS</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-odd"><td rowspan="7"><div class="line-block">
-<div class="line">RTL8721Dx</div>
-<div class="line">RTL8711Dx</div>
-</div>
-</td>
-<td><p>SDIO</p></td>
-<td><p>Y</p></td>
-<td><p>Y</p></td>
-<td><p>Y</p></td>
-<td><p>Y</p></td>
-<td><p>Wi-Fi and Bluetooth, traffic for both runs over SDIO</p></td>
-</tr>
-<tr class="row-even"><td><p>SPI</p></td>
-<td><p>Y</p></td>
-<td><p>Y</p></td>
-<td><p>Y</p></td>
-<td><p>Y</p></td>
-<td><p>Wi-Fi and Bluetooth, traffic for both runs over SPI</p></td>
-</tr>
-<tr class="row-odd"><td><p>USB</p></td>
-<td><p>Y</p></td>
-<td><p>X</p></td>
-<td><p>Y</p></td>
-<td><p>X</p></td>
-<td><p>Wi-Fi and Bluetooth, traffic for both runs over USB</p></td>
-</tr>
-<tr class="row-even"><td><p>UART</p></td>
-<td><p>TBD</p></td>
-<td><p>TBD</p></td>
-<td></td>
-<td></td>
-<td><p>Bluetooth only runs over UART</p></td>
-</tr>
-<tr class="row-odd"><td><p>SDIO (Wi-Fi) + UART (BT)</p></td>
-<td><p>Y</p></td>
-<td><p>Y</p></td>
-<td><p>Y</p></td>
-<td><p>Y</p></td>
-<td><p>Wi-Fi runs over SDIO, and Bluetooth runs over UART</p></td>
-</tr>
-<tr class="row-even"><td><p>SPI (Wi-Fi) + UART (BT)</p></td>
-<td><p>Y</p></td>
-<td><p>Y</p></td>
-<td><p>Y</p></td>
-<td><p>Y</p></td>
-<td><p>Wi-Fi runs over SPI, and Bluetooth runs over UART</p></td>
-</tr>
-<tr class="row-odd"><td><p>USB (Wi-Fi) + UART (BT)</p></td>
-<td><p>TBD</p></td>
-<td><p>TBD</p></td>
-<td></td>
-<td></td>
-<td><p>Wi-Fi runs over USB, and Bluetooth runs over UART</p></td>
-</tr>
-<tr class="row-even"><td rowspan="7"><div class="line-block">
-<div class="line">RTL8726EA</div>
-<div class="line">RTL8713EC</div>
-<div class="line">RTL8720EA</div>
-<div class="line">RTL8710EC</div>
-</div>
-</td>
-<td><p>SDIO</p></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="row-odd"><td><p>SPI</p></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="row-even"><td><p>USB</p></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="row-odd"><td><p>UART</p></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="row-even"><td><p>SDIO (Wi-Fi) + UART (BT)</p></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="row-odd"><td><p>SPI (Wi-Fi) + UART (BT)</p></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="row-even"><td><p>USB (Wi-Fi) + UART (BT)</p></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="row-odd"><td rowspan="7"><p>RTL8730E</p></td>
-<td><p>SDIO</p></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="row-even"><td><p>SPI</p></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="row-odd"><td><p>USB</p></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="row-even"><td><p>UART</p></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="row-odd"><td><p>SDIO (Wi-Fi) + UART (BT)</p></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="row-even"><td><p>SPI (Wi-Fi) + UART (BT)</p></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="row-odd"><td><p>USB (Wi-Fi) + UART (BT)</p></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-</tbody>
-</table>
+<h1>Architecture<a class="headerlink" href="#architecture" title="Link to this heading"></a></h1>
+<p>The FullMAC driver implements the following modules:</p>
+<ul class="simple">
+<li><p>Provide a data transmission path between the host and the device based on a private transmission protocol via the SDIO/SPI interface</p></li>
+<li><p>Adapt the cfg80211 layer and register the wireless network interface (wlan0/1) in the kernel to enable network data packet interaction between the Linux kernel and the RTL8721Dx</p></li>
+<li><p>Provide commonly-used and proprietary commands to configure the parameters of Wi-Fi interface</p></li>
+</ul>
+<p>To clarify, in the following sections, the term <code class="docutils literal notranslate"><span class="pre">host</span></code> refers to the Linux PC/Rtos IC acting as the host, and the term <code class="docutils literal notranslate"><span class="pre">device</span></code> refers to the RTL8721Dx serving as the device.</p>
+<figure class="align-center" id="id1">
+<a class="reference internal image-reference" href="../../../../_images/wifi_fullmac_architecture.svg"><img alt="../../../../_images/wifi_fullmac_architecture.svg" height="466" src="../../../../_images/wifi_fullmac_architecture.svg" width="464" /></a>
+<figcaption>
+<p><span class="caption-text">FullMAC architecture</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
+</figcaption>
+</figure>
 </section>
 <section id="features">
-<h2>Features<a class="headerlink" href="#features" title="Link to this heading"></a></h2>
+<h1>Features<a class="headerlink" href="#features" title="Link to this heading"></a></h1>
 <table class="docutils align-default" style="width: 100%">
 <thead>
 <tr class="row-odd"><th class="head"><p>Features</p></th>
 <th class="head"><p>Linux host</p></th>
 <th class="head"><p>FreeRTOS host</p></th>
+<th class="head"><p>Zephyr host</p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>Wi-Fi configuration mechanism</p></td>
-<td><p>Standard Linux APIs</p></td>
-<td><p>FreeRTOS Wi-Fi APIs</p></td>
+<tr class="row-even"><td><p>SoC supported</p></td>
+<td><p>RTL8721Dx/RTL8711Dx</p></td>
+<td><p>RTL8721Dx/RTL8711Dx</p></td>
+<td><p>RTL8721Dx/RTL8711Dx</p></td>
 </tr>
-<tr class="row-odd"><td><p>Wi-Fi features</p></td>
-<td colspan="2"><p>802.11 a/b/g/n/ax</p></td>
-</tr>
-<tr class="row-even"><td><p>Transport interface</p></td>
-<td colspan="2"><ul class="simple">
+<tr class="row-odd"><td><p>Transport interface</p></td>
+<td><ul class="simple">
 <li><p>SDIO</p></li>
 <li><p>SPI</p></li>
 <li><p>USB</p></li>
-<li><p>UART</p></li>
+<li><p>UART(TBD)</p></li>
+</ul>
+</td>
+<td><ul class="simple">
+<li><p>SDIO</p></li>
+<li><p>SPI</p></li>
+</ul>
+</td>
+<td><ul class="simple">
+<li><p>SDIO</p></li>
 </ul>
 </td>
 </tr>
-<tr class="row-odd"><td><p>Wi-Fi &amp; BT transport combinations</p></td>
-<td colspan="2"><ul class="simple">
+<tr class="row-even"><td><p>Wi-Fi &amp; BT transport combinations</p></td>
+<td><ul class="simple">
 <li><p>SDIO only</p></li>
 <li><p>SPI only</p></li>
 <li><p>USB only</p></li>
+<li><p>SDIO(WiFi) + UART(BT)</p></li>
+<li><p>SPI(WiFi) + UART(BT)</p></li>
+<li><p>USB(WiFi) + UART(BT)</p></li>
+</ul>
+</td>
+<td><ul class="simple">
+<li><p>SDIO only</p></li>
+<li><p>SPI only</p></li>
 <li><p>SDIO + UART</p></li>
 <li><p>SPI + UART</p></li>
-<li><p>USB + UART</p></li>
+</ul>
+</td>
+<td><ul class="simple">
+<li><p>SDIO only(just WiFi Now)</p></li>
 </ul>
 </td>
 </tr>
-<tr class="row-even"><td><p>Wi-Fi mode</p></td>
+<tr class="row-odd"><td><p>Wi-Fi features</p></td>
+<td><p>802.11 a/b/g/n/ax</p></td>
+<td><p>802.11 a/b/g/n/ax</p></td>
+<td><p>802.11 a/b/g/n/ax</p></td>
+</tr>
+<tr class="row-even"><td><p>Wi-Fi configuration mechanism</p></td>
+<td><p>Standard Linux APIs</p></td>
+<td><p>FreeRTOS Wi-Fi APIs</p></td>
+<td><p>Standard Zephyr APIs</p></td>
+</tr>
+<tr class="row-odd"><td><p>Wi-Fi mode</p></td>
 <td><ul class="simple">
 <li><p>Station</p></li>
 <li><p>SoftAP</p></li>
@@ -554,9 +238,28 @@
 <li><p>SoftAP</p></li>
 </ul>
 </td>
+<td><ul class="simple">
+<li><p>Station</p></li>
+<li><p>SoftAP</p></li>
+</ul>
+</td>
 </tr>
-<tr class="row-odd"><td><p>Wi-Fi security</p></td>
-<td colspan="2"><ul class="simple">
+<tr class="row-even"><td><p>Wi-Fi security</p></td>
+<td><ul class="simple">
+<li><p>Open</p></li>
+<li><p>WPA</p></li>
+<li><p>WPA2</p></li>
+<li><p>WPA3</p></li>
+</ul>
+</td>
+<td><ul class="simple">
+<li><p>Open</p></li>
+<li><p>WPA</p></li>
+<li><p>WPA2</p></li>
+<li><p>WPA3</p></li>
+</ul>
+</td>
+<td><ul class="simple">
 <li><p>Open</p></li>
 <li><p>WPA</p></li>
 <li><p>WPA2</p></li>
@@ -564,49 +267,182 @@
 </ul>
 </td>
 </tr>
-<tr class="row-even"><td rowspan="2"><p>Power saving</p></td>
-<td colspan="2"><p>Wowlan</p></td>
-</tr>
-<tr class="row-odd"><td><p>Proxy Offload:</p>
-<ul class="simple">
-<li><p>ARP Response</p></li>
-<li><p>mDNS</p></li>
-<li><p>ICMP Response (TODO)</p></li>
-<li><p>SNMP (TODO)</p></li>
-<li><p>LLMNR (TODO)</p></li>
-<li><p>SSDP/SLP/WSD/LLTD (TODO)</p></li>
-</ul>
-</td>
-<td><p>-</p></td>
+<tr class="row-odd"><td><p>Power saving</p></td>
+<td><p>Wowlan</p></td>
+<td><p>Wowlan</p></td>
+<td><p>Wowlan</p></td>
 </tr>
 <tr class="row-even"><td><p>Bluetooth features</p></td>
-<td colspan="2"><ul class="simple">
+<td><ul class="simple">
+<li><p>BLE 5.0</p></li>
+<li><p>BLE 5.2</p></li>
+<li><p>Bluetooth 5.3</p></li>
+</ul>
+</td>
+<td><ul class="simple">
+<li><p>BLE 5.0</p></li>
+<li><p>BLE 5.2</p></li>
+<li><p>Bluetooth 5.3</p></li>
+</ul>
+</td>
+<td><ul class="simple">
 <li><p>BLE 5.0</p></li>
 <li><p>BLE 5.2</p></li>
 <li><p>Bluetooth 5.3</p></li>
 </ul>
 </td>
 </tr>
-<tr class="row-odd"><td><p>SoC supported</p></td>
-<td colspan="2"><p>RTL8721Dx/RTL8711Dx</p></td>
-</tr>
 </tbody>
 </table>
 </section>
+<section id="transport-interface">
+<h1>Transport Interface<a class="headerlink" href="#transport-interface" title="Link to this heading"></a></h1>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-0-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-0-0-0" name="0-0" role="tab" tabindex="0">Linux</button><button aria-controls="panel-0-0-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-1" name="0-1" role="tab" tabindex="-1">FreeRTOS</button><button aria-controls="panel-0-0-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-2" name="0-2" role="tab" tabindex="-1">Zephyr</button></div><div aria-labelledby="tab-0-0-0" class="sphinx-tabs-panel" id="panel-0-0-0" name="0-0" role="tabpanel" tabindex="0"><table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Ameba SoC</p></th>
+<th class="head"><p>Interface</p></th>
+<th class="head"><p>Wi-Fi</p></th>
+<th class="head"><p>BT</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td rowspan="7"><div class="line-block">
+<div class="line">RTL8721Dx</div>
+<div class="line">RTL8711Dx</div>
+</div>
+</td>
+<td><p>SDIO</p></td>
+<td><p>Y</p></td>
+<td><p>Y</p></td>
+</tr>
+<tr class="row-odd"><td><p>SPI</p></td>
+<td><p>Y</p></td>
+<td><p>Y</p></td>
+</tr>
+<tr class="row-even"><td><p>USB</p></td>
+<td><p>Y</p></td>
+<td><p>X</p></td>
+</tr>
+<tr class="row-odd"><td><p>UART</p></td>
+<td><p>X</p></td>
+<td><p>X</p></td>
+</tr>
+<tr class="row-even"><td><p>SDIO (Wi-Fi) + UART (BT)</p></td>
+<td><p>Y</p></td>
+<td><p>Y</p></td>
+</tr>
+<tr class="row-odd"><td><p>SPI (Wi-Fi) + UART (BT)</p></td>
+<td><p>Y</p></td>
+<td><p>Y</p></td>
+</tr>
+<tr class="row-even"><td><p>USB (Wi-Fi) + UART (BT)</p></td>
+<td><p>X</p></td>
+<td><p>X</p></td>
+</tr>
+</tbody>
+</table>
+</div><div aria-labelledby="tab-0-0-1" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-1" name="0-1" role="tabpanel" tabindex="0"><table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Ameba SoC</p></th>
+<th class="head"><p>Interface</p></th>
+<th class="head"><p>Wi-Fi</p></th>
+<th class="head"><p>BT</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td rowspan="7"><div class="line-block">
+<div class="line">RTL8721Dx</div>
+<div class="line">RTL8711Dx</div>
+</div>
+</td>
+<td><p>SDIO</p></td>
+<td><p>Y</p></td>
+<td><p>Y</p></td>
+</tr>
+<tr class="row-odd"><td><p>SPI</p></td>
+<td><p>Y</p></td>
+<td><p>Y</p></td>
+</tr>
+<tr class="row-even"><td><p>USB</p></td>
+<td><p>X</p></td>
+<td><p>X</p></td>
+</tr>
+<tr class="row-odd"><td><p>UART</p></td>
+<td><p>X</p></td>
+<td><p>X</p></td>
+</tr>
+<tr class="row-even"><td><p>SDIO (Wi-Fi) + UART (BT)</p></td>
+<td><p>Y</p></td>
+<td><p>Y</p></td>
+</tr>
+<tr class="row-odd"><td><p>SPI (Wi-Fi) + UART (BT)</p></td>
+<td><p>Y</p></td>
+<td><p>Y</p></td>
+</tr>
+<tr class="row-even"><td><p>USB (Wi-Fi) + UART (BT)</p></td>
+<td><p>X</p></td>
+<td><p>X</p></td>
+</tr>
+</tbody>
+</table>
+</div><div aria-labelledby="tab-0-0-2" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-2" name="0-2" role="tabpanel" tabindex="0"><table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Ameba SoC</p></th>
+<th class="head"><p>Interface</p></th>
+<th class="head"><p>Wi-Fi</p></th>
+<th class="head"><p>BT</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td rowspan="7"><div class="line-block">
+<div class="line">RTL8721Dx</div>
+<div class="line">RTL8711Dx</div>
+</div>
+</td>
+<td><p>SDIO</p></td>
+<td><p>Y</p></td>
+<td><p>X</p></td>
+</tr>
+<tr class="row-odd"><td><p>SPI</p></td>
+<td><p>X</p></td>
+<td><p>X</p></td>
+</tr>
+<tr class="row-even"><td><p>USB</p></td>
+<td><p>X</p></td>
+<td><p>X</p></td>
+</tr>
+<tr class="row-odd"><td><p>UART</p></td>
+<td><p>X</p></td>
+<td><p>X</p></td>
+</tr>
+<tr class="row-even"><td><p>SDIO (Wi-Fi) + UART (BT)</p></td>
+<td><p>X</p></td>
+<td><p>X</p></td>
+</tr>
+<tr class="row-odd"><td><p>SPI (Wi-Fi) + UART (BT)</p></td>
+<td><p>X</p></td>
+<td><p>X</p></td>
+</tr>
+<tr class="row-even"><td><p>USB (Wi-Fi) + UART (BT)</p></td>
+<td><p>X</p></td>
+<td><p>X</p></td>
+</tr>
+</tbody>
+</table>
+</div></div>
 </section>
 <section id="file-tree">
 <h1>File Tree<a class="headerlink" href="#file-tree" title="Link to this heading"></a></h1>
 <section id="wi-fi">
 <h2>Wi-Fi<a class="headerlink" href="#wi-fi" title="Link to this heading"></a></h2>
 <div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-0-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-0-0-0" name="0-0" role="tab" tabindex="0">FreeRTOS</button><button aria-controls="panel-0-0-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-1" name="0-1" role="tab" tabindex="-1">Linux</button></div><div aria-labelledby="tab-0-0-0" class="sphinx-tabs-panel" id="panel-0-0-0" name="0-0" role="tabpanel" tabindex="0"><p>The FullMAC driver of FreeRTOS in the SDK is located at <code class="docutils literal notranslate"><span class="pre">{SDK}/component/wifi/inic</span></code>. Users need to porting files in none_ipc_rtos if use other FreeRtos IC as Host.</p>
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-1-1-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-1-1-0" name="1-0" role="tab" tabindex="0">Device Driver</button><button aria-controls="panel-1-1-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-1-1-1" name="1-1" role="tab" tabindex="-1">FreeRTOS Host Driver</button><button aria-controls="panel-1-1-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-1-1-2" name="1-2" role="tab" tabindex="-1">Linux Host Driver</button></div><div aria-labelledby="tab-1-1-0" class="sphinx-tabs-panel" id="panel-1-1-0" name="1-0" role="tabpanel" tabindex="0"><p>The FullMAC device driver is located at <code class="docutils literal notranslate"><span class="pre">{SDK}/component/wifi/inic</span></code>.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Low-level driver
 └── sdio
       └── inic_sdio_dev.c
 └── spi
       ├── inic_spi_dev.c
-      ├── inic_spi_host.c
-      └── inic_spi_host_trx.c
 └── usb
       └── inic_usb_dev.c
 
@@ -616,6 +452,15 @@ FullMAC common driver
       ├── inic_dev_bridge.c
       ├── inic_dev_msg_queue.c
       └── inic_dev_protocal_offload.c
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-1-1-1" class="sphinx-tabs-panel" hidden="true" id="panel-1-1-1" name="1-1" role="tabpanel" tabindex="0"><p>FullMAC RTOS Host driver is located at  <code class="docutils literal notranslate"><span class="pre">{SDK}/component/wifi/inic</span></code>。 Developers can porting it into Host MCU中。</p>
+<p>notice：Developers should realize none_ipc_rtos use Host OS interfaces。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Low-level driver
+└── spi
+      ├── inic_spi_host.c
+      └── inic_spi_host_trx.c
+FullMAC common driver
 └── none_ipc_host
       ├── inic_host_api.c
       ├── inic_host_api_basic.c
@@ -624,7 +469,7 @@ FullMAC common driver
 └── none_ipc_rtos
 </pre></div>
 </div>
-</div><div aria-labelledby="tab-0-0-1" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-1" name="0-1" role="tabpanel" tabindex="0"><p>The FullMAC driver of Linux in the SDK is located at <code class="docutils literal notranslate"><span class="pre">{SDK}/component/wifi/cfg80211_fullmac</span></code>. The main focus should be on the files below.</p>
+</div><div aria-labelledby="tab-1-1-2" class="sphinx-tabs-panel" hidden="true" id="panel-1-1-2" name="1-2" role="tabpanel" tabindex="0"><p>The FullMAC driver of Linux in the SDK is located at <code class="docutils literal notranslate"><span class="pre">{SDK}/component/wifi/cfg80211_fullmac</span></code>. The main focus should be on the files below.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Low-level hardware driver
 └── common
       ├── rtw_ioctl.c
@@ -697,7 +542,7 @@ FullMAC driver
 <section id="bluetooth">
 <h2>Bluetooth<a class="headerlink" href="#bluetooth" title="Link to this heading"></a></h2>
 <div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-1-1-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-1-1-0" name="1-0" role="tab" tabindex="0">FreeRTOS</button><button aria-controls="panel-1-1-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-1-1-1" name="1-1" role="tab" tabindex="-1">Linux</button></div><div aria-labelledby="tab-1-1-0" class="sphinx-tabs-panel" id="panel-1-1-0" name="1-0" role="tabpanel" tabindex="0"></div><div aria-labelledby="tab-1-1-1" class="sphinx-tabs-panel" hidden="true" id="panel-1-1-1" name="1-1" role="tabpanel" tabindex="0"></div></div>
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-2-2-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-2-2-0" name="2-0" role="tab" tabindex="0">Device Driver</button><button aria-controls="panel-2-2-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-2-2-1" name="2-1" role="tab" tabindex="-1">RTOS Host Driver</button><button aria-controls="panel-2-2-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-2-2-2" name="2-2" role="tab" tabindex="-1">Linux Host Driver</button></div><div aria-labelledby="tab-2-2-0" class="sphinx-tabs-panel" id="panel-2-2-0" name="2-0" role="tabpanel" tabindex="0"></div><div aria-labelledby="tab-2-2-1" class="sphinx-tabs-panel" hidden="true" id="panel-2-2-1" name="2-1" role="tabpanel" tabindex="0"></div><div aria-labelledby="tab-2-2-2" class="sphinx-tabs-panel" hidden="true" id="panel-2-2-2" name="2-2" role="tabpanel" tabindex="0"></div></div>
 </section>
 </section>
 <section id="hardware-configuration">
@@ -706,12 +551,14 @@ FullMAC driver
 <h2>Interface Connections<a class="headerlink" href="#interface-connections" title="Link to this heading"></a></h2>
 <p>The FullMAC can be used on Linux PC/Raspberry Pi/STM32 RTOS with different interfaces, with different pins used for FullMAC function.</p>
 <div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-2-2-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-2-2-0" name="2-0" role="tab" tabindex="0">RTL8721Dx/RTL8711Dx</button></div><div aria-labelledby="tab-2-2-0" class="sphinx-tabs-panel" id="panel-2-2-0" name="2-0" role="tabpanel" tabindex="0"><table class="docutils align-default" id="fullmac-pins" style="width: 100%">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-3-3-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-3-3-0" name="3-0" role="tab" tabindex="0">RTL8721Dx/RTL8711Dx</button></div><div aria-labelledby="tab-3-3-0" class="sphinx-tabs-panel" id="panel-3-3-0" name="3-0" role="tabpanel" tabindex="0"><table class="docutils align-default" id="fullmac-pins" style="width: 100%">
 <caption><span class="caption-text">FullMAC used pins of different interfaces</span><a class="headerlink" href="#fullmac-pins" title="Link to this table"></a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p>Interface</p></th>
-<th class="head"><p>RTL8721Dx/RTL8711Dx pin</p></th>
-<th class="head"><p>Raspberry Pi pin</p></th>
+<th class="head"><p>RTL8721Dx</p>
+<p>RTL8711Dx</p>
+</th>
+<th class="head"><p>Raspberry Pi</p></th>
 <th class="head"><p>Function</p></th>
 <th class="head"><p>Description</p></th>
 </tr>
@@ -764,15 +611,14 @@ FullMAC driver
 <tr class="row-even"><td><p>PB8</p></td>
 <td><p>GPIO 23</p></td>
 <td><p>DEV_TX_REQ</p></td>
-<td><p>An output pin for RTL8721Dx, used to indicate to the host</p>
-<p>that it has a data packet to send with a rising edge.</p>
-</td>
+<td><p>Ameba SoC use rising edge of this pin to indicate
+if device has data to send to host</p></td>
 </tr>
 <tr class="row-odd"><td><p>PB9</p></td>
 <td><p>GPIO 22</p></td>
 <td><p>DEV_READY</p></td>
-<td><p>An output pin for RTL8721Dx, used to indicate its readiness</p>
-<p>for SPI transcation to host.</p>
+<td><p>Ameba SoC use level of this pin to indicate if it</p>
+<p>is ready to receive host data</p>
 <ul class="simple">
 <li><p>1: Device is ready.</p></li>
 <li><p>0: Device is busy.</p></li>
@@ -839,10 +685,10 @@ FullMAC driver
 <div><p>For the Linux PC, an SDIO host peripheral is required. Please connect to the RTL8721Dx with corresponding pins according to <a class="reference internal" href="#fullmac-pins"><span class="std std-ref">FullMAC used pins of different interfaces</span></a>.</p>
 <p>The RTL8721Dx can also use a gold finger adapter to convert the SDIO pins into a standard SD card, as the following figure shows, and supports the hardware platform only with an SD card slot.
 Note that in this case, you need to contact us to modify the demo board circuit.</p>
-<figure class="align-center" id="id1">
+<figure class="align-center" id="id2">
 <a class="reference internal image-reference" href="../../../../_images/sdio_adapter_board.jpg"><img alt="../../../../_images/sdio_adapter_board.jpg" src="../../../../_images/sdio_adapter_board.jpg" style="width: 335.5px; height: 248.5px;" /></a>
 <figcaption>
-<p><span class="caption-text">RTL8721Dx SDIO adapter board</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
+<p><span class="caption-text">RTL8721Dx SDIO adapter board</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 </div></blockquote>
@@ -853,10 +699,10 @@ Note that in this case, you need to contact us to modify the demo board circuit.
 <div><p>The pin location of RTL8721Dx demo board corresponds to the pin location of Raspberry Pi.
 In order to run at high speed, it’s strongly recommended to plug the demo board directly into Raspberry Pi, as the following figure shows.</p>
 <p>The pins used for SDIO FullMAC on Raspberry Pi are listed in <a class="reference internal" href="#fullmac-pins"><span class="std std-ref">FullMAC used pins of different interfaces</span></a>.</p>
-<figure class="align-center" id="id2">
+<figure class="align-center" id="id3">
 <a class="reference internal image-reference" href="../../../../_images/connection_with_raspberry_pi.jpg"><img alt="../../../../_images/connection_with_raspberry_pi.jpg" src="../../../../_images/connection_with_raspberry_pi.jpg" style="width: 254.5px; height: 227.0px;" /></a>
 <figcaption>
-<p><span class="caption-text">RTL8721Dx connection with Raspberry Pi</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
+<p><span class="caption-text">RTL8721Dx connection with Raspberry Pi</span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 </div></blockquote>
@@ -886,7 +732,7 @@ In order to run at high speed, it’s strongly recommended to plug the demo boar
 <section id="wi-fi-host-driver-porting-guide">
 <h1>Wi-Fi Host Driver Porting Guide<a class="headerlink" href="#wi-fi-host-driver-porting-guide" title="Link to this heading"></a></h1>
 <div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-3-3-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-3-3-0" name="3-0" role="tab" tabindex="0">RTOS</button><button aria-controls="panel-3-3-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-3-3-1" name="3-1" role="tab" tabindex="-1">Linux</button></div><div aria-labelledby="tab-3-3-0" class="sphinx-tabs-panel" id="panel-3-3-0" name="3-0" role="tabpanel" tabindex="0"><p>If use RTL8721Dx as SPI Fullmac Host:</p>
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-4-4-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-4-4-0" name="4-0" role="tab" tabindex="0">RTOS</button><button aria-controls="panel-4-4-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-4-4-1" name="4-1" role="tab" tabindex="-1">Linux</button></div><div aria-labelledby="tab-4-4-0" class="sphinx-tabs-panel" id="panel-4-4-0" name="4-0" role="tabpanel" tabindex="0"><p>If use RTL8721Dx as SPI Fullmac Host:</p>
 <ol class="arabic">
 <li><p>Execute <code class="docutils literal notranslate"><span class="pre">./menuconfig.py</span></code> under the path <code class="docutils literal notranslate"><span class="pre">{SDK}/amebadplus_gcc_project</span></code></p>
 <ol class="loweralpha">
@@ -901,7 +747,7 @@ In order to run at high speed, it’s strongly recommended to plug the demo boar
 <li><p>Use the ImageTool to flash the bin files to RTL8721Dx and resst the device.</p></li>
 </ol>
 <p>If use other rtos IC as SPI/SDIO Fullmac Host, files showed in file tree can be used.</p>
-</div><div aria-labelledby="tab-3-3-1" class="sphinx-tabs-panel" hidden="true" id="panel-3-3-1" name="3-1" role="tabpanel" tabindex="0"><p>The FullMAC driver has been tested and verified to work on Linux kernel versions 5.4 and 5.10.
+</div><div aria-labelledby="tab-4-4-1" class="sphinx-tabs-panel" hidden="true" id="panel-4-4-1" name="4-1" role="tabpanel" tabindex="0"><p>The FullMAC driver has been tested and verified to work on Linux kernel versions 5.4 and 5.10.
 If you encounter any compilation errors on other kernel versions, please contact us.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -924,12 +770,12 @@ sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> <
 <li><p>For Raspberry Pi:</p></li>
 </ul>
 <div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-4-4-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-4-4-0" name="4-0" role="tab" tabindex="0">SDIO</button><button aria-controls="panel-4-4-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-4-4-1" name="4-1" role="tab" tabindex="-1">SPI</button><button aria-controls="panel-4-4-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-4-4-2" name="4-2" role="tab" tabindex="-1">USB</button></div><div aria-labelledby="tab-4-4-0" class="sphinx-tabs-panel" id="panel-4-4-0" name="4-0" role="tabpanel" tabindex="0"><p>Use <code class="docutils literal notranslate"><span class="pre">dtoverlay</span></code> command to configure SDIO.</p>
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-5-5-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-5-5-0" name="5-0" role="tab" tabindex="0">SDIO</button><button aria-controls="panel-5-5-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-5-5-1" name="5-1" role="tab" tabindex="-1">SPI</button><button aria-controls="panel-5-5-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-5-5-2" name="5-2" role="tab" tabindex="-1">USB</button></div><div aria-labelledby="tab-5-5-0" class="sphinx-tabs-panel" id="panel-5-5-0" name="5-0" role="tabpanel" tabindex="0"><p>Use <code class="docutils literal notranslate"><span class="pre">dtoverlay</span></code> command to configure SDIO.</p>
 <p>For Raspberry Pi 4, type the following command:</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>dtoverlay<span class="w"> </span>sdio<span class="w"> </span><span class="nv">poll_once</span><span class="o">=</span>off
 </pre></div>
 </div>
-</div><div aria-labelledby="tab-4-4-1" class="sphinx-tabs-panel" hidden="true" id="panel-4-4-1" name="4-1" role="tabpanel" tabindex="0"><ol class="lowerroman">
+</div><div aria-labelledby="tab-5-5-1" class="sphinx-tabs-panel" hidden="true" id="panel-5-5-1" name="5-1" role="tabpanel" tabindex="0"><ol class="lowerroman">
 <li><p>Enable the SPI peripheral.</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>raspi-config
 </pre></div>
@@ -954,20 +800,20 @@ dtoverlay<span class="w"> </span>inic_spidev
 </pre></div>
 </div>
 </div></blockquote>
-</div><div aria-labelledby="tab-4-4-2" class="sphinx-tabs-panel" hidden="true" id="panel-4-4-2" name="4-2" role="tabpanel" tabindex="0"></div></div>
+</div><div aria-labelledby="tab-5-5-2" class="sphinx-tabs-panel" hidden="true" id="panel-5-5-2" name="5-2" role="tabpanel" tabindex="0"></div></div>
 </li>
 <li><p>Build the module.</p>
 <ol class="loweralpha simple">
 <li><p>In the path <code class="docutils literal notranslate"><span class="pre">/component/wifi/cfg80211_fullmac</span></code>, execute the following script with an interface parameter to configure the host driver.</p></li>
 </ol>
 <div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-5-5-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-5-5-0" name="5-0" role="tab" tabindex="0">SDIO</button><button aria-controls="panel-5-5-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-5-5-1" name="5-1" role="tab" tabindex="-1">SPI</button><button aria-controls="panel-5-5-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-5-5-2" name="5-2" role="tab" tabindex="-1">USB</button></div><div aria-labelledby="tab-5-5-0" class="sphinx-tabs-panel" id="panel-5-5-0" name="5-0" role="tabpanel" tabindex="0"><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">fullmac_setup</span><span class="o">.</span><span class="n">sh</span> <span class="n">sdio</span>
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-6-6-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-6-6-0" name="6-0" role="tab" tabindex="0">SDIO</button><button aria-controls="panel-6-6-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-6-6-1" name="6-1" role="tab" tabindex="-1">SPI</button><button aria-controls="panel-6-6-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-6-6-2" name="6-2" role="tab" tabindex="-1">USB</button></div><div aria-labelledby="tab-6-6-0" class="sphinx-tabs-panel" id="panel-6-6-0" name="6-0" role="tabpanel" tabindex="0"><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">fullmac_setup</span><span class="o">.</span><span class="n">sh</span> <span class="n">sdio</span>
 </pre></div>
 </div>
-</div><div aria-labelledby="tab-5-5-1" class="sphinx-tabs-panel" hidden="true" id="panel-5-5-1" name="5-1" role="tabpanel" tabindex="0"><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">fullmac_setup</span><span class="o">.</span><span class="n">sh</span> <span class="n">spi</span>
+</div><div aria-labelledby="tab-6-6-1" class="sphinx-tabs-panel" hidden="true" id="panel-6-6-1" name="6-1" role="tabpanel" tabindex="0"><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">fullmac_setup</span><span class="o">.</span><span class="n">sh</span> <span class="n">spi</span>
 </pre></div>
 </div>
-</div><div aria-labelledby="tab-5-5-2" class="sphinx-tabs-panel" hidden="true" id="panel-5-5-2" name="5-2" role="tabpanel" tabindex="0"><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">fullmac_setup</span><span class="o">.</span><span class="n">sh</span> <span class="n">usb</span>
+</div><div aria-labelledby="tab-6-6-2" class="sphinx-tabs-panel" hidden="true" id="panel-6-6-2" name="6-2" role="tabpanel" tabindex="0"><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">fullmac_setup</span><span class="o">.</span><span class="n">sh</span> <span class="n">usb</span>
 </pre></div>
 </div>
 </div></div>
@@ -984,21 +830,21 @@ dtoverlay<span class="w"> </span>inic_spidev
 <ol class="arabic" id="load-the-module-step" start="3">
 <li><p>Load the module.</p>
 <div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-6-6-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-6-6-0" name="6-0" role="tab" tabindex="0">SDIO</button><button aria-controls="panel-6-6-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-6-6-1" name="6-1" role="tab" tabindex="-1">SPI</button><button aria-controls="panel-6-6-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-6-6-2" name="6-2" role="tab" tabindex="-1">USB</button></div><div aria-labelledby="tab-6-6-0" class="sphinx-tabs-panel" id="panel-6-6-0" name="6-0" role="tabpanel" tabindex="0"><p><code class="file docutils literal notranslate"><span class="pre">fullmac_sdio.ko</span></code> is generated in <code class="docutils literal notranslate"><span class="pre">/cfg80211_fullmac/sdio</span></code>.</p>
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-7-7-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-7-7-0" name="7-0" role="tab" tabindex="0">SDIO</button><button aria-controls="panel-7-7-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-7-7-1" name="7-1" role="tab" tabindex="-1">SPI</button><button aria-controls="panel-7-7-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-7-7-2" name="7-2" role="tab" tabindex="-1">USB</button></div><div aria-labelledby="tab-7-7-0" class="sphinx-tabs-panel" id="panel-7-7-0" name="7-0" role="tabpanel" tabindex="0"><p><code class="file docutils literal notranslate"><span class="pre">fullmac_sdio.ko</span></code> is generated in <code class="docutils literal notranslate"><span class="pre">/cfg80211_fullmac/sdio</span></code>.</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>su
 cp<span class="w"> </span>sdio/fullmac_sdio.ko<span class="w"> </span>/lib/modules/XXX/
 depmod
 modprobe<span class="w"> </span>fullmac_sdio
 </pre></div>
 </div>
-</div><div aria-labelledby="tab-6-6-1" class="sphinx-tabs-panel" hidden="true" id="panel-6-6-1" name="6-1" role="tabpanel" tabindex="0"><p><code class="file docutils literal notranslate"><span class="pre">fullmac_spi.ko</span></code> is generated in <code class="docutils literal notranslate"><span class="pre">/cfg80211_fullmac/spi</span></code>.</p>
+</div><div aria-labelledby="tab-7-7-1" class="sphinx-tabs-panel" hidden="true" id="panel-7-7-1" name="7-1" role="tabpanel" tabindex="0"><p><code class="file docutils literal notranslate"><span class="pre">fullmac_spi.ko</span></code> is generated in <code class="docutils literal notranslate"><span class="pre">/cfg80211_fullmac/spi</span></code>.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">su</span>
 <span class="n">cp</span> <span class="n">spi</span><span class="o">/</span><span class="n">fullmac_spi</span><span class="o">.</span><span class="n">ko</span> <span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">modules</span><span class="o">/</span><span class="n">XXX</span><span class="o">/</span>
 <span class="n">depmod</span>
 <span class="n">modprobe</span> <span class="n">fullmac_spi</span>
 </pre></div>
 </div>
-</div><div aria-labelledby="tab-6-6-2" class="sphinx-tabs-panel" hidden="true" id="panel-6-6-2" name="6-2" role="tabpanel" tabindex="0"><p><code class="file docutils literal notranslate"><span class="pre">fullmac_spi.ko</span></code> is generated in <code class="docutils literal notranslate"><span class="pre">/cfg80211_fullmac/usb</span></code>.</p>
+</div><div aria-labelledby="tab-7-7-2" class="sphinx-tabs-panel" hidden="true" id="panel-7-7-2" name="7-2" role="tabpanel" tabindex="0"><p><code class="file docutils literal notranslate"><span class="pre">fullmac_spi.ko</span></code> is generated in <code class="docutils literal notranslate"><span class="pre">/cfg80211_fullmac/usb</span></code>.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">su</span>
 <span class="n">cp</span> <span class="n">usb</span><span class="o">/</span><span class="n">fullmac_spi</span><span class="o">.</span><span class="n">ko</span> <span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">modules</span><span class="o">/</span><span class="n">XXX</span><span class="o">/</span>
 <span class="n">depmod</span>
@@ -1138,12 +984,12 @@ If you want to use OPEN or WPA3, please refer to the official hostapd documentat
 <section id="bt-host-driver-porting-guide">
 <h1>BT Host Driver Porting Guide<a class="headerlink" href="#bt-host-driver-porting-guide" title="Link to this heading"></a></h1>
 <div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-7-7-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-7-7-0" name="7-0" role="tab" tabindex="0">RTOS</button><button aria-controls="panel-7-7-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-7-7-1" name="7-1" role="tab" tabindex="-1">Linux</button></div><div aria-labelledby="tab-7-7-0" class="sphinx-tabs-panel" id="panel-7-7-0" name="7-0" role="tabpanel" tabindex="0"></div><div aria-labelledby="tab-7-7-1" class="sphinx-tabs-panel" hidden="true" id="panel-7-7-1" name="7-1" role="tabpanel" tabindex="0"></div></div>
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-8-8-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-8-8-0" name="8-0" role="tab" tabindex="0">RTOS</button><button aria-controls="panel-8-8-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-8-8-1" name="8-1" role="tab" tabindex="-1">Linux</button></div><div aria-labelledby="tab-8-8-0" class="sphinx-tabs-panel" id="panel-8-8-0" name="8-0" role="tabpanel" tabindex="0"></div><div aria-labelledby="tab-8-8-1" class="sphinx-tabs-panel" hidden="true" id="panel-8-8-1" name="8-1" role="tabpanel" tabindex="0"></div></div>
 </section>
 <section id="wifi-throughput">
 <h1>WiFi Throughput<a class="headerlink" href="#wifi-throughput" title="Link to this heading"></a></h1>
 <div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-8-8-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-8-8-0" name="8-0" role="tab" tabindex="0">RTOS</button><button aria-controls="panel-8-8-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-8-8-1" name="8-1" role="tab" tabindex="-1">Linux</button></div><div aria-labelledby="tab-8-8-0" class="sphinx-tabs-panel" id="panel-8-8-0" name="8-0" role="tabpanel" tabindex="0"><table class="docutils align-default" style="width: 100%">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-9-9-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-9-9-0" name="9-0" role="tab" tabindex="0">RTOS</button><button aria-controls="panel-9-9-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-9-9-1" name="9-1" role="tab" tabindex="-1">Linux</button></div><div aria-labelledby="tab-9-9-0" class="sphinx-tabs-panel" id="panel-9-9-0" name="9-0" role="tabpanel" tabindex="0"><table class="docutils align-default" style="width: 100%">
 <thead>
 <tr class="row-odd"><th class="head"><p>Interface</p></th>
 <th class="head"><p>Item</p></th>
@@ -1166,7 +1012,7 @@ If you want to use OPEN or WPA3, please refer to the official hostapd documentat
 </tr>
 </tbody>
 </table>
-</div><div aria-labelledby="tab-8-8-1" class="sphinx-tabs-panel" hidden="true" id="panel-8-8-1" name="8-1" role="tabpanel" tabindex="0"><table class="docutils align-default" style="width: 100%">
+</div><div aria-labelledby="tab-9-9-1" class="sphinx-tabs-panel" hidden="true" id="panel-9-9-1" name="9-1" role="tabpanel" tabindex="0"><table class="docutils align-default" style="width: 100%">
 <thead>
 <tr class="row-odd"><th class="head"><p>Interface</p></th>
 <th class="head"><p>Wi-Fi driver location</p></th>
@@ -1261,7 +1107,7 @@ If you want to use OPEN or WPA3, please refer to the official hostapd documentat
 <section id="device">
 <h2>Device<a class="headerlink" href="#device" title="Link to this heading"></a></h2>
 <div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-9-9-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-9-9-0" name="9-0" role="tab" tabindex="0">RTL8721Dx/RTL8711Dx</button></div><div aria-labelledby="tab-9-9-0" class="sphinx-tabs-panel" id="panel-9-9-0" name="9-0" role="tabpanel" tabindex="0"><p>Take the Wi-Fi driver running on KM0 for an example:</p>
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-10-10-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-10-10-0" name="10-0" role="tab" tabindex="0">RTL8721Dx/RTL8711Dx</button></div><div aria-labelledby="tab-10-10-0" class="sphinx-tabs-panel" id="panel-10-10-0" name="10-0" role="tabpanel" tabindex="0"><p>Take the Wi-Fi driver running on KM0 for an example:</p>
 <table class="docutils align-default" style="width: 100%">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1293,7 +1139,7 @@ If you want to use OPEN or WPA3, please refer to the official hostapd documentat
 <section id="host">
 <h2>Host<a class="headerlink" href="#host" title="Link to this heading"></a></h2>
 <div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-10-10-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-10-10-0" name="10-0" role="tab" tabindex="0">RTOS</button><button aria-controls="panel-10-10-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-10-10-1" name="10-1" role="tab" tabindex="-1">Linux</button></div><div aria-labelledby="tab-10-10-0" class="sphinx-tabs-panel" id="panel-10-10-0" name="10-0" role="tabpanel" tabindex="0"><table class="docutils align-default" style="width: 100%">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-11-11-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-11-11-0" name="11-0" role="tab" tabindex="0">RTOS</button><button aria-controls="panel-11-11-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-11-11-1" name="11-1" role="tab" tabindex="-1">Linux</button></div><div aria-labelledby="tab-11-11-0" class="sphinx-tabs-panel" id="panel-11-11-0" name="11-0" role="tabpanel" tabindex="0"><table class="docutils align-default" style="width: 100%">
 <thead>
 <tr class="row-odd"><th class="head"><p>Host</p></th>
 <th class="head"><p>Item</p></th>
@@ -1313,7 +1159,7 @@ If you want to use OPEN or WPA3, please refer to the official hostapd documentat
 </tr>
 </tbody>
 </table>
-</div><div aria-labelledby="tab-10-10-1" class="sphinx-tabs-panel" hidden="true" id="panel-10-10-1" name="10-1" role="tabpanel" tabindex="0"><table class="docutils align-default" style="width: 100%">
+</div><div aria-labelledby="tab-11-11-1" class="sphinx-tabs-panel" hidden="true" id="panel-11-11-1" name="11-1" role="tabpanel" tabindex="0"><table class="docutils align-default" style="width: 100%">
 <thead>
 <tr class="row-odd"><th class="head"><p>Host</p></th>
 <th class="head"><p>Item</p></th>
