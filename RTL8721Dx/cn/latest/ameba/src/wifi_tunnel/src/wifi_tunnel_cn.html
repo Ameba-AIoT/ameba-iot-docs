@@ -75,7 +75,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#id3">Wi-Fi R-Mesh 的网络容量</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#wi-fi-r-mesh-nat">Wi-Fi R-Mesh NAT</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#id4">Wi-Fi R-Mesh 的吞吐量</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#id5">Wi-Fi R-Mesh 的吞吐量数据如下表所示：</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">吞吐量</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#iperf">通过Iperf测试吞吐量</a></li>
 </ul>
 </li>
@@ -83,14 +83,10 @@
 <li class="toctree-l2"><a class="reference internal" href="#wi-fi-r-mesh-gravitation">Wi-Fi R-Mesh 可视化演示工具-Gravitation</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#id6">测试环境</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#id7">简介</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#gravitation">Gravitation使用指南</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#id8">测试工具的位置</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id9">测试步骤如下</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gravitation">Gravitation使用指南</a></li>
 </ul>
 </li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#id10">Wi-Fi R-Mesh 参数配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id8">Wi-Fi R-Mesh 参数配置</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#r-mesh-sdk">R-Mesh SDK获取</a></li>
 </ul>
 </li>
@@ -125,11 +121,11 @@
              
   <section id="wi-fi-r-mesh">
 <span id="wifi-rmesh-cn"></span><h1>Wi-Fi R-Mesh 拓扑结构<a class="headerlink" href="#wi-fi-r-mesh" title="Link to this heading"></a></h1>
-<p>如下图所示, Wi-Fi R-Mesh 是一个树形mesh网络, 用于增加WiFi覆盖范围, 让距离AP比较远的设备也能获得稳定的网络连线。</p>
-<figure class="align-center" id="id11">
+<p>如下图所示, Wi-Fi R-Mesh 是一个树形mesh网络, 用于增加Wi-Fi覆盖范围, 让距离AP比较远的设备也能获得稳定的网络连线。</p>
+<figure class="align-center" id="id9">
 <a class="reference internal image-reference" href="../../../../_images/wifi_tunnel_topology_capacity.svg"><img alt="../../../../_images/wifi_tunnel_topology_capacity.svg" height="540" src="../../../../_images/wifi_tunnel_topology_capacity.svg" width="624" /></a>
 <figcaption>
-<p><span class="caption-text">Wi-Fi R-Mesh 拓扑结构</span><a class="headerlink" href="#id11" title="Link to this image"></a></p>
+<p><span class="caption-text">Wi-Fi R-Mesh 拓扑结构</span><a class="headerlink" href="#id9" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 </section>
@@ -139,20 +135,20 @@
 <ul class="simple">
 <li><p>应用层软件开发无感:</p>
 <ul>
-<li><p>所有的mesh协议都在WiFi驱动层实现，不管是root节点还是子节点，应用层都可以视为当前的节点是一个和AP连接的WiFi Station。</p></li>
-<li><p>WiFi配网程序无需更新。</p></li>
+<li><p>所有的mesh协议都在Wi-Fi驱动层实现，不管是根节点还是子节点，应用层都可以视为当前的节点是一个和AP连接的Wi-Fi Station。</p></li>
+<li><p>Wi-Fi配网程序无需更新。</p></li>
 </ul>
 </li>
 <li><p>百微妙级别的快速配对和切换:</p>
 <ul>
 <li><p>当检测到信号更好的父节点的时候，子节点可以快速的从旧的父节点切换到新的父节点，而不影响数据通信。</p></li>
-<li><p>当父节点发生问题的时候(掉电或者挂住)，子节点可以迅速检测到并切换到另外一个父节点而不影响数据通信。</p></li>
+<li><p>当父节点发生问题时（掉电或挂住），子节点可以迅速检测到并切换到另外一个父节点而不影响数据通信。</p></li>
 <li><p>一个节点可以携带其所有的子节点一起切换到另外一个父节点，所有节点的数据通信不受影响。</p></li>
 </ul>
 </li>
 <li><p>经过数跳的设备也具备较高的吞吐量:</p>
 <ul>
-<li><p>R-Mesh 转发无需经过 TCPIP 协议栈， 数据转发都在底层驱动实现，可以节省 SRAM 和 MCU 算力。</p></li>
+<li><p>R-Mesh 转发无需经过TCP/IP协议栈， 数据转发都在底层驱动实现，可以节省 SRAM 和 MCU 算力。</p></li>
 <li><p>软件处理时间极短，可以获得更好的吞吐量。</p></li>
 </ul>
 </li>
@@ -166,49 +162,50 @@
 </section>
 <section id="id2">
 <h1>Wi-Fi R-Mesh 的数据流<a class="headerlink" href="#id2" title="Link to this heading"></a></h1>
-<p>Wi-Fi R-Mesh 直接在WiFi 驱动层实现数据转发, 消耗极少的SRAM和MCU算力。</p>
+<p>Wi-Fi R-Mesh直接在Wi-Fi驱动层实现数据转发, 消耗极少的SRAM和MCU算力。</p>
 <p>由于需要极少的软件处理过程，所以即使经过几跳的节点也会有很好的吞吐量。</p>
-<figure class="align-center" id="id12">
+<figure class="align-center" id="id10">
 <a class="reference internal image-reference" href="../../../../_images/wifi_tunnel_data_flow.svg"><img alt="../../../../_images/wifi_tunnel_data_flow.svg" height="196" src="../../../../_images/wifi_tunnel_data_flow.svg" width="464" /></a>
 <figcaption>
-<p><span class="caption-text">Wi-Fi R-Mesh 的数据流</span><a class="headerlink" href="#id12" title="Link to this image"></a></p>
+<p><span class="caption-text">Wi-Fi R-Mesh 的数据流</span><a class="headerlink" href="#id10" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 </section>
 <section id="id3">
 <h1>Wi-Fi R-Mesh 的网络容量<a class="headerlink" href="#id3" title="Link to this heading"></a></h1>
-<p>Wi-Fi R-Mesh 中每个root下可以连接的子节点个数称为R-Mesh 的网络容量。</p>
-<p>如下图所示的例子中，网络容量为 4，则每个root只可以连接4个节点，不管拓扑的形式是哪一种。</p>
+<p>Wi-Fi R-Mesh 中每个根节点下可以连接的子节点个数称为R-Mesh的网络容量。</p>
+<p>如下图所示的例子中，网络容量为 4，则每个根节点只可以连接4个节点，不管拓扑的形式是哪一种。</p>
 <ul class="simple">
-<li><p>拓扑 0: 所有子节点都直接连接到root。</p></li>
+<li><p>拓扑 0: 所有子节点都直接连接到根节点。</p></li>
 <li><p>拓扑 3: 4个节点形成一个4跳的线型网络</p></li>
-<li><p>也可能是拓扑 0和拓扑 3之间的其它拓扑结构</p></li>
+<li><p>也可能是拓扑0和拓扑3之间的其它拓扑结构</p></li>
 </ul>
-<figure class="align-center" id="id13">
+<figure class="align-center" id="id11">
 <a class="reference internal image-reference" href="../../../../_images/wifi_tunnel_topology_capacity.svg"><img alt="../../../../_images/wifi_tunnel_topology_capacity.svg" height="540" src="../../../../_images/wifi_tunnel_topology_capacity.svg" width="624" /></a>
 <figcaption>
-<p><span class="caption-text">Wi-Fi R-Mesh 网络容量</span><a class="headerlink" href="#id13" title="Link to this image"></a></p>
+<p><span class="caption-text">Wi-Fi R-Mesh 网络容量</span><a class="headerlink" href="#id11" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 </section>
 <section id="wi-fi-r-mesh-nat">
 <h1>Wi-Fi R-Mesh NAT<a class="headerlink" href="#wi-fi-r-mesh-nat" title="Link to this heading"></a></h1>
-<p>由于R-Mesh的每个节点都会和AP创建真实的WIFI连线，在AP 可以连接的Station数量受限的情况下，R-Mesh可以支持的节点个数也会受限。
-基于此，我们可以使用station+softap基于NAT协议来扩展R-Mesh中节点的数量。此时，root节点及子节点会和softap进行连线，
-而不是和AP进行连线. NAT协议用于AP网络和R-Mesh网络之间的数据转发.</p>
-<p>在R-Mesh中我们成这样的节点为R-NAT节点.</p>
-<p>如下图所示，R-NAT节点放在root和AP之间，用于扩展可以接入网络的节点的数量。</p>
-<figure class="align-center" id="id14">
+<p>由于R-Mesh的每个节点都会和AP创建真实的WIFI连线，在AP可以连接的Station数量受限的情况下，R-Mesh可以支持的节点个数也会受限。
+基于此，我们可以使用Station + SoftAP基于NAT协议来扩展R-Mesh中节点的数量。此时，根节点及子节点会和SoftAP进行连线，
+而不是和AP进行连线。NAT协议用于AP网络和R-Mesh网络之间的数据转发。</p>
+<p>在R-Mesh中我们成这样的节点为R-NAT节点。</p>
+<p>如下图所示，R-NAT节点放在根节点和AP之间，用于扩展可以接入网络的节点的数量。</p>
+<figure class="align-center" id="id12">
 <a class="reference internal image-reference" href="../../../../_images/wifi_tunnel_nat.svg"><img alt="../../../../_images/wifi_tunnel_nat.svg" height="501" src="../../../../_images/wifi_tunnel_nat.svg" width="939" /></a>
 <figcaption>
-<p><span class="caption-text">Wi-Fi R-NAT</span><a class="headerlink" href="#id14" title="Link to this image"></a></p>
+<p><span class="caption-text">Wi-Fi R-NAT</span><a class="headerlink" href="#id12" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 </section>
 <section id="id4">
 <h1>Wi-Fi R-Mesh 的吞吐量<a class="headerlink" href="#id4" title="Link to this heading"></a></h1>
 <section id="id5">
-<h2>Wi-Fi R-Mesh 的吞吐量数据如下表所示：<a class="headerlink" href="#id5" title="Link to this heading"></a></h2>
+<h2>吞吐量<a class="headerlink" href="#id5" title="Link to this heading"></a></h2>
+<p>Wi-Fi R-Mesh 的吞吐量数据如下表所示：</p>
 <table class="docutils align-default" style="width: 100%">
 <thead>
 <tr class="row-odd"><th class="head"><p>Test scenario</p></th>
@@ -346,11 +343,11 @@
 </section>
 <section id="iperf">
 <h2>通过Iperf测试吞吐量<a class="headerlink" href="#iperf" title="Link to this heading"></a></h2>
-<p>与普通的Station或者AP模式无异，我们可以通过iperf测试R-Mesh的吞吐量。如下图所示，可以在AP端和节点端的PC上输入iperf指令即可。</p>
-<figure class="align-center" id="id15">
+<p>与普通的Station或者AP模式无异，我们可以通过iperf测试R-Mesh的吞吐量。如下图所示，在AP端和节点端的PC上输入iperf指令即可。</p>
+<figure class="align-center" id="id13">
 <a class="reference internal image-reference" href="../../../../_images/tp_test_ipref.svg"><img alt="../../../../_images/tp_test_ipref.svg" height="131" src="../../../../_images/tp_test_ipref.svg" width="688" /></a>
 <figcaption>
-<p><span class="caption-text">R-Mesh的吞吐量测试</span><a class="headerlink" href="#id15" title="Link to this image"></a></p>
+<p><span class="caption-text">R-Mesh的吞吐量测试</span><a class="headerlink" href="#id13" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <p><strong>UDP Tx 测试</strong></p>
@@ -419,10 +416,10 @@
 <section id="id6">
 <h2>测试环境<a class="headerlink" href="#id6" title="Link to this heading"></a></h2>
 <p>AP和PC通过网络连接，Gravitation运行于PC上，如下图所示：</p>
-<figure class="align-center" id="id16">
+<figure class="align-center" id="id14">
 <a class="reference internal image-reference" href="../../../../_images/rmesh_demo_tool_connection.svg"><img alt="../../../../_images/rmesh_demo_tool_connection.svg" height="137" src="../../../../_images/rmesh_demo_tool_connection.svg" width="560" /></a>
 <figcaption>
-<p><span class="caption-text">Wi-Fi R-Mesh 测试环境</span><a class="headerlink" href="#id16" title="Link to this image"></a></p>
+<p><span class="caption-text">Wi-Fi R-Mesh 测试环境</span><a class="headerlink" href="#id14" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 </section>
@@ -433,10 +430,10 @@
 <li><p>及时显示网络拓扑及其改变。</p></li>
 <li><p>可以做ping测试。</p></li>
 </ul>
-<figure class="align-center" id="id17">
+<figure class="align-center" id="id15">
 <a class="reference internal image-reference" href="../../../../_images/rmesh_demo_tool.png"><img alt="../../../../_images/rmesh_demo_tool.png" src="../../../../_images/rmesh_demo_tool.png" style="width: 954.0px; height: 511.5px;" /></a>
 <figcaption>
-<p><span class="caption-text">Gravitation</span><a class="headerlink" href="#id17" title="Link to this image"></a></p>
+<p><span class="caption-text">Gravitation</span><a class="headerlink" href="#id15" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <p>每个节点会显示：<code class="docutils literal notranslate"><span class="pre">MAC_Addr:IP</span> <span class="pre">(更新时间)</span></code>.
@@ -444,15 +441,13 @@
 </section>
 <section id="gravitation">
 <h2>Gravitation使用指南<a class="headerlink" href="#gravitation" title="Link to this heading"></a></h2>
-<section id="id8">
-<h3>测试工具的位置<a class="headerlink" href="#id8" title="Link to this heading"></a></h3>
+<p><strong>测试工具的位置</strong></p>
 <p>Gravitation的目录为: <code class="docutils literal notranslate"><span class="pre">{sdk}/tools/R-Mesh_Demo_Tool</span></code>.</p>
-</section>
-<section id="id9">
-<h3>测试步骤如下<a class="headerlink" href="#id9" title="Link to this heading"></a></h3>
-<ul>
-<li><p>将AP和PC通过网络连接，然后执行gravitation.exe</p></li>
-<li><p>打开gravitation文件夹下的文件 <code class="file docutils literal notranslate"><span class="pre">config.yaml</span></code>, 配置所要测试的AP，你可以同时添加多个AP：</p>
+<p><strong>测试步骤</strong></p>
+<p>测试步骤如下：</p>
+<ol class="arabic">
+<li><p>将AP和PC通过网络连接，执行gravitation.exe</p></li>
+<li><p>打开gravitation文件夹下的文件 <code class="file docutils literal notranslate"><span class="pre">config.yaml</span></code>, 配置所要测试的AP。你可以同时添加多个AP：</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ap_mac_list</span><span class="p">:</span>
 <span class="o">-</span> <span class="mi">00</span><span class="p">:</span><span class="mi">11</span><span class="p">:</span><span class="mi">22</span><span class="p">:</span><span class="mi">33</span><span class="p">:</span><span class="mi">44</span><span class="p">:</span><span class="mi">55</span>
 </pre></div>
@@ -464,20 +459,23 @@
 <span class="n">packet_size</span><span class="p">:</span> <span class="mi">64</span>
 </pre></div>
 </div>
-<p>其中ping间隔也可以通过gravitation界面直接配置。</p>
 </li>
-<li><p>此时gravitation配置完成，关闭gravitation并重新运行gravitation.exe，所有配置即刻生效。</p></li>
-<li><p>使用AT指令让每个测试节点连接AP，之后节点会自动进行Mesh组网，你可以在gravitation观察到每个节点的连接状况及网络拓扑。</p>
+</ol>
+<blockquote>
+<div><p>其中ping间隔也可以通过gravitation界面直接配置。</p>
+<p>此时gravitation配置完成，关闭gravitation并重新运行gravitation.exe，所有配置即刻生效。</p>
+</div></blockquote>
+<ol class="arabic" start="4">
+<li><p>使用AT指令让每个测试节点连接AP，之后节点会自动进行Mesh组网。你可以在gravitation观察到每个节点的连接状况及网络拓扑。</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">WLCONN</span><span class="o">=</span><span class="n">ssid</span><span class="p">,</span><span class="n">rmesh_test</span><span class="p">,</span><span class="n">pw</span><span class="p">,</span><span class="mi">12345678</span>
 </pre></div>
 </div>
 </li>
-</ul>
+</ol>
 </section>
 </section>
-</section>
-<section id="id10">
-<h1>Wi-Fi R-Mesh 参数配置<a class="headerlink" href="#id10" title="Link to this heading"></a></h1>
+<section id="id8">
+<h1>Wi-Fi R-Mesh 参数配置<a class="headerlink" href="#id8" title="Link to this heading"></a></h1>
 <p>您只需要配置有限的几个参数即可使用R-Mesh（不配置则会使用默认配置）。</p>
 <p>打开文件：<code class="docutils literal notranslate"><span class="pre">{sdk}/component/soc/amebadplus/ameba_wificfg.c</span></code>，可以看到如下参数，修改后重新编译SDK即可。</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>/*R-mesh*/
@@ -489,8 +487,7 @@ wifi_user_config.wtn_child_refresh_timeout：单位为毫秒，超过这个时�
 </section>
 <section id="r-mesh-sdk">
 <h1>R-Mesh SDK获取<a class="headerlink" href="#r-mesh-sdk" title="Link to this heading"></a></h1>
-<p>联系 &lt;<a class="reference external" href="mailto:claire_wang&#37;&#52;&#48;realsil&#46;com&#46;cn">claire_wang<span>&#64;</span>realsil<span>&#46;</span>com<span>&#46;</span>cn</a>&gt;索取R-Mesh wlan lib，然后通过如下SDK编译image即可使用R-Mesh：</p>
-<p><a class="reference external" href="https://github.com/Ameba-AIoT/ameba-rtos">IoT SDK</a></p>
+<p>联系 &lt;<a class="reference external" href="mailto:claire_wang&#37;&#52;&#48;realsil&#46;com&#46;cn">claire_wang<span>&#64;</span>realsil<span>&#46;</span>com<span>&#46;</span>cn</a>&gt;索取R-Mesh wlan lib，然后通过如下SDK编译image即可使用R-Mesh：<a class="reference external" href="https://github.com/Ameba-AIoT/ameba-rtos">IoT SDK</a></p>
 </section>
 
 
