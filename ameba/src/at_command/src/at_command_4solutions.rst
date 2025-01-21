@@ -12,4 +12,4 @@ As illustrated in the figure, the Ameba is connected to the host MCU via interfa
       :columns: 2
 
       * |finger_icon| `AT Command SDK <https://github.com/Ameba-AIoT/ameba-rtos>`_
-      * |finger_icon| `AT Command DoC <https://ameba-aiot.github.io/ameba-iot-docs/RTL8721Dx/en/latest/ameba/en/at_command/src/index.html>`_
+      * |finger_icon| `AT Command DoC <https://ameba-aiot.github.io/ameba-iot-docs/RTL8721Dx/en/latest/ameba/src/at_command/at_command_index.html>`_
