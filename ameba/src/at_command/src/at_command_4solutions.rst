@@ -2,7 +2,7 @@
 
 As illustrated in the figure, the Ameba is connected to the host MCU via interfaces such as UART/SPI，and the host MCU controls the network device and facilitates the transmission of network data using AT commands.
 
-.. figure:: ../../../src/at_command/figures/at_command_4solutions.svg
+.. figure:: ../src/at_command/figures/at_command_4solutions.svg
    :scale: 120%
    :align: center
 

@@ -4,7 +4,7 @@ Connect Ameba SoC to the host as a Wi-Fi card through UART/SPI/SDIO/USB interfac
 
 The following figure is the high-level block diagram for Wi-Fi FullMAC solution.
 
-.. figure:: ../../../src/fullmac/figures/wifi_fullmac_4solutions.svg
+.. figure:: ../src/fullmac/figures/wifi_fullmac_4solutions.svg
    :scale: 120%
    :align: center
 

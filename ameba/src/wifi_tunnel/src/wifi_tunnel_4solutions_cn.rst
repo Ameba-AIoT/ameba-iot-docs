@@ -2,7 +2,7 @@
 
 如下图所示, Wi-Fi R-MESH 是一个树形mesh网络, 用于增加WiFi覆盖范围, 让距离AP比较远的设备也能获得稳定的网络连线.
 
-.. figure:: ../../../src/wifi_tunnel/figures/wifi_tunnel_topology_capacity.svg
+.. figure:: ../src/wifi_tunnel/figures/wifi_tunnel_topology_capacity.svg
    :scale: 140%
    :align: center
 

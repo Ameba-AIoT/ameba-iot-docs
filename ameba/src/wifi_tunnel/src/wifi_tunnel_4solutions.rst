@@ -4,7 +4,7 @@ Realtek Wi-Fi R-MESH networking solution.
 
 As shown in the figure below, Wi-Fi R-MESH is a mesh network with tree topology used to extend the transmission distance of Wi-Fi, allowing stations that are relatively far from the AP to maintain a stable online status.
 
-.. figure:: ../../../src/wifi_tunnel/figures/wifi_tunnel_topology_capacity.svg
+.. figure:: ../src/wifi_tunnel/figures/wifi_tunnel_topology_capacity.svg
    :scale: 140%
    :align: center
 
