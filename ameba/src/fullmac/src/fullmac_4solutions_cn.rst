@@ -23,4 +23,4 @@
       :columns: 2
 
       * |finger_icon| `Wi-Fi FullMAC SDK <https://github.com/Ameba-AIoT/ameba-rtos>`_
-      * |finger_icon| `Wi-Fi FullMAC DoC <https://ameba-aiot.github.io/ameba-iot-docs/RTL8721Dx/cn/latest/ameba/cn/fullmac/src/index.html>`_
+      * |finger_icon| `Wi-Fi FullMAC DoC <https://ameba-aiot.github.io/ameba-iot-docs/RTL8721Dx/cn/latest/ameba/src/fullmac/fullmac_index_cn.html>`_

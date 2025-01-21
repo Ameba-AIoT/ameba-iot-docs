@@ -21,4 +21,4 @@ The well-designed Wi-Fi R-MESH has the following advantages:
       :columns: 2
 
       * |finger_icon| `Wi-Fi R-Mesh SDK <https://github.com/Ameba-AIoT/ameba-rtos>`_
-      * |finger_icon| `Wi-Fi R-Mesh DoC <https://ameba-aiot.github.io/ameba-iot-docs/RTL8721Dx/en/latest/ameba/en/wifi_tunnel/src/index.html>`_
+      * |finger_icon| `Wi-Fi R-Mesh DoC <https://ameba-aiot.github.io/ameba-iot-docs/RTL8721Dx/en/latest/ameba/src/wifi_tunnel/wifi_tunnel_index.html>`_

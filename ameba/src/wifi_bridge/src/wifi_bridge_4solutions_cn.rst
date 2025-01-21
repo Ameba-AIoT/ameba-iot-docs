@@ -21,4 +21,4 @@
       :columns: 2
 
       * |finger_icon| `Wi-Fi Bridge SDK <https://github.com/Ameba-AIoT/ameba-rtos>`_
-      * |finger_icon| `Wi-Fi Bridge DoC <https://ameba-aiot.github.io/ameba-iot-docs/RTL8721Dx/en/latest/ameba/en/wifi_bridge/src/index.html>`_
+      * |finger_icon| `Wi-Fi Bridge DoC <https://ameba-aiot.github.io/ameba-iot-docs/RTL8721Dx/cn/latest/ameba/src/wifi_bridge/wifi_bridge_index_cn.html>`_
