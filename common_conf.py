@@ -60,8 +60,8 @@ def get_toctree_rst(root_rst: Path, src_root: Path, toctree_rst_files: List) -> 
         toctree_rst_files.append(root_rst)
     else:
         return  # 已经存在,则终止当前路径,防止陷入死循环
-    if root_rst.stem not in ["index", "index_nda", "index_linux", "index_linux_nda"]:
-        return  # 只解析index,index_nda,提高效率
+    if not fnmatch.fnmatch(f"_{root_rst.stem}_", "*_index_*"):
+        return  # 只解析包含index的,提高效率
     for line in root_rst.read_text(encoding='utf-8').splitlines():
         line = line.strip()
         if line.startswith(".. toctree::"):
@@ -224,7 +224,6 @@ def setup(app):
 # 项目设置
 author = "Realsil"
 copyright = f"{datetime.datetime.now().year}, Realsil"
-
 
 # 设置扩展
 extensions = [
