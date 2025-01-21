@@ -2,13 +2,13 @@
 
    a. Click :menuselection:`CONFIG Link Option > IMG2(Application) running on FLASH or PSRAM?`, and select :menuselection:`PSRAM`
 
-      .. figure:: ../../../src/fullmac/figures/sdio_config_flash_or_psram.png
+      .. figure:: ../figures/sdio_config_flash_or_psram.png
          :scale: 80%
          :align: center
 
    b. Click :menuselection:`CONFIG INIC ITNF > INIC Mode > FULLMAC`, select :menuselection:`SDIO_FULLMAC` for SDIO interface or :menuselection:`SPI_FULLMAC` for SPI interface.
 
-      .. figure:: ../../../src/fullmac/figures/wifi_sdio_spi_selection.png
+      .. figure:: ../figures/wifi_sdio_spi_selection.png
          :scale: 80%
          :align: center
 

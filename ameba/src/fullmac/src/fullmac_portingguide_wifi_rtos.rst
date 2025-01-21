@@ -6,7 +6,7 @@
 
       a. Click :menuselection:`CONFIG INIC ITNF > INIC Mode`, select :menuselection:`SPI_FULLMAC_HOST` for SPI interface.
 
-         .. figure:: ../../../src/fullmac/figures/spi_config_fullmac_host.png
+         .. figure:: ../figures/spi_config_fullmac_host.png
             :scale: 80%
             :align: center
 

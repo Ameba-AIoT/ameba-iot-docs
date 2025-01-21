@@ -6,7 +6,7 @@
 
       a. 找到 :menuselection:`CONFIG INIC ITNF > INIC Mode`, 选择需要的接口：
 
-         .. figure:: ../../../src/fullmac/figures/spi_config_fullmac_host.png
+         .. figure:: ../figures/spi_config_fullmac_host.png
             :scale: 80%
             :align: center
 

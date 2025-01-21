@@ -49,7 +49,7 @@ LOGUART Mode
 
 In case of LOGUART mode, the input and response of AT commands are shown in the same port.
 
-.. figure:: ../../../src/at_command/figures/loguart_mode.svg
+.. figure:: ../figures/loguart_mode.svg
    :scale: 120%
    :align: center
 
@@ -64,7 +64,7 @@ MCU Control Mode
 
 In case of MCU control mode, the input and response of AT commands can be separated from the driver log, making it easier for users to view the execution results of AT commands more intuitively.
 
-.. figure:: ../../../src/at_command/figures/mcu_control_mode.svg
+.. figure:: ../figures/mcu_control_mode.svg
    :scale: 120%
    :align: center
 
@@ -316,7 +316,7 @@ Users can modify the property value of the interface to choose between using UAR
 For the MCU Control mode of SPI, if you want to achieve better high-speed transmission performance, you need to enable the High TP Mode in menuconfig.
 The configuration process is as follows:
 
-.. figure:: ../../../src/at_command/figures/enable_wifi_high_tp_mode.png
+.. figure:: ../figures/enable_wifi_high_tp_mode.png
    :scale: 90%
    :align: center
 
@@ -379,7 +379,7 @@ After preparations above, users can build images in the ``{sdk}`` directory. The
       make menuconfig
       // ...
    
-   .. figure:: ../../../src/at_command/figures/choice_mode.png
+   .. figure:: ../figures/choice_mode.png
       :scale: 90%
       :align: center
    
@@ -391,7 +391,7 @@ After preparations above, users can build images in the ``{sdk}`` directory. The
 
 If users want to use Bluetooth AT Commands, run ``$make menuconfig`` to enable BLE transfer module first.
 
-.. figure:: ../../../src/at_command/figures/enable_ble_transfer_module.png
+.. figure:: ../figures/enable_ble_transfer_module.png
    :scale: 90%
    :align: center
 
@@ -414,7 +414,7 @@ When you lanuch the image tool, it is shown as the following figure.
 
 .. only:: RTL8721D
 
-   .. figure:: ../../../src/at_command/figures/image_tool_amebadplus.png
+   .. figure:: ../figures/image_tool_amebadplus.png
       :scale: 70%
       :align: center
 
@@ -422,7 +422,7 @@ When you lanuch the image tool, it is shown as the following figure.
 
 .. only:: RTL8726EA
 
-   .. figure:: ../../../src/at_command/figures/image_tool_amebalite.png
+   .. figure:: ../figures/image_tool_amebalite.png
       :scale: 70%
       :align: center
 

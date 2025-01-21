@@ -4,7 +4,7 @@ Introduction
 ------------------------
 SDIO bridge 的架构图如下图所示.
 
-.. figure:: ../../../src/wifi_bridge/figures/sdio_bridge_architecture.svg
+.. figure:: ../figures/sdio_bridge_architecture.svg
    :scale: 120%
    :align: center
 
@@ -45,7 +45,7 @@ Usually, the host will create a TCP/UDP connection with Internet Cloud Service, 
 If the host needs to enter power-saving mode and still keep connection with Cloud Service, they can create another same TCP/UDP connection on Ameba upper layer application.
 The IP address and destination port are the same, the only difference is source port.
 
-.. figure:: ../../../src/wifi_bridge/figures/sdio_data_flow.svg
+.. figure:: ../figures/sdio_data_flow.svg
    :scale: 90%
    :align: center
    :name: sdio_data_flow
@@ -172,7 +172,7 @@ The |CHIP_NAME| can also convert to a standard SD card through the designed PCB 
 
 .. This figure is also referred in wifi_fullmac.rst, it is not allowed to change the figure name unless necessary.
    If the figure name must be changed, make sure to update wifi_fullmac.rst accordingly.
-.. figure:: ../../../src/wifi_bridge/figures/sdio_adapter_board.jpg
+.. figure:: ../figures/sdio_adapter_board.jpg
    :scale: 50%
    :align: center
 
@@ -182,7 +182,7 @@ The pin layout of |CHIP_NAME| demo board refers the pin layout of Raspberry Pi a
 
 .. This figure is also referred in wifi_fullmac.rst, it is not allowed to change the figure name unless necessary.
    If the figure name must be changed, make sure to update wifi_fullmac.rst accordingly.
-.. figure:: ../../../src/wifi_bridge/figures/connection_with_raspberry_pi.jpg
+.. figure:: ../figures/connection_with_raspberry_pi.jpg
    :scale: 50%
    :align: center
 
@@ -253,19 +253,19 @@ In order to build SDIO bridge image, choose :guilabel:`SDIO_BRIDGE` in menuconfi
 
 1. Enter menuconfig and select :guilabel:`CONFIG INIC INTF`
 
-   .. figure:: ../../../src/wifi_bridge/figures/bridge_config_inic_intf.png
+   .. figure:: ../figures/bridge_config_inic_intf.png
       :scale: 40%
       :align: center
 
 2. In INIC-INTF menu, select :guilabel:`INIC MODE`
 
-   .. figure:: ../../../src/wifi_bridge/figures/bridge_inic_mode.png
+   .. figure:: ../figures/bridge_inic_mode.png
       :scale: 40%
       :align: center
 
 3. In INIC Mode menu, select :guilabel:`SDIO_BRIDGE`
 
-   .. figure:: ../../../src/wifi_bridge/figures/bridge_sdio_bridge.png
+   .. figure:: ../figures/bridge_sdio_bridge.png
       :scale: 50%
       :align: center
 
@@ -278,7 +278,7 @@ The testapp wraps some Wi-Fi commands, such as Wi-Fi connect, Wi-Fi scan, which 
 
 The testapp uses netlink to communicate with SDIO host driver. When SDIO host driver receives related commands, the testapp will inform SDIO device to perform corresponding operation by SDIO interface. The control flow is illustrated below.
 
-.. figure:: ../../../src/wifi_bridge/figures/bridge_testapp_control_flow.svg
+.. figure:: ../figures/bridge_testapp_control_flow.svg
    :scale: 90%
    :align: center
 
@@ -332,14 +332,14 @@ Command Usage
    
    After Wi-Fi connect command executed, the ``eth_sta0`` interface can be shown by command ``ifconfig``, the IP address will also be configured automatically, and this IP address will be the same IP address in |CHIP_NAME|, as shown in Figure :ref:`ifconfig result <bridge_ifconfig_result>`.
 
-   .. figure:: ../../../src/wifi_bridge/figures/bridge_testapp_control_flow.png
+   .. figure:: ../figures/bridge_testapp_control_flow.png
       :scale: 60%
       :align: center
       :name: bridge_testapp_control_flow
 
       testapp control flow
 
-   .. figure:: ../../../src/wifi_bridge/figures/bridge_ifconfig_result.png
+   .. figure:: ../figures/bridge_ifconfig_result.png
       :scale: 60%
       :align: center
       :name: bridge_ifconfig_result

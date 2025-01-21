@@ -1,8 +1,7 @@
 #!/bin/bash
 
 echo "build amebadplus"
-cd ../amebadplus
-make cn RTL8721D
+make cn
 
 counter=1
 until [ $counter -eq 0 ]
@@ -12,5 +11,6 @@ do
     ((counter--))
 done
 
+cd ../amebadplus
+make en TAGS=8721D
 cd -
-make cn

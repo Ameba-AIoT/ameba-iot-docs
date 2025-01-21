@@ -4,7 +4,7 @@ Wi-Fi R-Mesh Topology
 ------------------------------------------
 As shown in the figure below, Wi-Fi R-Mesh is a tree-topology mesh network used to increase the Wi-Fi coverage, allowing stations that are far from the AP to also obtain a stable network connection.
 
-.. figure:: ../../../src/wifi_tunnel/figures/wifi_tunnel_topology_capacity.svg
+.. figure:: ../figures/wifi_tunnel_topology_capacity.svg
    :scale: 140%
    :align: center
 
@@ -42,7 +42,7 @@ Wi-Fi R-Mesh handles data forwarding directly via the Wi-Fi driver, requiring mi
 
 As a result of minimal software-processing flow, the software-processing time is also greatly reduced. Consequently, even nodes several hops away communicating with the AP can achieve good throughput.
 
-.. figure:: ../../../src/wifi_tunnel/figures/wifi_tunnel_data_flow.svg
+.. figure:: ../figures/wifi_tunnel_data_flow.svg
    :scale: 130%
    :align: center
 
@@ -58,7 +58,7 @@ The diagram below illustrates an example where the capacity is 4.
 - Topology 3: The four nodes form a 4-hop network
 - Can also be any intermediate topology between Topology 0 and Topology 3
 
-.. figure:: ../../../src/wifi_tunnel/figures/wifi_tunnel_topology_capacity.svg
+.. figure:: ../figures/wifi_tunnel_topology_capacity.svg
    :scale: 140%
    :align: center
 
@@ -72,7 +72,7 @@ In this solution, the root node and its child nodes are connected to the SoftAP,
 
 The diagram below illustrates an example where the NAT is used to expand the R-Mesh station number.
 
-.. figure:: ../../../src/wifi_tunnel/figures/wifi_tunnel_nat.svg
+.. figure:: ../figures/wifi_tunnel_nat.svg
    :scale: 140%
    :align: center
 
@@ -134,7 +134,7 @@ Throughput Test via ipref Command
 The throughput can be tested via iperf. Normally, a PC will be used as the test peer, and the PC need connect to target AP via the network cable.
 In R-mesh, each R-mesh node will obtain an IP from the target AP, thus each R-mesh node can use the same iperf test method as a normal STA.
 
-.. figure:: ../../../src/wifi_tunnel/figures/tp_test_ipref.svg
+.. figure:: ../figures/tp_test_ipref.svg
    :scale: 140%
    :align: center
 
@@ -201,7 +201,7 @@ Wi-Fi R-Mesh RTT
 ------------------------------
 The Wi-Fi R-Mesh Round-Trip Latency is illustrated in the following figure.
 
-.. figure:: ../../../src/wifi_tunnel/figures/rmesh_rtt.png
+.. figure:: ../figures/rmesh_rtt.png
    :scale: 80%
    :align: center
 
@@ -212,7 +212,7 @@ Hardware Connection
 ~~~~~~~~~~~~~~~~~~~~~~
 The AP and PC are connected via the network, and the demo tool is executed on the PC.
 
-.. figure:: ../../../src/wifi_tunnel/figures/rmesh_demo_tool_connection.svg
+.. figure:: ../figures/rmesh_demo_tool_connection.svg
    :scale: 135%
    :align: center
 
@@ -223,7 +223,7 @@ Introduction
 To effectively test and demonstrate Wi-Fi R-Mesh, we have specifically developed a software tool.
 R-mesh nodes will periodically communicate with the tool by socket to update the current network status.
 
-.. figure:: ../../../src/wifi_tunnel/figures/rmesh_demo_tool.png
+.. figure:: ../figures/rmesh_demo_tool.png
    :scale: 50%
    :align: center
 
@@ -276,7 +276,7 @@ Usage
 
   The ping interval can also be configured directly on the bottom of tool menu:
 
-  .. figure:: ../../../src/wifi_tunnel/figures/ping_interval.png
+  .. figure:: ../figures/ping_interval.png
      :scale: 50%
      :align: center
 

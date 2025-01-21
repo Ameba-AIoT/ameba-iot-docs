@@ -46,7 +46,7 @@
 
             ii. 选择 :menuselection:`Interface Options > SPI > Yes`：
 
-               .. figure:: ../../../src/fullmac/figures/raspberry_pi_spi_config.png
+               .. figure:: ../figures/raspberry_pi_spi_config.png
                   :scale: 100%
                   :align: center
 
@@ -136,7 +136,7 @@
       ko文件加载成功之后, 使用 ``ifconfig`` 命令可以获取到WiFi网络设备的相关信息。
       如下图所示，MAC地址为``00:e0:4c``的是Station模式, MAC地址为 ``00:e1:4c is`` 的是softAP模式。
 
-      .. figure:: ../../../src/fullmac/figures/ifconfig_sta_softap.png
+      .. figure:: ../figures/ifconfig_sta_softap.png
          :scale: 100%
          :align: center
 

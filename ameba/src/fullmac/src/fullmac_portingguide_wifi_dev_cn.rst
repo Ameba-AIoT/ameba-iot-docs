@@ -2,13 +2,13 @@
 
    a. 找到 :menuselection:`CONFIG Link Option > IMG2(Application) running on FLASH or PSRAM?`, 选择:menuselection:`PSRAM`：
 
-      .. figure:: ../../../src/fullmac/figures/sdio_config_flash_or_psram.png
+      .. figure:: ../figures/sdio_config_flash_or_psram.png
          :scale: 80%
          :align: center
 
    b. 找到 :menuselection:`CONFIG INIC ITNF > INIC Mode > FULLMAC`, 选择需要的接口：
 
-      .. figure:: ../../../src/fullmac/figures/wifi_sdio_spi_selection.png
+      .. figure:: ../figures/wifi_sdio_spi_selection.png
          :scale: 80%
          :align: center
 

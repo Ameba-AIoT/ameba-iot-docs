@@ -14,18 +14,18 @@ FullMAC 提供如下功能:
 
 如下图所示 ``host`` 可以是Linux/Rtos/Zephyr OS, ``device`` 是指支持FullMAC的Ameba SoC。
 
-.. include:: ../../../src/fullmac/src/fullmac_architecture.rst
+.. include:: ../src/fullmac_architecture.rst
 
 FullMAC的特点
 ------------------------
-.. include:: ../../../src/fullmac/src/fullmac_features.rst
+.. include:: ../src/fullmac_features.rst
 
 FullMAC传输接口
 ------------------------
 
 .. tabs::
 
-   .. include:: ../../../src/fullmac/src/fullmac_interface.rst
+   .. include:: ../src/fullmac_interface.rst
 
 FullMAC文件目录
 ---------------
@@ -35,9 +35,9 @@ Wi-Fi
 
 .. tabs::
 
-   .. include:: ../../../src/fullmac/src/fullmac_filetree_rtos_cn.rst
+   .. include:: ../src/fullmac_filetree_rtos_cn.rst
 
-   .. include:: ../../../src/fullmac/src/fullmac_filetree_linux_cn.rst
+   .. include:: ../src/fullmac_filetree_linux_cn.rst
 
 Bluetooth
 ~~~~~~~~~~
@@ -60,7 +60,7 @@ FullMAC 目前经过测试的Host有：Linux @ PC/Linux @ Raspberry Pi/RTOS @ ST
 
 .. tabs::
 
-   .. include:: ../../../src/fullmac/src/fullmac_hostpins_raspberry_21dx11dx .rst
+   .. include:: ../src/fullmac_hostpins_raspberry_21dx11dx .rst
 
 .. note::
    以上Ameba的SDIO pin是 SDK的默认pin脚，如果开发者使用另外的pin脚做SDIO，则需要修改SPDIO_Board_Init 中的SDIO pinmux配置。
@@ -77,10 +77,10 @@ SDIO转接板
 ~~~~~~~~~~~~~~~~~~~~~~
 由于SDIO 飞线可能会导致信号传输质量差，无法使用较高的频率传输。可以购买SDIO转接板连接到Ameba的SDIO pin脚，如下图所示：
 
-   .. This figure is located at ../../../src/wifi_bridge/figures.
+   .. This figure is located at figures.
       If the figure name has been changed, make sure to update sdio_fullmac.rst accordingly.
 
-   .. figure:: ../../../src/wifi_bridge/figures/sdio_adapter_board.jpg
+   .. figure:: ../figures/sdio_adapter_board.jpg
       :align: center
       :scale: 50%
 
@@ -93,7 +93,7 @@ SDIO转接板
 ~~~~~~~~~~~~~~~~~~~~~~
 为了实现高速传输，建议将Amaba的Demo板的 SDIO pin脚直接焊接到树莓派对应的pin脚，如下图所示：
 
-   .. figure:: ../../../src/wifi_bridge/figures/connection_with_raspberry_pi.jpg
+   .. figure:: ../figures/connection_with_raspberry_pi.jpg
       :align: center
       :scale: 50%
 
@@ -101,35 +101,35 @@ SDIO转接板
 
 FullMAC WiFi Device 驱动移植指南
 --------------------------------
-.. include:: ../../../src/fullmac/src/fullmac_portingguide_wifi_dev_cn.rst
+.. include:: ../src/fullmac_portingguide_wifi_dev_cn.rst
 
 FullMAC Wi-Fi Host 驱动移植指南
 --------------------------------
 .. tabs::
 
-   .. include:: ../../../src/fullmac/src/fullmac_portingguide_wifi_rtos_cn.rst
+   .. include:: ../src/fullmac_portingguide_wifi_rtos_cn.rst
 
-   .. include:: ../../../src/fullmac/src/fullmac_portingguide_wifi_linux_cn.rst
+   .. include:: ../src/fullmac_portingguide_wifi_linux_cn.rst
 
 FullMAC BT Device 驱动移植指南
 ---------------------------------------
-.. include:: ../../../src/fullmac/src/fullmac_portingguide_bt_dev_cn.rst
+.. include:: ../src/fullmac_portingguide_bt_dev_cn.rst
 
 FullMAC BT Host 驱动移植指南
 -------------------------------
 .. tabs::
 
-   .. include:: ../../../src/fullmac/src/fullmac_portingguide_bt_linux_cn.rst
+   .. include:: ../src/fullmac_portingguide_bt_linux_cn.rst
 
-   .. include:: ../../../src/fullmac/src/fullmac_portingguide_bt_rtos_cn.rst
+   .. include:: ../src/fullmac_portingguide_bt_rtos_cn.rst
 
 FullMAC WiFi 吞吐量
 -------------------
 .. tabs::
 
-   .. include:: ../../../src/fullmac/src/fullmac_throughput_wifi_rtos.rst
+   .. include:: ../src/fullmac_throughput_wifi_rtos.rst
 
-   .. include:: ../../../src/fullmac/src/fullmac_throughput_wifi_linux.rst
+   .. include:: ../src/fullmac_throughput_wifi_linux.rst
 
    - [1] The data is the test result of device code running in PSRAM, host driver running on Dell Optiplex 3080 MT.
    - [2] The data is the test result of device code running in PSRAM, host driver running on Raspberry Pi 4.
@@ -141,12 +141,12 @@ Device
 ~~~~~~~~
 .. tabs::
 
-   .. include:: ../../../src/fullmac/src/fullmac_memsize_dev_21dx11dx.rst
+   .. include:: ../src/fullmac_memsize_dev_21dx11dx.rst
 
 Host
 ~~~~~~~~
 .. tabs::
 
-   .. include:: ../../../src/fullmac/src/fullmac_memsize_host_rtos.rst
+   .. include:: ../src/fullmac_memsize_host_rtos.rst
 
-   .. include:: ../../../src/fullmac/src/fullmac_memsize_host_linux.rst
+   .. include:: ../src/fullmac_memsize_host_linux.rst

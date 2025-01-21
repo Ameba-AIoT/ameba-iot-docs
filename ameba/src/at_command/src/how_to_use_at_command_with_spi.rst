@@ -56,7 +56,7 @@ After this, you can refer to our host example to adapt it to the specific MCU pl
 
 In the example code, we added an UART task to receive AT commands and print the AT responses.The overall data flow diagram is as follows:
 
-.. figure:: ../../../src/at_command/figures/spi_at_data_flow.svg
+.. figure:: ../figures/spi_at_data_flow.svg
    :scale: 150%
    :align: center
 
@@ -88,7 +88,7 @@ The SPI AT Command exchange process mainly consists of two aspects:
 
 - SPI master sends AT command to slave:
 
-.. figure:: ../../../src/at_command/figures/spi_master_send_at_command_to_slave.svg
+.. figure:: ../figures/spi_master_send_at_command_to_slave.svg
    :scale: 150%
    :align: center
 
@@ -106,7 +106,7 @@ The specific instructions for each step are as follows:
 
 - SPI slave sends AT command response to master:
 
-.. figure:: ../../../src/at_command/figures/spi_slave_send_response_to_master.svg
+.. figure:: ../figures/spi_slave_send_response_to_master.svg
    :scale: 150%
    :align: center
 

@@ -45,7 +45,7 @@
 
             ii. Select :menuselection:`Interface Options > SPI > Yes`
 
-               .. figure:: ../../../src/fullmac/figures/raspberry_pi_spi_config.png
+               .. figure:: ../figures/raspberry_pi_spi_config.png
                   :scale: 100%
                   :align: center
 
@@ -137,7 +137,7 @@
 
       The following is an example, in which **wlan1** is STA and **wlan2** is softAP.
 
-      .. figure:: ../../../src/fullmac/figures/ifconfig_sta_softap.png
+      .. figure:: ../figures/ifconfig_sta_softap.png
          :scale: 100%
          :align: center   
 
