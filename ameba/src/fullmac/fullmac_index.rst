@@ -7,4 +7,4 @@ FullMAC
 .. toctree::
    :maxdepth: 5
 
-   src/fullmac
+   fullmac

@@ -7,4 +7,4 @@ Wi-Fi Bridge
 .. toctree::
    :maxdepth: 2
 
-   src/wifi_bridge
+   wifi_bridge
