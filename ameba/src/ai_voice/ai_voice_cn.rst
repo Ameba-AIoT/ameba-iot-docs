@@ -2,102 +2,101 @@
 
 概述
 ------------
-The AIVoice provides offline AI solution to build voice related applications on Realtek Ameba SoCs.
+AIVoice提供用于在Realtek SoC上构建语音相关应用的离线AI解决方案。
 
-支持的SoC
-~~~~~~~~~~~~~~~~~~~~~~~
+支持平台
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 .. table::
    :width: 100%
    :widths: auto
 
-   +-----------------------+----------+------------+------------------------------+-----------------------------------+
-   | Ameba SoC             | OS       | Processor  | aivoice_lib_dir              | aivoice_example_dir               |
-   +=======================+==========+============+==============================+===================================+
-   | RTL8730E              | Linux    | CA32       | {LINUXSDK}/apps/aivoice      | {LINUXSDK}/apps/aivoice/example   |
-   |                       +----------+            +------------------------------+-----------------------------------+
-   |                       | FreeRTOS |            | {RTOSSDK}/component/aivoice  | {RTOSSDK}/example/aivoice         |
-   +-----------------------+----------+------------+------------------------------+-----------------------------------+
-   | RTL8726EA/RTL8713EC   | FreeRTOS | HiFi5 DSP  | {DSPSDK}/lib/aivoice         | {DSPSDK}/example/example_aivoice  |
-   +-----------------------+----------+------------+------------------------------+-----------------------------------+
+   +---------------------+----------+-----------+-----------------------------+----------------------------------+
+   | 芯片                | 操作系统 | 核        | aivoice_lib_dir             | aivoice_example_dir              |
+   +=====================+==========+===========+=============================+==================================+
+   | RTL8730E            | Linux    | CA32      | {LINUXSDK}/apps/aivoice     | {LINUXSDK}/apps/aivoice/example  |
+   +                     +----------+           +-----------------------------+----------------------------------+
+   |                     | FreeRTOS |           | {RTOSSDK}/component/aivoice | {RTOSSDK}/example/aivoice        |
+   +---------------------+----------+-----------+-----------------------------+----------------------------------+
+   | RTL8713EC,RTL8726EA | FreeRTOS | HiFi5 DSP | {DSPSDK}/lib/aivoice        | {DSPSDK}/example/example_aivoice |
+   +---------------------+----------+-----------+-----------------------------+----------------------------------+
 
 模块
-~~~~~~~~~~~~
-AFE (Audio Front End)
+~~~~~~~~~~~~~~~~~~~~~~~~
+AFE（信号处理）
 ^^^^^^^^^^^^^^^^^^^^^^^^
-The AFE is audio signal processing module for enhancing speech signals. It can improve robustness of speech recognition system or improve signal quality of communication system.
+AFE是用于增强语音信号的音频信号处理模块。它可以提高语音识别系统的鲁棒性或改善通信系统的信号质量。
 
-In AIVoice, AFE includes submodules:
+在AIVoice中，AFE算法包括以下子模块：
 
-- AEC (Acoustic Echo Cancellation)
-- BF (Beamforming)
-- NS (Noise Suppression)
-- AGC (Automatic Gain Control)
+- AEC（声学回声消除）
+- BF（波束成形）
+- NS（噪声抑制）
+- AGC（自动增益控制）
 
-Currently SDK provides libraries for four microphone arrays:
+当前SDK中提供了以下四种麦克风阵型对应的算法库：
 
 - 1mic
 - 2mic_30mm
 - 2mic_50mm
 - 2mic_70mm
 
-Other microphone arrays or performance optimizations can be provided through customized services.
+也可以通过定制服务提供其他麦克风阵列或性能优化。
 
-KWS (Keyword Spotting)
+KWS（唤醒词检测）
 ^^^^^^^^^^^^^^^^^^^^^^^^
-The KWS is the module to detect specific wakeup words from audio. It is usually the first step in a voice interaction system. The device will enter the state of waiting voice commands after detecting the keyword.
+KWS是用于检测音频中特定唤醒词的模块。它通常是语音交互的第一步，设备检测到唤醒词后，会进入等待语音指令状态。
 
-In AIVoice, two solutions of KWS are available:
+AIVoice支持两种KWS算法方案：
 
 .. table::
    :width: 100%
    :widths: auto
 
-   +--------------------+-------------------+----------------------------------------------------------+-----------------------------------+
-   | Solution           | Training data     | Available keywords                                       | Feature                           |
-   +--------------------+-------------------+----------------------------------------------------------+-----------------------------------+
-   | Fixed Keyword      | Specific keywords | Keywords the same as training data                       | Better performance; smaller model |
-   +--------------------+-------------------+----------------------------------------------------------+-----------------------------------+
-   | Customized Keyword | Common data       | Customized keyword of the same language as training data | More flexible                     |
-   +--------------------+-------------------+----------------------------------------------------------+-----------------------------------+
+   +--------------+------------+--------------------------------------+---------------------+
+   | 方案         | 训练数据   | 可选唤醒词                           | 方案特点            |
+   +==============+============+======================================+=====================+
+   | 固定唤醒词   | 特定唤醒词 | 训练数据所用唤醒词                   | 性能更好；模型更小  |
+   +--------------+------------+--------------------------------------+---------------------+
+   | 自定义唤醒词 | 通用数据   | 与训练数据相同语种的任意自定义唤醒词 | 更灵活              |
+   +--------------+------------+--------------------------------------+---------------------+
 
-Currently SDK provides a fixed keyword model library of Chinese keyword "xiao-qiang-xiao-qiang" or "ni-hao-xiao-qiang". Other keywords or performance optimizations can be provided through customized services.
+当前SDK中提供了一个“小强小强”或“你好小强”的中文固定唤醒词模型，也可以通过定制服务提供其他唤醒词或性能优化。
 
-VAD (Voice Activity Detection)
+VAD（语音端点检测）
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-The VAD is the module to detect the presence of human speech in audio.
+VAD是用于检测音频中有无语音信号的模块。
 
-In AIVoice, a neural network based VAD is provided and can be used in speech enhancement, ASR system etc.
+AIVoice提供了一个基于神经网络的VAD算法，可以用于语音增强、识别等语音系统中。
 
-ASR (Automatic Speech Recognition)
+ASR（语音识别）
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-The ASR is the module to recognize speech to text.
+ASR是用于把语音信号识别为文本的模块。
 
-In AIVoice, ASR supports recognition of Chinese speech command words offline.
+AIVoice提供了中文离线语音命令词检测的ASR算法。
 
-Currently SDK provides libraries for 40 air-conditioning related command words, including "打开空调" and "关闭空调" etc. Other command words or performance optimizations can be provided through customized services.
+当前SDK中提供了一套包含“打开空调” “关闭空调”等空调相关的40条命令词的识别算法，也可以通过定制服务更换命令词、性能优化等。
 
 流程
-~~~~~~~~~~~
-Some algorithm flows have been implemented to facilitate user's development.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+为了方便用户开发，部分算法流程已在AIVoice中实现：
 
-:- Full Flow: An offline full flow including AFE, KWS and ASR. AFE and KWS are always-on, ASR turns on and supports continuous recognition when KWS detects the keyword. ASR exits after timeout.
-:- AFE+KWS: Offline flow including AFE and KWS, always-on.
+:- Full Flow: 一个完整的离线流程，包括AFE，KWS和ASR。AFE和KWS始终开启，当KWS检测到关键字时，ASR开启并支持持续识别。超时后ASR退出。
+:- AFE+KWS: 离线流程包括AFE和KWS，始终开启。
 
 配置
 ---------------
 AIVoice
 ~~~~~~~~~~~~~~~
-Configurable parameters:
+可配参数：
 
-:- no_cmd_timeout: ASR exits when no command word detected during this duration. **ONLY used in full flow.**
-:- memory_alloc_mode: Default mode uses SDK default heap. SRAM mode uses SDK default heap while also allocate space from SRAM for memory critical data. **SRAM mode is ONLY available on RTL8713EC and RTL8726EA DSP 
-now.**
+:- no_cmd_timeout: 如果在此持续时间内未检测到命令字，则ASR退出。 **仅在full flow中使用。**
+:- memory_alloc_mode: 默认使用SDK默认堆。SRAM模式使用SDK默认堆，同时还从SRAM分配空间用于内存关键数据。 **SRAM模式目前仅适用于RTL8713EC和RTL8726EA DSP。**
 
-Please refer to ``${aivoice_lib_dir}/include/aivoice_sdk_config.h`` for details.
+详情请参考 ``${aivoice_lib_dir}/include/aivoice_sdk_config.h``。
 
 AFE
 ~~~~~~~~~~~~~~~
-AFE configuration includes microphone array, working mode, submodule switches, etc.
+AFE配置包括麦克风阵列，模式，子模块开关等。
 
 .. code-block:: c
 
@@ -137,43 +136,43 @@ AFE configuration includes microphone array, working mode, submodule switches, e
        int ssl_max_hz;                         // maximum frequency(Hz) of SSL module.
    } afe_config_t;
 
-If you need to change *mic_array*, both configuration and AFE resource library should be changed accordingly.
+如果需要修改麦克风阵列，请确保配置和afe资源库做对应的修改。
 
-Please refer to ``${aivoice_lib_dir}/include/aivoice_afe_config.h`` for details.
+详情请参考 ``${aivoice_lib_dir}/include/aivoice_afe_config.h``。
 
 .. attention::
-   Make sure the *mic_array* and *ref_num* in configuration match AFE input audio.
+   注意：请确保 mic_array 、ref_num 两个参数与 AFE 输入音频匹配。
 
 KWS
 ~~~~~~~~~~~~~~~
-Configurable parameters:
+可配参数：
 
-:- keywords: Keywords for wake up, and **available keywords depend on KWS model**. If the KWS model is a fixed keyword solution, keywords can only be chosen from the trained words. For customized solution, keywords can be customized with any combinations of same language unit(such as pinyin for Chinese). Example: "xiao-qiang-xiao-qiang".
-:- thresholds: Threshold for wake up, range [0, 1]. The higher, less false alarm, but harder to wake up. Set to 0 to use sensitivity with predefined thresholds.
-:- sensitivity: Three levels of sensitivity are provided with predefined thresholds. The higher, easier to wake up but also more false alarm. **ONLY works when thresholds set to 0.**
+:- keywords: 唤醒关键字， **可选的关键字取决于KWS模型**。如果KWS模型是固定唤醒词方案，则只能从训练过的单词中选择。对于自定义唤醒词方案，可以使用该语言建模单元的任意组合来定制关键字（例如中文拼音）。示例："xiao-qiang-xiao-qiang"。
+:- thresholds: 唤醒阈值，范围[0, 1]。值越高，误唤醒越少，但更难唤醒。如果要使用灵敏度，该值需要设为0。
+:- sensitivity: 提供预先调好阈值的三档灵敏度，灵敏度越高，更容易唤醒，但误唤醒也越多。 **灵敏度仅在阈值设置为0时有效。**
 
-Please refer to ``${aivoice_lib_dir}/include/aivoice_kws_config.h`` for details.
+详情请参考 ``${aivoice_lib_dir}/include/aivoice_kws_config.h``。
 
 VAD
 ~~~~~~~~~~~~~~~
-Configurable parameters:
+可配参数：
 
-:- sensitivity: Three levels of sensitivity are provided with predefined thresholds. The higher, easier to detect speech but also more false alarm.
-:- left_margin: Time margin added to the start of speech segment, which makes the start offset earlier than raw prediction. Only affects offset_ms of VAD output, it won't affect the event trigger time of status 1.
-:- right_margin: Time margin added to the end of speech segment, which makes the end offset later than raw prediction. Affects both offset_ms of VAD output and event time of status 0.
+:- sensitivity: 提供预先调好阈值的三档灵敏度，灵敏度越高，越容易检测到语音，但误报也越多。
+:- left_margin: 添加到语音段开头的时间边距，使起始点早于原始的预测点。该值仅影响VAD输出的offset_ms，不会影响状态1的事件触发时间。
+:- right_margin: 添加到语音段结尾的时间边距，使结尾点晚于原始的预测点。该值同时影响VAD输出的offset_ms和状态0的事件触发时间。
 
-Please refer to ``${aivoice_lib_dir}/include/aivoice_vad_config.h`` for details.
+详情请参考 ``${aivoice_lib_dir}/include/aivoice_vad_config.h``。
 
 .. note::
-   *left_margin* only affects *offset_ms* returned by VAD, it won't affect the VAD event trigger time. If you need to get the audio during left_margin, please implement a buffer to keep audio.
+   left_margin参数仅影响vad返回的offset_ms数值, 无法影响vad状态的改变时间. 如果需要保留left_margin区间内的音频，请在外部通过音频缓存实现。
 
 ASR
 ~~~~~~~~~~~~~~~~
-Configurable parameters:
+可配参数：
 
-:- sensitivity: Three levels of sensitivity are provided with predefined internal parameters.The higher, easier to detect commands but also more false alarm.
+:- sensitivity: 提供预先调好阈值的三档灵敏度，灵敏度越高，更容易识别到命令词，但误触发也越多。
 
-Please refer to ``${aivoice_lib_dir}/include/aivoice_asr_config.h`` for details.
+详情请参考 ``${aivoice_lib_dir}/include/aivoice_asr_config.h``。
 
 接口
 ---------------
@@ -184,7 +183,7 @@ Please refer to ``${aivoice_lib_dir}/include/aivoice_asr_config.h`` for details.
    :widths: auto
 
    +----------------------------+-------------+
-   | Interface                  | Flow/module |
+   | 接口                       | 流程/模块   |
    +============================+=============+
    | aivoice_iface_full_flow_v1 | AFE+KWS+ASR |
    +----------------------------+-------------+
@@ -199,34 +198,34 @@ Please refer to ``${aivoice_lib_dir}/include/aivoice_asr_config.h`` for details.
    | aivoice_iface_asr_v1       | ASR         |
    +----------------------------+-------------+
 
-All interfaces support the following functions:
+所有接口均支持以下函数:
 
 - create()
 - destroy()
 - reset()
 - feed()
 
-Please refer to ``${aivoice_lib_dir}/include/aivoice_interface.h`` for details.
+详情请参考 ``${aivoice_lib_dir}/include/aivoice_interface.h``。
 
-事件和回调信息
-~~~~~~~~~~~~~~~~~~
+事件及回调信息
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 .. table::
    :width: 100%
    :widths: auto
 
-   +-------------------------------+---------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------+
-   | aivoice_out_event_type        | Event trigger time                                            | Callback message                                                                                               |
-   +===============================+===============================================================+================================================================================================================+
-   | AIVOICE_EVOUT_VAD             | When VAD detects start or end point of a speech segment       | Struct includes VAD status, offset.                                                                            |
-   +-------------------------------+---------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------+
-   | AIVOICE_EVOUT_WAKEUP          | When KWS detects keyword                                      | json string includes id, keyword, and score. Example: {"id":2,"keyword":"ni-hao-xiao-qiang","score":0.9}       |
-   +-------------------------------+---------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------+
-   | AIVOICE_EVOUT_ASR_RESULT      | When ASR detects command word                                 | json string includes fst type, commands and id. Example: {"type":0,"commands":[{"rec":"play music","id":14}]}  |
-   +-------------------------------+---------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------+
-   | AIVOICE_EVOUT_AFE             | Every frame when AFE got input                                | Struct includes AFE output data, channel number, etc.                                                          |
-   +-------------------------------+---------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------+
-   | AIVOICE_EVOUT_ASR_REC_TIMEOUT | When no command word detected during a given timeout duration | NULL                                                                                                           |
-   +-------------------------------+---------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------+
+   +------------------------------------+-------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------------------+
+   |  aivoice输出事件                   |  事件触发时间                                               |  回调信息                                                                                                                  |
+   +====================================+=============================================================+============================================================================================================================+
+   |  AIVOICE_EVOUT_VAD                 |  当VAD检测到语音段开始或结束                                |  包含VAD状态，偏移的结构体                                                                                                 |
+   +------------------------------------+-------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------------------+
+   |  AIVOICE_EVOUT_WAKEUP              |  当KWS检测到唤醒词                                          |  包含id，唤醒词，唤醒得分的json字符串。示例:   {"id":2,"keyword":"ni-hao-xiao-qiang","score":0.9}                          |
+   +------------------------------------+-------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------------------+
+   |  AIVOICE_EVOUT_ASR_RESULT          |  当ASR检测到命令词                                          |  包含fst类型，命令词，id的json字符串。 示例:   {"type":0,"commands":[{"rec":"打开空调","id":14}]}                          |
+   +------------------------------------+-------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------------------+
+   |  AIVOICE_EVOUT_AFE                 |  AFE收到输入的每一帧                                        |  包含AFE输出数据，通道数等的结构体                                                                                         |
+   +------------------------------------+-------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------------------+
+   |  AIVOICE_EVOUT_ASR_REC_TIMEOUT     |  在给定的超时期限内未检测到命令字时                         |  NULL                                                                                                                      |
+   +------------------------------------+-------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------------------+
 
 AFE事件定义
 ^^^^^^^^^^^^^^^^^^^^^^^
@@ -252,35 +251,34 @@ VAD事件定义
 
 KWS模式
 ~~~~~~~~~~~~~~~~
-Two KWS modes are provided for different use cases. Multi mode improves KWS and ASR accuracy compared to single mode, while also increases computation consumption and heap.
+有单路或多路两种KWS模式可供不同使用场景选择。与单路相比，多路模式可以提升KWS和ASR的准确率，但同时计算资源和内存使用也会上升。
 
 .. table::
    :width: 100%
    :widths: auto
 
-   +-------------+--------------------------------------------+--------------------------------------------------+
-   | KWS Mode    | Function                                   | Description                                      |
-   +=============+============================================+==================================================+
-   | single mode | void rtk_aivoice_set_single_kws_mode(void) | less computation consumption and less heap used  |
-   +-------------+--------------------------------------------+--------------------------------------------------+
-   | multi mode  | void rtk_aivoice_set_multi_kws_mode(void)  | better kws and asr accuracy                      |
-   +-------------+--------------------------------------------+--------------------------------------------------+
+   +---------------+----------------------------------------------+------------------------+
+   | KWS模式       | 函数                                         | 特点                   |
+   +===============+==============================================+========================+
+   | 单路模式      | void rtk_aivoice_set_single_kws_mode(void)   | 更少的计算量和内存占用 |
+   +---------------+----------------------------------------------+------------------------+
+   | 多路模式      | void rtk_aivoice_set_multi_kws_mode(void)    | 更高的唤醒率和识别率   |
+   +---------------+----------------------------------------------+------------------------+
 
 .. attention::
-   KWS mode must be set before creating an instance in these flows:
-
-   - aivoice_iface_full_flow_v1
-   - aivoice_iface_afe_kws_v1
+   在这些流程中创建实例之前必须设置KWS模式：
+      - aivoice_iface_full_flow_v1
+      - aivoice_iface_afe_kws_v1
 
 示例
 ---------------
 AIVoice Full Flow离线示例
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
-This example shows how to use AIVoice full flow with a pre-recorded 3 channel audio and will run only once after EVB reset. **Audio functions such as recording and playback are not integrated.**
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+该例子通过一条提前录制的三通道音频演示如何使用AIVoice的全流程，在开发板启动后仅运行一次。 **未整合录音、播放等音频功能。**
 
 AIVoice使用步骤
 ^^^^^^^^^^^^^^^^^^^^^^^
-1. Select aivoice flow or modules needed. Set KWS mode to multi or single if using full flow or afe_kws flow.
+1. 选择需要的aivoice流程或模块。如果使用full_flow或afe_kws流程，需要指定KWS模式为单路或多路模式。
 
    .. code-block:: c
 
@@ -291,7 +289,7 @@ AIVoice使用步骤
       const struct rtk_aivoice_iface *aivoice = &aivoice_iface_full_flow_v1;
       rtk_aivoice_set_multi_kws_mode();
 
-2. Build configuration.
+2. 准备配置参数。
 
    .. code-block:: c
 
@@ -332,7 +330,7 @@ AIVoice使用步骤
       aivoice_param.no_cmd_timeout = 10;
       config.common = &aivoice_param; // can be NULL
 
-3. Use :func:`create()` to create and initialize aivoice instance with given configuration.
+3. 使用 :func:`create()` 和指定配置来创建并初始化aivoice实例。
 
    .. code-block:: c
 
@@ -344,7 +342,7 @@ AIVoice使用步骤
           return;
       }
 
-4. Register callback function.
+4. 注册回调函数。
 
    .. code-block:: c
 
@@ -355,7 +353,7 @@ AIVoice使用步骤
        * */
       rtk_aivoice_register_callback(handle, aivoice_callback_process, NULL);
 
-   The callback function can be modified according to user cases:
+   回调函数可以按实际使用需求进行修改：
 
    .. code-block:: c
 
@@ -408,7 +406,7 @@ AIVoice使用步骤
           return 0;
       }
 
-5. Use :func:`feed()` to input audio data to aivoice.
+6. 使用 :func:`feed()` 给aivoice输入音频数据。
 
    .. code-block:: c
 
@@ -431,9 +429,9 @@ AIVoice使用步骤
               audio_offset += afe_frame_bytes;
       }
 
-6. (Optional) If reset status is needed, use :func:`reset()`.
+7. （可选） 如果需要重置状态, 使用 :func:`reset()`。
 
-7. If aivoice is no longer needed, use :func:`destroy()` to destroy the instance.
+8. 如果不再需要aivoice，使用 :func:`destroy()` 销毁实例。
 
    .. code-block:: c
 
@@ -441,31 +439,31 @@ AIVoice使用步骤
       * Destroy the aivoice instance */
       aivoice->destroy(handle);
 
-Please refer to ``${aivoice_example_dir}/full_flow_offline`` for more details.
+详情请参考 ``${aivoice_example_dir}/full_flow_offline`` 。
 
 编译示例
 ^^^^^^^^^^^^^^^^^^^^^^^
 .. only:: RTL8726EA
-   1. Build Tensorflow Lite Micro Library for DSP, refer to :ref:`build_tflm_lib`.
+   1. 编译DSP的Tensorflow Lite Micro库, 请参考 :ref:`build_tflm_lib`。
 
-   2. Import ``{DSPSDK}/example/aivoice/full_flow_offline`` source in Xtensa Xplorer.
+   2. 在Xtensa Xplorer中导入 ``{DSPSDK}/example/aivoice/full_flow_offline`` 源。
 
-   3. Set software configurations and modify libraries such as AFE resource if needed.
+   3. 进行软件相关配置，按需修改链接的库如AFE资源等。
 
-      - add include path (-I)
+      - 添加包含路径 (-I)
 
         ${workspace_loc}/../lib/aivoice/include
-      - add library search path (-L)
+      - 添加库搜索路径 (-L)
 
         ${workspace_loc}/../lib/aivoice/prebuilts/$(TARGET_CONFIG)
         ${workspace_loc}/../lib/xa_nnlib/v1.8.1/bin/$(TARGET_CONFIG)/Release
         ${workspace_loc}/../lib/lib_hifi5/project/hifi5_library/bin/$(TARGET_CONFIG)/Release
         ${workspace_loc}/../lib/tflite_micro/project/bin/$(TARGET_CONFIG)/Release
-      - add libraries (-l)
+      - 添加库 (-l)
 
         -laivoice -lafe_kernel -lafe_res_2mic50mm -lkernel -lvad -lkws -lasr -lfst -lcJSON -ltomlc99 -ltflite_micro -lxa_nnlib -lhifi5_dsp
 
-   4. Build image referring to the steps in :ref:`dsp_build <build_environment_for_dsp>`.
+   4. 编译固件，请参考 :ref:`dsp_build <build_environment_for_dsp>` 中的步骤。
 
 术语
 ---------------
@@ -473,37 +471,37 @@ Please refer to ``${aivoice_example_dir}/full_flow_offline`` for more details.
    :sorted:
 
    AEC
-      Acoustic Echo Cancellation, or echo cancellation, refers to removing the echo signal from the input signal. The echo signal is generated by a sound played through the speaker of the device then captured by the microphone.
+      AEC(Acoustic Echo Cancellation)，声学回声消除，或回声消除，是指消除输入信号中的回声信号。回声信号是指麦克风采集到的设备自身扬声器播放的音频。
 
    AFE
-      Audio Front End, refers to a combination of modules for preprocessing raw audio signals. It's usually performed to improve the quality of speech signal before the voice interaction, including several speech enhancement algorithms.
+      AFE(Audio Front End)，音频前端，或信号处理，是指用于原始音频信号预处理的一些模块的组合。通常在进行语音交互前执行以增强信号质量，包含多种语音增强算法。
 
    AGC
-      Automatic Gain Control, an algorithm that dynamically controls the gain of a signal and automatically adjust the amplitude to maintain an optimal signal strength.
+      AGC(Automatic Gain Control)，自动增益控制，用于动态调节信号的增益，自动调整信号幅值，以保持最佳信号强度。
 
    ASR
-      Automatic Speech Recognition, or Speech-to-Text, refers to recognition of spoken language from audio into text. It can be used to build voice-user interface to enable spoken human interaction with AI devices.
+      ASR(Automatic Speech Recognition)，语音识别，是指把音频中的语音识别为文本。它可用于构建语音用户界面，实现人类与人工智能设备的语音交互。
 
    BF
-      BeamForming, refers to a spatial filter designed for a microphone array to enhance the signal from a specific direction and attenuate signals from other directions.
+      BF(BeamForming)，波束形成，是指一种为麦克风阵列设计的空间滤波器，用于增强来自特定方向的信号同时衰减其他方向的信号。
 
    KWS
-      Keyword Spotting, or wakeup word detection, refers to identifying specific keywords from audio. It is usually the first step in a voice interaction system. The device will enter the state of waiting voice commands after detecting the keyword.
+      KWS(Keyword Spotting)，关键词检测，或唤醒词检测、语音唤醒，是指从音频中识别特定的唤醒词。通常是语音交互的第一步，设备检测到唤醒词后，会进入等待语音指令状态。
 
    NN
-      Neural Network, is a machine learning model used for various task in artificial intelligence. Neural networks rely on training data to learn and improve their accuracy.
+      NN(Neural Network)，神经网络，是一种用于人工智能各类任务的机器学习模型。神经网络依靠训练数据学习并提升准确性。
 
    NS
-      Noise Suppression, or noise reduction, refers to suppressing ambient noises in the signal to enhance the speech signal, especially stationary noises.
+      NS(Noise Suppression)，噪声抑制，或降噪，是指抑制信号中的环境噪声以增强语音信号, 尤其是稳态噪声。
 
    RES
-      Residual Echo Suppression, refers to suppressing the remained echo signal after AEC processing. It is a postfilter for AEC.
+      RES(Residual Echo Suppression)，残余回声抑制，是指抑制AEC处理后的残余回声信号。是AEC的后置滤波器。
 
    SSL
-      Sound Source Localization, or direction of arrival(DOA), refers to estimating the spatial location of a sound source using a microphone array.
+      SSL(Sound Source Localization)，声源定位，是指利用麦克风阵列估计声源的空间方位。
 
    TTS
-      Text-To-Speech, or speech synthesis, is a technology that converts text into spoken audio. It can be used in any speech-enabled application that requires converting text to speech imitating human voice.
+      TTS(Text-To-Speech)，语音合成，是一种将文本转换为语音的技术。它可用于各种需要将文本转换为人声的语音应用中。
 
    VAD
-      Voice Activity Detection, or speech activity detection, is a binary classifier to detect the presence or absence of human speech. It is widely used in speech enhancement, ASR system etc, and can also be used to deactivate some processes during non-speech section of an audio session, saving on computation or bandwidth.
+      VAD (Voice Activity Detection)，语音活性检测，或语音端点检测，是指从音频中检测有无语音信号。它被广泛用于语音增强、语音识别等系统中，也可用于去除音频会话中的非语音片段以减少计算、带宽等。
