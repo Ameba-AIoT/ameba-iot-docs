@@ -1,6 +1,4 @@
-.. _wifi_sdio_bridge:
-
-Introduction
+WiFi Bridge Introduction
 ------------------------
 The following figure is the high-level block diagram for SDIO bridge solution.
 
@@ -97,7 +95,7 @@ WiFi Bridge Linux Test
 
 .. include:: wifi_bridge_testapp_linux.rst
 
-Throughput
+WiFi Bridge Throughput
 --------------------
 .. table::
    :width: 100%
@@ -123,19 +121,3 @@ Test conditions:
 - AP: xiaomi AX3000
 
 - Host platform: Linux PC
-
-Memory Consumption
-------------------------------------
-.. table::
-   :width: 100%
-   :widths: auto
-
-   +-----+----------+------------+----------------+-------------------+
-   | CPU | Text (B) | Rodata (B) | DATA + BSS (B) | Heap consumed (B) |
-   +=====+==========+============+================+===================+
-   | KM4 | 570296   | 147510     | 41635          | 677561            |
-   +-----+----------+------------+----------------+-------------------+
-
-
-
-

@@ -1,6 +1,3 @@
-.. _wifi_sdio_bridge:
-
-
 如下图所示, 在Wi-Fi Bridge 方案中, Ameba作为网卡, 通过UART/SPI/SDIO/USB与主机MCU连接, 为主机MCU提供网络连接功能.
 
 主机MCU和从机都会运行TCPIP协议栈, 用户可以在主机MCU通过scoket接口开发应用程序.

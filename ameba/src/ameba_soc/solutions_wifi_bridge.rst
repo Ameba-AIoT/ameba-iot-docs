@@ -1,5 +1,3 @@
-.. _wifi_sdio_bridge:
-
 Introduction
 ------------------------
 Connect Ameba SoC to the host as a Wi-Fi card through UART/SPI/SDIO/USB interfaces.

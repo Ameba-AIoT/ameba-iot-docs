@@ -1,6 +1,4 @@
-.. _wifi_sdio_bridge:
-
-Introduction
+WiFi bridge 架构
 ------------------------
 WiFi bridge 的架构图如下图所示.
 
@@ -97,7 +95,7 @@ WiFi Bridge Linux 测试
 
 .. include:: wifi_bridge_testapp_linux_cn.rst
 
-Throughput
+WiFi Bridge 吞吐量
 --------------------
 .. table::
    :width: 100%
@@ -116,26 +114,10 @@ Throughput
    +--------+---------------+
 
 
-Test conditions:
+测试场景:
 
 - Image2 running on PSRAM
 
 - AP: xiaomi AX3000
 
-- Host platform: Linux PC
-
-Memory Consumption
-------------------------------------
-.. table::
-   :width: 100%
-   :widths: auto
-
-   +-----+----------+------------+----------------+-------------------+
-   | CPU | Text (B) | Rodata (B) | DATA + BSS (B) | Heap consumed (B) |
-   +=====+==========+============+================+===================+
-   | KM4 | 570296   | 147510     | 41635          | 677561            |
-   +-----+----------+------------+----------------+-------------------+
-
-
-
-
+- Host 平台: Linux PC
