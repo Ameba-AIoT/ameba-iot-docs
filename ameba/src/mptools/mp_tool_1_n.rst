@@ -1,4 +1,4 @@
-.. _1_n_mp_tool:
+.. _mp_tool_1_n:
 
 Introduction
 ==================================
@@ -14,7 +14,7 @@ This document introduces how to use Ameba 1-N MP ImageTool to download images fo
 
 The tool will first download the flashloader code into SRAM, then the flashloader will handle the subsequent image download to Ameba Flash.
 
-.. _1_n_mp_tool_environment_setup:
+.. _mp_tool_1_n_environment_setup:
 
 Environment Setup
 ==================================
@@ -62,7 +62,7 @@ Software Setup
    
 
 
-.. _1_n_mp_tool_image_download:
+.. _mp_tool_1_n_image_download:
 
 Image Download
 ============================

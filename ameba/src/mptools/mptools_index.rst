@@ -8,4 +8,4 @@
    :maxdepth: 2
 
    
-   1_n_mp_tool
+   mp_tool_1_n

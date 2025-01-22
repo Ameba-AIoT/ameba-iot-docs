@@ -1,4 +1,4 @@
-.. _adaptivity_test:
+.. _wifi_guide_adaptivity_test:
 
 Introduction
 -------------

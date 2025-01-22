@@ -5,4 +5,4 @@ Wi-Fi Adaptivity Test
 .. toctree::
    :maxdepth: 3
 
-   adaptivity_test
+   wifi_guide_adaptivity_test

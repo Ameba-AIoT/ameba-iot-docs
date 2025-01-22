@@ -6,7 +6,7 @@ Wi-Fi
 .. toctree::
    :maxdepth: 4
 
-   adaptivity_index
+   wifi_guide_adaptivity_index
 
 
 
