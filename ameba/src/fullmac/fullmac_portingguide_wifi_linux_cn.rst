@@ -62,9 +62,9 @@
 
          .. tab:: USB
 
-   2. Build the module
+   2. 构建模块
 
-      a. 在目录 ``/component/wifi/cfg80211_fullmac``下面执行如下操作：
+      a. 在目录 ``/component/wifi/cfg80211_fullmac`` 下执行如下操作：
 
       .. tabs::
 
@@ -169,7 +169,7 @@
             Wpa_supplicant -D nl80211 -i wlanX -c /etc/wpa_supplicant/wpa_supplicant.conf -dd > /var/wifi_log
 
       .. note::
-         - *wlanX* 是在 :ref:`Step 3 <load_the_module_step>`中获取的Station 模式的设备名称。
+         *wlanX* 是在 :ref:`Step 3 <load_the_module_step>` 中获取的Station 模式的设备名称。
 
       c. 获取IP地址:
 
@@ -179,7 +179,7 @@
 
    5. softAP的使用
 
-      a. 在 ``/etc/hostapd/``下面创建文件`hostapd.conf`配置softAP，如下是一个WPA2的实例，更多配置请参考wpa_supplicant的官方文档。
+      a. 在 ``/etc/hostapd/`` 下创建文件 :file:`hostapd.conf` 配置softAP，如下是一个WPA2的实例，更多配置请参考wpa_supplicant的官方文档。
 
          .. code-block::
 
@@ -210,7 +210,7 @@
             wpa_pairwise=CCMP
             wpa_passphrase=12345678
 
-      b. 在``/etc/``下面创建文件`udhcpd_wlanX.conf`，并添加如下信息：
+      b. 在 ``/etc/`` 下面创建文件 `udhcpd_wlanX.conf`，并添加如下信息：
 
          .. code-block::
 
@@ -237,7 +237,7 @@
             hostapd /etc/hostapd/hostapd.conf -i wlanX
 
       .. note::
-         - *wlanX* 是在 :ref:`Step 3 <load_the_module_step>`中获取的Station 模式的设备名称。
+         *wlanX* 是在 :ref:`Step 3 <load_the_module_step>` 中获取的Station 模式的设备名称。
 
       d. 设置IP地址：
 
