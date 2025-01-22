@@ -11,7 +11,7 @@
 
 * 主机不管是Linux还是rtos，都需要使用realtek WiFi API进行WiFi的开发
 
-.. figure:: ../src/ameba_soc/figures/sdio_bridge_4solutions.svg
+.. figure:: ../src/ameba_soc/figures/wifi_bridge_4solutions.svg
    :scale: 120%
    :align: center
 

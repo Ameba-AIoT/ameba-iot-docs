@@ -6,7 +6,7 @@ Connect Ameba SoC to the host as a Wi-Fi card through UART/SPI/SDIO/USB interfac
 
 The following figure is the high-level block diagram for Wi-Fi bridge solution.
 
-.. figure:: ../src/ameba_soc/figures/sdio_bridge_4solutions.svg
+.. figure:: ../src/ameba_soc/figures/wifi_bridge_4solutions.svg
    :scale: 120%
    :align: center
 
