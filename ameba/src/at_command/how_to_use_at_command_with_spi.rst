@@ -14,39 +14,21 @@ Default SPI AT Command Module Pins
 ----------------------------------
 For different chips, the default SPI AT Command module pins are listed in the following table.
 
+.. table:: Default SPI AT Command module pins for different chips
+   :width: 100%
+   :widths: auto
 
+   +-----------------------------+----------+----------+---------+--------+-----------------+----------------+--------+
+   | Ameba SoC                   | SPI MOSI | SPI MISO | SPI CLK | SPI CS | MASTER SYNC PIN | SLAVE SYNC PIN | GND    |
+   +=============================+==========+==========+=========+========+=================+================+========+
+   | RTL8721Dx/RTL8711Dx         | PA_27    | PA_28    | PA_26   | PA_12  | PB_30           | PB_31          | GND    |
+   +-----------------------------+----------+----------+---------+--------+-----------------+----------------+--------+
+   | | RTL8726EA/RTL8713EC       | PA_29    | PA_30    | PA_28   | PA_31  | PB_2            | PB_3           | GND    |
+   | | RTL8720EA/RTL8710EC       |          |          |         |        |                 |                |        |
+   +-----------------------------+----------+----------+---------+--------+-----------------+----------------+--------+
+   | RTL8730E                    | PA_13    | PA_14    | PA_15   | PA_16  | PA_20           | PA_21          | GND    |
+   +-----------------------------+----------+----------+---------+--------+-----------------+----------------+--------+
 
-.. only:: RTL8721D
-
-   .. table:: Default SPI AT Command module pins for chips
-      :width: 100%
-      :widths: auto
-
-      +-------------+----------+----------+---------+--------+-----------------+----------------+
-      | Chip name   | SPI MOSI | SPI MISO | SPI CLK | SPI CS | MASTER SYNC PIN | SLAVE SYNC PIN |
-      +=============+==========+==========+=========+========+=================+================+
-      | RTL8721Dx   |          |          |         |        |                 |                |
-      +             + PA_27    + PA_28    + PA_26   + PA_26  + PB_30           + PB_31          +
-      | RTL8711Dx   |          |          |         |        |                 |                |
-      +-------------+----------+----------+---------+--------+-----------------+----------------+
-
-.. only:: RTL8726EA
-
-   .. table:: Default SPI AT Command module pins for chips
-      :width: 100%
-      :widths: auto
-
-      +-------------+----------+----------+---------+--------+-----------------+----------------+
-      | Chip name   | SPI MOSI | SPI MISO | SPI CLK | SPI CS | MASTER SYNC PIN | SLAVE SYNC PIN |
-      +=============+==========+==========+=========+========+=================+================+
-      | RTL8726EA   |          |          |         |        |                 |                |
-      +             +          +          +         +        +                 +                +
-      | RTL8713EC   |          |          |         |        |                 |                |
-      +             + PA_29    + PA_30    + PA_28   + PA_31  + PB_2            + PB_3           +
-      | RTL8720EA   |          |          |         |        |                 |                |
-      +             +          +          +         +        +                 +                +
-      | RTL8710EC   |          |          |         |        |                 |                |
-      +-------------+----------+----------+---------+--------+-----------------+----------------+
 
 Use AT Command with SPI
 ------------------------
@@ -56,7 +38,7 @@ After this, you can refer to our host example to adapt it to the specific MCU pl
 
 In the example code, we added an UART task to receive AT commands and print the AT responses.The overall data flow diagram is as follows:
 
-.. figure:: figures/spi_at_data_flow.svg
+.. figure:: ../figures/spi_at_data_flow.svg
    :scale: 150%
    :align: center
 
@@ -76,11 +58,11 @@ When the SPI AT Command host sends AT commands or transparent data, or receives 
 
 Where:
 
-- ``Magic Number``: "AT" in ASCII code.
+:Magic Number: ``AT`` in ASCII code.
 
-- ``Data Len``: Data length in bytes.
+:Data Len: Data length in bytes.
 
-- ``Checksum``: CRC32 checksum of all except Checksum field.
+:Checksum: CRC32 checksum of all except Checksum field.
 
 SPI AT Command Interaction Process
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -88,32 +70,29 @@ The SPI AT Command exchange process mainly consists of two aspects:
 
 - SPI master sends AT command to slave:
 
-.. figure:: figures/spi_master_send_at_command_to_slave.svg
-   :scale: 150%
-   :align: center
+  .. figure:: ../figures/spi_master_send_at_command_to_slave.svg
+     :scale: 150%
+     :align: center
 
-   SPI master sends AT command to slave
+     SPI master sends AT command to slave
 
-The specific instructions for each step are as follows:
+  The specific instructions for each step are as follows:
 
-   Step 1: SPI master signals the SPI slave to prepare for data reception by pulling down the Master Sync Pin.
-
-   Step 2: SPI slave receives the master’s request through a GPIO interrupt and, upon preparing to receive data, 
-   informs the master that it can transmit data by pulling up the Slave Sync Pin.
-    
-   Step 3:  SPI master begins data transmission, and after the transmission is complete, both the master 
-   and the slave reset their respective Sync Pins to their initial states.
+  1. SPI master signals the SPI slave to prepare for data reception by pulling down the Master Sync Pin.
+  2. SPI slave receives the master’s request through a GPIO interrupt and, upon preparing to receive data,
+     informs the master that it can transmit data by pulling up the Slave Sync Pin.
+  3. SPI master begins data transmission, and after the transmission is complete, both the master
+     and the slave reset their respective Sync Pins to their initial states.
 
 - SPI slave sends AT command response to master:
 
-.. figure:: figures/spi_slave_send_response_to_master.svg
-   :scale: 150%
-   :align: center
+  .. figure:: ../figures/spi_slave_send_response_to_master.svg
+     :scale: 150%
+     :align: center
 
-   SPI slave sends AT command response to master
+     SPI slave sends AT command response to master
 
-The specific instructions for each step are as follows:
+  The specific instructions for each step are as follows:
 
-   Step 1: SPI slave signals the master that it is ready to receive the AT command response by pulling up the Slave Sync Pin.
-
-   Step 2: SPI master begins receiving data, and after the transmission is complete, the slave resets the Slave Sync Pin to its initial state.
+  1. SPI slave signals the master that it is ready to receive the AT command response by pulling up the Slave Sync Pin.
+  2. SPI master begins receiving data, and after the transmission is complete, the slave resets the Slave Sync Pin to its initial state.
