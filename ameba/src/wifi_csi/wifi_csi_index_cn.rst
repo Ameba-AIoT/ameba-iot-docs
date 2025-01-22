@@ -7,4 +7,4 @@ Wi-Fi CSI
 .. toctree::
    :maxdepth: 2
 
-   src/wifi_csi.rst
+   wifi_csi.rst
