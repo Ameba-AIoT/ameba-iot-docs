@@ -27,5 +27,5 @@ Digital Signal Processing (DSP)
 .. toctree::
    :maxdepth: 2
 
-   dsp_build_environment/dsp_build_index
-   dsp_configuration/dsp_config_index
+   dsp_build_index
+   dsp_config_index
