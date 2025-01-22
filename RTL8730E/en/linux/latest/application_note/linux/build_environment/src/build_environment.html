@@ -84,6 +84,11 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#download-images-to-flash">Download Images to Flash</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#docker-container">Docker Container</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#image">Image</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#container">Container</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../sdk_architecture/src/index.html">Architecture</a></li>
@@ -490,6 +495,188 @@ The image is specific to the machine set in the environment setup. After build s
 <li><p>Refer to <span class="xref std std-ref">Image Tool</span> for Ameba Image Tool common operations.</p></li>
 <li><p>Refer to <a class="reference internal" href="../../sdk_architecture/src/sdk_architecture.html#sdk-architecutre-flash-layout"><span class="std std-ref">Flash layout</span></a> for RTL8730E.</p></li>
 </ul>
+</section>
+<section id="docker-container">
+<h1>Docker Container<a class="headerlink" href="#docker-container" title="Link to this heading"></a></h1>
+<p>Docker is an open-source platform designed to automate the deployment, scaling, and management of applications in containers. Containers are lightweight, portable, and self-sufficient units that include everything needed to run a piece of software, such as code, runtime, libraries, and system tools.</p>
+<p>Here are key aspects of Docker technology:</p>
+<ol class="arabic simple">
+<li><p>Docker utilizes containerization to package an application and its dependencies into a single container. This ensures consistent behavior across different environments, such as development, testing, and production.</p></li>
+<li><p>Containers can run virtually anywhere, on a developer’s machine, on physical or virtual machines in a data center, or in the cloud—without alteration.</p></li>
+<li><p>Containers share the host system’s kernel, making them more lightweight than traditional virtual machines, which include an entire operating system per instance.</p></li>
+<li><p>Each Docker container runs in a separate environment, providing a layer of isolation that ensures applications do not interfere with one another.</p></li>
+<li><p>This is the core part of Docker, which creates, runs, and orchestrates the containers. It’s responsible for managing container lifecycle, images, and networking.</p></li>
+<li><p>A cloud-based repository for sharing, storing, and managing Docker images. It acts like a GitHub for Docker images, allowing you to pull and push images from public and private repositories.</p></li>
+</ol>
+<section id="image">
+<h2>Image<a class="headerlink" href="#image" title="Link to this heading"></a></h2>
+<section id="id1">
+<h3>Build Image<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
+<p>Before you need to build a new docker image, you should install docker on your computer. The procedure to install docker is refer to <a class="reference external" href="https://www.docker.com">Docker HomePage</a>.</p>
+<p>You can run docker at Windows, Linux, MacOS system, etc. We introduce the procedure on Linux here, the procedure at other operation systems is same as Linux.</p>
+<p>At first, there should be a file named <em>Dockerfile</em> at your work directory.</p>
+<p>The content of Dockerfile is as below for example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set the base system.</span>
+<span class="n">FROM</span> <span class="n">ubuntu</span><span class="p">:</span><span class="mf">20.04</span>
+
+<span class="c1"># Set environment variables.</span>
+<span class="n">ENV</span> <span class="n">DEBIAN_FRONTEND</span><span class="o">=</span><span class="n">noninteractive</span>
+
+<span class="c1"># Update.</span>
+<span class="n">RUN</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">update</span>
+
+<span class="c1"># Install some tools.</span>
+<span class="n">RUN</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="n">sudo</span>
+<span class="n">RUN</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="n">make</span>
+<span class="n">RUN</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="n">make</span><span class="o">-</span><span class="n">guile</span>
+<span class="n">RUN</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="n">build</span><span class="o">-</span><span class="n">essential</span>
+<span class="n">RUN</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="n">gcc</span>
+<span class="n">RUN</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="n">g</span><span class="o">++</span>
+<span class="c1"># Any other tools you need to install …</span>
+<span class="c1"># ……</span>
+
+<span class="c1"># Add toolchain.</span>
+<span class="n">ADD</span> <span class="n">rtk</span><span class="o">-</span><span class="n">toolchain</span><span class="o">.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span> <span class="o">/</span><span class="n">opt</span>
+
+<span class="c1"># Create a normal user named &quot;ameba&quot;, with password &quot;ameba&quot;.</span>
+<span class="n">RUN</span> <span class="n">useradd</span> <span class="o">-</span><span class="n">m</span> <span class="o">-</span><span class="n">s</span> <span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">bash</span> <span class="n">ameba</span> <span class="o">&amp;&amp;</span> <span class="n">echo</span> <span class="s2">&quot;ameba:ameba&quot;</span> <span class="o">|</span> <span class="n">chpasswd</span> <span class="o">&amp;&amp;</span> <span class="n">adduser</span> <span class="n">ameba</span> <span class="n">sudo</span>
+<span class="n">RUN</span> <span class="n">echo</span> <span class="s2">&quot;ameba ALL=(ALL) NOPASSWD: ALL&quot;</span> <span class="o">&gt;&gt;</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">sudoers</span>
+<span class="n">USER</span> <span class="n">ameba</span>
+
+<span class="c1"># Set work directory.</span>
+<span class="n">WORKDIR</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">ameba</span>
+
+<span class="c1"># RUN shell command.</span>
+<span class="n">CMD</span> <span class="p">[</span><span class="s2">&quot;/bin/bash&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Then, you can execute <em>docker build</em> command to build your image.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">docker</span> <span class="n">build</span> <span class="o">-</span><span class="n">t</span> <span class="o">&lt;</span><span class="n">image_name</span><span class="o">&gt;</span><span class="p">:</span><span class="o">&lt;</span><span class="n">image_tag</span><span class="o">&gt;</span> <span class="o">.</span>
+</pre></div>
+</div>
+<p>Where the <em>&lt;image_name&gt;</em> means the name of docker image, <em>&lt;image_tag&gt;</em> is optional, which signs the different revision of docker image, if absent, it is <em>latest</em> as default.</p>
+<p>After building successfully, you can use <em>docker images</em> command to check whether this image is on your host.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">docker</span> <span class="n">images</span>
+</pre></div>
+</div>
+<p>You can add parameter <em>-a</em> to show all the images including hidden mid-layer images.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">docker</span> <span class="n">images</span> <span class="o">-</span><span class="n">a</span>
+</pre></div>
+</div>
+<p>Then all the images including their names, tags, and IDs will be shown.</p>
+<p>You can add new name or tag to an image.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">docker</span> <span class="n">tag</span> <span class="o">&lt;</span><span class="n">image_id</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">new_image_name</span><span class="o">&gt;</span><span class="p">:</span><span class="o">&lt;</span><span class="n">new_image_tag</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</section>
+<section id="load-image">
+<h3>Load Image<a class="headerlink" href="#load-image" title="Link to this heading"></a></h3>
+<p>We provide ready-to-use Docker images for customers. Please contact Realtek to obtain the base image version for compiling the SDK.</p>
+<p>For example, when you got the image named <em>rtk_ameba_sdk_build_v1.1.tar</em>, you can load this on your host with command <em>docker load</em>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">docker</span> <span class="n">load</span> <span class="o">-</span><span class="n">i</span> <span class="n">rtk_ameba_sdk_build_v1</span><span class="mf">.1</span><span class="o">.</span><span class="n">tar</span>
+</pre></div>
+</div>
+<p>Then you can use <em>docker images</em> command to check whether this image is on your host.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">docker</span> <span class="n">images</span>
+</pre></div>
+</div>
+<p>If the image is no longer needed, you can delete it by name and tag.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">docker</span> <span class="n">rmi</span> <span class="o">&lt;</span><span class="n">image_name</span><span class="o">&gt;</span><span class="p">:</span><span class="o">&lt;</span><span class="n">image_tag</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>One <em>&lt;image_id&gt;</em> may correspond to one or more <em>&lt;image_name&gt;:&lt;image_tag&gt;</em>. When you tag one <em>&lt;image_id&gt;</em> with more than one <em>&lt;image_name&gt;:&lt;image_tag&gt;</em>, the command above will not delete this <em>&lt;image_id&gt;</em>, because there is other <em>&lt;image_name&gt;:&lt;image_tag&gt;</em>.</p>
+<p>You can delete docker image by ID, in this case, all the <em>&lt;image_name&gt;:&lt;image_tag&gt;</em> correspond to this <em>&lt;image_id&gt;</em> should be deleted at same time.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">docker</span> <span class="n">rmi</span> <span class="o">&lt;</span><span class="n">image_id</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="container">
+<h2>Container<a class="headerlink" href="#container" title="Link to this heading"></a></h2>
+<p>A Docker container is an instance of a Docker image. It is a executable unit of software that packages up the application along with everything it needs to run consistently in any environment.</p>
+<ol class="arabic simple">
+<li><p>Containers run in isolated environments, utilizing OS-level virtualization to share the host system’s kernel, ensuring minimal overhead compared to traditional virtual machines.</p></li>
+<li><p>By default, containers are stateless and temporary, meaning any changes made during execution are not saved after they stop unless explicitly configured.</p></li>
+<li><p>Containers can be easily configured with options for networking, storage, and other runtime attributes using Docker commands or a Docker Compose file.</p></li>
+<li><p>Containers can be quickly scaled horizontally to handle varying loads, and because they’re portable, they run consistently across different computing environments.</p></li>
+</ol>
+<section id="run-container">
+<h3>Run Container<a class="headerlink" href="#run-container" title="Link to this heading"></a></h3>
+<p>After building a new docker image, or loading a ready-to-use docker image, you can run a new container based on this image’s name.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">docker</span> <span class="n">run</span> <span class="o">--</span><span class="n">name</span> <span class="o">&lt;</span><span class="n">container_name</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">it</span> <span class="o">&lt;</span><span class="n">image_name</span><span class="o">&gt;</span><span class="p">:</span><span class="o">&lt;</span><span class="n">image_tag</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>Or, base on this image’s ID.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">docker</span> <span class="n">run</span> <span class="o">--</span><span class="n">name</span> <span class="o">&lt;</span><span class="n">container_name</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">it</span> <span class="o">&lt;</span><span class="n">image_id</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>Where the <em>&lt;container_name&gt;</em> should be different from the names of any existing containers, if absent, the docker will automatically assign a unique name to the container.</p>
+<p>And, if you want to mount your directory on host for this container, you can add parameter <em>-v</em>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">docker</span> <span class="n">run</span> <span class="o">--</span><span class="n">name</span> <span class="o">&lt;</span><span class="n">container_name</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">v</span> <span class="o">&lt;</span><span class="n">host_dir</span><span class="o">&gt;</span><span class="p">:</span><span class="o">&lt;</span><span class="n">container_dir</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">it</span> <span class="o">&lt;</span><span class="n">image_name</span><span class="o">&gt;</span><span class="p">:</span><span class="o">&lt;</span><span class="n">image_tag</span><span class="o">&gt;</span>
+<span class="n">sudo</span> <span class="n">docker</span> <span class="n">run</span> <span class="o">--</span><span class="n">name</span> <span class="o">&lt;</span><span class="n">container_name</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">v</span> <span class="o">&lt;</span><span class="n">host_dir</span><span class="o">&gt;</span><span class="p">:</span><span class="o">&lt;</span><span class="n">container_dir</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">it</span> <span class="o">&lt;</span><span class="n">image_id</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>Where <em>&lt;host_dir&gt;</em> is a directory on your host, which should exist. The <em>&lt;container_dir&gt;</em> is a directory on your container, if it does not exist, the container can create it by only one layer. For example, the directory <code class="docutils literal notranslate"><span class="pre">/home/ameba</span></code> has already existed, if you set the <em>&lt;container_dir&gt;</em> as <code class="docutils literal notranslate"><span class="pre">/home/ameba/my_dir</span></code>, the container will create it, but if you set the <em>&lt;container_dir&gt;</em> as <code class="docutils literal notranslate"><span class="pre">/home/ameba/my_dir/deep_dir</span></code>, the container can not create it successfully.</p>
+<p>After mounting the directory successfully, user can operate this directory at host and container at same time.</p>
+<p>In container, you can run <em>exit</em> to back to your host.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">exit</span>
+</pre></div>
+</div>
+<p>Then you can use <em>docker ps</em> command to check whether this container is running.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">docker</span> <span class="n">ps</span>
+</pre></div>
+</div>
+<p>If you want to see all the containers including all ones running and not running, you can add parameter <em>-a</em>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">docker</span> <span class="n">ps</span> <span class="o">-</span><span class="n">a</span>
+</pre></div>
+</div>
+<p>If this container is no longer needed, you can delete it by <em>&lt;container_name&gt;</em> or <em>&lt;container_id&gt;</em>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">docker</span> <span class="n">rm</span> <span class="o">&lt;</span><span class="n">container_name</span><span class="o">&gt;</span>
+<span class="n">sudo</span> <span class="n">docker</span> <span class="n">rm</span> <span class="o">&lt;</span><span class="n">container_id</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</section>
+<section id="execute-existing-container">
+<h3>Execute existing Container<a class="headerlink" href="#execute-existing-container" title="Link to this heading"></a></h3>
+<p>If you want to execute a container not running, you should start it at first, by container name or ID.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">docker</span> <span class="n">start</span> <span class="o">&lt;</span><span class="n">container_name</span><span class="o">&gt;</span>
+<span class="n">sudo</span> <span class="n">docker</span> <span class="n">start</span> <span class="o">&lt;</span><span class="n">container_id</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>Then, run <em>docker exec</em> command to get into container, by container name or ID.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">docker</span> <span class="n">exec</span> <span class="o">-</span><span class="n">it</span> <span class="o">&lt;</span><span class="n">container_name</span><span class="o">&gt;</span> <span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">bash</span>
+<span class="n">sudo</span> <span class="n">docker</span> <span class="n">exec</span> <span class="o">-</span><span class="n">it</span> <span class="o">&lt;</span><span class="n">container_id</span><span class="o">&gt;</span> <span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">bash</span>
+</pre></div>
+</div>
+<p>After exiting the container, you can stop this container by name or ID as you wish.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">docker</span> <span class="n">stop</span> <span class="o">&lt;</span><span class="n">container_name</span><span class="o">&gt;</span>
+<span class="n">sudo</span> <span class="n">docker</span> <span class="n">stop</span> <span class="o">&lt;</span><span class="n">container_id</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</section>
+<section id="build-sdk-at-container">
+<h3>Build SDK at Container<a class="headerlink" href="#build-sdk-at-container" title="Link to this heading"></a></h3>
+<p>For the images release by Realtek, the environment has been setup already, you can build the sdk directly.</p>
+<p>If you mount the directory of the host on container, you can put the sdk into the directory, then it can be seen at the container at same time, you can build the code directly.</p>
+<p>If you does not mount the directory of the host, you can use <em>docker cp</em> command to copy files or directory between host and container.</p>
+<p>Copy files or directory from host to container.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">docker</span> <span class="n">cp</span> <span class="o">&lt;</span><span class="n">host_directory</span><span class="o">&gt;/&lt;</span><span class="n">files_or_directory</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">container_name</span><span class="o">&gt;</span><span class="p">:</span><span class="o">&lt;</span><span class="n">container_directory</span><span class="o">&gt;</span>
+<span class="n">sudo</span> <span class="n">docker</span> <span class="n">cp</span> <span class="o">&lt;</span><span class="n">host_directory</span><span class="o">&gt;/&lt;</span><span class="n">files_or_directory</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">container_id</span><span class="o">&gt;</span><span class="p">:</span><span class="o">&lt;</span><span class="n">container_directory</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>After you building sdk successfully, you can copy files or directory from container to host.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">docker</span> <span class="n">cp</span> <span class="o">&lt;</span><span class="n">container_name</span><span class="o">&gt;</span><span class="p">:</span><span class="o">&lt;</span><span class="n">container_directory_or_files</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">host_directory</span><span class="o">&gt;</span>
+<span class="n">sudo</span> <span class="n">docker</span> <span class="n">cp</span> <span class="o">&lt;</span><span class="n">container_id</span><span class="o">&gt;</span><span class="p">:</span><span class="o">&lt;</span><span class="n">container_directory_or_files</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">host_directory</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>You can also get the sdk from github at container, which has the same procedure at host.</p>
+</section>
+<section id="use-podman-instead">
+<h3>Use Podman Instead<a class="headerlink" href="#use-podman-instead" title="Link to this heading"></a></h3>
+<p>The podman can also deal with the images and containers as well as docker. Users can get podman from <a class="reference external" href="https://podman.io/get-started">Podman HostPage</a>.</p>
+<p>The command format for Podman and Docker is almost the same, you can simply replace the <em>docker</em> prefix with <em>podman</em> to use it directly. For example, you can use <em>podman build</em> instead of <em>docker build</em>, <em>podman images</em> instead of <em>docker images</em>, <em>podman ps</em> instead of <em>docker ps</em>, etc. All the procedures of dealing with images and containers are same for podman and docker.</p>
+</section>
+</section>
 </section>
 
 
