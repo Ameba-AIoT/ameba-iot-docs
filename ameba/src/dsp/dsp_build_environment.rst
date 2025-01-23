@@ -45,6 +45,7 @@ When sending the E-mail, the following information is needed:
    :align: center
 
 .. admonition:: Essential Information
+
    - **MAC address**
    - **Company**
    - **University & School** (for students only)

@@ -1,4 +1,4 @@
-.. _build_environment_for_dsp_cn:
+.. _build_environment_for_dsp:
 
 准备工作
 ----------------------
@@ -45,6 +45,7 @@ Xtensa Xplorer 许可证
    :align: center
 
 .. admonition:: 必需信息
+
    - **MAC地址**
    - **工作单位**
    - **学校/学院** (仅学生)
