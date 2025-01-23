@@ -6,11 +6,11 @@ The Pinmux Tool is the official pinmux and clock adjustment tool developed by Re
 
 The UI of Pinmux Tool is shown below:
 
-.. figure:: figures/ui_1.png
+.. figure:: figures/pinmuxtool_ui_1.png
    :scale: 70%
    :align: center
 
-.. figure:: figures/ui_2.png
+.. figure:: figures/pinmuxtool_ui_2.png
    :scale: 70%
    :align: center
 
@@ -34,7 +34,7 @@ The steps of creating a new project are illustrated below:
 
 3. Choose the chip type
 
-   .. figure:: figures/choose_chip.png
+   .. figure:: figures/pinmuxtool_choose_chip.png
       :scale: 80%
       :align: center
 
@@ -56,7 +56,7 @@ The steps of assigning pin to peripheral are illustrated below:
 
 3. ``Layout`` will update pinout synchronously
 
-   .. figure:: figures/layout.png
+   .. figure:: figures/pinmuxtool_layout.png
       :scale: 70%
       :align: center
 
@@ -87,11 +87,11 @@ After function assignment, the color of pin will turn **green** or **orange**:
 
 The pinout table below will dynamically update the information of each pin.
 
-.. figure:: figures/pinout_table_1.png
+.. figure:: figures/pinmuxtool_pinout_table_1.png
    :scale: 70%
    :align: center
 
-.. figure:: figures/pinout_table_2.png
+.. figure:: figures/pinmuxtool_pinout_table_2.png
    :scale: 70%
    :align: center
 
@@ -145,7 +145,7 @@ The ``Clock`` function is used to adjust chip's clock information. The adjustmen
 
 5. Click :guilabel:`OK` button.
 
-.. figure:: figures/clock_1.png
+.. figure:: figures/pinmuxtool_clock_1.png
    :scale: 70%
    :align: center
 
@@ -154,6 +154,6 @@ Configuration Saving
 After completing the configuration of clock, click the save icon in menu bar to save it.
 Modifications will be saved to the file: ``{SDK}\component\soc\amebadplus\usrcfg\ameba_bootcfg.c``
 
-.. figure:: figures/saving.png
+.. figure:: figures/pinmuxtool_saving.png
    :scale: 70%
    :align: center

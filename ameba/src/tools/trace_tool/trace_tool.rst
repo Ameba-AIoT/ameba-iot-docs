@@ -17,7 +17,7 @@ The Trace Tool can display logs when the AGG function of loguart is enabled or d
 
 - ``Option: Global Settings`` including row count and timestamp, and ``Tag Filter`` is used to attach different tag before logs to distinguish logs from different cores when the AGG function is enabled.
 
-.. figure:: figures/trace_tool_ui.png
+.. figure:: figures/tracetool_ui.png
    :scale: 60%
    :align: center
    :name: fig1_trace_tool_ui
@@ -56,7 +56,7 @@ The hardware connection is illustrated below.
 
 .. only:: RTL8726EA
    
-   .. figure:: figures/hardware_connection_8726e.svg
+   .. figure:: figures/tracetool_hardware_connection_8726e.svg
       :scale: 90%
       :align: center
 
@@ -64,7 +64,7 @@ The hardware connection is illustrated below.
 
 .. only:: RTL8721D
 
-   .. figure:: figures/hardware_connection_8721d.svg
+   .. figure:: figures/tracetool_hardware_connection_8721d.svg
       :scale: 90%
       :align: center
 
@@ -97,13 +97,13 @@ After setting the environment mentioned in Section :ref:`trace_tool_environment_
 
    a. Check your COM through **Device Manager** in your computer, as shown below. In :guilabel:`COM & LPT` item, all the COM ports connected to the computer are listed.
 
-      .. figure:: figures/port_1.PNG
+      .. figure:: figures/tracetool_port_1.PNG
          :scale: 90%
          :align: center
 
    b. Select COM port in :guilabel:`Port Setting` box.
 
-      .. figure:: figures/port_2.png
+      .. figure:: figures/tracetool_port_2.png
          :scale: 75%
          :align: center
 
@@ -125,7 +125,7 @@ After setting the environment mentioned in Section :ref:`trace_tool_environment_
    - When COM port is open, the Trace Tool starts to receive logs from the device. Log is shown in Log window. By default, the timestamp is inserted at the start of each log.
    - If COM port is closed, the Trace Tool will not display logs and the commands can't be sent.
 
-   .. figure:: figures/log.png
+   .. figure:: figures/tracetool_log.png
       :scale: 90%
       :align: center
 
@@ -148,7 +148,7 @@ When COM port is open, you can send commands to the device through Trace Tool. T
 
 1. Input a command in command box as shown in the red block.
 
-   .. figure:: figures/command_box.png
+   .. figure:: figures/tracetool_command_box.png
       :scale: 60%
       :align: center
 
@@ -222,7 +222,7 @@ The REG function is used to read and write registers by register address.
 - ``Read/Write Register``: enter the register address to ``Read`` or ``Write`` the register value. ``Dump`` means batch printing register values, only Wifi MAC/Wifi BB/Wifi RF registers are supported to be dump.
 - ``Bit Value``: bitwise accessing the register specified by address.
 
-  .. figure:: figures/register.png
+  .. figure:: figures/tracetool_register.png
      :scale: 75%
      :align: center
   
@@ -233,13 +233,13 @@ The scope function is used to capture specific data in log and illustrate wavefo
 1. Enter *X* and *Y* pattern, *X* default value is time.
 2. Click :guilabel:`Start` button.
 
-.. figure:: figures/scope_1.png
+.. figure:: figures/tracetool_scope_1.png
    :scale: 60%
    :align: center
 
 In the scope interface, waveform will be illustrated synchronously.
 
-.. figure:: figures/scope_2.png
+.. figure:: figures/tracetool_scope_2.png
    :scale: 60%
    :align: center
 
@@ -250,7 +250,7 @@ WiFi Debug
 - ``DBG``: set Wi-Fi RA debug, avilable address: [0,0xff], and illustrate *CCK_FA* and *OFDM_FA* average value.
 - ``Power Save``: enable or disable Wi-Fi power saving mode.
 
-.. figure:: figures/wifi_debug.png
+.. figure:: figures/tracetool_wifi_debug.png
    :scale: 90%
    :align: center
 
@@ -263,7 +263,7 @@ The AUTO feature is used for automatic script execution.
 1. Click ``Browse`` button to choose the script you want to execute.
 2. Click ``Execute`` button to execute the script.
 
-.. figure:: figures/auto_script_1.png
+.. figure:: figures/tracetool_auto_script_1.png
    :scale: 90%
    :align: center
 
@@ -333,7 +333,7 @@ The format of script.txt which is used in auto mode is as follows:
   - The key word *pass_pattern*, *fail_pattern* and *timeout* are only valid for the next command CMD1, used to catch patterns in CMD1 execution.
     When catching the patterns, key word ``if...fi`` can be used to perform subsequent operation, now only the ``break`` operation is supported, which is used to jump out of the loop.
 
-    .. figure:: figures/auto_script_2.png
+    .. figure:: figures/tracetool_auto_script_2.png
        :scale: 60%
        :align: center
 

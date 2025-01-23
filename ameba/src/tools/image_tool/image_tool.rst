@@ -36,7 +36,7 @@ The UI of Image Tool is shown below.
 
 .. only:: FreeRTOS
 
-   .. figure:: figures/image_tool_ui_freertos.png
+   .. figure:: figures/imgtool_image_tool_ui_freertos.png
       :scale: 90%
       :align: center
 
@@ -50,7 +50,7 @@ The hardware setup for image download is shown below.
 
 .. only:: RTL8726EA
 
-   .. figure:: figures/hardware_setup_for_image_download_lite.svg
+   .. figure:: figures/imgtool_hardware_setup_for_image_download_lite.svg
       :scale: 130%
       :align: center
 
@@ -58,7 +58,7 @@ The hardware setup for image download is shown below.
 
 .. only:: RTL8721D
 
-   .. figure:: figures/hardware_setup_for_image_download_dplus.svg
+   .. figure:: figures/imgtool_hardware_setup_for_image_download_dplus.svg
       :scale: 130%
       :align: center
 
@@ -173,7 +173,7 @@ Download Steps
 
       .. only:: RTL8726EA
 
-         .. figure:: figures/image_download_operation_lite.png
+         .. figure:: figures/imgtool_image_download_operation_lite.png
             :scale: 90%
             :align: center
 
@@ -181,7 +181,7 @@ Download Steps
 
       .. only:: RTL8721D
 
-         .. figure:: figures/image_download_operation_dplus.png
+         .. figure:: figures/imgtool_image_download_operation_dplus.png
             :scale: 90%
             :align: center
 
@@ -223,7 +223,7 @@ Steps to erase Flash are illustrated below:
 
    You would get the operation result from the log window.
 
-   .. figure:: figures/nor_flash_erase_operation.png
+   .. figure:: figures/imgtool_nor_flash_erase_operation.png
       :scale: 90%
       :align: center
 
@@ -254,7 +254,7 @@ NOR Flash Register Access
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 Besides the common pre-steps, click :menuselection:`Advanced` and select :menuselection:`NOR Flash Register Access` item to lunch the NOR Flash Register Access dialog for further operations:
 
-.. figure:: figures/nor_flash_register_access.png
+.. figure:: figures/imgtool_nor_flash_register_access.png
    :scale: 90%
    :align: center
 
@@ -269,7 +269,7 @@ After the common pre-steps, next steps to read NOR Flash register:
 1. Select the read command to read specific register.
 2. Click the :menuselection:`Read` button, the register value will show up in the Register Value text box.
 
-   .. figure:: figures/read_nor_flash_register_operation.png
+   .. figure:: figures/imgtool_read_nor_flash_register_operation.png
       :scale: 90%
       :align: center
 
@@ -284,7 +284,7 @@ After the common pre-steps, next steps to write NOR Flash register:
 3. Click the :menuselection:`Write` button.
 4. Read back the register value for verification, refer to Section :ref:`read_nor_flash_register`.
 
-   .. figure:: figures/write_nor_flash_register_operation.png
+   .. figure:: figures/imgtool_write_nor_flash_register_operation.png
       :scale: 90%
       :align: center
 
@@ -299,7 +299,7 @@ Image Tool will pop up a dialog to guide user for the follow-up actions.
 
 For NOR Flash, only Flash type and protection register value will be shown.
 
-.. figure:: figures/nor.png
+.. figure:: figures/imgtool_nor.png
    :scale: 90%
    :align: center
 
@@ -340,7 +340,7 @@ Steps to modify an existing device profile are listed below:
 
 4. Click :guilabel:`Save` button to overwrite the existing device profile or click :guilabel:`Save As` button to save the modified device profile to a new file.
 
-   .. figure:: figures/edit_an_existing_device_profile.png
+   .. figure:: figures/imgtool_edit_an_existing_device_profile.png
       :scale: 80%
       :align: center
 

@@ -6,7 +6,7 @@ Introduction
 This document introduces how to use Ameba 1-N MP ImageTool to download images for several boards simultaneously.
 
 
-.. figure:: figures/ameba_1_n_mp_imagetool.png
+.. figure:: figures/mp1ton_ameba_1_n_mp_imagetool.png
    :scale: 90%
    :align: center
 
@@ -28,7 +28,7 @@ To download images for several boards simultaneously, the equipments listed belo
 
 - PC with 1-N MP ImageTool installed
 
-.. figure:: figures/hardware_setup.png
+.. figure:: figures/mp1ton_hardware_setup.png
    :scale: 120%
    :align: center
 
@@ -119,7 +119,7 @@ The steps to download images in normal mode are as follows:
 
 7. Click :guilabel:`Download` button.
 
-.. figure:: figures/ameba_1_n_mp_imagetool_operation.png
+.. figure:: figures/mp1ton_ameba_1_n_mp_imagetool_operation.png
    :scale: 90%
    :align: center
 
@@ -129,11 +129,11 @@ Once click :guilabel:`Download` button, image download starts.
 
 - If the image download is in process, as the following figures show, a light bulb shows up at the end of each progress bar, and a stopwatch measures the elapsed time. When image download is finished, a green tick shows up.
 
-  .. figure:: figures/image_download_ok_1.png
+  .. figure:: figures/mp1ton_image_download_ok_1.png
      :scale: 90%
      :align: center
   
-  .. figure:: figures/image_download_ok_2.png
+  .. figure:: figures/mp1ton_image_download_ok_2.png
      :scale: 90%
      :align: center
 
@@ -148,7 +148,7 @@ Factory Mode
 ^^^^^^^^^^^^^^^^^^^^^^^^
 If Factory Mode is enabled, the UI disables some functions. The configuration parameters are saved to :file:`Setting.ini` and reloaded when the tool restarts the next time.
 
-.. figure:: figures/factory_mode.png
+.. figure:: figures/mp1ton_factory_mode.png
    :scale: 90%
    :align: center
 
@@ -164,7 +164,7 @@ There are two ways to exit the factory mode:
 
 2. Open the tool again, and the modified parameters will be restored to normal mode.
 
-.. figure:: figures/parameters_modification.png
+.. figure:: figures/mp1ton_parameters_modification.png
    :scale: 70%
    :align: center
 
@@ -642,7 +642,7 @@ And the mp image layout in sram is:
    | | RTL8710EC|                  |              |            |
    +------------+------------------+--------------+------------+
 
-.. figure:: figures/mp_shrink_image_address_setting.png
+.. figure:: figures/mp1ton_mp_shrink_image_address_setting.png
    :scale: 90%
    :align: center
 
@@ -660,7 +660,7 @@ When transmission interrupts or verification fails, a red error sign shows up, y
 
 - Hover the mouse cursor over the sign, the error message shows up, as following figure shows.
 
-.. figure:: figures/download_is_fail.png
+.. figure:: figures/mp1ton_download_is_fail.png
    :scale: 90%
    :align: center
 
@@ -688,7 +688,7 @@ If Flash is write protected by Flash BPs, that is to say, when Flash block prote
 
 - You can process Flash BPs for download as needed, as following figure shows.
 
-.. figure:: figures/flash_block_protection_detected.png
+.. figure:: figures/mp1ton_flash_block_protection_detected.png
    :scale: 90%
    :align: center
 
@@ -706,7 +706,7 @@ The values of ``ProcessFlashBPsForErase`` and ``ProcessFlashBPsForDownload`` are
 
    - 2: Tool will abort erase/download when detect Flash block protection.
 
-.. figure:: figures/setting_ini.png
+.. figure:: figures/mp1ton_setting_ini.png
    :scale: 60%
    :align: center
 

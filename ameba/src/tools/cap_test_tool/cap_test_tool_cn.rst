@@ -7,7 +7,7 @@ Cap Test Tool is the official Cap-Touch calibration tool developed by Realtek fo
 
 The UI of Cap Test Tool is shown below.
 
-.. figure:: figures/cap_test_tool_ui.png
+.. figure:: figures/cap_tool_test_ui.png
    :scale: 25%
    :align: center
    :name: cap_test_tool_ui
@@ -20,7 +20,7 @@ Hardware Setup
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 The hardware setup is shown below.
 
-.. figure:: figures/hardware_setup.svg
+.. figure:: figures/cap_tool_hardware_setup.svg
    :scale: 130%
    :align: center
 
@@ -67,13 +67,13 @@ The capacitance capture circuit adopts constant current source charging and ADC 
 - The ADC synchronized with the charge and discharge controller samples the voltage of the Vt net and collects the maximum voltage at the end of the charge.
 - ADC converts analog voltage into digital code identified by MCU for subsequent processing.
 
-.. figure:: figures/simple_diagram.svg
+.. figure:: figures/cap_tool_simple_diagram.svg
    :scale: 120%
    :align: center
 
    Simple diagram
 
-.. figure:: figures/waveform_of_vt.svg
+.. figure:: figures/cap_tool_waveform_of_vt.svg
    :scale: 120%
    :align: center
 
@@ -81,7 +81,7 @@ The capacitance capture circuit adopts constant current source charging and ADC 
 
 As shown below, the Cap-Touch Controller (CTC) scan period consists of active time and sleep time, which can be configured individually for different applications.
 
-.. figure:: figures/scan_period_diagram.svg
+.. figure:: figures/cap_tool_scan_period_diagram.svg
    :scale: 120%
    :align: center
 
@@ -316,7 +316,7 @@ The calibration process of Iref is integrated in the tool, and the user is only 
 5. Observe the logs and wait the process to complete.
 6. Both mbias and baseline will be calibrated in device, and mbias will be updated in Cap Test Tool.
 
-   .. figure:: figures/iref_calibration_operation.png
+   .. figure:: figures/cap_tool_iref_calibration_operation.png
       :scale: 25%
       :align: center
       :name: iref_calibration_operation
@@ -354,7 +354,7 @@ The absolute value threshold is the debugging function, which the user does not 
 
    If you want to observe the signals, continue :ref:`Step 6 <cap_test_tool_step_6>`; otherwise, jump to :ref:`Step 8 <cap_test_tool_step_8>`.
 
-   .. figure:: figures/threshold_calibration_operation_before_calibration.png
+   .. figure:: figures/cap_tool_threshold_calibration_operation_before_calibration.png
       :scale: 30%
       :align: center
       :name: threshold_calibration_operation_before_calibration
@@ -371,7 +371,7 @@ The absolute value threshold is the debugging function, which the user does not 
       - Diff threshold will be set to the value of 80% of max. diff data.
       - Noise threshold will be set to the value of 40% of max. diff data.
 
-   .. figure:: figures/threshold_calibration_operation_in_calibration.png
+   .. figure:: figures/cap_tool_threshold_calibration_operation_in_calibration.png
       :scale: 30%
       :align: center
 
@@ -384,7 +384,7 @@ The absolute value threshold is the debugging function, which the user does not 
 8. Click the ``Stop Threshold Calibration`` button.
 9. Cap Test Tool calculates diff threshold and noise threshold, prints log and updates values in cells.
 
-   .. figure:: figures/threshold_calibration_operation_after_calibration.png
+   .. figure:: figures/cap_tool_threshold_calibration_operation_after_calibration.png
       :scale: 30%
       :align: center
 
@@ -450,7 +450,7 @@ Reset Baseline
       - It has no association with the current monitor view.
 
 
-   .. figure:: figures/reset_baseline_operation.png
+   .. figure:: figures/cap_tool_reset_baseline_operation.png
       :scale: 35%
       :align: center
 
@@ -467,25 +467,25 @@ Observe Signals
 
 Monitor boards of different views are shown in the following figures.
 
-.. figure:: figures/monitor_board_sample_data_view.png
+.. figure:: figures/cap_tool_monitor_board_sample_data_view.png
    :scale: 30%
    :align: center
 
    Monitor board (``Sample Data`` View)
 
-.. figure:: figures/monitor_board_data_baseline_view.png
+.. figure:: figures/cap_tool_monitor_board_data_baseline_view.png
    :scale: 30%
    :align: center
 
    Monitor board (``Average Data vs Baseline`` View)
 
-.. figure:: figures/monitor_board_diff_threshold_view.png
+.. figure:: figures/cap_tool_monitor_board_diff_threshold_view.png
    :scale: 30%
    :align: center
 
    Monitor board (``Diff Data vs Diff Threshold`` View)
 
-.. figure:: figures/monitor_board_snr_view.png
+.. figure:: figures/cap_tool_monitor_board_snr_view.png
    :scale: 30%
    :align: center
 
