@@ -134,7 +134,7 @@ Realtek RTL8711Dx系列产品，为双频Wi-Fi 4 (2.4GHz + 5GHz)和BLE 5.0的双
 
       * |finger_icon| `数据手册 <https://www.realmcu.com/zh/Home/DownloadList/add965ea-d661-4a63-9514-d18b6912f8ab>`_
       * |finger_icon| `应用笔记 <https://ameba-aiot.github.io/ameba-iot-docs/RTL8721Dx/en/latest/application_note/index.html>`_
-      * |finger_icon| `Wi-Fi指南 <https://ameba-aiot.github.io/ameba-iot-docs/RTL8721Dx/en/latest/ameba/en/wifi/index.html>`_
-      * |finger_icon| `AT命令 <https://ameba-aiot.github.io/ameba-iot-docs/RTL8721Dx/en/latest/ameba/en/at_command/src/index.html>`_
-      * |finger_icon| `软件工具 <https://ameba-aiot.github.io/ameba-iot-docs/RTL8721Dx/en/latest/ameba/en/software_tools/index.html>`_
-      * |finger_icon| `MP工具 <https://ameba-aiot.github.io/ameba-iot-docs/RTL8721Dx/en/latest/ameba/en/mp_tools/src/index.html>`_
+      * |finger_icon| `Wi-Fi指南 <https://ameba-aiot.github.io/ameba-iot-docs/RTL8721Dx/cn/latest/ameba/src/wifi/wifi_guide_index_cn.html>`_
+      * |finger_icon| `AT命令 <https://ameba-aiot.github.io/ameba-iot-docs/RTL8721Dx/cn/latest/ameba/src/at_command/at_command_index_cn.html>`_
+      * |finger_icon| `软件工具 <https://ameba-aiot.github.io/ameba-iot-docs/RTL8721Dx/cn/latest/ameba/src/tools/tools_index_cn.html>`_
+      * |finger_icon| `MP工具 <https://ameba-aiot.github.io/ameba-iot-docs/RTL8721Dx/cn/latest/ameba/src/mptools/mptools_index_cn.html>`_

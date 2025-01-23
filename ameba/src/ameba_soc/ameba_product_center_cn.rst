@@ -1,5 +1,16 @@
 .. tabs::
 
+   .. tab:: 所有IC
+      .. tabs::
+         .. tab:: RTL8720EA系列
+            .. include:: ../src/ameba_soc/8720ea_series_cn.rst
+         .. tab:: RTL8721Dx系列
+            .. include:: ../src/ameba_soc/8721dx_series_cn.rst
+         .. tab:: RTL8726EA系列
+            .. include:: ../src/ameba_soc/8726ea_series_cn.rst
+         .. tab:: RTL8730E系列
+            .. include:: ../src/ameba_soc/8730e_series_cn.rst
+
    .. tab:: IoT控制SoC
 
       集成Wi-Fi 6/4（802.11 a/b/g/n/ax）和低功耗蓝牙（BLE） 5.0/5.2/5.3，以及丰富的外设资源，提供强大的安全和最低的功耗，为物联网的各种应用开发提供助力。

@@ -141,7 +141,7 @@ With excellent ultra-low power consumption, enhanced encryption strategy (PSA Le
 
       * |finger_icon| `Datasheet <https://www.realmcu.com/zh/Home/DownloadList/add965ea-d661-4a63-9514-d18b6912f8ab>`_
       * |finger_icon| `Application Note <https://ameba-aiot.github.io/ameba-iot-docs/RTL8721Dx/en/latest/application_note/index.html>`_
-      * |finger_icon| `Wi-Fi Guide <https://ameba-aiot.github.io/ameba-iot-docs/RTL8721Dx/en/latest/ameba/en/wifi/index.html>`_
-      * |finger_icon| `AT Command <https://ameba-aiot.github.io/ameba-iot-docs/RTL8721Dx/en/latest/ameba/en/at_command/src/index.html>`_
-      * |finger_icon| `Software Tools <https://ameba-aiot.github.io/ameba-iot-docs/RTL8721Dx/en/latest/ameba/en/software_tools/index.html>`_
-      * |finger_icon| `MP Tools <https://ameba-aiot.github.io/ameba-iot-docs/RTL8721Dx/en/latest/ameba/en/mp_tools/src/index.html>`_
+      * |finger_icon| `Wi-Fi Guide <https://ameba-aiot.github.io/ameba-iot-docs/RTL8721Dx/en/latest/ameba/src/wifi/wifi_guide_index.html>`_
+      * |finger_icon| `AT Command <https://ameba-aiot.github.io/ameba-iot-docs/RTL8721Dx/en/latest/ameba/src/at_command/at_command_index.html>`_
+      * |finger_icon| `Software Tools <https://ameba-aiot.github.io/ameba-iot-docs/RTL8721Dx/en/latest/ameba/src/tools/tools_index.html>`_
+      * |finger_icon| `MP Tools <https://ameba-aiot.github.io/ameba-iot-docs/RTL8721Dx/en/latest/ameba/src/mptools/mptools_index.html>`_

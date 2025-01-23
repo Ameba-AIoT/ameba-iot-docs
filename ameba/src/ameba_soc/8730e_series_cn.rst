@@ -138,7 +138,7 @@ Realtek RTL8730E系列芯片为双频Wi-Fi 6 (2.4GHz + 5GHz)和Bluetooth 5.3的�
 
       * |finger_icon| `规格书 <https://www.realmcu.com/zh/Home/DownloadList/20d00b7b-4a60-4ece-9bca-820267a0af53>`_
       * |finger_icon| `应用笔记 <https://ameba-aiot.github.io/ameba-iot-docs/RTL8730E/en/latest/application_note/index.html>`_
-      * |finger_icon| `Wi-Fi指南 <https://ameba-aiot.github.io/ameba-iot-docs/RTL8730E/en/latest/ameba/en/wifi/index.html>`_
-      * |finger_icon| `AT命令 <https://ameba-aiot.github.io/ameba-iot-docs/RTL8730E/en/latest/ameba/en/at_command/src/index.html>`_
-      * |finger_icon| `软件工具 <https://ameba-aiot.github.io/ameba-iot-docs/RTL8730E/en/latest/ameba/en/software_tools/index.html>`_
-      * |finger_icon| `MP工具 <https://ameba-aiot.github.io/ameba-iot-docs/RTL8730E/en/latest/ameba/en/mp_tools/src/index.html>`_
+      * |finger_icon| `Wi-Fi指南 <https://ameba-aiot.github.io/ameba-iot-docs/RTL8721Dx/cn/latest/ameba/src/wifi/wifi_guide_index_cn.html>`_
+      * |finger_icon| `AT命令 <https://ameba-aiot.github.io/ameba-iot-docs/RTL8721Dx/cn/latest/ameba/src/at_command/at_command_index_cn.html>`_
+      * |finger_icon| `软件工具 <https://ameba-aiot.github.io/ameba-iot-docs/RTL8721Dx/cn/latest/ameba/src/tools/tools_index_cn.html>`_
+      * |finger_icon| `MP工具 <https://ameba-aiot.github.io/ameba-iot-docs/RTL8721Dx/cn/latest/ameba/src/mptools/mptools_index_cn.html>`_

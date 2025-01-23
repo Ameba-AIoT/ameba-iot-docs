@@ -1,5 +1,16 @@
 .. tabs::
 
+   .. tab:: ALL ICs
+      .. tabs::
+         .. tab:: RTL8720EA Series
+            .. include:: ../src/ameba_soc/8720ea_series.rst
+         .. tab:: RTL8721Dx Series
+            .. include:: ../src/ameba_soc/8721dx_series.rst
+         .. tab:: RTL8726EA Series
+            .. include:: ../src/ameba_soc/8726ea_series.rst
+         .. tab:: RTL8730E Series
+            .. include:: ../src/ameba_soc/8730e_series.rst
+
    .. tab:: IoT Control
 
       Integrated with WiFi 6/4 (802.11 a/b/g/n/ax) and Low Energy Bluetooth (BLE) 5.0/5.2/5.3, along with abundant peripheral resources,

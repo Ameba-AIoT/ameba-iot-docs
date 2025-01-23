@@ -137,7 +137,7 @@ Combined with abundant peripheral interfaces, the RTL8730E series has been succe
 
       * |finger_icon| `Datasheet <https://www.realmcu.com/zh/Home/DownloadList/20d00b7b-4a60-4ece-9bca-820267a0af53>`_
       * |finger_icon| `Application Note <https://ameba-aiot.github.io/ameba-iot-docs/RTL8730E/en/latest/application_note/index.html>`_
-      * |finger_icon| `Wi-Fi Guide <https://ameba-aiot.github.io/ameba-iot-docs/RTL8730E/en/latest/ameba/en/wifi/index.html>`_
-      * |finger_icon| `AT Command  <https://ameba-aiot.github.io/ameba-iot-docs/RTL8730E/en/latest/ameba/en/at_command/src/index.html>`_
-      * |finger_icon| `Software Tools <https://ameba-aiot.github.io/ameba-iot-docs/RTL8730E/en/latest/ameba/en/software_tools/index.html>`_
-      * |finger_icon| `MP Tools <https://ameba-aiot.github.io/ameba-iot-docs/RTL8730E/en/latest/ameba/en/mp_tools/src/index.html>`_
+      * |finger_icon| `Wi-Fi Guide <https://ameba-aiot.github.io/ameba-iot-docs/RTL8721Dx/en/latest/ameba/src/wifi/wifi_guide_index.html>`_
+      * |finger_icon| `AT Command <https://ameba-aiot.github.io/ameba-iot-docs/RTL8721Dx/en/latest/ameba/src/at_command/at_command_index.html>`_
+      * |finger_icon| `Software Tools <https://ameba-aiot.github.io/ameba-iot-docs/RTL8721Dx/en/latest/ameba/src/tools/tools_index.html>`_
+      * |finger_icon| `MP Tools <https://ameba-aiot.github.io/ameba-iot-docs/RTL8721Dx/en/latest/ameba/src/mptools/mptools_index.html>`_
