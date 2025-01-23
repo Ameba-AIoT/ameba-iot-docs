@@ -77,7 +77,7 @@ The pin layout of Ameba demo board refers the pin layout of Raspberry Pi and can
       connection with Raspberry Pi
 
 WiFi Bridge Device Porting Guide
---------------------------------
+---------------------------------
 .. include:: fullmac_portingguide_wifi_dev.rst
 
 WiFi Bridge Host Porting Guide
@@ -96,7 +96,7 @@ WiFi Bridge Linux Test
 .. include:: wifi_bridge_testapp_linux.rst
 
 WiFi Bridge Throughput
---------------------
+------------------------
 .. table::
    :width: 100%
    :widths: auto

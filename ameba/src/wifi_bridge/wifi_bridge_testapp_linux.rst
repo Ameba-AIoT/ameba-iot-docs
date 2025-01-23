@@ -13,8 +13,6 @@ The testapp uses netlink to communicate with SDIO host driver. When SDIO host dr
 
 APP Commands
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-The supported commands are listed below.
-
 .. table::
    :width: 100%
    :widths: auto
@@ -22,15 +20,12 @@ The supported commands are listed below.
    +----------------------------+----------------------------------------------------------------------------------------------+
    | Command                    | Description                                                                                  |
    +============================+==============================================================================================+
-   | wifi_connect param1 param2 | Used to connect to AP.                                                                       |
+   | wifi_connect param1 param2 | connect to AP.                                                                               |
    |                            |                                                                                              |
    |                            | :param1: SSID                                                                                |
    |                            |                                                                                              |
-   |                            | :param2: password                                                                            |
+   |                            | :param2: password (option)                                                                   |
    |                            |                                                                                              |
-   |                            | *param2* can be absent when connect to AP which security type is open.                       |
-   |                            |                                                                                              |
-   |                            | The IP address will also be obtained and configured after successfully connected to AP.      |
    +----------------------------+----------------------------------------------------------------------------------------------+
    | disconnect                 | Disconnect to AP                                                                             |
    +----------------------------+----------------------------------------------------------------------------------------------+
@@ -43,17 +38,13 @@ APP Build and Run
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 1. Copy ``sdio_bridge/bridge_api`` folder to host
 
-2. Compile and execute as below, then you can input test commands listed in Section :ref:`bridge_supported_commands` to test
+2. Compile and execute as below, then you can input test commands.
 
    .. code-block:: C
 
       $cd sdio_bridge/bridge_api/testapp
       $make
       $sudo ./bridge
-
-   For example, ``./bridge wifi_connect xiaomi_esther 12345678`` means connect to an AP whose SSID is ``xiaomi_esther`` and password is ``12345678``, as shown in Figure :ref:`testapp control flow <bridge_testapp_control_flow>`.
-   
-   After Wi-Fi connect command executed, the ``eth_sta0`` interface can be shown by command ``ifconfig``, the IP address will also be configured automatically, and this IP address will be the same IP address in |CHIP_NAME|, as shown in Figure :ref:`ifconfig result <bridge_ifconfig_result>`.
 
    .. figure:: figures/bridge_testapp_control_flow.png
       :scale: 60%
@@ -76,13 +67,13 @@ The following is a simple operation flow. After configuration as below, data com
 
 After make and install host driver, and successfully make testapp, enter ``sdio_bridge/testapp folder``.
 
-1. Input ``sudo ./bridge`` to start.
+1. ``sudo ./bridge`` to start.
 
-2. Input ``scan`` command to trigger scan.
+2. ``scan`` to trigger scan.
 
-3. Input ``scanres`` command to get and print scan result
+3. ``scanres`` to get and print scan result
 
-4. Input ``wifi_connect target_ssid password`` command to connect your target AP, ``target_ssid`` and ``password`` in this command will be your target AP's SSID and password.
+4. ``wifi_connect target_ssid password`` command to connect your target AP,  The IP address will also be obtained and configured after successfully connected to AP.
 
 5. After successfully connected, use the standard ``ifconfig`` to check the interface, and the IP address will be already configured.
 
