@@ -7,9 +7,9 @@ Software Tools
    :maxdepth: 2
 
 
-   image_tool/image_tool_index_cn
-   trace_tool/trace_tool_index_cn
-   layout_tool/layout_tool_index_cn
-   pinmux_tool/pinmux_tool_index_cn
-   cap_test_tool/cap_test_tool_index_cn
+   image_tool_index_cn
+   trace_tool_index_cn
+   layout_tool_index_cn
+   pinmux_tool_index_cn
+   cap_test_tool_index_cn
 
