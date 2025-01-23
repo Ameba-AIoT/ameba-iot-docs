@@ -34,7 +34,7 @@ The data-transmission efficiency of GDMA is affected by clock synchronization, c
 
 Usage
 ----------
-.. figure:: ../figures/dma_block_size_diagram.svg
+.. figure:: figures/dma_block_size_diagram.svg
    :scale: 120%
    :align: center
    :name: dma_block_size_diagram
@@ -183,14 +183,14 @@ In auto-reloading mode, the source and destination can independently select whic
    |                               | PGDMA_InitTypeDef->GDMA_ReloadDst = 1  | block, as shown in :ref:`mbd_source_dest_auto`.                                                                   |
    +-------------------------------+----------------------------------------+-------------------------------------------------------------------------------------------------------------------+
 
-.. figure:: ../figures/mbd_source_auto_dest_cont.png
+.. figure:: figures/mbd_source_auto_dest_cont.png
    :scale: 70%
    :align: center
    :name: mbd_source_auto_dest_cont
 
    Multi-block DMA transfer with source address auto-reloaded and contiguous destination address
 
-.. figure:: ../figures/mbd_source_dest_auto.png
+.. figure:: figures/mbd_source_dest_auto.png
    :scale: 70%
    :align: center
    :name: mbd_source_dest_auto
@@ -236,21 +236,21 @@ In linked list mode, the addresses between data blocks do not have to be consecu
 
 If both the destination and the source are continuous data blocks, multi-block transmission should not be used, and single-block transmission is more appropriate.
 
-.. figure:: ../figures/mbd_source_auto_link_dest.png
+.. figure:: figures/mbd_source_auto_link_dest.png
    :scale: 50%
    :align: center
    :name: mbd_source_auto_link_dest
 
    Multi-block DMA transfer with source address auto-reloaded and linked list destination address
 
-.. figure:: ../figures/mbd_link_source_cont_dest.png
+.. figure:: figures/mbd_link_source_cont_dest.png
    :scale: 50%
    :align: center
    :name: mbd_link_source_cont_dest
 
    Multi-block DMA transfer with linked list source address and contiguous destination address
    
-.. figure:: ../figures/mbd_link_source_dest.png
+.. figure:: figures/mbd_link_source_dest.png
    :scale: 60%
    :align: center
    :name: mbd_link_source_dest
