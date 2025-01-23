@@ -1,6 +1,5 @@
-Digital Signal Processing (DSP)
+数字信号处理（DSP）
 ================================
-
 
 .. table::
    :width: 100%

@@ -36,14 +36,20 @@ Xtensa Xplorer License
 ~~~~~~~~~~~~~~~~~~~~~~~
 Xtensa Xplorer license is also essential along with the software packages.
 
-You can send an E-mail to <claire_wang@realsil.com.cn> to apply for a temporary license. The E-mail should be like this:
+You can send an E-mail to <claire_wang@realsil.com.cn> to apply for a temporary license.
+
+When sending the E-mail, the following information is needed:
 
 .. figure:: figures/apply_for_license_email.png
    :scale: 100%
    :align: center
 
-.. important::
-   - The **MAC address** is necessary when applying for a license.
+.. admonition:: Essential Information
+   - **MAC address**
+   - **Company**
+   - **University & School** (for students only)
+
+.. note::
    - One cunstomer can only apply for one license.
    - The validity period of the temporary license is 3 months.
 

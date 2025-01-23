@@ -1,14 +1,14 @@
-.. _build_environment_for_dsp:
+.. _build_environment_for_dsp_cn:
 
-Preparation
+准备工作
 ----------------------
-In order to develop HiFi5 DSP, you need to downoad :ref:`dsp_software packages` and prepare :ref:`xtensa_xplorer_license` first.
+为了开发 HiFi5 DSP，首先需要下载 :ref:`dsp_software packages` 和准备 :ref:`xtensa_xplorer_license`.
 
 .. _dsp_software packages:
 
-Software Packages
+软件包
 ~~~~~~~~~~~~~~~~~~
-Download the software packages according to your operating system.
+根据使用操作系统的不同，下载对应的软件包。
 
 .. table::
    :width: 100%
@@ -32,23 +32,30 @@ Download the software packages according to your operating system.
 
 .. _xtensa_xplorer_license:
 
-Xtensa Xplorer License
+Xtensa Xplorer 许可证
 ~~~~~~~~~~~~~~~~~~~~~~~
-Xtensa Xplorer license is also essential along with the software packages.
+除了上文提到的软件包以外，Xtensa Xplorer 许可证也是必不可少的。
 
-You can send an E-mail to <claire_wang@realsil.com.cn> to apply for a temporary license. The E-mail should be like this:
+联系 <claire_wang@realsil.com.cn> 可申请一份临时许可证。
 
-.. figure:: figures/apply_for_license_email.png
+发邮件申请许可证时，必须提供以下信息：
+
+.. figure:: figures/apply_for_license_email_cn.png
    :scale: 100%
    :align: center
 
-.. important::
-   - The **MAC address** is necessary when applying for a license.
-   - One cunstomer can only apply for one license.
-   - The validity period of the temporary license is 3 months.
+.. admonition:: 必需信息
+   - **MAC地址**
+   - **工作单位**
+   - **学校/学院** (仅学生)
 
-Installing Toolchains
-----------------------
+.. note::
+   - 一人只能申请一份许可证。
+   - 临时许可证的有效期是3个月。
+
+
+安装工具链
+-------------
 Install the Xplorer, a GUI based IDE tool provided by Cadence to build DSP applications.
 
 Windows
