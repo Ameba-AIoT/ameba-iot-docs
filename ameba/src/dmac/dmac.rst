@@ -11,22 +11,10 @@ GDMA Performance
 --------------------------------
 The data-transmission efficiency of GDMA is affected by clock synchronization, channel FIFO depth, transfer types, handshake efficiency, GDMA interface setting of slave and other factors. The following data is based on the results of the experiment with the transmission type of single block and the transmission channel is zero.
 
-.. table::
-   :width: 100%
-   :widths: auto
+.. tabs::
 
-   +-------+------------+-----------------------------+-----------------------------+
-   | Slave | Clock (Hz) | Writing 64 bytes            | Reading 64 bytes            |
-   +=======+============+=============================+=============================+
-   | SRAM  | 250M       | (64*8)/(280ns)= 1828.57Mbps | (64*8)/(240ns)= 2133.33Mbps |
-   +-------+------------+-----------------------------+-----------------------------+
-   | PSRAM | 250M       | (64*8)/(350ns)= 1462.86Mbps | (64*8)/(360ns)= 1422.22Mbps |
-   +-------+------------+-----------------------------+-----------------------------+
-   | Audio | 40M        | (64*8)/(1050ns)= 487.62Mbps | (64*8)/(470ns)=1089.36Mbps  |
-   +-------+------------+-----------------------------+-----------------------------+
-   | SPI   | 100M       | (64*8)/(710ns)= 721.13Mbps  | (64*8)/(670ns)= 764.18Mbps  |
-   +-------+------------+-----------------------------+-----------------------------+
-
+   .. include:: dmac_performance_20EA21Dx26EA.rst
+   .. include:: dmac_performance_8730E.rst
 
 .. note::
    The time of GDMA turn-around is not included.
