@@ -590,7 +590,7 @@ if device has data to send to host</p></td>
 <section id="app">
 <h2>APP 架构<a class="headerlink" href="#app" title="Link to this heading"></a></h2>
 <p>APP封装了一些WIFI 操作比如：连线，扫描，让Host可以控制Ameba的行为。</p>
-<p>APP使用 netlink 实现APP和 底层通信，当底层驱动收到相关的命令之后, 会通过接口传给SoC让SoC执行相应的操作，反向亦然。</p>
+<p>APP使用 netlink 实现APP和底层通信，当底层驱动收到相关的命令之后, 会通过接口传给SoC让SoC执行相应的操作，反向亦然。</p>
 <figure class="align-center" id="id14">
 <a class="reference internal image-reference" href="../../../_images/bridge_testapp_control_flow.svg"><img alt="../../../_images/bridge_testapp_control_flow.svg" height="251" src="../../../_images/bridge_testapp_control_flow.svg" width="338" /></a>
 <figcaption>
@@ -608,17 +608,15 @@ if device has data to send to host</p></td>
 </thead>
 <tbody>
 <tr class="row-even"><td><p>wifi_connect param1 param2</p></td>
-<td><p>Used to connect to AP.</p>
+<td><p>Connect to AP.</p>
 <dl class="field-list simple">
 <dt class="field-odd">param1<span class="colon">:</span></dt>
 <dd class="field-odd"><p>SSID</p>
 </dd>
 <dt class="field-even">param2<span class="colon">:</span></dt>
-<dd class="field-even"><p>password</p>
+<dd class="field-even"><p>password  (option)</p>
 </dd>
 </dl>
-<p><em>param2</em> can be absent when connect to AP which security type is open.</p>
-<p>The IP address will also be obtained and configured after successfully connected to AP.</p>
 </td>
 </tr>
 <tr class="row-odd"><td><p>disconnect</p></td>
@@ -643,7 +641,6 @@ if device has data to send to host</p></td>
 <span class="n">$sudo</span><span class="w"> </span><span class="p">.</span><span class="o">/</span><span class="n">bridge</span>
 </pre></div>
 </div>
-<p>比如, <code class="docutils literal notranslate"><span class="pre">./bridge</span> <span class="pre">wifi_connect</span> <span class="pre">xiaomi_esther</span> <span class="pre">12345678</span></code> 代表连接SSID为 <code class="docutils literal notranslate"><span class="pre">xiaomi_esther</span></code> 密码为 <code class="docutils literal notranslate"><span class="pre">12345678</span></code> 的AP</p>
 <figure class="align-center" id="bridge-testapp-control-flow">
 <a class="reference internal image-reference" href="../../../_images/bridge_testapp_control_flow.png"><img alt="../../../_images/bridge_testapp_control_flow.png" src="../../../_images/bridge_testapp_control_flow.png" style="width: 382.2px; height: 276.0px;" /></a>
 <figcaption>
@@ -663,11 +660,11 @@ if device has data to send to host</p></td>
 <h2>APP 测试过程<a class="headerlink" href="#id9" title="Link to this heading"></a></h2>
 <p>确保host 驱动正确编译并加载，APP正确编译之后，执行如下步骤测试数据通路：</p>
 <ol class="arabic simple">
-<li><p>输入 <code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">./bridge</span></code></p></li>
-<li><p>输入 <code class="docutils literal notranslate"><span class="pre">scan</span></code> 出发WiFi 扫描</p></li>
-<li><p>输入 <code class="docutils literal notranslate"><span class="pre">scanres</span></code> 获取扫描列表</p></li>
-<li><p>输入 <code class="docutils literal notranslate"><span class="pre">wifi_connect</span> <span class="pre">target_ssid</span> <span class="pre">password</span></code> 连接AP</p></li>
-<li><p>输入 <code class="docutils literal notranslate"><span class="pre">ifconfig</span></code> 检查 <code class="docutils literal notranslate"><span class="pre">eth_sta0</span></code> 的IP地址是否已经正确获取</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">./bridge</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">scan</span></code> 触发WiFi 扫描</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">scanres</span></code> 获取扫描列表</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">wifi_connect</span> <span class="pre">target_ssid</span> <span class="pre">password</span></code> 连接AP, 连线成功之后IP地址也会自动获取</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ifconfig</span></code> 检查 <code class="docutils literal notranslate"><span class="pre">eth_sta0</span></code> 的IP地址是否已经正确获取</p></li>
 </ol>
 <p>之后可以执行 <code class="docutils literal notranslate"><span class="pre">ping</span></code> 后者 <code class="docutils literal notranslate"><span class="pre">iperf</span></code> 命令测试数据通路</p>
 </section>
