@@ -41,7 +41,7 @@ Ameba-tflite-micro是针对瑞昱Ameba芯片的TensorFlow Lite Micro库的一个
 
    1. 点击 ``File > Import > General > Existing Projects into Workspace`` 并且选择 ``{DSPSDK}/lib/tflite_micro`` 的路径。
 
-      .. figure:: ../figures/xplorer_import_existing_project.png
+      .. figure:: figures/xplorer_import_existing_project.png
          :scale: 90%
          :align: center
 
@@ -49,7 +49,7 @@ Ameba-tflite-micro是针对瑞昱Ameba芯片的TensorFlow Lite Micro库的一个
 
       输出的库会保存在 ``{DSPSDK}/lib/tflite_micro/project/bin/HIFI5_PROD_1123_asic_UPG/Release`` 目录下。
 
-      .. figure:: ../figures/xplorer_build_project.png
+      .. figure:: figures/xplorer_build_project.png
          :scale: 90%
          :align: center
 
@@ -69,19 +69,19 @@ Ameba-tflite-micro是针对瑞昱Ameba芯片的TensorFlow Lite Micro库的一个
 
    2. 选择KM4核
 
-      .. figure:: ../figures/menuconfig_lite_km4.png
+      .. figure:: figures/menuconfig_lite_km4.png
          :scale: 100%
          :align: center
 
    3. 选择AI config
 
-      .. figure:: ../figures/menuconfig_lite_km4_ai.png
+      .. figure:: figures/menuconfig_lite_km4_ai.png
          :scale: 100%
          :align: center
 
    4. 开启tflite_micro
 
-      .. figure:: ../figures/menuconfig_lite_km4_ai_tflm.png
+      .. figure:: figures/menuconfig_lite_km4_ai_tflm.png
          :scale: 100%
          :align: center
 
@@ -101,19 +101,19 @@ Ameba-tflite-micro是针对瑞昱Ameba芯片的TensorFlow Lite Micro库的一个
 
    2. 选择KM4核
 
-      .. figure:: ../figures/menuconfig_dplus_km4.png
+      .. figure:: figures/menuconfig_dplus_km4.png
          :scale: 100%
          :align: center
 
    3. 选择AI config
 
-      .. figure:: ../figures/menuconfig_dplus_km4_ai.png
+      .. figure:: figures/menuconfig_dplus_km4_ai.png
          :scale: 100%
          :align: center
 
    4. 开启tflite_micro
 
-      .. figure:: ../figures/menuconfig_dplus_km4_ai_tflm.png
+      .. figure:: figures/menuconfig_dplus_km4_ai_tflm.png
          :scale: 100%
          :align: center
 

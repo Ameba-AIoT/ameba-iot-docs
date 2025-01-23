@@ -7,13 +7,13 @@ AT 命令
 .. toctree::
    :maxdepth: 2
 
-   at_command_introduction.rst
-   at_command_common.rst
-   at_command_wifi.rst
-   at_command_mqtt.rst
-   at_command_http.rst
-   at_command_websocket.rst
-   at_command_tcp_ip.rst
-   at_command_bluetooth.rst
-   at_command_file_system.rst
-   at_command_use_spi.rst
+   at_command_introduction_cn.rst
+   at_command_common_cn.rst
+   at_command_wifi_cn.rst
+   at_command_mqtt_cn.rst
+   at_command_http_cn.rst
+   at_command_websocket_cn.rst
+   at_command_tcp_ip_cn.rst
+   at_command_bluetooth_cn.rst
+   at_command_file_system_cn.rst
+   at_command_use_spi_cn.rst
