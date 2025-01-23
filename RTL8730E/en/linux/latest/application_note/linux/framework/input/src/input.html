@@ -214,6 +214,7 @@
 <p>The Linux input device drivers translate device-specific signals into the standard format <em>input_event</em>, Input HAL filters <em>input_event</em> into <em>InputHwRawEvent</em>. The input manager service converts the <em>InputHwRawEvent</em> into <em>KeyEvent</em> or <em>MotionEvent</em> according to the type of the input event.</p>
 <section id="linux-kernel-input-event-data">
 <h3>Linux Kernel Input Event data<a class="headerlink" href="#linux-kernel-input-event-data" title="Link to this heading"></a></h3>
+<p>In this section, <em>&lt;linux&gt;</em> means the kernel linux directory in sdk, which is <code class="docutils literal notranslate"><span class="pre">&lt;sdk&gt;/kernel/linux-5.4</span></code> for kernel 5.4.x, and <code class="docutils literal notranslate"><span class="pre">&lt;sdk&gt;/kernel/linux-6.6</span></code> for kernel 6.6.x. <em>&lt;dts_dir&gt;</em> means the directory of dts files, which is <code class="docutils literal notranslate"><span class="pre">&lt;sdk&gt;/kernel/linux-5.4/arch/arm/boot/dts</span></code> for kernel 5.4.x, and <code class="docutils literal notranslate"><span class="pre">&lt;sdk&gt;/kernel/linux-6.6/arch/arm/boot/dts/realtek/ameba</span></code> for kernel 6.6.x.</p>
 <p>The Linux input device drivers translate device-specific signals into structure named <em>input_event</em>. Input HAL gets a whole number of input events by reading on the <code class="docutils literal notranslate"><span class="pre">/dev/Input/eventX</span></code>. Their layout is:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">struct</span> <span class="n">input_event</span> <span class="p">{</span>
   <span class="n">struct</span> <span class="n">timeval</span> <span class="n">time</span><span class="p">;</span>
@@ -242,7 +243,7 @@
 <li><p><em>when</em>: Indicates when the event happened.</p></li>
 <li><p><em>device_id</em>: Indicates which input device report the event.</p></li>
 <li><p><em>type</em>: Indicates the type of input device, the supported types defined in <em>InputHwDevType</em></p></li>
-<li><p><em>code</em>: Indicates the event code. A complete list is in <code class="docutils literal notranslate"><span class="pre">&lt;sdk&gt;/sources/kernel/linux-5.4/include/uapi/linux/input-event-codes.h</span></code></p></li>
+<li><p><em>code</em>: Indicates the event code. A complete list is in <code class="docutils literal notranslate"><span class="pre">&lt;linux&gt;/include/uapi/linux/input-event-codes.h</span></code></p></li>
 <li><p>value: Indicates the event carries.</p></li>
 </ul>
 </section>
@@ -283,9 +284,9 @@
 </ul>
 <section id="linux-kernel-key-maps">
 <h4>Linux Kernel Key Maps<a class="headerlink" href="#linux-kernel-key-maps" title="Link to this heading"></a></h4>
-<p>The Linux input drivers is responsible for mapping the physical scan code got from GPIO pins to the Linux key codes. A Linux key code is a standard identifier for the keys. Linux key codes are defined in <code class="docutils literal notranslate"><span class="pre">&lt;sdk&gt;/sources/kernel/linux-5.4/include/uapi/linux/input-event-codes.h</span></code> header file with the prefix <em>KEY_</em>.</p>
+<p>The Linux input drivers is responsible for mapping the physical scan code got from GPIO pins to the Linux key codes. A Linux key code is a standard identifier for the keys. Linux key codes are defined in <code class="docutils literal notranslate"><span class="pre">&lt;linux&gt;/include/uapi/linux/input-event-codes.h</span></code> header file with the prefix <em>KEY_</em>.</p>
 <p>Take the <em>KEY_1</em> as an example, <em>KEY_1</em> is used to represent the <em>1</em> key. When the key is pressed, an event with the key’s code is emitted with value 1, when the key is released, an event is emitted with value 0.</p>
-<p>The default key codes of Cap-touch is defined in the DTS file: <code class="docutils literal notranslate"><span class="pre">&lt;sdk&gt;/sources/kernel/linux-5.4/arch/arm/boot/dts/rtl8730e-captouch.dtsi</span></code></p>
+<p>The default key codes of Cap-touch is defined in the DTS file: <code class="docutils literal notranslate"><span class="pre">&lt;dts_dir&gt;/rtl8730e-captouch.dtsi</span></code></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">rtk</span><span class="p">,</span><span class="n">ctc</span><span class="o">-</span><span class="n">keycodes</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">KEY_1</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">KEY_2</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">KEY_3</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">KEY_4</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">KEY_5</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">KEY_6</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">KEY_7</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">KEY_8</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">KEY_9</span><span class="o">&gt;</span><span class="p">;</span>
 </pre></div>
 </div>

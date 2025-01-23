@@ -22,7 +22,6 @@
         <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
         <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script src="../../../../_static/toggleprompt.js?v=d7ede5d2"></script>
-        <script src="../../../../_static/tabs.js?v=3030b3cb"></script>
         <script>let toggleHintShow = 'Click to show';</script>
         <script>let toggleHintHide = 'Click to hide';</script>
         <script>let toggleOpenOnPrint = 'true';</script>
@@ -85,7 +84,6 @@
 <li class="toctree-l4"><a class="reference internal" href="#enable-uboot-secure-boot-config">Enable UBoot Secure Boot Config</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#prepare-secure-boot-key">Prepare Secure Boot Key</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#make-secure-image">Make Secure Image</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#make-imagetool-flashloader">Make ImageTool Flashloader</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#enable-secure-boot">Enable Secure Boot</a></li>
@@ -193,8 +191,7 @@ Function <code class="xref py py-func docutils literal notranslate"><span class=
 <p>For more details on dm-verity, refer to <a class="reference external" href="https://docs.kernel.org/admin-guide/device-mapper/verity.html">https://docs.kernel.org/admin-guide/device-mapper/verity.html</a>.</p>
 <p>This section describes the Construction Parameters, Theory of operation, Hash Tree, On-disk format and some examples. The kernel command line is the only start-point for the hash-tree verification of rootfs, and the digest of root-hash for hash-tree will be inserted to VBmeta whose validity is confirmed by the former flow.</p>
 <p>Codes of the above framework can be divided into three parts: <strong>Flash</strong> area, <strong>U-Boot</strong> area and <strong>kernel</strong> area. Only the core code directories of each part are listed below.</p>
-<div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-0-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-0-0-0" name="0-0" role="tab" tabindex="0">Yocto</button><button aria-controls="panel-0-0-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-1" name="0-1" role="tab" tabindex="-1">OpenWrt</button></div><div aria-labelledby="tab-0-0-0" class="sphinx-tabs-panel" id="panel-0-0-0" name="0-0" role="tabpanel" tabindex="0"><table class="docutils align-default" style="width: 100%">
+<table class="docutils align-default" style="width: 100%">
 <thead>
 <tr class="row-odd"><th class="head"><p>Area</p></th>
 <th class="head"><p>Directory</p></th>
@@ -219,39 +216,12 @@ Function <code class="xref py py-func docutils literal notranslate"><span class=
 </tr>
 </tbody>
 </table>
-</div><div aria-labelledby="tab-0-0-1" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-1" name="0-1" role="tabpanel" tabindex="0"><table class="docutils align-default" style="width: 100%">
-<thead>
-<tr class="row-odd"><th class="head"><p>Area</p></th>
-<th class="head"><p>Directory</p></th>
-<th class="head"><p>Introduction</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>Flash</p></td>
-<td><p>&lt;sdk&gt;/sources/build/tools/verified_boot</p></td>
-<td><p>The script of making secure related images.</p></td>
-</tr>
-<tr class="row-odd"><td rowspan="2"><p>U-Boot</p></td>
-<td><p>&lt;uboot&gt;/cmd/mtd.c</p></td>
-<td><p>The operations of reading NAND Flash.</p></td>
-</tr>
-<tr class="row-even"><td><p>&lt;uboot&gt;/cmd/realtek-avb.c</p></td>
-<td><p>The verification of vbmeta/public key/kernel/dtb.</p></td>
-</tr>
-<tr class="row-odd"><td><p>Kernel</p></td>
-<td><p>&lt;linux&gt;/drivers/md/*</p></td>
-<td><p>This directory is provided by GPI Linux kernel named dm-verity, used to verify the hash tree of rootfs.</p></td>
-</tr>
-</tbody>
-</table>
-</div></div>
 <p>More for android verified boot, refer to <a class="reference external" href="https://android.googlesource.com/platform/external/avb">https://android.googlesource.com/platform/external/avb</a>.</p>
 </section>
 </section>
 <section id="configuration">
 <span id="id1"></span><h1>Configuration<a class="headerlink" href="#configuration" title="Link to this heading"></a></h1>
-<div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-1-1-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-1-1-0" name="1-0" role="tab" tabindex="0">Yocto</button><button aria-controls="panel-1-1-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-1-1-1" name="1-1" role="tab" tabindex="-1">OpenWrt</button></div><div aria-labelledby="tab-1-1-0" class="sphinx-tabs-panel" id="panel-1-1-0" name="1-0" role="tabpanel" tabindex="0"><p>Yocto SDK uses <code class="file docutils literal notranslate"><span class="pre">mksecure.sh</span></code> to build secure images, which is located at <code class="docutils literal notranslate"><span class="pre">&lt;sdk&gt;/sources/yocto/meta-realtek/tools/verified_boot</span></code>.
+<p>Yocto SDK uses <code class="file docutils literal notranslate"><span class="pre">mksecure.sh</span></code> to build secure images, which is located at <code class="docutils literal notranslate"><span class="pre">&lt;sdk&gt;/sources/yocto/meta-realtek/tools/verified_boot</span></code>.
 The usage of the script is illustrated below:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mksecure</span><span class="o">.</span><span class="n">sh</span>
 <span class="o">--</span><span class="n">key_dir</span><span class="o">=&lt;</span><span class="n">secure</span> <span class="n">key</span> <span class="n">path</span><span class="o">&gt;</span>
@@ -365,7 +335,7 @@ The usage of the script is illustrated below:</p>
 <td><p>Only useful when <em>-s</em> is not set</p></td>
 <td><div class="line-block">
 <div class="line">Indicates the partition size of device tree blob partition, which is described in</div>
-<div class="line"><code class="file docutils literal notranslate"><span class="pre">&lt;sdk&gt;/sources/kernel/linux-5.4/arch/arm/boot/dts/rtl8730e-spi-nand-256m.dtsi</span> <span class="pre">(rtl8730e-spi-nand-128m.dtsi)</span></code>.</div>
+<div class="line"><code class="file docutils literal notranslate"><span class="pre">&lt;dts_dir&gt;/rtl8730e-spi-nand-256m.dtsi</span> <span class="pre">(rtl8730e-spi-nand-128m.dtsi)</span></code>.</div>
 </div>
 </td>
 </tr>
@@ -395,111 +365,35 @@ The usage of the script is illustrated below:</p>
 </tr>
 </tbody>
 </table>
-</div><div aria-labelledby="tab-1-1-1" class="sphinx-tabs-panel" hidden="true" id="panel-1-1-1" name="1-1" role="tabpanel" tabindex="0"><p>To build secure images, set the <em>TARGET_VERIFIED_BOOT</em> to <code class="docutils literal notranslate"><span class="pre">true</span></code> to enable the secure boot, which is located at <code class="docutils literal notranslate"><span class="pre">&lt;sdk&gt;/sources/openwrt/target/linux/&lt;board&gt;/board_config.mk</span></code>.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># secure</span>
-<span class="n">TARGET_VERIFIED_BOOT</span><span class="o">:=</span> <span class="n">true</span>
-<span class="n">TARGET_ROLLBACK_INDEX</span><span class="o">:=</span> <span class="mi">1</span>
-<span class="n">TARGET_VERIFIED_BOOT_RSA_ALGORITHM</span><span class="o">:=</span> <span class="n">SHA512_RSA2048</span>
-<span class="n">TARGET_VERIFIED_BOOT_HASH_ALGORITHM</span><span class="o">:=</span> <span class="n">sha512</span>
-<span class="n">TARGET_VERIFIED_BOOT_HASH_BLOCK</span><span class="o">:=</span> <span class="mi">4096</span>
-<span class="n">TARGET_VERIFIED_BOOT_KEY_PATH</span><span class="o">:=</span> <span class="n">build</span><span class="o">/</span><span class="n">tools</span><span class="o">/</span><span class="n">security_keys</span><span class="o">/</span><span class="n">test</span>
-</pre></div>
-</div>
-<p>When <em>TARGET_VERIFIED_BOOT</em> is enabled, the following parameters can be configured.</p>
-<table class="docutils align-default" style="width: 100%">
-<thead>
-<tr class="row-odd"><th class="head"><p>Parameter</p></th>
-<th class="head"><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>TARGET_ROLLBACK_INDEX</p></td>
-<td><div class="line-block">
-<div class="line">The version information of current images.</div>
-<div class="line">This is a security related rollback value, which can only be incremented</div>
-<div class="line">or unchanged, and cannot be less than the previous version. Otherwise,</div>
-<div class="line">the boot will be rejected.</div>
-</div>
-</td>
-</tr>
-<tr class="row-odd"><td><p>TARGET_VERIFIED_BOOT_RSA_ALGORITHM</p></td>
-<td><div class="line-block">
-<div class="line">The algorithm for signature used by vbmeta.</div>
-<div class="line">It can be set as <code class="docutils literal notranslate"><span class="pre">SHA512_RSA2048</span></code>, <code class="docutils literal notranslate"><span class="pre">SHA256_RSA2048</span></code>, <code class="docutils literal notranslate"><span class="pre">SHA512_</span> <span class="pre">RSA1024</span></code>, or</div>
-<div class="line"><code class="docutils literal notranslate"><span class="pre">SHA256_RSA1024</span></code> (the capital letter is mandatory).</div>
-</div>
-</td>
-</tr>
-<tr class="row-even"><td><p>TARGET_VERIFIED_BOOT_HASH_ALGORITHM</p></td>
-<td><div class="line-block">
-<div class="line">SHA algorithm used in calculating image hash.</div>
-<div class="line">It can be set as <code class="docutils literal notranslate"><span class="pre">sha256</span></code> or <code class="docutils literal notranslate"><span class="pre">sha512</span></code> (the lowercase letters is mandatory).</div>
-</div>
-</td>
-</tr>
-<tr class="row-odd"><td><p>TARGET_VERIFIED_BOOT_HASH_BLOCK</p></td>
-<td><div class="line-block">
-<div class="line">This configuration means block size to do hash.</div>
-<div class="line">When calculating hash for rootfs, the rootfs .img ought to be divided into</div>
-<div class="line">many small blocks. This is the size of the blocks, which is recommended to</div>
-<div class="line">be set as 1024, 2048, or 4096.</div>
-</div>
-</td>
-</tr>
-<tr class="row-even"><td><p>TARGET_VERIFIED_BOOT_KEY_PATH</p></td>
-<td><div class="line-block">
-<div class="line">This configuration indicates the secure boot key path.</div>
-<div class="line">Users can use this configuration to set their own secure key paths and refer</div>
-<div class="line">to the following sections to generate their own secure keys if necessary.</div>
-<div class="line">Currently, the system uses default secure key, which is located at</div>
-<div class="line"><code class="docutils literal notranslate"><span class="pre">&lt;sdk&gt;/sources/build/tools/security_keys/test</span></code>.</div>
-</div>
-</td>
-</tr>
-</tbody>
-</table>
-</div></div>
+<p>Where <em>&lt;dts_dir&gt;</em> means the directory of dts files, which is <code class="docutils literal notranslate"><span class="pre">&lt;sdk&gt;/kernel/linux-5.4/arch/arm/boot/dts</span></code> for kernel 5.4.x, and <code class="docutils literal notranslate"><span class="pre">&lt;sdk&gt;/kernel/linux-6.6/arch/arm/boot/dts/realtek/ameba</span></code> for kernel 6.6.x.</p>
 </section>
 <section id="how-to-use-secure-boot">
 <h1>How to Use Secure Boot<a class="headerlink" href="#how-to-use-secure-boot" title="Link to this heading"></a></h1>
 <p>The following steps illustrate how to use secure boot.</p>
-<div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-2-2-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-2-2-0" name="2-0" role="tab" tabindex="0">Yocto</button><button aria-controls="panel-2-2-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-2-2-1" name="2-1" role="tab" tabindex="-1">OpenWrt</button></div><div aria-labelledby="tab-2-2-0" class="sphinx-tabs-panel" id="panel-2-2-0" name="2-0" role="tabpanel" tabindex="0"><ol class="arabic simple">
+<ol class="arabic simple">
 <li><p>Enable uboot secure boot configs</p></li>
 <li><p>Prepare secure boot keys</p></li>
 <li><p>Make and generate raw images</p></li>
 <li><p>Make secure images</p></li>
 <li><p>Enable firmware secure boot related OTP bits after the system boots up</p></li>
 </ol>
-</div><div aria-labelledby="tab-2-2-1" class="sphinx-tabs-panel" hidden="true" id="panel-2-2-1" name="2-1" role="tabpanel" tabindex="0"><ol class="arabic simple">
-<li><p>Prepare secure boot keys</p></li>
-<li><p>Configure secure boot in <code class="docutils literal notranslate"><span class="pre">board_config.mk</span></code></p></li>
-<li><p>Make and generate raw images.</p></li>
-<li><p>Make secure images</p></li>
-<li><p>Generate ImageTool flashloader</p></li>
-<li><p>Enable firmware secure boot related OTP bits after the system boots up</p></li>
-</ol>
-</div></div>
 <section id="enable-uboot-secure-boot-config">
 <h2>Enable UBoot Secure Boot Config<a class="headerlink" href="#enable-uboot-secure-boot-config" title="Link to this heading"></a></h2>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>This step is only needed for Yocto project.</p>
 </div>
-<div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-3-3-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-3-3-0" name="3-0" role="tab" tabindex="0">Yocto</button></div><div aria-labelledby="tab-3-3-0" class="sphinx-tabs-panel" id="panel-3-3-0" name="3-0" role="tabpanel" tabindex="0"><p>To enable Linux secure boot, uboot related secure boot configs need to be opened, the uboot config listed at <code class="docutils literal notranslate"><span class="pre">&lt;sdk&gt;/sources/boot/uboot/configs</span></code> and secure boot related configs are listed below</p>
+<p>To enable Linux secure boot, uboot related secure boot configs need to be opened, the uboot config listed at <code class="docutils literal notranslate"><span class="pre">&lt;sdk&gt;/sources/boot/uboot/configs</span></code> and secure boot related configs are listed below</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CONFIG_VERIFIED_BOOT</span><span class="o">=</span><span class="n">y</span>
 <span class="n">CONFIG_OTP_RTK_AMEBA</span><span class="o">=</span><span class="n">y</span>
 </pre></div>
 </div>
 <p>Make sure the configs above are enabled.</p>
 <p>Currently we have enabled the configs in default.</p>
-</div></div>
 </section>
 <section id="prepare-secure-boot-key">
 <h2>Prepare Secure Boot Key<a class="headerlink" href="#prepare-secure-boot-key" title="Link to this heading"></a></h2>
-<div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-4-4-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-4-4-0" name="4-0" role="tab" tabindex="0">Yocto</button><button aria-controls="panel-4-4-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-4-4-1" name="4-1" role="tab" tabindex="-1">OpenWrt</button></div><div aria-labelledby="tab-4-4-0" class="sphinx-tabs-panel" id="panel-4-4-0" name="4-0" role="tabpanel" tabindex="0"><p>To use Linux verified boot, secure keys should be prepared. Just as mentioned above, key path needs to be set by configuring <code class="docutils literal notranslate"><span class="pre">--key_dir</span></code> parameter when executing <code class="file docutils literal notranslate"><span class="pre">mksecure.sh</span></code>.</p>
+<p>To use Linux verified boot, secure keys should be prepared. Just as mentioned above, key path needs to be set by configuring <code class="docutils literal notranslate"><span class="pre">--key_dir</span></code> parameter when executing <code class="file docutils literal notranslate"><span class="pre">mksecure.sh</span></code>.</p>
 <p>The default manifest/key file (<code class="file docutils literal notranslate"><span class="pre">manifest.json/key.json</span></code>) and keys are located at <code class="docutils literal notranslate"><span class="pre">&lt;sdk&gt;/sources/yocto/meta-realtek/tools/verified_boot/security_keys/test</span></code>.</p>
 <p>Linux SDK provides tool <code class="docutils literal notranslate"><span class="pre">make_key</span></code> (<code class="docutils literal notranslate"><span class="pre">&lt;sdk&gt;/sources/yocto/meta-realtek/tools/verified_boot</span></code>) for users to generate their own secure keys under specific key path. Use the following command to generate secure keys, which will be generated under the path below:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">make_key</span> <span class="o">&lt;</span><span class="n">key</span> <span class="n">path</span><span class="o">&gt;</span>
@@ -524,37 +418,10 @@ The usage of the script is illustrated below:</p>
 </tr>
 </tbody>
 </table>
-</div><div aria-labelledby="tab-4-4-1" class="sphinx-tabs-panel" hidden="true" id="panel-4-4-1" name="4-1" role="tabpanel" tabindex="0"><p>To use Linux verified boot, secure keys should be prepared. Just as mentioned above, key path is set by configuring <em>TARGET_VERIFIED_BOOT_KEY_PATH</em> and keys will be generated under this path. All secure keys are listed below:</p>
-<table class="docutils align-default" style="width: 100%">
-<thead>
-<tr class="row-odd"><th class="head"><p>File</p></th>
-<th class="head"><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>fw.key</p></td>
-<td><p>Used to sign the firmware bootloader and key certificate</p></td>
-</tr>
-<tr class="row-odd"><td><p>root.key</p></td>
-<td><p>Used to sign firmware NSPE/SPE and Linux boot image</p></td>
-</tr>
-<tr class="row-even"><td><p>vbmeta.priv.key/vbmeta.pub.key</p></td>
-<td><p>Used to sign Linux vbmeta image</p></td>
-</tr>
-</tbody>
-</table>
-<p>The SDK provides tool make_key (<code class="docutils literal notranslate"><span class="pre">&lt;sdk&gt;/sources/build/tools/verified_boot</span></code>) for user to generate own secure keys under specific key path. Use the following command to generate secure keys:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># &lt;rsatype&gt; can be RSA1024, RSA2048</span>
-<span class="n">make_key</span> <span class="o">&lt;</span><span class="n">key</span> <span class="n">path</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">rsatype</span><span class="o">&gt;</span>
-</pre></div>
-</div>
-<p>Set secure key path in <em>TARGET_VERIFIED_BOOT_KEY_PATH</em> at <code class="file docutils literal notranslate"><span class="pre">&lt;sdk&gt;/sources/openwrt/target/linux/&lt;board&gt;/board_config.mk</span></code> to let the build system use it.</p>
-</div></div>
 </section>
 <section id="make-secure-image">
 <h2>Make Secure Image<a class="headerlink" href="#make-secure-image" title="Link to this heading"></a></h2>
-<div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-5-5-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-5-5-0" name="5-0" role="tab" tabindex="0">Yocto</button><button aria-controls="panel-5-5-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-5-5-1" name="5-1" role="tab" tabindex="-1">OpenWrt</button></div><div aria-labelledby="tab-5-5-0" class="sphinx-tabs-panel" id="panel-5-5-0" name="5-0" role="tabpanel" tabindex="0"><p>Before making secure images, all the raw images (except firmware images) need to be generated first. Refer to <a class="reference internal" href="#configuration"><span class="std std-ref">Configuration</span></a> to use <code class="file docutils literal notranslate"><span class="pre">mksecure.sh</span></code> to make secure images if needed.</p>
+<p>Before making secure images, all the raw images (except firmware images) need to be generated first. Refer to <a class="reference internal" href="#configuration"><span class="std std-ref">Configuration</span></a> to use <code class="file docutils literal notranslate"><span class="pre">mksecure.sh</span></code> to make secure images if needed.</p>
 <p>elf2bin is used to make secure image in mksecure.sh, the usage of elf2bin is:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">elf2bin</span> <span class="n">manifest</span> <span class="o">&lt;</span><span class="n">manifest_json</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">key_json</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">img_file</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">out_file</span><span class="o">&gt;</span> <span class="p">[</span><span class="n">app</span><span class="o">|</span><span class="n">boot</span><span class="p">]</span>
 </pre></div>
@@ -602,36 +469,14 @@ The usage of the script is illustrated below:</p>
 <dd class="field-even"><ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">&lt;key_id1&gt;</span></code> indicates key ID in <code class="file docutils literal notranslate"><span class="pre">cert.bin</span></code>, whose value begins from 0.</p></li>
 <li><div class="line-block">
-<div class="line"><code class="docutils literal notranslate"><span class="pre">[app|vbmeta]</span></code> indicates the image type described in <code class="docutils literal notranslate"><span class="pre">&lt;key1_json&gt;</span></code>.</div>
-<div class="line"><code class="docutils literal notranslate"><span class="pre">vbmeta</span></code> is used to verify Linux vbmeta image, and <code class="docutils literal notranslate"><span class="pre">app</span></code> is used to</div>
-<div class="line">verify other app images (firmware app images, Linux bootloader).</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">[app|vbmeta]</span></code> indicates the image type described in <code class="docutils literal notranslate"><span class="pre">&lt;key1_json&gt;</span></code>.
+| <code class="docutils literal notranslate"><span class="pre">vbmeta</span></code> is used to verify Linux vbmeta image, and <code class="docutils literal notranslate"><span class="pre">app</span></code> is used to
+| verify other app images (firmware app images, Linux bootloader).</div>
 </div>
 </li>
 </ul>
 </dd>
 </dl>
-</div><div aria-labelledby="tab-5-5-1" class="sphinx-tabs-panel" hidden="true" id="panel-5-5-1" name="5-1" role="tabpanel" tabindex="0"><p>Before making secure images, all the raw images (besides firmware images) need to be generated under <code class="docutils literal notranslate"><span class="pre">&lt;sdk&gt;/sources/</span> <span class="pre">out/target/product/&lt;product&gt;/</span></code>.</p>
-<ol class="arabic simple">
-<li><p>Use <code class="docutils literal notranslate"><span class="pre">make</span></code> or <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">firmware</span></code> to generate linux images or firmware images if needed.</p></li>
-<li><p>Use <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">secureimage</span></code> to generate <code class="file docutils literal notranslate"><span class="pre">vbmeta.img</span></code> and other secure images.</p></li>
-</ol>
-<p>Secure images are also generated with the same name under <code class="docutils literal notranslate"><span class="pre">&lt;sdk&gt;/sources/out/target/product/&lt;product&gt;/</span></code>.</p>
-</div></div>
-</section>
-<section id="make-imagetool-flashloader">
-<h2>Make ImageTool Flashloader<a class="headerlink" href="#make-imagetool-flashloader" title="Link to this heading"></a></h2>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>This step is only needed for OpenWrt project.</p>
-</div>
-<div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-6-6-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-6-6-0" name="6-0" role="tab" tabindex="0">OpenWrt</button></div><div aria-labelledby="tab-6-6-0" class="sphinx-tabs-panel" id="panel-6-6-0" name="6-0" role="tabpanel" tabindex="0"><p>In order to prevent attackers from injecting malicious code, the flashloader binary (<code class="file docutils literal notranslate"><span class="pre">&lt;sdk&gt;/tools/ameba/ImageTool/floader_rtl8730e.bin</span></code>) should be also signed when secure boot is enabled. Only signed flashloader is allowed to execute. So if secure images need to flash, imagetool flashloader binary needs to be updated, otherwise flash will be failed.</p>
-<p>When all the secure images are prepared:</p>
-<ol class="arabic simple">
-<li><p>Use <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">imagetool_flashloader</span></code> to generate secure imagetool flashloader. <code class="file docutils literal notranslate"><span class="pre">floader_rtl8730e.bin</span></code> will be generated under <code class="docutils literal notranslate"><span class="pre">&lt;sdk&gt;/sources/out/target/product/&lt;product&gt;/</span></code>.</p></li>
-<li><p>Copy <code class="file docutils literal notranslate"><span class="pre">floader_rtl8730e.bin</span></code> to <code class="docutils literal notranslate"><span class="pre">&lt;sdk&gt;/tools/ameba/ImageTool/</span></code> manually, then start ImageTool to flash all the secure images to board.</p></li>
-</ol>
-</div></div>
 </section>
 </section>
 <section id="enable-secure-boot">

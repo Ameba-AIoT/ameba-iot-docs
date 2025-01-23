@@ -190,43 +190,44 @@
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>kernel/linux-5.4/sound/soc/realtek/machine.c</p></td>
+<tr class="row-even"><td><p>&lt;linux&gt;/sound/soc/realtek/machine.c</p></td>
 <td><p>Machine driver.</p>
 <p>Describes which codec, dma, cpu_dai, codec_dai driver we use.</p>
 </td>
 </tr>
-<tr class="row-odd"><td><p>kernel/linux-5.4/sound/soc/realtek/dma.c</p></td>
+<tr class="row-odd"><td><p>&lt;linux&gt;/sound/soc/realtek/dma.c</p></td>
 <td><p>DMA driver.</p></td>
 </tr>
-<tr class="row-even"><td><p>kernel/linux-5.4/sound/soc/realtek/sport.c</p></td>
+<tr class="row-even"><td><p>&lt;linux&gt;/sound/soc/realtek/sport.c</p></td>
 <td><p>cpu_dai driver, which is the SPORT driver of audio codec.</p></td>
 </tr>
-<tr class="row-odd"><td><p>kernel/linux-5.4/sound/soc/realtek/ameba_sport.c</p></td>
+<tr class="row-odd"><td><p>&lt;linux&gt;/sound/soc/realtek/ameba_sport.c</p></td>
 <td><p>SPORT control APIs implementations.</p></td>
 </tr>
-<tr class="row-even"><td><p>kernel/linux-5.4/sound/soc/realtek/ameba_audio_clock.c</p></td>
+<tr class="row-even"><td><p>&lt;linux&gt;/sound/soc/realtek/ameba_audio_clock.c</p></td>
 <td><p>PLL clock framework.</p></td>
 </tr>
-<tr class="row-odd"><td><p>kernel/linux-5.4/sound/soc/realtek/ameba_audio_clock_driver.c</p></td>
+<tr class="row-odd"><td><p>&lt;linux&gt;/sound/soc/realtek/ameba_audio_clock_driver.c</p></td>
 <td><p>PLL clock driver.</p></td>
 </tr>
-<tr class="row-even"><td><p>kernel/linux-5.4/sound/soc/codecs/ameba-codec.c</p></td>
+<tr class="row-even"><td><p>&lt;linux&gt;/sound/soc/codecs/ameba-codec.c</p></td>
 <td><p>codec_dai driver and codec driver.</p></td>
 </tr>
-<tr class="row-odd"><td><p>kernel/linux-5.4/sound/soc/codecs/ameba_audio.c</p></td>
+<tr class="row-odd"><td><p>&lt;linux&gt;/sound/soc/codecs/ameba_audio.c</p></td>
 <td><p>Codec control APIs implementations.</p></td>
 </tr>
 </tbody>
 </table>
+<p>Where <em>&lt;linux&gt;</em> means the kernel linux directory in sdk, which is <code class="docutils literal notranslate"><span class="pre">&lt;sdk&gt;/kernel/linux-5.4</span></code> for kernel 5.4.x, and <code class="docutils literal notranslate"><span class="pre">&lt;sdk&gt;/kernel/linux-6.6</span></code> for kernel 6.6.x, <strong>the same applies below</strong>.</p>
 <ul>
 <li><p>Audio driver Kconfig</p>
-<p><code class="docutils literal notranslate"><span class="pre">kernel/linux-5.4/sound/soc/Kconfig</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">&lt;linux&gt;/sound/soc/Kconfig</span></code></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">source</span> <span class="s2">&quot;sound/soc/realtek/Kconfig&quot;</span>
 </pre></div>
 </div>
 </li>
 <li><p>Audio driver Makefile</p>
-<p><code class="docutils literal notranslate"><span class="pre">kernel/linux-5.4/sound/soc/Makefile</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">&lt;linux&gt;/sound/soc/Makefile</span></code></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>obj-$(CONFIG_SND_SOC)   += realtek/
 </pre></div>
 </div>
@@ -592,11 +593,12 @@
 <section id="dts-configuration">
 <span id="linux-audio-dts-configuration"></span><h2>DTS Configuration<a class="headerlink" href="#dts-configuration" title="Link to this heading"></a></h2>
 <p>Audio DTS makes audio driver more flexible for different hardware. User can change DTS according to the specific hardware. Be aware that, after changing DTS, make sure it has no conflict with other modules.</p>
+<p>In this section, <em>&lt;dts_dir&gt;</em> means the directory of dts files, which is <code class="docutils literal notranslate"><span class="pre">&lt;sdk&gt;/kernel/linux-5.4/arch/arm/boot/dts</span></code> for kernel 5.4.x, and <code class="docutils literal notranslate"><span class="pre">&lt;sdk&gt;/kernel/linux-6.6/arch/arm/boot/dts/realtek/ameba</span></code> for kernel 6.6.x.</p>
 <section id="amplifier-configuration">
 <h3>Amplifier Configuration<a class="headerlink" href="#amplifier-configuration" title="Link to this heading"></a></h3>
 <p>Change the following DTS GPIO configuration of amplifier enable pins according to different boards.</p>
 <ol class="arabic">
-<li><p>Change <code class="docutils literal notranslate"><span class="pre">kernel/linux-5.4/arch/arm/boot/dts/rtl8730e-pinctrl.dtsi</span></code>.</p>
+<li><p>Change <code class="docutils literal notranslate"><span class="pre">&lt;dts_dir&gt;/rtl8730e-pinctrl.dtsi</span></code>.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>audio_ext_amp_pins:audio_ext_pin@0 {
 pins {
    pinmux = &lt;REALTEK_PINMUX(&#39;B&#39;, 7, GPIO)&gt;;  //using PB7 for amplifier enable pin
@@ -606,7 +608,7 @@ pins {
 </pre></div>
 </div>
 </li>
-<li><p>Change your product’s amplifier pinmux setting in DTS. For example, if you launch <em>generic_rtl8730elh_va8-eng</em>, please change <code class="docutils literal notranslate"><span class="pre">kernel/linux-5.4/arch/arm/boot/dts/rtl8730elh-va8-generic.dts</span></code>.</p>
+<li><p>Change your product’s amplifier pinmux setting in DTS. For example, if you launch <em>generic_rtl8730elh_va8-eng</em>, please change <code class="docutils literal notranslate"><span class="pre">&lt;dts_dir&gt;/rtl8730elh-va8-generic.dts</span></code>.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&amp;</span><span class="n">codec</span><span class="p">{</span>
    <span class="n">pinctrl</span><span class="o">-</span><span class="n">names</span> <span class="o">=</span> <span class="s2">&quot;default&quot;</span><span class="p">;</span>
    <span class="n">pinctrl</span><span class="o">-</span><span class="mi">0</span> <span class="o">=</span> <span class="o">&lt;&amp;</span><span class="n">audio_ext_amp_pins</span><span class="o">&gt;</span><span class="p">;</span>
@@ -623,7 +625,7 @@ pins {
 <p>Take the <em>rtl8730elh-va8</em> demo board, generic project’s dts config for example.</p>
 <ul>
 <li><p>Example: how to set SPORT2 as multi-io.</p>
-<p>Change <code class="docutils literal notranslate"><span class="pre">kernel/linux-5.4/arch/arm/boot/dts/rtl8730elh-va8-generic.dts</span></code>.</p>
+<p>Change <code class="docutils literal notranslate"><span class="pre">&lt;dts_dir&gt;/rtl8730elh-va8-generic.dts</span></code>.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&amp;</span><span class="n">sport2</span> <span class="p">{</span>
    <span class="n">rtk</span><span class="p">,</span><span class="n">sport</span><span class="o">-</span><span class="n">multi</span><span class="o">-</span><span class="n">io</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mi">1</span><span class="o">&gt;</span><span class="p">;</span>
 <span class="p">};</span>
@@ -631,7 +633,7 @@ pins {
 </div>
 </li>
 <li><p>Example: how to set SPORT3 as TDM.</p>
-<p>Change <code class="docutils literal notranslate"><span class="pre">kernel/linux-5.4/arch/arm/boot/dts/rtl8730elh-va8-generic.dts</span></code>.</p>
+<p>Change <code class="docutils literal notranslate"><span class="pre">&lt;dts_dir&gt;/rtl8730elh-va8-generic.dts</span></code>.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&amp;</span><span class="n">sport3</span> <span class="p">{</span>
    <span class="n">rtk</span><span class="p">,</span><span class="n">sport</span><span class="o">-</span><span class="n">multi</span><span class="o">-</span><span class="n">io</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mi">0</span><span class="o">&gt;</span><span class="p">;</span>
 <span class="p">};</span>
@@ -648,7 +650,7 @@ pins {
 </div>
 <p>At this case, add the multiplier in DTS to notify SPORT driver the information, so that SPORT driver will calculate the right PLL clock for specific data streaming sample rate.</p>
 <p>Take the <em>rtl8730elh-va8</em> demo board, generic project’s dts config for example:</p>
-<p>Change <code class="docutils literal notranslate"><span class="pre">kernel/linux-5.4/arch/arm/boot/dts/rtl8730elh-va8-generic.dts</span></code>.</p>
+<p>Change <code class="docutils literal notranslate"><span class="pre">&lt;dts_dir&gt;/rtl8730elh-va8-generic.dts</span></code>.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&amp;</span><span class="n">sport2</span> <span class="p">{</span>
    <span class="n">rtk</span><span class="p">,</span><span class="n">sport</span><span class="o">-</span><span class="n">mclk</span><span class="o">-</span><span class="n">multiplier</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mi">256</span><span class="o">&gt;</span>
 <span class="p">};</span>
@@ -663,7 +665,7 @@ pins {
 </div>
 <p>At this case, add the maximum value of MCLK in DTS to notify SPORT driver the information, so that SPORT driver will calculate the right PLL clock for specific data streaming sample rate.</p>
 <p>Take the <em>rtl8730elh-va8</em> demo board, generic project’s dts config for example:</p>
-<p>Change <code class="docutils literal notranslate"><span class="pre">kernel/linux-5.4/arch/arm/boot/dts/rtl8730elh-va8-generic.dts</span></code>.</p>
+<p>Change <code class="docutils literal notranslate"><span class="pre">&lt;dts_dir&gt;/rtl8730elh-va8-generic.dts</span></code>.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&amp;</span><span class="n">sport2</span> <span class="p">{</span>
    <span class="n">rtk</span><span class="p">,</span><span class="n">sport</span><span class="o">-</span><span class="n">mclk</span><span class="o">-</span><span class="n">fixed</span><span class="o">-</span><span class="nb">max</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mi">12288000</span><span class="o">&gt;</span><span class="p">;</span>
 <span class="p">};</span>
@@ -674,7 +676,7 @@ pins {
 <section id="sport-mode-set">
 <h3>SPORT Mode Set<a class="headerlink" href="#sport-mode-set" title="Link to this heading"></a></h3>
 <p>The SPORT supports both master mode and slave mode.</p>
-<p>Set the correct mode you need in your project’s dts. For example, if you launch <em>generic_rtl8730elh_va8-eng</em>, please change <code class="docutils literal notranslate"><span class="pre">kernel/linux-5.4/arch/arm/boot/dts/rtl8730elh-va8-generic.dts</span></code>:</p>
+<p>Set the correct mode you need in your project’s dts. For example, if you launch <em>generic_rtl8730elh_va8-eng</em>, please change <code class="docutils literal notranslate"><span class="pre">&lt;dts_dir&gt;/rtl8730elh-va8-generic.dts</span></code>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&amp;</span><span class="n">sport2</span> <span class="p">{</span>
    <span class="n">rtk</span><span class="p">,</span><span class="n">sport</span><span class="o">-</span><span class="n">mode</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mi">0</span><span class="o">&gt;</span><span class="p">;</span> <span class="o">//</span> <span class="mi">0</span><span class="p">,</span><span class="n">soc</span> <span class="ow">is</span> <span class="n">master</span><span class="o">.</span> <span class="mi">1</span><span class="p">,</span> <span class="n">soc</span> <span class="ow">is</span> <span class="n">slave</span><span class="o">.</span>
 <span class="p">};</span>
@@ -685,7 +687,7 @@ pins {
 <h3>SPORT Pinmux Set<a class="headerlink" href="#sport-pinmux-set" title="Link to this heading"></a></h3>
 <p>The SPORT2/SPORT3 I2S needs to set the pinmux to interact with external codec.</p>
 <ol class="arabic">
-<li><p>The I2S pinmux is set in <code class="docutils literal notranslate"><span class="pre">kernel/linux-5.4/arch/arm/boot/dts/rtl8730e-pinctrl.dtsi</span></code>. If your board’s pinmux is different, config it. For example:</p>
+<li><p>The I2S pinmux is set in <code class="docutils literal notranslate"><span class="pre">&lt;dts_dir&gt;/rtl8730e-pinctrl.dtsi</span></code>. If your board’s pinmux is different, config it. For example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">i2s2_pins</span><span class="p">:</span> <span class="n">i2s2</span><span class="o">@</span><span class="mi">0</span> <span class="p">{</span>
    <span class="n">pins</span> <span class="p">{</span>
       <span class="n">pinmux</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">REALTEK_PINMUX</span><span class="p">(</span><span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="n">I2S2</span><span class="p">)</span><span class="o">&gt;</span><span class="p">,</span><span class="o">//</span><span class="n">change</span> <span class="n">your</span> <span class="n">pinmux</span>
@@ -718,7 +720,7 @@ pins {
 </div>
 </li>
 </ol>
-<p>Make sure to use the i2s pinmux in your project’s dts. For example, if you launch <em>generic_rtl8730elh_va8-eng</em> and need to use i2s2_pins in SPORT2, add i2s in the SPORT2 part in <code class="docutils literal notranslate"><span class="pre">kernel/linux-5.4/arch/arm/boot/dts/rtl8730elh-va8-generic.dts</span></code>.</p>
+<p>Make sure to use the i2s pinmux in your project’s dts. For example, if you launch <em>generic_rtl8730elh_va8-eng</em> and need to use i2s2_pins in SPORT2, add i2s in the SPORT2 part in <code class="docutils literal notranslate"><span class="pre">&lt;dts_dir&gt;/rtl8730elh-va8-generic.dts</span></code>.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&amp;</span><span class="n">sport2</span> <span class="p">{</span>
    <span class="n">pinctrl</span><span class="o">-</span><span class="n">names</span> <span class="o">=</span> <span class="s2">&quot;default&quot;</span><span class="p">;</span>
    <span class="n">spinctrl</span><span class="o">-</span><span class="mi">0</span> <span class="o">=</span> <span class="o">&lt;&amp;</span><span class="n">i2s2_pins</span><span class="o">&gt;</span><span class="p">;</span>
@@ -729,7 +731,7 @@ pins {
 <section id="dmic-configuration">
 <h3>DMIC Configuration<a class="headerlink" href="#dmic-configuration" title="Link to this heading"></a></h3>
 <p>DMIC is not enabled by default. If you want to test the DMIC, follow the steps below:</p>
-<p>There are two groups of DMIC pinmux in <code class="docutils literal notranslate"><span class="pre">kernel/linux-5.4/arch/arm/boot/dts/rtl8730e-pinctrl.dtsi</span></code>. Choose the one you use, and you can also change it according to your hardware.</p>
+<p>There are two groups of DMIC pinmux in <code class="docutils literal notranslate"><span class="pre">&lt;dts_dir&gt;/rtl8730e-pinctrl.dtsi</span></code>. Choose the one you use, and you can also change it according to your hardware.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dmic_pins_a</span><span class="p">:</span> <span class="n">dmic</span><span class="o">@</span><span class="mi">0</span> <span class="p">{</span> <span class="o">//</span> <span class="n">Fixed</span> <span class="k">for</span> <span class="n">EV730EL0_3V0</span> <span class="n">demo</span> <span class="n">board</span>
    <span class="n">pins</span> <span class="p">{</span>
       <span class="n">pinmux</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">REALTEK_PINMUX</span><span class="p">(</span><span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="mi">21</span><span class="p">,</span> <span class="n">DMIC</span><span class="p">)</span><span class="o">&gt;</span><span class="p">,</span><span class="o">//</span><span class="n">change</span> <span class="n">your</span> <span class="n">pinmux</span>
@@ -753,7 +755,7 @@ pins {
 <span class="p">};</span>
 </pre></div>
 </div>
-<p>Make sure to use the dmic pinmux in your project’s dts. For example, if you launch <em>generic_rtl8730elh_va8-eng</em> and need to use dmic_pins_a, change <code class="docutils literal notranslate"><span class="pre">kernel/linux-5.4/arch/arm/boot/dts/rtl8730elh-va8-generic.dts</span></code>.</p>
+<p>Make sure to use the dmic pinmux in your project’s dts. For example, if you launch <em>generic_rtl8730elh_va8-eng</em> and need to use dmic_pins_a, change <code class="docutils literal notranslate"><span class="pre">&lt;dts_dir&gt;/rtl8730elh-va8-generic.dts</span></code>.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&amp;</span><span class="n">codec</span><span class="p">{</span>
    <span class="n">pinctrl</span><span class="o">-</span><span class="n">names</span> <span class="o">=</span> <span class="s2">&quot;default&quot;</span><span class="p">,</span> <span class="s2">&quot;default&quot;</span><span class="p">;</span>
    <span class="n">pinctrl</span><span class="o">-</span><span class="mi">0</span> <span class="o">=</span> <span class="o">&lt;&amp;</span><span class="n">audio_ext_amp_pins</span><span class="o">&gt;</span><span class="p">;</span>
@@ -1066,10 +1068,7 @@ if (!ctl) {
 <li><p>Offer APIs for user to get the current clock for <em>SPORT0</em> to <em>SPORT3</em>.</p></li>
 <li><p>Offer APIs for user to achieve fine-tuning of audio PLL.</p></li>
 </ul>
-<p>To use the audio-clock APIs, copy the header to your include path:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">kernel</span><span class="o">/</span><span class="n">linux</span><span class="o">-</span><span class="mf">5.4</span><span class="o">/</span><span class="n">include</span><span class="o">/</span><span class="n">uapi</span><span class="o">/</span><span class="n">sound</span><span class="o">/</span><span class="n">rtk_audio_pll</span><span class="o">.</span><span class="n">h</span>
-</pre></div>
-</div>
+<p>To use the audio-clock APIs, copy the header to your include path: <code class="docutils literal notranslate"><span class="pre">&lt;linux&gt;/include/uapi/sound/rtk_audio_pll.h</span></code></p>
 <p>Audio-clock APIs are calling through standard device node interfaces.</p>
 <table class="docutils align-default" style="width: 100%">
 <thead>
