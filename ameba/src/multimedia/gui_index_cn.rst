@@ -1,8 +1,8 @@
-Audio
+GUI
 ==========
 
 
 .. toctree::
    :maxdepth: 1
 
-   audio_cn
+   gui_cn

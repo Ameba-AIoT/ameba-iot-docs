@@ -1,5 +1,5 @@
-Media
-==========
+Multimedia Architecture
+========================
 
 
 .. toctree::

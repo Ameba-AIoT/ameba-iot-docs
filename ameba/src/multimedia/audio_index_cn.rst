@@ -1,8 +1,8 @@
-多媒体架构
+音频
 ==========
 
 
 .. toctree::
    :maxdepth: 1
 
-   media_cn
+   audio_cn

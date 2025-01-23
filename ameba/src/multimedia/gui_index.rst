@@ -1,8 +1,8 @@
-多媒体架构
+GUI
 ==========
 
 
 .. toctree::
    :maxdepth: 1
 
-   media_cn
+   gui
