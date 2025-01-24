@@ -1,190 +1,8 @@
-.. _mpu:
-
-MPU
-=============
-Functional Description
---------------------------------------------
-The Memory Protection Unit (MPU) is a component provided by Arm and is used to provide hardware protection by software definition. The code in SDK provides the mpu_region_config struct to set the region memory attribute of MPU.
-
-
-The following table shows the member variables of the :class:`mpu_region_config` struct.
-
-.. list-table:: mpu_region_config struct
-   :header-rows: 1
-   :width: 100%
-
-   * -  Member variable
-     -  Type
-     -  Description
-   * -  region_base
-     -  uint32_t
-     -  MPU region base, 32 bytes aligned
-   * -  region_size
-     -  uint32_t
-     -  MPU region size, 32 bytes aligned
-   * -  xn
-     -  uint8_t
-     -  Execute Never attribute
-
-        * MPU_EXEC_ALLOW: Allows program execution in this region
-        * MPU_EXEC_NEVER: Does not allow program execution in this region
-   * -  ap
-     -  uint8_t
-     -  Access permissions
-       
-        - MPU_PRIV_RW: Read/write by privileged code only
-       
-        - MPU_UN_PRIV_RW: Read/write by any privilege level
-       
-        - MPU_PRIV_R: Read only by privileged code only
-       
-        - MPU_PRIV_W: Read only by any privilege level
-   * -  sh
-     -  uint8_t
-     -  Share ability for Normal memory
-       
-        - MPU_NON_SHAREABLE: Non-shareable
-       
-        - MPU_OUT_SHAREABLE: Outer shareable
-       
-        - MPU_INR_SHAREABLE: Inner shareable
-   * -  attr_idx
-     -  uint8_t
-     -  Memory attribute indirect index, can be a value of 0 ~ 7, the detailed attribute is defined in :func:`mpu_init()` and is customized. The typical definition is as follows:
-       
-        - 0: MPU_MEM_ATTR_IDX_NC, defines memory attribute of Normal memory with non-cacheable.
-       
-        - 1: MPU_MEM_ATTR_IDX_WT_T_RA, defines memory attribute of Normal memory with write-through transient, read allocation.
-
-        - 2: MPU_MEM_ATTR_IDX_WB_T_RWA, defines memory attribute of Normal memory with write-back transient, read and write allocation.
-       
-        - 3 ~ 7: MPU_MEM_ATTR_IDX_DEVICE, defines memory attribute of Device memory with non-gathering, non-recording, non-early Write Acknowledge.
-
-MPU APIs
-----------------
-mpu_init
-~~~~~~~~~~~~~~~~
-.. table::
-   :width: 100%
-   :widths: 30, 70
-
-   +--------------+---------------------------------------------------------+
-   | Items        | Description                                             |
-   +==============+=========================================================+
-   | Introduction | Initialize MPU region memory attribute to typical value |
-   +--------------+---------------------------------------------------------+
-   | Parameters   | None                                                    |
-   +--------------+---------------------------------------------------------+
-   | Return       | None                                                    |
-   +--------------+---------------------------------------------------------+
-
-mpu_set_mem_attr
-~~~~~~~~~~~~~~~~~~~~~~
-.. table::
-   :width: 100%
-   :widths: 30, 70
-
-   +--------------+----------------------------------------------------------------+
-   | Items        | Description                                                    |
-   +==============+================================================================+
-   | Introduction | Change MPU region memory attribute                             |
-   +--------------+----------------------------------------------------------------+
-   | Parameters   | - attr_idx: region memory attribute index, which can be 0 ~ 7. |
-   |              |                                                                |
-   |              | - mem_attr: region memory attributes.                          |
-   +--------------+----------------------------------------------------------------+
-   | Return       | None                                                           |
-   +--------------+----------------------------------------------------------------+
-
-mpu_region_cfg
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-.. table::
-   :width: 100%
-   :widths: 30, 70
-
-   +--------------+-----------------------------------------------------------------------------+
-   | Items        | Description                                                                 |
-   +==============+=============================================================================+
-   | Introduction | Configure MPU region memory attribute.                                      |
-   +--------------+-----------------------------------------------------------------------------+
-   | Parameters   | - region_num:                                                               |
-   |              |                                                                             |
-   |              |    - KM4_NS: 0 ~ 7                                                          |
-   |              |                                                                             |
-   |              |    - KM4_S: 0 ~ 3                                                           |
-   |              |                                                                             |
-   |              | - pmpu_cfg: point to the mpu_region_config struct which has been configured |
-   +--------------+-----------------------------------------------------------------------------+
-   | Return       | None                                                                        |
-   +--------------+-----------------------------------------------------------------------------+
-
-mpu_entry_free
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-.. table::
-   :width: 100%
-   :widths: 30, 70
-
-   +--------------+------------------+
-   | Items        | Description      |
-   +==============+==================+
-   | Introduction | Free MPU entry   |
-   +--------------+------------------+
-   | Parameters   | MPU entry index: |
-   |              |                  |
-   |              | - KM4_NS: 0 ~ 7  |
-   |              |                  |
-   |              | - KM4_S: 0 ~ 3   |
-   +--------------+------------------+
-   | Return       | None             |
-   +--------------+------------------+
-
-mpu_entry_alloc
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-.. table::
-   :width: 100%
-   :widths: 30, 70
-
-   +--------------+---------------------------+
-   | Items        | Description               |
-   +==============+===========================+
-   | Introduction | Allocate a free MPU entry |
-   +--------------+---------------------------+
-   | Parameters   | None                      |
-   +--------------+---------------------------+
-   | Return       | MPU entry index:          |
-   |              |                           |
-   |              | - KM4_NS: 0 ~ 7           |
-   |              |                           |
-   |              | - KM4_S: 0 ~ 3            |
-   |              |                           |
-   |              | - Fail: -1                |
-   +--------------+---------------------------+
-
-Usage
-----------
-Follow these steps to set a MPU region:
-
-1. Define a new variable and struct
-
-   - Variable to store MPU entry index
-
-   - Struct *mpu_region_config* to store the region memory attribute
-
-2. Call :func:`mpu_entry_alloc()` to allocate a free MPU entry
-
-3. Set the struct of region memory attribute
-
-4. Call :func:`mpu_region_cfg()` to configure MPU region memory attribute
-
-
-
-.. _cache:
-
 Cache
 ==========
 Functional Description
 --------------------------------------------
-The Cache of |CHIP_NAME| supports Enable/Disable, Flush and Clean operation, as following table lists.
+The Cache of Soc supports Enable/Disable, Flush and Clean operation, as following table lists.
 
 
 
@@ -214,12 +32,17 @@ The Cache of |CHIP_NAME| supports Enable/Disable, Flush and Clean operation, as 
 
 
 
-.. note::
+Cache Boot Status
+--------------------
+In the ROM code, the default states of Cache are:
 
-   In the ROM code, the default states of Cache are:
-   
-   - KM4 Cache: enabled by default
-   - KM0 Cache: disabled by default
+.. tabs::
+
+   .. include:: cache_boot_status_21Dx.rst
+   .. include:: cache_boot_status_20EA26EA.rst
+   .. include:: cache_boot_status_30E.rst
+
+
 
 
 Cache APIs
@@ -390,6 +213,10 @@ Add *SRAM_NOCACHE_DATA_SECTION* before the buffer definition to define a data bu
 
    SRAM_NOCACHE_DATA_SECTION u8 noncache_buffer[DATA_BUFFER_SIZE];
 
+.. Caution::
+   - For KR4: non-cacheable attributes can only be defined through MCCA registers, which means a data buffer cannot be defined with non-cacheable attribute.
+   - For DSP: to operate the DSP Cache memories, refer to \ *Xtensa LX7 Microprocessor Data Book and Xtensa System Software Reference Manual*\  for more information.
+
 
 .. _cache_consistency_using_dma:
 
@@ -422,7 +249,9 @@ DMA Rx Flow
 2. DCache_Clean (if the Rx buffer is in a clean state, this step can be skipped)
 
    .. Caution::
-      If the Rx buffer is in a dirty state in the cache, the CPU may write the Rx buffer back to memory from the cache when CPU's D-Cache becomes full, which could overwrite content that DMA Rx has already written.
+      - For Cortex-A32, if the Rx buffer is in a dirty state in the cache, executing DCache_Invalidate on Cortex-A32 will perform both a clean and invalidate operation. The clean operation may lead to unexpected write behavior to memory.
+      - If the Rx buffer is in a dirty state in the cache, the CPU may write the Rx buffer back to memory from the cache when CPU's D-Cache becomes full, which could overwrite content that DMA Rx has already written.
+
 
 3. DMA Rx Config
 
@@ -431,7 +260,20 @@ DMA Rx Flow
 5. DCache_Invalidate (this step is mandatory)
 
   .. Caution::
-     Prevents the CPU from reading old values into the cache during DMA processing.
+
+     - For CPUs with automatic data prefetching and monitoring capabilities, such as Cortex-A32/DSP, e.g., Cortex-A32 reads the contents of adjacent addresses of the Rx buffer, Cortex-A32 starts line fills in the background to bring the old values of the Rx buffer back into the cache.
+     - Prevents the CPU from reading old values into the cache during DMA processing.
 
 6. CPU reads Rx buffer (the value returned by DMA Rx)
+
+   .. Caution::
+      For Cortex-A32/DSP, DCache_Clean/DCache_CleanInvalidate operations write entire cache lines to memory.
+      When two CPUs (with different cache line sizes) communicate using a shared memory region, this shared memory must be aligned with the larger of the two cache line sizes.
+      e.g., if the shared memory is only 32 bytes, CPU0 with a 32-byte cache line will only write 32 bytes each time it cleans, while CPU1 with a 64-byte cache line will write 64 bytes each time it cleans, potentially overwriting other data of CPU0.
+
+
+
+
+
+
 
