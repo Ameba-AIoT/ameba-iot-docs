@@ -5,13 +5,11 @@
 The audio framework is a whole audio architecture aiming to provide different layers of audio interfaces for applications. The interfaces involve Audio HAL and Audio Framework.
 
 - Audio HAL: defines unified audio hardware interfaces. It interacts with audio driver to do audio streaming or audio settings.
-
 - Audio Framework: provides interfaces for audio streaming, volume, and other settings.
 
-The audio framework provides two architectures to meet different needs of audio. Different architectures have different implementations, but the interfaces are the same.
+  The audio framework provides two architectures to meet different needs of audio. Different architectures have different implementations, but the interfaces are the same.
 
 - Audio mixer architecture: supports audio recording, and audio playback. For audio playback, this architecture provides audio mixing functions, and format, rate, channel will be converted to a unified format for mixing.
-
 - Audio passthrough architecture: supports audio recording, and audio playback. This architecture has no audio mixing, only one audio playback is allowed at the same moment.
 
 音频混音器概述
@@ -28,33 +26,26 @@ The whole audio mixer architecture includes the following sub-modules:
 
 - Application Interface
 
-   - **RTAudioTrack** provides interfaces to play sound.
-
-   - **RTAudioRecord** provides interfaces to capture sound.
-
-   - **RTAudioControl** provides interfaces to control sound volumes and so on.
+  - **RTAudioTrack** provides interfaces to play sound.
+  - **RTAudioRecord** provides interfaces to capture sound.
+  - **RTAudioControl** provides interfaces to control sound volumes and so on.
 
 - Audio Framework
 
-   - Audio framework provides audio reformat, resample, volume, and mixer functions for audio stream playback.
+  - Audio framework provides audio reformat, resample, volume, and mixer functions for audio stream playback.
 
 - Audio HAL
 
-   - **AudioHwManager** provides interfaces that manage audio cards through a specific card driver program opened based on the given audio card descriptor.
-
-   - **AudioHwCard** provides interfaces that manage audio card capabilities, including initializing ports, creating stream out and stream in.
-
-   - **AudioHwControl** provides interfaces for RTAudioControl, and set commands to audio driver.
-
-   - **AudioHwStreamOut** provides interfaces that get data from the upper layer and render data to audio driver user interfaces.
-
-   - **AudioHwStreamIn** provides interfaces to capture data from audio driver user interfaces and deliver the data to the upper layer.
+  - **AudioHwManager** provides interfaces that manage audio cards through a specific card driver program opened based on the given audio card descriptor.
+  - **AudioHwCard** provides interfaces that manage audio card capabilities, including initializing ports, creating stream out and stream in.
+  - **AudioHwControl** provides interfaces for RTAudioControl, and set commands to audio driver.
+  - **AudioHwStreamOut** provides interfaces that get data from the upper layer and render data to audio driver user interfaces.
+  - **AudioHwStreamIn** provides interfaces to capture data from audio driver user interfaces and deliver the data to the upper layer.
 
 - Audio Driver
 
-   - **AUDIO_SP** provides interfaces to configure audio sports.
-
-   - **AUDIO_CODEC** provides interfaces to configure audio codec.
+  - **AUDIO_SP** provides interfaces to configure audio sports.
+  - **AUDIO_CODEC** provides interfaces to configure audio codec.
 
 音频透传概述
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -71,7 +62,7 @@ The audio passthrough architecture has no Audio Framework layer compared to audi
 .. _architecture_comparison:
 
 架构选择
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~
 The above sections describe two architectures of audio: mixer and passthrough. Users can choose the suitable architecture according to the project's requirements. Here is a comparison table of the two architectures:
 
 .. table::
@@ -89,10 +80,9 @@ The above sections describe two architectures of audio: mixer and passthrough. U
    +--------------+------------------+-----------+-------------------+-------------------+-------------------+------------------+
 
 - For record implementation, the two architectures are the same. Both architectures can meet user's record function needs.
-
 - For playback implements, the two architectures are different. If the user has the requirements to play two sounds together at the same time, choose mixer architecture, because only the mixer architecture can do the mixing.
 
-- The mixer architecture takes more memory and has a bigger code size. If the user wants to save memory and code size and has no requirements of audio mixing, choose the passthrough architecture.
+The mixer architecture takes more memory and has a bigger code size. If the user wants to save memory and code size and has no requirements of audio mixing, choose the passthrough architecture.
 
 音频术语
 ----------------------
@@ -107,7 +97,7 @@ The meanings of some widely-used audio terms in this chapter are listed below.
      -  Pulse Code Modulation, audio data is a raw stream.
    * -  channel
      -  A channel sound is an independent audio signal captured or played in different positions, so the number of
-       
+
         channels is the number of sound sources.
    * -  mono
      -  Mono means only one single channel sound.
@@ -115,13 +105,13 @@ The meanings of some widely-used audio terms in this chapter are listed below.
      -  Stereo means two channels.
    * -  bit depth
      -  Bit depth represents the bits effectively used in the process of audio signals.
-       
+
         Sampling depth shows the resolution of the sound. The larger the value, the higher the resolution.
    * -  sample
      -  Representing the audio processing at a point in time.
    * -  sample rate
      -  The audio sampling rate refers to the number of frames that the signal is sampled per second.
-       
+
          The higher the sampling frequency, the higher quality the sound will be.
    * -  frame
      -  A frame is a sound unit whose length is the sample length multiplies the number of channels.
@@ -129,7 +119,7 @@ The meanings of some widely-used audio terms in this chapter are listed below.
      -  Audio signal gain control to adjust the signal level.
    * -  interleaved
      -  It is a recording method of audio data. In the interleaved mode, the data is stored in a continuous manner,
-       
+
         all the channels of sample of first frame are first stored, and then the storage of second frame.
    * -  latency
      -  Time delay when a signal passes through the whole system.
@@ -137,7 +127,7 @@ The meanings of some widely-used audio terms in this chapter are listed below.
      -  The buffer is too full to let buffer producer write more data.
    * -  underrun
      -  The buffer producer is too slow to write data to the buffer so that the buffer is empty when the consumer
-       
+
         wants to consume data.
    * -  xrun
      -  Overrun or underrun.
@@ -179,9 +169,9 @@ The two-channel interleaved data is illustrated in :ref:`audio_two_channels_inte
    Four-channel interleaved
 
 音频架构
-------------------------
+---------
 播放架构
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~
 The block diagram of audio mixer playback architecture is shown as below.
 
 .. figure:: figures/audio_playback_mixer_architecture.svg
@@ -202,29 +192,27 @@ The audio playback architecture includes the following sub-modules:
 
 - Audio Framework (only mixer architecture)
 
-   - Audio framework is responsible for audio playback sound mixing.
-
-   - Before mixing, all sound will be converted to one unified audio format, default is 16-bit, 44100Hz, 2-channel. Sub-modules reformat, resampler are responsible to do the conversion. There is also volume sub-module in audio framework to adjust volumes for different audio types, for example, music, speech may have different volumes.
-
-   - Audio framework supports sound rate from 8k-96k, channel mono/stereo, format 8-bit, 16-bit, 24-bit, and 32-bit float.
+  - Audio framework is responsible for audio playback sound mixing.
+  - Before mixing, all sound will be converted to one unified audio format, default is 16-bit, 44100Hz, 2-channel. Sub-modules reformat, resampler are responsible to do the conversion. There is also volume sub-module in audio framework to adjust volumes for different audio types, for example, music, speech may have different volumes.
+  - Audio framework supports sound rate from 8k-96k, channel mono/stereo, format 8-bit, 16-bit, 24-bit, and 32-bit float.
 
 - Audio HAL
 
-   - Audio HAL gets playback data from audio framework, and sends the data to audio driver.
+  - Audio HAL gets playback data from audio framework, and sends the data to audio driver.
 
 - Audio Driver
 
-   - Audio Driver gets playback data from audio HAL and sends data to audio hardware.
+  - Audio Driver gets playback data from audio HAL and sends data to audio hardware.
 
 录音架构
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~
 Audio mixer and passthrough have the same record architecture. The block diagram of audio record is shown as below.
 
 .. figure:: figures/audio_record_architecture.svg
    :scale: 100%
    :align: center
 
-   Record architecture
+   录音架构
 
 The audio record architecture includes the following sub-modules:
 
@@ -233,14 +221,14 @@ The audio record architecture includes the following sub-modules:
 - **Audio Driver**: gets record data from Audio hardware, and sends data to audio HAL.
 
 控制架构
-~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~
 Audio mixer and passthrough have the same control architecture. The block diagram of audio control is shown as below.
 
 .. figure:: figures/audio_control_architecture.svg
    :scale: 120%
    :align: center
 
-   Control architecture
+   控制架构
 
 The audio control architecture includes the following sub-modules:
 
@@ -283,7 +271,7 @@ The config *out_min_frames_stage* in *kPrimaryAudioConfig* only supports *RTAUDI
 *RTAUDIO_OUT_MIN_FRAMES_STAGE2* may reduce the framework's latency, but may cause noise. It's the user's choice to set it.
 
 HAL配置
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~
 Audio hardware configurations lie in ``{SDK}/component/soc/amebaxx/usrcfg/include/ameba_audio_hw_usrcfg.h``.
 
 Different boards have different configurations. For example, some boards need to use an amplifier, while others do not. Different boards may use different pins to enable the amplifier; the start-up time is different for different amplifiers. In addition, the pins used by each board's DMICs may be different, and the stable time of DMICs may be different. All the information needs to be configured in the configuration file.
@@ -319,11 +307,11 @@ The interfaces layer is shown as below.
 驱动接口
 ~~~~~~~~~~~~~~~~~~
 
-.. tabs:: 
+.. tabs::
 
-   .. tab:: RTL8721Dx series
+   .. tab:: RTL8721Dx/RTL8711Dx Series
 
-      - For sport interfaces, please refer to: ``{SDK}/component/soc/amebadplus/fwlib/include/ameba_sport.h``.
+      - For SPORT interfaces, please refer to: ``{SDK}/component/soc/amebadplus/fwlib/include/ameba_sport.h``.
       - For codec interfaces, please refer to: ``{SDK}/component/soc/amebadplus/fwlib/include/ameba_audio.h``.
 
       I2S PLL APIs
@@ -342,12 +330,14 @@ The interfaces layer is shown as below.
 
          Flow of using I2S PLL interfaces
 
-   .. tab:: RTL8726EA series
-      - For sport interfaces, please refer to: ``{SDK}/component/soc/amebalite/fwlib/include/ameba_sport.h``.
+   .. tab:: RTL8726EA/RTL8713EC/RTL8720EA/RTL8710EC Series
+
+      - For SPORT interfaces, please refer to: ``{SDK}/component/soc/amebalite/fwlib/include/ameba_sport.h``.
       - For codec interfaces, please refer to: ``{SDK}/component/soc/amebalite/fwlib/include/ameba_audio.h``.
 
-   .. tab:: RTL8730E series
-      - For sport interfaces, please refer to: ``{SDK}/component/soc/amebasmart/fwlib/include/ameba_sport.h``.
+   .. tab:: RTL8730E Series
+
+      - For SPORT interfaces, please refer to: ``{SDK}/component/soc/amebasmart/fwlib/include/ameba_sport.h``.
       - For codec interfaces, please refer to: ``{SDK}/component/soc/amebasmart/fwlib/include/ameba_audio.h``.
 
 HAL接口
@@ -369,9 +359,8 @@ AudioHwCard is a physical or virtual hardware to process audio stream. It contai
 .. figure:: figures/audio_hal_architecture.svg
    :scale: 90%
    :align: center
-   :name: audio_hal_architecture
 
-   AudioHwCard example
+   AudioHwCard 示例
 
 The AudioHwManager manages system's all AudioHwCards and opens a specific card driver based on the given audio card descriptor.
 
@@ -448,7 +437,6 @@ Here is the description showing how to use audio HAL interfaces to play audio ra
 ^^^^^^^^^^^^^^^^^^^^^^
 Users can check the example of AudioHwStreamOut in ``{SDK}/component/example/audio/audio_hal_capture``.
 
-
 Here is the description showing how to use audio HAL interfaces to capture audio raw data:
 
 1. Use :func:`CreateAudioHwManager()` to get AudioHwManager instance:
@@ -504,7 +492,7 @@ Here is the description showing how to use audio HAL interfaces to capture audio
 6. Use :func:`DestroyStreamIn()` to close AudioHwStreamIn when finishing recording:
 
    .. code-block:: c
-   
+
       audio_card_in->DestroyStreamIn(audio_card_in, audio_stream_in);
 
 7. Use :func:`CloseCard()` to destroy the AudioHwCard, and finally call :func:`DestoryAudioHwManager()` to release AudioHwManager instance.
@@ -518,7 +506,6 @@ Here is the description showing how to use audio HAL interfaces to capture audio
 ^^^^^^^^^^^^^^^^^^^^^^
 Here is an example showing how to use audio HAL interfaces to control audio codec:
 
-
 AudioHwCotrol is always thread-safe, and the calling is convenient. To use AudioHwCotrol, the first parameter of the function call should always be :func:`GetAudioHwControl()`.
 Take the PLL clock setting for example:
 
@@ -527,16 +514,16 @@ Take the PLL clock setting for example:
    GetAudioHwControl()->AdjustPLLClock(GetAudioHwControl(), rate, ppm, action);
 
 音频框架接口
-~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~
 音频流接口
-^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^
 Audio Streaming Interfaces include RTAudioTrack and RTAudioRecord interfaces. The interfaces lie in ``{SDK}/component/audio/interfaces/audio``. The interfaces have specific descriptions in them, please read them before using.
 
 - **RTAudioTrack**: initializes the format of playback data streaming in the framework, receives PCM data from the application, and writes data to Audio Framework (mixer) or Audio HAL (passthrough).
 - **RTAudioRecord**: initializes the format of record data streaming in the framework, receives PCM data from Audio HAL, and sends data to applications.
 
 使用 RTAudioTrack
-************************************
+**********************
 RTAudioTrack includes support for playing variety of common audio raw format types so that audio can be easily integrated into applications. At most 32 RTAudioTracks can play together.
 
 Audio Framework has the following audio playback stream types. Applications can use the types to initialize RTAudioTrack. Framework gets the streaming type and does the volume mixing according to the types.
@@ -577,17 +564,12 @@ Here is an example showing how to play audio raw data:
    Where
 
    :category_type: defines the stream type of the playback data source.
-
    :sample_rate: playback source raw data's rate.
-
    :channel_count: playback source raw data's channel number.
-
    :format: playback source raw data's bit depth.
-
    :buffer_bytes: ringbuffer size for RTAudioTrack to avoid xrun.
 
    .. note::
-
       The *buffer_bytes* in RTAudioTrackConfig is very important. The buffer size should always be more than the minimum buffer size Audio framework calculated. Otherwise overrun will occur.
 
 3. Use the interface to get minimum RTAudioTrack buffer bytes, and use it as a reference to define RTAudioTrack buffer size.
@@ -633,7 +615,6 @@ Here is an example showing how to play audio raw data:
 
    .. note::
       - In the mixer architecture, this API sets the software volume of the current audio_track.
-
       - In the passthrough architecture, this API is not supported.
 
 6. Write audio data to the framework. The write_size can be defined by users. Users need to make sure the *write_size/frame_size* is integer.
@@ -668,7 +649,6 @@ RTAudioRecord supports variety of common audio raw format types, so that you can
 The following audio input sources are supported by RTAudioRecord:
 
 - **RTDEVICE_IN_MIC** - if the application wants to capture data from microphone, then choose this input source.
-
 - **RTDEVICE_IN_I2S** - if the application wants to capture data from I2S, then choose this input source.
 
 The test demo of RTAudioRecord lies in ``{SDK}/component/example/audio/audio_record``.
@@ -698,13 +678,9 @@ Here is an example showing how to record audio raw data:
    Where
 
    :sample_rate: record source raw data's rate.
-
    :channel_count: record source raw data's channel number.
-
    :format: record source raw data's bit depth.
-
    :device: audio input device source for data record.
-
    :buffer_bytes: audio buffer bytes in framework. Set 0 to use default value. User can also set other value, the bigger buffer_bytes means bigger latency.
 
    Here's an example showing how to create RTAudioRecordConfig object of RTAudioRecord:
