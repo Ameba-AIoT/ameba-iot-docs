@@ -1,44 +1,100 @@
-.. _audio:
+.. 音频:
 
-Introduction
+简介
 ------------------------
 The audio framework is a whole audio architecture aiming to provide different layers of audio interfaces for applications. The interfaces involve Audio HAL and Audio Framework.
 
 - Audio HAL: defines unified audio hardware interfaces. It interacts with audio driver to do audio streaming or audio settings.
-- Audio Framework: provides interfaces for audio streaming, and other settings.
 
-The audio framework provides passthrough architecture which supports audio recording, and audio playback. This architecture has no audio mixing, only one audio playback is allowed at the same moment.
+- Audio Framework: provides interfaces for audio streaming, volume, and other settings.
 
-The audio interfaces and the entire implementation of audio passthrough architecture is shown below.
+The audio framework provides two architectures to meet different needs of audio. Different architectures have different implementations, but the interfaces are the same.
 
-   .. figure:: figures/audio_passthrough_overview.svg
-      :scale: 140%
-      :align: center
+- Audio mixer architecture: supports audio recording, and audio playback. For audio playback, this architecture provides audio mixing functions, and format, rate, channel will be converted to a unified format for mixing.
 
-      Audio passthrough overview
+- Audio passthrough architecture: supports audio recording, and audio playback. This architecture has no audio mixing, only one audio playback is allowed at the same moment.
 
-The whole audio passthrough architecture includes the following sub-modules:
+音频混音器概述
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The audio interfaces and the entire implementation are shown as below.
+
+.. figure:: figures/audio_mixer_overview.svg
+   :scale: 130%
+   :align: center
+
+   Audio mixer overview
+
+The whole audio mixer architecture includes the following sub-modules:
 
 - Application Interface
 
    - **RTAudioTrack** provides interfaces to play sound.
+
    - **RTAudioRecord** provides interfaces to capture sound.
+
    - **RTAudioControl** provides interfaces to control sound volumes and so on.
+
+- Audio Framework
+
+   - Audio framework provides audio reformat, resample, volume, and mixer functions for audio stream playback.
 
 - Audio HAL
 
    - **AudioHwManager** provides interfaces that manage audio cards through a specific card driver program opened based on the given audio card descriptor.
+
    - **AudioHwCard** provides interfaces that manage audio card capabilities, including initializing ports, creating stream out and stream in.
+
    - **AudioHwControl** provides interfaces for RTAudioControl, and set commands to audio driver.
+
    - **AudioHwStreamOut** provides interfaces that get data from the upper layer and render data to audio driver user interfaces.
+
    - **AudioHwStreamIn** provides interfaces to capture data from audio driver user interfaces and deliver the data to the upper layer.
 
 - Audio Driver
 
    - **AUDIO_SP** provides interfaces to configure audio sports.
+
    - **AUDIO_CODEC** provides interfaces to configure audio codec.
 
-Terminology
+音频透传概述
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The audio interfaces and the entire implementation are shown as below.
+
+.. figure:: figures/audio_passthrough_overview.svg
+   :scale: 120%
+   :align: center
+
+   Audio passthrough overview
+
+The audio passthrough architecture has no Audio Framework layer compared to audio mixer architecture, other layers are nearly the same.
+
+.. _architecture_comparison:
+
+架构选择
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The above sections describe two architectures of audio: mixer and passthrough. Users can choose the suitable architecture according to the project's requirements. Here is a comparison table of the two architectures:
+
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +--------------+------------------+-----------+-------------------+-------------------+-------------------+------------------+
+   | Architecture | Memory occupancy | Code size | Playback function                                         | Capture function |
+   |              |                  |           +-------------------+-------------------+-------------------+                  |
+   |              |                  |           | Basic function    | Mixing function   | Playback latency  |                  |
+   +==============+==================+===========+===================+===================+===================+==================+
+   | Mixer        | More             | More      | Nearly the same   | Support           | More              | Same             |
+   +--------------+------------------+-----------+-------------------+-------------------+-------------------+------------------+
+   | Passthrough  | Less             | Less      | Nearly the same   | Not support       | Less              | Same             |
+   +--------------+------------------+-----------+-------------------+-------------------+-------------------+------------------+
+
+- For record implementation, the two architectures are the same. Both architectures can meet user's record function needs.
+
+- For playback implements, the two architectures are different. If the user has the requirements to play two sounds together at the same time, choose mixer architecture, because only the mixer architecture can do the mixing.
+
+- The mixer architecture takes more memory and has a bigger code size. If the user wants to save memory and code size and has no requirements of audio mixing, choose the passthrough architecture.
+
+音频术语
 ----------------------
 The meanings of some widely-used audio terms in this chapter are listed below.
 
@@ -50,9 +106,9 @@ The meanings of some widely-used audio terms in this chapter are listed below.
    * -  PCM
      -  Pulse Code Modulation, audio data is a raw stream.
    * -  channel
-     -  A channel sound is an independent audio signal captured or played in different positions, so the number of channels
+     -  A channel sound is an independent audio signal captured or played in different positions, so the number of
        
-        is the number of sound sources.
+        channels is the number of sound sources.
    * -  mono
      -  Mono means only one single channel sound.
    * -  stereo
@@ -66,23 +122,23 @@ The meanings of some widely-used audio terms in this chapter are listed below.
    * -  sample rate
      -  The audio sampling rate refers to the number of frames that the signal is sampled per second.
        
-        The higher the sampling frequency, the higher quality the sound will be.
+         The higher the sampling frequency, the higher quality the sound will be.
    * -  frame
      -  A frame is a sound unit whose length is the sample length multiplies the number of channels.
    * -  gain
      -  Audio signal gain control to adjust the signal level.
    * -  interleaved
-     -  It is a recording method of audio data. In the interleaved mode, the data is stored in a continuous manner, all the
+     -  It is a recording method of audio data. In the interleaved mode, the data is stored in a continuous manner,
        
-        channels of sample of first frame are first stored, and then the storage of second frame.
+        all the channels of sample of first frame are first stored, and then the storage of second frame.
    * -  latency
      -  Time delay when a signal passes through the whole system.
    * -  overrun
      -  The buffer is too full to let buffer producer write more data.
    * -  underrun
-     -  The buffer producer is too slow to write data to the buffer so that the buffer is empty when the consumer wants to
+     -  The buffer producer is too slow to write data to the buffer so that the buffer is empty when the consumer
        
-        consume data.
+        wants to consume data.
    * -  xrun
      -  Overrun or underrun.
    * -  volume
@@ -100,223 +156,69 @@ The meanings of some widely-used audio terms in this chapter are listed below.
    * -  Audio codec
      -  The DAC and ADC controller inside the chip.
 
-Data Format
+音频格式
 ----------------------
-This section describes the data format that audio framework and audio HAL supports.
-The common part of audio framework and audio HAL is described here. And the different parts will be described in their own sections.
+This section describes the data format that audio framework and audio HAL supports. The common part of audio framework and audio HAL is described here. And the different parts will be described in their own sections.
 
 Both audio framework and audio HAL support interleaved streaming data.
 
-The interleaved data is illustrated in the following figures.
+The two-channel interleaved data is illustrated in :ref:`audio_two_channels_interleaved`, and the four-channel interleaved data is illustrated in :ref:`audio_four_channels_interleaved`.
 
 .. figure:: figures/audio_two_channels_interleaved.svg
    :scale: 100%
    :align: center
+   :name: audio_two_channels_interleaved
 
    Two-channel interleaved
 
 .. figure:: figures/audio_four_channels_interleaved.svg
    :scale: 100%
    :align: center
+   :name: audio_four_channels_interleaved
 
    Four-channel interleaved
 
-Framework Format
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-This section describes the format that Audio Framework supports. Before playback, or capture, make sure your sound format is supported.
-
-Audio Framework has the following types of bit depth:
-
-- *RTAUDIO_FORMAT_INVALID* - invalid bit depth of audio stream
-- *RTAUDIO_FORMAT_PCM_8_BIT* - audio stream has 8-bit depth
-- *RTAUDIO_FORMAT_PCM_16_BIT* - audio stream has 16-bit depth
-- *RTAUDIO_FORMAT_PCM_32_BIT* - audio stream has 32-bit depth
-- *RTAUDIO_FORMAT_PCM_FLOAT* - audio stream has 32-bit float format
-- *RTAUDIO_FORMAT_PCM_24_BIT* - audio stream has 24-bit depth
-- *RTAUDIO_FORMAT_PCM_8_24_BIT* - audio stream has 24-bit + 8-bit depth
-
-The following table describes the supported formats for playback and recording. ``Y`` means the format is supported; ``N`` means the format is not supported.
-
-.. table::
-   :width: 100%
-   :widths: 50,25,25
-
-   +----------------------------------+----------+---------+
-   | Bit depth                        | Playback | Capture |
-   +==================================+==========+=========+
-   | RTAUDIO_FORMAT_PCM_8_BIT         | Y        | Y       |
-   +----------------------------------+----------+---------+
-   | RTAUDIO_FORMAT_PCM_16_BIT        | Y        | Y       |
-   +----------------------------------+----------+---------+
-   | RTAUDIO_FORMAT_PCM_32_BIT        | Y        | Y       |
-   +----------------------------------+----------+---------+
-   | RTAUDIO_FORMAT_PCM_FLOAT         | N        | N       |
-   +----------------------------------+----------+---------+
-   | RTAUDIO_FORMAT_PCM_24_BIT        | Y        | Y       |
-   +----------------------------------+----------+---------+
-   | RTAUDIO_FORMAT_PCM_8_24_BIT      | Y        | Y       |
-   +----------------------------------+----------+---------+
-
-The sample rate is another important format of audio streaming. For playback and recording, audio framework supports the following sample rates.
-``Y`` means the sample rate is supported; ``N`` means the sample rate is not supported.
-
-.. table::
-   :width: 100%
-   :widths: 50,25,25
-
-   +-------------+----------+---------+
-   | Sample rate | Playback | Capture |
-   +=============+==========+=========+
-   | 8000        | Y        | Y       |
-   +-------------+----------+---------+
-   | 11025       | Y        | Y       |
-   +-------------+----------+---------+
-   | 16000       | Y        | Y       |
-   +-------------+----------+---------+
-   | 22050       | Y        | Y       |
-   +-------------+----------+---------+
-   | 32000       | Y        | Y       |
-   +-------------+----------+---------+
-   | 44100       | Y        | Y       |
-   +-------------+----------+---------+
-   | 48000       | Y        | Y       |
-   +-------------+----------+---------+
-   | 88200       | Y        | Y       |
-   +-------------+----------+---------+
-   | 96000       | Y        | Y       |
-   +-------------+----------+---------+
-   | 192000      | Y        | Y       |
-   +-------------+----------+---------+
-
-To do audio streaming, the channel count parameter setting is necessary, too. For playback and recording, audio framework supports the following channel counts.
-``Y`` means the channel count is supported; ``N`` means the channel count is not supported.
-
-.. table::
-   :width: 100%
-   :widths: 50,25,25
-
-   +---------------+----------+---------+
-   | Channel count | Playback | Capture |
-   +===============+==========+=========+
-   | 1             | Y        | Y       |
-   +---------------+----------+---------+
-   | 2             | Y        | Y       |
-   +---------------+----------+---------+
-   | 4             | Y        | Y       |
-   +---------------+----------+---------+
-   | 6             | Y        | Y       |
-   +---------------+----------+---------+
-   | 8             | Y        | Y       |
-   +---------------+----------+---------+
-
-HAL Format
-~~~~~~~~~~~~~~~~~~~~
-Audio Hal has the following types of bit depth:
-
-- *AUDIO_HW_FORMAT_INVALID* - invalid bit depth of audio stream
-- *AUDIO_HW_FORMAT_PCM_8_BIT* - audio stream has 8-bit depth
-- *AUDIO_HW_FORMAT_PCM_16_BIT* - audio stream has 16-bit depth
-- *AUDIO_HW_FORMAT_PCM_32_BIT* - audio stream has 32-bit depth
-- *AUDIO_HW_FORMAT_PCM_FLOAT* - audio stream has 32-bit float format
-- *AUDIO_HW_FORMAT_PCM_24_BIT* - audio stream has 24-bit depth
-- *AUDIO_HW_FORMAT_PCM_8_24_BIT* - audio stream has 24-bit + 8-bit depth
-
-If using the Audio HAL interface, check the bit depth HAL supported for Playback and Capture.
-``Y`` means the format is supported; ``N`` means the format is not supported.
-
-.. table::
-   :width: 100%
-   :widths: 50,25,25
-
-   +-----------------------------------+----------+---------+
-   | Bit depth                         | Playback | Capture |
-   +===================================+==========+=========+
-   | AUDIO_HW_FORMAT_PCM_8_BIT         | Y        | Y       |
-   +-----------------------------------+----------+---------+
-   | AUDIO_HW_FORMAT_PCM_16_BIT        | Y        | Y       |
-   +-----------------------------------+----------+---------+
-   | AUDIO_HW_FORMAT_PCM_32_BIT        | Y        | Y       |
-   +-----------------------------------+----------+---------+
-   | AUDIO_HW_FORMAT_PCM_FLOAT         | N        | N       |
-   +-----------------------------------+----------+---------+
-   | AUDIO_HW_FORMAT_PCM_24_BIT        | N        | N       |
-   +-----------------------------------+----------+---------+
-   | AUDIO_HW_FORMAT_PCM_8_24_BIT      | Y        | Y       |
-   +-----------------------------------+----------+---------+
-
-The sample rate is another important format of HAL audio streaming. For playback and recording, audio HAL supports the following sample rates.
-``Y`` means the sample rate is supported; ``N`` means the sample rate is not supported.
-
-.. table::
-   :width: 100%
-   :widths: 50,25,25
-
-   +-------------+----------+---------+
-   | Sample rate | Playback | Capture |
-   +=============+==========+=========+
-   | 8000        | Y        | Y       |
-   +-------------+----------+---------+
-   | 11025       | Y        | Y       |
-   +-------------+----------+---------+
-   | 16000       | Y        | Y       |
-   +-------------+----------+---------+
-   | 22050       | Y        | Y       |
-   +-------------+----------+---------+
-   | 32000       | Y        | Y       |
-   +-------------+----------+---------+
-   | 44100       | Y        | Y       |
-   +-------------+----------+---------+
-   | 48000       | Y        | Y       |
-   +-------------+----------+---------+
-   | 88200       | Y        | Y       |
-   +-------------+----------+---------+
-   | 96000       | Y        | Y       |
-   +-------------+----------+---------+
-   | 192000      | Y        | Y       |
-   +-------------+----------+---------+
-
-To do audio streaming, the channel count parameter setting is necessary, too. For playback and recording, audio HAL supports the following channel counts.
-``Y`` means the channel count is supported; ``N`` means the channel count is not supported.
-
-.. table::
-   :width: 100%
-   :widths: 50,25,25
-
-   +---------------+----------+---------+
-   | Channel count | Playback | Capture |
-   +===============+==========+=========+
-   | 1             | Y        | Y       |
-   +---------------+----------+---------+
-   | 2             | Y        | Y       |
-   +---------------+----------+---------+
-   | 4             | Y        | Y       |
-   +---------------+----------+---------+
-   | 6             | Y        | Y       |
-   +---------------+----------+---------+
-   | 8             | Y        | Y       |
-   +---------------+----------+---------+
-
-Architecture
+音频架构
 ------------------------
-Playback Architecture
+播放架构
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-The block diagram of audio playback architecture is shown below.
+The block diagram of audio mixer playback architecture is shown as below.
 
-.. figure:: figures/audio_playback_architecture.svg
+.. figure:: figures/audio_playback_mixer_architecture.svg
    :scale: 100%
    :align: center
 
-   Playback architecture
+   Playback mixer architecture
+
+The block diagram of audio passthrough playback architecture is shown as below.
+
+.. figure:: figures/audio_playback_passthrough_architecture.svg
+   :scale: 100%
+   :align: center
+
+   Playback passthrough architecture
 
 The audio playback architecture includes the following sub-modules:
 
-- **Audio Framework**: provides interfaces for applications.
-- **Audio HAL**: gets playback data from audio framework, and sends the data to audio driver.
-- **Audio Driver**: gets playback data from audio HAL and sends data to audio hardware.
+- Audio Framework (only mixer architecture)
 
-Record Architecture
+   - Audio framework is responsible for audio playback sound mixing.
+
+   - Before mixing, all sound will be converted to one unified audio format, default is 16-bit, 44100Hz, 2-channel. Sub-modules reformat, resampler are responsible to do the conversion. There is also volume sub-module in audio framework to adjust volumes for different audio types, for example, music, speech may have different volumes.
+
+   - Audio framework supports sound rate from 8k-96k, channel mono/stereo, format 8-bit, 16-bit, 24-bit, and 32-bit float.
+
+- Audio HAL
+
+   - Audio HAL gets playback data from audio framework, and sends the data to audio driver.
+
+- Audio Driver
+
+   - Audio Driver gets playback data from audio HAL and sends data to audio hardware.
+
+录音架构
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-The block diagram of audio record architecture is shown below.
+Audio mixer and passthrough have the same record architecture. The block diagram of audio record is shown as below.
 
 .. figure:: figures/audio_record_architecture.svg
    :scale: 100%
@@ -330,12 +232,12 @@ The audio record architecture includes the following sub-modules:
 - **Audio HAL**: gets record data from Audio driver, and sends the data to RTAudioRecord.
 - **Audio Driver**: gets record data from Audio hardware, and sends data to audio HAL.
 
-Control Architecture
+控制架构
 ~~~~~~~~~~~~~~~~~~~~~~~
-The block diagram of audio control architecture is shown below.
+Audio mixer and passthrough have the same control architecture. The block diagram of audio control is shown as below.
 
 .. figure:: figures/audio_control_architecture.svg
-   :scale: 90%
+   :scale: 120%
    :align: center
 
    Control architecture
@@ -346,29 +248,50 @@ The audio control architecture includes the following sub-modules:
 - **Audio HAL**: does audio control settings by calling Driver APIs.
 - **Audio Driver**: controls audio codec hardware.
 
-Configurations
----------------
-MenuConfig
+RTAudioControl provides interfaces to set and get hardware volume.
+
+.. code-block:: c
+
+   #include "audio/audio_control.h"
+   int32_t RTAudioControl_SetHardwareVolume(float left_volume, float right_volume)
+
+Users set the left and right channel volume to 0.0-1.0, linear maps to -65.625-MAXdb.
+
+音频配置
+----------------
+菜单配置
 ~~~~~~~~~~~~~
-If users want to use audio interfaces, select the following audio configurations, and choose audio architecture: *passthrough*.
+If users want to use audio interfaces, select the following audio configurations, and choose the suitable audio architecture according to Section :ref:`architecture_comparison`.
 
 .. figure:: figures/audio_menuconfig.svg
    :scale: 130%
    :align: center
 
-HAL Configuration
+   audio menuconfig
+
+框架配置
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+Audio Framework configurations lie in ``{SDK}/component/audio/configs/ameba_audio_mixer_usrcfg.cpp``.
+
+If users want to change the audio HAL period buffer size, or audio mixer's buffer policy, change *kPrimaryAudioConfig* according to the description of ``{SDK}/component/audio/configs/include/ameba_audio_mixer_usrcfg.h``.
+
+The config *out_min_frames_stage* in *kPrimaryAudioConfig* only supports *RTAUDIO_OUT_MIN_FRAMES_STAGE1* and *RTAUDIO_OUT_MIN_ FRAMES_STAGE2*.
+
+- *RTAUDIO_OUT_MIN_FRAMES_STAGE1* means more data output to audio HAL one time.
+- *RTAUDIO_OUT_MIN_FRAMES_ STAGE2* means less data output to audio HAL one time.
+
+*RTAUDIO_OUT_MIN_FRAMES_STAGE2* may reduce the framework's latency, but may cause noise. It's the user's choice to set it.
+
+HAL配置
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Audio hardware configurations lie in ``{SDK}/component/soc/amebadplus/usrcfg/include/ameba_audio_hw_usrcfg.h``.
+Audio hardware configurations lie in ``{SDK}/component/soc/amebaxx/usrcfg/include/ameba_audio_hw_usrcfg.h``.
 
-Different boards have different configurations.
-For example, some boards need to use an amplifier, while others do not. Different boards may use different pins to enable the amplifier; the start-up time is different for different amplifiers.
-In addition, the pins used by each board's DMICs may be different, and the stable time of DMICs may be different.
-All the information needs to be configured in the configuration file.
+Different boards have different configurations. For example, some boards need to use an amplifier, while others do not. Different boards may use different pins to enable the amplifier; the start-up time is different for different amplifiers. In addition, the pins used by each board's DMICs may be different, and the stable time of DMICs may be different. All the information needs to be configured in the configuration file.
 
-The ``ameba_audio_hw_usrcfg.h`` file has the description for each configuration, please set them according to the description.
+The :file:`ameba_audio_hw_usrcfg.h` file has the description for each configuration, please set them according to the description.
 
-Interfaces
---------------------
+音频接口
+---------------------
 The audio component provides three layers of interfaces.
 
 .. table::
@@ -382,35 +305,52 @@ The audio component provides three layers of interfaces.
    +----------------------------+----------------------------------------------------------------------------------------+
    | Audio HAL Interfaces       | Audio Hardware Abstraction Layer Interfaces.                                           |
    +----------------------------+----------------------------------------------------------------------------------------+
-   | Audio Framework Interfaces | High-level Interfaces for applications to render/capture stream, set volume, and so on.|
+   | Audio Framework Interfaces | High-level Interfaces for applications to render/capture stream, set volume and so on. |
    +----------------------------+----------------------------------------------------------------------------------------+
 
-The interfaces layer is shown below.
+The interfaces layer is shown as below.
 
 .. figure:: figures/audio_interfaces.svg
-   :scale: 110%
+   :scale: 120%
    :align: center
 
    Audio interfaces
 
-Driver Interfaces
+驱动接口
 ~~~~~~~~~~~~~~~~~~
-I2S PLL APIs
-^^^^^^^^^^^^^^^
-There are two ways to generate I2S PLL:
 
-- One is that the system clock is an integer multiple of 98.304M or 45.1584M, we add the system clock in *SocClk_Info* array, so you can modify the index of *SocClk_Info* array in :file:`bootloader_km4.c`. When you need high-quality audio applications, you can use this method.
-- The other is that the system clock is not an integer multiple of 98.304M or 45.1584M, in this case, we automatically get the 98.304M or 45.1584M.
+.. tabs:: 
 
-The details are shown in the following figure.
+   .. tab:: RTL8721Dx series
 
-.. figure:: figures/audio_i2s_pll_interfaces.svg
-   :scale: 130%
-   :align: center
+      - For sport interfaces, please refer to: ``{SDK}/component/soc/amebadplus/fwlib/include/ameba_sport.h``.
+      - For codec interfaces, please refer to: ``{SDK}/component/soc/amebadplus/fwlib/include/ameba_audio.h``.
 
-   Flow of using I2S PLL interfaces
+      I2S PLL APIs
+      ^^^^^^^^^^^^^^^
 
-HAL Interfaces
+      There are two ways to generate I2S PLL:
+
+      - One is that the system clock is an integer multiple of 98.304M or 45.1584M, we add the system clock in *SocClk_Info* array, so you can modify the index of *SocClk_Info* array in :file:`bootloader_km4.c`. When you need high-quality audio applications, you can use this method.
+      - The other is that the system clock is not an integer multiple of 98.304M or 45.1584M, in this case, we automatically get the 98.304M or 45.1584M.
+
+      The details are shown in the following figure.
+
+      .. figure:: figures/audio_i2s_pll_interfaces.svg
+         :scale: 130%
+         :align: center
+
+         Flow of using I2S PLL interfaces
+
+   .. tab:: RTL8726EA series
+      - For sport interfaces, please refer to: ``{SDK}/component/soc/amebalite/fwlib/include/ameba_sport.h``.
+      - For codec interfaces, please refer to: ``{SDK}/component/soc/amebalite/fwlib/include/ameba_audio.h``.
+
+   .. tab:: RTL8730E series
+      - For sport interfaces, please refer to: ``{SDK}/component/soc/amebasmart/fwlib/include/ameba_sport.h``.
+      - For codec interfaces, please refer to: ``{SDK}/component/soc/amebasmart/fwlib/include/ameba_audio.h``.
+
+HAL接口
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Audio HAL provides AudioHwStreamOut/AudioHwStreamIn/AudioHwControl interfaces to interact with audio hardware. The interfaces lie in ``{SDK}/component/audio/interfaces/hardware/audio``.
 The interfaces have specific descriptions in them, read them before use.
@@ -418,6 +358,7 @@ The interfaces have specific descriptions in them, read them before use.
 - **AudioHwStreamOut**: receives PCM data from the upper layer, writes data via audio driver to send PCM data to hardware, and provides information about audio output hardware driver.
 - **AudioHwStreamIn**: receives PCM data via audio driver and sends to the upper layer.
 - **AudioHwControl**: receives control calling from the upper layer, and sets control information to the driver.
+
 
 The AudioHwStreamOut/AudioHwStreamIn is managed by AudioHwCard interface. It is responsible for creating/destroying AudioHwStreamOut/AudioHwStreamIn instance.
 AudioHwCard is a physical or virtual hardware to process audio stream. It contains a set of ports and devices as shown in following figure.
@@ -428,15 +369,15 @@ AudioHwCard is a physical or virtual hardware to process audio stream. It contai
 .. figure:: figures/audio_hal_architecture.svg
    :scale: 90%
    :align: center
+   :name: audio_hal_architecture
 
    AudioHwCard example
 
 The AudioHwManager manages system's all AudioHwCards and opens a specific card driver based on the given audio card descriptor.
 
-Using AudioHwStreamOut
+使用 AudioHwStreamOut
 ^^^^^^^^^^^^^^^^^^^^^^^
 Users can check the example of AudioHwStreamOut in ``{SDK}/component/example/audio/audio_hal_render``.
-
 Here is the description showing how to use audio HAL interfaces to play audio raw data (PCM format):
 
 1. Use :func:`CreateAudioHwManager()` to get AudioHwManager instance:
@@ -503,9 +444,10 @@ Here is the description showing how to use audio HAL interfaces to play audio ra
       audio_manager->CloseCard(audio_manager, audio_card, audio_card_desc);
       DestoryAudioHwManager(audio_manager);
 
-Using AudioHwStreamIn
+使用 AudioHwStreamIn
 ^^^^^^^^^^^^^^^^^^^^^^
 Users can check the example of AudioHwStreamOut in ``{SDK}/component/example/audio/audio_hal_capture``.
+
 
 Here is the description showing how to use audio HAL interfaces to capture audio raw data:
 
@@ -572,7 +514,7 @@ Here is the description showing how to use audio HAL interfaces to capture audio
       audio_manager->CloseCard(audio_manager, audio_card_in, audio_card_in_desc);
       DestoryAudioHwManager(audio_manager);
 
-Using AudioHwControl
+使用 AudioHwControl
 ^^^^^^^^^^^^^^^^^^^^^^
 Here is an example showing how to use audio HAL interfaces to control audio codec:
 
@@ -584,27 +526,25 @@ Take the PLL clock setting for example:
 
    GetAudioHwControl()->AdjustPLLClock(GetAudioHwControl(), rate, ppm, action);
 
-Framework Interfaces
+音频框架接口
 ~~~~~~~~~~~~~~~~~~~~~~
-Streaming Interfaces
+音频流接口
 ^^^^^^^^^^^^^^^^^^^^^^
-Audio Streaming Interfaces include RTAudioTrack and RTAudioRecord interfaces, which lie in ``{SDK}/component/audio/interfaces/audio``.
-The interfaces have specific descriptions, read them before using.
+Audio Streaming Interfaces include RTAudioTrack and RTAudioRecord interfaces. The interfaces lie in ``{SDK}/component/audio/interfaces/audio``. The interfaces have specific descriptions in them, please read them before using.
 
-- **RTAudioTrack**: initializes the format of playback data streaming in the framework, receives PCM data from the application, and writes data to Audio HAL.
+- **RTAudioTrack**: initializes the format of playback data streaming in the framework, receives PCM data from the application, and writes data to Audio Framework (mixer) or Audio HAL (passthrough).
 - **RTAudioRecord**: initializes the format of record data streaming in the framework, receives PCM data from Audio HAL, and sends data to applications.
 
-Using RTAudioTrack
+使用 RTAudioTrack
 ************************************
-RTAudioTrack includes support for playing variety of common audio raw format types so that audio can be easily integrated into applications.
+RTAudioTrack includes support for playing variety of common audio raw format types so that audio can be easily integrated into applications. At most 32 RTAudioTracks can play together.
 
-Audio Framework has the following audio playback category types.
-Applications can use the types to initialize RTAudioTrack. Framework gets the category type and does the volume mixing according to the types.
+Audio Framework has the following audio playback stream types. Applications can use the types to initialize RTAudioTrack. Framework gets the streaming type and does the volume mixing according to the types.
 
-- *RTAUDIO_CATEGORY_MEDIA* - if the application wants to play music, then its type is *RTAUDIO_CATEGORY_MEDIA*, it can use this type to init RTAudioTrack. Then audio framework will know its type, and mix it with media's volume.
-- *RTAUDIO_CATEGORY_COMMUNICATION* - if the application wants to start a phone call, it can output the phone call's sound, the sound's type should be *RTAUDIO_CATEGORY_COMMUNICATION*.
-- *RTAUDIO_CATEGORY_SPEECH* - if the application wants to do voice recognition, and output the speech sound.
-- *RTAUDIO_CATEGORY_BEEP* - if the sound is key tone, or other beep sound, then its type is *RTAUDIO_CATEGORY_BEEP*.
+- **RTAUDIO_CATEGORY_MEDIA** - if the application wants to play music, then its type is **RTAUDIO_CATEGORY_MEDIA**, it can use this type to init RTAudioTrack. Then audio framework will know its type, and mix it with media's volume.
+- **RTAUDIO_CATEGORY_COMMUNICATION** - if the application wants to start a phone call, it can output the phone call's sound, the sound's type should be **RTAUDIO_CATEGORY_COMMUNICATION**.
+- **RTAUDIO_CATEGORY_SPEECH** - if the application wants to do voice recognition, and output the speech sound.
+- **RTAUDIO_CATEGORY_BEEP** - if the sound is key tone, or other beep sound, then its type is **RTAUDIO_CATEGORY_BEEP**.
 
 The test demo of RTAudioTrack lies in ``{SDK}/component/example/audio/audio_track``.
 
@@ -622,10 +562,10 @@ Here is an example showing how to play audio raw data:
 
       struct RTAudioTrack* audio_track = RTAudioTrack_Create();
 
-   Apps can use the Audio Configs API to provide detailed audio information about a specific audio playback source, including stream type (type of playback source), format, number of channels, sample rate, and RTAudioTrack ringbuffer size. The syntax is as follows:
+   The application can use the Audio Configs API to provide detailed audio information about a specific audio playback source, including stream type (type of playback source), format, number of channels, sample rate, and RTAudioTrack ringbuffer size. The syntax is as follows:
 
    .. code-block:: c
-      
+
       typedef struct {
       uint32_t category_type;
       uint32_t sample_rate;
@@ -636,7 +576,7 @@ Here is an example showing how to play audio raw data:
 
    Where
 
-   :category_type: define the stream type of the playback data source.
+   :category_type: defines the stream type of the playback data source.
 
    :sample_rate: playback source raw data's rate.
 
@@ -648,16 +588,18 @@ Here is an example showing how to play audio raw data:
 
    .. note::
 
-      The *buffer_bytes* in RTAudioTrackConfig is very important. The buffer size should always be more than the minimum buffer size Audio framework calculated.
-      Otherwise overrun will occur.
+      The *buffer_bytes* in RTAudioTrackConfig is very important. The buffer size should always be more than the minimum buffer size Audio framework calculated. Otherwise overrun will occur.
 
-   Use the interface to get minimum RTAudioTrack buffer bytes, and use it as a reference to define RTAudioTrack buffer size, for example, you can use minimum buffer size*4 as buffer size. The bigger size you use, the smoother playing you will get, yet it may cause more latency. It's your choice to define the size.
+3. Use the interface to get minimum RTAudioTrack buffer bytes, and use it as a reference to define RTAudioTrack buffer size.
+
+   For example, you can use minimum buffer size*4 as buffer size.
+   The bigger size you use, the smoother playing you will get, yet it may cause more latency. It's your choice to define the size.
 
    .. code-block:: c
 
       int track_buf_size = RTAudioTrack_GetMinBufferBytes(audio_track, type, rate, format, channels) * 4;
 
-1. Use this buffer size and other audio parameters to create RTAudioTrackConfig object, here's an example:
+4. Use this buffer size and other audio parameters to create RTAudioTrackConfig object, here's an example:
 
    .. code-block:: c
 
@@ -674,60 +616,74 @@ Here is an example showing how to play audio raw data:
 
       RTAudioTrack_Init(audio_track, &track_config);
 
-2. When all the preparations are completed, start RTAudioTrack and check if starts success.
+5. When all the preparations are completed, start RTAudioTrack and check if starts success.
 
    .. code-block:: c
 
       if(RTAudioTrack_Start(audio_track) != 0){
-      //track start fail
+         //track start fail
+         return;
       }
 
-3. Write audio data to the framework. The write_size can be defined by users. Users need to make sure the *write_size/frame_size* is integer.
+   The default volume of RTAudioTrack is maximum 1.0, you can adjust the volume with the following API.
+
+   .. code-block:: c
+
+      RTAudioTrack_SetVolume(audio_track, 1.0, 1.0);
+
+   .. note::
+      - In the mixer architecture, this API sets the software volume of the current audio_track.
+
+      - In the passthrough architecture, this API is not supported.
+
+6. Write audio data to the framework. The write_size can be defined by users. Users need to make sure the *write_size/frame_size* is integer.
 
    .. code-block:: c
 
       RTAudioTrack_Write(audio_track, buffer, write_size, true);
 
-4. If users want to pause, stop writing data, and then call the following APIs to tell the framework to do pause:
+7. If users want to pause, stop writing data, and then call the following APIs to tell the framework to do pause:
 
    .. code-block:: c
 
       RTAudioTrack_Pause(audio_track);
       RTAudioTrack_Flush(audio_track);
 
-5. If users want to stop playing audio, stop writing data, and then call RTAudioTrack_Stop() API:
+8. If users want to stop playing audio, stop writing data, and then call :func:`RTAudioTrack_Stop()`.
 
    .. code-block:: c
 
       RTAudioTrack_Stop(audio_track);
 
-6. Delete audio_track pointer when it's no use.
+9. Delete audio_track pointer when it's no use.
 
    .. code-block:: c
 
       RTAudioTrack_Destroy(audio_track);
 
-Using RTAudioRecord
+使用 RTAudioRecord
 ********************
 RTAudioRecord supports variety of common audio raw format types, so that you can easily integrate record into applications.
 
-RTAudioRecord supports the following audio input sources:
+The following audio input sources are supported by RTAudioRecord:
 
-- *RTDEVICE_IN_MIC* - if the application wants to capture data from microphone, then choose this input source.
-- *RTDEVICE_IN_HS_MIC*- if the application wants to capture data from headset microphone, then choose this input source.
-- *RTDEVICE_IN_HS_MIC*- if the application wants to capture data from LINE-IN, then choose this input source.
+- **RTDEVICE_IN_MIC** - if the application wants to capture data from microphone, then choose this input source.
+
+- **RTDEVICE_IN_I2S** - if the application wants to capture data from I2S, then choose this input source.
 
 The test demo of RTAudioRecord lies in ``{SDK}/component/example/audio/audio_record``.
 
 Here is an example showing how to record audio raw data:
 
-1. Create RTAudioRecord first:
+1. Create RTAudioRecord
 
    .. code-block:: c
 
       struct RTAudioRecord *audio_record = RTAudioRecord_Create();
 
-2. Apps can use the Audio Configs API to provide detailed audio information about a specific audio record source, including record device source, format, number of channels, and sample rate. The syntax is as follows:
+2. The application can use the Audio Configs API to provide detailed audio information about a specific audio record source, including record device source, format, number of channels, and sample rate.
+
+   The syntax is as follows:
 
    .. code-block:: c
 
@@ -762,47 +718,47 @@ Here is an example showing how to record audio raw data:
       record_config.device = RTDEVICE_IN_MIC;
       record_config.buffer_bytes = 0;
 
-   With RTAudioRecordConfig object created, you can initialize RTAudioRecord, in this step, Audio HAL's AudioHwCard will be opened, according to the audio input device source:
+3. With RTAudioRecordConfig object created, initialize RTAudioRecord, In this step, Audio HAL's AudioHwCard will be opened, according to the audio input device source:
 
    .. code-block:: c
 
       RTAudioRecord_Init(audio_record, &record_config);
 
-3. When all the preparations are completed, start audio_record:
+4. When all the preparations are completed, start audio_record:
 
    .. code-block:: c
 
       RTAudioRecord_Start(audio_record);
 
-4. Read audio microphone data. The read size can be defined by users. Users need to make sure *size/frame_size* is integer.
+5. Read audio microphone data.The read size can be defined by users. Users need to make sure *size/frame_size* is integer.
 
    .. code-block:: c
 
       RTAudioRecord_Read(audio_record, buffer, size, true);
 
-5. When the record ends, stop the record:
+6. When the record ends, stop the record:
 
    .. code-block:: c
 
       RTAudioRecord_Stop(audio_record);
 
-6. When audio_record no use, destroy it to avoid memory leak:
+7. When audio_record no use, destroy it to avoid memory leak:
 
    .. code-block:: c
 
       RTAudioRecord_Destroy(audio_record);
 
-Control Interfaces
+音频控制接口
 ^^^^^^^^^^^^^^^^^^^^
 Audio Control Interfaces include RTAudioControl interfaces to interact with audio control HAL.
-RTAudioControl provides interfaces to set and get hardware volume, set output device, and so on.
-The interfaces lie in ``{SDK}/component/audio/interfaces/audio/audio_control.h``.
-The interfaces have specific descriptions, read them before using.
+RTAudioControl provides interfaces to set and get hardware volume, set output device, and so on. The interfaces lie in :file:`{SDK}/component/audio/interfaces/audio/audio_control.h` The interfaces have specific descriptions, read them before use.
 
-Using RTAudioControl
+使用 RTAudioControl
 ************************
-Here is an example of how to use RTAudioControl: call RTAudioControl to set audio PLL clock 2 ppms slower.
+For using RTAudioControl, Call RTAudioControl to set audio hardware volume of DAC:
 
 .. code-block:: c
 
-   RTAudioControl_AdjustPLLClock(48000, 2, RTAUDIO_PLL_SLOWER);
+   RTAudioControl_SetHardwareVolume(0.5, 0.5);
+
+For playback and record case, most RTAudioControl APIs can be called at any time, any place, they can work directly. Only :func:`RTAudioControl_SetPlaybackDevice()` can only be called before :func:`RTAudioService_Init` in mixer architecture, and before :func:`RTAudioTrack_Start` in passthrough architecture.
