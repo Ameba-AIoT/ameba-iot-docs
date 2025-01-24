@@ -1,4 +1,4 @@
-.. tab:: RTL8721Dx/RTL8711Dx
+.. tab:: RTL8721Dx
 
    Take the Wi-Fi driver running on KM0 for an example:
 
