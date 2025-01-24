@@ -3,7 +3,7 @@
 Pin Controller (Pinctrl)
 ================================================
 .. tabs ::
-   .. include :: pinctrl_21Dx_cn.rst
-   .. include :: pinctrl_20EA_cn.rst
-   .. include :: pinctrl_26EA_cn.rst
-   .. include :: pinctrl_30E_cn.rst
+   .. include :: 21Dx_pinctrl_cn.rst
+   .. include :: 20EA_pinctrl_cn.rst
+   .. include :: 26EA_pinctrl_cn.rst
+   .. include :: 30E_pinctrl_cn.rst
