@@ -1,7 +1,6 @@
 Digital Signal Processing (DSP)
 ================================
 
-
 .. table::
    :width: 100%
    :widths: auto
@@ -27,5 +26,5 @@ Digital Signal Processing (DSP)
 .. toctree::
    :maxdepth: 2
 
-   dsp_build_index
-   dsp_config_index
+   dsp_build_environment
+   dsp_configuration

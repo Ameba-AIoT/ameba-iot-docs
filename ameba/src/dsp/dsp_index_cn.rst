@@ -26,5 +26,5 @@
 .. toctree::
    :maxdepth: 2
 
-   dsp_build_index_cn
-   dsp_config_index_cn
+   dsp_build_environment_cn
+   dsp_configuration_cn

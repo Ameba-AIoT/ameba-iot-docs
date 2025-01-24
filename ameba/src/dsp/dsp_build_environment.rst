@@ -1,5 +1,8 @@
 .. _build_environment_for_dsp:
 
+Build Environment for DSP
+==========================
+
 Preparation
 ----------------------
 In order to develop HiFi5 DSP, you need to downoad :ref:`dsp_software packages` and prepare :ref:`xtensa_xplorer_license` first.
