@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Introduction &mdash; RTL8721Dx 文档  documentation</title>
+  <title>简介 &mdash; RTL8721Dx 文档  documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=13237357" />
@@ -22,6 +22,7 @@
         <script src="../../../_static/doctools.js?v=9a2dae69"></script>
         <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script src="../../../_static/toggleprompt.js?v=d7ede5d2"></script>
+        <script src="../../../_static/tabs.js?v=3030b3cb"></script>
         <script>let toggleHintShow = 'Click to show';</script>
         <script>let toggleHintHide = 'Click to hide';</script>
         <script>let toggleOpenOnPrint = 'true';</script>
@@ -84,28 +85,30 @@
 <li class="toctree-l1 current"><a class="reference internal" href="multimedia_index_cn.html">多媒体</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="media_index_cn.html">多媒体架构</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="audio_index_cn.html">音频</a><ul class="current">
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Introduction</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#terminology">Terminology</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#data-format">Data Format</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#framework-format">Framework Format</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#hal-format">HAL Format</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">简介</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id2">音频混音器概述</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id3">音频透传概述</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#architecture-comparison">架构选择</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#architecture">Architecture</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#playback-architecture">Playback Architecture</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#record-architecture">Record Architecture</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#control-architecture">Control Architecture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">音频术语</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id6">音频格式</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id7">音频架构</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id8">播放架构</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id9">录音架构</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id10">控制架构</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#configurations">Configurations</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#menuconfig">MenuConfig</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#hal-configuration">HAL Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id11">音频配置</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id12">菜单配置</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id13">框架配置</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#hal">HAL配置</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#interfaces">Interfaces</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#driver-interfaces">Driver Interfaces</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#hal-interfaces">HAL Interfaces</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#framework-interfaces">Framework Interfaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id14">音频接口</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id15">驱动接口</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id16">HAL接口</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id17">音频框架接口</a></li>
 </ul>
 </li>
 </ul>
@@ -142,7 +145,7 @@
       <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="multimedia_index_cn.html">多媒体</a></li>
           <li class="breadcrumb-item"><a href="audio_index_cn.html">音频</a></li>
-      <li class="breadcrumb-item active">Introduction</li>
+      <li class="breadcrumb-item active">简介</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -151,24 +154,28 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="introduction">
-<span id="audio"></span><h1>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h1>
+  <section id="id1">
+<h1>简介<a class="headerlink" href="#id1" title="Link to this heading"></a></h1>
 <p>The audio framework is a whole audio architecture aiming to provide different layers of audio interfaces for applications. The interfaces involve Audio HAL and Audio Framework.</p>
 <ul class="simple">
 <li><p>Audio HAL: defines unified audio hardware interfaces. It interacts with audio driver to do audio streaming or audio settings.</p></li>
-<li><p>Audio Framework: provides interfaces for audio streaming, and other settings.</p></li>
+<li><p>Audio Framework: provides interfaces for audio streaming, volume, and other settings.</p></li>
 </ul>
-<p>The audio framework provides passthrough architecture which supports audio recording, and audio playback. This architecture has no audio mixing, only one audio playback is allowed at the same moment.</p>
-<p>The audio interfaces and the entire implementation of audio passthrough architecture is shown below.</p>
-<blockquote>
-<div><figure class="align-center" id="id1">
-<a class="reference internal image-reference" href="../../../_images/audio_passthrough_overview.svg"><img alt="../../../_images/audio_passthrough_overview.svg" height="375" src="../../../_images/audio_passthrough_overview.svg" width="719" /></a>
+<p>The audio framework provides two architectures to meet different needs of audio. Different architectures have different implementations, but the interfaces are the same.</p>
+<ul class="simple">
+<li><p>Audio mixer architecture: supports audio recording, and audio playback. For audio playback, this architecture provides audio mixing functions, and format, rate, channel will be converted to a unified format for mixing.</p></li>
+<li><p>Audio passthrough architecture: supports audio recording, and audio playback. This architecture has no audio mixing, only one audio playback is allowed at the same moment.</p></li>
+</ul>
+<section id="id2">
+<h2>音频混音器概述<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+<p>The audio interfaces and the entire implementation are shown as below.</p>
+<figure class="align-center" id="id20">
+<a class="reference internal image-reference" href="../../../_images/audio_mixer_overview.svg"><img alt="../../../_images/audio_mixer_overview.svg" height="569" src="../../../_images/audio_mixer_overview.svg" width="725" /></a>
 <figcaption>
-<p><span class="caption-text">Audio passthrough overview</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
+<p><span class="caption-text">Audio mixer overview</span><a class="headerlink" href="#id20" title="Link to this image"></a></p>
 </figcaption>
 </figure>
-</div></blockquote>
-<p>The whole audio passthrough architecture includes the following sub-modules:</p>
+<p>The whole audio mixer architecture includes the following sub-modules:</p>
 <ul>
 <li><p>Application Interface</p>
 <blockquote>
@@ -176,6 +183,13 @@
 <li><p><strong>RTAudioTrack</strong> provides interfaces to play sound.</p></li>
 <li><p><strong>RTAudioRecord</strong> provides interfaces to capture sound.</p></li>
 <li><p><strong>RTAudioControl</strong> provides interfaces to control sound volumes and so on.</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>Audio Framework</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Audio framework provides audio reformat, resample, volume, and mixer functions for audio stream playback.</p></li>
 </ul>
 </div></blockquote>
 </li>
@@ -200,8 +214,61 @@
 </li>
 </ul>
 </section>
-<section id="terminology">
-<h1>Terminology<a class="headerlink" href="#terminology" title="Link to this heading"></a></h1>
+<section id="id3">
+<h2>音频透传概述<a class="headerlink" href="#id3" title="Link to this heading"></a></h2>
+<p>The audio interfaces and the entire implementation are shown as below.</p>
+<figure class="align-center" id="id21">
+<a class="reference internal image-reference" href="../../../_images/audio_passthrough_overview.svg"><img alt="../../../_images/audio_passthrough_overview.svg" height="321" src="../../../_images/audio_passthrough_overview.svg" width="616" /></a>
+<figcaption>
+<p><span class="caption-text">Audio passthrough overview</span><a class="headerlink" href="#id21" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p>The audio passthrough architecture has no Audio Framework layer compared to audio mixer architecture, other layers are nearly the same.</p>
+</section>
+<section id="architecture-comparison">
+<span id="id4"></span><h2>架构选择<a class="headerlink" href="#architecture-comparison" title="Link to this heading"></a></h2>
+<p>The above sections describe two architectures of audio: mixer and passthrough. Users can choose the suitable architecture according to the project's requirements. Here is a comparison table of the two architectures:</p>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head" rowspan="2"><p>Architecture</p></th>
+<th class="head" rowspan="2"><p>Memory occupancy</p></th>
+<th class="head" rowspan="2"><p>Code size</p></th>
+<th class="head" colspan="3"><p>Playback function</p></th>
+<th class="head" rowspan="2"><p>Capture function</p></th>
+</tr>
+<tr class="row-even"><th class="head"><p>Basic function</p></th>
+<th class="head"><p>Mixing function</p></th>
+<th class="head"><p>Playback latency</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-odd"><td><p>Mixer</p></td>
+<td><p>More</p></td>
+<td><p>More</p></td>
+<td><p>Nearly the same</p></td>
+<td><p>Support</p></td>
+<td><p>More</p></td>
+<td><p>Same</p></td>
+</tr>
+<tr class="row-even"><td><p>Passthrough</p></td>
+<td><p>Less</p></td>
+<td><p>Less</p></td>
+<td><p>Nearly the same</p></td>
+<td><p>Not support</p></td>
+<td><p>Less</p></td>
+<td><p>Same</p></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li><p>For record implementation, the two architectures are the same. Both architectures can meet user's record function needs.</p></li>
+<li><p>For playback implements, the two architectures are different. If the user has the requirements to play two sounds together at the same time, choose mixer architecture, because only the mixer architecture can do the mixing.</p></li>
+<li><p>The mixer architecture takes more memory and has a bigger code size. If the user wants to save memory and code size and has no requirements of audio mixing, choose the passthrough architecture.</p></li>
+</ul>
+</section>
+</section>
+<section id="id5">
+<h1>音频术语<a class="headerlink" href="#id5" title="Link to this heading"></a></h1>
 <p>The meanings of some widely-used audio terms in this chapter are listed below.</p>
 <table class="docutils align-default">
 <thead>
@@ -214,8 +281,8 @@
 <td><p>Pulse Code Modulation, audio data is a raw stream.</p></td>
 </tr>
 <tr class="row-odd"><td><p>channel</p></td>
-<td><p>A channel sound is an independent audio signal captured or played in different positions, so the number of channels</p>
-<p>is the number of sound sources.</p>
+<td><p>A channel sound is an independent audio signal captured or played in different positions, so the number of</p>
+<p>channels is the number of sound sources.</p>
 </td>
 </tr>
 <tr class="row-even"><td><p>mono</p></td>
@@ -234,7 +301,9 @@
 </tr>
 <tr class="row-even"><td><p>sample rate</p></td>
 <td><p>The audio sampling rate refers to the number of frames that the signal is sampled per second.</p>
-<p>The higher the sampling frequency, the higher quality the sound will be.</p>
+<blockquote>
+<div><p>The higher the sampling frequency, the higher quality the sound will be.</p>
+</div></blockquote>
 </td>
 </tr>
 <tr class="row-odd"><td><p>frame</p></td>
@@ -244,8 +313,8 @@
 <td><p>Audio signal gain control to adjust the signal level.</p></td>
 </tr>
 <tr class="row-odd"><td><p>interleaved</p></td>
-<td><p>It is a recording method of audio data. In the interleaved mode, the data is stored in a continuous manner, all the</p>
-<p>channels of sample of first frame are first stored, and then the storage of second frame.</p>
+<td><p>It is a recording method of audio data. In the interleaved mode, the data is stored in a continuous manner,</p>
+<p>all the channels of sample of first frame are first stored, and then the storage of second frame.</p>
 </td>
 </tr>
 <tr class="row-even"><td><p>latency</p></td>
@@ -255,8 +324,8 @@
 <td><p>The buffer is too full to let buffer producer write more data.</p></td>
 </tr>
 <tr class="row-even"><td><p>underrun</p></td>
-<td><p>The buffer producer is too slow to write data to the buffer so that the buffer is empty when the consumer wants to</p>
-<p>consume data.</p>
+<td><p>The buffer producer is too slow to write data to the buffer so that the buffer is empty when the consumer</p>
+<p>wants to consume data.</p>
 </td>
 </tr>
 <tr class="row-odd"><td><p>xrun</p></td>
@@ -286,346 +355,76 @@
 </tbody>
 </table>
 </section>
-<section id="data-format">
-<h1>Data Format<a class="headerlink" href="#data-format" title="Link to this heading"></a></h1>
-<p>This section describes the data format that audio framework and audio HAL supports.
-The common part of audio framework and audio HAL is described here. And the different parts will be described in their own sections.</p>
+<section id="id6">
+<h1>音频格式<a class="headerlink" href="#id6" title="Link to this heading"></a></h1>
+<p>This section describes the data format that audio framework and audio HAL supports. The common part of audio framework and audio HAL is described here. And the different parts will be described in their own sections.</p>
 <p>Both audio framework and audio HAL support interleaved streaming data.</p>
-<p>The interleaved data is illustrated in the following figures.</p>
-<figure class="align-center" id="id2">
+<p>The two-channel interleaved data is illustrated in <a class="reference internal" href="#audio-two-channels-interleaved"><span class="std std-ref">Two-channel interleaved</span></a>, and the four-channel interleaved data is illustrated in <a class="reference internal" href="#audio-four-channels-interleaved"><span class="std std-ref">Four-channel interleaved</span></a>.</p>
+<figure class="align-center" id="audio-two-channels-interleaved">
 <a class="reference internal image-reference" href="../../../_images/audio_two_channels_interleaved.svg"><img alt="../../../_images/audio_two_channels_interleaved.svg" height="129" src="../../../_images/audio_two_channels_interleaved.svg" width="477" /></a>
 <figcaption>
-<p><span class="caption-text">Two-channel interleaved</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
+<p><span class="caption-text">Two-channel interleaved</span><a class="headerlink" href="#audio-two-channels-interleaved" title="Link to this image"></a></p>
 </figcaption>
 </figure>
-<figure class="align-center" id="id3">
+<figure class="align-center" id="audio-four-channels-interleaved">
 <a class="reference internal image-reference" href="../../../_images/audio_four_channels_interleaved.svg"><img alt="../../../_images/audio_four_channels_interleaved.svg" height="139" src="../../../_images/audio_four_channels_interleaved.svg" width="946" /></a>
 <figcaption>
-<p><span class="caption-text">Four-channel interleaved</span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
+<p><span class="caption-text">Four-channel interleaved</span><a class="headerlink" href="#audio-four-channels-interleaved" title="Link to this image"></a></p>
 </figcaption>
 </figure>
-<section id="framework-format">
-<h2>Framework Format<a class="headerlink" href="#framework-format" title="Link to this heading"></a></h2>
-<p>This section describes the format that Audio Framework supports. Before playback, or capture, make sure your sound format is supported.</p>
-<p>Audio Framework has the following types of bit depth:</p>
-<ul class="simple">
-<li><p><em>RTAUDIO_FORMAT_INVALID</em> - invalid bit depth of audio stream</p></li>
-<li><p><em>RTAUDIO_FORMAT_PCM_8_BIT</em> - audio stream has 8-bit depth</p></li>
-<li><p><em>RTAUDIO_FORMAT_PCM_16_BIT</em> - audio stream has 16-bit depth</p></li>
-<li><p><em>RTAUDIO_FORMAT_PCM_32_BIT</em> - audio stream has 32-bit depth</p></li>
-<li><p><em>RTAUDIO_FORMAT_PCM_FLOAT</em> - audio stream has 32-bit float format</p></li>
-<li><p><em>RTAUDIO_FORMAT_PCM_24_BIT</em> - audio stream has 24-bit depth</p></li>
-<li><p><em>RTAUDIO_FORMAT_PCM_8_24_BIT</em> - audio stream has 24-bit + 8-bit depth</p></li>
-</ul>
-<p>The following table describes the supported formats for playback and recording. <code class="docutils literal notranslate"><span class="pre">Y</span></code> means the format is supported; <code class="docutils literal notranslate"><span class="pre">N</span></code> means the format is not supported.</p>
-<table class="docutils align-default" style="width: 100%">
-<colgroup>
-<col style="width: 50.0%" />
-<col style="width: 25.0%" />
-<col style="width: 25.0%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p>Bit depth</p></th>
-<th class="head"><p>Playback</p></th>
-<th class="head"><p>Capture</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>RTAUDIO_FORMAT_PCM_8_BIT</p></td>
-<td><p>Y</p></td>
-<td><p>Y</p></td>
-</tr>
-<tr class="row-odd"><td><p>RTAUDIO_FORMAT_PCM_16_BIT</p></td>
-<td><p>Y</p></td>
-<td><p>Y</p></td>
-</tr>
-<tr class="row-even"><td><p>RTAUDIO_FORMAT_PCM_32_BIT</p></td>
-<td><p>Y</p></td>
-<td><p>Y</p></td>
-</tr>
-<tr class="row-odd"><td><p>RTAUDIO_FORMAT_PCM_FLOAT</p></td>
-<td><p>N</p></td>
-<td><p>N</p></td>
-</tr>
-<tr class="row-even"><td><p>RTAUDIO_FORMAT_PCM_24_BIT</p></td>
-<td><p>Y</p></td>
-<td><p>Y</p></td>
-</tr>
-<tr class="row-odd"><td><p>RTAUDIO_FORMAT_PCM_8_24_BIT</p></td>
-<td><p>Y</p></td>
-<td><p>Y</p></td>
-</tr>
-</tbody>
-</table>
-<p>The sample rate is another important format of audio streaming. For playback and recording, audio framework supports the following sample rates.
-<code class="docutils literal notranslate"><span class="pre">Y</span></code> means the sample rate is supported; <code class="docutils literal notranslate"><span class="pre">N</span></code> means the sample rate is not supported.</p>
-<table class="docutils align-default" style="width: 100%">
-<colgroup>
-<col style="width: 50.0%" />
-<col style="width: 25.0%" />
-<col style="width: 25.0%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p>Sample rate</p></th>
-<th class="head"><p>Playback</p></th>
-<th class="head"><p>Capture</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>8000</p></td>
-<td><p>Y</p></td>
-<td><p>Y</p></td>
-</tr>
-<tr class="row-odd"><td><p>11025</p></td>
-<td><p>Y</p></td>
-<td><p>Y</p></td>
-</tr>
-<tr class="row-even"><td><p>16000</p></td>
-<td><p>Y</p></td>
-<td><p>Y</p></td>
-</tr>
-<tr class="row-odd"><td><p>22050</p></td>
-<td><p>Y</p></td>
-<td><p>Y</p></td>
-</tr>
-<tr class="row-even"><td><p>32000</p></td>
-<td><p>Y</p></td>
-<td><p>Y</p></td>
-</tr>
-<tr class="row-odd"><td><p>44100</p></td>
-<td><p>Y</p></td>
-<td><p>Y</p></td>
-</tr>
-<tr class="row-even"><td><p>48000</p></td>
-<td><p>Y</p></td>
-<td><p>Y</p></td>
-</tr>
-<tr class="row-odd"><td><p>88200</p></td>
-<td><p>Y</p></td>
-<td><p>Y</p></td>
-</tr>
-<tr class="row-even"><td><p>96000</p></td>
-<td><p>Y</p></td>
-<td><p>Y</p></td>
-</tr>
-<tr class="row-odd"><td><p>192000</p></td>
-<td><p>Y</p></td>
-<td><p>Y</p></td>
-</tr>
-</tbody>
-</table>
-<p>To do audio streaming, the channel count parameter setting is necessary, too. For playback and recording, audio framework supports the following channel counts.
-<code class="docutils literal notranslate"><span class="pre">Y</span></code> means the channel count is supported; <code class="docutils literal notranslate"><span class="pre">N</span></code> means the channel count is not supported.</p>
-<table class="docutils align-default" style="width: 100%">
-<colgroup>
-<col style="width: 50.0%" />
-<col style="width: 25.0%" />
-<col style="width: 25.0%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p>Channel count</p></th>
-<th class="head"><p>Playback</p></th>
-<th class="head"><p>Capture</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>1</p></td>
-<td><p>Y</p></td>
-<td><p>Y</p></td>
-</tr>
-<tr class="row-odd"><td><p>2</p></td>
-<td><p>Y</p></td>
-<td><p>Y</p></td>
-</tr>
-<tr class="row-even"><td><p>4</p></td>
-<td><p>Y</p></td>
-<td><p>Y</p></td>
-</tr>
-<tr class="row-odd"><td><p>6</p></td>
-<td><p>Y</p></td>
-<td><p>Y</p></td>
-</tr>
-<tr class="row-even"><td><p>8</p></td>
-<td><p>Y</p></td>
-<td><p>Y</p></td>
-</tr>
-</tbody>
-</table>
 </section>
-<section id="hal-format">
-<h2>HAL Format<a class="headerlink" href="#hal-format" title="Link to this heading"></a></h2>
-<p>Audio Hal has the following types of bit depth:</p>
-<ul class="simple">
-<li><p><em>AUDIO_HW_FORMAT_INVALID</em> - invalid bit depth of audio stream</p></li>
-<li><p><em>AUDIO_HW_FORMAT_PCM_8_BIT</em> - audio stream has 8-bit depth</p></li>
-<li><p><em>AUDIO_HW_FORMAT_PCM_16_BIT</em> - audio stream has 16-bit depth</p></li>
-<li><p><em>AUDIO_HW_FORMAT_PCM_32_BIT</em> - audio stream has 32-bit depth</p></li>
-<li><p><em>AUDIO_HW_FORMAT_PCM_FLOAT</em> - audio stream has 32-bit float format</p></li>
-<li><p><em>AUDIO_HW_FORMAT_PCM_24_BIT</em> - audio stream has 24-bit depth</p></li>
-<li><p><em>AUDIO_HW_FORMAT_PCM_8_24_BIT</em> - audio stream has 24-bit + 8-bit depth</p></li>
-</ul>
-<p>If using the Audio HAL interface, check the bit depth HAL supported for Playback and Capture.
-<code class="docutils literal notranslate"><span class="pre">Y</span></code> means the format is supported; <code class="docutils literal notranslate"><span class="pre">N</span></code> means the format is not supported.</p>
-<table class="docutils align-default" style="width: 100%">
-<colgroup>
-<col style="width: 50.0%" />
-<col style="width: 25.0%" />
-<col style="width: 25.0%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p>Bit depth</p></th>
-<th class="head"><p>Playback</p></th>
-<th class="head"><p>Capture</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>AUDIO_HW_FORMAT_PCM_8_BIT</p></td>
-<td><p>Y</p></td>
-<td><p>Y</p></td>
-</tr>
-<tr class="row-odd"><td><p>AUDIO_HW_FORMAT_PCM_16_BIT</p></td>
-<td><p>Y</p></td>
-<td><p>Y</p></td>
-</tr>
-<tr class="row-even"><td><p>AUDIO_HW_FORMAT_PCM_32_BIT</p></td>
-<td><p>Y</p></td>
-<td><p>Y</p></td>
-</tr>
-<tr class="row-odd"><td><p>AUDIO_HW_FORMAT_PCM_FLOAT</p></td>
-<td><p>N</p></td>
-<td><p>N</p></td>
-</tr>
-<tr class="row-even"><td><p>AUDIO_HW_FORMAT_PCM_24_BIT</p></td>
-<td><p>N</p></td>
-<td><p>N</p></td>
-</tr>
-<tr class="row-odd"><td><p>AUDIO_HW_FORMAT_PCM_8_24_BIT</p></td>
-<td><p>Y</p></td>
-<td><p>Y</p></td>
-</tr>
-</tbody>
-</table>
-<p>The sample rate is another important format of HAL audio streaming. For playback and recording, audio HAL supports the following sample rates.
-<code class="docutils literal notranslate"><span class="pre">Y</span></code> means the sample rate is supported; <code class="docutils literal notranslate"><span class="pre">N</span></code> means the sample rate is not supported.</p>
-<table class="docutils align-default" style="width: 100%">
-<colgroup>
-<col style="width: 50.0%" />
-<col style="width: 25.0%" />
-<col style="width: 25.0%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p>Sample rate</p></th>
-<th class="head"><p>Playback</p></th>
-<th class="head"><p>Capture</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>8000</p></td>
-<td><p>Y</p></td>
-<td><p>Y</p></td>
-</tr>
-<tr class="row-odd"><td><p>11025</p></td>
-<td><p>Y</p></td>
-<td><p>Y</p></td>
-</tr>
-<tr class="row-even"><td><p>16000</p></td>
-<td><p>Y</p></td>
-<td><p>Y</p></td>
-</tr>
-<tr class="row-odd"><td><p>22050</p></td>
-<td><p>Y</p></td>
-<td><p>Y</p></td>
-</tr>
-<tr class="row-even"><td><p>32000</p></td>
-<td><p>Y</p></td>
-<td><p>Y</p></td>
-</tr>
-<tr class="row-odd"><td><p>44100</p></td>
-<td><p>Y</p></td>
-<td><p>Y</p></td>
-</tr>
-<tr class="row-even"><td><p>48000</p></td>
-<td><p>Y</p></td>
-<td><p>Y</p></td>
-</tr>
-<tr class="row-odd"><td><p>88200</p></td>
-<td><p>Y</p></td>
-<td><p>Y</p></td>
-</tr>
-<tr class="row-even"><td><p>96000</p></td>
-<td><p>Y</p></td>
-<td><p>Y</p></td>
-</tr>
-<tr class="row-odd"><td><p>192000</p></td>
-<td><p>Y</p></td>
-<td><p>Y</p></td>
-</tr>
-</tbody>
-</table>
-<p>To do audio streaming, the channel count parameter setting is necessary, too. For playback and recording, audio HAL supports the following channel counts.
-<code class="docutils literal notranslate"><span class="pre">Y</span></code> means the channel count is supported; <code class="docutils literal notranslate"><span class="pre">N</span></code> means the channel count is not supported.</p>
-<table class="docutils align-default" style="width: 100%">
-<colgroup>
-<col style="width: 50.0%" />
-<col style="width: 25.0%" />
-<col style="width: 25.0%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p>Channel count</p></th>
-<th class="head"><p>Playback</p></th>
-<th class="head"><p>Capture</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>1</p></td>
-<td><p>Y</p></td>
-<td><p>Y</p></td>
-</tr>
-<tr class="row-odd"><td><p>2</p></td>
-<td><p>Y</p></td>
-<td><p>Y</p></td>
-</tr>
-<tr class="row-even"><td><p>4</p></td>
-<td><p>Y</p></td>
-<td><p>Y</p></td>
-</tr>
-<tr class="row-odd"><td><p>6</p></td>
-<td><p>Y</p></td>
-<td><p>Y</p></td>
-</tr>
-<tr class="row-even"><td><p>8</p></td>
-<td><p>Y</p></td>
-<td><p>Y</p></td>
-</tr>
-</tbody>
-</table>
-</section>
-</section>
-<section id="architecture">
-<h1>Architecture<a class="headerlink" href="#architecture" title="Link to this heading"></a></h1>
-<section id="playback-architecture">
-<h2>Playback Architecture<a class="headerlink" href="#playback-architecture" title="Link to this heading"></a></h2>
-<p>The block diagram of audio playback architecture is shown below.</p>
-<figure class="align-center" id="id4">
-<a class="reference internal image-reference" href="../../../_images/audio_playback_architecture.svg"><img alt="../../../_images/audio_playback_architecture.svg" height="490" src="../../../_images/audio_playback_architecture.svg" width="529" /></a>
+<section id="id7">
+<h1>音频架构<a class="headerlink" href="#id7" title="Link to this heading"></a></h1>
+<section id="id8">
+<h2>播放架构<a class="headerlink" href="#id8" title="Link to this heading"></a></h2>
+<p>The block diagram of audio mixer playback architecture is shown as below.</p>
+<figure class="align-center" id="id22">
+<a class="reference internal image-reference" href="../../../_images/audio_playback_mixer_architecture.svg"><img alt="../../../_images/audio_playback_mixer_architecture.svg" height="415" src="../../../_images/audio_playback_mixer_architecture.svg" width="755" /></a>
 <figcaption>
-<p><span class="caption-text">Playback architecture</span><a class="headerlink" href="#id4" title="Link to this image"></a></p>
+<p><span class="caption-text">Playback mixer architecture</span><a class="headerlink" href="#id22" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p>The block diagram of audio passthrough playback architecture is shown as below.</p>
+<figure class="align-center" id="id23">
+<a class="reference internal image-reference" href="../../../_images/audio_playback_passthrough_architecture.svg"><img alt="../../../_images/audio_playback_passthrough_architecture.svg" height="490" src="../../../_images/audio_playback_passthrough_architecture.svg" width="529" /></a>
+<figcaption>
+<p><span class="caption-text">Playback passthrough architecture</span><a class="headerlink" href="#id23" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <p>The audio playback architecture includes the following sub-modules:</p>
-<ul class="simple">
-<li><p><strong>Audio Framework</strong>: provides interfaces for applications.</p></li>
-<li><p><strong>Audio HAL</strong>: gets playback data from audio framework, and sends the data to audio driver.</p></li>
-<li><p><strong>Audio Driver</strong>: gets playback data from audio HAL and sends data to audio hardware.</p></li>
+<ul>
+<li><p>Audio Framework (only mixer architecture)</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Audio framework is responsible for audio playback sound mixing.</p></li>
+<li><p>Before mixing, all sound will be converted to one unified audio format, default is 16-bit, 44100Hz, 2-channel. Sub-modules reformat, resampler are responsible to do the conversion. There is also volume sub-module in audio framework to adjust volumes for different audio types, for example, music, speech may have different volumes.</p></li>
+<li><p>Audio framework supports sound rate from 8k-96k, channel mono/stereo, format 8-bit, 16-bit, 24-bit, and 32-bit float.</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>Audio HAL</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Audio HAL gets playback data from audio framework, and sends the data to audio driver.</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>Audio Driver</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Audio Driver gets playback data from audio HAL and sends data to audio hardware.</p></li>
+</ul>
+</div></blockquote>
+</li>
 </ul>
 </section>
-<section id="record-architecture">
-<h2>Record Architecture<a class="headerlink" href="#record-architecture" title="Link to this heading"></a></h2>
-<p>The block diagram of audio record architecture is shown below.</p>
-<figure class="align-center" id="id5">
+<section id="id9">
+<h2>录音架构<a class="headerlink" href="#id9" title="Link to this heading"></a></h2>
+<p>Audio mixer and passthrough have the same record architecture. The block diagram of audio record is shown as below.</p>
+<figure class="align-center" id="id24">
 <a class="reference internal image-reference" href="../../../_images/audio_record_architecture.svg"><img alt="../../../_images/audio_record_architecture.svg" height="483" src="../../../_images/audio_record_architecture.svg" width="536" /></a>
 <figcaption>
-<p><span class="caption-text">Record architecture</span><a class="headerlink" href="#id5" title="Link to this image"></a></p>
+<p><span class="caption-text">Record architecture</span><a class="headerlink" href="#id24" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <p>The audio record architecture includes the following sub-modules:</p>
@@ -635,13 +434,13 @@ The common part of audio framework and audio HAL is described here. And the diff
 <li><p><strong>Audio Driver</strong>: gets record data from Audio hardware, and sends data to audio HAL.</p></li>
 </ul>
 </section>
-<section id="control-architecture">
-<h2>Control Architecture<a class="headerlink" href="#control-architecture" title="Link to this heading"></a></h2>
-<p>The block diagram of audio control architecture is shown below.</p>
-<figure class="align-center" id="id6">
-<a class="reference internal image-reference" href="../../../_images/audio_control_architecture.svg"><img alt="../../../_images/audio_control_architecture.svg" height="400" src="../../../_images/audio_control_architecture.svg" width="482" /></a>
+<section id="id10">
+<h2>控制架构<a class="headerlink" href="#id10" title="Link to this heading"></a></h2>
+<p>Audio mixer and passthrough have the same control architecture. The block diagram of audio control is shown as below.</p>
+<figure class="align-center" id="id25">
+<a class="reference internal image-reference" href="../../../_images/audio_control_architecture.svg"><img alt="../../../_images/audio_control_architecture.svg" height="534" src="../../../_images/audio_control_architecture.svg" width="643" /></a>
 <figcaption>
-<p><span class="caption-text">Control architecture</span><a class="headerlink" href="#id6" title="Link to this image"></a></p>
+<p><span class="caption-text">Control architecture</span><a class="headerlink" href="#id25" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <p>The audio control architecture includes the following sub-modules:</p>
@@ -650,29 +449,46 @@ The common part of audio framework and audio HAL is described here. And the diff
 <li><p><strong>Audio HAL</strong>: does audio control settings by calling Driver APIs.</p></li>
 <li><p><strong>Audio Driver</strong>: controls audio codec hardware.</p></li>
 </ul>
+<p>RTAudioControl provides interfaces to set and get hardware volume.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;audio/audio_control.h&quot;</span>
+<span class="kt">int32_t</span><span class="w"> </span><span class="n">RTAudioControl_SetHardwareVolume</span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="n">left_volume</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">right_volume</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Users set the left and right channel volume to 0.0-1.0, linear maps to -65.625-MAXdb.</p>
 </section>
 </section>
-<section id="configurations">
-<h1>Configurations<a class="headerlink" href="#configurations" title="Link to this heading"></a></h1>
-<section id="menuconfig">
-<h2>MenuConfig<a class="headerlink" href="#menuconfig" title="Link to this heading"></a></h2>
-<p>If users want to use audio interfaces, select the following audio configurations, and choose audio architecture: <em>passthrough</em>.</p>
-<figure class="align-center">
-<a class="reference internal image-reference" href="../../../_images/audio_menuconfig.svg"><img alt="../../../_images/audio_menuconfig.svg" height="507" src="../../../_images/audio_menuconfig.svg" width="946" /></a>
+<section id="id11">
+<h1>音频配置<a class="headerlink" href="#id11" title="Link to this heading"></a></h1>
+<section id="id12">
+<h2>菜单配置<a class="headerlink" href="#id12" title="Link to this heading"></a></h2>
+<p>If users want to use audio interfaces, select the following audio configurations, and choose the suitable audio architecture according to Section <a class="reference internal" href="#architecture-comparison"><span class="std std-ref">架构选择</span></a>.</p>
+<figure class="align-center" id="id26">
+<a class="reference internal image-reference" href="../../../_images/audio_menuconfig.svg"><img alt="../../../_images/audio_menuconfig.svg" height="507" src="../../../_images/audio_menuconfig.svg" width="620" /></a>
+<figcaption>
+<p><span class="caption-text">audio menuconfig</span><a class="headerlink" href="#id26" title="Link to this image"></a></p>
+</figcaption>
 </figure>
 </section>
-<section id="hal-configuration">
-<h2>HAL Configuration<a class="headerlink" href="#hal-configuration" title="Link to this heading"></a></h2>
-<p>Audio hardware configurations lie in <code class="docutils literal notranslate"><span class="pre">{SDK}/component/soc/amebadplus/usrcfg/include/ameba_audio_hw_usrcfg.h</span></code>.</p>
-<p>Different boards have different configurations.
-For example, some boards need to use an amplifier, while others do not. Different boards may use different pins to enable the amplifier; the start-up time is different for different amplifiers.
-In addition, the pins used by each board's DMICs may be different, and the stable time of DMICs may be different.
-All the information needs to be configured in the configuration file.</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">ameba_audio_hw_usrcfg.h</span></code> file has the description for each configuration, please set them according to the description.</p>
+<section id="id13">
+<h2>框架配置<a class="headerlink" href="#id13" title="Link to this heading"></a></h2>
+<p>Audio Framework configurations lie in <code class="docutils literal notranslate"><span class="pre">{SDK}/component/audio/configs/ameba_audio_mixer_usrcfg.cpp</span></code>.</p>
+<p>If users want to change the audio HAL period buffer size, or audio mixer's buffer policy, change <em>kPrimaryAudioConfig</em> according to the description of <code class="docutils literal notranslate"><span class="pre">{SDK}/component/audio/configs/include/ameba_audio_mixer_usrcfg.h</span></code>.</p>
+<p>The config <em>out_min_frames_stage</em> in <em>kPrimaryAudioConfig</em> only supports <em>RTAUDIO_OUT_MIN_FRAMES_STAGE1</em> and <em>RTAUDIO_OUT_MIN_ FRAMES_STAGE2</em>.</p>
+<ul class="simple">
+<li><p><em>RTAUDIO_OUT_MIN_FRAMES_STAGE1</em> means more data output to audio HAL one time.</p></li>
+<li><p><em>RTAUDIO_OUT_MIN_FRAMES_ STAGE2</em> means less data output to audio HAL one time.</p></li>
+</ul>
+<p><em>RTAUDIO_OUT_MIN_FRAMES_STAGE2</em> may reduce the framework's latency, but may cause noise. It's the user's choice to set it.</p>
+</section>
+<section id="hal">
+<h2>HAL配置<a class="headerlink" href="#hal" title="Link to this heading"></a></h2>
+<p>Audio hardware configurations lie in <code class="docutils literal notranslate"><span class="pre">{SDK}/component/soc/amebaxx/usrcfg/include/ameba_audio_hw_usrcfg.h</span></code>.</p>
+<p>Different boards have different configurations. For example, some boards need to use an amplifier, while others do not. Different boards may use different pins to enable the amplifier; the start-up time is different for different amplifiers. In addition, the pins used by each board's DMICs may be different, and the stable time of DMICs may be different. All the information needs to be configured in the configuration file.</p>
+<p>The <code class="file docutils literal notranslate"><span class="pre">ameba_audio_hw_usrcfg.h</span></code> file has the description for each configuration, please set them according to the description.</p>
 </section>
 </section>
-<section id="interfaces">
-<h1>Interfaces<a class="headerlink" href="#interfaces" title="Link to this heading"></a></h1>
+<section id="id14">
+<h1>音频接口<a class="headerlink" href="#id14" title="Link to this heading"></a></h1>
 <p>The audio component provides three layers of interfaces.</p>
 <table class="docutils align-default" style="width: 100%">
 <colgroup>
@@ -692,37 +508,48 @@ All the information needs to be configured in the configuration file.</p>
 <td><p>Audio Hardware Abstraction Layer Interfaces.</p></td>
 </tr>
 <tr class="row-even"><td><p>Audio Framework Interfaces</p></td>
-<td><p>High-level Interfaces for applications to render/capture stream, set volume, and so on.</p></td>
+<td><p>High-level Interfaces for applications to render/capture stream, set volume and so on.</p></td>
 </tr>
 </tbody>
 </table>
-<p>The interfaces layer is shown below.</p>
-<figure class="align-center" id="id7">
-<a class="reference internal image-reference" href="../../../_images/audio_interfaces.svg"><img alt="../../../_images/audio_interfaces.svg" height="246" src="../../../_images/audio_interfaces.svg" width="673" /></a>
+<p>The interfaces layer is shown as below.</p>
+<figure class="align-center" id="id27">
+<a class="reference internal image-reference" href="../../../_images/audio_interfaces.svg"><img alt="../../../_images/audio_interfaces.svg" height="268" src="../../../_images/audio_interfaces.svg" width="734" /></a>
 <figcaption>
-<p><span class="caption-text">Audio interfaces</span><a class="headerlink" href="#id7" title="Link to this image"></a></p>
+<p><span class="caption-text">Audio interfaces</span><a class="headerlink" href="#id27" title="Link to this image"></a></p>
 </figcaption>
 </figure>
-<section id="driver-interfaces">
-<h2>Driver Interfaces<a class="headerlink" href="#driver-interfaces" title="Link to this heading"></a></h2>
-<section id="i2s-pll-apis">
-<h3>I2S PLL APIs<a class="headerlink" href="#i2s-pll-apis" title="Link to this heading"></a></h3>
+<section id="id15">
+<h2>驱动接口<a class="headerlink" href="#id15" title="Link to this heading"></a></h2>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-0-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-0-0-0" name="0-0" role="tab" tabindex="0">RTL8721Dx series</button><button aria-controls="panel-0-0-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-1" name="0-1" role="tab" tabindex="-1">RTL8726EA series</button><button aria-controls="panel-0-0-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-2" name="0-2" role="tab" tabindex="-1">RTL8730E series</button></div><div aria-labelledby="tab-0-0-0" class="sphinx-tabs-panel" id="panel-0-0-0" name="0-0" role="tabpanel" tabindex="0"><ul class="simple">
+<li><p>For sport interfaces, please refer to: <code class="docutils literal notranslate"><span class="pre">{SDK}/component/soc/amebadplus/fwlib/include/ameba_sport.h</span></code>.</p></li>
+<li><p>For codec interfaces, please refer to: <code class="docutils literal notranslate"><span class="pre">{SDK}/component/soc/amebadplus/fwlib/include/ameba_audio.h</span></code>.</p></li>
+</ul>
 <p>There are two ways to generate I2S PLL:</p>
 <ul class="simple">
 <li><p>One is that the system clock is an integer multiple of 98.304M or 45.1584M, we add the system clock in <em>SocClk_Info</em> array, so you can modify the index of <em>SocClk_Info</em> array in <code class="file docutils literal notranslate"><span class="pre">bootloader_km4.c</span></code>. When you need high-quality audio applications, you can use this method.</p></li>
 <li><p>The other is that the system clock is not an integer multiple of 98.304M or 45.1584M, in this case, we automatically get the 98.304M or 45.1584M.</p></li>
 </ul>
 <p>The details are shown in the following figure.</p>
-<figure class="align-center" id="id8">
+<figure class="align-center" id="id28">
 <a class="reference internal image-reference" href="../../../_images/audio_i2s_pll_interfaces.svg"><img alt="../../../_images/audio_i2s_pll_interfaces.svg" height="361" src="../../../_images/audio_i2s_pll_interfaces.svg" width="401" /></a>
 <figcaption>
-<p><span class="caption-text">Flow of using I2S PLL interfaces</span><a class="headerlink" href="#id8" title="Link to this image"></a></p>
+<p><span class="caption-text">Flow of using I2S PLL interfaces</span><a class="headerlink" href="#id28" title="Link to this image"></a></p>
 </figcaption>
 </figure>
+</div><div aria-labelledby="tab-0-0-1" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-1" name="0-1" role="tabpanel" tabindex="0"><ul class="simple">
+<li><p>For sport interfaces, please refer to: <code class="docutils literal notranslate"><span class="pre">{SDK}/component/soc/amebalite/fwlib/include/ameba_sport.h</span></code>.</p></li>
+<li><p>For codec interfaces, please refer to: <code class="docutils literal notranslate"><span class="pre">{SDK}/component/soc/amebalite/fwlib/include/ameba_audio.h</span></code>.</p></li>
+</ul>
+</div><div aria-labelledby="tab-0-0-2" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-2" name="0-2" role="tabpanel" tabindex="0"><ul class="simple">
+<li><p>For sport interfaces, please refer to: <code class="docutils literal notranslate"><span class="pre">{SDK}/component/soc/amebasmart/fwlib/include/ameba_sport.h</span></code>.</p></li>
+<li><p>For codec interfaces, please refer to: <code class="docutils literal notranslate"><span class="pre">{SDK}/component/soc/amebasmart/fwlib/include/ameba_audio.h</span></code>.</p></li>
+</ul>
+</div></div>
 </section>
-</section>
-<section id="hal-interfaces">
-<h2>HAL Interfaces<a class="headerlink" href="#hal-interfaces" title="Link to this heading"></a></h2>
+<section id="id16">
+<h2>HAL接口<a class="headerlink" href="#id16" title="Link to this heading"></a></h2>
 <p>Audio HAL provides AudioHwStreamOut/AudioHwStreamIn/AudioHwControl interfaces to interact with audio hardware. The interfaces lie in <code class="docutils literal notranslate"><span class="pre">{SDK}/component/audio/interfaces/hardware/audio</span></code>.
 The interfaces have specific descriptions in them, read them before use.</p>
 <ul class="simple">
@@ -736,17 +563,17 @@ AudioHwCard is a physical or virtual hardware to process audio stream. It contai
 <li><p><em>Port</em> – the stream output/input of the audio card is called “port”.</p></li>
 <li><p><em>Device</em> – The device output/input of audio card is called device.</p></li>
 </ul>
-<figure class="align-center" id="id9">
+<figure class="align-center" id="audio-hal-architecture">
 <a class="reference internal image-reference" href="../../../_images/audio_hal_architecture.svg"><img alt="../../../_images/audio_hal_architecture.svg" height="285" src="../../../_images/audio_hal_architecture.svg" width="507" /></a>
 <figcaption>
-<p><span class="caption-text">AudioHwCard example</span><a class="headerlink" href="#id9" title="Link to this image"></a></p>
+<p><span class="caption-text">AudioHwCard example</span><a class="headerlink" href="#audio-hal-architecture" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <p>The AudioHwManager manages system's all AudioHwCards and opens a specific card driver based on the given audio card descriptor.</p>
-<section id="using-audiohwstreamout">
-<h3>Using AudioHwStreamOut<a class="headerlink" href="#using-audiohwstreamout" title="Link to this heading"></a></h3>
-<p>Users can check the example of AudioHwStreamOut in <code class="docutils literal notranslate"><span class="pre">{SDK}/component/example/audio/audio_hal_render</span></code>.</p>
-<p>Here is the description showing how to use audio HAL interfaces to play audio raw data (PCM format):</p>
+<section id="audiohwstreamout">
+<h3>使用 AudioHwStreamOut<a class="headerlink" href="#audiohwstreamout" title="Link to this heading"></a></h3>
+<p>Users can check the example of AudioHwStreamOut in <code class="docutils literal notranslate"><span class="pre">{SDK}/component/example/audio/audio_hal_render</span></code>.
+Here is the description showing how to use audio HAL interfaces to play audio raw data (PCM format):</p>
 <ol class="arabic">
 <li><p>Use <code class="xref py py-func docutils literal notranslate"><span class="pre">CreateAudioHwManager()</span></code> to get AudioHwManager instance:</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">AudioHwManager</span><span class="w"> </span><span class="o">*</span><span class="n">audio_manager</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CreateAudioHwManager</span><span class="p">();</span>
@@ -807,8 +634,8 @@ AudioHwCard is a physical or virtual hardware to process audio stream. It contai
 </li>
 </ol>
 </section>
-<section id="using-audiohwstreamin">
-<h3>Using AudioHwStreamIn<a class="headerlink" href="#using-audiohwstreamin" title="Link to this heading"></a></h3>
+<section id="audiohwstreamin">
+<h3>使用 AudioHwStreamIn<a class="headerlink" href="#audiohwstreamin" title="Link to this heading"></a></h3>
 <p>Users can check the example of AudioHwStreamOut in <code class="docutils literal notranslate"><span class="pre">{SDK}/component/example/audio/audio_hal_capture</span></code>.</p>
 <p>Here is the description showing how to use audio HAL interfaces to capture audio raw data:</p>
 <ol class="arabic">
@@ -870,8 +697,8 @@ AudioHwCard is a physical or virtual hardware to process audio stream. It contai
 </li>
 </ol>
 </section>
-<section id="using-audiohwcontrol">
-<h3>Using AudioHwControl<a class="headerlink" href="#using-audiohwcontrol" title="Link to this heading"></a></h3>
+<section id="audiohwcontrol">
+<h3>使用 AudioHwControl<a class="headerlink" href="#audiohwcontrol" title="Link to this heading"></a></h3>
 <p>Here is an example showing how to use audio HAL interfaces to control audio codec:</p>
 <p>AudioHwCotrol is always thread-safe, and the calling is convenient. To use AudioHwCotrol, the first parameter of the function call should always be <code class="xref py py-func docutils literal notranslate"><span class="pre">GetAudioHwControl()</span></code>.
 Take the PLL clock setting for example:</p>
@@ -880,26 +707,24 @@ Take the PLL clock setting for example:</p>
 </div>
 </section>
 </section>
-<section id="framework-interfaces">
-<h2>Framework Interfaces<a class="headerlink" href="#framework-interfaces" title="Link to this heading"></a></h2>
-<section id="streaming-interfaces">
-<h3>Streaming Interfaces<a class="headerlink" href="#streaming-interfaces" title="Link to this heading"></a></h3>
-<p>Audio Streaming Interfaces include RTAudioTrack and RTAudioRecord interfaces, which lie in <code class="docutils literal notranslate"><span class="pre">{SDK}/component/audio/interfaces/audio</span></code>.
-The interfaces have specific descriptions, read them before using.</p>
+<section id="id17">
+<h2>音频框架接口<a class="headerlink" href="#id17" title="Link to this heading"></a></h2>
+<section id="id18">
+<h3>音频流接口<a class="headerlink" href="#id18" title="Link to this heading"></a></h3>
+<p>Audio Streaming Interfaces include RTAudioTrack and RTAudioRecord interfaces. The interfaces lie in <code class="docutils literal notranslate"><span class="pre">{SDK}/component/audio/interfaces/audio</span></code>. The interfaces have specific descriptions in them, please read them before using.</p>
 <ul class="simple">
-<li><p><strong>RTAudioTrack</strong>: initializes the format of playback data streaming in the framework, receives PCM data from the application, and writes data to Audio HAL.</p></li>
+<li><p><strong>RTAudioTrack</strong>: initializes the format of playback data streaming in the framework, receives PCM data from the application, and writes data to Audio Framework (mixer) or Audio HAL (passthrough).</p></li>
 <li><p><strong>RTAudioRecord</strong>: initializes the format of record data streaming in the framework, receives PCM data from Audio HAL, and sends data to applications.</p></li>
 </ul>
-<section id="using-rtaudiotrack">
-<h4>Using RTAudioTrack<a class="headerlink" href="#using-rtaudiotrack" title="Link to this heading"></a></h4>
-<p>RTAudioTrack includes support for playing variety of common audio raw format types so that audio can be easily integrated into applications.</p>
-<p>Audio Framework has the following audio playback category types.
-Applications can use the types to initialize RTAudioTrack. Framework gets the category type and does the volume mixing according to the types.</p>
+<section id="rtaudiotrack">
+<h4>使用 RTAudioTrack<a class="headerlink" href="#rtaudiotrack" title="Link to this heading"></a></h4>
+<p>RTAudioTrack includes support for playing variety of common audio raw format types so that audio can be easily integrated into applications. At most 32 RTAudioTracks can play together.</p>
+<p>Audio Framework has the following audio playback stream types. Applications can use the types to initialize RTAudioTrack. Framework gets the streaming type and does the volume mixing according to the types.</p>
 <ul class="simple">
-<li><p><em>RTAUDIO_CATEGORY_MEDIA</em> - if the application wants to play music, then its type is <em>RTAUDIO_CATEGORY_MEDIA</em>, it can use this type to init RTAudioTrack. Then audio framework will know its type, and mix it with media's volume.</p></li>
-<li><p><em>RTAUDIO_CATEGORY_COMMUNICATION</em> - if the application wants to start a phone call, it can output the phone call's sound, the sound's type should be <em>RTAUDIO_CATEGORY_COMMUNICATION</em>.</p></li>
-<li><p><em>RTAUDIO_CATEGORY_SPEECH</em> - if the application wants to do voice recognition, and output the speech sound.</p></li>
-<li><p><em>RTAUDIO_CATEGORY_BEEP</em> - if the sound is key tone, or other beep sound, then its type is <em>RTAUDIO_CATEGORY_BEEP</em>.</p></li>
+<li><p><strong>RTAUDIO_CATEGORY_MEDIA</strong> - if the application wants to play music, then its type is <strong>RTAUDIO_CATEGORY_MEDIA</strong>, it can use this type to init RTAudioTrack. Then audio framework will know its type, and mix it with media's volume.</p></li>
+<li><p><strong>RTAUDIO_CATEGORY_COMMUNICATION</strong> - if the application wants to start a phone call, it can output the phone call's sound, the sound's type should be <strong>RTAUDIO_CATEGORY_COMMUNICATION</strong>.</p></li>
+<li><p><strong>RTAUDIO_CATEGORY_SPEECH</strong> - if the application wants to do voice recognition, and output the speech sound.</p></li>
+<li><p><strong>RTAUDIO_CATEGORY_BEEP</strong> - if the sound is key tone, or other beep sound, then its type is <strong>RTAUDIO_CATEGORY_BEEP</strong>.</p></li>
 </ul>
 <p>The test demo of RTAudioTrack lies in <code class="docutils literal notranslate"><span class="pre">{SDK}/component/example/audio/audio_track</span></code>.</p>
 <p>Here is an example showing how to play audio raw data:</p>
@@ -913,7 +738,7 @@ Applications can use the types to initialize RTAudioTrack. Framework gets the ca
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">RTAudioTrack</span><span class="o">*</span><span class="w"> </span><span class="n">audio_track</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RTAudioTrack_Create</span><span class="p">();</span>
 </pre></div>
 </div>
-<p>Apps can use the Audio Configs API to provide detailed audio information about a specific audio playback source, including stream type (type of playback source), format, number of channels, sample rate, and RTAudioTrack ringbuffer size. The syntax is as follows:</p>
+<p>The application can use the Audio Configs API to provide detailed audio information about a specific audio playback source, including stream type (type of playback source), format, number of channels, sample rate, and RTAudioTrack ringbuffer size. The syntax is as follows:</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="p">{</span>
 <span class="kt">uint32_t</span><span class="w"> </span><span class="n">category_type</span><span class="p">;</span>
 <span class="kt">uint32_t</span><span class="w"> </span><span class="n">sample_rate</span><span class="p">;</span>
@@ -926,7 +751,7 @@ Applications can use the types to initialize RTAudioTrack. Framework gets the ca
 <p>Where</p>
 <dl class="field-list simple">
 <dt class="field-odd">category_type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>define the stream type of the playback data source.</p>
+<dd class="field-odd"><p>defines the stream type of the playback data source.</p>
 </dd>
 <dt class="field-even">sample_rate<span class="colon">:</span></dt>
 <dd class="field-even"><p>playback source raw data's rate.</p>
@@ -943,16 +768,16 @@ Applications can use the types to initialize RTAudioTrack. Framework gets the ca
 </dl>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The <em>buffer_bytes</em> in RTAudioTrackConfig is very important. The buffer size should always be more than the minimum buffer size Audio framework calculated.
-Otherwise overrun will occur.</p>
+<p>The <em>buffer_bytes</em> in RTAudioTrackConfig is very important. The buffer size should always be more than the minimum buffer size Audio framework calculated. Otherwise overrun will occur.</p>
 </div>
-<p>Use the interface to get minimum RTAudioTrack buffer bytes, and use it as a reference to define RTAudioTrack buffer size, for example, you can use minimum buffer size*4 as buffer size. The bigger size you use, the smoother playing you will get, yet it may cause more latency. It's your choice to define the size.</p>
+</li>
+<li><p>Use the interface to get minimum RTAudioTrack buffer bytes, and use it as a reference to define RTAudioTrack buffer size.</p>
+<p>For example, you can use minimum buffer size*4 as buffer size.
+The bigger size you use, the smoother playing you will get, yet it may cause more latency. It's your choice to define the size.</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">track_buf_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RTAudioTrack_GetMinBufferBytes</span><span class="p">(</span><span class="n">audio_track</span><span class="p">,</span><span class="w"> </span><span class="n">type</span><span class="p">,</span><span class="w"> </span><span class="n">rate</span><span class="p">,</span><span class="w"> </span><span class="n">format</span><span class="p">,</span><span class="w"> </span><span class="n">channels</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span>
 </pre></div>
 </div>
 </li>
-</ol>
-<ol class="arabic">
 <li><p>Use this buffer size and other audio parameters to create RTAudioTrackConfig object, here's an example:</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">RTAudioTrackConfig</span><span class="w"> </span><span class="n">track_config</span><span class="p">;</span>
 <span class="n">track_config</span><span class="p">.</span><span class="n">category_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RTAUDIO_CATEGORY_MEDIA</span><span class="p">;</span>
@@ -969,9 +794,21 @@ Otherwise overrun will occur.</p>
 </li>
 <li><p>When all the preparations are completed, start RTAudioTrack and check if starts success.</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">if</span><span class="p">(</span><span class="n">RTAudioTrack_Start</span><span class="p">(</span><span class="n">audio_track</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">0</span><span class="p">){</span>
-<span class="c1">//track start fail</span>
+<span class="w">   </span><span class="c1">//track start fail</span>
+<span class="w">   </span><span class="k">return</span><span class="p">;</span>
 <span class="p">}</span>
 </pre></div>
+</div>
+<p>The default volume of RTAudioTrack is maximum 1.0, you can adjust the volume with the following API.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">RTAudioTrack_SetVolume</span><span class="p">(</span><span class="n">audio_track</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0</span><span class="p">);</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>In the mixer architecture, this API sets the software volume of the current audio_track.</p></li>
+<li><p>In the passthrough architecture, this API is not supported.</p></li>
+</ul>
 </div>
 </li>
 <li><p>Write audio data to the framework. The write_size can be defined by users. Users need to make sure the <em>write_size/frame_size</em> is integer.</p>
@@ -985,7 +822,7 @@ Otherwise overrun will occur.</p>
 </pre></div>
 </div>
 </li>
-<li><p>If users want to stop playing audio, stop writing data, and then call RTAudioTrack_Stop() API:</p>
+<li><p>If users want to stop playing audio, stop writing data, and then call <code class="xref py py-func docutils literal notranslate"><span class="pre">RTAudioTrack_Stop()</span></code>.</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">RTAudioTrack_Stop</span><span class="p">(</span><span class="n">audio_track</span><span class="p">);</span>
 </pre></div>
 </div>
@@ -997,24 +834,24 @@ Otherwise overrun will occur.</p>
 </li>
 </ol>
 </section>
-<section id="using-rtaudiorecord">
-<h4>Using RTAudioRecord<a class="headerlink" href="#using-rtaudiorecord" title="Link to this heading"></a></h4>
+<section id="rtaudiorecord">
+<h4>使用 RTAudioRecord<a class="headerlink" href="#rtaudiorecord" title="Link to this heading"></a></h4>
 <p>RTAudioRecord supports variety of common audio raw format types, so that you can easily integrate record into applications.</p>
-<p>RTAudioRecord supports the following audio input sources:</p>
+<p>The following audio input sources are supported by RTAudioRecord:</p>
 <ul class="simple">
-<li><p><em>RTDEVICE_IN_MIC</em> - if the application wants to capture data from microphone, then choose this input source.</p></li>
-<li><p><em>RTDEVICE_IN_HS_MIC</em>- if the application wants to capture data from headset microphone, then choose this input source.</p></li>
-<li><p><em>RTDEVICE_IN_HS_MIC</em>- if the application wants to capture data from LINE-IN, then choose this input source.</p></li>
+<li><p><strong>RTDEVICE_IN_MIC</strong> - if the application wants to capture data from microphone, then choose this input source.</p></li>
+<li><p><strong>RTDEVICE_IN_I2S</strong> - if the application wants to capture data from I2S, then choose this input source.</p></li>
 </ul>
 <p>The test demo of RTAudioRecord lies in <code class="docutils literal notranslate"><span class="pre">{SDK}/component/example/audio/audio_record</span></code>.</p>
 <p>Here is an example showing how to record audio raw data:</p>
 <ol class="arabic">
-<li><p>Create RTAudioRecord first:</p>
+<li><p>Create RTAudioRecord</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">RTAudioRecord</span><span class="w"> </span><span class="o">*</span><span class="n">audio_record</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RTAudioRecord_Create</span><span class="p">();</span>
 </pre></div>
 </div>
 </li>
-<li><p>Apps can use the Audio Configs API to provide detailed audio information about a specific audio record source, including record device source, format, number of channels, and sample rate. The syntax is as follows:</p>
+<li><p>The application can use the Audio Configs API to provide detailed audio information about a specific audio record source, including record device source, format, number of channels, and sample rate.</p>
+<p>The syntax is as follows:</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="p">{</span>
 <span class="kt">uint32_t</span><span class="w"> </span><span class="n">sample_rate</span><span class="p">;</span>
 <span class="kt">uint32_t</span><span class="w"> </span><span class="n">channel_count</span><span class="p">;</span>
@@ -1051,7 +888,8 @@ Otherwise overrun will occur.</p>
 <span class="n">record_config</span><span class="p">.</span><span class="n">buffer_bytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
 </pre></div>
 </div>
-<p>With RTAudioRecordConfig object created, you can initialize RTAudioRecord, in this step, Audio HAL's AudioHwCard will be opened, according to the audio input device source:</p>
+</li>
+<li><p>With RTAudioRecordConfig object created, initialize RTAudioRecord, In this step, Audio HAL's AudioHwCard will be opened, according to the audio input device source:</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">RTAudioRecord_Init</span><span class="p">(</span><span class="n">audio_record</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">record_config</span><span class="p">);</span>
 </pre></div>
 </div>
@@ -1061,7 +899,7 @@ Otherwise overrun will occur.</p>
 </pre></div>
 </div>
 </li>
-<li><p>Read audio microphone data. The read size can be defined by users. Users need to make sure <em>size/frame_size</em> is integer.</p>
+<li><p>Read audio microphone data.The read size can be defined by users. Users need to make sure <em>size/frame_size</em> is integer.</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">RTAudioRecord_Read</span><span class="p">(</span><span class="n">audio_record</span><span class="p">,</span><span class="w"> </span><span class="n">buffer</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">);</span>
 </pre></div>
 </div>
@@ -1079,18 +917,17 @@ Otherwise overrun will occur.</p>
 </ol>
 </section>
 </section>
-<section id="control-interfaces">
-<h3>Control Interfaces<a class="headerlink" href="#control-interfaces" title="Link to this heading"></a></h3>
+<section id="id19">
+<h3>音频控制接口<a class="headerlink" href="#id19" title="Link to this heading"></a></h3>
 <p>Audio Control Interfaces include RTAudioControl interfaces to interact with audio control HAL.
-RTAudioControl provides interfaces to set and get hardware volume, set output device, and so on.
-The interfaces lie in <code class="docutils literal notranslate"><span class="pre">{SDK}/component/audio/interfaces/audio/audio_control.h</span></code>.
-The interfaces have specific descriptions, read them before using.</p>
-<section id="using-rtaudiocontrol">
-<h4>Using RTAudioControl<a class="headerlink" href="#using-rtaudiocontrol" title="Link to this heading"></a></h4>
-<p>Here is an example of how to use RTAudioControl: call RTAudioControl to set audio PLL clock 2 ppms slower.</p>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">RTAudioControl_AdjustPLLClock</span><span class="p">(</span><span class="mi">48000</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="n">RTAUDIO_PLL_SLOWER</span><span class="p">);</span>
+RTAudioControl provides interfaces to set and get hardware volume, set output device, and so on. The interfaces lie in <code class="file docutils literal notranslate"><em><span class="pre">SDK</span></em><span class="pre">/component/audio/interfaces/audio/audio_control.h</span></code> The interfaces have specific descriptions, read them before use.</p>
+<section id="rtaudiocontrol">
+<h4>使用 RTAudioControl<a class="headerlink" href="#rtaudiocontrol" title="Link to this heading"></a></h4>
+<p>For using RTAudioControl, Call RTAudioControl to set audio hardware volume of DAC:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">RTAudioControl_SetHardwareVolume</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span><span class="w"> </span><span class="mf">0.5</span><span class="p">);</span>
 </pre></div>
 </div>
+<p>For playback and record case, most RTAudioControl APIs can be called at any time, any place, they can work directly. Only <code class="xref py py-func docutils literal notranslate"><span class="pre">RTAudioControl_SetPlaybackDevice()</span></code> can only be called before <code class="xref py py-func docutils literal notranslate"><span class="pre">RTAudioService_Init()</span></code> in mixer architecture, and before <code class="xref py py-func docutils literal notranslate"><span class="pre">RTAudioTrack_Start()</span></code> in passthrough architecture.</p>
 </section>
 </section>
 </section>
