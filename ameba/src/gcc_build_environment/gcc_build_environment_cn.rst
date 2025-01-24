@@ -14,11 +14,11 @@ This chapter illustrates how to build Realtek's SDK under GCC environment. It fo
 
 Windows
 ~~~~~~~~~~~~~~
-.. include:: preparing_gcc_environment_windows.rst
+.. include:: gcc_preparing_environment_windows.rst
 
 Linux
 ~~~~~~~~~~
-.. include:: preparing_gcc_environment_windows.rst
+.. include:: gcc_preparing_environment_windows.rst
 
 Troubleshooting
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

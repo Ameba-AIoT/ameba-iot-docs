@@ -64,7 +64,7 @@ Makefile 架构
 ----------------------------------------
 The Makefile in ``{SDK}\amebadplus_gcc_project\project_km4\asdk\make\project\library`` is an example to show how to build user library. As shown below, ``lib_user.a`` will be generated in ``{SDK}\amebadplus_gcc_project\project_km4\asdk\lib\application``.
 
-.. figure:: ../figures/build_lib.png
+.. figure:: figures/build_lib.png
    :scale: 90%
    :align: center
 
