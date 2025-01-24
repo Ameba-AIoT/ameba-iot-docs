@@ -4,7 +4,7 @@ Multimedia
 ==========================================
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
 
    media_index
    audio_index

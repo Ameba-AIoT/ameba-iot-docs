@@ -1,17 +1,14 @@
 .. _media:
 
-Overview
+概述
 ----------------
 The Media refers to a whole media architecture aiming to provide media interfaces for applications to use. It provides a player named RTPlayer. The RTPlayer can be used to control the playback of an audio file.
 
 There are many kinds of audio sources, the RTPlayer supports the following:
 
 - Audio file stored in the flash
-
 - Audio data buffer stored in the memory
-
 - Http/Https streaming
-
 - Custom data source
 
 The RTPlayer supports the following audio formats:
@@ -42,8 +39,8 @@ The RTPlayer supports the following audio formats:
    | Vorbis       | N/A                                                                               | Ogg (.ogg)                   |
    +--------------+-----------------------------------------------------------------------------------+------------------------------+
 
-Architecture
-------------------------
+架构
+--------
 The applications interact with media according to the following figure.
 
 .. figure:: figures/media_architecture.svg
@@ -53,7 +50,7 @@ The applications interact with media according to the following figure.
 
    Media architecture
 
-Playback States
+Playback 状态
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Playback of media is managed through a state machine. The playback state is shown as below.
 
@@ -236,21 +233,17 @@ The Media supports playing a customer implementation data source. Applications n
 
 4. Get the whole length of the source.
 
-Stream Buffering Principle
+流缓冲原理
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 For http streaming source, the bandwidth of the network will affect the playback effect. A good user experience should contain the following functions:
 
 - When the download speed is too slow, the application needs to pause playback and makes some prompts, such as: pop up some dialog boxes showing the download percentage.
-
 - When a certain data has been downloaded, the application needs to resume playback.
-
 
 The RTPlayer sets a starting water level for http streaming source, playback will not start until enough audio data is buffered. Application calls :func:`RTPlayer_Prepare()` or :func:`RTPlayer_PrepareAsync(…)` to prepare the streaming source.
 
 - :func:`RTPlayer_Prepare()` is a synchronous function, application can call :func:`RTPlayer_Start()` after it.
-
 - :func:`RTPlayer_PrepareAsync()` is an asynchronous function, application should not call :func:`RTPlayer_Start()` until receiving ``RTPlayerCallback.OnRTPlayerStateChanged(…, …, RTPLAYER_PREPARED)``.
-
 
 For http source, the RTPlayer will continuously check the downloaded data and update the downloaded percentage to monitors via ``RTPlayerCallback.OnRTPlayerInfo(…, …, RTPLAYER_INFO_BUFFERING_INFO_UPDATE)``. When the downloaded data is enough, the RTPlayer will trigger ``RTPlayerCallback.OnRTPlayerStateChanged (…, …, RTPLAYER_PREPARED)`` and application can start the playback. The detailed principle is shown as below.
 
@@ -268,9 +261,9 @@ During playback, if the remaining downloaded data is not enough, the RTPlayer wi
 
    HttpSource stream buffering principle during playing
 
-Interfaces
+接口
 --------------------
-Overview
+简介
 ~~~~~~~~~~~~~~~~
 The Media provides one layer of interfaces:
 
@@ -285,16 +278,15 @@ The Media provides one layer of interfaces:
    | RTPlayer   | High-level API for applications to play audio files. |
    +------------+------------------------------------------------------+
 
-RTPlayer APIs
+RTPlayer API
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 The RTPlayer APIs can perform basic operations of a playback, such as starting a playback, pausing audio during playing, querying information about a specified playback, and registering observer to monitor playback status change.
 
-Using RTPlayer
+使用 RTPlayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 The RTPlayer supports several different media sources such as: local files stored in the flash, media buffer data and streaming. We need to pass an URL which represents the resource path to RTPlayer when creating a playback.
 
 - For a file source file, URL is the storage path, such as: ``char *url = "lfs://1.wav"``.
-
 - For a buffering source, URL starts with **"buffer://"**, such as: ``char *url = "buffer://1611496456"``.
 
   .. note::
@@ -362,9 +354,7 @@ After :func:`RTPlayer_SetSource`, you need to prepare the RTPlayer by call :func
 
 When the RTPlayer is done preparing, it enters the Prepared state, which means you can call :func:`RTPlayer_Start()` to make it play the media. At that point, you can move between the Started, Paused and PlaybackCompleted states by calling such methods as :func:`RTPlayer_Start()` and :func:`RTPlayer_Pause()`, amongst others. When you call :func:`RTPlayer_Stop()`, however, notice that you cannot call :func:`RTPlayer_Start()` again until you prepare the RTPlayer again.
 
-
 Always keep the state diagram in mind when writing code that interacts with an RTPlayer object, because calling its methods from the wrong state is a common cause of bugs.
-
 
 Pause playback:
 
@@ -393,7 +383,7 @@ Besides, you must release the RTPlayer, because it makes little sense to hold on
    RTPlayer_Destory(player);
    player = NULL;
 
-Using Callback
+使用 Callback
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 You can create an instance of ``RTPlayerCallback`` and assign it to the player to monitor playback. Here is an example:
 
@@ -445,8 +435,8 @@ Remember to release ``RTPlayerCallback`` object to avoid memory leak:
 
    OsalMemFree(callback);
 
-Using RTDataSource
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+使用 RTDataSource
+^^^^^^^^^^^^^^^^^^^^
 If the source does not come from a fixed url, customers can implement their own data source based on ``RTDataSource``.
 
 .. code-block:: c
