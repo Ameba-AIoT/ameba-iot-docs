@@ -73,6 +73,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../sdk_architecture/sdk_architecture_index_cn.html">SDK 架构</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../gcc_makefile/gcc_makefile_index_cn.html">GCC Makefile</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../sdk_example/sdk_example_index_cn.html">SDK 示例</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../file_system/file_system_index_cn.html">虚拟文件系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mp_image/mp_image_index_cn.html">MP 固件</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../application_note/index.html">应用指南</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../wifi/wifi_guide_index_cn.html">Wi-Fi 指南</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../fullmac/fullmac_index_cn.html">FullMAC</a></li>
@@ -157,12 +159,11 @@
   <section id="id1">
 <h1>简介<a class="headerlink" href="#id1" title="Link to this heading"></a></h1>
 <p>The audio framework is a whole audio architecture aiming to provide different layers of audio interfaces for applications. The interfaces involve Audio HAL and Audio Framework.</p>
-<ul class="simple">
+<ul>
 <li><p>Audio HAL: defines unified audio hardware interfaces. It interacts with audio driver to do audio streaming or audio settings.</p></li>
-<li><p>Audio Framework: provides interfaces for audio streaming, volume, and other settings.</p></li>
-</ul>
+<li><p>Audio Framework: provides interfaces for audio streaming, volume, and other settings.</p>
 <p>The audio framework provides two architectures to meet different needs of audio. Different architectures have different implementations, but the interfaces are the same.</p>
-<ul class="simple">
+</li>
 <li><p>Audio mixer architecture: supports audio recording, and audio playback. For audio playback, this architecture provides audio mixing functions, and format, rate, channel will be converted to a unified format for mixing.</p></li>
 <li><p>Audio passthrough architecture: supports audio recording, and audio playback. This architecture has no audio mixing, only one audio playback is allowed at the same moment.</p></li>
 </ul>
@@ -176,41 +177,33 @@
 </figcaption>
 </figure>
 <p>The whole audio mixer architecture includes the following sub-modules:</p>
-<ul>
+<ul class="simple">
 <li><p>Application Interface</p>
-<blockquote>
-<div><ul class="simple">
+<ul>
 <li><p><strong>RTAudioTrack</strong> provides interfaces to play sound.</p></li>
 <li><p><strong>RTAudioRecord</strong> provides interfaces to capture sound.</p></li>
 <li><p><strong>RTAudioControl</strong> provides interfaces to control sound volumes and so on.</p></li>
 </ul>
-</div></blockquote>
 </li>
 <li><p>Audio Framework</p>
-<blockquote>
-<div><ul class="simple">
+<ul>
 <li><p>Audio framework provides audio reformat, resample, volume, and mixer functions for audio stream playback.</p></li>
 </ul>
-</div></blockquote>
 </li>
 <li><p>Audio HAL</p>
-<blockquote>
-<div><ul class="simple">
+<ul>
 <li><p><strong>AudioHwManager</strong> provides interfaces that manage audio cards through a specific card driver program opened based on the given audio card descriptor.</p></li>
 <li><p><strong>AudioHwCard</strong> provides interfaces that manage audio card capabilities, including initializing ports, creating stream out and stream in.</p></li>
 <li><p><strong>AudioHwControl</strong> provides interfaces for RTAudioControl, and set commands to audio driver.</p></li>
 <li><p><strong>AudioHwStreamOut</strong> provides interfaces that get data from the upper layer and render data to audio driver user interfaces.</p></li>
 <li><p><strong>AudioHwStreamIn</strong> provides interfaces to capture data from audio driver user interfaces and deliver the data to the upper layer.</p></li>
 </ul>
-</div></blockquote>
 </li>
 <li><p>Audio Driver</p>
-<blockquote>
-<div><ul class="simple">
+<ul>
 <li><p><strong>AUDIO_SP</strong> provides interfaces to configure audio sports.</p></li>
 <li><p><strong>AUDIO_CODEC</strong> provides interfaces to configure audio codec.</p></li>
 </ul>
-</div></blockquote>
 </li>
 </ul>
 </section>
@@ -263,8 +256,8 @@
 <ul class="simple">
 <li><p>For record implementation, the two architectures are the same. Both architectures can meet user's record function needs.</p></li>
 <li><p>For playback implements, the two architectures are different. If the user has the requirements to play two sounds together at the same time, choose mixer architecture, because only the mixer architecture can do the mixing.</p></li>
-<li><p>The mixer architecture takes more memory and has a bigger code size. If the user wants to save memory and code size and has no requirements of audio mixing, choose the passthrough architecture.</p></li>
 </ul>
+<p>The mixer architecture takes more memory and has a bigger code size. If the user wants to save memory and code size and has no requirements of audio mixing, choose the passthrough architecture.</p>
 </section>
 </section>
 <section id="id5">
@@ -392,29 +385,23 @@
 </figcaption>
 </figure>
 <p>The audio playback architecture includes the following sub-modules:</p>
-<ul>
+<ul class="simple">
 <li><p>Audio Framework (only mixer architecture)</p>
-<blockquote>
-<div><ul class="simple">
+<ul>
 <li><p>Audio framework is responsible for audio playback sound mixing.</p></li>
 <li><p>Before mixing, all sound will be converted to one unified audio format, default is 16-bit, 44100Hz, 2-channel. Sub-modules reformat, resampler are responsible to do the conversion. There is also volume sub-module in audio framework to adjust volumes for different audio types, for example, music, speech may have different volumes.</p></li>
 <li><p>Audio framework supports sound rate from 8k-96k, channel mono/stereo, format 8-bit, 16-bit, 24-bit, and 32-bit float.</p></li>
 </ul>
-</div></blockquote>
 </li>
 <li><p>Audio HAL</p>
-<blockquote>
-<div><ul class="simple">
+<ul>
 <li><p>Audio HAL gets playback data from audio framework, and sends the data to audio driver.</p></li>
 </ul>
-</div></blockquote>
 </li>
 <li><p>Audio Driver</p>
-<blockquote>
-<div><ul class="simple">
+<ul>
 <li><p>Audio Driver gets playback data from audio HAL and sends data to audio hardware.</p></li>
 </ul>
-</div></blockquote>
 </li>
 </ul>
 </section>
@@ -424,7 +411,7 @@
 <figure class="align-center" id="id24">
 <a class="reference internal image-reference" href="../../../_images/audio_record_architecture.svg"><img alt="../../../_images/audio_record_architecture.svg" height="483" src="../../../_images/audio_record_architecture.svg" width="536" /></a>
 <figcaption>
-<p><span class="caption-text">Record architecture</span><a class="headerlink" href="#id24" title="Link to this image"></a></p>
+<p><span class="caption-text">录音架构</span><a class="headerlink" href="#id24" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <p>The audio record architecture includes the following sub-modules:</p>
@@ -440,7 +427,7 @@
 <figure class="align-center" id="id25">
 <a class="reference internal image-reference" href="../../../_images/audio_control_architecture.svg"><img alt="../../../_images/audio_control_architecture.svg" height="534" src="../../../_images/audio_control_architecture.svg" width="643" /></a>
 <figcaption>
-<p><span class="caption-text">Control architecture</span><a class="headerlink" href="#id25" title="Link to this image"></a></p>
+<p><span class="caption-text">控制架构</span><a class="headerlink" href="#id25" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <p>The audio control architecture includes the following sub-modules:</p>
@@ -522,8 +509,8 @@
 <section id="id15">
 <h2>驱动接口<a class="headerlink" href="#id15" title="Link to this heading"></a></h2>
 <div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-0-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-0-0-0" name="0-0" role="tab" tabindex="0">RTL8721Dx series</button><button aria-controls="panel-0-0-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-1" name="0-1" role="tab" tabindex="-1">RTL8726EA series</button><button aria-controls="panel-0-0-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-2" name="0-2" role="tab" tabindex="-1">RTL8730E series</button></div><div aria-labelledby="tab-0-0-0" class="sphinx-tabs-panel" id="panel-0-0-0" name="0-0" role="tabpanel" tabindex="0"><ul class="simple">
-<li><p>For sport interfaces, please refer to: <code class="docutils literal notranslate"><span class="pre">{SDK}/component/soc/amebadplus/fwlib/include/ameba_sport.h</span></code>.</p></li>
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-0-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-0-0-0" name="0-0" role="tab" tabindex="0">RTL8721Dx/RTL8711Dx Series</button><button aria-controls="panel-0-0-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-1" name="0-1" role="tab" tabindex="-1">RTL8726EA/RTL8713EC/RTL8720EA/RTL8710EC Series</button><button aria-controls="panel-0-0-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-2" name="0-2" role="tab" tabindex="-1">RTL8730E Series</button></div><div aria-labelledby="tab-0-0-0" class="sphinx-tabs-panel" id="panel-0-0-0" name="0-0" role="tabpanel" tabindex="0"><ul class="simple">
+<li><p>For SPORT interfaces, please refer to: <code class="docutils literal notranslate"><span class="pre">{SDK}/component/soc/amebadplus/fwlib/include/ameba_sport.h</span></code>.</p></li>
 <li><p>For codec interfaces, please refer to: <code class="docutils literal notranslate"><span class="pre">{SDK}/component/soc/amebadplus/fwlib/include/ameba_audio.h</span></code>.</p></li>
 </ul>
 <p>There are two ways to generate I2S PLL:</p>
@@ -539,11 +526,11 @@
 </figcaption>
 </figure>
 </div><div aria-labelledby="tab-0-0-1" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-1" name="0-1" role="tabpanel" tabindex="0"><ul class="simple">
-<li><p>For sport interfaces, please refer to: <code class="docutils literal notranslate"><span class="pre">{SDK}/component/soc/amebalite/fwlib/include/ameba_sport.h</span></code>.</p></li>
+<li><p>For SPORT interfaces, please refer to: <code class="docutils literal notranslate"><span class="pre">{SDK}/component/soc/amebalite/fwlib/include/ameba_sport.h</span></code>.</p></li>
 <li><p>For codec interfaces, please refer to: <code class="docutils literal notranslate"><span class="pre">{SDK}/component/soc/amebalite/fwlib/include/ameba_audio.h</span></code>.</p></li>
 </ul>
 </div><div aria-labelledby="tab-0-0-2" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-2" name="0-2" role="tabpanel" tabindex="0"><ul class="simple">
-<li><p>For sport interfaces, please refer to: <code class="docutils literal notranslate"><span class="pre">{SDK}/component/soc/amebasmart/fwlib/include/ameba_sport.h</span></code>.</p></li>
+<li><p>For SPORT interfaces, please refer to: <code class="docutils literal notranslate"><span class="pre">{SDK}/component/soc/amebasmart/fwlib/include/ameba_sport.h</span></code>.</p></li>
 <li><p>For codec interfaces, please refer to: <code class="docutils literal notranslate"><span class="pre">{SDK}/component/soc/amebasmart/fwlib/include/ameba_audio.h</span></code>.</p></li>
 </ul>
 </div></div>
@@ -563,10 +550,10 @@ AudioHwCard is a physical or virtual hardware to process audio stream. It contai
 <li><p><em>Port</em> – the stream output/input of the audio card is called “port”.</p></li>
 <li><p><em>Device</em> – The device output/input of audio card is called device.</p></li>
 </ul>
-<figure class="align-center" id="audio-hal-architecture">
+<figure class="align-center" id="id29">
 <a class="reference internal image-reference" href="../../../_images/audio_hal_architecture.svg"><img alt="../../../_images/audio_hal_architecture.svg" height="285" src="../../../_images/audio_hal_architecture.svg" width="507" /></a>
 <figcaption>
-<p><span class="caption-text">AudioHwCard example</span><a class="headerlink" href="#audio-hal-architecture" title="Link to this image"></a></p>
+<p><span class="caption-text">AudioHwCard 示例</span><a class="headerlink" href="#id29" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <p>The AudioHwManager manages system's all AudioHwCards and opens a specific card driver based on the given audio card descriptor.</p>

@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Overview &mdash; RTL8721Dx 文档  documentation</title>
+  <title>概述 &mdash; RTL8721Dx 文档  documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=13237357" />
@@ -72,6 +72,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../sdk_architecture/sdk_architecture_index_cn.html">SDK 架构</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../gcc_makefile/gcc_makefile_index_cn.html">GCC Makefile</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../sdk_example/sdk_example_index_cn.html">SDK 示例</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../file_system/file_system_index_cn.html">虚拟文件系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mp_image/mp_image_index_cn.html">MP 固件</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../application_note/index.html">应用指南</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../wifi/wifi_guide_index_cn.html">Wi-Fi 指南</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../fullmac/fullmac_index_cn.html">FullMAC</a></li>
@@ -83,17 +85,17 @@
 <li class="toctree-l1"><a class="reference internal" href="../ai_voice/ai_voice_index_cn.html">语音识别</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="multimedia_index_cn.html">多媒体</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="media_index_cn.html">多媒体架构</a><ul class="current">
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Overview</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#architecture">Architecture</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#playback-states">Playback States</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">概述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">架构</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#playback">Playback 状态</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#callbacks">Callbacks</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#rtdatasource">RTDataSource</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#stream-buffering-principle">Stream Buffering Principle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id3">流缓冲原理</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#interfaces">Interfaces</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#id1">Overview</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#rtplayer-apis">RTPlayer APIs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">接口</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id5">简介</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rtplayer-api">RTPlayer API</a></li>
 </ul>
 </li>
 </ul>
@@ -131,7 +133,7 @@
       <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="multimedia_index_cn.html">多媒体</a></li>
           <li class="breadcrumb-item"><a href="media_index_cn.html">多媒体架构</a></li>
-      <li class="breadcrumb-item active">Overview</li>
+      <li class="breadcrumb-item active">概述</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -140,8 +142,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="overview">
-<span id="media"></span><h1>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h1>
+  <section id="media">
+<span id="id1"></span><h1>概述<a class="headerlink" href="#media" title="Link to this heading"></a></h1>
 <p>The Media refers to a whole media architecture aiming to provide media interfaces for applications to use. It provides a player named RTPlayer. The RTPlayer can be used to control the playback of an audio file.</p>
 <p>There are many kinds of audio sources, the RTPlayer supports the following:</p>
 <ul class="simple">
@@ -192,8 +194,8 @@
 </tbody>
 </table>
 </section>
-<section id="architecture">
-<h1>Architecture<a class="headerlink" href="#architecture" title="Link to this heading"></a></h1>
+<section id="id2">
+<h1>架构<a class="headerlink" href="#id2" title="Link to this heading"></a></h1>
 <p>The applications interact with media according to the following figure.</p>
 <figure class="align-center" id="media-architecture">
 <a class="reference internal image-reference" href="../../../_images/media_architecture.svg"><img alt="../../../_images/media_architecture.svg" height="640" src="../../../_images/media_architecture.svg" width="572" /></a>
@@ -201,8 +203,8 @@
 <p><span class="caption-text">Media architecture</span><a class="headerlink" href="#media-architecture" title="Link to this image"></a></p>
 </figcaption>
 </figure>
-<section id="playback-states">
-<h2>Playback States<a class="headerlink" href="#playback-states" title="Link to this heading"></a></h2>
+<section id="playback">
+<h2>Playback 状态<a class="headerlink" href="#playback" title="Link to this heading"></a></h2>
 <p>Playback of media is managed through a state machine. The playback state is shown as below.</p>
 <figure class="align-center" id="media-playback-states">
 <a class="reference internal image-reference" href="../../../_images/media_playback_states.svg"><img alt="../../../_images/media_playback_states.svg" height="616" src="../../../_images/media_playback_states.svg" width="882" /></a>
@@ -451,8 +453,8 @@
 <li><p>Get the whole length of the source.</p></li>
 </ol>
 </section>
-<section id="stream-buffering-principle">
-<h2>Stream Buffering Principle<a class="headerlink" href="#stream-buffering-principle" title="Link to this heading"></a></h2>
+<section id="id3">
+<h2>流缓冲原理<a class="headerlink" href="#id3" title="Link to this heading"></a></h2>
 <p>For http streaming source, the bandwidth of the network will affect the playback effect. A good user experience should contain the following functions:</p>
 <ul class="simple">
 <li><p>When the download speed is too slow, the application needs to pause playback and makes some prompts, such as: pop up some dialog boxes showing the download percentage.</p></li>
@@ -464,25 +466,25 @@
 <li><p><code class="xref py py-func docutils literal notranslate"><span class="pre">RTPlayer_PrepareAsync()</span></code> is an asynchronous function, application should not call <code class="xref py py-func docutils literal notranslate"><span class="pre">RTPlayer_Start()</span></code> until receiving <code class="docutils literal notranslate"><span class="pre">RTPlayerCallback.OnRTPlayerStateChanged(…,</span> <span class="pre">…,</span> <span class="pre">RTPLAYER_PREPARED)</span></code>.</p></li>
 </ul>
 <p>For http source, the RTPlayer will continuously check the downloaded data and update the downloaded percentage to monitors via <code class="docutils literal notranslate"><span class="pre">RTPlayerCallback.OnRTPlayerInfo(…,</span> <span class="pre">…,</span> <span class="pre">RTPLAYER_INFO_BUFFERING_INFO_UPDATE)</span></code>. When the downloaded data is enough, the RTPlayer will trigger <code class="docutils literal notranslate"><span class="pre">RTPlayerCallback.OnRTPlayerStateChanged</span> <span class="pre">(…,</span> <span class="pre">…,</span> <span class="pre">RTPLAYER_PREPARED)</span></code> and application can start the playback. The detailed principle is shown as below.</p>
-<figure class="align-center" id="id2">
+<figure class="align-center" id="id7">
 <a class="reference internal image-reference" href="../../../_images/media_http_source_stream_buffering_principle_during_starting.svg"><img alt="../../../_images/media_http_source_stream_buffering_principle_during_starting.svg" height="340" src="../../../_images/media_http_source_stream_buffering_principle_during_starting.svg" width="727" /></a>
 <figcaption>
-<p><span class="caption-text">HttpSource stream buffering principle during starting</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
+<p><span class="caption-text">HttpSource stream buffering principle during starting</span><a class="headerlink" href="#id7" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <p>During playback, if the remaining downloaded data is not enough, the RTPlayer will trigger <code class="docutils literal notranslate"><span class="pre">RTPlayerCallback.OnRTPlayerInfo(…,</span> <span class="pre">…,</span> <span class="pre">RTPLAYER_INFO_BUFFERING_START)</span></code>. Application can update user display interfaces to indicate users that the current network status is poor. During this time, the RTPlayer will continuously check the downloaded data and update the downloaded percentage to monitors via <code class="docutils literal notranslate"><span class="pre">RTPlayerCallback.OnRTPlayerInfo(…,</span> <span class="pre">…,</span> <span class="pre">RTPLAYER_INFO_BUFFERING_INFO_UPDATE)</span></code>. When the downloaded data is enough, the RTPlayer will trigger <code class="docutils literal notranslate"><span class="pre">RTPlayerCallback.OnRTPlayerInfo(…,</span> <span class="pre">…,</span> <span class="pre">RTPLAYER_INFO_BUFFERING_END)</span></code> and application can resume the playback. The detailed principle is shown as below.</p>
-<figure class="align-center" id="id3">
+<figure class="align-center" id="id8">
 <a class="reference internal image-reference" href="../../../_images/media_http_source_stream_buffering_principle_during_playing.svg"><img alt="../../../_images/media_http_source_stream_buffering_principle_during_playing.svg" height="340" src="../../../_images/media_http_source_stream_buffering_principle_during_playing.svg" width="684" /></a>
 <figcaption>
-<p><span class="caption-text">HttpSource stream buffering principle during playing</span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
+<p><span class="caption-text">HttpSource stream buffering principle during playing</span><a class="headerlink" href="#id8" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 </section>
 </section>
-<section id="interfaces">
-<h1>Interfaces<a class="headerlink" href="#interfaces" title="Link to this heading"></a></h1>
-<section id="id1">
-<h2>Overview<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<section id="id4">
+<h1>接口<a class="headerlink" href="#id4" title="Link to this heading"></a></h1>
+<section id="id5">
+<h2>简介<a class="headerlink" href="#id5" title="Link to this heading"></a></h2>
 <p>The Media provides one layer of interfaces:</p>
 <table class="docutils align-default" style="width: 100%">
 <thead>
@@ -497,11 +499,11 @@
 </tbody>
 </table>
 </section>
-<section id="rtplayer-apis">
-<h2>RTPlayer APIs<a class="headerlink" href="#rtplayer-apis" title="Link to this heading"></a></h2>
+<section id="rtplayer-api">
+<h2>RTPlayer API<a class="headerlink" href="#rtplayer-api" title="Link to this heading"></a></h2>
 <p>The RTPlayer APIs can perform basic operations of a playback, such as starting a playback, pausing audio during playing, querying information about a specified playback, and registering observer to monitor playback status change.</p>
-<section id="using-rtplayer">
-<h3>Using RTPlayer<a class="headerlink" href="#using-rtplayer" title="Link to this heading"></a></h3>
+<section id="rtplayer">
+<h3>使用 RTPlayer<a class="headerlink" href="#rtplayer" title="Link to this heading"></a></h3>
 <p>The RTPlayer supports several different media sources such as: local files stored in the flash, media buffer data and streaming. We need to pass an URL which represents the resource path to RTPlayer when creating a playback.</p>
 <ul>
 <li><p>For a file source file, URL is the storage path, such as: <code class="docutils literal notranslate"><span class="pre">char</span> <span class="pre">*url</span> <span class="pre">=</span> <span class="pre">&quot;lfs://1.wav&quot;</span></code>.</p></li>
@@ -591,8 +593,8 @@
 </pre></div>
 </div>
 </section>
-<section id="using-callback">
-<h3>Using Callback<a class="headerlink" href="#using-callback" title="Link to this heading"></a></h3>
+<section id="callback">
+<h3>使用 Callback<a class="headerlink" href="#callback" title="Link to this heading"></a></h3>
 <p>You can create an instance of <code class="docutils literal notranslate"><span class="pre">RTPlayerCallback</span></code> and assign it to the player to monitor playback. Here is an example:</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">OnStateChanged</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">RTPlayerCallback</span><span class="w"> </span><span class="o">*</span><span class="n">listener</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">RTPlayer</span><span class="w"> </span><span class="o">*</span><span class="n">player</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">state</span><span class="p">)</span>
 <span class="p">{</span>
@@ -640,8 +642,8 @@
 </pre></div>
 </div>
 </section>
-<section id="using-rtdatasource">
-<h3>Using RTDataSource<a class="headerlink" href="#using-rtdatasource" title="Link to this heading"></a></h3>
+<section id="id6">
+<h3>使用 RTDataSource<a class="headerlink" href="#id6" title="Link to this heading"></a></h3>
 <p>If the source does not come from a fixed url, customers can implement their own data source based on <code class="docutils literal notranslate"><span class="pre">RTDataSource</span></code>.</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">MyDataSource</span><span class="w"> </span><span class="n">MyDataSource</span><span class="p">;</span>
 <span class="k">struct</span><span class="w"> </span><span class="nc">MyDataSource</span><span class="w"> </span><span class="p">{</span>
