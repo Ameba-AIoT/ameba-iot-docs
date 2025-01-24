@@ -4,19 +4,19 @@ Introduction
 ------------------------
 .. tabs::
 
-   .. include:: psram_introduction_21Dx.rst
-   .. include:: psram_introduction_20EA10EC.rst
-   .. include:: psram_introduction_26EA13EC.rst
-   .. include:: psram_introduction_30E.rst
+   .. include:: 21Dx_psram_introduction.rst
+   .. include:: 20EA10EC_psram_introduction.rst
+   .. include:: 26EA13EC_psram_introduction.rst
+   .. include:: 30E_psram_introduction.rst
 
 Throughput
 --------------------
 .. tabs::
 
-   .. include:: psram_throughput_21Dx.rst
-   .. include:: psram_throughput_20EA10EC.rst
-   .. include:: psram_throughput_26EA13EC.rst
-   .. include:: psram_throughput_30E.rst
+   .. include:: 21Dx_psram_throughput.rst
+   .. include:: 20EA10EC_psram_throughput.rst
+   .. include:: 26EA13EC_psram_throughput.rst
+   .. include:: 30E_psram_throughput.rst
 
 Boot from PSRAM
 ------------------------------
@@ -43,10 +43,10 @@ Row Hammer
 ~~~~~~~~~~~~~~~~~~~~
 .. tabs::
 
-   .. include:: psram_row_hammer_21Dx.rst
-   .. include:: psram_row_hammer_20EA10EC.rst
-   .. include:: psram_row_hammer_26EA13EC.rst
-   .. include:: psram_row_hammer_30E.rst
+   .. include:: 21Dx_psram_row_hammer.rst
+   .. include:: 20EA10EC_psram_row_hammer.rst
+   .. include:: 26EA13EC_psram_row_hammer.rst
+   .. include:: 30E_psram_row_hammer.rst
 
 
 Notice
@@ -57,10 +57,10 @@ On the “Write Back” policy, the synchronization operations need to be taken 
 
 .. tabs::
 
-   .. include:: psram_cache_operation_21Dx.rst
-   .. include:: psram_cache_operation_20EA10EC.rst
-   .. include:: psram_cache_operation_26EA13EC.rst
-   .. include:: psram_cache_operation_30E.rst
+   .. include:: 21Dx_psram_cache_operation.rst
+   .. include:: 20EA10EC_psram_cache_operation.rst
+   .. include:: 26EA13EC_psram_cache_operation.rst
+   .. include:: 30E_psram_cache_operation.rst
 
 DMA Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -118,19 +118,19 @@ If you need multi-time DMA Tx/Rx with only one-time xxx_GDMA_Init, ``DCache_Clea
 
 .. tabs::
 
-   .. include:: psram_dma_onetime_init_21Dx.rst
-   .. include:: psram_dma_onetime_init_20EA10EC.rst
-   .. include:: psram_dma_onetime_init_26EA13EC.rst
-   .. include:: psram_dma_onetime_init_30E.rst
+   .. include:: 21Dx_psram_dma_onetime_init.rst
+   .. include:: 20EA10EC_psram_dma_onetime_init.rst
+   .. include:: 26EA13EC_psram_dma_onetime_init.rst
+   .. include:: 30E_psram_dma_onetime_init.rst
 
 TCEM Setting
 ------------------------
 .. tabs::
 
-   .. include:: psram_tcem_setting_21Dx.rst
-   .. include:: psram_tcem_setting_20EA10EC.rst
-   .. include:: psram_tcem_setting_26EA13EC.rst
-   .. include:: psram_tcem_setting_30E.rst
+   .. include:: 21Dx_psram_tcem_setting.rst
+   .. include:: 20EA10EC_psram_tcem_setting.rst
+   .. include:: 26EA13EC_psram_tcem_setting.rst
+   .. include:: 30E_psram_tcem_setting.rst
 
 
 
