@@ -1,19 +1,11 @@
-In order to build SDIO bridge image, choose :guilabel:`SDIO_BRIDGE` in menuconfig according to the following steps:
+1. 在目录 ``{SDK}/amebadplus_gcc_project``中执行 ``./menuconfig.py``
 
-1. Enter menuconfig and select :guilabel:`CONFIG INIC INTF`
+   a. 找到 :menuselection:`CONFIG INIC ITNF > INIC Mode > FULLMAC_BRIDGE`, 选择需要的接口：
 
-   .. figure:: figures/bridge_config_inic_intf.png
-      :scale: 40%
-      :align: center
+      .. figure:: figures/bridge_sdio_spi_selection.png
+         :scale: 80%
+         :align: center
 
-2. In INIC-INTF menu, select :guilabel:`INIC MODE`
+2. 执行make产生 :file:`km4_boot_all.bin` 和 :file:`km0_km4_app.bin`.
 
-   .. figure:: figures/bridge_inic_mode.png
-      :scale: 40%
-      :align: center
-
-3. In INIC Mode menu, select :guilabel:`SDIO_BRIDGE`
-
-   .. figure:: figures/bridge_sdio_bridge.png
-      :scale: 50%
-      :align: center
+3. 使用image tool下载image到Demo板。

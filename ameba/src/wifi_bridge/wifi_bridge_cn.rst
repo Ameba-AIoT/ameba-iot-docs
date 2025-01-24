@@ -23,6 +23,8 @@ WiFi Bridge 文件目录
 --------------------------------
 .. tabs::
 
+   .. include:: wifi_bridge_filetree_dev_rtos_cn.rst
+
    .. include:: wifi_bridge_filetree_rtos_cn.rst
 
    .. include:: wifi_bridge_filetree_linux_cn.rst
@@ -78,7 +80,7 @@ SDIO转接板
 
 WiFi Bridge Device 驱动移植指南
 --------------------------------
-.. include:: fullmac_portingguide_wifi_dev_cn.rst
+.. include:: wifi_bridge_portingguide_wifi_dev_cn.rst
 
 WiFi Bridge Host 驱动移植指南
 --------------------------------
