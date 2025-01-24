@@ -1,8 +1,7 @@
 .. _pinctrl:
 
-Usage
-------------------------
-
+Pin Controller (Pinctrl)
+================================================
 To configure the pin multiplexing function, follow the steps below:
 
 1. Turn off the SWD or enable audio pad share if the pin default function is SWD or audio, and configure it to other functions.
@@ -14,25 +13,25 @@ To configure the pin multiplexing function, follow the steps below:
 
 2. Turn off the SWD if the pin default function is SWD, and configure it to other functions.
 
-   .. code-block:: C
+   .. code-block:: c
 
       Pinmux_Swdoff();
 
 3. Configure pinmux function.
 
-   .. code-block:: C
+   .. code-block:: c
 
       Pinmux_Config(u8 PinName, u32 PinFunc);
 
 4. Set pin pull type.
 
-   .. code-block:: C
+   .. code-block:: c
 
       PAD_PullCtrl(u8 PinName, u8 PullType); //normal mode
       PAD_SleepPullCtrl(u8 PinName, u8 PullType); //sleep and deep-sleep mode
 
 5. Set driving strength if needed.
 
-   .. code-block:: C
+   .. code-block:: c
 
       PAD_DrvStrength(u8 PinName, u32 DrvStrength);
