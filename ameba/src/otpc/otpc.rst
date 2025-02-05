@@ -3,9 +3,9 @@
 Introduction
 ------------------------
 
-Antifuse one-time programmable (OTP) is the most secure embedded non-volatile memory (eNVM). The default value is *1* and can only be change from *1* to *0*.
+Antifuse one-time programmable (OTP) is the most secure embedded non-volatile memory (eNVM). The default value is *1* and can only be changed from *1* to *0*.
 
-.. figure:: ../figures/otp_layout.svg
+.. figure:: figures/otp_layout.svg
    :scale: 100%
    :align: center
    :name: otp_layout
@@ -198,7 +198,7 @@ For example:
 
 - By command ``EFUSE rmap``, the logical zone is all shown immediately.
 
-.. figure:: ../figures/efuse_write_and_read_logical_map.png
+.. figure:: figures/efuse_write_and_read_logical_map.png
    :scale: 60%
    :align: center
    :name: efuse_write_and_read_logical_map
@@ -240,14 +240,14 @@ For example:
 
 - By command ``EFUSE rraw``, the physical zone is all shown immediately.
 
-.. figure:: ../figures/efuse_write_and_read_physical_map_upper_half.png
+.. figure:: figures/efuse_write_and_read_physical_map_upper_half.png
    :scale: 70%
    :align: center
 
 .. centered::
    ...
 
-.. figure:: ../figures/efuse_write_and_read_physical_map_lower_half.png
+.. figure:: figures/efuse_write_and_read_physical_map_lower_half.png
    :scale: 70%
    :align: center
 
@@ -274,7 +274,7 @@ The logical area 0x000 ~ 0x01F (32 bytes) will be auto-loaded to system register
 
 The procedure of programming the system data is described below.
 
-.. figure:: ../figures/programming_the_system_data.svg
+.. figure:: figures/programming_the_system_data.svg
    :scale: 150%
    :align: center
 
@@ -394,34 +394,11 @@ For detailed information about Wi-Fi Calibration Data, refer to *WS_MP_FLOW.pdf*
 
 Programming Scenarios
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Usually, system data has their initial value, and you can program specific bits according to your demands. Table below lists some scenarios that specific bits need to be programmed at your requirements.
-
-
-.. table::
-   :width: 100%
-   :widths: auto
-
-   +--------+-----+--------------------+-----+---------------------------------------------+---------------------------------------------------------------------------------------+
-   | Offset | Bit | Symbol             | INI | Description                                 | Scenarios                                                                             |
-   +========+=====+====================+=====+=============================================+=======================================================================================+
-   | 0x02   | [1] | SPIC_ADDR_4BYTE_EN | 0   | SPI Flash controller address 4-byte enable  | - If embedded Flash is used, ignore it.                                               |
-   |        |     |                    |     |                                             |                                                                                       |
-   |        |     |                    |     | 0: Disable                                  | - If external Flash is used, moreover, its size is larger than 16M bytes, program it. |
-   |        |     |                    |     |                                             |                                                                                       |
-   |        |     |                    |     | 1: Enable                                   |                                                                                       |
-   +--------+-----+--------------------+-----+---------------------------------------------+---------------------------------------------------------------------------------------+
-   | 0x03   | [1] | LOW_BAUD_LOG_EN    | 0   | LOGUART baud rate selection                 | If the LOGUART baud rate needs to be changed from 1.5Mbps to 115200bps, program it.   |
-   |        |     |                    |     |                                             |                                                                                       |
-   |        |     |                    |     | 0: 1.5Mbps                                  |                                                                                       |
-   |        |     |                    |     |                                             |                                                                                       |
-   |        |     |                    |     | 1: 115200bps                                |                                                                                       |
-   +--------+-----+--------------------+-----+---------------------------------------------+---------------------------------------------------------------------------------------+
-   | 0x03   | [0] | DIS_BOOT_LOG_EN    | 0   | Boot ROM log disable                        | If boot ROM log needs to be disabled, program it.                                     |
-   |        |     |                    |     |                                             |                                                                                       |
-   |        |     |                    |     | 0: Enable                                   |                                                                                       |
-   |        |     |                    |     |                                             |                                                                                       |
-   |        |     |                    |     | 1: Disable                                  |                                                                                       |
-   +--------+-----+--------------------+-----+---------------------------------------------+---------------------------------------------------------------------------------------+
+.. tabs ::
+   .. include:: 21Dx_otpc_program_scenarios.rst
+   .. include:: 26E13E_otpc_program_scenarios.rst
+   .. include:: 20E10E_otpc_program_scenarios.rst
+   .. include:: 30E_otpc_program_scenarios.rst
 
 Security Zone
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -433,7 +410,7 @@ The security zone is divided into three parts, as illustrated below.
 
 - User-defined area: 0x380~0x3FF
 
-.. figure:: ../figures/security_area_layout.svg
+.. figure:: figures/security_area_layout.svg
    :scale: 120%
    :align: center
    :name: security_area_layout
@@ -444,9 +421,23 @@ Key Area
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Contents in key area are listed below. For more detailed usage about the keys, refer to the corresponding chapters:
 
+.. tabs::
+   .. include:: 21Dx_otpc_key_area.rst
+   .. include:: 26E13E_otpc_key_area.rst
+   .. include:: 20E10E_otpc_key_area.rst
+   .. include:: 30E_otpc_key_area.rst
+
+
 Configuration Area
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Contents in configuration area are listed below. About field's usage in this area, you can get detailed information in the corresponding chapters.
+
+.. tabs::
+   .. include:: 21Dx_otpc_cfg_area.rst
+   .. include:: 26E13E_otpc_cfg_area.rst
+   .. include:: 20E10E_otpc_cfg_area.rst
+   .. include:: 30E_otpc_cfg_area.rst
+
 
 .. _otpc_usage_security_zone_config_area_crc:
 
@@ -499,7 +490,7 @@ When you use CRC validation function for the first time, please follow the follo
 
    - If the CRC entry is checked fail, the following log will show up, and the chip enters endless loop.
 
-   .. figure:: ../figures/otpc_usage_security_zone_config_area_crc.png
+   .. figure:: figures/otpc_usage_security_zone_config_area_crc.png
       :scale: 60%
       :align: center
 
@@ -564,51 +555,8 @@ In this area, two keys have their own read protection and write protection. Thes
 
 Contents in hidden physical area and usage is listed below.
 
-.. table::
-   :width: 100%
-   :widths: auto
-
-   +--------+--------+-----------------------------+-----------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------+
-   | Offset | Bit    | Symbol                      | Description                                                                       | Usage                                                                                                       |
-   +========+========+=============================+===================================================================================+=============================================================================================================+
-   | 0x700  | [7:0]  | RMA (Life State)            | Define which mode device works in.                                                | - To make the device go to RMA mode, you should program this field to make sure the number of 1 is odd.     |
-   |        |        |                             |                                                                                   |                                                                                                             |
-   |        |        |                             | - If the number of 1 is odd, it will go to RMA mode                               | - To make the device go to Normal mode, you should program this field to make sure the number of 1 is even. |
-   |        |        |                             |                                                                                   |                                                                                                             |
-   |        |        |                             | - If the number of 1 is even, it will go to Normal mode                           | - By default, the value is 0xFF and it's in normal mode.                                                    |
-   |        |        |                             |                                                                                   |                                                                                                             |
-   |        |        |                             | HW will auto-load the work mode first when boot.                                  |                                                                                                             |
-   |        |        |                             |                                                                                   |                                                                                                             |
-   |        |        |                             | In RMA mode, the secure 4K bits should be protected and return all "1" when read. |                                                                                                             |
-   +--------+--------+-----------------------------+-----------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------+
-   | 0x701  | [1:0]  | ROM_PATCH_EN                | Defined by Realtek                                                                | Used by Realtek                                                                                             |
-   |        +--------+-----------------------------+                                                                                   |                                                                                                             |
-   |        | [2]    | ROM_PATCH_LWE1              |                                                                                   |                                                                                                             |
-   |        +--------+-----------------------------+                                                                                   |                                                                                                             |
-   |        | [3]    | ROM_PATCH_LWE2              |                                                                                   |                                                                                                             |
-   |        +--------+-----------------------------+                                                                                   |                                                                                                             |
-   |        | [4]    | ROM_PATCH_LWE3              |                                                                                   |                                                                                                             |
-   |        +--------+-----------------------------+                                                                                   |                                                                                                             |
-   |        | [5]    | ROM_PATCH_LWE4              |                                                                                   |                                                                                                             |
-   |        +--------+-----------------------------+                                                                                   |                                                                                                             |
-   |        | [6]    | ROM_PATCH_LWE5              |                                                                                   |                                                                                                             |
-   |        +--------+-----------------------------+                                                                                   |                                                                                                             |
-   |        | [7]    | ROM_PATCH_HWE               |                                                                                   |                                                                                                             |
-   +--------+--------+-----------------------------+-----------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------+
-   | 0x702  | [0]    | RMA_SWD_PWD_R_Protection_EN | Key read protection and write protection.                                         |                                                                                                             |
-   |        +--------+-----------------------------+                                                                                   |                                                                                                             |
-   |        | [1]    | RMA_SWD_PWD_W_Forbidden_EN  |                                                                                   |                                                                                                             |
-   |        +--------+-----------------------------+                                                                                   |                                                                                                             |
-   |        | [2]    | RMA_PK_W_Forbidden_EN       |                                                                                   |                                                                                                             |
-   |        +--------+-----------------------------+-----------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------+
-   |        | [7:3]  | RSVD                        | Reserved                                                                          |                                                                                                             |
-   +--------+--------+-----------------------------+-----------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------+
-   | 0x704  | [63:0] | ADC calibration             | Defined by Realtek                                                                | Used by Realtek                                                                                             |
-   +--------+--------+-----------------------------+-----------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------+
-   | 0x710  | 128    | RMA SWD Key                 | SWD Key in RMA Mode                                                               |                                                                                                             |
-   +--------+--------+-----------------------------+-----------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------+
-   | 0x720  | 256    | RMA SBOOT KEY HASH          | SBOOT Key Hash in RMA Mode                                                        |                                                                                                             |
-   +--------+--------+-----------------------------+-----------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------+
-
-.. note:: After Read protection and Write protection programmed, the key can never be read out again. Please maintain the key carefully.
-
+.. tabs::
+   .. include:: 21Dx_otpc_hid_area.rst
+   .. include:: 26E13E_otpc_hid_area.rst
+   .. include:: 20E10E_otpc_hid_area.rst
+   .. include:: 30E_otpc_hid_area.rst
