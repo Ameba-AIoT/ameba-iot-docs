@@ -1,8 +1,8 @@
-Chip Enable
+CHIP Enable
 ======================
 
 
 .. toctree::
    :maxdepth: 1
 
-   chipen
+   chipen_cn
