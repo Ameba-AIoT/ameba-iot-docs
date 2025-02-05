@@ -10,7 +10,9 @@ The following figure is the high-level block diagram for SDIO bridge solution.
 
 WiFi Bridge Features
 ------------------------
-.. include:: wifi_bridge_features.rst
+.. tabs::
+
+   .. include:: 21Dx11Dx_wifi_bridge_features.rst
 
 WiFi Bridge Interfaces
 ------------------------
@@ -37,7 +39,7 @@ Please connect Ameba SoC to host with jumper cables as mentioned below.
 
 .. tabs::
 
-   .. include:: wifi_bridge_hostpins_raspberry_21dx11dx.rst
+   .. include:: 21Dx11Dx_wifi_bridge_hostpins_raspberry.rst
 
 .. note::
    The above pins are the default pin configuration in the firmware code. If you need to change the pin configuration on the SDIO device side, modifications must be made in the SPDIO_Board_Init function to set the actual connected pins' pinmux to SDIO. This function is located in the following file:

@@ -10,7 +10,9 @@ WiFi bridge 的架构图如下图所示.
 
 WiFi Bridge 的特点
 ------------------------
-.. include:: wifi_bridge_features.rst
+.. tabs::
+
+   .. include:: 21Dx11Dx_wifi_bridge_features.rst
 
 WiFi Bridge 传输接口
 ------------------------
@@ -39,7 +41,7 @@ WiFi Bridge 硬件配置
 
 .. tabs::
 
-   .. include:: wifi_bridge_hostpins_raspberry_21dx11dx.rst
+   .. include:: 21Dx11Dx_wifi_bridge_hostpins_raspberry.rst
 
 .. note::
    以上Ameba的SDIO pin是 SDK的默认pin脚，如果开发者使用另外的pin脚做SDIO，则需要修改SPDIO_Board_Init 中的SDIO pinmux配置。
