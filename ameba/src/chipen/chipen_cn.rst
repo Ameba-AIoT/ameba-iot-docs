@@ -5,7 +5,7 @@ Introduction
 The CHIP_EN (chip enable) is an external pin that can be used to control the reset status of the whole SoC. This pin can work in level reset mode, interrupt reset mode or pulse reset mode. By default, it works in level reset mode. This pin always has the function of resetting system no matter in which mode.
 
 
-The button with ``CHIP_EN`` is connected to the ``CHIP_EN`` pin, as :ref:`clip_en_on_board` shows.
+The button with ``CHIP_EN`` is connected to the ``CHIP_EN`` pin, as :ref:`chip_en_on_board` shows.
 
 .. figure:: figures/chip_en_on_board.png
    :scale: 50%
