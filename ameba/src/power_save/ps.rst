@@ -7,10 +7,10 @@ SoC has an advanced Power Management Controller (PMC), which can flexibly power 
 
 .. tabs::
 
-   .. include:: 21Dx_ps_power_arch.rst
-   .. include:: 26E13E_ps_power_arch.rst
-   .. include:: 20E10E_ps_power_arch.rst
-   .. include:: 30E_ps_power_arch.rst
+   .. include:: ps_power_arch_dplus.rst
+   .. include:: ps_power_arch_lite_26E13E.rst
+   .. include:: ps_power_arch_lite_20E10E.rst
+   .. include:: ps_power_arch_smart.rst
 
 Power-Saving Mode
 ------------------
@@ -28,8 +28,8 @@ Wakeup Source
 --------------------------
 .. tabs::
    .. include:: ps_wake_source_dplius.rst
-   .. include:: 26E13E_ps_wake_source.rst
-   .. include:: 20E10E_ps_wake_source.rst
+   .. include:: ps_wake_source_lite_26E13E.rst
+   .. include:: ps_wake_source_lite_20E10E.rst
    .. include:: ps_wake_source_smart.rst
 
 Entering Sleep Mode
@@ -44,8 +44,8 @@ Power-Saving Configuration
 ----------------------------
 .. tabs::
    .. include:: ps_usrcfg_dplus.rst
-   .. include:: 26E13E_ps_usrcfg.rst
-   .. include:: 20E10E_ps_usrcfg.rst
+   .. include:: ps_usrcfg_lite_26E13E.rst
+   .. include:: ps_usrcfg_lite_20E10E.rst
    .. include:: ps_usrcfg_smart.rst
 
 Power-Saving Related APIs
