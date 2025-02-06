@@ -1,6 +1,6 @@
 .. _thermal_sensor:
 
-Supported IC
+Supported ICs
 ------------------------
 .. table::
    :width: 100%
