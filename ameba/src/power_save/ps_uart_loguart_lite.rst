@@ -1,8 +1,8 @@
 .. tab:: RTL8726E/RTL8720E
 
-   For peripherals that need specific clock settings, such as UART and LOGUART, their setting flows are described in Section :ref:`power_saving_uart` and :ref:`power_saving_loguart`.
+   For peripherals that need specific clock settings, such as UART and LOGUART, their setting flows are described in Section :ref:`lite_power_saving_uart` and :ref:`lite_power_saving_loguart`.
 
-   .. _power_saving_uart:
+   .. _lite_power_saving_uart:
 
    **UART**
 
@@ -24,7 +24,7 @@
       - If the Rx clock source is XTAL40M, do not turn off XTAL during sleep.
       - The portion of the command used to wake up that exceeds the FIFO depth (64B) will be lost.
 
-   .. _power_saving_loguart:
+   .. _lite_power_saving_loguart:
 
    **LOGUART**
 

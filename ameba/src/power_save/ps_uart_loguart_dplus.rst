@@ -1,8 +1,8 @@
 .. tab:: RTL8721Dx
 
-   For peripherals that need specific clock settings, such as UART and LOGUART, their setting flows are described in Section :ref:`power_saving_uart` and :ref:`power_saving_loguart`.
+   For peripherals that need specific clock settings, such as UART and LOGUART, their setting flows are described in Section :ref:`21dx_power_saving_uart` and :ref:`21dx_power_saving_loguart`.
 
-   .. _power_saving_uart:
+   .. _21dx_power_saving_uart:
 
    **UART**
 
@@ -27,7 +27,7 @@
       - When the baudrate is larger than 115200, it is not recommended to use UART as a wakeup source.
       - The portion of the command used to wake up that exceeds the FIFO depth (64B) will be lost.
 
-   .. _power_saving_loguart:
+   .. _21dx_power_saving_loguart:
 
    **LOGUART**
 
