@@ -80,12 +80,3 @@
       - Read and returns all zero when FIFO is empty.
 
       - This FIFO has a lower priority than FIFO_S. If available data is less than 128 bits in FIFO_S, hardware will not feed any data to this FIFO.
-
-   Usage
-   ----------
-   - If you need to run the system with security attributes, it is suggested to configure TRNG as secure so that the Control Register can only be accessed from secure world.
-
-   - When a large amount of random data is required both by secure world and non-secure world simultaneously, request from secure world will be satisfied first for the former has a higher priority. After the request from secure world ends, random data will be generated to satisfy non-secure world.
-
-   - It is suggested to call ``_rand()`` function to get a 32-bit random data.
-

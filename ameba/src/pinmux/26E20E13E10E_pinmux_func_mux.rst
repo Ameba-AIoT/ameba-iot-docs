@@ -18,8 +18,8 @@
       
       Schematic diagram of pinmux connection of PA0
 
-   Function ID 20-67
-   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   **Function ID 20-67**
+
    For functions whose ID number is after 20, each pin can be connected to different signals of a certain IP. This method maximizes the freedom of use, but the scope of use and some IPs' performance (maximum transfer speed) is limited.
 
    .. note:: These function IDs can only be configured on ``PA8`` to ``PA31`` and ``PB0`` to ``PB10``.
