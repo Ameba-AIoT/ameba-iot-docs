@@ -1,5 +1,7 @@
 .. tab:: RTL8730E
 
+   **Github**: `rtl8730e ameba_sleepcfg.c <https://github.com/Ameba-AIoT/ameba-rtos/blob/master/component/soc/amebamart/usrcfg/ameba_sleepcfg.c>`_
+
    **Wakeup Mask Setup**
 
    For sleep mode, only one CPU is required to wake up to execute the program in some situations. The wakeup mask module is designed to implement this function.

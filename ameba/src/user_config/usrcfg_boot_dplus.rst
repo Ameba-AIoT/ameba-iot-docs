@@ -1,6 +1,6 @@
 .. tab:: RTL8721Dx
 
-   **Github**: `ameba_bootcfg.c <https://github.com/Ameba-AIoT/ameba-rtos/blob/master/component/soc/amebadplus/usrcfg/ameba_bootcfg.c>`_
+   **Github**: `rtl8721dx ameba_bootcfg.c <https://github.com/Ameba-AIoT/ameba-rtos/blob/master/component/soc/amebadplus/usrcfg/ameba_bootcfg.c>`_
 
    This section introduces the boot-related configurations including SoC clock switch and boot log.
    The KM4 boots at 200MHz at the BootRom Stage, and switches to a higher frequency during the Bootloader Stage.
@@ -26,3 +26,6 @@
    .. note::
       The maximum operating speed of Flash with Wide Range VCC 1.65V~3.6V should use the speed limit of 1.65V~2.3V power supply.
 
+   **SoC & PSRAM Clock Set Flow**
+
+   .. include:: usrcfg_soc_clk_dplus.rst

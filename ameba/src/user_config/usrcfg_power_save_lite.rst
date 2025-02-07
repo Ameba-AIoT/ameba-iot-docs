@@ -56,8 +56,8 @@ The config attribute can be set to **DISABLE_WAKEPIN** or **HIGH_LEVEL_WAKEUP** 
 
 .. note::
       - By default, AON_WAKEPIN_IRQ will not be enabled in ``sleep_wakepin_config[]``, and users need to enable it by themselves.
-      - The wakeup mask will not be set in ``sleep_wakepin_config[]``. If wakepin is used for sleep mode, `WAKE_SRC_AON_WAKEPIN` entry
-   needs to be set in ``sleep_wevent_config[]``.
+
+      - The wakeup mask will not be set in ``sleep_wakepin_config[]``. If wakepin is used for sleep mode, `WAKE_SRC_AON_WAKEPIN` entry needs to be set in ``sleep_wevent_config[]``.
 
 **Clock and Voltage Configuration**
 

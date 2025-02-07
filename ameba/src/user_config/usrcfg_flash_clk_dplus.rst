@@ -1,6 +1,6 @@
 .. tab:: RTL8721Dx
 
-   **Github**: `ameba_flashcfg.c <https://github.com/Ameba-AIoT/ameba-rtos/blob/master/component/soc/amebalite/usrcfg/ameba_flashcfg.c>`_
+   **Github**: `rtl8721dx ameba_flashcfg.c <https://github.com/Ameba-AIoT/ameba-rtos/blob/master/component/soc/amebalite/usrcfg/ameba_flashcfg.c>`_
 
    **Flash_Speed**
 
@@ -9,6 +9,7 @@
    If the Flash needs to run slower, change the value of ``Flash_Speed`` (SPIC0) or ``Data_Flash_Speed`` (SPIC1).
 
    .. code-block:: c
+
       const u16 Flash_Speed = CLKDIV(2);
       const u16 Data_Flash_Speed = CLKDIV(2);
 

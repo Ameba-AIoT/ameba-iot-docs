@@ -1,6 +1,6 @@
-.. tab:: RTL8726E/RTL8720E
+.. tab:: RTL8720E
 
-   **Github**: `ameba_bootcfg.c <https://github.com/Ameba-AIoT/ameba-rtos/blob/master/component/soc/amebalite/usrcfg/ameba_bootcfg.c>`_
+   **Github**: `rtl8720e ameba_bootcfg.c <https://github.com/Ameba-AIoT/ameba-rtos/blob/master/component/soc/amebalite/usrcfg/ameba_bootcfg.c>`_
 
    This section introduces the boot-related configurations including SoC clock switch and boot log.
    The KM4  boots at 150MHz at the BootROM Stage, and switches to a higher frequency during the Bootloader Stage.
@@ -25,10 +25,10 @@
       +---------+-------+-----------------+--------------+---------------------------------------------------+
       | KM4/KR4 | B-Cut | ≤400MHz         | 1.0V         |                                                   |
       +---------+-------+-----------------+--------------+---------------------------------------------------+
-      | DSP     |       | ≤400MHz         | 0.9V         | The same as PLLD                                  |
-      +---------+-------+-----------------+--------------+---------------------------------------------------+
-      | DSP     |       | ≤500MHz         | 1.0V         | The same as PLLD                                  |
-      +---------+-------+-----------------+--------------+---------------------------------------------------+
+
+   **SoC & PSRAM Clock Set Flow**
+
+   .. include:: usrcfg_soc_clk_lite.rst
 
    **Boot_Log_En**
 
