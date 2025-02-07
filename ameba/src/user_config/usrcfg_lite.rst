@@ -1,15 +1,18 @@
 .. _user_configuration:
 
+Supported ICs
+------------------------
+All ICs support user config
+
 Introduction
--------------
+------------------------
 This chapter describes the user configurations in the SDK. Users can modify any of them according to the application requirements.
 
 Boot
 --------
 This section introduces the boot-related configurations including SoC clock switch and boot log.
-
-The KM4 in |CHIP_NAME| device boots at 150MHz at the BootROM Stage, and switches to a higher frequency during the Bootloader Stage.
-There are some limitations when changing the SoC clock.
+The KM4  boots at 150MHz at the BootROM Stage, and switches to a higher frequency during the Bootloader Stage.
+There are some limitations when changing the SoC clock:
 
 .. table::
    :width: 100%
@@ -38,9 +41,11 @@ There are some limitations when changing the SoC clock.
 .. _user_configuration_soc_clock_switch:
 
 SoC Clock Switch
-~~~~~~~~~~~~~~~~~
+--------------------------------
+.. _flow:
+
 Flow
-^^^^^^^^
+~~~~~~~~
 
 .. _user_configuration_flow_step_1:
 
@@ -209,8 +214,8 @@ The *Boot_Agg_En* macro is used with Trace Tool to sort out boot logs from diffe
 .. note::
    Refer to Chapter :ref:`Trace Tool <trace_tool>` for more information.
 
-Flash
-----------
+Flash Clock Switch
+------------------------------------
 This section introduces the Flash-related configurations including speed, read mode, layout and protect mode, which locate at ``\component\soc\amebalite\usrcfg\ameba_flashcfg.c``.
 
 Speed

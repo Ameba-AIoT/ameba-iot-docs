@@ -1,5 +1,17 @@
 .. _rtc_io:
 
+Supported ICs
+------------------------
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +------------+------------+----------+----------+----------+
+   | IC         | RTL8721Dx  | RTL8726E | RTL8720E | RTL8730E |
+   +============+============+==========+==========+==========+
+   | Supported  |     Y      |     N    |     N    |     N    |
+   +------------+------------+----------+----------+----------+
+
 Introduction
 ------------------------
 The RTC_IO module serves to store the RTC time and count the power-off time temporarily when the chip is in power off period.
