@@ -13,7 +13,7 @@
 
    5. KM4 helps DSP load images and check the signature (optional, if DSP exists)
 
-   .. figure:: figures_lite/boot_flow.svg
+   .. figure:: figures/boot_flow_lite.svg
       :scale: 90%
       :align: center
 

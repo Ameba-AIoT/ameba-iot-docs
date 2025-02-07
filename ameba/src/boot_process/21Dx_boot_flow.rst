@@ -11,7 +11,7 @@
 
    4. KM4 helps KM0 load images and check the signature (optional)
 
-   .. figure:: figures_dplus/boot_flow.svg
+   .. figure:: figures/boot_flow_dplus.svg
       :scale: 90%
       :align: center
 

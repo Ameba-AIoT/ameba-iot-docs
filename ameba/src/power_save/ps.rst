@@ -42,11 +42,7 @@ Entering Deep-Sleep Mode
 
 Power-Saving Configuration
 ----------------------------
-.. tabs::
-   .. include:: ps_usrcfg_dplus.rst
-   .. include:: ps_usrcfg_lite_26E13E.rst
-   .. include:: ps_usrcfg_lite_20E10E.rst
-   .. include:: ps_usrcfg_smart.rst
+Please reference User Config chapter for detail information.
 
 Power-Saving Related APIs
 --------------------------------------------------

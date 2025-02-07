@@ -9,7 +9,7 @@
    - NP helps KM0 load images and check the signature (optional)
    - NP helps AP load images and check the signature (optional)
 
-   .. figure:: figures_smart/boot_flow.svg
+   .. figure:: figures/boot_flow_smart.svg
       :scale: 90%
       :align: center
 
