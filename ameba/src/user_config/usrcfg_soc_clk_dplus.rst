@@ -1,12 +1,4 @@
-1. (Optional) Find out the speed limit of embedded PSRAM device if not sure.
-
-   a. Print the value of ``ChipInfo_BDNum()`` function, which will get the chip info from OTP.
-
-   b. Refer to PSRAM type in ``Chip_Info[]`` in ``\lib\ram_common\ameba_chipinfo_lib.c``.
-
-   For now, this step can be skipped because only *wb955* is used.
-
-2. Check the value of ``Boot_SocClk_Info_Idx`` and ``SocClk_Info[]`` in ``\usrcfg\ameba_ bootcfg.c``.
+1. Check the value of ``Boot_SocClk_Info_Idx`` and ``SocClk_Info[]`` in ``\usrcfg\ameba_ bootcfg.c``.
 
    .. code-block:: c
       :emphasize-lines: 5, 6, 7, 8, 9, 10, 11, 12, 20, 22
@@ -35,7 +27,7 @@
       u8 Boot_SocClk_Info_Idx = 0;
       #endif
 
-3. Check the ``BOOT_ChipInfo_ClkInfoIdx()`` function in ``\bootloader\bootloader_km4.c``.
+2. Check the ``BOOT_ChipInfo_ClkInfoIdx()`` function in ``\bootloader\bootloader_km4.c``.
 
    .. code-block:: c
 
@@ -70,7 +62,7 @@
       |            |             |                    | - PSRASM: PLL/2   |
       +------------+-------------+--------------------+-------------------+
 
-4. Refer to one of the following methods to change the SoC clock if needed.
+3. Refer to one of the following methods to change the SoC clock if needed.
 
    - Modify ``SocClk_Info[0]`` in ``\usrcfg\ameba_bootcfg.c``..
 
@@ -93,7 +85,7 @@
          // PLL can be 300MHz~688.128MHz
          // KM4_CKD range is [1, 8], KM0_CKD range is [1, 16] or USEXTAL
          const SocClk_Info_TypeDef SocClk_Info[] = {
-            // PLL_CLK,    Vol_Type,      KM4_CKD,    KM0_CKD,     PSRAMC_CKD 
+            // PLL_CLK,    Vol_Type,      KM4_CKD,    KM0_CKD,     PSRAMC_CKD
             {PLL_520M,     CORE_VOL_0P9,  CLKDIV(2),	CLKDIV(5),   CLKDIV(2)},
             {PLL_331M,     CORE_VOL_1P0,  CLKDIV(1),	CLKDIV(3),   CLKDIV(1)},
             {PLL_400M,     CORE_VOL_0P9,  CLKDIV(2),	CLKDIV(4),   CLKDIV(1)},
@@ -105,4 +97,4 @@
    Based on the example configuration, the clock of KM4 is 173.3MHz, KM0 is 86.6MHz, PSRAM controller is 260MHz (twice the PSRAM), and core power is 0.9V.
    The clocks of left modules will be set to a reasonable value by software automatically based on their maximum speeds.
 
-5. Rebuild the project and download the new image again.
+4. Rebuild the project and download the new image again.
