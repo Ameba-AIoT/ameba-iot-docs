@@ -22,6 +22,7 @@
         <script src="../../../_static/doctools.js?v=9a2dae69"></script>
         <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script src="../../../_static/toggleprompt.js?v=d7ede5d2"></script>
+        <script src="../../../_static/tabs.js?v=3030b3cb"></script>
         <script>let toggleHintShow = 'Click to show';</script>
         <script>let toggleHintHide = 'Click to hide';</script>
         <script>let toggleOpenOnPrint = 'true';</script>
@@ -77,6 +78,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#vfs-initialization">VFS Initialization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#usage-of-vfs">Usage of VFS</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#vfs-on-flash">VFS on Flash</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#vfs-on-sd-card">VFS on SD card</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#vfs-within-app-image">VFS within APP Image</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#common-file-operation">Common File Operation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#key-value-operation">Key-Value Operation</a></li>
@@ -158,14 +160,22 @@
            <div itemprop="articleBody">
              
   <section id="introduction">
-<span id="amebadplus-virtual-file-system"></span><h1>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h1>
+<span id="virtual-file-system"></span><h1>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h1>
 <p>This section introduces how to run Virtual File System (VFS) on Ameba SoC, including FatFS and LittleFS as the underlying implementation. Users can ignore the differences between different file systems by using VFS. The VFS provides common file operation interfaces like fopen, fclose, fwrite, fread, etc. The Key-Value (KV) interfaces are based on these common file operations. The architecture of VFS is illustrated below.</p>
-<figure class="align-center" id="id2">
-<a class="reference internal image-reference" href="../../../_images/vfs_architecture.svg"><img alt="../../../_images/vfs_architecture.svg" height="247" src="../../../_images/vfs_architecture.svg" width="349" /></a>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-0-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-0-0-0" name="0-0" role="tab" tabindex="0">RTL8726EA/RTL8720EA/RTL8721Dx</button><button aria-controls="panel-0-0-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-1" name="0-1" role="tab" tabindex="-1">RTL8726EA/RTL8720EA/RTL8721Dx</button></div><div aria-labelledby="tab-0-0-0" class="sphinx-tabs-panel" id="panel-0-0-0" name="0-0" role="tabpanel" tabindex="0"><figure class="align-center" id="id3">
+<a class="reference internal image-reference" href="../../../_images/vfs_architecture_lite_dplus.svg"><img alt="../../../_images/vfs_architecture_lite_dplus.svg" height="247" src="../../../_images/vfs_architecture_lite_dplus.svg" width="349" /></a>
 <figcaption>
-<p><span class="caption-text">Architecture of VFS</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
+<p><span class="caption-text">Architecture of VFS</span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
 </figcaption>
 </figure>
+</div><div aria-labelledby="tab-0-0-1" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-1" name="0-1" role="tabpanel" tabindex="0"><figure class="align-center" id="id4">
+<a class="reference internal image-reference" href="../../../_images/vfs_architecture_smart.svg"><img alt="../../../_images/vfs_architecture_smart.svg" height="269" src="../../../_images/vfs_architecture_smart.svg" width="349" /></a>
+<figcaption>
+<p><span class="caption-text">Architecture of VFS</span><a class="headerlink" href="#id4" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</div></div>
 </section>
 <section id="vfs-initialization">
 <h1>VFS Initialization<a class="headerlink" href="#vfs-initialization" title="Link to this heading"></a></h1>
@@ -197,12 +207,13 @@
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>The <code class="xref py py-func docutils literal notranslate"><span class="pre">vfs_user_register()</span></code> API will mount VFS to the Flash by users’ configuration. If failed to mount, this API will check whether the Flash is clean (0xFF). And if the Flash is clean, it will program the Flash to initialize VFS.</p>
+<p>The <code class="xref py py-func docutils literal notranslate"><span class="pre">vfs_user_register()</span></code> API will mount VFS to the Flash (or SD card, if supported) by users’ configuration. If failed to mount, this API will check whether the Flash is clean (0xFF). And if the Flash is clean, it will program the Flash to initialize VFS.</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">vfs_user_register</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">prefix</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">vfs_type</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">interface</span><span class="p">,</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="n">region</span><span class="p">,</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="n">flag</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Where:</p>
-<dl class="field-list simple">
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-1-1-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-1-1-0" name="1-0" role="tab" tabindex="0">RTL8726EA/RTL8720EA/RTL8721Dx</button><button aria-controls="panel-1-1-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-1-1-1" name="1-1" role="tab" tabindex="-1">RTL8730E</button></div><div aria-labelledby="tab-1-1-0" class="sphinx-tabs-panel" id="panel-1-1-0" name="1-0" role="tabpanel" tabindex="0"><dl class="field-list simple">
 <dt class="field-odd"><strong>prefix</strong><span class="colon">:</span></dt>
 <dd class="field-odd"><p>defined by users, used to distinguish different file systems</p>
 </dd>
@@ -213,32 +224,131 @@
 <dd class="field-odd"><p>memory type (Flash only)</p>
 </dd>
 <dt class="field-even"><strong>region</strong><span class="colon">:</span></dt>
-<dd class="field-even"><p>Flash partition (<strong>VFS1</strong> or <strong>VFS2</strong>, described in Section <a class="reference internal" href="#vfs-on-flash-section"><span class="std std-ref">VFS on Flash</span></a>)</p>
+<dd class="field-even"><p>Flash partition (<strong>VFS1</strong> or <strong>VFS2</strong>, described in Section <a class="reference internal" href="#vfs-on-flash"><span class="std std-ref">VFS on Flash</span></a>)</p>
 </dd>
 <dt class="field-odd"><strong>flag</strong><span class="colon">:</span></dt>
 <dd class="field-odd"><p>operation authority of file system (read-write or read-only)</p>
 </dd>
 </dl>
+</div><div aria-labelledby="tab-1-1-1" class="sphinx-tabs-panel" hidden="true" id="panel-1-1-1" name="1-1" role="tabpanel" tabindex="0"><dl class="field-list simple">
+<dt class="field-odd"><strong>prefix</strong><span class="colon">:</span></dt>
+<dd class="field-odd"><p>defined by users, used to distinguish different file systems</p>
+</dd>
+<dt class="field-even"><strong>vfs_type</strong><span class="colon">:</span></dt>
+<dd class="field-even"><p>file system type of the underlying implementation (<strong>FatFS</strong> or <strong>LittleFS</strong>)</p>
+</dd>
+<dt class="field-odd"><strong>interface</strong><span class="colon">:</span></dt>
+<dd class="field-odd"><p>memory type (Flash for LittleFS, Flash and SD card for FatFS)</p>
+</dd>
+<dt class="field-even"><strong>region</strong><span class="colon">:</span></dt>
+<dd class="field-even"><p>Flash partition (<strong>VFS1</strong> or <strong>VFS2</strong>, described in Section <a class="reference internal" href="#vfs-on-flash"><span class="std std-ref">VFS on Flash</span></a>)</p>
+</dd>
+<dt class="field-odd"><strong>flag</strong><span class="colon">:</span></dt>
+<dd class="field-odd"><p>operation authority of file system (read-write or read-only)</p>
+</dd>
+</dl>
+</div></div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p><em>vfs_type</em> of VFS_REGION_1 is set to <strong>LittleFS</strong> by default for read-write balance and power failure protection. To ensure proper utilization of <strong>FatFS</strong>, it is essential to configure the relevant settings in the menuconfig.</p>
+<p><em>vfs_type</em> of VFS1 is set to <strong>LittleFS</strong> by default for read-write balance and power failure protection. To ensure proper utilization of <strong>FatFS</strong>, it is essential to configure the relevant settings in the menuconfig.</p>
 </div>
 </section>
 <section id="usage-of-vfs">
 <h1>Usage of VFS<a class="headerlink" href="#usage-of-vfs" title="Link to this heading"></a></h1>
 <section id="vfs-on-flash">
-<span id="vfs-on-flash-section"></span><h2>VFS on Flash<a class="headerlink" href="#vfs-on-flash" title="Link to this heading"></a></h2>
-<p>Adjust the Flash partitions appropriately if the VFS interfaces are set to the Flash, and modify <strong>VFS1</strong> or <strong>VFS2</strong> (according to register region in <code class="file docutils literal notranslate"><span class="pre">main.c</span></code>) in <cite>Flash_Layout[]</cite> in <code class="docutils literal notranslate"><span class="pre">{SDK}\component\soc\amebadplus\usrcfg\ameba_flashcfg.c</span></code>.</p>
+<span id="id1"></span><h2>VFS on Flash<a class="headerlink" href="#vfs-on-flash" title="Link to this heading"></a></h2>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-2-2-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-2-2-0" name="2-0" role="tab" tabindex="0">RTL8730E</button><button aria-controls="panel-2-2-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-2-2-1" name="2-1" role="tab" tabindex="-1">RTL8726EA/RTL8720EA</button><button aria-controls="panel-2-2-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-2-2-2" name="2-2" role="tab" tabindex="-1">RTL8721Dx</button></div><div aria-labelledby="tab-2-2-0" class="sphinx-tabs-panel" id="panel-2-2-0" name="2-0" role="tabpanel" tabindex="0"><p>Adjust the Flash partitions appropriately if the VFS interfaces are set to the Flash, and modify VFS1 or VFS2 (according to register region in <code class="file docutils literal notranslate"><span class="pre">main.c</span></code>) in <cite>Flash_Layout[]</cite> in <code class="docutils literal notranslate"><span class="pre">{SDK}\component\soc\amebasmart\usrcfg\ameba_flashcfg.c</span></code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The Flash type should be considered when changing the Flash layout.</p>
+<ul class="simple">
+<li><p>NOR Flash for FatFS and LittleFS</p></li>
+<li><p>NAND Flash only for LittleFS</p></li>
+</ul>
+</div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">FlashLayoutInfo_TypeDef</span><span class="w"> </span><span class="n">Flash_Layout_Nor</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="cm">/*Region_Type,         [StartAddr,     EndAddr]                */</span>
+<span class="w">   </span><span class="p">{</span><span class="n">IMG_BOOT</span><span class="p">,</span><span class="w">                     </span><span class="mh">0x08000000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x0801FFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Boot Manifest(4K) + KM4 Bootloader(124K)</span>
+<span class="w">   </span><span class="c1">//Users should modify below according to their own memory</span>
+<span class="w">   </span><span class="p">{</span><span class="n">IMG_APP_OTA1</span><span class="p">,</span><span class="w">                 </span><span class="mh">0x08020000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x082FFFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Certificate(4K) + Manifest(4K) + KR4 &amp; KM4   Application OTA1 + Manifest(4K) + RDP IMG OTA1</span>
+<span class="w">   </span><span class="c1">// + AP IMG OTA1</span>
+<span class="w">   </span><span class="p">{</span><span class="n">IMG_BOOT_OTA2</span><span class="p">,</span><span class="w">        </span><span class="mh">0x08300000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x0833FFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Boot Manifest(4K) + KM4 Bootloader(252K) OTA</span>
+<span class="w">   </span><span class="p">{</span><span class="n">IMG_APP_OTA2</span><span class="p">,</span><span class="w">                 </span><span class="mh">0x08340000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x0861FFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Certificate(4K) + Manifest(4K) + KR4 &amp; KM4   Application OTA2 + Manifest(4K) + RDP IMG OTA2</span>
+<span class="w">   </span><span class="c1">// + AP IMG OTA2</span>
+<span class="w">   </span><span class="p">{</span><span class="n">FTL</span><span class="p">,</span><span class="w">                          </span><span class="mh">0x08620000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x08622FFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//FTL for BT(&gt;=12K), The start offset of flash    pages which is allocated to FTL physical map.</span>
+<span class="hll"><span class="w">   </span><span class="p">{</span><span class="n">VFS1</span><span class="p">,</span><span class="w">                                 </span><span class="mh">0x08623000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x08642FFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//VFS region 1 (128K)</span>
+</span><span class="hll"><span class="w">   </span><span class="p">{</span><span class="n">VFS2</span><span class="p">,</span><span class="w">                                 </span><span class="mh">0xFFFFFFFF</span><span class="p">,</span><span class="w"> </span><span class="mh">0xFFFFFFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//VFS region 2</span>
+</span><span class="w">   </span><span class="p">{</span><span class="n">USER</span><span class="p">,</span><span class="w">                                 </span><span class="mh">0xFFFFFFFF</span><span class="p">,</span><span class="w"> </span><span class="mh">0xFFFFFFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//reserve for user</span>
+<span class="w">   </span><span class="cm">/* End */</span>
+<span class="w">   </span><span class="p">{</span><span class="mh">0xFF</span><span class="p">,</span><span class="w">                                 </span><span class="mh">0xFFFFFFFF</span><span class="p">,</span><span class="w"> </span><span class="mh">0xFFFFFFFF</span><span class="p">},</span>
+</pre></div>
+</div>
+<p>.   };</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">FlashLayoutInfo_TypeDef</span><span class="w"> </span><span class="n">Flash_Layout_Nand</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="cm">/*Region_Type,         [StartAddr,     EndAddr]                */</span>
+<span class="w">   </span><span class="p">{</span><span class="n">IMG_BOOT</span><span class="p">,</span><span class="w">                     </span><span class="mh">0x08000000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x0801FFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Boot Manifest(4K) + KM4 Bootloader(124K)</span>
+<span class="w">   </span><span class="c1">//Users should modify below according to their own memory</span>
+<span class="w">   </span><span class="p">{</span><span class="n">IMG_APP_OTA1</span><span class="p">,</span><span class="w">                 </span><span class="mh">0x08020000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x082FFFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Certificate(4K) + Manifest(4K) + KR4 &amp; KM4   Application OTA1 + Manifest(4K) + RDP IMG OTA1</span>
+<span class="w">   </span><span class="c1">// + AP IMG OTA1</span>
+<span class="w">   </span><span class="p">{</span><span class="n">IMG_BOOT_OTA2</span><span class="p">,</span><span class="w">        </span><span class="mh">0x08300000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x0833FFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Boot Manifest(4K) + KM4 Bootloader(252K) OTA</span>
+<span class="w">   </span><span class="p">{</span><span class="n">IMG_APP_OTA2</span><span class="p">,</span><span class="w">                 </span><span class="mh">0x08340000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x0861FFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Certificate(4K) + Manifest(4K) + KR4 &amp; KM4   Application OTA2 + Manifest(4K) + RDP IMG OTA2</span>
+<span class="w">   </span><span class="c1">// + AP IMG OTA2</span>
+<span class="w">   </span><span class="p">{</span><span class="n">FTL</span><span class="p">,</span><span class="w">                          </span><span class="mh">0x0C400000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x0C45FFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//FTL for BT(&gt;=384K), The start offset of flash   pages which is allocated to FTL physical map.</span>
+<span class="hll"><span class="w">   </span><span class="p">{</span><span class="n">VFS1</span><span class="p">,</span><span class="w">                                 </span><span class="mh">0x0C460000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x0C55FFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//VFS region 1(1024K)</span>
+</span><span class="hll"><span class="w">   </span><span class="p">{</span><span class="n">VFS2</span><span class="p">,</span><span class="w">                                 </span><span class="mh">0xFFFFFFFF</span><span class="p">,</span><span class="w"> </span><span class="mh">0xFFFFFFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//VFS region 2</span>
+</span><span class="w">   </span><span class="p">{</span><span class="n">USER</span><span class="p">,</span><span class="w">                                 </span><span class="mh">0xFFFFFFFF</span><span class="p">,</span><span class="w"> </span><span class="mh">0xFFFFFFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//reserve for user</span>
+<span class="w">   </span><span class="cm">/* End */</span>
+<span class="w">   </span><span class="p">{</span><span class="mh">0xFF</span><span class="p">,</span><span class="w">                                 </span><span class="mh">0xFFFFFFFF</span><span class="p">,</span><span class="w"> </span><span class="mh">0xFFFFFFFF</span><span class="p">},</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>The <strong>VFS1</strong> region must exist, and its size should always be larger than 128KB.</p></li>
+<li><p>There are two VFS regions at most.</p></li>
+</ul>
+</div>
+</div><div aria-labelledby="tab-2-2-1" class="sphinx-tabs-panel" hidden="true" id="panel-2-2-1" name="2-1" role="tabpanel" tabindex="0"><p>Adjust the Flash partitions appropriately if the VFS interfaces are set to the Flash, and modify VFS1 or VFS2 (according to register region in <code class="file docutils literal notranslate"><span class="pre">main.c</span></code>) in <cite>Flash_Layout[]</cite> in <code class="docutils literal notranslate"><span class="pre">{SDK}component\soc\amebalite\usrcfg\ameba_flashcfg.c</span></code>.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">FlashLayoutInfo_TypeDef</span><span class="w"> </span><span class="n">Flash_Layout</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="cm">/*Region_Type, [StartAddr,     EndAddr]                */</span>
+<span class="w">   </span><span class="p">{</span><span class="n">IMG_BOOT</span><span class="p">,</span><span class="w">      </span><span class="mh">0x08000000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x08013FFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Boot Manifest(4K) + KM4 Bootloader(76K)</span>
+<span class="w">   </span><span class="c1">//Users should modify below according to their own memory</span>
+<span class="w">   </span><span class="p">{</span><span class="n">IMG_APP_OTA1</span><span class="p">,</span><span class="w">  </span><span class="mh">0x08014000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x081F3FFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Certificate(4K) + Manifest(4K) + KR4 &amp; KM4  Application OTA1 + Manifest(4K) + RDP IMG OTA1</span>
+
+<span class="w">   </span><span class="p">{</span><span class="n">IMG_BOOT_OTA2</span><span class="p">,</span><span class="w"> </span><span class="mh">0x08200000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x08213FFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Boot Manifest(4K) + KM4 Bootloader(76K) OTA</span>
+<span class="w">   </span><span class="p">{</span><span class="n">IMG_APP_OTA2</span><span class="p">,</span><span class="w">  </span><span class="mh">0x08214000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x083DCFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Certificate(4K) + Manifest(4K) + KR4 &amp; KM4  Application OTA2 + Manifest(4K) + RDP IMG OTA2</span>
+<span class="w">   </span><span class="p">{</span><span class="n">FTL</span><span class="p">,</span><span class="w">           </span><span class="mh">0x083DD000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x083DFFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//FTL for BT(&gt;=12K), The start offset of flash   pages which is allocated to FTL physical map.</span>
+<span class="hll"><span class="w">   </span><span class="p">{</span><span class="n">VFS1</span><span class="p">,</span><span class="w">          </span><span class="mh">0x083E0000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x083FFFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//VFS region 1 (128K)</span>
+</span><span class="w">   </span><span class="p">{</span><span class="n">IMG_DSP</span><span class="p">,</span><span class="w">       </span><span class="mh">0x08400000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x086FFFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Manifest(4K) + DSP IMG, only one DSP region in    layout</span>
+<span class="w">   </span><span class="p">{</span><span class="n">VFS2</span><span class="p">,</span><span class="w">          </span><span class="mh">0xFFFFFFFF</span><span class="p">,</span><span class="w"> </span><span class="mh">0xFFFFFFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//VFS region 2</span>
+<span class="w">   </span><span class="p">{</span><span class="n">USER</span><span class="p">,</span><span class="w">          </span><span class="mh">0xFFFFFFFF</span><span class="p">,</span><span class="w"> </span><span class="mh">0xFFFFFFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//reserve for user</span>
+
+<span class="w">   </span><span class="cm">/* End */</span>
+<span class="w">   </span><span class="p">{</span><span class="mh">0xFF</span><span class="p">,</span><span class="w">          </span><span class="mh">0xFFFFFFFF</span><span class="p">,</span><span class="w"> </span><span class="mh">0xFFFFFFFF</span><span class="p">},</span>
+<span class="p">};</span>
+<span class="w">   </span><span class="p">};</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>The <strong>VFS1</strong> region must exist, and its size should always be larger than 128KB.</p></li>
+<li><p>There are two VFS regions at most.</p></li>
+</ul>
+</div>
+</div><div aria-labelledby="tab-2-2-2" class="sphinx-tabs-panel" hidden="true" id="panel-2-2-2" name="2-2" role="tabpanel" tabindex="0"><p>Adjust the Flash partitions appropriately if the VFS interfaces are set to the Flash, and modify <strong>VFS1</strong> or <strong>VFS2</strong> (according to register region in <code class="file docutils literal notranslate"><span class="pre">main.c</span></code>) in <cite>Flash_Layout[]</cite> in <code class="docutils literal notranslate"><span class="pre">{SDK}\component\soc\amebadplus\usrcfg\ameba_flashcfg.c</span></code>.</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">const</span><span class="w"> </span><span class="n">FlashLayoutInfo_TypeDef</span><span class="w"> </span><span class="n">Flash_Layout</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="cm">/*Region_Type,  [StartAddr, EndAddr]   */</span>
 <span class="w">    </span><span class="p">{</span><span class="n">IMG_BOOT</span><span class="p">,</span><span class="w">      </span><span class="mh">0x08000000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x08013FFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Boot Manifest(4K) + KM4 Bootloader(76K)</span>
 <span class="w">    </span><span class="c1">//Users should modify below according to their own memory</span>
-<span class="w">    </span><span class="p">{</span><span class="n">IMG_APP_OTA1</span><span class="p">,</span><span class="w">  </span><span class="mh">0x08014000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x081F3FFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Certificate(4K) + Manifest(4K) + KM4 Application OTA1 + Manifest(4K) + RDP IMG OTA1</span>
+<span class="w">    </span><span class="p">{</span><span class="n">IMG_APP_OTA1</span><span class="p">,</span><span class="w">  </span><span class="mh">0x08014000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x081F3FFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Certificate(4K) + Manifest(4K) + KM4    Application OTA1 + Manifest(4K) + RDP IMG OTA1</span>
 
 <span class="w">    </span><span class="p">{</span><span class="n">IMG_BOOT_OTA2</span><span class="p">,</span><span class="w"> </span><span class="mh">0x08200000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x08213FFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Boot Manifest(4K) + KM4 Bootloader(76K) OTA</span>
-<span class="w">    </span><span class="p">{</span><span class="n">IMG_APP_OTA2</span><span class="p">,</span><span class="w">  </span><span class="mh">0x08214000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x083DCFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Certificate(4K) + Manifest(4K) + KM4 Application OTA2 + Manifest(4K) + RDP IMG OTA2</span>
+<span class="w">    </span><span class="p">{</span><span class="n">IMG_APP_OTA2</span><span class="p">,</span><span class="w">  </span><span class="mh">0x08214000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x083DCFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Certificate(4K) + Manifest(4K) + KM4    Application OTA2 + Manifest(4K) + RDP IMG OTA2</span>
 
-<span class="w">    </span><span class="p">{</span><span class="n">FTL</span><span class="p">,</span><span class="w">           </span><span class="mh">0x083DD000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x083DFFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//FTL for BT(&gt;=12K), The start offset of flash pages which is allocated to FTL physical map.</span>
+<span class="w">    </span><span class="p">{</span><span class="n">FTL</span><span class="p">,</span><span class="w">           </span><span class="mh">0x083DD000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x083DFFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//FTL for BT(&gt;=12K), The start offset of flash  pages which is allocated to FTL physical map.</span>
 <span class="hll"><span class="w">    </span><span class="p">{</span><span class="n">VFS1</span><span class="p">,</span><span class="w">          </span><span class="mh">0x083E0000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x083FFFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//VFS region 1 (128K)</span>
 </span><span class="w">    </span><span class="p">{</span><span class="n">VFS2</span><span class="p">,</span><span class="w">          </span><span class="mh">0xFFFFFFFF</span><span class="p">,</span><span class="w"> </span><span class="mh">0xFFFFFFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//VFS region 2</span>
 <span class="w">    </span><span class="p">{</span><span class="n">USER</span><span class="p">,</span><span class="w">          </span><span class="mh">0xFFFFFFFF</span><span class="p">,</span><span class="w"> </span><span class="mh">0xFFFFFFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Reserved for users</span>
@@ -254,6 +364,13 @@
 <li><p>The <strong>VFS1</strong> region must exist, and its size should always be larger than 128KB.</p></li>
 <li><p>There are two VFS regions at most.</p></li>
 </ul>
+</div>
+</div></div>
+</section>
+<section id="vfs-on-sd-card">
+<h2>VFS on SD card<a class="headerlink" href="#vfs-on-sd-card" title="Link to this heading"></a></h2>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"></div><p>The SD card is only supported by FatFS, <cite>vfs_type</cite> should be set to FatFS when <cite>interface</cite> is set to SD card. Menuconfig VFS Fatfs SD configuration should be set.</p>
 </div>
 </section>
 <section id="vfs-within-app-image">
@@ -504,7 +621,7 @@
 </div>
 </section>
 <section id="vfs-bin-file-generation">
-<span id="id1"></span><h2>VFS Bin File Generation<a class="headerlink" href="#vfs-bin-file-generation" title="Link to this heading"></a></h2>
+<span id="id2"></span><h2>VFS Bin File Generation<a class="headerlink" href="#vfs-bin-file-generation" title="Link to this heading"></a></h2>
 <p>If data needs to be placed in the Flash in advance, VFS bin file can be generated on PC. After generating the bin file, it should be downloaded to VFS region according to the Flash layout.</p>
 <section id="littlefs-bin-file-generation">
 <h3>LittleFS Bin File Generation<a class="headerlink" href="#littlefs-bin-file-generation" title="Link to this heading"></a></h3>
@@ -541,12 +658,12 @@
 <p class="admonition-title">Note</p>
 <ul class="simple">
 <li><p><strong>-b 4096</strong> and <strong>-p 256</strong> are default configurations, users should adapt the configuration according to <em>block_size</em> and <em>cache_size</em> of <code class="docutils literal notranslate"><span class="pre">lfs_config</span></code> in <code class="docutils literal notranslate"><span class="pre">{SDK}\component\file_system\littlefs\littlefs_adapter.c</span></code>.</p></li>
-<li><p><strong>-s 0x20000</strong> is according to VFS region mentioned in Section <a class="reference internal" href="#vfs-on-flash-section"><span class="std std-ref">VFS on Flash</span></a>.</p></li>
+<li><p><strong>-s 0x20000</strong> is according to VFS region mentioned in Section <span class="xref std std-ref">vfs_on_flash_section</span>.</p></li>
 </ul>
 </div>
 </li>
 <li><p>Download the image to the Flash.</p>
-<p>The start address of Image Tool should be <code class="docutils literal notranslate"><span class="pre">StartAddr</span></code> of VFS Flash region mentioned in Section <a class="reference internal" href="#vfs-on-flash-section"><span class="std std-ref">VFS on Flash</span></a>. The end address of Image Tool should be it’s <code class="docutils literal notranslate"><span class="pre">EndAddr</span></code> + 1;</p>
+<p>The start address of Image Tool should be <code class="docutils literal notranslate"><span class="pre">StartAddr</span></code> of VFS Flash region mentioned in Section <span class="xref std std-ref">vfs_on_flash_section</span>. The end address of Image Tool should be it’s <code class="docutils literal notranslate"><span class="pre">EndAddr</span></code> + 1;</p>
 <figure class="align-center">
 <a class="reference internal image-reference" href="../../../_images/littlefs_bin_download.png"><img alt="../../../_images/littlefs_bin_download.png" src="../../../_images/littlefs_bin_download.png" style="width: 777.6px; height: 112.8px;" /></a>
 </figure>
