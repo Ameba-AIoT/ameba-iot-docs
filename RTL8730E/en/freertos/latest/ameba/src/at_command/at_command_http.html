@@ -85,7 +85,7 @@
 <li class="toctree-l2"><a class="reference internal" href="at_command_wifi.html">Wi-Fi AT Commands</a></li>
 <li class="toctree-l2"><a class="reference internal" href="at_command_mqtt.html">MQTT AT Commands</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">HTTP AT Commands</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#at-httpconf">AT+HTTPCONF</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#at-httpheader">AT+HTTPHEADER</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#description">Description</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#command">Command</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#response">Response</a></li>
@@ -94,7 +94,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#example">Example</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#at-httpget">AT+HTTPGET</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#at-httpconf">AT+HTTPCONF</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#id2">Description</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#id3">Command</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#id4">Response</a></li>
@@ -103,7 +103,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#id7">Example</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#at-httppost">AT+HTTPPOST</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#at-httpquery">AT+HTTPQUERY</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#id8">Description</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#id9">Command</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#id10">Response</a></li>
@@ -112,7 +112,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#id13">Example</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#at-httpput">AT+HTTPPUT</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#at-httpget">AT+HTTPGET</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#id14">Description</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#id15">Command</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#id16">Response</a></li>
@@ -121,7 +121,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#id19">Example</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#at-httpdel">AT+HTTPDEL</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#at-httppost">AT+HTTPPOST</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#id20">Description</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#id21">Command</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#id22">Response</a></li>
@@ -130,10 +130,28 @@
 <li class="toctree-l4"><a class="reference internal" href="#id25">Example</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="#at-httpput">AT+HTTPPUT</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id26">Description</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id27">Command</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id28">Response</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id29">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id30">Error Number</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id31">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#at-httpdel">AT+HTTPDEL</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id32">Description</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id33">Command</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id34">Response</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id35">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id36">Error Number</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id37">Example</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="at_command_websocket.html">WebSocket AT Commands</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_tcp_ip.html">TCP/IP AT Commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="at_command_tcp_ip.html">Socket AT Commands</a></li>
 <li class="toctree-l2"><a class="reference internal" href="at_command_bluetooth.html">Bluetooth AT Commands</a></li>
 <li class="toctree-l2"><a class="reference internal" href="at_command_file_system.html">File System AT Commands</a></li>
 <li class="toctree-l2"><a class="reference internal" href="at_command_use_spi.html">How to Use AT Command with SPI</a></li>
@@ -191,27 +209,27 @@ If you need RTL8730E to support HTTP AT commands, you can enable HTTP AT command
 <p>The <code class="docutils literal notranslate"><span class="pre">TT</span> <span class="pre">mode</span></code> is only supported for MCU control mode. If you need use <code class="docutils literal notranslate"><span class="pre">TT</span> <span class="pre">mode</span></code> for AT commands, you need enable MCU control mode.
 The details of <code class="docutils literal notranslate"><span class="pre">TT</span> <span class="pre">mode</span></code> refer to <a class="reference internal" href="at_command_introduction.html#transparent-transmission"><span class="std std-ref">Transparent Transmission</span></a>.</p>
 </div>
-<section id="at-httpconf">
-<span id="http-at-httpconf"></span><h2>AT+HTTPCONF<a class="headerlink" href="#at-httpconf" title="Link to this heading"></a></h2>
+<section id="at-httpheader">
+<span id="http-at-httpheader"></span><h2>AT+HTTPHEADER<a class="headerlink" href="#at-httpheader" title="Link to this heading"></a></h2>
 <section id="description">
 <h3>Description<a class="headerlink" href="#description" title="Link to this heading"></a></h3>
-<p>Set HTTP Configuration.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Connect to the AP before using the HTTP AT commands.</p>
-</div>
+<p>Set HTTP request header. If you need to set HTTP request header used by GET/POST/PUT/… method, excuete it. It will take effect globally and permanently until a restart or reset. Once set, all HTTP method commands will carry these request headers. This command can set only one HTTP request header at a time, but you can set multiple times to support multiple different HTTP request headers. Currently, a maximum of 10 entries can be set.</p>
 </section>
 <section id="command">
 <h3>Command<a class="headerlink" href="#command" title="Link to this heading"></a></h3>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">HTTPCONF</span><span class="o">=&lt;</span><span class="n">timeout</span><span class="o">&gt;</span><span class="p">[,</span><span class="o">&lt;</span><span class="n">port</span><span class="o">&gt;</span><span class="p">]</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">HTTPHEADER</span><span class="o">=&lt;</span><span class="n">req_header_len</span><span class="o">&gt;</span>
 </pre></div>
 </div>
 </section>
 <section id="response">
 <h3>Response<a class="headerlink" href="#response" title="Link to this heading"></a></h3>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">OK</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span> <span class="o">&gt;&gt;&gt;</span>
+<span class="o">&lt;</span><span class="n">req_header</span><span class="o">&gt;</span>
+<span class="n">OK</span>
 </pre></div>
 </div>
+<p>The symbol <code class="docutils literal notranslate"><span class="pre">&gt;&gt;&gt;</span></code> indicates that AT service is ready for receiving serial data, and you can enter the HTTP request header string (in the format of <code class="docutils literal notranslate"><span class="pre">key:</span> <span class="pre">value</span></code>) now.
+When the string length determined by the parameter <code class="docutils literal notranslate"><span class="pre">&lt;req_header_len&gt;</span></code> is reached, it returns OK.</p>
 <p>Or</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ERROR</span><span class="p">:</span><span class="o">&lt;</span><span class="n">error_no</span><span class="o">&gt;</span>
 </pre></div>
@@ -220,17 +238,15 @@ The details of <code class="docutils literal notranslate"><span class="pre">TT</
 <section id="parameter">
 <h3>Parameter<a class="headerlink" href="#parameter" title="Link to this heading"></a></h3>
 <dl class="field-list simple">
-<dt class="field-odd">&lt;timeout&gt;<span class="colon">:</span></dt>
-<dd class="field-odd"><p>HTTP receive timeout.</p>
+<dt class="field-odd">&lt;req_header_len&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The length of input characters for single HTTP request header.</p>
 <ul class="simple">
-<li><p>Unit: second. Default: 10s.</p></li>
+<li><p>0: Clear all HTTP request headers that have been set.</p></li>
+<li><p>Other: Set a new HTTP request header.</p></li>
 </ul>
 </dd>
-<dt class="field-even">&lt;port&gt;<span class="colon">:</span></dt>
-<dd class="field-even"><p>HTTP server port.</p>
-<ul class="simple">
-<li><p>Default: 80 for HTTP, 443 for HTTPS. Range: [1,65535].</p></li>
-</ul>
+<dt class="field-even">&lt;req_header&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>The actual HTTP request header string (in the format of <code class="docutils literal notranslate"><span class="pre">key:</span> <span class="pre">value</span></code>)</p>
 </dd>
 </dl>
 </section>
@@ -240,40 +256,47 @@ The details of <code class="docutils literal notranslate"><span class="pre">TT</
 <dt class="field-odd">1<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Error parameters.</p>
 </dd>
+<dt class="field-even">2<span class="colon">:</span></dt>
+<dd class="field-even"><p>Malloc error.</p>
+</dd>
+<dt class="field-odd">3<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Get data failed in TT mode.</p>
+</dd>
 </dl>
 </section>
 <section id="example">
 <h3>Example<a class="headerlink" href="#example" title="Link to this heading"></a></h3>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">HTTPCONF</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="mi">12345</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="n">Set</span> <span class="n">a</span> <span class="n">new</span> <span class="n">request</span> <span class="n">header</span>
+<span class="n">AT</span><span class="o">+</span><span class="n">HTTPHEADER</span><span class="o">=</span><span class="mi">17</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="n">Connection</span><span class="p">:</span> <span class="n">close</span>
+<span class="n">OK</span>
+
+<span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="n">Clear</span> <span class="nb">all</span> <span class="n">request</span> <span class="n">header</span>
+<span class="n">AT</span><span class="o">+</span><span class="n">HTTPHEADER</span><span class="o">=</span><span class="mi">0</span>
 <span class="n">OK</span>
 </pre></div>
 </div>
 </section>
 </section>
-<section id="at-httpget">
-<span id="http-at-httget"></span><h2>AT+HTTPGET<a class="headerlink" href="#at-httpget" title="Link to this heading"></a></h2>
+<section id="at-httpconf">
+<span id="http-at-httpconf"></span><h2>AT+HTTPCONF<a class="headerlink" href="#at-httpconf" title="Link to this heading"></a></h2>
 <section id="id2">
 <h3>Description<a class="headerlink" href="#id2" title="Link to this heading"></a></h3>
-<p>Get HTTP resource.</p>
+<p>Set HTTP configuration. Setting by this command are global. Once set, it is effective permanently. If you need to use default HTTP timeout and port (80 for HTTP, 443 for HTTPS), enter</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">HTTPCONF</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span><span class="mi">0</span>
+</pre></div>
+</div>
 </section>
 <section id="id3">
 <h3>Command<a class="headerlink" href="#id3" title="Link to this heading"></a></h3>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">HTTPGET</span><span class="o">=&lt;</span><span class="n">host</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">path</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">conn_type</span><span class="o">&gt;</span><span class="p">[,</span><span class="o">&lt;</span><span class="n">certificate_index</span><span class="o">&gt;</span><span class="p">][,</span><span class="o">&lt;</span><span class="n">req_header_cnt</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">req_header</span><span class="o">&gt;...&lt;</span><span class="n">req_header</span><span class="o">&gt;</span><span class="p">]</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">HTTPCONF</span><span class="o">=&lt;</span><span class="n">timeout</span><span class="o">&gt;</span><span class="p">[,</span><span class="o">&lt;</span><span class="n">port</span><span class="o">&gt;</span><span class="p">]</span>
 </pre></div>
 </div>
 </section>
 <section id="id4">
 <h3>Response<a class="headerlink" href="#id4" title="Link to this heading"></a></h3>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+</span><span class="n">HTTPGET</span><span class="p">:</span> <span class="n">HEADER</span> <span class="n">LEN</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">header_len</span><span class="o">&gt;</span>
-<span class="o">+</span><span class="n">HTTPGET</span><span class="p">:</span> <span class="n">HEADER</span> <span class="n">DUMP</span> <span class="n">START</span>
-<span class="o">&lt;</span><span class="n">header_string</span><span class="o">&gt;</span>
-<span class="o">+</span><span class="n">HTTPGET</span><span class="p">:</span> <span class="n">HEADER</span> <span class="n">DUMP</span> <span class="n">END</span>
-<span class="o">+</span><span class="n">HTTPGET</span><span class="p">:</span> <span class="n">BODY</span> <span class="n">LEN</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">body_len</span><span class="o">&gt;</span>
-<span class="o">+</span><span class="n">HTTPGET</span><span class="p">:</span> <span class="n">BODY</span> <span class="n">DUMP</span> <span class="n">START</span>
-<span class="o">&lt;</span><span class="n">body</span><span class="o">&gt;</span>
-<span class="o">+</span><span class="n">HTTPGET</span><span class="p">:</span> <span class="n">BODY</span> <span class="n">DUMP</span> <span class="n">END</span>
-
-<span class="n">OK</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">OK</span>
 </pre></div>
 </div>
 <p>Or</p>
@@ -284,11 +307,155 @@ The details of <code class="docutils literal notranslate"><span class="pre">TT</
 <section id="id5">
 <h3>Parameter<a class="headerlink" href="#id5" title="Link to this heading"></a></h3>
 <dl class="field-list simple">
+<dt class="field-odd">&lt;timeout&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>HTTP receive/send timeout.</p>
+<ul class="simple">
+<li><p>Unit: second. Default: 10.</p></li>
+</ul>
+</dd>
+<dt class="field-even">&lt;port&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>HTTP server port.</p>
+<ul class="simple">
+<li><p>Default: 80 for HTTP, 443 for HTTPS. Range: [1,65535].</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="id6">
+<h3>Error Number<a class="headerlink" href="#id6" title="Link to this heading"></a></h3>
+<dl class="field-list simple">
+<dt class="field-odd">1<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Error parameters.</p>
+</dd>
+</dl>
+</section>
+<section id="id7">
+<h3>Example<a class="headerlink" href="#id7" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="n">Set</span> <span class="n">the</span> <span class="n">timeout</span> <span class="n">to</span> <span class="mi">1</span><span class="n">s</span> <span class="ow">and</span> <span class="n">the</span> <span class="n">port</span> <span class="n">to</span> <span class="mi">12345</span><span class="p">:</span>
+<span class="n">AT</span><span class="o">+</span><span class="n">HTTPCONF</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="mi">12345</span>
+<span class="n">OK</span>
+
+<span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="n">Set</span> <span class="n">the</span> <span class="n">timeout</span> <span class="ow">and</span> <span class="n">the</span> <span class="n">port</span> <span class="n">to</span> <span class="n">default</span><span class="p">:</span>
+<span class="n">AT</span><span class="o">+</span><span class="n">HTTPCONF</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span><span class="mi">0</span>
+<span class="n">OK</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="at-httpquery">
+<span id="http-at-httpquery"></span><h2>AT+HTTPQUERY<a class="headerlink" href="#at-httpquery" title="Link to this heading"></a></h2>
+<section id="id8">
+<h3>Description<a class="headerlink" href="#id8" title="Link to this heading"></a></h3>
+<p>Query HTTP global configuration, including HTTP timeout, HTTP server port and HTTP request header string.</p>
+</section>
+<section id="id9">
+<h3>Command<a class="headerlink" href="#id9" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">HTTPQUERY</span>
+</pre></div>
+</div>
+</section>
+<section id="id10">
+<h3>Response<a class="headerlink" href="#id10" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Global</span> <span class="n">HTTP</span> <span class="n">configuration</span><span class="p">:</span>
+<span class="n">http_timeout</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">http_timeout</span><span class="o">&gt;</span>
+<span class="n">http_server_port</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">http_server_port</span><span class="o">&gt;</span> <span class="p">[</span> <span class="n">OR</span> <span class="n">http_server_port</span><span class="p">:</span> <span class="mi">80</span> <span class="k">for</span> <span class="n">HTTP</span><span class="p">,</span> <span class="mi">443</span> <span class="k">for</span> <span class="n">HTTPS</span><span class="p">]</span>
+<span class="n">http_req_header_cnt</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">http_req_header_cnt</span><span class="o">&gt;</span>
+<span class="p">[</span><span class="n">http_req_header</span> <span class="nb">list</span><span class="p">:]</span>
+
+<span class="n">OK</span>
+</pre></div>
+</div>
+<p>Or</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ERROR</span><span class="p">:</span><span class="o">&lt;</span><span class="n">error_no</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</section>
+<section id="id11">
+<h3>Parameter<a class="headerlink" href="#id11" title="Link to this heading"></a></h3>
+<p>No parameters.</p>
+</section>
+<section id="id12">
+<h3>Error Number<a class="headerlink" href="#id12" title="Link to this heading"></a></h3>
+<dl class="field-list simple">
+<dt class="field-odd">1<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Error parameters.</p>
+</dd>
+</dl>
+</section>
+<section id="id13">
+<h3>Example<a class="headerlink" href="#id13" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="n">Default</span> <span class="n">configuration</span> <span class="n">query</span>
+<span class="n">AT</span><span class="o">+</span><span class="n">HTTPQUERY</span>
+<span class="n">Global</span> <span class="n">HTTP</span> <span class="n">configuration</span><span class="p">:</span>
+<span class="n">http_timeout</span><span class="p">:</span> <span class="mi">10</span>
+<span class="n">http_server_port</span><span class="p">:</span> <span class="mi">80</span> <span class="k">for</span> <span class="n">HTTP</span><span class="p">,</span> <span class="mi">443</span> <span class="k">for</span> <span class="n">HTTPS</span>
+<span class="n">http_req_header_cnt</span><span class="p">:</span> <span class="mi">0</span>
+
+<span class="n">OK</span>
+
+<span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="n">User</span> <span class="n">configuration</span> <span class="n">query</span>
+<span class="n">AT</span><span class="o">+</span><span class="n">HTTPHEADER</span><span class="o">=</span><span class="mi">17</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="n">Connection</span><span class="p">:</span> <span class="n">close</span>
+<span class="n">OK</span>
+<span class="n">AT</span><span class="o">+</span><span class="n">HTTPCONF</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="mi">12345</span>
+<span class="n">OK</span>
+<span class="n">AT</span><span class="o">+</span><span class="n">HTTPQUERY</span>
+<span class="n">Global</span> <span class="n">HTTP</span> <span class="n">configuration</span><span class="p">:</span>
+<span class="n">http_timeout</span><span class="p">:</span> <span class="mi">1</span>
+<span class="n">http_server_port</span><span class="p">:</span> <span class="mi">12345</span>
+<span class="n">http_req_header_cnt</span><span class="p">:</span> <span class="mi">1</span>
+<span class="n">http_req_header</span> <span class="nb">list</span><span class="p">:</span>
+<span class="n">Connection</span><span class="p">:</span> <span class="n">close</span>
+
+<span class="n">OK</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You need to connect to the AP with internet access capability before using the following HTTP method AT commands.</p>
+</div>
+</section>
+</section>
+<section id="at-httpget">
+<span id="http-at-httget"></span><h2>AT+HTTPGET<a class="headerlink" href="#at-httpget" title="Link to this heading"></a></h2>
+<section id="id14">
+<h3>Description<a class="headerlink" href="#id14" title="Link to this heading"></a></h3>
+<p>Get HTTP resource.</p>
+</section>
+<section id="id15">
+<h3>Command<a class="headerlink" href="#id15" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">HTTPGET</span><span class="o">=&lt;</span><span class="n">host</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">path</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">conn_type</span><span class="o">&gt;</span><span class="p">[,</span><span class="o">&lt;</span><span class="n">certificate_index</span><span class="o">&gt;</span><span class="p">][,</span><span class="o">&lt;</span><span class="n">req_header_cnt</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">req_header</span><span class="o">&gt;...&lt;</span><span class="n">req_header</span><span class="o">&gt;</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<section id="id16">
+<h3>Response<a class="headerlink" href="#id16" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+</span><span class="n">HTTPGET</span><span class="p">:</span> <span class="n">HEADER</span> <span class="n">LEN</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">header_len</span><span class="o">&gt;</span>
+<span class="o">+</span><span class="n">HTTPGET</span><span class="p">:</span> <span class="n">HEADER</span> <span class="n">DUMP</span> <span class="n">START</span>
+<span class="o">&lt;</span><span class="n">header_string</span><span class="o">&gt;</span>
+<span class="o">+</span><span class="n">HTTPGET</span><span class="p">:</span> <span class="n">HEADER</span> <span class="n">DUMP</span> <span class="n">END</span>
+<span class="o">+</span><span class="n">HTTPGET</span><span class="p">:</span> <span class="n">BODY</span> <span class="n">DUMP</span> <span class="n">START</span>
+<span class="o">&lt;</span><span class="n">body</span><span class="o">&gt;</span>
+<span class="o">+</span><span class="n">HTTPGET</span><span class="p">:</span> <span class="n">BODY</span> <span class="n">DUMP</span> <span class="n">END</span>
+<span class="o">+</span><span class="n">HTTPGET</span><span class="p">:</span> <span class="n">BODY</span> <span class="n">LEN</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">body_len</span><span class="o">&gt;</span>
+
+<span class="n">OK</span>
+</pre></div>
+</div>
+<p>Or</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ERROR</span><span class="p">:</span><span class="o">&lt;</span><span class="n">error_no</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</section>
+<section id="id17">
+<h3>Parameter<a class="headerlink" href="#id17" title="Link to this heading"></a></h3>
+<dl class="field-list simple">
 <dt class="field-odd">&lt;host&gt;<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Domain name or IP address.</p>
 </dd>
 <dt class="field-even">&lt;path&gt;<span class="colon">:</span></dt>
-<dd class="field-even"><p>HTTP path.</p>
+<dd class="field-even"><p>HTTP path. Default: / (if user did not enter &lt;path&gt;)</p>
 </dd>
 <dt class="field-odd">&lt;conn_type&gt;<span class="colon">:</span></dt>
 <dd class="field-odd"><p>HTTP connection type.</p>
@@ -314,8 +481,8 @@ The details of <code class="docutils literal notranslate"><span class="pre">TT</
 </dd>
 </dl>
 </section>
-<section id="id6">
-<h3>Error Number<a class="headerlink" href="#id6" title="Link to this heading"></a></h3>
+<section id="id18">
+<h3>Error Number<a class="headerlink" href="#id18" title="Link to this heading"></a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">1<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Parameters error.</p>
@@ -334,8 +501,8 @@ The details of <code class="docutils literal notranslate"><span class="pre">TT</
 </dd>
 </dl>
 </section>
-<section id="id7">
-<h3>Example<a class="headerlink" href="#id7" title="Link to this heading"></a></h3>
+<section id="id19">
+<h3>Example<a class="headerlink" href="#id19" title="Link to this heading"></a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">HTTPGET</span><span class="o">=</span><span class="n">httpbin</span><span class="o">.</span><span class="n">org</span><span class="p">,</span><span class="o">/</span><span class="n">get</span><span class="p">,</span><span class="mi">1</span>
 
 <span class="o">+</span><span class="n">HTTPGET</span><span class="p">:</span> <span class="n">HEADER</span> <span class="n">LEN</span> <span class="o">=</span> <span class="mi">230</span>
@@ -350,7 +517,6 @@ The details of <code class="docutils literal notranslate"><span class="pre">TT</
 <span class="n">Access</span><span class="o">-</span><span class="n">Control</span><span class="o">-</span><span class="n">Allow</span><span class="o">-</span><span class="n">Credentials</span><span class="p">:</span> <span class="n">true</span>
 
 <span class="o">+</span><span class="n">HTTPGET</span><span class="p">:</span> <span class="n">HEADER</span> <span class="n">DUMP</span> <span class="n">END</span>
-<span class="o">+</span><span class="n">HTTPGET</span><span class="p">:</span> <span class="n">BODY</span> <span class="n">LEN</span> <span class="o">=</span> <span class="mi">196</span>
 <span class="o">+</span><span class="n">HTTPGET</span><span class="p">:</span> <span class="n">BODY</span> <span class="n">DUMP</span> <span class="n">START</span>
 <span class="p">{</span>
 <span class="s2">&quot;args&quot;</span><span class="p">:</span> <span class="p">{},</span>
@@ -362,6 +528,7 @@ The details of <code class="docutils literal notranslate"><span class="pre">TT</
 <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;http://httpbin.org/get&quot;</span>
 <span class="p">}</span>
 <span class="o">+</span><span class="n">HTTPGET</span><span class="p">:</span> <span class="n">BODY</span> <span class="n">DUMP</span> <span class="n">END</span>
+<span class="o">+</span><span class="n">HTTPGET</span><span class="p">:</span> <span class="n">BODY</span> <span class="n">LEN</span> <span class="o">=</span> <span class="mi">196</span>
 
 <span class="n">OK</span>
 </pre></div>
@@ -370,18 +537,18 @@ The details of <code class="docutils literal notranslate"><span class="pre">TT</
 </section>
 <section id="at-httppost">
 <span id="http-at-httppost"></span><h2>AT+HTTPPOST<a class="headerlink" href="#at-httppost" title="Link to this heading"></a></h2>
-<section id="id8">
-<h3>Description<a class="headerlink" href="#id8" title="Link to this heading"></a></h3>
+<section id="id20">
+<h3>Description<a class="headerlink" href="#id20" title="Link to this heading"></a></h3>
 <p>Post HTTP data of specified length.</p>
 </section>
-<section id="id9">
-<h3>Command<a class="headerlink" href="#id9" title="Link to this heading"></a></h3>
+<section id="id21">
+<h3>Command<a class="headerlink" href="#id21" title="Link to this heading"></a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">HTTPPOST</span><span class="o">=&lt;</span><span class="n">host</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">path</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">conn_type</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">body_size</span><span class="o">&gt;</span><span class="p">[,</span><span class="o">&lt;</span><span class="n">certificate_index</span><span class="o">&gt;</span><span class="p">][,</span><span class="o">&lt;</span><span class="n">req_header_cnt</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">req_header</span><span class="o">&gt;...&lt;</span><span class="n">req_header</span><span class="o">&gt;</span><span class="p">]</span>
 </pre></div>
 </div>
 </section>
-<section id="id10">
-<h3>Response<a class="headerlink" href="#id10" title="Link to this heading"></a></h3>
+<section id="id22">
+<h3>Response<a class="headerlink" href="#id22" title="Link to this heading"></a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="o">&gt;</span> <span class="o">&gt;</span>
 </pre></div>
 </div>
@@ -392,10 +559,10 @@ If the transmission is successful, it returns:</p>
 <span class="o">+</span><span class="n">HTTPPOST</span><span class="p">:</span> <span class="n">HEADER</span> <span class="n">DUMP</span> <span class="n">START</span>
 <span class="o">&lt;</span><span class="n">header_string</span><span class="o">&gt;</span>
 <span class="o">+</span><span class="n">HTTPPOST</span><span class="p">:</span> <span class="n">HEADER</span> <span class="n">DUMP</span> <span class="n">END</span>
-<span class="o">+</span><span class="n">HTTPPOST</span><span class="p">:</span> <span class="n">BODY</span> <span class="n">LEN</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">body_len</span><span class="o">&gt;</span>
 <span class="o">+</span><span class="n">HTTPPOST</span><span class="p">:</span> <span class="n">BODY</span> <span class="n">DUMP</span> <span class="n">START</span>
 <span class="o">&lt;</span><span class="n">body</span><span class="o">&gt;</span>
 <span class="o">+</span><span class="n">HTTPPOST</span><span class="p">:</span> <span class="n">BODY</span> <span class="n">DUMP</span> <span class="n">END</span>
+<span class="o">+</span><span class="n">HTTPPOST</span><span class="p">:</span> <span class="n">BODY</span> <span class="n">LEN</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">body_len</span><span class="o">&gt;</span>
 
 <span class="n">OK</span>
 </pre></div>
@@ -405,14 +572,14 @@ If the transmission is successful, it returns:</p>
 </pre></div>
 </div>
 </section>
-<section id="id11">
-<h3>Parameter<a class="headerlink" href="#id11" title="Link to this heading"></a></h3>
+<section id="id23">
+<h3>Parameter<a class="headerlink" href="#id23" title="Link to this heading"></a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">&lt;host&gt;<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Domain name or IP address.</p>
 </dd>
 <dt class="field-even">&lt;path&gt;<span class="colon">:</span></dt>
-<dd class="field-even"><p>HTTP path.</p>
+<dd class="field-even"><p>HTTP path. Default: / (if user did not enter &lt;path&gt;)</p>
 </dd>
 <dt class="field-odd">&lt;conn_type&gt;<span class="colon">:</span></dt>
 <dd class="field-odd"><p>HTTP connection type.</p>
@@ -441,8 +608,8 @@ If the transmission is successful, it returns:</p>
 </dd>
 </dl>
 </section>
-<section id="id12">
-<h3>Error Number<a class="headerlink" href="#id12" title="Link to this heading"></a></h3>
+<section id="id24">
+<h3>Error Number<a class="headerlink" href="#id24" title="Link to this heading"></a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">1<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Parameters error.</p>
@@ -467,8 +634,8 @@ If the transmission is successful, it returns:</p>
 </dd>
 </dl>
 </section>
-<section id="id13">
-<h3>Example<a class="headerlink" href="#id13" title="Link to this heading"></a></h3>
+<section id="id25">
+<h3>Example<a class="headerlink" href="#id25" title="Link to this heading"></a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">HTTPPOST</span><span class="o">=</span><span class="n">httpbin</span><span class="o">.</span><span class="n">org</span><span class="p">,</span><span class="o">/</span><span class="n">post</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">35</span><span class="p">,,</span><span class="mi">2</span><span class="p">,</span><span class="n">Connection</span><span class="p">:</span> <span class="n">close</span><span class="p">,</span><span class="n">User</span><span class="o">-</span><span class="n">Agent</span><span class="p">:</span> <span class="n">Ameba_Dplus</span>
 <span class="o">&gt;&gt;&gt;</span>
 <span class="n">param1</span><span class="o">=</span><span class="n">test_data1</span><span class="o">&amp;</span><span class="n">param2</span><span class="o">=</span><span class="n">test_data2</span>
@@ -485,7 +652,6 @@ If the transmission is successful, it returns:</p>
 <span class="n">Access</span><span class="o">-</span><span class="n">Control</span><span class="o">-</span><span class="n">Allow</span><span class="o">-</span><span class="n">Credentials</span><span class="p">:</span> <span class="n">true</span>
 
 <span class="o">+</span><span class="n">HTTPPOST</span><span class="p">:</span> <span class="n">HEADER</span> <span class="n">DUMP</span> <span class="n">END</span>
-<span class="o">+</span><span class="n">HTTPPOST</span><span class="p">:</span> <span class="n">BODY</span> <span class="n">LEN</span> <span class="o">=</span> <span class="mi">359</span>
 <span class="o">+</span><span class="n">HTTPPOST</span><span class="p">:</span> <span class="n">BODY</span> <span class="n">DUMP</span> <span class="n">START</span>
 <span class="p">{</span>
 <span class="s2">&quot;args&quot;</span><span class="p">:</span> <span class="p">{},</span>
@@ -503,6 +669,7 @@ If the transmission is successful, it returns:</p>
 <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://httpbin.org/post&quot;</span>
 <span class="p">}</span>
 <span class="o">+</span><span class="n">HTTPPOST</span><span class="p">:</span> <span class="n">BODY</span> <span class="n">DUMP</span> <span class="n">END</span>
+<span class="o">+</span><span class="n">HTTPPOST</span><span class="p">:</span> <span class="n">BODY</span> <span class="n">LEN</span> <span class="o">=</span> <span class="mi">359</span>
 
 <span class="n">OK</span>
 </pre></div>
@@ -511,18 +678,18 @@ If the transmission is successful, it returns:</p>
 </section>
 <section id="at-httpput">
 <span id="http-at-httpput"></span><h2>AT+HTTPPUT<a class="headerlink" href="#at-httpput" title="Link to this heading"></a></h2>
-<section id="id14">
-<h3>Description<a class="headerlink" href="#id14" title="Link to this heading"></a></h3>
+<section id="id26">
+<h3>Description<a class="headerlink" href="#id26" title="Link to this heading"></a></h3>
 <p>Put HTTP data of specified length.</p>
 </section>
-<section id="id15">
-<h3>Command<a class="headerlink" href="#id15" title="Link to this heading"></a></h3>
+<section id="id27">
+<h3>Command<a class="headerlink" href="#id27" title="Link to this heading"></a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">HTTPPUT</span><span class="o">=&lt;</span><span class="n">host</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">path</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">conn_type</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">body_size</span><span class="o">&gt;</span><span class="p">[,</span><span class="o">&lt;</span><span class="n">certificate_index</span><span class="o">&gt;</span><span class="p">][,</span><span class="o">&lt;</span><span class="n">req_header_cnt</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">req_header</span><span class="o">&gt;...&lt;</span><span class="n">req_header</span><span class="o">&gt;</span><span class="p">]</span>
 </pre></div>
 </div>
 </section>
-<section id="id16">
-<h3>Response<a class="headerlink" href="#id16" title="Link to this heading"></a></h3>
+<section id="id28">
+<h3>Response<a class="headerlink" href="#id28" title="Link to this heading"></a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="o">&gt;</span> <span class="o">&gt;</span>
 </pre></div>
 </div>
@@ -533,10 +700,10 @@ If the transmission is successful, it returns:</p>
 <span class="o">+</span><span class="n">HTTPPUT</span><span class="p">:</span> <span class="n">HEADER</span> <span class="n">DUMP</span> <span class="n">START</span>
 <span class="o">&lt;</span><span class="n">header_string</span><span class="o">&gt;</span>
 <span class="o">+</span><span class="n">HTTPPUT</span><span class="p">:</span> <span class="n">HEADER</span> <span class="n">DUMP</span> <span class="n">END</span>
-<span class="o">+</span><span class="n">HTTPPUT</span><span class="p">:</span> <span class="n">BODY</span> <span class="n">LEN</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">body_len</span><span class="o">&gt;</span>
 <span class="o">+</span><span class="n">HTTPPUT</span><span class="p">:</span> <span class="n">BODY</span> <span class="n">DUMP</span> <span class="n">START</span>
 <span class="o">&lt;</span><span class="n">body</span><span class="o">&gt;</span>
 <span class="o">+</span><span class="n">HTTPPUT</span><span class="p">:</span> <span class="n">BODY</span> <span class="n">DUMP</span> <span class="n">END</span>
+<span class="o">+</span><span class="n">HTTPPUT</span><span class="p">:</span> <span class="n">BODY</span> <span class="n">LEN</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">body_len</span><span class="o">&gt;</span>
 
 <span class="n">OK</span>
 </pre></div>
@@ -546,14 +713,14 @@ If the transmission is successful, it returns:</p>
 </pre></div>
 </div>
 </section>
-<section id="id17">
-<h3>Parameter<a class="headerlink" href="#id17" title="Link to this heading"></a></h3>
+<section id="id29">
+<h3>Parameter<a class="headerlink" href="#id29" title="Link to this heading"></a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">&lt;host&gt;<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Domain name or IP address.</p>
 </dd>
 <dt class="field-even">&lt;path&gt;<span class="colon">:</span></dt>
-<dd class="field-even"><p>HTTP path.</p>
+<dd class="field-even"><p>HTTP path. Default: / (if user did not enter &lt;path&gt;)</p>
 </dd>
 <dt class="field-odd">&lt;conn_type&gt;<span class="colon">:</span></dt>
 <dd class="field-odd"><p>HTTP connection type.</p>
@@ -579,8 +746,8 @@ If the transmission is successful, it returns:</p>
 </dd>
 </dl>
 </section>
-<section id="id18">
-<h3>Error Number<a class="headerlink" href="#id18" title="Link to this heading"></a></h3>
+<section id="id30">
+<h3>Error Number<a class="headerlink" href="#id30" title="Link to this heading"></a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">1<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Parameters error.</p>
@@ -605,8 +772,8 @@ If the transmission is successful, it returns:</p>
 </dd>
 </dl>
 </section>
-<section id="id19">
-<h3>Example<a class="headerlink" href="#id19" title="Link to this heading"></a></h3>
+<section id="id31">
+<h3>Example<a class="headerlink" href="#id31" title="Link to this heading"></a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">HTTPPUT</span><span class="o">=</span><span class="n">httpbin</span><span class="o">.</span><span class="n">org</span><span class="p">,</span><span class="o">/</span><span class="n">put</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">35</span><span class="p">,,</span><span class="mi">2</span><span class="p">,</span><span class="n">Connection</span><span class="p">:</span> <span class="n">close</span><span class="p">,</span><span class="n">User</span><span class="o">-</span><span class="n">Agent</span><span class="p">:</span> <span class="n">Ameba_Dplus</span>
 <span class="o">&gt;&gt;&gt;</span>
 <span class="n">param1</span><span class="o">=</span><span class="n">test_data1</span><span class="o">&amp;</span><span class="n">param2</span><span class="o">=</span><span class="n">test_data2</span>
@@ -623,7 +790,6 @@ If the transmission is successful, it returns:</p>
 <span class="n">Access</span><span class="o">-</span><span class="n">Control</span><span class="o">-</span><span class="n">Allow</span><span class="o">-</span><span class="n">Credentials</span><span class="p">:</span> <span class="n">true</span>
 
 <span class="o">+</span><span class="n">HTTPPUT</span><span class="p">:</span> <span class="n">HEADER</span> <span class="n">DUMP</span> <span class="n">END</span>
-<span class="o">+</span><span class="n">HTTPPUT</span><span class="p">:</span> <span class="n">BODY</span> <span class="n">LEN</span> <span class="o">=</span> <span class="mi">358</span>
 <span class="o">+</span><span class="n">HTTPPUT</span><span class="p">:</span> <span class="n">BODY</span> <span class="n">DUMP</span> <span class="n">START</span>
 <span class="p">{</span>
 <span class="s2">&quot;args&quot;</span><span class="p">:</span> <span class="p">{},</span>
@@ -641,6 +807,7 @@ If the transmission is successful, it returns:</p>
 <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://httpbin.org/put&quot;</span>
 <span class="p">}</span>
 <span class="o">+</span><span class="n">HTTPPUT</span><span class="p">:</span> <span class="n">BODY</span> <span class="n">DUMP</span> <span class="n">END</span>
+<span class="o">+</span><span class="n">HTTPPUT</span><span class="p">:</span> <span class="n">BODY</span> <span class="n">LEN</span> <span class="o">=</span> <span class="mi">358</span>
 
 <span class="n">OK</span>
 </pre></div>
@@ -649,26 +816,26 @@ If the transmission is successful, it returns:</p>
 </section>
 <section id="at-httpdel">
 <span id="http-at-httpdel"></span><h2>AT+HTTPDEL<a class="headerlink" href="#at-httpdel" title="Link to this heading"></a></h2>
-<section id="id20">
-<h3>Description<a class="headerlink" href="#id20" title="Link to this heading"></a></h3>
-<p>Delete HTTP resource.</p>
+<section id="id32">
+<h3>Description<a class="headerlink" href="#id32" title="Link to this heading"></a></h3>
+<p>Delete the specified HTTP resource.</p>
 </section>
-<section id="id21">
-<h3>Command<a class="headerlink" href="#id21" title="Link to this heading"></a></h3>
+<section id="id33">
+<h3>Command<a class="headerlink" href="#id33" title="Link to this heading"></a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">HTTPDEL</span><span class="o">=&lt;</span><span class="n">host</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">path</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">conn_type</span><span class="o">&gt;</span><span class="p">[,</span><span class="o">&lt;</span><span class="n">certificate_index</span><span class="o">&gt;</span><span class="p">][,</span><span class="o">&lt;</span><span class="n">req_header_cnt</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">req_header</span><span class="o">&gt;...&lt;</span><span class="n">req_header</span><span class="o">&gt;</span><span class="p">]</span>
 </pre></div>
 </div>
 </section>
-<section id="id22">
-<h3>Response<a class="headerlink" href="#id22" title="Link to this heading"></a></h3>
+<section id="id34">
+<h3>Response<a class="headerlink" href="#id34" title="Link to this heading"></a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+</span><span class="n">HTTPDEL</span><span class="p">:</span> <span class="n">HEADER</span> <span class="n">LEN</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">header_len</span><span class="o">&gt;</span>
 <span class="o">+</span><span class="n">HTTPDEL</span><span class="p">:</span> <span class="n">HEADER</span> <span class="n">DUMP</span> <span class="n">START</span>
 <span class="o">&lt;</span><span class="n">header_string</span><span class="o">&gt;</span>
 <span class="o">+</span><span class="n">HTTPDEL</span><span class="p">:</span> <span class="n">HEADER</span> <span class="n">DUMP</span> <span class="n">END</span>
-<span class="o">+</span><span class="n">HTTPDEL</span><span class="p">:</span> <span class="n">BODY</span> <span class="n">LEN</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">body_len</span><span class="o">&gt;</span>
 <span class="o">+</span><span class="n">HTTPDEL</span><span class="p">:</span> <span class="n">BODY</span> <span class="n">DUMP</span> <span class="n">START</span>
 <span class="o">&lt;</span><span class="n">body</span><span class="o">&gt;</span>
 <span class="o">+</span><span class="n">HTTPDEL</span><span class="p">:</span> <span class="n">BODY</span> <span class="n">DUMP</span> <span class="n">END</span>
+<span class="o">+</span><span class="n">HTTPDEL</span><span class="p">:</span> <span class="n">BODY</span> <span class="n">LEN</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">body_len</span><span class="o">&gt;</span>
 
 <span class="n">OK</span>
 </pre></div>
@@ -678,14 +845,14 @@ If the transmission is successful, it returns:</p>
 </pre></div>
 </div>
 </section>
-<section id="id23">
-<h3>Parameter<a class="headerlink" href="#id23" title="Link to this heading"></a></h3>
+<section id="id35">
+<h3>Parameter<a class="headerlink" href="#id35" title="Link to this heading"></a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">&lt;host&gt;<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Domain name or IP address.</p>
 </dd>
 <dt class="field-even">&lt;path&gt;<span class="colon">:</span></dt>
-<dd class="field-even"><p>HTTP path.</p>
+<dd class="field-even"><p>HTTP path. Default: / (if user did not enter &lt;path&gt;)</p>
 </dd>
 <dt class="field-odd">&lt;conn_type&gt;<span class="colon">:</span></dt>
 <dd class="field-odd"><p>HTTP connection type.</p>
@@ -711,8 +878,8 @@ If the transmission is successful, it returns:</p>
 </dd>
 </dl>
 </section>
-<section id="id24">
-<h3>Error Number<a class="headerlink" href="#id24" title="Link to this heading"></a></h3>
+<section id="id36">
+<h3>Error Number<a class="headerlink" href="#id36" title="Link to this heading"></a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">1<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Parameters error.</p>
@@ -731,8 +898,8 @@ If the transmission is successful, it returns:</p>
 </dd>
 </dl>
 </section>
-<section id="id25">
-<h3>Example<a class="headerlink" href="#id25" title="Link to this heading"></a></h3>
+<section id="id37">
+<h3>Example<a class="headerlink" href="#id37" title="Link to this heading"></a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">HTTPDEL</span><span class="o">=</span><span class="n">httpbin</span><span class="o">.</span><span class="n">org</span><span class="p">,</span><span class="o">/</span><span class="n">delete</span><span class="p">,</span><span class="mi">2</span>
 
 <span class="o">+</span><span class="n">HTTPDEL</span><span class="p">:</span> <span class="n">HEADER</span> <span class="n">LEN</span> <span class="o">=</span> <span class="mi">230</span>
@@ -747,7 +914,6 @@ If the transmission is successful, it returns:</p>
 <span class="n">Access</span><span class="o">-</span><span class="n">Control</span><span class="o">-</span><span class="n">Allow</span><span class="o">-</span><span class="n">Credentials</span><span class="p">:</span> <span class="n">true</span>
 
 <span class="o">+</span><span class="n">HTTPDEL</span><span class="p">:</span> <span class="n">HEADER</span> <span class="n">DUMP</span> <span class="n">END</span>
-<span class="o">+</span><span class="n">HTTPDEL</span><span class="p">:</span> <span class="n">BODY</span> <span class="n">LEN</span> <span class="o">=</span> <span class="mi">263</span>
 <span class="o">+</span><span class="n">HTTPDEL</span><span class="p">:</span> <span class="n">BODY</span> <span class="n">DUMP</span> <span class="n">START</span>
 <span class="p">{</span>
 <span class="s2">&quot;args&quot;</span><span class="p">:</span> <span class="p">{},</span>
@@ -763,6 +929,7 @@ If the transmission is successful, it returns:</p>
 <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://httpbin.org/delete&quot;</span>
 <span class="p">}</span>
 <span class="o">+</span><span class="n">HTTPDEL</span><span class="p">:</span> <span class="n">BODY</span> <span class="n">DUMP</span> <span class="n">END</span>
+<span class="o">+</span><span class="n">HTTPDEL</span><span class="p">:</span> <span class="n">BODY</span> <span class="n">LEN</span> <span class="o">=</span> <span class="mi">263</span>
 
 <span class="n">OK</span>
 </pre></div>
