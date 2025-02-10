@@ -1,6 +1,6 @@
-.. tab:: RTL8726EA/RTL8720EA/RTL8721Dx
+.. tab:: RTL8730E
 
-   .. figure:: figures/vfs_architecture_smart.svg
+   .. figure:: figures/vfs_architecture_30E.svg
       :scale: 130%
       :align: center
    
