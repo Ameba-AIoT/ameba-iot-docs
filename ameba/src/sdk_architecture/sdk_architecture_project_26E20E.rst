@@ -1,4 +1,4 @@
-.. tab:: RTL8726EA/RTL8720E
+.. tab:: RTL8726EA/RTL8720EA
 
    The project name is ``amebadlite_gcc_project``, and the project includes the following items:
 

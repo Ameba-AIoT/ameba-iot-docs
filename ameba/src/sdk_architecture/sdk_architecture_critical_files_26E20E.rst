@@ -1,4 +1,4 @@
-.. tab:: RTL8726EA/RTL8720E
+.. tab:: RTL8726EA/RTL8720EA
 
    .. table::
       :width: 100%
@@ -7,7 +7,7 @@
       +------------------+-----------------------------------------------------------------------------+--------------------------------------------------+
       | Items            | Description                                                                 | Location                                         |
       +==================+=============================================================================+==================================================+
-      | basic_types.h    | - SUCCESS/FAIL                                                              | {SDK}\component\soc\amebalite\fwlib\include     |
+      | basic_types.h    | - SUCCESS/FAIL                                                              | ``\component\soc\amebalite\fwlib\include``       |
       |                  | - TRUE/FALSE                                                                |                                                  |
       |                  | - ENABLE/DISABLE                                                            |                                                  |
       |                  | - ON/OFF                                                                    |                                                  |
@@ -29,7 +29,7 @@
       |                  |                                                                             |                                                  |
       |                  | If you want to use raw APIs, this header must be included.                  |                                                  |
       +------------------+-----------------------------------------------------------------------------+--------------------------------------------------+
-      | mbed API headers | Peripheral header files for mbed APIs.                                      | {SDK}\component\soc\amebalite\hal               |
+      | mbed API headers | Peripheral header files for mbed APIs.                                      | ``\component\soc\amebalite\hal``                 |
       |                  |                                                                             |                                                  |
       |                  | If you want to use mbed APIs, related headers must be included.             |                                                  |
       +------------------+-----------------------------------------------------------------------------+--------------------------------------------------+

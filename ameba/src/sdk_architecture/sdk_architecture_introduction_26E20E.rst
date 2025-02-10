@@ -1,4 +1,4 @@
-.. tab:: RTL8726EA/RTL8720E
+.. tab:: RTL8726EA/RTL8720EA
 
    ::
 

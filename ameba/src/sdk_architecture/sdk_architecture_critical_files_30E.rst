@@ -7,7 +7,7 @@
       +------------------+-----------------------------------------------------------------------------+--------------------------------------------------+
       | Items            | Description                                                                 | Location                                         |
       +==================+=============================================================================+==================================================+
-      | basic_types.h    | - SUCCESS/FAIL                                                              | {SDK}\component\soc\amebasmart\fwlib\include     |
+      | basic_types.h    | - SUCCESS/FAIL                                                              | ``\component\soc\amebasmart\fwlib\include``      |
       |                  | - TRUE/FALSE                                                                |                                                  |
       |                  | - ENABLE/DISABLE                                                            |                                                  |
       |                  | - ON/OFF                                                                    |                                                  |
@@ -29,7 +29,7 @@
       |                  |                                                                             |                                                  |
       |                  | If you want to use raw APIs, this header must be included.                  |                                                  |
       +------------------+-----------------------------------------------------------------------------+--------------------------------------------------+
-      | mbed API headers | Peripheral header files for mbed APIs.                                      | {SDK}\component\soc\amebasmart\hal               |
+      | mbed API headers | Peripheral header files for mbed APIs.                                      | ``\component\soc\amebasmart\hal``                |
       |                  |                                                                             |                                                  |
       |                  | If you want to use mbed APIs, related headers must be included.             |                                                  |
       +------------------+-----------------------------------------------------------------------------+--------------------------------------------------+

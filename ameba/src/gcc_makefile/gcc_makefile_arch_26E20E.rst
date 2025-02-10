@@ -1,4 +1,4 @@
-.. tab:: RTL8720EA
+.. tab:: RTL8726EA/RTL8720EA
 
    - **KM4 Makefile**
 
@@ -57,3 +57,6 @@
                project_kr4\vsdk\make\utilities\Makefile
                project_kr4\vsdk\make\utilities_example\Makefile
                project_kr4\vsdk\make\utils\Makefile
+
+
+
