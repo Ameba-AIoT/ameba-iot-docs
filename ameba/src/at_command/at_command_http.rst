@@ -33,15 +33,81 @@ If you need |CHIP_NAME| to support HTTP AT commands, you can enable HTTP AT comm
    The ``TT mode`` is only supported for MCU control mode. If you need use ``TT mode`` for AT commands, you need enable MCU control mode.
    The details of ``TT mode`` refer to :ref:`Transparent Transmission <transparent_transmission>`.
 
+
+.. _http_at_httpheader:
+
+AT+HTTPHEADER
+----------------------
+Description
+~~~~~~~~~~~~~~~~~~~~~~
+Set HTTP request header. If you need to set HTTP request header used by GET/POST/PUT/... method, excuete it. It will take effect globally and permanently until a restart or reset. Once set, all HTTP method commands will carry these request headers. This command can set only one HTTP request header at a time, but you can set multiple times to support multiple different HTTP request headers. Currently, a maximum of 10 entries can be set.
+
+Command
+~~~~~~~~~~~~~~
+.. code-block::
+
+   AT+HTTPHEADER=<req_header_len>
+
+Response
+~~~~~~~~~~~~~~~~
+.. code-block::
+
+    >>>
+   <req_header>
+   OK
+
+The symbol ``>>>`` indicates that AT service is ready for receiving serial data, and you can enter the HTTP request header string (in the format of ``key: value``) now.
+When the string length determined by the parameter ``<req_header_len>`` is reached, it returns OK.
+
+Or
+
+.. code-block::
+
+   ERROR:<error_no>
+
+Parameter
+~~~~~~~~~~~~~~~~~~
+:<req_header_len>: The length of input characters for single HTTP request header.
+
+   - 0: Clear all HTTP request headers that have been set.
+
+   - Other: Set a new HTTP request header.
+
+:<req_header>: The actual HTTP request header string (in the format of ``key: value``)
+
+Error Number
+~~~~~~~~~~~~~~~~~~~~~~~~
+:1: Error parameters.
+
+:2: Malloc error.
+
+:3: Get data failed in TT mode.
+
+Example
+~~~~~~~~~~~~~~
+.. code-block::
+
+   (1) Set a new request header
+   AT+HTTPHEADER=17
+   >>>
+   Connection: close
+   OK
+
+   (2) Clear all request header
+   AT+HTTPHEADER=0
+   OK
+
 .. _http_at_httpconf:
 
 AT+HTTPCONF
 ----------------------
 Description
 ~~~~~~~~~~~~~~~~~~~~~~
-Set HTTP Configuration.
+Set HTTP configuration. Setting by this command are global. Once set, it is effective permanently. If you need to use default HTTP timeout and port (80 for HTTP, 443 for HTTPS), enter
 
-.. note:: Connect to the AP before using the HTTP AT commands.
+.. code-block::
+
+   AT+HTTPCONF=10,0
 
 Command
 ~~~~~~~~~~~~~~
@@ -63,9 +129,9 @@ Or
 
 Parameter
 ~~~~~~~~~~~~~~~~~~
-:<timeout>: HTTP receive timeout.
+:<timeout>: HTTP receive/send timeout.
 
-   - Unit: second. Default: 10s.
+   - Unit: second. Default: 10.
 
 :<port>: HTTP server port.
 
@@ -79,8 +145,87 @@ Example
 ~~~~~~~~~~~~~~
 .. code-block::
 
+   (1) Set the timeout to 1s and the port to 12345:
    AT+HTTPCONF=1,12345
    OK
+
+   (2) Set the timeout and the port to default:
+   AT+HTTPCONF=10,0
+   OK
+
+.. _http_at_httpquery:
+
+AT+HTTPQUERY
+----------------------
+Description
+~~~~~~~~~~~~~~~~~~~~~~
+Query HTTP global configuration, including HTTP timeout, HTTP server port and HTTP request header string.
+
+Command
+~~~~~~~~~~~~~~
+.. code-block::
+
+   AT+HTTPQUERY
+
+Response
+~~~~~~~~~~~~~~~~
+.. code-block::
+
+   Global HTTP configuration:
+   http_timeout: <http_timeout>
+   http_server_port: <http_server_port> [ OR http_server_port: 80 for HTTP, 443 for HTTPS]
+   http_req_header_cnt: <http_req_header_cnt>
+   [http_req_header list:]
+
+   OK
+
+Or
+
+.. code-block::
+
+   ERROR:<error_no>
+
+Parameter
+~~~~~~~~~~~~~~~~~~
+No parameters.
+
+Error Number
+~~~~~~~~~~~~~~~~~~~~~~~~
+:1: Error parameters.
+
+Example
+~~~~~~~~~~~~~~
+.. code-block::
+
+   (1) Default configuration query
+   AT+HTTPQUERY
+   Global HTTP configuration:
+   http_timeout: 10
+   http_server_port: 80 for HTTP, 443 for HTTPS
+   http_req_header_cnt: 0
+   
+   OK
+
+   (2) User configuration query
+   AT+HTTPHEADER=17
+   >>>
+   Connection: close
+   OK
+   AT+HTTPCONF=1,12345
+   OK
+   AT+HTTPQUERY
+   Global HTTP configuration:
+   http_timeout: 1
+   http_server_port: 12345
+   http_req_header_cnt: 1
+   http_req_header list:
+   Connection: close
+
+   OK
+
+
+
+.. note:: You need to connect to the AP with internet access capability before using the following HTTP method AT commands.
 
 .. _http_at_httget:
 
@@ -104,10 +249,10 @@ Response
    +HTTPGET: HEADER DUMP START
    <header_string>
    +HTTPGET: HEADER DUMP END
-   +HTTPGET: BODY LEN = <body_len>
    +HTTPGET: BODY DUMP START
    <body>
    +HTTPGET: BODY DUMP END
+   +HTTPGET: BODY LEN = <body_len>
 
    OK
 
@@ -121,7 +266,7 @@ Parameter
 ~~~~~~~~~~~~~~~~~~
 :<host>: Domain name or IP address.
 
-:<path>: HTTP path.
+:<path>: HTTP path. Default: / (if user did not enter <path>)
 
 :<conn_type>: HTTP connection type.
 
@@ -173,7 +318,6 @@ Example
    Access-Control-Allow-Credentials: true
 
    +HTTPGET: HEADER DUMP END
-   +HTTPGET: BODY LEN = 196
    +HTTPGET: BODY DUMP START
    {
    "args": {}, 
@@ -185,6 +329,7 @@ Example
    "url": "http://httpbin.org/get"
    }
    +HTTPGET: BODY DUMP END
+   +HTTPGET: BODY LEN = 196
 
    OK
 
@@ -218,10 +363,10 @@ If the transmission is successful, it returns:
    +HTTPPOST: HEADER DUMP START
    <header_string>
    +HTTPPOST: HEADER DUMP END
-   +HTTPPOST: BODY LEN = <body_len>
    +HTTPPOST: BODY DUMP START
    <body>
    +HTTPPOST: BODY DUMP END
+   +HTTPPOST: BODY LEN = <body_len>
 
    OK
 
@@ -235,7 +380,7 @@ Parameter
 ~~~~~~~~~~~~~~~~~~
 :<host>: Domain name or IP address.
 
-:<path>: HTTP path.
+:<path>: HTTP path. Default: / (if user did not enter <path>)
 
 :<conn_type>: HTTP connection type.
 
@@ -295,7 +440,6 @@ Example
    Access-Control-Allow-Credentials: true
 
    +HTTPPOST: HEADER DUMP END
-   +HTTPPOST: BODY LEN = 359
    +HTTPPOST: BODY DUMP START
    {
    "args": {}, 
@@ -313,6 +457,7 @@ Example
    "url": "https://httpbin.org/post"
    }
    +HTTPPOST: BODY DUMP END
+   +HTTPPOST: BODY LEN = 359
 
    OK
 
@@ -346,10 +491,10 @@ If the transmission is successful, it returns:
    +HTTPPUT: HEADER DUMP START
    <header_string>
    +HTTPPUT: HEADER DUMP END
-   +HTTPPUT: BODY LEN = <body_len>
    +HTTPPUT: BODY DUMP START
    <body>
    +HTTPPUT: BODY DUMP END
+   +HTTPPUT: BODY LEN = <body_len>
 
    OK
 
@@ -363,7 +508,7 @@ Parameter
 ~~~~~~~~~~~~~~~~~~
 :<host>: Domain name or IP address.
 
-:<path>: HTTP path.
+:<path>: HTTP path. Default: / (if user did not enter <path>)
 
 :<conn_type>: HTTP connection type.
 
@@ -421,7 +566,6 @@ Example
    Access-Control-Allow-Credentials: true
 
    +HTTPPUT: HEADER DUMP END
-   +HTTPPUT: BODY LEN = 358
    +HTTPPUT: BODY DUMP START
    {
    "args": {}, 
@@ -439,6 +583,7 @@ Example
    "url": "https://httpbin.org/put"
    }
    +HTTPPUT: BODY DUMP END
+   +HTTPPUT: BODY LEN = 358
 
    OK
 
@@ -448,7 +593,7 @@ AT+HTTPDEL
 ----------------------------
 Description
 ~~~~~~~~~~~~~~~~~~~~~~
-Delete HTTP resource.
+Delete the specified HTTP resource.
 
 Command
 ~~~~~~~~~~~~~~
@@ -464,10 +609,10 @@ Response
    +HTTPDEL: HEADER DUMP START
    <header_string>
    +HTTPDEL: HEADER DUMP END
-   +HTTPDEL: BODY LEN = <body_len>
    +HTTPDEL: BODY DUMP START
    <body>
    +HTTPDEL: BODY DUMP END
+   +HTTPDEL: BODY LEN = <body_len>
 
    OK
 
@@ -481,7 +626,7 @@ Parameter
 ~~~~~~~~~~~~~~~~~~
 :<host>: Domain name or IP address.
 
-:<path>: HTTP path.
+:<path>: HTTP path. Default: / (if user did not enter <path>)
 
 :<conn_type>: HTTP connection type.
 
@@ -533,7 +678,6 @@ Example
    Access-Control-Allow-Credentials: true
 
    +HTTPDEL: HEADER DUMP END
-   +HTTPDEL: BODY LEN = 263
    +HTTPDEL: BODY DUMP START
    {
    "args": {}, 
@@ -549,5 +693,6 @@ Example
    "url": "https://httpbin.org/delete"
    }
    +HTTPDEL: BODY DUMP END
+   +HTTPDEL: BODY LEN = 263
 
    OK
