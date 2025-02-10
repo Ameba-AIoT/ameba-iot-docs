@@ -1,14 +1,13 @@
-.. _amebadplus_virtual_file_system:
+.. _virtual_file_system:
 
 Introduction
 ------------------------
 This section introduces how to run Virtual File System (VFS) on Ameba SoC, including FatFS and LittleFS as the underlying implementation. Users can ignore the differences between different file systems by using VFS. The VFS provides common file operation interfaces like fopen, fclose, fwrite, fread, etc. The Key-Value (KV) interfaces are based on these common file operations. The architecture of VFS is illustrated below.
 
-.. figure:: figures/vfs_architecture.svg
-   :scale: 130%
-   :align: center
+.. tabs::
 
-   Architecture of VFS
+   .. include:: vfs_arch_lite_dplus.rst
+   .. include:: vfs_arch_smart.rst
 
 VFS Initialization
 ------------------------------------
@@ -42,7 +41,7 @@ By default, the VFS has been initialized in :file:`main.c`.
      return;
    }
 
-The :func:`vfs_user_register()` API will mount VFS to the Flash by users' configuration. If failed to mount, this API will check whether the Flash is clean (0xFF). And if the Flash is clean, it will program the Flash to initialize VFS.
+The :func:`vfs_user_register()` API will mount VFS to the Flash (or SD card, if supported) by users' configuration. If failed to mount, this API will check whether the Flash is clean (0xFF). And if the Flash is clean, it will program the Flash to initialize VFS.
 
 .. code-block:: c
 
@@ -50,48 +49,46 @@ The :func:`vfs_user_register()` API will mount VFS to the Flash by users' config
 
 Where:
 
-:**prefix**: defined by users, used to distinguish different file systems
-:**vfs_type**: file system type of the underlying implementation (**FatFS** or **LittleFS**)
-:**interface**: memory type (Flash only)
-:**region**: Flash partition (**VFS1** or **VFS2**, described in Section :ref:`vfs_on_flash_section`)
-:**flag**: operation authority of file system (read-write or read-only)
+.. tabs::
+
+   .. tab:: RTL8726EA/RTL8720EA/RTL8721Dx
+
+      :**prefix**: defined by users, used to distinguish different file systems
+      :**vfs_type**: file system type of the underlying implementation (**FatFS** or **LittleFS**)
+      :**interface**: memory type (Flash only)
+      :**region**: Flash partition (**VFS1** or **VFS2**, described in Section :ref:`vfs_on_flash`)
+      :**flag**: operation authority of file system (read-write or read-only)
+
+   .. tab:: RTL8730E
+
+      :**prefix**: defined by users, used to distinguish different file systems
+      :**vfs_type**: file system type of the underlying implementation (**FatFS** or **LittleFS**)
+      :**interface**: memory type (Flash for LittleFS, Flash and SD card for FatFS)
+      :**region**: Flash partition (**VFS1** or **VFS2**, described in Section :ref:`vfs_on_flash`)
+      :**flag**: operation authority of file system (read-write or read-only)
 
 .. note::
-   *vfs_type* of VFS_REGION_1 is set to **LittleFS** by default for read-write balance and power failure protection. To ensure proper utilization of **FatFS**, it is essential to configure the relevant settings in the menuconfig.
+   *vfs_type* of VFS1 is set to **LittleFS** by default for read-write balance and power failure protection. To ensure proper utilization of **FatFS**, it is essential to configure the relevant settings in the menuconfig.
 
 Usage of VFS
 ------------------------
 
-.. _vfs_on_flash_section:
+.. _vfs_on_flash:
 
 VFS on Flash
 ~~~~~~~~~~~~~~~
-Adjust the Flash partitions appropriately if the VFS interfaces are set to the Flash, and modify **VFS1** or **VFS2** (according to register region in :file:`main.c`) in `Flash_Layout[]` in ``{SDK}\component\soc\amebadplus\usrcfg\ameba_flashcfg.c``.
+.. tabs::
 
-.. code-block:: c
-   :emphasize-lines: 11
+   .. include:: vfs_on_flash_smart.rst
+   .. include:: vfs_on_flash_lite.rst
+   .. include:: vfs_on_flash_dplus.rst
 
-   const FlashLayoutInfo_TypeDef Flash_Layout[] = {
-       /*Region_Type,  [StartAddr, EndAddr]   */
-       {IMG_BOOT,      0x08000000, 0x08013FFF}, //Boot Manifest(4K) + KM4 Bootloader(76K)
-       //Users should modify below according to their own memory
-       {IMG_APP_OTA1,  0x08014000, 0x081F3FFF}, //Certificate(4K) + Manifest(4K) + KM4 Application OTA1 + Manifest(4K) + RDP IMG OTA1
+VFS on SD card
+~~~~~~~~~~~~~~~
+.. tabs::
 
-       {IMG_BOOT_OTA2, 0x08200000, 0x08213FFF}, //Boot Manifest(4K) + KM4 Bootloader(76K) OTA
-       {IMG_APP_OTA2,  0x08214000, 0x083DCFFF}, //Certificate(4K) + Manifest(4K) + KM4 Application OTA2 + Manifest(4K) + RDP IMG OTA2
+   .. include:: vfs_on_sd_card_smart.rst
 
-       {FTL,           0x083DD000, 0x083DFFFF}, //FTL for BT(>=12K), The start offset of flash pages which is allocated to FTL physical map.
-       {VFS1,          0x083E0000, 0x083FFFFF}, //VFS region 1 (128K)
-       {VFS2,          0xFFFFFFFF, 0xFFFFFFFF}, //VFS region 2
-       {USER,          0xFFFFFFFF, 0xFFFFFFFF}, //Reserved for users
-
-       /* End */
-       {0xFF,          0xFFFFFFFF, 0xFFFFFFFF},
-   };
-
-.. note::
-   - The **VFS1** region must exist, and its size should always be larger than 128KB.
-   - There are two VFS regions at most.
 
 VFS within APP Image
 ~~~~~~~~~~~~~~~~~~~~~~~
