@@ -2,7 +2,7 @@
 
 Introduction
 --------------------------------------
-There are two kinds of examples in the SDK of |CHIP_NAME|:
+There are two kinds of examples in the SDK.
 
 - application examples
 - peripheral examples
@@ -23,13 +23,13 @@ This chapter illustrates the contents of examples and how to build example sourc
 
 Application Example
 --------------------------------------
-In each folder of application example, there are C source files, header files and :file:`README.txt`.
-You should check for detailed configurations of the example according to :file:`README.txt`.
+In each folder of application example, there are C source files, header files and :file:`README.txt`. You should check for detailed configurations of the example according to :file:`README.txt`.
 
 .. note::
-   The application examples are shared by all Realtek SoC, so you need to refer to :file:`README.txt` for detailed information of |CHIP_NAME|.
+   The application examples are shared by all Realtek SoC, so you need to refer to :file:`README.txt` for detailed information of different ICs.
 
 The application examples normally run on KM4. The entry function of application example is :func:`app_example()` in :file:`main.c` under ``{SDK}\amebadplus_gcc_project\project_km4\src``.
+
 Each application example has its own :func:`app_example()`, and :func:`app_example()` in :file:`main.c` will be replaced automatically when the application example is built.
 
 .. code-block:: c
