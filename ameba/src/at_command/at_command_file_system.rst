@@ -31,7 +31,7 @@ Parameter
 ~~~~~~~~~~~~~~~~~~
 :<operation>: file operation type.
 
-   - 0: List files in directory.(Only support KV directory)
+   - 0: List files in directory.
 
    - 1: Delete file.
 
@@ -57,3 +57,4 @@ Error Number
 
 .. note::
    When the `operation` is set to `write`, the system will enter :ref:`TT mode <transparent_transmission>` upon receiving this command.
+   The File System AT commands are all executed in the ``AT`` directory.

@@ -269,23 +269,54 @@ Besides obtaining the release version from GitHub, users can also build images w
 
 SSL Certificate
 ~~~~~~~~~~~~~~~~
-If an SSL certificate is required during the use of AT Commands, the user has two options to prepare the certificate before executing the command:
+If an SSL certificate is required during the use of AT Commands, users should prepare the certificate before executing the command.
+Store the pre-prepared certificate files in the VFS binary file. The format of the certificate name and the related AT commands are as follows:
 
-- 1. Store the pre-prepared certificate files in the VFS binary file with the names and formats of <client/server>_<ca/cert/key>_<1/2/3>.crt. 
-  Then, flash them to the AT module together with the application firmware.
+.. table:: SSL certificate file name and related AT commands
+   :width: 100%
+   :widths: auto
 
-- 2. During the operation of the AT module, use the AT+FS command to write the certificate into the file system. 
-  For detailed usage of the AT+FS command to write files, please refer to :ref:`file_system_at_commands`.
+   +------------+------------------------+---------------------+
+   |  Function  | Certificate Name       | Related AT Commands |
+   +------------+------------------------+---------------------+
+   | SSL client | client 1 certificates: | - AT+HTTPGET        |
+   |            |                        | - AT+HTTPPOST       |
+   |            | - client_ca_1.crt      | - AT+HTTPPUT        |
+   |            | - client_cert_1.crt    | - AT+HTTPDEL        |
+   |            | - client_key_1.key     | - AT+MQTTUSERCFG    |
+   |            |                        | - AT+SKTCLIENT      |
+   |            | client 2 certificates: | - AT+WSOPEN         |
+   |            |                        |                     |
+   |            | - client_ca_2.crt      |                     |
+   |            | - client_cert_2.crt    |                     |
+   |            | - client_key_2.key     |                     |
+   |            |                        |                     |
+   |            | ...                    |                     |
+   +------------+------------------------+---------------------+
+   | SSL Server | server 1 certificates: | - AT+SKTSERVE       |
+   |            |                        |                     |
+   |            | - server_ca_1.crt      |                     |
+   |            | - server_cert_1.crt    |                     |
+   |            | - server_key_1.key     |                     |
+   |            |                        |                     |
+   |            | server 2 certificates: |                     |
+   |            |                        |                     |
+   |            | - server_ca_2.crt      |                     |
+   |            | - server_cert_2.crt    |                     |
+   |            | - server_key_2.key     |                     |
+   |            |                        |                     |
+   |            | ...                    |                     |
+   +------------+------------------------+---------------------+
 
-.. note::
-   When creating the VFS bin file, SSL certificates should be placed in the ``KV`` directory. The operations of the file system AT commands are also conducted in the ``KV`` directory.
+Then, flash them to the AT module together with the application firmware.
+When creating the VFS bin file, SSL certificates should be placed in the ``CERT`` directory.
 
 .. _atcmd_mcu_control_mode_configuration:
 
 Configuration
 ~~~~~~~~~~~~~~~
 For MCU Control mode, the configuration needs to be implemented via the ``atcmd_config.json`` file. 
-The ``atcmd_config.json`` file needs to be converted into a littlefs bin file and placed in the KV directory(refer to :ref:`Example <atcmd_config_example>` for details).
+The ``atcmd_config.json`` file needs to be converted into a littlefs bin file and placed in the root directory(refer to :ref:`Example <atcmd_config_example>` for details).
 The specific format is as follows:
 
 .. code-block::
@@ -343,14 +374,14 @@ This section demonstrates how to prepare a custom atcmd_config.json file and act
          }
       }
 
-2. Create a TEST/KV directory and place the atcmd_config.json file into the ``KV`` subdirectory.
+2. Create a TEST directory and place the atcmd_config.json file into root directory.
 
 3. Use the LittleFS binary file creation tool to generate a LittleFS binary file (refer to :ref:`VFS Bin File <vfs_bin_file_generation>` for the specific command parameters).
 
    .. code-block::
       
       linux@user:~$./mklittlefs -b 4096 -p 256 -s 131072 -c TEST lfs.bin
-      /KV/atcmd_config.json
+      atcmd_config.json
 
 4. Flash the generated lfs.bin file into the VFS1 region of the AT module according to the flash layout(refer to :ref:`VFS on Flash <vfs_on_flash_section>` for the specific address).
 
