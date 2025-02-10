@@ -73,37 +73,20 @@ In case of MCU control mode, the input and response of AT commands can be separa
 In MCU Control mode, users should prepare the :file:`atcmd_config.json` file in advance(refer to :ref:`atcmd_mcu_control_mode_configuration` for detailed instructions).
 If no VFS AT command configuration file is provided, the default configuration of UART will be used.
 
-.. only:: RTL8721D
+.. table:: Default UART port and baud rates
+   :width: 100%
+   :widths: auto
 
-   .. table:: Default UART port and baud rates for chips
-      :width: 100%
-      :widths: auto
-
-      +-------------+---------+---------+-------------------+
-      | Chip name   | UART Tx | UART Rx | Default baud rate |
-      +=============+=========+=========+===================+
-      | RTL8721D    | PA_26   | PA_27   | 38400             |
-      +             +         +         +                   +
-      | RTL8711D    |         |         |                   |
-      +-------------+---------+---------+-------------------+
-
-.. only:: RTL8726EA
-
-   .. table:: Default UART port and baud rates
-      :width: 100%
-      :widths: auto
-
-      +-------------+---------+---------+-------------------+
-      | Chip name   | UART Tx | UART Rx | Default baud rate |
-      +=============+=========+=========+===================+
-      | RTL8726EA   | PA_28   | PA_29   | 38400             |
-      +             +         +         +                   +
-      | RTL8713EC   |         |         |                   |
-      +             +         +         +                   +
-      | RTL8720EA   |         |         |                   |
-      +             +         +         +                   +
-      | RTL8710EC   |         |         |                   |
-      +-------------+---------+---------+-------------------+
+   +-----------------------+---------+---------+-------------------+
+   | Ameba SoC             | UART Tx | UART Rx | Default baud rate |
+   +=======================+=========+=========+===================+
+   | RTL8721Dx/RTL8711Dx   | PA_26   | PA_27   | 38400             |
+   +-----------------------+---------+---------+-------------------+
+   | | RTL8726EA/RTL8713EC | PA_28   | PA_29   | 38400             |
+   | | RTL8720EA/RTL8710EC |         |         |                   |
+   +-----------------------+---------+---------+-------------------+
+   | RTL8730E              | PA_3    | PA_2    | 38400             |
+   +-----------------------+---------+---------+-------------------+
 
 Command Description
 --------------------
@@ -410,23 +393,33 @@ In this section, we will introduce the first one.
 The Image Tool is the official image download tool developed by Realtek for Ameba series SoC.
 It can be used to download images to the Flash of device through the UART download interface.
 
-When you lanuch the image tool, it is shown as the following figure.
+When you lanuch the image tool, it is shown as the following figures.
 
-.. only:: RTL8721D
+.. tabs::
 
-   .. figure:: figures/image_tool_amebadplus.png
-      :scale: 70%
-      :align: center
+   .. tab:: RTL8721Dx
 
-      Image Tool
+      .. figure:: figures/image_tool_21Dx.png
+         :scale: 70%
+         :align: center
 
-.. only:: RTL8726EA
+         Image Tool
 
-   .. figure:: figures/image_tool_amebalite.png
-      :scale: 70%
-      :align: center
+   .. tab:: RTL8726EA/RTL8720EA
 
-      Image Tool
+      .. figure:: figures/image_tool_26E20E.png
+         :scale: 70%
+         :align: center
+
+         Image Tool
+
+   .. tab:: RTL8730E
+
+      .. figure:: figures/image_tool_30E.png
+         :scale: 70%
+         :align: center
+
+         Image Tool
 
 The device profiles provide the necessary device information required for image download, with the naming rules:
 

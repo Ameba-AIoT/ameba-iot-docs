@@ -1,6 +1,6 @@
 .. _tcp_ip_at_commands:
 
-TCP/IP AT Commands
+Socket AT Commands
 ====================================
 
 .. _tcp_ip_at_sktserver:
