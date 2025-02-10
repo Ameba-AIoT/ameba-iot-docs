@@ -6,8 +6,8 @@ This section introduces how to run Virtual File System (VFS) on Ameba SoC, inclu
 
 .. tabs::
 
-   .. include:: vfs_arch_lite_dplus.rst
-   .. include:: vfs_arch_smart.rst
+   .. include:: vfs_arch_26E20E21Dx.rst
+   .. include:: vfs_arch_30E.rst
 
 VFS Initialization
 ------------------------------------
@@ -79,15 +79,15 @@ VFS on Flash
 ~~~~~~~~~~~~~~~
 .. tabs::
 
-   .. include:: vfs_on_flash_smart.rst
-   .. include:: vfs_on_flash_lite.rst
-   .. include:: vfs_on_flash_dplus.rst
+   .. include:: vfs_on_flash_30E.rst
+   .. include:: vfs_on_flash_26E20E.rst
+   .. include:: vfs_on_flash_21Dx.rst
 
 VFS on SD card
 ~~~~~~~~~~~~~~~
 .. tabs::
 
-   .. include:: vfs_on_sd_card_smart.rst
+   .. include:: vfs_on_sd_card_30E.rst
 
 
 VFS within APP Image
