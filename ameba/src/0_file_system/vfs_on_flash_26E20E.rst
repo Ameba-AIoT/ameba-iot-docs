@@ -22,7 +22,6 @@
          /* End */
          {0xFF,          0xFFFFFFFF, 0xFFFFFFFF},
       };
-         };
 
    .. note::
       - The **VFS1** region must exist, and its size should always be larger than 128KB.

@@ -88,34 +88,15 @@ VFS on SD card
 .. tabs::
 
    .. include:: vfs_on_sd_card_30E.rst
-
+   .. include:: vfs_on_sd_card_26E20E21Dx.rst
 
 VFS within APP Image
 ~~~~~~~~~~~~~~~~~~~~~~~
-If the user only intends to use read-only files through VFS, VFS provides a more convenient read-only configuration feature on flash. The detailed steps are as follows:
+.. tabs::
 
-1. Prepare the read-only files and convert them into a FAT-formatted bin file. Refer to section :ref:`fatfs_bin_file_generation_section` for the method.
-2. Name the bin file :file:`fatfs.bin` and place it in ``{SDK}\amebadplus_gcc_project``.
-3. Enable the following configurations in the menuconfig:
-
-   .. figure:: figures/vfs_within_app_image_1.png
-       :scale: 90%
-       :align: center
-
-   .. figure:: figures/vfs_within_app_image_2.png
-       :scale: 90%
-       :align: center
-
-4. Rebuild the application firmware.
-
-   The application firmware (:file:`km0_km4_app.bin`) will include a read-only VFS area in FAT format, which will be mounted during the startup process.
-
-After startup, you will see the log **VFS-FAT Init Success** indicating that the read-only file system has been successfully mounted.
-
-For the file usage method, refer to Section :ref:`common_file_operation_section` or :ref:`key_value_operation_section`.
-
-.. note::
-   To optimize the effective space utilization of the read-only file system, only FAT format is currently supported.
+   .. include:: vfs_within_app_image_30E.rst
+   .. include:: vfs_within_app_image_26E20E.rst
+   .. include:: vfs_within_app_image_21Dx.rst
 
 .. _common_file_operation_section:
 
@@ -295,15 +276,17 @@ LittleFS Bin File Generation
 
    .. note::
       - **-b 4096** and **-p 256** are default configurations, users should adapt the configuration according to *block_size* and *cache_size* of ``lfs_config`` in ``{SDK}\component\file_system\littlefs\littlefs_adapter.c``.
-      - **-s 0x20000** is according to VFS region mentioned in Section :ref:`vfs_on_flash_section`.
+      - **-s 0x20000** is according to VFS region mentioned in Section :ref:`vfs_on_flash`.
 
 3. Download the image to the Flash.
 
-   The start address of Image Tool should be ``StartAddr`` of VFS Flash region mentioned in Section :ref:`vfs_on_flash_section`. The end address of Image Tool should be it's ``EndAddr`` + 1;
+   The start address of Image Tool should be ``StartAddr`` of VFS Flash region mentioned in Section :ref:`vfs_on_flash`. The end address of Image Tool should be it's ``EndAddr`` + 1;
 
-   .. figure:: figures/littlefs_bin_download.png
-      :scale: 60%
-      :align: center
+   .. tabs::
+
+      .. include:: vfs_bin_download_21Dx.rst
+      .. include:: vfs_bin_download_26E20E.rst
+      .. include:: vfs_bin_download_30E.rst
 
 .. _fatfs_bin_file_generation_section:
 
@@ -319,6 +302,5 @@ The steps to generate FatFS bin files are listed below:
    In this step, ``hello.txt`` is stored in ``test.bin``.
 
 5. Use command ``root@ubuntu # sudo umount ./fs`` to generate the FatFS file after unmounting ``test.bin``.
-
-   Users should find other related information from the internet, and copy ``test.bin`` into user data area of Flash finally.
+6. Refer to LittleFS Step 3 to write the generated bin file to the Flash.
 

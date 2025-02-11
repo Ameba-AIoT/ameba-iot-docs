@@ -26,7 +26,7 @@
          {USER, 				0xFFFFFFFF, 0xFFFFFFFF}, //reserve for user
          /* End */
          {0xFF, 				0xFFFFFFFF, 0xFFFFFFFF},
-   .   };
+      };
 
 
    .. code-block:: c
