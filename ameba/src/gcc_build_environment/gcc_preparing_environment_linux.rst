@@ -1,4 +1,3 @@
-
 On Linux, 32-bit Linux is not supported because of the toolchain.
 
 The packages listed below should be installed for the GCC environment:
@@ -17,8 +16,8 @@ Some of the packages above may have been pre-installed in your operating system.
 
   Starting from Ubuntu 6.10, dash is used by default instead of bash. You can use ``$ls -l /bin/sh`` command to check whether the system shell is bash or dash.
 
-   - (Optional) If the system shell is dash, use ``$sudo dpkg-reconfigure dash`` command to switch from dash to bash.
-   - If the system shell is bash, continue to do the subsequent operations.
+  - (Optional) If the system shell is dash, use ``$sudo dpkg-reconfigure dash`` command to switch from dash to bash.
+  - If the system shell is bash, continue to do the subsequent operations.
 
   .. figure:: figures/switching_from_dash_to_bash.png
      :scale: 85%

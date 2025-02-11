@@ -24,7 +24,7 @@ endif
 
 help:
 	@echo '####################################################### Help Info ######################################################'
-	@echo -e '#  \033[31mAttention\033[0m:                                                                                                          #'
+	@echo -e '#  \033[31mAttention\033[0m:                                                                                        #'
 	@echo '#      Before run below cmds, you need run "source activate_linux" to enter virtual environment at first!              #'
 	@echo '#      After run, you can use "deactivate" to exit virtual environment!                                                #'
 	@echo '#  Examples:                                                                                                           #'

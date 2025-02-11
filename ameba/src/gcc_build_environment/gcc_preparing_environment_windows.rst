@@ -78,6 +78,6 @@ The steps to prepare GCC environment are as follows:
    a. Press ``Win+R`` keys to open the ``Run`` dialog box, then type ``regedit`` and press ``Enter`` to open the ``Registry Editor``.
    b. Navigate to the registry key: ``Computer\HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\FileSystem``.
    c. Search and check if the ``LongPathsEnabled`` item exists. If not, continue to **Step d**; otherwise, go to **Step e**.
-   d. Right-click on an empty space in the right pane, then select ``New`` > ``DWORD (32-bit) Value``, and name it ``LongPathsEnabled``.
+   d. Right-click on an empty space in the right pane, then select ::menuselection:`New > DWORD (32-bit) Value`, and name it ``LongPathsEnabled``.
    e. Double-click on ``LongPathsEnabled`` and set its value to 1, then click ``OK`` to save.
 
