@@ -5,4 +5,4 @@ Hardware Crypto Engine
 .. toctree::
    :maxdepth: 1
 
-   crypto_engine
+   1_crypto_engine_toprst

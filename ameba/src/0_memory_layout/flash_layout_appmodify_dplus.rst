@@ -1,7 +1,5 @@
 .. tab:: RTL8721Dx
 
-   .. _flash_layout_app_ota1:
-
    **APP OTA1**
 
    Follow the steps to modify the location of APP OTA1:
@@ -29,11 +27,8 @@
          };
 
 
-   .. _flash_layout_app_ota1_step2:
-
    2. Re-build the project to generate the bootloader and APP OTA1.
 
-   .. _flash_layout_app_ota1_step3:
 
    3. Modify the address of ``km0_km4_app.bin`` through ImageTool, and download the new bootloader and APP OTA1.
 
@@ -49,7 +44,7 @@
 
    1. Modify the address of *IMG_APP_OTA2* in ``{SDK}\component\soc\amebaxxx\usrcfg\ameba_flashcfg.c``.
 
-   2. Re-build and download the new bootloader and APP OTA2 as described in Section :ref:`flash_layout_app_ota1` step :ref:`2 <flash_layout_app_ota1_step2>` ~ :ref:`3 <flash_layout_app_ota1_step3>`.
+   2. Re-build and download the new bootloader and APP OTA2 as described in Section **APP OTA1**.
 
       .. code-block:: c
          :emphasize-lines: 11

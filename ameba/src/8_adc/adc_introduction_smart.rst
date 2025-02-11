@@ -1,8 +1,5 @@
 .. tab:: RTL8730E
 
-
-   Introduction
-   ------------------------
    This chapter describes the usage of the 12-bit analog-to-digital converter (ADC).
 
    The ADC is a successive-approximation register (SAR) ADC, which includes up to:

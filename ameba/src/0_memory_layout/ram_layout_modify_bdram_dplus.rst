@@ -10,7 +10,7 @@
          :scale: 90%
          :align: center
 
-   2. Re-build and download the new Bootloader and IMG2 OTA2 as described in Section section :ref:`flash_layout_app_ota1` step :ref:`2 <flash_layout_app_ota1_step2>` ~ :ref:`3 <flash_layout_app_ota1_step3>`.
+   2. Re-build and download the new Bootloader and IMG2 OTA2 as described in Section section **APP OTA1**.
 
    **BD_PSRAM**
 

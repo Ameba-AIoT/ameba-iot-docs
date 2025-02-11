@@ -4,6 +4,8 @@ Supported ICs
 -----------------------------------------
 All ICs support user config
 
+.. _user_configuration_soc_clock_switch:
+
 ameba_bootcfg
 -----------------------------------------
 .. tabs::

@@ -7,6 +7,8 @@ The CHIP_EN (chip enable) is an external pin that can be used to control the res
 
 The button with ``CHIP_EN`` is connected to the ``CHIP_EN`` pin, as :ref:`chip_en_on_board` shows.
 
+.. _chip_en_on_board:
+
 .. figure:: figures/chip_en_on_board.png
    :scale: 50%
    :align: center

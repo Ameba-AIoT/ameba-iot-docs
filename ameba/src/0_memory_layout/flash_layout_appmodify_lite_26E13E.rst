@@ -4,4 +4,4 @@
 
    **Modifying DSP IMG Location**
 
-   Refer to :ref:`flash_layout_app_ota1` to modify the location of DSP IMG.
+   Refer to **APP OTA1** to modify the location of DSP IMG.

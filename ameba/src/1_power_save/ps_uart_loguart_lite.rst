@@ -1,6 +1,6 @@
 .. tab:: RTL8726E/RTL8720E
 
-   For peripherals that need specific clock settings, such as UART and LOGUART, their setting flows are described in Section :ref:`lite_power_saving_uart` and :ref:`lite_power_saving_loguart`.
+   For peripherals that need specific clock settings, such as UART and LOGUART, their setting flows are described in following section.
 
    .. _lite_power_saving_uart:
 

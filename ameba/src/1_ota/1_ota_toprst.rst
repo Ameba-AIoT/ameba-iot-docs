@@ -40,6 +40,8 @@ The combination of major version and minor version is the 4-byte version number.
 .. note::
    - For bootloader, version number can be 0 to 32767; for application, version number can be 0 to 65535.
 
+   - For detailed layouts of manifest and certificate, refer to **Secure Boot** section.
+
 As described in :ref:`Image Slot <image_slot>`, there are two slots (OTA1 and OTA2) for all the images in the Flash layout.
 When reboot after OTA upgrade finished, the device would check the image to determine to boot from OTA1 or OTA2.
 
@@ -110,10 +112,10 @@ OTA Image
 ~~~~~~~~~~~~~~~~~~
 .. tabs::
 
-   .. include:: 21Dx_ota_image.rst
-   .. include:: 26E_ota_image.rst
-   .. include:: 20E_ota_image.rst
-   .. include:: 30E_ota_image.rst
+   .. include:: ota_image_21Dx.rst
+   .. include:: ota_image_26E.rst
+   .. include:: ota_image_20E.rst
+   .. include:: ota_image_30E.rst
 
 OTA Selection Flow
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -251,10 +253,10 @@ Modifying Configurations
 
    .. tabs::
 
-      .. include:: 21Dx_ota2_otp.rst
-      .. include:: 26E13E_ota2_otp.rst
-      .. include:: 20E10E_ota2_otp.rst
-      .. include:: 30E_ota2_otp.rst
+      .. include:: ota2_otp_21Dx.rst
+      .. include:: ota2_otp_26E13E.rst
+      .. include:: ota2_otp_20E10E.rst
+      .. include:: ota2_otp_30E.rst
 
 
    .. note::
@@ -280,10 +282,10 @@ Generating OTA Image Automatically
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 .. tabs::
 
-   .. include:: 21Dx_ota_all_gen.rst
-   .. include:: 26E13E_ota_all_gen.rst
-   .. include:: 20E10E_ota_all_gen.rst
-   .. include:: 30E_ota_all_gen.rst
+   .. include:: ota_all_gen_21Dx.rst
+   .. include:: ota_all_gen_26E13E.rst
+   .. include:: ota_all_gen_20E10E.rst
+   .. include:: ota_all_gen_30E.rst
 
 Updating from Local Server
 ----------------------------------------------------
@@ -440,8 +442,8 @@ Modify the memory layout in ``{SDK}\component\soc\amebadxxxx\usrcfg\ameba_flashc
 
 .. tabs::
 
-   .. include:: 21Dx_ota_usrcfg.rst
-   .. include:: 26E13E_ota_usrcfg.rst
-   .. include:: 20E10E_ota_usrcfg.rst
-   .. include:: 30E_ota_usrcfg.rst
+   .. include:: ota_usrcfg_21Dx.rst
+   .. include:: ota_usrcfg_26E13E.rst
+   .. include:: ota_usrcfg_20E10E.rst
+   .. include:: ota_usrcfg_30E.rst
 

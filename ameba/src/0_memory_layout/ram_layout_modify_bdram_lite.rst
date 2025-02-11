@@ -28,7 +28,7 @@
          #define RAM_KR4_IMG2_SIZE			(SRAM_END - KR4_IMG2_RAM_START)
          #endif
 
-   2. Re-build and download the new bootloader and IMG2 OTA2 as described in Section :ref:`flash_layout_app_ota1` Step :ref:`2 <flash_layout_app_ota1_step2>` ~ :ref:`3 <flash_layout_app_ota1_step3>`.
+   2. Re-build and download the new bootloader and IMG2 OTA2 as described in Section **APP OTA1**.
 
    **BD_PSRAM**
 

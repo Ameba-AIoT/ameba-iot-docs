@@ -1,6 +1,6 @@
 .. tab:: RTL8730E
 
-   For peripherals that need specific clock settings, such as UART and LOGUART, their setting flows are described in Section :ref:`smart_power_saving_uart` and :ref:`smart_power_saving_loguart`.
+   For peripherals that need specific clock settings, such as UART and LOGUART, their setting flows are described in following section.
 
    .. _smart_power_saving_uart:
 

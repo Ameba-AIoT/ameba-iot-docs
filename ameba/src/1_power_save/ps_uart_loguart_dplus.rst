@@ -1,6 +1,6 @@
 .. tab:: RTL8721Dx
 
-   For peripherals that need specific clock settings, such as UART and LOGUART, their setting flows are described in Section :ref:`21dx_power_saving_uart` and :ref:`21dx_power_saving_loguart`.
+   For peripherals that need specific clock settings, such as UART and LOGUART, their setting flows are described in the following section.
 
    .. _21dx_power_saving_uart:
 

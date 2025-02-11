@@ -1,3 +1,5 @@
+.. _trace_tool:
+
 Trace Tool
 ===================
 

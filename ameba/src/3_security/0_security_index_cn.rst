@@ -7,5 +7,5 @@ Security and Encryption
 .. toctree::
    :maxdepth: 5
 
-   security
-   encryption
+   1_security_toprst
+   1_encryption_toprst
