@@ -8,7 +8,7 @@
 
       The started J-Link GDB server looks like below. This window should NOT be closed if you want to download the image or enter debug mode.
 
-      .. figure:: figures/windows_km4_jlink_gdb_server_connection.png
+      .. figure:: figures/dplus_windows_km4_jlink_gdb_server_connection.png
          :scale: 90%
          :align: center
 
@@ -22,7 +22,7 @@
       a. Change the working directory to project_km4.
       b. On the MSYS2 terminal, type ``$make setup GDB_SERVER=jlink`` command before selecting J-Link debugger.
 
-         .. figure:: figures/windows_km4_jlink_setup.png
+         .. figure:: figures/dplus_windows_km4_jlink_setup.png
             :scale: 90%
             :align: center
 
@@ -36,10 +36,10 @@
 
       The started J-Link GDB server looks like below. This window should NOT be closed if you want to download the image or enter debug mode. Because KM4 will download all the images, you don't need to connect J-Link to KM0 when downloading images. J-Link can connect to KM0 when debugging.
 
-      .. figure:: figures/windows_km0_jlink_gdb_server_connection.png
+      .. figure:: figures/dplus_windows_km0_jlink_gdb_server_connection.png
          :scale: 90%
          :align: center
-      
+
          KM0 J-Link GDB server connection under Windows
 
    2. Setup J-Link for KM0
@@ -47,8 +47,8 @@
       a. Change working directory to project_km0.
       b. On the Cygwin terminal, type ``$make setup GDB_SERVER=jlink`` command to select J-Link debugger.
 
-      .. figure:: figures/windows_km0_jlink_setup.png
+      .. figure:: figures/dplus_windows_km0_jlink_setup.png
          :scale: 90%
          :align: center
-      
+
          KM0 J-Link setup under Windows

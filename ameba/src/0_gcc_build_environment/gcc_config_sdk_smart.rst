@@ -18,7 +18,7 @@
 
    The following figure is the menuconfig UI, and the options in red may be used frequently.
 
-   .. figure:: ../figures/menuconfig_ui_lite.svg
+   .. figure:: ../figures/menuconfig_ui_smart.svg
       :scale: 120%
       :align: center
 

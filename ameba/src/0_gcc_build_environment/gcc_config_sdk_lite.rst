@@ -20,6 +20,5 @@
    .. figure:: ../figures/menuconfig_ui_lite.svg
       :scale: 130%
       :align: center
-      :name: menuconfig_ui
 
       menuconfig UI

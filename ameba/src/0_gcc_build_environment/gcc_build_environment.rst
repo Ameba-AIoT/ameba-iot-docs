@@ -107,76 +107,20 @@ This section illustrates how to build SDK for both Windows and Linux. The follow
 There are two ways to build the SDK, you can choose either of them.
 
 Build One by One
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Follow these steps to build the SDK of KM4 and KM0 project one by one:
+~~~~~~~~~~~~~~~~~~~~
+.. tabs::
 
-1. Use ``$cd`` command to switch to the project directories of SDK on Windows or Linux.
-
-   For example, you can type ``$cd {SDK}\amebadplus_gcc_project\project_km4`` to switch to the KM4 project, the same operation for the KM0 project.
-
-2. Build SDK under the KM0 or KM4 project directory on Windows or Linux.
-
-   - For normal image, simply use ``$make all`` command to build SDK.
-   - For MP image, refer to Section :ref:`how_to_build_mp_image` to build SDK.
-
-3. Check the command execution results. If somehow failed, type ``$make clean`` to clean and then redo the make procedure.
-
-   - For KM4 project, if the terminal contains ``target_img2.axf`` and ``Image manipulating end`` message (see :ref:`km4_project_make_all`), it means that KM4 images have been built successfully. You can find them under ``\amebadplus_gcc_project\project_km4\asdk\image`` (see :ref:`km4_image_generation`).
-
-     .. figure:: figures/km4_project_make_all.png
-        :scale: 75%
-        :align: center
-        :name: km4_project_make_all
-
-        KM4 project make all
-
-     .. figure:: figures/km4_image_generation.png
-        :scale: 90%
-        :align: center
-        :name: km4_image_generation
-
-        KM4 image generation
-
-   - For KM0 project, if the terminal contains ``target_img2.axf`` and ``Image manipulating end`` message (see :ref:`km0_project_make_all`), it means that KM0 image has been built successfully. You can find it under ``\amebadplus_gcc_project\project_km0\asdk\image`` (see :ref:`km0_image_generation`).
-
-     .. figure:: figures/km0_project_make_all.png
-        :scale: 75%
-        :align: center
-        :name: km0_project_make_all
-
-        KM0 project make all
-
-     .. figure:: figures/km0_image_generation.png
-        :scale: 75%
-        :align: center
-        :name: km0_image_generation
-
-        KM0 image generation
+   .. include:: gcc_build_sdk_1b1_dplus.rst
+   .. include:: gcc_build_sdk_1b1_lite.rst
+   .. include:: gcc_build_sdk_1b1_smart.rst
 
 Build Together
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-In order to improve the efficiency of building SDK, you can also execute ``$make all`` command once under ``\amebadplus_gcc_project``, instead of executing ``$make all`` command separately under the KM0 project and KM4 project.
+.. tabs::
 
-- If the terminal contains ``target_img2.axf`` and ``Image manipulating end`` message (see :ref:`km4_km0_projects_make_all`), it means that all the images have been built successfully. The image files are generated under ``\amebadplus_gcc_project`` (see :ref:`km4_km0_image_generation`). You can also find them under ``\amebadplus_gcc_project\project_km0\asdk\image`` and ``\amebadplus_gcc_project\project_km4\asdk\image``.
-
-- If somehow failed, type ``$make clean`` to clean and then redo the make procedure.
-
-  .. figure:: figures/km4_km0_projects_make_all.png
-     :scale: 75%
-     :align: center
-     :name: km4_km0_projects_make_all
-
-     KM4 & KM0 projects make all
-
-  .. figure:: figures/km4_km0_image_generation.png
-     :scale: 90%
-     :align: center
-     :name: km4_km0_image_generation
-
-     KM4 & KM0 image generation
-
-.. note::
-   If you want to search some .map files for debugging, get them under the directory ``\amebadplus_gcc_project\project_km0\asdk\image`` or ``\amebadplus_gcc_project\project_km4\asdk\image``, but not ``\amebadplus_gcc_project``.
+   .. include:: gcc_build_sdk_together_dplus.rst
+   .. include:: gcc_build_sdk_together_lite.rst
+   .. include:: gcc_build_sdk_together_smart.rst
 
 .. _setting_debugger:
 
@@ -235,73 +179,11 @@ Open a new terminal and type the following command to install GDB server. After 
 .. note::
    The version of J-Link GDB server below is just an example, you can select the latest version to download.
 
-KM4 Setup
-******************
-1. Connect to KM4
+.. tabs::
 
-   a. Open a new terminal under directory ``/amebadplus_gcc_project/utils/jlink_script``.
-
-   b. Type ``$/opt/SEGGER/JLink/JLinkGDBServer -select USB-device Cortex-M33 -if SWD -scriptfileAP2_KM4.JLinkScript port 2335``.
-
-   .. figure:: figures/linux_km4_jlink_gdb_server_connection.png
-      :scale: 70%
-      :align: center
-   
-      KM4 J-Link GDB server connection setting under Linux
-
-   If the connection is successful, the log is shown as below. This terminal should NOT be closed if you want to download software or enter GDB debugger mode.
-   
-   .. figure:: figures/linux_km4_jlink_gdb_server_connection_success.png
-      :scale: 70%
-      :align: center
-   
-      KM4 J-Link GDB server connection success under Linux
-
-2. Setup J-Link for KM4
-
-   a. Open a new terminal under project_km4 folder.
-
-   b. Type ``$make setup GDB_SERVER=jlink`` command before using J-Link to download software or enter GDB debugger.
-
-   .. figure:: figures/linux_km4_jlink_setup.png
-      :scale: 70%
-      :align: center
-   
-      KM4 J-Link terminal setup under Linux
-
-KM0 Setup
-******************
-1. Connect to KM0
-
-   a. Open a new terminal under directory ``/amebadplus_gcc_project/utils/jlink_script``.
-
-   b. Type ``$/opt/SEGGER/JLink/JLinkGDBServer -select USB -device Cortex-M23 -if SWD -scriptfile AP1_KM0.JLinkScript port 2331``.
-
-   .. figure:: figures/linux_km0_jlink_gdb_server_connection.png
-      :scale: 70%
-      :align: center
-   
-      KM0 J-Link GDB server connection setting under Linux
-   
-   If the connection is successful, the log is shown below.
-   
-   .. figure:: figures/linux_km0_jlink_gdb_server_connection_success.png
-      :scale: 70%
-      :align: center
-   
-      KM0 J-Link GDB server connection success under Linux
-
-2. Setup J-Link for KM0
-
-   a. Open a new terminal under project_km0.
-
-   b. Type ``$make setup GDB_SERVER=jlink`` command before using J-Link to download software or enter GDB debugger.
-
-   .. figure:: figures/linux_km0_jlink_setup.png
-      :scale: 70%
-      :align: center
-   
-      KM0 J-Link terminal setup under Linux
+   .. include:: gcc_setting_debugger_jlink_linux_dplus.rst
+   .. include:: gcc_setting_debugger_jlink_linux_lite.rst
+   .. include:: gcc_setting_debugger_jlink_linux_smart.rst
 
 Downloading Image to Flash
 ----------------------------------------------------

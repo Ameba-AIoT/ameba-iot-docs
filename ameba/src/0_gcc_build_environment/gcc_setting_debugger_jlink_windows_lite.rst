@@ -20,7 +20,6 @@
    2. Setup J-Link for KM4
 
       a. Change the working directory to project_km4.
-
       b. On the MSYS2 terminal, type ``$make setup GDB_SERVER=jlink`` command before selecting J-Link debugger.
 
          .. figure:: ../figures/windows_km4_jlink_setup.png
