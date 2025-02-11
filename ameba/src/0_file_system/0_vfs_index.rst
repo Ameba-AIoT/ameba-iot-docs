@@ -5,4 +5,4 @@ Virtual File System
 .. toctree::
    :maxdepth: 1
 
-   vfs
+   1_vfs_toprst
