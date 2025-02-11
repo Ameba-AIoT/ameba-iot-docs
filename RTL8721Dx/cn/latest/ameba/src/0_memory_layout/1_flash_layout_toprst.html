@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Introduction &mdash; RTL8721Dx 文档  documentation</title>
+  <title>Flash Layout &mdash; RTL8721Dx 文档  documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=13237357" />
@@ -32,8 +32,8 @@
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="Memory Layout" href="ram_layout_index.html" />
-    <link rel="prev" title="Flash Layout" href="flash_layout_index.html" />  
+    <link rel="next" title="RAM Layout" href="1_ram_layout_toprst.html" />
+    <link rel="prev" title="Flash and RAM Layout" href="0_layout_index_cn.html" />  
      
   <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -69,12 +69,13 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../../product_overview/src/index.html">0.1 产品简介</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gcc_build_environment/gcc_build_index_cn.html">0.2 GCC 编译环境</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../0_sdk_architecture/sdk_architecture_index_cn.html">0.3 SDK 架构</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../0_gcc_makefile/gcc_makefile_index_cn.html">0.4 GCC Makefile</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../0_sdk_example/sdk_example_index_cn.html">0.5 SDK 示例</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="layout_index_cn.html">0.6 存储器地址规划</a><ul class="current">
-<li class="toctree-l2 current"><a class="reference internal" href="flash_layout_index.html">Flash Layout</a><ul class="current">
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Introduction</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="0_layout_index_cn.html">0.6 存储器地址规划</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Flash Layout</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#introduction">Introduction</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#memory-management-unit-mmu">Memory Management Unit (MMU)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#how-to-modify-flash-layout">How to Modify Flash Layout</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#modifying-bootloader-ota2-location">Modifying Bootloader OTA2 Location</a></li>
@@ -85,7 +86,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#flash-protect-enable">Flash Protect Enable</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="ram_layout_index.html">Memory Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1_ram_layout_toprst.html">RAM Layout</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../0_user_config/0_usrcfg_index_cn.html">0.8 开发者配置</a></li>
@@ -112,7 +113,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../3_nda_rsip/0_rsip_index_nda.html">3.5 RSIP</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../3_nda_secure_boot/0_secure_boot_index_nda.html">3.6 Secure Boot</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../3_nda_swd_protection/0_swd_protection_index_nda.html">3.7 SWD Protection</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../3_nda_tfm/0_tfm_index_nda.html">3.8 TFM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_tfm/0_tfm_index_nda.html">3.8 Trusted Firmware-M (TF-M)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../3_crypto_engine/crypto_engine_index_cn.html">3.9 硬件加密引擎</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../4_ai/ai_index_cn.html">4.1 人工智能</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../4_ai_voice/ai_voice_index_cn.html">4.2 语音识别</a></li>
@@ -145,9 +146,8 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="layout_index_cn.html">Flash and Memory Layout</a></li>
-          <li class="breadcrumb-item"><a href="flash_layout_index.html">Flash Layout</a></li>
-      <li class="breadcrumb-item active">Introduction</li>
+          <li class="breadcrumb-item"><a href="0_layout_index_cn.html">Flash and RAM Layout</a></li>
+      <li class="breadcrumb-item active">Flash Layout</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -156,8 +156,10 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="introduction">
-<span id="flash-layout"></span><h1>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h1>
+  <section id="flash-layout">
+<h1>Flash Layout<a class="headerlink" href="#flash-layout" title="Link to this heading"></a></h1>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
 <p>This chapter introduces the default Flash layout of RTL8721Dx and how to modify the Flash layout if needed.</p>
 <p>The default Flash layout used in SDK is illustrated in the following figure and table.
 The layout takes 8MB Flash as an example. The start address of boot manifest is fixed to 0x0800_0000, and other start addresses can be configured by users flexibly.</p>
@@ -483,7 +485,7 @@ The layout takes 8MB Flash as an example. The start address of boot manifest is 
 </div></div>
 </section>
 <section id="memory-management-unit-mmu">
-<h1>Memory Management Unit (MMU)<a class="headerlink" href="#memory-management-unit-mmu" title="Link to this heading"></a></h1>
+<h2>Memory Management Unit (MMU)<a class="headerlink" href="#memory-management-unit-mmu" title="Link to this heading"></a></h2>
 <p>To achieve flexibility of image and for image encryption when RSIP is enabled (the fixed address is needed by IV when doing image encryption, refer to RSIP for more information), Flash MMU is applied by default.
 The default MMU layout used in SDK is illustrated below.</p>
 <div class="sphinx-tabs docutils container">
@@ -508,7 +510,7 @@ The default MMU layout used in SDK is illustrated below.</p>
 </div></div>
 </section>
 <section id="how-to-modify-flash-layout">
-<span id="id1"></span><h1>How to Modify Flash Layout<a class="headerlink" href="#how-to-modify-flash-layout" title="Link to this heading"></a></h1>
+<span id="id1"></span><h2>How to Modify Flash Layout<a class="headerlink" href="#how-to-modify-flash-layout" title="Link to this heading"></a></h2>
 <p>The following locations in the Flash can be modified:</p>
 <ul>
 <li><p>Bootloader OTA2 location</p></li>
@@ -524,7 +526,7 @@ The default MMU layout used in SDK is illustrated below.</p>
 <li><p>FTL/VFS Location</p></li>
 </ul>
 <section id="modifying-bootloader-ota2-location">
-<h2>Modifying Bootloader OTA2 Location<a class="headerlink" href="#modifying-bootloader-ota2-location" title="Link to this heading"></a></h2>
+<h3>Modifying Bootloader OTA2 Location<a class="headerlink" href="#modifying-bootloader-ota2-location" title="Link to this heading"></a></h3>
 <p>The location of bootloader OTA2 can be modified but requires 4KB alignment. The bootloader OTA2 is disabled by default.
 If you want to enable bootloader OTA2, shift the start address of the bootloader OTA2 right by 12 bits, then burn it to the OTP 0x36C~0x36D.</p>
 <p>The method is to modify the address of <em>IMG_BOOT_OTA2</em> in <code class="docutils literal notranslate"><span class="pre">{SDK}\component\soc\amebaxxx\usrcfg\ameba_flashcfg.c</span></code>.
@@ -623,7 +625,7 @@ That is, <em>IMG_VER_xxxxx</em> in <code class="docutils literal notranslate"><s
 </div></div>
 </section>
 <section id="modifying-app-location">
-<h2>Modifying APP Location<a class="headerlink" href="#modifying-app-location" title="Link to this heading"></a></h2>
+<h3>Modifying APP Location<a class="headerlink" href="#modifying-app-location" title="Link to this heading"></a></h3>
 <div class="sphinx-tabs docutils container">
 <div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-3-3-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-3-3-0" name="3-0" role="tab" tabindex="0">RTL8721Dx</button><button aria-controls="panel-3-3-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-3-3-1" name="3-1" role="tab" tabindex="-1">RTL8726E</button><button aria-controls="panel-3-3-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-3-3-2" name="3-2" role="tab" tabindex="-1">RTL8720E</button></div><div aria-labelledby="tab-3-3-0" class="sphinx-tabs-panel" id="panel-3-3-0" name="3-0" role="tabpanel" tabindex="0"><p id="flash-layout-app-ota1"><strong>APP OTA1</strong></p>
 <p>Follow the steps to modify the location of APP OTA1:</p>
@@ -833,7 +835,7 @@ That is, <em>IMG_VER_xxxxx</em> in <code class="docutils literal notranslate"><s
 </div></div>
 </section>
 <section id="modifying-ftl-vfs-location">
-<h2>Modifying FTL/VFS Location<a class="headerlink" href="#modifying-ftl-vfs-location" title="Link to this heading"></a></h2>
+<h3>Modifying FTL/VFS Location<a class="headerlink" href="#modifying-ftl-vfs-location" title="Link to this heading"></a></h3>
 <div class="sphinx-tabs docutils container">
 <div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-4-4-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-4-4-0" name="4-0" role="tab" tabindex="0">RTL8721Dx</button><button aria-controls="panel-4-4-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-4-4-1" name="4-1" role="tab" tabindex="-1">RTL8726E/RTL8720E</button></div><div aria-labelledby="tab-4-4-0" class="sphinx-tabs-panel" id="panel-4-4-0" name="4-0" role="tabpanel" tabindex="0"><p>Modify the addresses of <em>FTL</em> and <em>VFS1</em> in <code class="docutils literal notranslate"><span class="pre">{SDK}\component\soc\amebaxxx\usrcfg\ameba_flashcfg.c</span></code></p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/*</span>
@@ -885,7 +887,7 @@ That is, <em>IMG_VER_xxxxx</em> in <code class="docutils literal notranslate"><s
 </section>
 </section>
 <section id="flash-protect-enable">
-<span id="id8"></span><h1>Flash Protect Enable<a class="headerlink" href="#flash-protect-enable" title="Link to this heading"></a></h1>
+<span id="id8"></span><h2>Flash Protect Enable<a class="headerlink" href="#flash-protect-enable" title="Link to this heading"></a></h2>
 <p>Before loading APP IMG, the bootloader will read the Status Register from Flash.</p>
 <p>If only the Quad Enable (QE) bit is set in the output of bitwise AND between Status Register of Flash
 and <code class="docutils literal notranslate"><span class="pre">status_mask</span></code> in <code class="docutils literal notranslate"><span class="pre">Flash_AVL</span></code> (<code class="docutils literal notranslate"><span class="pre">{SDK}\component\soc\amebaxxx\usrcfg\ameba_flashcfg.c</span></code>),
@@ -980,13 +982,14 @@ Block Protect Bit in the Status Register of Flash at the same time.</p>
 </ul>
 </div>
 </section>
+</section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="flash_layout_index.html" class="btn btn-neutral float-left" title="Flash Layout" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="ram_layout_index.html" class="btn btn-neutral float-right" title="Memory Layout" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="0_layout_index_cn.html" class="btn btn-neutral float-left" title="Flash and RAM Layout" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="1_ram_layout_toprst.html" class="btn btn-neutral float-right" title="RAM Layout" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

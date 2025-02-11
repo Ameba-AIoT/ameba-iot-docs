@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Flash Layout &mdash; RTL8721Dx 文档  documentation</title>
+  <title>Flash and RAM Layout &mdash; RTL8721Dx 文档  documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=13237357" />
@@ -31,8 +31,8 @@
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="Introduction" href="flash.html" />
-    <link rel="prev" title="Flash and Memory Layout" href="layout_index_cn.html" />  
+    <link rel="next" title="Flash Layout" href="1_flash_layout_toprst.html" />
+    <link rel="prev" title="概述" href="../0_sdk_example/sdk_example_cn.html" />  
      
   <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -68,18 +68,13 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../../product_overview/src/index.html">0.1 产品简介</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gcc_build_environment/gcc_build_index_cn.html">0.2 GCC 编译环境</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../0_sdk_architecture/sdk_architecture_index_cn.html">0.3 SDK 架构</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../0_gcc_makefile/gcc_makefile_index_cn.html">0.4 GCC Makefile</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../0_sdk_example/sdk_example_index_cn.html">0.5 SDK 示例</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="layout_index_cn.html">0.6 存储器地址规划</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Flash Layout</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="flash.html">Introduction</a></li>
-<li class="toctree-l3"><a class="reference internal" href="flash.html#memory-management-unit-mmu">Memory Management Unit (MMU)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="flash.html#how-to-modify-flash-layout">How to Modify Flash Layout</a></li>
-<li class="toctree-l3"><a class="reference internal" href="flash.html#flash-protect-enable">Flash Protect Enable</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="ram_layout_index.html">Memory Layout</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">0.6 存储器地址规划</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="1_flash_layout_toprst.html">Flash Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1_ram_layout_toprst.html">RAM Layout</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../0_user_config/0_usrcfg_index_cn.html">0.8 开发者配置</a></li>
@@ -106,7 +101,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../3_nda_rsip/0_rsip_index_nda.html">3.5 RSIP</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../3_nda_secure_boot/0_secure_boot_index_nda.html">3.6 Secure Boot</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../3_nda_swd_protection/0_swd_protection_index_nda.html">3.7 SWD Protection</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../3_nda_tfm/0_tfm_index_nda.html">3.8 TFM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_tfm/0_tfm_index_nda.html">3.8 Trusted Firmware-M (TF-M)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../3_crypto_engine/crypto_engine_index_cn.html">3.9 硬件加密引擎</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../4_ai/ai_index_cn.html">4.1 人工智能</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../4_ai_voice/ai_voice_index_cn.html">4.2 语音识别</a></li>
@@ -139,8 +134,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="layout_index_cn.html">Flash and Memory Layout</a></li>
-      <li class="breadcrumb-item active">Flash Layout</li>
+      <li class="breadcrumb-item active">Flash and RAM Layout</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -149,19 +143,27 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="flash-layout">
-<h1>Flash Layout<a class="headerlink" href="#flash-layout" title="Link to this heading"></a></h1>
+  <section id="flash-and-ram-layout">
+<h1>Flash and RAM Layout<a class="headerlink" href="#flash-and-ram-layout" title="Link to this heading"></a></h1>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="flash.html">Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="flash.html#memory-management-unit-mmu">Memory Management Unit (MMU)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="flash.html#how-to-modify-flash-layout">How to Modify Flash Layout</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="flash.html#modifying-bootloader-ota2-location">Modifying Bootloader OTA2 Location</a></li>
-<li class="toctree-l2"><a class="reference internal" href="flash.html#modifying-app-location">Modifying APP Location</a></li>
-<li class="toctree-l2"><a class="reference internal" href="flash.html#modifying-ftl-vfs-location">Modifying FTL/VFS Location</a></li>
+<li class="toctree-l1"><a class="reference internal" href="1_flash_layout_toprst.html">Flash Layout</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="1_flash_layout_toprst.html#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1_flash_layout_toprst.html#memory-management-unit-mmu">Memory Management Unit (MMU)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1_flash_layout_toprst.html#how-to-modify-flash-layout">How to Modify Flash Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1_flash_layout_toprst.html#flash-protect-enable">Flash Protect Enable</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="flash.html#flash-protect-enable">Flash Protect Enable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="1_ram_layout_toprst.html">RAM Layout</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="1_ram_layout_toprst.html#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1_ram_layout_toprst.html#id1">RAM Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1_ram_layout_toprst.html#sram0-first-40kb-layout">SRAM0 (first 40KB) layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1_ram_layout_toprst.html#ram-psram-layout">RAM &amp; PSRAM Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1_ram_layout_toprst.html#modifying-bootloader-size">Modifying Bootloader Size</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1_ram_layout_toprst.html#modifying-bd-ram-bd-psram-size">Modifying BD_RAM BD_PSRAM Size</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1_ram_layout_toprst.html#modifying-heap-size">Modifying Heap Size</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </section>
@@ -170,8 +172,8 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="layout_index_cn.html" class="btn btn-neutral float-left" title="Flash and Memory Layout" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="flash.html" class="btn btn-neutral float-right" title="Introduction" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../0_sdk_example/sdk_example_cn.html" class="btn btn-neutral float-left" title="概述" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="1_flash_layout_toprst.html" class="btn btn-neutral float-right" title="Flash Layout" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
