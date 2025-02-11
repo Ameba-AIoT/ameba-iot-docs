@@ -1,4 +1,6 @@
-.. _memory_layout:
+RAM Layout
+========================
+
 
 Introduction
 ----------------------------
@@ -32,7 +34,7 @@ Modifying Bootloader Size
    .. include:: ram_layout_modify_bootloader_lite.rst
 
 Modifying BD_RAM BD_PSRAM Size
-----------------------------
+--------------------------------
 .. tabs::
    .. include:: ram_layout_modify_bdram_dplus.rst
    .. include:: ram_layout_modify_bdram_lite.rst

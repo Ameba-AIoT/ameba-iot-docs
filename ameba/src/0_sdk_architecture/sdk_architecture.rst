@@ -11,18 +11,18 @@ The SDK consists of four parts, and the contents and descriptions of each part a
 
 .. tabs::
 
-   .. include:: sdk_architecture_introduction_21Dx.rst
-   .. include:: sdk_architecture_introduction_26E20E.rst
-   .. include:: sdk_architecture_introduction_30E.rst
+   .. include:: sdk_architecture_introduction_dplus.rst
+   .. include:: sdk_architecture_introduction_lite.rst
+   .. include:: sdk_architecture_introduction_smart.rst
 
 
 project
 --------------
 .. tabs::
 
-   .. include:: sdk_architecture_project_21Dx.rst
-   .. include:: sdk_architecture_project_26E20E.rst
-   .. include:: sdk_architecture_project_30E.rst
+   .. include:: sdk_architecture_project_dplus.rst
+   .. include:: sdk_architecture_project_lite.rst
+   .. include:: sdk_architecture_project_smart.rst
 
 component
 ------------------
@@ -106,6 +106,6 @@ Critical Header Files
 ------------------------------------------
 .. tabs::
 
-   .. include:: sdk_architecture_critical_files_21Dx.rst
-   .. include:: sdk_architecture_critical_files_26E20E.rst
-   .. include:: sdk_architecture_critical_files_30E.rst
+   .. include:: sdk_architecture_critical_files_dplus.rst
+   .. include:: sdk_architecture_critical_files_lite.rst
+   .. include:: sdk_architecture_critical_files_smart.rst

@@ -5,5 +5,5 @@ Flash and Memory Layout
 .. toctree::
    :maxdepth: 2
 
-   flash_layout_index
-   ram_layout_index
+   1_flash_layout_toprst
+   1_ram_layout_toprst
