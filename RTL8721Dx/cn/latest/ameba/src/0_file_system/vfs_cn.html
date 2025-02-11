@@ -82,11 +82,11 @@
 <li class="toctree-l2"><a class="reference internal" href="#id2">VFS 用法</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#flashvfs">Flash中的VFS</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#sdvfs">SD卡中的VFS</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#vfs-within-app-image">VFS within APP Image</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">应用固件包含VFS</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#common-file-operation-section">普通文件操作</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#key-value">Key-Value 操作</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id4">代码转换</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id5">VFS 加密</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">代码转换</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id6">VFS 加密</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#vfs-bin-file-generation">VFS Bin File Generation</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#littlefs-bin-file-generation">LittleFS Bin File Generation</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#fatfs-bin-file-generation">FatFS Bin File Generation</a></li>
@@ -164,16 +164,16 @@
 <span id="id1"></span><h1>概述<a class="headerlink" href="#virtual-file-system" title="Link to this heading"></a></h1>
 <p>This section introduces how to run Virtual File System (VFS) on Ameba SoC, including FatFS and LittleFS as the underlying implementation. Users can ignore the differences between different file systems by using VFS. The VFS provides common file operation interfaces like fopen, fclose, fwrite, fread, etc. The Key-Value (KV) interfaces are based on these common file operations. The architecture of VFS is illustrated below.</p>
 <div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-0-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-0-0-0" name="0-0" role="tab" tabindex="0">RTL8726EA/RTL8720EA/RTL8721Dx</button><button aria-controls="panel-0-0-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-1" name="0-1" role="tab" tabindex="-1">RTL8730E</button></div><div aria-labelledby="tab-0-0-0" class="sphinx-tabs-panel" id="panel-0-0-0" name="0-0" role="tabpanel" tabindex="0"><figure class="align-center" id="id7">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-0-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-0-0-0" name="0-0" role="tab" tabindex="0">RTL8726EA/RTL8720EA/RTL8721Dx</button><button aria-controls="panel-0-0-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-1" name="0-1" role="tab" tabindex="-1">RTL8730E</button></div><div aria-labelledby="tab-0-0-0" class="sphinx-tabs-panel" id="panel-0-0-0" name="0-0" role="tabpanel" tabindex="0"><figure class="align-center" id="id8">
 <a class="reference internal image-reference" href="../../../_images/vfs_architecture_26E20E21Dx.svg"><img alt="../../../_images/vfs_architecture_26E20E21Dx.svg" height="247" src="../../../_images/vfs_architecture_26E20E21Dx.svg" width="349" /></a>
 <figcaption>
-<p><span class="caption-text">Architecture of VFS</span><a class="headerlink" href="#id7" title="Link to this image"></a></p>
+<p><span class="caption-text">Architecture of VFS</span><a class="headerlink" href="#id8" title="Link to this image"></a></p>
 </figcaption>
 </figure>
-</div><div aria-labelledby="tab-0-0-1" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-1" name="0-1" role="tabpanel" tabindex="0"><figure class="align-center" id="id8">
+</div><div aria-labelledby="tab-0-0-1" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-1" name="0-1" role="tabpanel" tabindex="0"><figure class="align-center" id="id9">
 <a class="reference internal image-reference" href="../../../_images/vfs_architecture_30E.svg"><img alt="../../../_images/vfs_architecture_30E.svg" height="269" src="../../../_images/vfs_architecture_30E.svg" width="349" /></a>
 <figcaption>
-<p><span class="caption-text">Architecture of VFS</span><a class="headerlink" href="#id8" title="Link to this image"></a></p>
+<p><span class="caption-text">Architecture of VFS</span><a class="headerlink" href="#id9" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 </div></div>
@@ -283,9 +283,9 @@
 </span><span class="w">   </span><span class="p">{</span><span class="n">USER</span><span class="p">,</span><span class="w">                                 </span><span class="mh">0xFFFFFFFF</span><span class="p">,</span><span class="w"> </span><span class="mh">0xFFFFFFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//reserve for user</span>
 <span class="w">   </span><span class="cm">/* End */</span>
 <span class="w">   </span><span class="p">{</span><span class="mh">0xFF</span><span class="p">,</span><span class="w">                                 </span><span class="mh">0xFFFFFFFF</span><span class="p">,</span><span class="w"> </span><span class="mh">0xFFFFFFFF</span><span class="p">},</span>
+<span class="p">};</span>
 </pre></div>
 </div>
-<p>.   };</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">FlashLayoutInfo_TypeDef</span><span class="w"> </span><span class="n">Flash_Layout_Nand</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
 <span class="w">   </span><span class="cm">/*Region_Type,         [StartAddr,     EndAddr]                */</span>
 <span class="w">   </span><span class="p">{</span><span class="n">IMG_BOOT</span><span class="p">,</span><span class="w">                     </span><span class="mh">0x08000000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x0801FFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Boot Manifest(4K) + KM4 Bootloader(124K)</span>
@@ -329,7 +329,6 @@
 <span class="w">   </span><span class="cm">/* End */</span>
 <span class="w">   </span><span class="p">{</span><span class="mh">0xFF</span><span class="p">,</span><span class="w">          </span><span class="mh">0xFFFFFFFF</span><span class="p">,</span><span class="w"> </span><span class="mh">0xFFFFFFFF</span><span class="p">},</span>
 <span class="p">};</span>
-<span class="w">   </span><span class="p">};</span>
 </pre></div>
 </div>
 <div class="admonition note">
@@ -371,36 +370,85 @@
 <section id="sdvfs">
 <h2>SD卡中的VFS<a class="headerlink" href="#sdvfs" title="Link to this heading"></a></h2>
 <div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"></div><p>The SD card is only supported by FatFS, <cite>vfs_type</cite> should be set to FatFS when <cite>interface</cite> is set to SD card. Menuconfig VFS Fatfs SD configuration should be set.</p>
-</div>
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-3-3-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-3-3-0" name="3-0" role="tab" tabindex="0">RTL8730E</button><button aria-controls="panel-3-3-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-3-3-1" name="3-1" role="tab" tabindex="-1">RTL8726EA/RTL8720EA/RTL8721Dx</button></div><div aria-labelledby="tab-3-3-0" class="sphinx-tabs-panel" id="panel-3-3-0" name="3-0" role="tabpanel" tabindex="0"><p>The SD card is only supported by FatFS, <cite>vfs_type</cite> should be set to FatFS when <cite>interface</cite> is set to SD card. Menuconfig VFS Fatfs SD configuration should be set.</p>
+</div><div aria-labelledby="tab-3-3-1" class="sphinx-tabs-panel" hidden="true" id="panel-3-3-1" name="3-1" role="tabpanel" tabindex="0"><p>Not Support</p>
+</div></div>
 </section>
-<section id="vfs-within-app-image">
-<h2>VFS within APP Image<a class="headerlink" href="#vfs-within-app-image" title="Link to this heading"></a></h2>
-<p>If the user only intends to use read-only files through VFS, VFS provides a more convenient read-only configuration feature on flash. The detailed steps are as follows:</p>
-<ol class="arabic">
+<section id="id3">
+<h2>应用固件包含VFS<a class="headerlink" href="#id3" title="Link to this heading"></a></h2>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-4-4-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-4-4-0" name="4-0" role="tab" tabindex="0">RTL8730E</button><button aria-controls="panel-4-4-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-4-4-1" name="4-1" role="tab" tabindex="-1">RTL8726EA/RTL8720EA</button><button aria-controls="panel-4-4-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-4-4-2" name="4-2" role="tab" tabindex="-1">RTL8721Dx</button></div><div aria-labelledby="tab-4-4-0" class="sphinx-tabs-panel" id="panel-4-4-0" name="4-0" role="tabpanel" tabindex="0"><p>If the user only intends to use read-only files through VFS, VFS provides a more convenient read-only configuration feature on flash. The detailed steps are as follows:</p>
+<ol class="arabic simple">
 <li><p>Prepare the read-only files and convert them into a FAT-formatted bin file. Refer to section <a class="reference internal" href="#fatfs-bin-file-generation-section"><span class="std std-ref">FatFS Bin File Generation</span></a> for the method.</p></li>
-<li><p>Name the bin file <code class="file docutils literal notranslate"><span class="pre">fatfs.bin</span></code> and place it in <code class="docutils literal notranslate"><span class="pre">{SDK}\amebadplus_gcc_project</span></code>.</p></li>
-<li><p>Enable the following configurations in the menuconfig:</p>
+<li><p>Name the bin file <code class="file docutils literal notranslate"><span class="pre">fatfs.bin</span></code> and place it in <code class="docutils literal notranslate"><span class="pre">{SDK}\amebasmart_gcc_project</span></code>.</p></li>
+<li><p>Enable the following configurations in the menuconfig:</p></li>
+</ol>
 <figure class="align-center">
 <a class="reference internal image-reference" href="../../../_images/vfs_within_app_image_1.png"><img alt="../../../_images/vfs_within_app_image_1.png" src="../../../_images/vfs_within_app_image_1.png" style="width: 299.7px; height: 114.3px;" /></a>
 </figure>
 <figure class="align-center">
 <a class="reference internal image-reference" href="../../../_images/vfs_within_app_image_2.png"><img alt="../../../_images/vfs_within_app_image_2.png" src="../../../_images/vfs_within_app_image_2.png" style="width: 221.4px; height: 75.60000000000001px;" /></a>
 </figure>
-</li>
-<li><p>Rebuild the application firmware.</p>
-<p>The application firmware (<code class="file docutils literal notranslate"><span class="pre">km0_km4_app.bin</span></code>) will include a read-only VFS area in FAT format, which will be mounted during the startup process.</p>
-</li>
+<ol class="arabic simple" start="4">
+<li><p>Rebuild the application firmware.</p></li>
 </ol>
+<p>The application firmware (<code class="file docutils literal notranslate"><span class="pre">km0_km4_ca32_app.bin</span></code>) will include a read-only VFS area in FAT format, which will be mounted during the startup process.</p>
 <p>After startup, you will see the log <strong>VFS-FAT Init Success</strong> indicating that the read-only file system has been successfully mounted.</p>
 <p>For the file usage method, refer to Section <a class="reference internal" href="#common-file-operation-section"><span class="std std-ref">普通文件操作</span></a> or <a class="reference internal" href="#key-value-operation-section"><span class="std std-ref">Key-Value 操作</span></a>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>To optimize the effective space utilization of the read-only file system, only FAT format is currently supported.</p>
 </div>
+</div><div aria-labelledby="tab-4-4-1" class="sphinx-tabs-panel" hidden="true" id="panel-4-4-1" name="4-1" role="tabpanel" tabindex="0"><blockquote>
+<div><p>If the user only intends to use read-only files through VFS, VFS provides a more convenient read-only configuration feature on flash. The detailed steps are as follows:</p>
+</div></blockquote>
+<ol class="arabic simple">
+<li><p>Prepare the read-only files and convert them into a FAT-formatted bin file. Refer to section <a class="reference internal" href="#fatfs-bin-file-generation-section"><span class="std std-ref">FatFS Bin File Generation</span></a> for the method.</p></li>
+<li><p>Name the bin file <code class="file docutils literal notranslate"><span class="pre">fatfs.bin</span></code> and place it in <code class="docutils literal notranslate"><span class="pre">{SDK}\amebalite_gcc_project</span></code>.</p></li>
+<li><p>Enable the following configurations in the menuconfig:</p></li>
+</ol>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../../_images/vfs_within_app_image_1.png"><img alt="../../../_images/vfs_within_app_image_1.png" src="../../../_images/vfs_within_app_image_1.png" style="width: 299.7px; height: 114.3px;" /></a>
+</figure>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../../_images/vfs_within_app_image_2.png"><img alt="../../../_images/vfs_within_app_image_2.png" src="../../../_images/vfs_within_app_image_2.png" style="width: 221.4px; height: 75.60000000000001px;" /></a>
+</figure>
+<ol class="arabic simple" start="4">
+<li><p>Rebuild the application firmware.</p></li>
+</ol>
+<p>The application firmware (<code class="file docutils literal notranslate"><span class="pre">kr4_km4_app.bin</span></code>) will include a read-only VFS area in FAT format, which will be mounted during the startup process.</p>
+<p>After startup, you will see the log <strong>VFS-FAT Init Success</strong> indicating that the read-only file system has been successfully mounted.</p>
+<p>For the file usage method, refer to Section <a class="reference internal" href="#common-file-operation-section"><span class="std std-ref">普通文件操作</span></a> or <a class="reference internal" href="#key-value-operation-section"><span class="std std-ref">Key-Value 操作</span></a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>To optimize the effective space utilization of the read-only file system, only FAT format is currently supported.</p>
+</div>
+</div><div aria-labelledby="tab-4-4-2" class="sphinx-tabs-panel" hidden="true" id="panel-4-4-2" name="4-2" role="tabpanel" tabindex="0"><p>If the user only intends to use read-only files through VFS, VFS provides a more convenient read-only configuration feature on flash. The detailed steps are as follows:</p>
+<ol class="arabic simple">
+<li><p>Prepare the read-only files and convert them into a FAT-formatted bin file. Refer to section <a class="reference internal" href="#fatfs-bin-file-generation-section"><span class="std std-ref">FatFS Bin File Generation</span></a> for the method.</p></li>
+<li><p>Name the bin file <code class="file docutils literal notranslate"><span class="pre">fatfs.bin</span></code> and place it in <code class="docutils literal notranslate"><span class="pre">{SDK}\amebadplus_gcc_project</span></code>.</p></li>
+<li><p>Enable the following configurations in the menuconfig:</p></li>
+</ol>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../../_images/vfs_within_app_image_1.png"><img alt="../../../_images/vfs_within_app_image_1.png" src="../../../_images/vfs_within_app_image_1.png" style="width: 299.7px; height: 114.3px;" /></a>
+</figure>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../../_images/vfs_within_app_image_2.png"><img alt="../../../_images/vfs_within_app_image_2.png" src="../../../_images/vfs_within_app_image_2.png" style="width: 221.4px; height: 75.60000000000001px;" /></a>
+</figure>
+<ol class="arabic simple" start="4">
+<li><p>Rebuild the application firmware.</p></li>
+</ol>
+<p>The application firmware (<code class="file docutils literal notranslate"><span class="pre">km0_km4_app.bin</span></code>) will include a read-only VFS area in FAT format, which will be mounted during the startup process.</p>
+<p>After startup, you will see the log <strong>VFS-FAT Init Success</strong> indicating that the read-only file system has been successfully mounted.</p>
+<p>For the file usage method, refer to Section <a class="reference internal" href="#common-file-operation-section"><span class="std std-ref">普通文件操作</span></a> or <a class="reference internal" href="#key-value-operation-section"><span class="std std-ref">Key-Value 操作</span></a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>To optimize the effective space utilization of the read-only file system, only FAT format is currently supported.</p>
+</div>
+</div></div>
 </section>
 <section id="common-file-operation-section">
-<span id="id3"></span><h2>普通文件操作<a class="headerlink" href="#common-file-operation-section" title="Link to this heading"></a></h2>
+<span id="id4"></span><h2>普通文件操作<a class="headerlink" href="#common-file-operation-section" title="Link to this heading"></a></h2>
 <p>VFS 中常用的文件操作接口如下所示：</p>
 <table class="docutils align-default" style="width: 100%">
 <colgroup>
@@ -574,8 +622,8 @@
 </pre></div>
 </div>
 </section>
-<section id="id4">
-<h2>代码转换<a class="headerlink" href="#id4" title="Link to this heading"></a></h2>
+<section id="id5">
+<h2>代码转换<a class="headerlink" href="#id5" title="Link to this heading"></a></h2>
 <p>FatFS 默认不支持 Unicode 与其他编码之间的转换。</p>
 <p>Modify the macro <code class="docutils literal notranslate"><span class="pre">FF_CODE_PAGE</span></code> in <code class="docutils literal notranslate"><span class="pre">{SDK}\component\file_system\fatfs\r0.14b\include\ffconf.h</span></code>  to enable the code conversion function, where <code class="docutils literal notranslate"><span class="pre">FF_CODE_PAGE</span></code> should be chosen as code page number which is desired.</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#define FF_CODE_PAGE  999</span>
@@ -608,8 +656,8 @@
 </pre></div>
 </div>
 </section>
-<section id="id5">
-<h2>VFS 加密<a class="headerlink" href="#id5" title="Link to this heading"></a></h2>
+<section id="id6">
+<h2>VFS 加密<a class="headerlink" href="#id6" title="Link to this heading"></a></h2>
 <p>For special storage security needs, users can configure encryption and decryption interfaces of vfs. Specific interface usage instructions are listed in <code class="docutils literal notranslate"><span class="pre">{SDK}\component\example\storage\vfs_encrypt\readme.txt</span></code>. Users can rebuild the project by <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">all</span> <span class="pre">EXAMPLE=vfs_encrypt</span></code> to test how KV APIs work. Test logs should be like below:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>[example_vfs_encrypt_thread] fwrite succeeded !!!
 [example_vfs_encrypt_thread] fread succeeded !!!
@@ -622,7 +670,7 @@
 </div>
 </section>
 <section id="vfs-bin-file-generation">
-<span id="id6"></span><h2>VFS Bin File Generation<a class="headerlink" href="#vfs-bin-file-generation" title="Link to this heading"></a></h2>
+<span id="id7"></span><h2>VFS Bin File Generation<a class="headerlink" href="#vfs-bin-file-generation" title="Link to this heading"></a></h2>
 <p>If data needs to be placed in the Flash in advance, VFS bin file can be generated on PC. After generating the bin file, it should be downloaded to VFS region according to the Flash layout.</p>
 <section id="littlefs-bin-file-generation">
 <h3>LittleFS Bin File Generation<a class="headerlink" href="#littlefs-bin-file-generation" title="Link to this heading"></a></h3>
@@ -665,9 +713,17 @@
 </li>
 <li><p>Download the image to the Flash.</p>
 <p>The start address of Image Tool should be <code class="docutils literal notranslate"><span class="pre">StartAddr</span></code> of VFS Flash region mentioned in Section <span class="xref std std-ref">vfs_on_flash_section</span>. The end address of Image Tool should be it's <code class="docutils literal notranslate"><span class="pre">EndAddr</span></code> + 1;</p>
-<figure class="align-center">
-<a class="reference internal image-reference" href="../../../_images/littlefs_bin_download.png"><img alt="../../../_images/littlefs_bin_download.png" src="../../../_images/littlefs_bin_download.png" style="width: 777.6px; height: 112.8px;" /></a>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-5-5-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-5-5-0" name="5-0" role="tab" tabindex="0">RTL8721Dx</button><button aria-controls="panel-5-5-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-5-5-1" name="5-1" role="tab" tabindex="-1">RTL8726EA/RTL8720EA</button><button aria-controls="panel-5-5-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-5-5-2" name="5-2" role="tab" tabindex="-1">RTL8730E</button></div><div aria-labelledby="tab-5-5-0" class="sphinx-tabs-panel" id="panel-5-5-0" name="5-0" role="tabpanel" tabindex="0"><figure class="align-center">
+<a class="reference internal image-reference" href="../../../_images/littlefs_bin_download_21Dx.png"><img alt="../../../_images/littlefs_bin_download_21Dx.png" src="../../../_images/littlefs_bin_download_21Dx.png" style="width: 777.6px; height: 112.8px;" /></a>
 </figure>
+</div><div aria-labelledby="tab-5-5-1" class="sphinx-tabs-panel" hidden="true" id="panel-5-5-1" name="5-1" role="tabpanel" tabindex="0"><figure class="align-center">
+<a class="reference internal image-reference" href="../../../_images/littlefs_bin_download_26E20E.png"><img alt="../../../_images/littlefs_bin_download_26E20E.png" src="../../../_images/littlefs_bin_download_26E20E.png" style="width: 772.2px; height: 108.0px;" /></a>
+</figure>
+</div><div aria-labelledby="tab-5-5-2" class="sphinx-tabs-panel" hidden="true" id="panel-5-5-2" name="5-2" role="tabpanel" tabindex="0"><figure class="align-center">
+<a class="reference internal image-reference" href="../../../_images/littlefs_bin_download_30E.png"><img alt="../../../_images/littlefs_bin_download_30E.png" src="../../../_images/littlefs_bin_download_30E.png" style="width: 775.8000000000001px; height: 105.3px;" /></a>
+</figure>
+</div></div>
 </li>
 </ol>
 </section>
@@ -681,9 +737,8 @@
 <li><p>Use command <code class="docutils literal notranslate"><span class="pre">root&#64;ubuntu</span> <span class="pre">#</span> <span class="pre">sudo</span> <span class="pre">cp</span> <span class="pre">hello.txt</span> <span class="pre">./fs</span></code> to copy the files that users want to store into <code class="docutils literal notranslate"><span class="pre">test.bin</span></code>.</p>
 <p>In this step, <code class="docutils literal notranslate"><span class="pre">hello.txt</span></code> is stored in <code class="docutils literal notranslate"><span class="pre">test.bin</span></code>.</p>
 </li>
-<li><p>Use command <code class="docutils literal notranslate"><span class="pre">root&#64;ubuntu</span> <span class="pre">#</span> <span class="pre">sudo</span> <span class="pre">umount</span> <span class="pre">./fs</span></code> to generate the FatFS file after unmounting <code class="docutils literal notranslate"><span class="pre">test.bin</span></code>.</p>
-<p>Users should find other related information from the internet, and copy <code class="docutils literal notranslate"><span class="pre">test.bin</span></code> into user data area of Flash finally.</p>
-</li>
+<li><p>Use command <code class="docutils literal notranslate"><span class="pre">root&#64;ubuntu</span> <span class="pre">#</span> <span class="pre">sudo</span> <span class="pre">umount</span> <span class="pre">./fs</span></code> to generate the FatFS file after unmounting <code class="docutils literal notranslate"><span class="pre">test.bin</span></code>.</p></li>
+<li><p>Refer to LittleFS Step 3 to write the generated bin file to the Flash.</p></li>
 </ol>
 </section>
 </section>
