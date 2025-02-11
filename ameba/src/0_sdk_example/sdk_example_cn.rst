@@ -34,9 +34,9 @@
 
 .. tabs::
 
-   .. include:: sdk_example_application_run_21Dx.rst
-   .. include:: sdk_example_application_run_26E20E.rst
-   .. include:: sdk_example_application_run_30E.rst
+   .. include:: sdk_example_application_run_dplus.rst
+   .. include:: sdk_example_application_run_lite.rst
+   .. include:: sdk_example_application_run_smart.rst
 
 外设示例
 ------------------------------------
@@ -58,7 +58,7 @@ Each example folder has :file:`main.c` and :file:`README.txt`. There are example
 
 .. tabs::
 
-   .. include:: sdk_example_peripheral_run_21Dx.rst
-   .. include:: sdk_example_peripheral_run_26E20E.rst
-   .. include:: sdk_example_peripheral_run_30E.rst
+   .. include:: sdk_example_peripheral_run_dplus.rst
+   .. include:: sdk_example_peripheral_run_lite.rst
+   .. include:: sdk_example_peripheral_run_smart.rst
 
