@@ -1,4 +1,3 @@
-
 For Windows, use MSYS2 and MinGW as the GCC environment.
 
 - MSYS2 is a collection of tools and libraries providing an easy-to-use environment for building, installing, and running native Windows software.
