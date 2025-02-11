@@ -7,9 +7,9 @@ Tools
    :maxdepth: 2
 
 
-   0_image_tool_index
-   0_trace_tool_index
-   0_layout_tool_index
-   0_pinmux_tool_index
-   0_cap_test_tool_index
+   1_image_tool_toprst
+   1_trace_tool_toprst
+   1_layout_tool_toprst
+   1_pinmux_tool_toprst
+   1_cap_test_tool_toprst
 

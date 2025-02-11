@@ -7,9 +7,9 @@
    :maxdepth: 2
 
 
-   0_image_tool_index_cn
-   0_trace_tool_index_cn
-   0_layout_tool_index_cn
-   0_pinmux_tool_index_cn
-   0_cap_test_tool_index_cn
+   1_image_tool_toprst_cn
+   1_trace_tool_toprst_cn
+   1_layout_tool_toprst_cn
+   1_pinmux_tool_toprst_cn
+   1_cap_test_tool_toprst_cn
 

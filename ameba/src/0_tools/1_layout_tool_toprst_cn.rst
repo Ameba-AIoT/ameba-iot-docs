@@ -1,4 +1,5 @@
-.. _layout_tool:
+Layout Tool
+==========================
 
 Introduction
 ------------------------

@@ -1,4 +1,5 @@
-.. _pinmux_tool:
+Pinmux Tool
+==========================
 
 Introduction
 -------------

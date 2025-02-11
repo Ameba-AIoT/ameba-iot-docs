@@ -1,4 +1,5 @@
-.. _cap_test_tool:
+Captouch Test Tool
+===================
 
 Introduction
 ------------------------

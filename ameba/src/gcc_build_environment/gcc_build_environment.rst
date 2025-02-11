@@ -5,11 +5,10 @@ Introduction
 This chapter illustrates how to build Realtek's SDK under GCC environment. It focuses on both Windows platform and Linux distribution. The build and download procedures are quite similar between Windows and Linux operating systems.
 
 - For Windows, Windows 10 64-bit is used as a platform.
-
 - For Linux server, Ubuntu 16.04 64-bit is used as a platform.
 
 Preparing GCC Environment
---------------------------------------------------
+------------------------------
 .. _windows_gcc_environment:
 
 Windows
@@ -18,85 +17,25 @@ Windows
 
 Linux
 ~~~~~~~~~~
-.. include:: gcc_preparing_environment_windows.rst
+.. include:: gcc_preparing_environment_linux.rst
 
 Troubleshooting
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 - MSYS2 pacman is responsible for managing and installing software, which is similar to apt-get in ubuntu. When ``bash:XXX:command not found`` appears, you can try instruction ``pacman -S <package_name>`` to install.
-
 - For detailed information of one package, try ``pacman -Si <package_name>``.
-
 - If system head files are not found when building tool, ``No such file or directory`` error will show up. You can try ``pacman -Fy <FILE_NAME>`` to check which package is lost, and install the lost package. If too many packages are lost, look for detailed information about the packages to decide which to install.
-
 - For multi-version python host, command ``update-alternatives --install /usr/bin/python python /usr/bin/python3.x 1`` can be used to select python of specific version 3.x, where x represents a desired version number.
-
 - If the error ``command 'python' not found`` appears during compilation, type command ``ln -s /usr/bin/python3 /usr/bin/python`` first to make sure that python3 is used when running python.
 
 Installing Toolchain
-----------------------------------------
-The toolchain will be installed automatically when building the project at the first time. And the toolchain will be intalled in ``/opt/rtk-toolchain`` by default.
+----------------------
+Automatical Installation
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. include:: gcc_installing_toolchain_auto.rst
 
-1. During the compilation, we will check if the toolchain exists and if the version of the toolchain match the lastest version. Once error occurs, you should fix the error according to the prompts on the screen and try again with ``make``.
-
-.. _make_toolchain:
-
-2. The toolchain will be downloaded from github when building the project at the first time. If find the download speed from github is too slow or download failed, please execute command ``make toolchain URL=aliyun`` or ``make toolchain URL=github`` first to get toolchain before building project. We recommend use ``make toolchain URL=aliyun`` to download toolchain from aliyun to improve the download speed.
-
-.. _change_installation_dir:
-
-3. The default directory for the toolchain installation is ``/opt/rtk-toolchain``. If you want to change the installation path, modify the ``TOOLCHAINDIR`` defined in ``Makefile.include.gen`` which is located both in ``project_km0`` and ``project_km4``.
-
-.. note::
-
-   - If an error ``Create Toolchain Dir Failed. May Not Have Permission`` appears, please create the installation directory by manual. If still fails, please refer to :ref:`3 <change_installation_dir>` above to change the installtion directory.
-   - If an error ``Download Failed`` appears, please check if the network connection is accessible first. If still fails, please refer to :ref:`2 <make_toolchain>` above to intall the toolchain again.
-   - If an error ``Current Toolchain Version Mismatched`` appears, please delete the current toochain and retry with ``make``, and the latest toolchain will be installed automatically during building the project.
-
-If the installation still fails, try with the manual installation steps shown in below.
-
-Windows
-~~~~~~~~~~~~~~
-This section introduces the steps to prepare the toolchain environment manually.
-
-1. Acquire the zip files of |CHIP_NAME| toolchain from Realtek.
-2. Create a new directory ``rtk-toolchain`` under the path ``{MSYS2_path}\opt``.
-
-   For example, if your MSYS2 installation path is as set in Section :ref:`windows_gcc_environment` **Step 3**, the ``rtk-toolchain`` should be in ``C:\msys64\opt``.
-
-   .. figure:: figures/windows_rtk_toolchain_1.png
-      :scale: 100%
-      :align: center
-
-3. Unzip ``asdk-10.3.x-mingw32-newlib-build-xxxx.zip`` and place the toolchain folder ``asdk-10.3.x`` to the folder ``rtk-toolchain`` created in **Step 2**.
-
-   .. figure:: figures/windows_rtk_toolchain_2.png
-      :scale: 90%
-      :align: center
-
-.. note::
-   The unzip folders should stay the same with the figure above and do NOT change them, otherwise you need to modify the toolchain directory in makefile to customize the path.
-
-Linux
-~~~~~~~~~~
-This section introduces the steps to prepare the toolchain environment manually.
-
-1. Acquire the zip files of |CHIP_NAME| toolchain from Realtek.
-
-2. Create a new directory ``rtk-toolchain`` under the path ``/opt``.
-
-   .. figure:: figures/linux_rtk_toolchain_1.png
-      :scale: 80%
-      :align: center
-
-
-3. Unzip ``asdk-10.3.x-linux-newlib-build-xxxx.tar.bz2`` to ``/opt/rtk-toolchain`` , then you can get the directory below:
-
-   .. figure:: figures/linux_rtk_toolchain_2.png
-      :scale: 75%
-      :align: center
-
-.. note::
-   - The unzip folders should stay the same with the figure above and do NOT change them, otherwise you need to modify the toolchain directory in makefile to customize the path.
+Manual Installation
+~~~~~~~~~~~~~~~~~~~~
+.. include:: gcc_installing_toolchain_manual.rst
 
 .. _configuring_sdk:
 
@@ -116,11 +55,8 @@ User can configure SDK options for KM0 and KM4 at the same time through ``$make 
 The main configurable options are divided into four parts:
 
 - ``General Config``: the shared kernel configurations for KM4 and KM0. The configurations will take effect in both KM4 and KM0.
-
 - ``Network Config``: the shared kernel configurations for KM4 and KM0. The configurations will take effect in both KM4 and KM0.
-
 - ``KM4 Config``: the exclusive kernel configurations for KM4. The configurations will take effect only in KM4 but not in KM0.
-
 - ``KM0 Config``: the exclusive kernel configurations for KM0. The configurations will take effect only in KM0 but not in KM4.
 
 The following figure is the menuconfig UI, and the options in red may be used frequently.
@@ -138,20 +74,53 @@ Building Code
 --------------------------
 This section illustrates how to build SDK for both Windows and Linux. The following table lists all the GCC project directories of SDK.
 
-.. table::
-   :width: 100%
-   :widths: auto
+.. tabs::
 
-   +------------------+------------------------------------------------+
-   | GCC project      | Directory                                      |
-   +==================+================================================+
-   | KM4              | {SDK}\\amebadplus_gcc_project\\project_km4     |
-   +------------------+------------------------------------------------+
-   | KM0              | {SDK}\\amebadplus_gcc_project\\project_km0     |
-   +------------------+------------------------------------------------+
+   .. tab:: RTL8721Dx
+
+      .. table::
+         :width: 100%
+         :widths: auto
+
+         +------------------+------------------------------------------------+
+         | GCC project      | Directory                                      |
+         +==================+================================================+
+         | KM4              | {SDK}\\amebadplus_gcc_project\\project_km4     |
+         +------------------+------------------------------------------------+
+         | KM0              | {SDK}\\amebadplus_gcc_project\\project_km0     |
+         +------------------+------------------------------------------------+
+
+   .. tab:: RTL8726EA/RTL8720EA
+
+      .. table::
+         :width: 100%
+         :widths: auto
+
+         +-------------+--------------------------------------------+
+         | GCC project | Directory                                  |
+         +=============+============================================+
+         | KM4         | {SDK}\\amebalite_gcc_project\\project_km4  |
+         +-------------+--------------------------------------------+
+         | KR4         | {SDK}\\amebalite_gcc_project\\project_kr4  |
+         +-------------+--------------------------------------------+
+
+   .. tab:: RTL8730E
+
+      .. table::
+         :width: 100%
+         :widths: auto
+
+         +-------------+-------------------------------------------+
+         | GCC project | Directory                                 |
+         +=============+===========================================+
+         | CA32        | {SDK}\\amebasmart_gcc_project\\project_ap |
+         +-------------+-------------------------------------------+
+         | KM4         | {SDK}\\amebasmart_gcc_project\\project_hp |
+         +-------------+-------------------------------------------+
+         | KM0         | {SDK}\\amebasmart_gcc_project\\project_lp |
+         +-------------+-------------------------------------------+
 
 .. note::
-
    Replace the ``{SDK}`` with your own SDK directory.
 
 There are two ways to build the SDK, you can choose either of them.
@@ -167,9 +136,7 @@ Follow these steps to build the SDK of KM4 and KM0 project one by one:
 2. Build SDK under the KM0 or KM4 project directory on Windows or Linux.
 
    - For normal image, simply use ``$make all`` command to build SDK.
-
    - For MP image, refer to Section :ref:`how_to_build_mp_image` to build SDK.
-
 
 3. Check the command execution results. If somehow failed, type ``$make clean`` to clean and then redo the make procedure.
 
@@ -179,30 +146,30 @@ Follow these steps to build the SDK of KM4 and KM0 project one by one:
         :scale: 75%
         :align: center
         :name: km4_project_make_all
-  
+
         KM4 project make all
-  
+
      .. figure:: figures/km4_image_generation.png
         :scale: 90%
         :align: center
         :name: km4_image_generation
-     
+
         KM4 image generation
-  
+
    - For KM0 project, if the terminal contains ``target_img2.axf`` and ``Image manipulating end`` message (see :ref:`km0_project_make_all`), it means that KM0 image has been built successfully. You can find it under ``\amebadplus_gcc_project\project_km0\asdk\image`` (see :ref:`km0_image_generation`).
 
      .. figure:: figures/km0_project_make_all.png
         :scale: 75%
         :align: center
         :name: km0_project_make_all
-     
+
         KM0 project make all
 
      .. figure:: figures/km0_image_generation.png
         :scale: 75%
         :align: center
         :name: km0_image_generation
-     
+
         KM0 image generation
 
 Build Together
@@ -217,24 +184,25 @@ In order to improve the efficiency of building SDK, you can also execute ``$make
      :scale: 75%
      :align: center
      :name: km4_km0_projects_make_all
-  
+
      KM4 & KM0 projects make all
-  
+
   .. figure:: figures/km4_km0_image_generation.png
      :scale: 90%
      :align: center
      :name: km4_km0_image_generation
-  
+
      KM4 & KM0 image generation
-  
+
 .. note::
    If you want to search some .map files for debugging, get them under the directory ``\amebadplus_gcc_project\project_km0\asdk\image`` or ``\amebadplus_gcc_project\project_km4\asdk\image``, but not ``\amebadplus_gcc_project``.
-
 
 .. _setting_debugger:
 
 Setting Debugger
---------------------------------
+-------------------
+.. include:: gcc_setting_debugger_probe_internal.rst
+
 J-Link
 ~~~~~~~~~~~~
 The |CHIP_NAME| supports J-Link debugger. Before setting J-Link debugger, you need to do some hardware configuration and download images to the |CHIP_NAME| device first.
@@ -242,19 +210,17 @@ The |CHIP_NAME| supports J-Link debugger. Before setting J-Link debugger, you ne
 1. Connect J-Link to the SWD of |CHIP_NAME|.
 
    a. Refer to the following figure to connect SWCLK pin of J-Link to SWD CLK pin of |CHIP_NAME|, and SWDIO pin of J-Link to SWD DATA pin of |CHIP_NAME|.
-
    b. Connect the |CHIP_NAME| device to PC after finishing these configurations.
 
       .. figure:: figures/connecting_jlink_to_swd.svg
          :scale: 130%
          :align: center
-      
+
          Wiring diagram of connecting J-Link to SWD
-   
+
    .. note::
       For |CHIP_NAME|, the J-Link version must be v9 or higher.
       If Virtual Machine (VM) is used as your platform, make sure that the USB connection setting between VM host and client is correct, so that the VM host can detect the device.
-   
 
 2. Download images to the |CHIP_NAME| device via ImageTool.
 
@@ -269,61 +235,11 @@ For Windows, click  and download the software in ``J-Link Software and Documenta
 .. note::
    The version of J-Link GDB server below is just an example, you can select the latest version to download.
 
+.. tabs::
 
-KM4 Setup
-******************
-1. Execute the ``cm4_jlink.bat``
-
-   Double-click the ``cm4_jlink.bat`` under ``{SDK}\amebadplus_gcc_project\utils\jlink_script``. You may have to change the path of JLinkGDBServer.exe and JLink.exe in the ``cm4_jlink.bat`` script according to your own settings.
-
-   The started J-Link GDB server looks like below. This window should NOT be closed if you want to download the image or enter debug mode.
-
-   .. figure:: figures/windows_km4_jlink_gdb_server_connection.png
-      :scale: 90%
-      :align: center
-   
-      KM4 J-Link GDB server connection under Windows
-
-   .. note::
-      Keep this window active to download the images to target.
-      
-2. Setup J-Link for KM4
-
-   a. Change the working directory to project_km4.
-
-   b. On the MSYS2 terminal, type ``$make setup GDB_SERVER=jlink`` command before selecting J-Link debugger.
-
-      .. figure:: figures/windows_km4_jlink_setup.png
-         :scale: 90%
-         :align: center
-
-         KM4 J-Link setup under Windows
-
-KM0 Setup
-******************
-1. Execute the ``cm0_jlink.bat``
-
-   Double-click the ``cm0_jlink.bat`` under ``{SDK}\amebadplus_gcc_project\utils\jlink_script``, the same as executing the ``cm4_jlink.bat``.
-
-   The started J-Link GDB server looks like below. This window should NOT be closed if you want to download the image or enter debug mode. Because KM4 will download all the images, you don't need to connect J-Link to KM0 when downloading images. J-Link can connect to KM0 when debugging.
-
-   .. figure:: figures/windows_km0_jlink_gdb_server_connection.png
-      :scale: 90%
-      :align: center
-   
-      KM0 J-Link GDB server connection under Windows
-
-2. Setup J-Link for KM0
-
-   a. Change working directory to project_km0.
-
-   b. On the Cygwin terminal, type ``$make setup GDB_SERVER=jlink`` command to select J-Link debugger.
-
-   .. figure:: figures/windows_km0_jlink_setup.png
-      :scale: 90%
-      :align: center
-   
-      KM0 J-Link setup under Windows
+   .. include:: gcc_setting_debugger_jlink_windows_dplus.rst
+   .. include:: gcc_setting_debugger_jlink_windows_lite.rst
+   .. include:: gcc_setting_debugger_jlink_windows_smart.rst
 
 Linux
 ^^^^^^^^^^
