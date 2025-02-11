@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MPU &mdash; RTL8721Dx 文档  documentation</title>
+  <title>内存保护单元 (MPU) &mdash; RTL8721Dx 文档  documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=13237357" />
@@ -32,7 +32,7 @@
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="Cache" href="1_cache_toprst_cn.html" />
+    <link rel="next" title="缓存 (Cache)" href="1_cache_toprst_cn.html" />
     <link rel="prev" title="&lt;no title&gt;" href="0_mpu_cache_index_cn.html" />  
      
   <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
@@ -77,14 +77,18 @@
 <li class="toctree-l1"><a class="reference internal" href="../0_user_config/0_usrcfg_index_cn.html">0.8 开发者配置</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../0_at_command/0_at_command_index_cn.html">0.A AT 命令</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../0_file_system/0_vfs_index_cn.html">0.B 虚拟文件系统</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">MPU</a><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">内存保护单元 (MPU)</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#introduction">Introduction</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#mpu-apis">MPU APIs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#usage">Usage</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="1_cache_toprst_cn.html">Cache</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../1_boot_process/0_boot_index_cn.html">1.1 BOOT 过程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="1_cache_toprst_cn.html">缓存 (Cache)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_boot_process/1_boot_process_toprst_cn.html">Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_boot_process/1_boot_process_toprst_cn.html#boot-address">Boot Address</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_boot_process/1_boot_process_toprst_cn.html#pin-description">Pin Description</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_boot_process/1_boot_process_toprst_cn.html#boot-flow">Boot Flow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_boot_process/1_boot_process_toprst_cn.html#boot-api">Boot API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../1_otpc/0_otpc_index.html">1.3 OTP存储器</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../1_chipen/0_chipen_index_cn.html">1.4 CHIPEN</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../1_ipc/0_ipc_index_cn.html">1.5 核间通信</a></li>
@@ -113,7 +117,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../8_ir/0_ir_index_cn.html">8.5 红外收发器</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../8_ledc/0_ledc_index_cn.html">8.6 LED控制器</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../8_cap_touch/0_cap_touch_index_cn.html">8.7 CAP-TOUCH</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../8_key_scan/0_key_scan_index_cn.html">8.8 KEY-SCAN</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_key_scan/1_key_scan_toprst.html">Supported ICs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_key_scan/1_key_scan_toprst.html#introduction">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_key_scan/1_key_scan_toprst.html#usage">Usage</a></li>
 </ul>
 
         </div>
@@ -131,7 +137,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="0_mpu_cache_index_cn.html">&lt;no title&gt;</a></li>
-      <li class="breadcrumb-item active">MPU</li>
+      <li class="breadcrumb-item active">内存保护单元 (MPU)</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -141,7 +147,7 @@
            <div itemprop="articleBody">
              
   <section id="mpu">
-<h1>MPU<a class="headerlink" href="#mpu" title="Link to this heading"></a></h1>
+<h1>内存保护单元 (MPU)<a class="headerlink" href="#mpu" title="Link to this heading"></a></h1>
 <section id="introduction">
 <h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
 <p>The Memory Protection Unit (MPU) is a component provided by Arm and is used to provide hardware protection by software definition. The code in SDK provides the mpu_region_config struct to set the region memory attribute of MPU.</p>
@@ -643,7 +649,7 @@
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="0_mpu_cache_index_cn.html" class="btn btn-neutral float-left" title="&lt;no title&gt;" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="1_cache_toprst_cn.html" class="btn btn-neutral float-right" title="Cache" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="1_cache_toprst_cn.html" class="btn btn-neutral float-right" title="缓存 (Cache)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
