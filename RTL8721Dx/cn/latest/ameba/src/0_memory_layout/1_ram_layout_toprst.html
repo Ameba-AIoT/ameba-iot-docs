@@ -76,7 +76,7 @@
 <li class="toctree-l2"><a class="reference internal" href="1_flash_layout_toprst.html">Flash Layout</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">RAM Layout</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#introduction">Introduction</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id1">RAM Layout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">RAM Layout</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#sram0-first-40kb-layout">SRAM0 (first 40KB) layout</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#ram-psram-layout">RAM &amp; PSRAM Layout</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#modifying-bootloader-size">Modifying Bootloader Size</a></li>
@@ -91,6 +91,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../0_file_system/0_vfs_index_cn.html">0.B 虚拟文件系统</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../1_mpu_cache/0_mpu_cache_index_cn.html">1.0 内存保护单元和缓存</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../1_boot_process/0_boot_index_cn.html">1.1 BOOT 过程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_ota/0_ota_index_cn.html">1.2 固件在线升级(OTA)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../1_otpc/0_otpc_index.html">1.3 OTP存储器</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../1_chipen/0_chipen_index_cn.html">1.4 CHIPEN</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../1_ipc/0_ipc_index_cn.html">1.5 核间通信</a></li>
@@ -102,12 +103,14 @@
 <li class="toctree-l1"><a class="reference internal" href="../2_wifi_bridge/0_wifi_bridge_index_cn.html">2.4 Wi-Fi Bridge</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../2_wifi_csi/0_wifi_csi_index_cn.html">2.5 Wi-Fi CSI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../2_wifi_adaptivity_test/0_wifi_adaptivity_index.html">2.6 Wi-Fi Adaptivity 测试指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_security/0_security_index_cn.html">3.1 安全与加密</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../3_nda_huk_derivation/0_huk_derivation_index_nda.html">3.3 HUK Derivation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../3_nda_rdp/0_rdp_index_nda.html">3.4 RDP</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../3_nda_rsip/0_rsip_index_nda.html">3.5 RSIP</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../3_nda_secure_boot/0_secure_boot_index_nda.html">3.6 Secure Boot</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../3_nda_swd_protection/0_swd_protection_index_nda.html">3.7 SWD Protection</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../3_nda_tfm/0_tfm_index_nda.html">3.8 Trusted Firmware-M (TF-M)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_crypto_engine/0_crypto_engine_index_cn.html">3.9 硬件加密引擎</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../4_ai/0_ai_index_cn.html">4.1 人工智能</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../4_ai_voice/0_ai_voice_index_cn.html">4.2 语音识别</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../4_multimedia/0_multimedia_index_cn.html">4.3 多媒体</a></li>
@@ -147,33 +150,33 @@
            <div itemprop="articleBody">
              
   <section id="ram-layout">
-<h1>RAM Layout<a class="headerlink" href="#ram-layout" title="Link to this heading"></a></h1>
+<span id="id1"></span><h1>RAM Layout<a class="headerlink" href="#ram-layout" title="Link to this heading"></a></h1>
 <section id="introduction">
 <h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
 <p>This chapter introduces the default memory layout of RTL8721Dx and how to modify the memory layout if needed.</p>
 </section>
-<section id="id1">
-<h2>RAM Layout<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<section id="id2">
+<h2>RAM Layout<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
 <div class="sphinx-tabs docutils container">
 <div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-0-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-0-0-0" name="0-0" role="tab" tabindex="0">RTL8721Dx</button><button aria-controls="panel-0-0-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-1" name="0-1" role="tab" tabindex="-1">RTL8726E</button><button aria-controls="panel-0-0-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-2" name="0-2" role="tab" tabindex="-1">RTL8720E</button></div><div aria-labelledby="tab-0-0-0" class="sphinx-tabs-panel" id="panel-0-0-0" name="0-0" role="tabpanel" tabindex="0"><p>In total, there are 512KB SRAM on chip, and the size of PSRAM can be 0MB/4MB/8MB/16MB…, which is decided by users. The RAM layout is illustrated below.</p>
-<figure class="align-center" id="id2">
-<a class="reference internal image-reference" href="../../../_images/ram_layout_dplus.svg"><img alt="../../../_images/ram_layout_dplus.svg" height="153" src="../../../_images/ram_layout_dplus.svg" width="471" /></a>
-<figcaption>
-<p><span class="caption-text">RAM layout</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
-</figcaption>
-</figure>
-</div><div aria-labelledby="tab-0-0-1" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-1" name="0-1" role="tabpanel" tabindex="0"><p>In total, there are 512KB SRAM on chip, and the size of PSRAM can be 0MB/4MB/8MB/16MB/32MB, which is decided by users. The default RAM layout is illustrated below.</p>
 <figure class="align-center" id="id3">
-<a class="reference internal image-reference" href="../../../_images/ram_layout_other_lite.svg"><img alt="../../../_images/ram_layout_other_lite.svg" height="202" src="../../../_images/ram_layout_other_lite.svg" width="539" /></a>
+<a class="reference internal image-reference" href="../../../_images/ram_layout_dplus.svg"><img alt="../../../_images/ram_layout_dplus.svg" height="153" src="../../../_images/ram_layout_dplus.svg" width="471" /></a>
 <figcaption>
 <p><span class="caption-text">RAM layout</span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
 </figcaption>
 </figure>
-</div><div aria-labelledby="tab-0-0-2" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-2" name="0-2" role="tabpanel" tabindex="0"><p>In total, there are 768KB SRAM on chip, and the size of PSRAM can be 0MB/4MB, which is decided by users. The default RAM layout is illustrated below.</p>
+</div><div aria-labelledby="tab-0-0-1" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-1" name="0-1" role="tabpanel" tabindex="0"><p>In total, there are 512KB SRAM on chip, and the size of PSRAM can be 0MB/4MB/8MB/16MB/32MB, which is decided by users. The default RAM layout is illustrated below.</p>
 <figure class="align-center" id="id4">
-<a class="reference internal image-reference" href="../../../_images/ram_layout_8720_lite.svg"><img alt="../../../_images/ram_layout_8720_lite.svg" height="292" src="../../../_images/ram_layout_8720_lite.svg" width="539" /></a>
+<a class="reference internal image-reference" href="../../../_images/ram_layout_other_lite.svg"><img alt="../../../_images/ram_layout_other_lite.svg" height="202" src="../../../_images/ram_layout_other_lite.svg" width="539" /></a>
 <figcaption>
 <p><span class="caption-text">RAM layout</span><a class="headerlink" href="#id4" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</div><div aria-labelledby="tab-0-0-2" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-2" name="0-2" role="tabpanel" tabindex="0"><p>In total, there are 768KB SRAM on chip, and the size of PSRAM can be 0MB/4MB, which is decided by users. The default RAM layout is illustrated below.</p>
+<figure class="align-center" id="id5">
+<a class="reference internal image-reference" href="../../../_images/ram_layout_8720_lite.svg"><img alt="../../../_images/ram_layout_8720_lite.svg" height="292" src="../../../_images/ram_layout_8720_lite.svg" width="539" /></a>
+<figcaption>
+<p><span class="caption-text">RAM layout</span><a class="headerlink" href="#id5" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 </div></div>
@@ -182,10 +185,10 @@
 <h2>SRAM0 (first 40KB) layout<a class="headerlink" href="#sram0-first-40kb-layout" title="Link to this heading"></a></h2>
 <div class="sphinx-tabs docutils container">
 <div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-1-1-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-1-1-0" name="1-0" role="tab" tabindex="0">RTL8721Dx</button><button aria-controls="panel-1-1-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-1-1-1" name="1-1" role="tab" tabindex="-1">RTL8726E</button><button aria-controls="panel-1-1-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-1-1-2" name="1-2" role="tab" tabindex="-1">RTL8720E</button></div><div aria-labelledby="tab-1-1-0" class="sphinx-tabs-panel" id="panel-1-1-0" name="1-0" role="tabpanel" tabindex="0"><p>The first 40KB SRAM0 layout is illustrated in the following figure and table. It is the same for all situations.</p>
-<figure class="align-center" id="id5">
+<figure class="align-center" id="id6">
 <a class="reference internal image-reference" href="../../../_images/sram0_layout_dplus.svg"><img alt="../../../_images/sram0_layout_dplus.svg" height="191" src="../../../_images/sram0_layout_dplus.svg" width="631" /></a>
 <figcaption>
-<p><span class="caption-text">SRAM0 (first 40KB) layout</span><a class="headerlink" href="#id5" title="Link to this image"></a></p>
+<p><span class="caption-text">SRAM0 (first 40KB) layout</span><a class="headerlink" href="#id6" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <table class="docutils align-default" style="width: 100%">
@@ -273,10 +276,10 @@
 </tbody>
 </table>
 </div><div aria-labelledby="tab-1-1-1" class="sphinx-tabs-panel" hidden="true" id="panel-1-1-1" name="1-1" role="tabpanel" tabindex="0"><p>The first 40KB SRAM0 layout is illustrated in the following figure and table. It is the same for all situations.</p>
-<figure class="align-center" id="id6">
+<figure class="align-center" id="id7">
 <a class="reference internal image-reference" href="../../../_images/sram0_layout_lite.svg"><img alt="../../../_images/sram0_layout_lite.svg" height="184" src="../../../_images/sram0_layout_lite.svg" width="645" /></a>
 <figcaption>
-<p><span class="caption-text">SRAM0 (first 40KB) layout</span><a class="headerlink" href="#id6" title="Link to this image"></a></p>
+<p><span class="caption-text">SRAM0 (first 40KB) layout</span><a class="headerlink" href="#id7" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <table class="docutils align-default" style="width: 100%">
@@ -370,10 +373,10 @@
 </tbody>
 </table>
 </div><div aria-labelledby="tab-1-1-2" class="sphinx-tabs-panel" hidden="true" id="panel-1-1-2" name="1-2" role="tabpanel" tabindex="0"><p>The first 40KB SRAM0 layout is illustrated in the following figure and table. It is the same for all situations.</p>
-<figure class="align-center" id="id7">
+<figure class="align-center" id="id8">
 <a class="reference internal image-reference" href="../../../_images/sram0_layout_lite.svg"><img alt="../../../_images/sram0_layout_lite.svg" height="184" src="../../../_images/sram0_layout_lite.svg" width="645" /></a>
 <figcaption>
-<p><span class="caption-text">SRAM0 (first 40KB) layout</span><a class="headerlink" href="#id7" title="Link to this image"></a></p>
+<p><span class="caption-text">SRAM0 (first 40KB) layout</span><a class="headerlink" href="#id8" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <table class="docutils align-default" style="width: 100%">
@@ -473,10 +476,10 @@
 <div class="sphinx-tabs docutils container">
 <div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-2-2-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-2-2-0" name="2-0" role="tab" tabindex="0">RTL8721Dx</button><button aria-controls="panel-2-2-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-2-2-1" name="2-1" role="tab" tabindex="-1">RTL8726E</button><button aria-controls="panel-2-2-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-2-2-2" name="2-2" role="tab" tabindex="-1">RTL8720E</button></div><div aria-labelledby="tab-2-2-0" class="sphinx-tabs-panel" id="panel-2-2-0" name="2-0" role="tabpanel" tabindex="0"><p>There are 352KB SRAM for KM4 and 96KB SRAM for KM0, which can be used for Power Management Controller (PMC) code and performance-cared text and data.
 The following figure and table illustrate the RAM layout with PSRAM.</p>
-<figure class="align-center" id="id8">
+<figure class="align-center" id="id9">
 <a class="reference internal image-reference" href="../../../_images/ram_layout_with_psram2_dplus.svg"><img alt="../../../_images/ram_layout_with_psram2_dplus.svg" height="383" src="../../../_images/ram_layout_with_psram2_dplus.svg" width="567" /></a>
 <figcaption>
-<p><span class="caption-text">RAM layout (with PSRAM)</span><a class="headerlink" href="#id8" title="Link to this image"></a></p>
+<p><span class="caption-text">RAM layout (with PSRAM)</span><a class="headerlink" href="#id9" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <table class="docutils align-default" style="width: 100%">
@@ -540,10 +543,10 @@ The following figure and table illustrate the RAM layout with PSRAM.</p>
 </tbody>
 </table>
 </div><div aria-labelledby="tab-2-2-1" class="sphinx-tabs-panel" hidden="true" id="panel-2-2-1" name="2-1" role="tabpanel" tabindex="0"><p>The following figure and table illustrate the default RAM layout with PSRAM.</p>
-<figure class="align-center" id="id9">
+<figure class="align-center" id="id10">
 <a class="reference internal image-reference" href="../../../_images/ram_psram_layout_8726_lite.svg"><img alt="../../../_images/ram_psram_layout_8726_lite.svg" height="511" src="../../../_images/ram_psram_layout_8726_lite.svg" width="691" /></a>
 <figcaption>
-<p><span class="caption-text">RAM &amp; PSRAM layout</span><a class="headerlink" href="#id9" title="Link to this image"></a></p>
+<p><span class="caption-text">RAM &amp; PSRAM layout</span><a class="headerlink" href="#id10" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <table class="docutils align-default" style="width: 100%">
@@ -610,10 +613,10 @@ The following figure and table illustrate the RAM layout with PSRAM.</p>
 The start address 0x2004_0020 is fixed for KR4.</p>
 <p><strong>With PSRAM</strong></p>
 <p>The following figure and table illustrate the default RAM layout with PSRAM.</p>
-<figure class="align-center" id="id10">
+<figure class="align-center" id="id11">
 <a class="reference internal image-reference" href="../../../_images/ram_layout_with_psram_8720_lite.svg"><img alt="../../../_images/ram_layout_with_psram_8720_lite.svg" height="510" src="../../../_images/ram_layout_with_psram_8720_lite.svg" width="847" /></a>
 <figcaption>
-<p><span class="caption-text">RAM layout (with PSRAM)</span><a class="headerlink" href="#id10" title="Link to this image"></a></p>
+<p><span class="caption-text">RAM layout (with PSRAM)</span><a class="headerlink" href="#id11" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <table class="docutils align-default" style="width: 100%">
@@ -684,10 +687,10 @@ The start address 0x2004_0020 is fixed for KR4.</p>
 </table>
 <p><strong>Without PSRAM</strong></p>
 <p>The following figure and table illustrate the default RAM layout without PSRAM.</p>
-<figure class="align-center" id="id11">
+<figure class="align-center" id="id12">
 <a class="reference internal image-reference" href="../../../_images/ram_layout_without_psram_8720_lite.svg"><img alt="../../../_images/ram_layout_without_psram_8720_lite.svg" height="403" src="../../../_images/ram_layout_without_psram_8720_lite.svg" width="534" /></a>
 <figcaption>
-<p><span class="caption-text">RAM layout (without PSRAM)</span><a class="headerlink" href="#id11" title="Link to this image"></a></p>
+<p><span class="caption-text">RAM layout (without PSRAM)</span><a class="headerlink" href="#id12" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <table class="docutils align-default" style="width: 100%">
@@ -792,7 +795,7 @@ The start address 0x2004_0020 is fixed for KR4.</p>
 <a class="reference internal image-reference" href="../../../_images/modify_sd_ram_step1_dplus.png"><img alt="../../../_images/modify_sd_ram_step1_dplus.png" src="../../../_images/modify_sd_ram_step1_dplus.png" style="width: 359.1px; height: 24.3px;" /></a>
 </figure>
 </li>
-<li><p>Re-build and download the new Bootloader and IMG2 OTA2 as described in Section section <span class="xref std std-ref">flash_layout_app_ota1</span> step <span class="xref std std-ref">2</span> ~ <span class="xref std std-ref">3</span>.</p></li>
+<li><p>Re-build and download the new Bootloader and IMG2 OTA2 as described in Section section <strong>APP OTA1</strong>.</p></li>
 </ol>
 <p><strong>BD_PSRAM</strong></p>
 <p>If user wants to modify the KM4 BD PSRAM size, please modify the running position of IMG2 in menuconfig first. Any option with PSRAM is acceptable. Then modify <code class="docutils literal notranslate"><span class="pre">PSRAM_KM4_IMG2_SIZE</span></code> in <code class="docutils literal notranslate"><span class="pre">{SDK}\amebadplus_gcc_project\amebaDplus_layout.ld</span></code> to change the end address of <code class="docutils literal notranslate"><span class="pre">KM4_BD_PSRAM</span></code>.</p>
@@ -825,7 +828,7 @@ The start address 0x2004_0020 is fixed for KR4.</p>
 </li>
 </ol>
 <ol class="arabic simple" start="2">
-<li><p>Re-build and download the new bootloader and IMG2 OTA2 as described in Section <span class="xref std std-ref">flash_layout_app_ota1</span> Step <span class="xref std std-ref">2</span> ~ <span class="xref std std-ref">3</span>.</p></li>
+<li><p>Re-build and download the new bootloader and IMG2 OTA2 as described in Section <strong>APP OTA1</strong>.</p></li>
 </ol>
 <p><strong>BD_PSRAM</strong></p>
 <p>Follow the steps to modify the size of KM4 BD_PSRAM:</p>
