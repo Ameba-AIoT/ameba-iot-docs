@@ -1,7 +1,5 @@
 .. tab:: RTL8726E
 
-   Introduction
-   ------------------------
    The inter-processor communication (IPC) hardware is designed to make multi-CPUs communicate with each other.
    Also, a shared SRAM is used to transmit information to each other. The block diagram is shown below.
 

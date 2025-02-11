@@ -329,8 +329,7 @@ Driver Interfaces
       - For sport interfaces, please refer to: ``{SDK}/component/soc/amebadplus/fwlib/include/ameba_sport.h``.
       - For codec interfaces, please refer to: ``{SDK}/component/soc/amebadplus/fwlib/include/ameba_audio.h``.
 
-      I2S PLL APIs
-      ^^^^^^^^^^^^^^^
+      **I2S PLL APIs**
 
       There are two ways to generate I2S PLL:
 

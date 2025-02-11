@@ -1,5 +1,6 @@
-MPU
-=============
+Memory Protection Unit (MPU)
+=============================
+
 Introduction
 --------------------------------------------
 The Memory Protection Unit (MPU) is a component provided by Arm and is used to provide hardware protection by software definition. The code in SDK provides the mpu_region_config struct to set the region memory attribute of MPU.

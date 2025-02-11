@@ -1,8 +1,4 @@
-Boot Process
-========================
-
-
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
 
    1_boot_process_toprst_cn

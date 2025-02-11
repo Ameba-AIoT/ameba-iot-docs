@@ -1,7 +1,3 @@
-Key-Scan
-================
-
-
 .. toctree::
    :maxdepth: 1
 

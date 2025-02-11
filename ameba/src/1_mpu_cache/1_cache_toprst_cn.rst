@@ -1,5 +1,6 @@
-Cache
-==========
+缓存 (Cache)
+============
+
 Introduction
 --------------------------------------------
 The Cache of Soc supports Enable/Disable, Flush and Clean operation, as following table lists.
