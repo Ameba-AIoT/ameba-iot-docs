@@ -1,8 +1,8 @@
-True Random Number Generator (TRNG)
+Pinmux Tool
 ======================================================================
 
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
 
-   trng
+   1_pinmux_tool_toprst

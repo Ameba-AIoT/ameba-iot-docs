@@ -1,10 +1,10 @@
 :github_url: https://github.com/Ameba-AIoT/ameba-iot-docs
 
-Wi-Fi CSI 
-========================
+Wi-Fi Bridge
+======================
 
 
 .. toctree::
    :maxdepth: 2
 
-   wifi_csi.rst
+   1_wifi_bridge_toprst

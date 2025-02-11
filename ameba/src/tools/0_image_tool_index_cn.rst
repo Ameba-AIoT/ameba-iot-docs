@@ -1,8 +1,8 @@
-Trace Tool
+Image Tool
 ====================
 
 
 .. toctree::
    :maxdepth: 2
 
-   trace_tool_cn
+   1_image_tool_toprst_cn

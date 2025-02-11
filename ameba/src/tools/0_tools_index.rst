@@ -1,15 +1,15 @@
 :github_url: https://github.com/Ameba-AIoT/ameba-iot-docs
 
-工具
+Tools
 ==========================================
 
 .. toctree::
    :maxdepth: 2
 
 
-   image_tool_index_cn
-   trace_tool_index_cn
-   layout_tool_index_cn
-   pinmux_tool_index_cn
-   cap_test_tool_index_cn
+   0_image_tool_index
+   0_trace_tool_index
+   0_layout_tool_index
+   0_pinmux_tool_index
+   0_cap_test_tool_index
 

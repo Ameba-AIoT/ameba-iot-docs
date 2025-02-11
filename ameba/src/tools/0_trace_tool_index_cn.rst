@@ -5,4 +5,4 @@ Trace Tool
 .. toctree::
    :maxdepth: 2
 
-   trace_tool
+   1_trace_tool_toprst_cn

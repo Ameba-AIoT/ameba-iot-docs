@@ -7,4 +7,4 @@ Wi-Fi R-Mesh
 .. toctree::
    :maxdepth: 2
 
-   wifi_tunnel
+   1_wifi_tunnel_toprst

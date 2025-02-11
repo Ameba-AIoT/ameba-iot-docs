@@ -5,4 +5,4 @@ USB OTG
 .. toctree::
    :maxdepth: 1
 
-   usb_otg_cn
+   1_usb_otg_toprst_cn
