@@ -15,9 +15,9 @@ The ECDSA supports all curves under 256-bit. But in our ROM code, only 8 kinds o
 
 The ECDSA has the features of key pair generation, ECDH key agreement, signature generation, public key signature verification, and basic function.
 
-.. note:: 
-   The ECDSA can be accessed by NP and AP, but if multi-cores call the API to operate the ECDSA at the same time, it will lead to ECDSA function error.
-   Users should take protective measures to ensure that only one core operates the ECDSA at a certain time.
+.. note::
+   ECDSA can be accessed by NP and AP, but if multi-core calls API to operate ECDSA at the same time,
+   it will lead to ECDSA function error. Users should take protective measures to ensure that only one core can operate ECDSA at the same time.
 
 ECDSA OTP
 ------------------
@@ -72,48 +72,48 @@ The process of programming OTP physical map is as follows:
       0xef, 0xcd, 0xab, 0x89, 0x67, 0x45, 0x23, 0x01, 0xef, 0xcd, 0xab, 0x89, 0x67, 0x45, 0x23, 0x01
       };
 
-   Using the following command to program ECDSA key1:
+   Using the following command to program ECDSA Key1:
 
-   .. code-block::
+   .. code-block:: c
 
       Efuse wraw 0x280 20 ffeeddccbbaa99887766554433221100efcdab8967452301efcdab8967452301
 
-3. Use the following command to read the OTP key back to check if it is written correctly. If not match, re-write it.
+3. Use the following command to read OTP key back to check if it is written correctly. If not match, re-write it.
 
-   .. code-block::
+   .. code-block:: c
 
       Efuse rraw 0x280
 
-4. Enable ECDSA Key Read Protection and Write Protection to prevent key exposure and tampering after the written ECDSA Key is confirmed.
+4. Enable ECDSA Key Read Protection and Write Protection to prevent key exposure and tampering after the written ECDSA key is confirmed.
 
 ECDSA Key Buffer Order
------------------------
+-------------------------
 The key buffer parameter of ECDSA follows the small endian mode. For example, if the key is:
 
-.. code-block::
+.. code-block:: c
 
    0x0123456789abcdef0123456789abcdef00112233445566778899aabbccddeeff
 
 You need to put it into an array in u8 format, like this:
 
-.. code-block::
+.. code-block:: c
 
    u8 key1[32]={
-   0xff, 0xee, 0xdd, 0xcc, 0xbb, 0xaa, 0x99, 0x88, 0x77, 0x66, 0x55, 0x44, 0x33, 0x22, 0x11, 0x00,
-   0xef, 0xcd, 0xab, 0x89, 0x67, 0x45, 0x23, 0x01, 0xef, 0xcd, 0xab, 0x89, 0x67, 0x45, 0x23, 0x01
+      0xff, 0xee, 0xdd, 0xcc, 0xbb, 0xaa, 0x99, 0x88, 0x77, 0x66, 0x55, 0x44, 0x33, 0x22, 0x11, 0x00,
+      0xef, 0xcd, 0xab, 0x89, 0x67, 0x45, 0x23, 0x01, 0xef, 0xcd, 0xab, 0x89, 0x67, 0x45, 0x23, 0x01
    };
 
 At this point, the array address can be API parameter.
 
 If you program it into OTP as ``ECDSA_PRI_KEY1``, the memory layout is:
 
-.. table::
+.. table:: 
    :width: 100%
    :widths: auto
 
    +-------+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+
    | 0x280 | ff | ee | dd | cc | bb | aa | 99 | 88 | 77 | 66 | 55 | 44 | 33 | 22 | 11 | 00 |
-   +=======+====+====+====+====+====+====+====+====+====+====+====+====+====+====+====+====+
+   +-------+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+
    | 0x290 | ef | cd | ab | 89 | 67 | 45 | 23 | 01 | ef | cd | ab | 89 | 67 | 45 | 23 | 01 |
    +-------+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+
 

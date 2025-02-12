@@ -13,7 +13,7 @@ Antifuse one-time programmable (OTP) is the most secure embedded non-volatile me
    OTP Layout
 
 .. note:: For detailed layout of each OTP zone, refer to UM1000.
-   
+
 
 OTP Programming APIs
 ----------------------------------------
@@ -306,7 +306,7 @@ Program the value of logical address 0x02[1] to 1, you should follow these steps
    Or
 
    .. code-block:: c
-      
+
       u8 data_read[4];
       OTP_LogicalMap_Read(&data_read,0,4);
 
@@ -315,26 +315,26 @@ Program the value of logical address 0x02[1] to 1, you should follow these steps
 3. Write the new value 0x12A23456 to logical address 0x00~0x03.
 
    .. code-block:: c
-      
+
       efuse wmap 0 4 5634A212
 
    Or
 
    .. code-block:: c
-      
+
       u8 data_written[4]={0x56,0x34,0xA2,0x12};
       OTP_LogicalMap_Write(0,4,(u8 *)data_written);
 
 4. Read the data_written again to check whether the value is written correctly.
 
    .. code-block:: c
-      
+
       efuse rmap
 
    Or
 
    .. code-block:: c
-      
+
       u8 data_read[4];
       OTP_LogicalMap_Read(&data_read,0,4);
 
@@ -350,13 +350,13 @@ Program the value of logical address 0x08[0] to 1, you should follow following s
 1. Read the logical map to check the original value.
 
    .. code-block:: c
-   
+
       efuse rmap
 
    Or
 
    .. code-block:: c
-   
+
       u8 data_read[4];
       OTP_LogicalMap_Read(&data_read,8,4);
 
@@ -365,26 +365,26 @@ Program the value of logical address 0x08[0] to 1, you should follow following s
 3. Write the new value 0x00000001 to logical address 0x08~0x0B.
 
    .. code-block:: c
-   
+
       efuse wmap 8 4 01000000
 
    Or
 
    .. code-block:: c
-   
+
       u8 data_written[4]={0x01,0x00,0x00,0x00};
       OTP_LogicalMap_Write(8,4,(u8 *)data_written);
 
 4. Read the data_written again to check whether the value is written correctly.
 
    .. code-block:: c
-   
+
       efuse rmap
 
    Or
 
    .. code-block:: c
-   
+
       u8 data_read[4];
       OTP_LogicalMap_Read(&data_read,8,4);
 
@@ -441,8 +441,9 @@ Contents in configuration area are listed below. About field's usage in this are
 
 .. _otpc_usage_security_zone_config_area_crc:
 
-CRC
-******
+OTPC CRC
+***********
+
 CRC is used for defending against injection attacks, and this function is accomplished by comparing the valid CRC entry that you programmed into OTP with the one calculated by hardware for security zone (0x200~0x36B).
 If you want to ensure the secure zone un-attacked, then CRC field needs to be programmed.
 
@@ -465,20 +466,20 @@ When you use CRC validation function for the first time, please follow the follo
 
    - Magic number is 0x8730:
 
-     .. code-block:: c  
+     .. code-block:: c 
 
         EFUSE wraw 370 2 3087
 
    - Assuming that CRC value is 0xB4C5:
 
      .. code-block:: c
-        
+
         EFUSE wraw 372 2 C5B4
 
 4. Read the CRC entry back, to check whether it's been written correctly
 
    .. code-block:: c
-      
+
       EFUSE rraw
 
    .. caution:: Pay attention to the order of data.
@@ -501,7 +502,7 @@ If security zone (0x200~0x36B) has been changed, a new CRC entry is needed.
 2. Get the new CRC value.
 
    .. code-block:: c
-      
+
       u32 OTPGetCRC(void)
 
 3. Program the previous used entry to all 0x00 to invalidate this entry, that means both CRC and magic number are programmed into 0x00.
