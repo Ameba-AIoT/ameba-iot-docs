@@ -56,7 +56,7 @@ Where:
 
 :**interface**: memory type (Flash only)
 
-:**region**: Flash partition (**VFS1** or **VFS2**, described in Section :ref:`vfs_on_flash_section`)
+:**region**: Flash partition (**VFS1** or **VFS2**, described in Section :ref:`vfs_on_flash`)
 
 :**flag**: operation authority of file system (read-write or read-only)
 
@@ -67,7 +67,7 @@ Where:
 Usage of VFS
 ------------------------
 
-.. _vfs_on_flash_section:
+.. _vfs_on_flash:
 
 VFS on Flash
 ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -330,12 +330,12 @@ LittleFS Bin File Generation
       :align: center
 
    .. note::
-      ``-b 4096`` and ``-p 256`` are default configurations, users should adapt the configuration according to `block_size` and `cache_size` of **lfs_config** in ``{SDK}\component\file_system\littlefs\littlefs_adapter.c``. ``-s 0x20000`` is according to VFS region mentioned in Section :ref:`vfs_on_flash_section`.
+      ``-b 4096`` and ``-p 256`` are default configurations, users should adapt the configuration according to `block_size` and `cache_size` of **lfs_config** in ``{SDK}\component\file_system\littlefs\littlefs_adapter.c``. ``-s 0x20000`` is according to VFS region mentioned in Section :ref:`vfs_on_flash`.
 
 
 3. Download the image to the Flash.
 
-   The start address of image should be VFS Flash region address mentioned in Section :ref:`vfs_on_flash_section`. Test logs are shown below:
+   The start address of image should be VFS Flash region address mentioned in Section :ref:`vfs_on_flash`. Test logs are shown below:
 
    .. code-block::
 
