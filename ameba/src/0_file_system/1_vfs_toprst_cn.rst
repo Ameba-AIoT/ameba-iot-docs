@@ -300,9 +300,10 @@ LittleFS Bin File Generation
 
    The start address of Image Tool should be ``StartAddr`` of VFS Flash region mentioned in Section :ref:`vfs_on_flash`. The end address of Image Tool should be it's ``EndAddr`` + 1;
 
-   .. figure:: figures/littlefs_bin_download.png
-      :scale: 60%
-      :align: center
+   .. tabs::
+      .. include:: vfs_bin_download_21Dx.rst
+      .. include:: vfs_bin_download_26E20E.rst
+      .. include:: vfs_bin_download_30E.rst
 
 .. _fatfs_bin_file_generation_section:
 
