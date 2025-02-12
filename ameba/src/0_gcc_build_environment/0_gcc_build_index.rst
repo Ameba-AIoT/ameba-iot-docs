@@ -5,5 +5,5 @@ GCC Build Environment
 .. toctree::
    :maxdepth: 2
 
-   gcc_build_environment
+   1_gcc_build_environment_toprst
 
