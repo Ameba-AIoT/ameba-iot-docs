@@ -19,6 +19,9 @@ endif
 ifneq ($(TAGS),)
   tag+=$(foreach t,$(TAGS), -t $(t))
 endif
+ifeq (,$(findstring nda,$(TAGS)))
+  tag+=$(foreach t,$(TAGS), -t $(t), -t else_nda)
+endif
 
 .PHONY: help en cn
 
