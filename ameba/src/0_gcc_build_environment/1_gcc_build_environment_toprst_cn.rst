@@ -5,7 +5,6 @@
 This chapter illustrates how to build Realtek's SDK under GCC environment. It focuses on both Windows platform and Linux distribution. The build and download procedures are quite similar between Windows and Linux operating systems.
 
 - For Windows, Windows 10 64-bit is used as a platform.
-
 - For Linux server, Ubuntu 16.04 64-bit is used as a platform.
 
 准备 GCC 环境
@@ -98,47 +97,63 @@ This section introduces the steps to prepare the toolchain environment manually.
 ------------------------------
 This section illustrates how to change SDK configurations.
 
-User can configure SDK options for KM0 and KM4 at the same time through ``$make menuconfig`` command.
+.. tabs::
 
-1. Switch to the directory ``{SDK}\amebadplus_gcc_project``
-2. Run ``$make menuconfig`` command on MSYS2 MinGW 64-bit (Windows) or terminal (Linux)
-
-.. note::
-   The command ``$make menuconfig`` is only supported under ``{SDK}\amebadplus_gcc_project``, but not supported under other paths.
-
-The main configurable options are divided into four parts:
-
-- ``General Config``: the shared kernel configurations for KM4 and KM0. The configurations will take effect in both KM4 and KM0.
-- ``Network Config``: the shared kernel configurations for KM4 and KM0. The configurations will take effect in both KM4 and KM0.
-- ``KM4 Config``: the exclusive kernel configurations for KM4. The configurations will take effect only in KM4 but not in KM0.
-- ``KM0 Config``: the exclusive kernel configurations for KM0. The configurations will take effect only in KM0 but not in KM4.
-
-The following figure is the menuconfig UI, and the options in red may be used frequently.
-
-.. figure:: figures/menuconfig_ui.svg
-   :scale: 130%
-   :align: center
-   :name: menuconfig_ui
-
-   menuconfig UI
+   .. include:: gcc_config_sdk_dplus.rst
+   .. include:: gcc_config_sdk_lite.rst
+   .. include:: gcc_config_sdk_smart.rst
 
 .. _building_code:
 
 编译代码
---------------------------
+----------
 This section illustrates how to build SDK for both Windows and Linux. The following table lists all the GCC project directories of SDK.
 
-.. table::
-   :width: 100%
-   :widths: auto
+.. tabs::
 
-   +------------------+------------------------------------------------+
-   | GCC project      | Directory                                      |
-   +==================+================================================+
-   | KM4              | {SDK}\\amebadplus_gcc_project\\project_km4     |
-   +------------------+------------------------------------------------+
-   | KM0              | {SDK}\\amebadplus_gcc_project\\project_km0     |
-   +------------------+------------------------------------------------+
+   .. tab:: RTL8721Dx
+
+      .. table::
+         :width: 100%
+         :widths: auto
+
+         +------------------+------------------------------------------------+
+         | GCC project      | Directory                                      |
+         +==================+================================================+
+         | KM4              | {SDK}\\amebadplus_gcc_project\\project_km4     |
+         +------------------+------------------------------------------------+
+         | KM0              | {SDK}\\amebadplus_gcc_project\\project_km0     |
+         +------------------+------------------------------------------------+
+
+   .. tab:: RTL8726EA/RTL8720EA
+
+      .. table::
+         :width: 100%
+         :widths: auto
+
+         +-------------+--------------------------------------------+
+         | GCC project | Directory                                  |
+         +=============+============================================+
+         | KM4         | {SDK}\\amebalite_gcc_project\\project_km4  |
+         +-------------+--------------------------------------------+
+         | KR4         | {SDK}\\amebalite_gcc_project\\project_kr4  |
+         +-------------+--------------------------------------------+
+
+   .. tab:: RTL8730E
+
+      .. table::
+         :width: 100%
+         :widths: auto
+
+         +-------------+-------------------------------------------+
+         | GCC project | Directory                                 |
+         +=============+===========================================+
+         | CA32        | {SDK}\\amebasmart_gcc_project\\project_ap |
+         +-------------+-------------------------------------------+
+         | KM4         | {SDK}\\amebasmart_gcc_project\\project_hp |
+         +-------------+-------------------------------------------+
+         | KM0         | {SDK}\\amebasmart_gcc_project\\project_lp |
+         +-------------+-------------------------------------------+
 
 .. note::
 
@@ -147,82 +162,28 @@ This section illustrates how to build SDK for both Windows and Linux. The follow
 There are two ways to build the SDK, you can choose either of them.
 
 逐一编译
-~~~~~~~~~~~~~~~~~~~~~
-Follow these steps to build the SDK of KM4 and KM0 project one by one:
+~~~~~~~~~~~
+.. tabs::
 
-1. Use ``$cd`` command to switch to the project directories of SDK on Windows or Linux.
-
-   For example, you can type ``$cd {SDK}\amebadplus_gcc_project\project_km4`` to switch to the KM4 project, the same operation for the KM0 project.
-
-2. Build SDK under the KM0 or KM4 project directory on Windows or Linux.
-
-   - For normal image, simply use ``$make all`` command to build SDK.
-   - For MP image, refer to Section :ref:`how_to_build_mp_image` to build SDK.
-
-3. Check the command execution results. If somehow failed, type ``$make clean`` to clean and then redo the make procedure.
-
-   - For KM4 project, if the terminal contains ``target_img2.axf`` and ``Image manipulating end`` message (see :ref:`km4_project_make_all`), it means that KM4 images have been built successfully. You can find them under ``\amebadplus_gcc_project\project_km4\asdk\image`` (see :ref:`km4_image_generation`).
-
-     .. figure:: figures/km4_project_make_all.png
-        :scale: 75%
-        :align: center
-        :name: km4_project_make_all
-
-        KM4 project make all
-
-     .. figure:: figures/km4_image_generation.png
-        :scale: 90%
-        :align: center
-        :name: km4_image_generation
-
-        KM4 image generation
-
-   - For KM0 project, if the terminal contains ``target_img2.axf`` and ``Image manipulating end`` message (see :ref:`km0_project_make_all`), it means that KM0 image has been built successfully. You can find it under ``\amebadplus_gcc_project\project_km0\asdk\image`` (see :ref:`km0_image_generation`).
-
-     .. figure:: figures/km0_project_make_all.png
-        :scale: 75%
-        :align: center
-        :name: km0_project_make_all
-
-        KM0 project make all
-
-     .. figure:: figures/km0_image_generation.png
-        :scale: 75%
-        :align: center
-        :name: km0_image_generation
-
-        KM0 image generation
+   .. include:: gcc_build_sdk_1b1_dplus.rst
+   .. include:: gcc_build_sdk_1b1_lite.rst
+   .. include:: gcc_build_sdk_1b1_smart.rst
 
 同时编译
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-In order to improve the efficiency of building SDK, you can also execute ``$make all`` command once under ``\amebadplus_gcc_project``, instead of executing ``$make all`` command separately under the KM0 project and KM4 project.
+~~~~~~~~~~
+.. tabs::
 
-- If the terminal contains ``target_img2.axf`` and ``Image manipulating end`` message (see :ref:`km4_km0_projects_make_all`), it means that all the images have been built successfully. The image files are generated under ``\amebadplus_gcc_project`` (see :ref:`km4_km0_image_generation`). You can also find them under ``\amebadplus_gcc_project\project_km0\asdk\image`` and ``\amebadplus_gcc_project\project_km4\asdk\image``.
-
-- If somehow failed, type ``$make clean`` to clean and then redo the make procedure.
-
-  .. figure:: figures/km4_km0_projects_make_all.png
-     :scale: 75%
-     :align: center
-     :name: km4_km0_projects_make_all
-  
-     KM4 & KM0 projects make all
-  
-  .. figure:: figures/km4_km0_image_generation.png
-     :scale: 90%
-     :align: center
-     :name: km4_km0_image_generation
-  
-     KM4 & KM0 image generation
-  
-.. note::
-   If you want to search some .map files for debugging, get them under the directory ``\amebadplus_gcc_project\project_km0\asdk\image`` or ``\amebadplus_gcc_project\project_km4\asdk\image``, but not ``\amebadplus_gcc_project``.
+   .. include:: gcc_build_sdk_together_dplus.rst
+   .. include:: gcc_build_sdk_together_lite.rst
+   .. include:: gcc_build_sdk_together_smart.rst
 
 
 .. _setting_debugger:
 
 设置调试器
---------------------------------
+------------
+.. include:: gcc_setting_debugger_probe_internal.rst
+
 J-Link
 ~~~~~~~~~~~~
 The |CHIP_NAME| supports J-Link debugger. Before setting J-Link debugger, you need to do some hardware configuration and download images to the |CHIP_NAME| device first.
@@ -230,19 +191,17 @@ The |CHIP_NAME| supports J-Link debugger. Before setting J-Link debugger, you ne
 1. Connect J-Link to the SWD of |CHIP_NAME|.
 
    a. Refer to the following figure to connect SWCLK pin of J-Link to SWD CLK pin of |CHIP_NAME|, and SWDIO pin of J-Link to SWD DATA pin of |CHIP_NAME|.
-
    b. Connect the |CHIP_NAME| device to PC after finishing these configurations.
 
       .. figure:: figures/connecting_jlink_to_swd.svg
          :scale: 130%
          :align: center
-      
+
          Wiring diagram of connecting J-Link to SWD
-   
+
    .. note::
       For |CHIP_NAME|, the J-Link version must be v9 or higher.
       If Virtual Machine (VM) is used as your platform, make sure that the USB connection setting between VM host and client is correct, so that the VM host can detect the device.
-   
 
 2. Download images to the |CHIP_NAME| device via ImageTool.
 
@@ -257,60 +216,12 @@ For Windows, click  and download the software in ``J-Link Software and Documenta
 .. note::
    The version of J-Link GDB server below is just an example, you can select the latest version to download.
 
-KM4 Setup
-*************
-1. Execute the ``cm4_jlink.bat``
+.. tabs::
 
-   Double-click the ``cm4_jlink.bat`` under ``{SDK}\amebadplus_gcc_project\utils\jlink_script``. You may have to change the path of JLinkGDBServer.exe and JLink.exe in the ``cm4_jlink.bat`` script according to your own settings.
+   .. include:: gcc_setting_debugger_jlink_windows_dplus.rst
+   .. include:: gcc_setting_debugger_jlink_windows_lite.rst
+   .. include:: gcc_setting_debugger_jlink_windows_smart.rst
 
-   The started J-Link GDB server looks like below. This window should NOT be closed if you want to download the image or enter debug mode.
-
-   .. figure:: figures/windows_km4_jlink_gdb_server_connection.png
-      :scale: 90%
-      :align: center
-   
-      KM4 J-Link GDB server connection under Windows
-
-   .. note::
-      Keep this window active to download the images to target.
-      
-2. Setup J-Link for KM4
-
-   a. Change the working directory to project_km4.
-
-   b. On the MSYS2 terminal, type ``$make setup GDB_SERVER=jlink`` command before selecting J-Link debugger.
-
-      .. figure:: figures/windows_km4_jlink_setup.png
-         :scale: 90%
-         :align: center
-
-         KM4 J-Link setup under Windows
-
-KM0 Setup
-******************
-1. Execute the ``cm0_jlink.bat``
-
-   Double-click the ``cm0_jlink.bat`` under ``{SDK}\amebadplus_gcc_project\utils\jlink_script``, the same as executing the ``cm4_jlink.bat``.
-
-   The started J-Link GDB server looks like below. This window should NOT be closed if you want to download the image or enter debug mode. Because KM4 will download all the images, you don't need to connect J-Link to KM0 when downloading images. J-Link can connect to KM0 when debugging.
-
-   .. figure:: figures/windows_km0_jlink_gdb_server_connection.png
-      :scale: 90%
-      :align: center
-   
-      KM0 J-Link GDB server connection under Windows
-
-2. Setup J-Link for KM0
-
-   a. Change working directory to project_km0.
-
-   b. On the Cygwin terminal, type ``$make setup GDB_SERVER=jlink`` command to select J-Link debugger.
-
-   .. figure:: figures/windows_km0_jlink_setup.png
-      :scale: 90%
-      :align: center
-   
-      KM0 J-Link setup under Windows
 
 Linux
 ^^^^^^^^^^
@@ -325,80 +236,18 @@ Open a new terminal and type the following command to install GDB server. After 
 .. note::
    The version of J-Link GDB server below is just an example, you can select the latest version to download.
 
-KM4 Setup
-******************
-1. Connect to KM4
+.. tabs::
 
-   a. Open a new terminal under directory ``/amebadplus_gcc_project/utils/jlink_script``.
-
-   b. Type ``$/opt/SEGGER/JLink/JLinkGDBServer -select USB-device Cortex-M33 -if SWD -scriptfileAP2_KM4.JLinkScript port 2335``.
-
-   .. figure:: figures/linux_km4_jlink_gdb_server_connection.png
-      :scale: 70%
-      :align: center
-   
-      KM4 J-Link GDB server connection setting under Linux
-
-   If the connection is successful, the log is shown as below. This terminal should NOT be closed if you want to download software or enter GDB debugger mode.
-   
-   .. figure:: figures/linux_km4_jlink_gdb_server_connection_success.png
-      :scale: 70%
-      :align: center
-   
-      KM4 J-Link GDB server connection success under Linux
-
-2. Setup J-Link for KM4
-
-   a. Open a new terminal under project_km4 folder.
-
-   b. Type ``$make setup GDB_SERVER=jlink`` command before using J-Link to download software or enter GDB debugger.
-
-   .. figure:: figures/linux_km4_jlink_setup.png
-      :scale: 70%
-      :align: center
-   
-      KM4 J-Link terminal setup under Linux
-
-KM0 Setup
-******************
-1. Connect to KM0
-
-   a. Open a new terminal under directory ``/amebadplus_gcc_project/utils/jlink_script``.
-
-   b. Type ``$/opt/SEGGER/JLink/JLinkGDBServer -select USB -device Cortex-M23 -if SWD -scriptfile AP1_KM0.JLinkScript port 2331``.
-
-   .. figure:: figures/linux_km0_jlink_gdb_server_connection.png
-      :scale: 70%
-      :align: center
-   
-      KM0 J-Link GDB server connection setting under Linux
-   
-   If the connection is successful, the log is shown below.
-   
-   .. figure:: figures/linux_km0_jlink_gdb_server_connection_success.png
-      :scale: 70%
-      :align: center
-   
-      KM0 J-Link GDB server connection success under Linux
-
-2. Setup J-Link for KM0
-
-   a. Open a new terminal under project_km0.
-
-   b. Type ``$make setup GDB_SERVER=jlink`` command before using J-Link to download software or enter GDB debugger.
-
-   .. figure:: figures/linux_km0_jlink_setup.png
-      :scale: 70%
-      :align: center
-   
-      KM0 J-Link terminal setup under Linux
+   .. include:: gcc_setting_debugger_jlink_linux_dplus.rst
+   .. include:: gcc_setting_debugger_jlink_linux_lite.rst
+   .. include:: gcc_setting_debugger_jlink_linux_smart.rst
 
 下载固件至 Flash
 ----------------------------------------------------
 有两种方法可以下载固件至 Flash：
 
-1. Image Tool, a software provided by Realtek (recommended). For more information, refer to :ref:`Image Tool <image_tool>` for more information.
-2. GDB Server, mainly used for GDB debug user case.
+- Image Tool, a software provided by Realtek (recommended). For more information, refer to :ref:`Image Tool <image_tool>` for more information.
+- GDB Server, mainly used for GDB debug user case.
 
 This section illustrates the second method to download images to Flash.
 
@@ -439,39 +288,21 @@ GDB Server
 To enter GDB debugger mode, follow the steps below:
 
 1. Make sure that the steps mentioned in Sections :ref:`Configuring_sdk` to :ref:`setting_debugger` are finished, then reset the device.
-
-2. Change the directory to target project which can be ``project_km4`` or ``project_km0``, and type ``$make debug`` on MSYS2 (Windows) or terminal (Linux).
+2. Change the directory to target project, and type ``$make debug`` on MSYS2 (Windows) or terminal (Linux).
 
 J-Link
 ~~~~~~~~~~~~
 步骤
 ^^^^^^
-1. Press ``Win+R`` on your keyboard. Hold down the Windows key on your keyboard, and press the ``R`` button. This will open the ``Run`` tool in a new pop-up window. Alternatively, you can find and click ``Run`` on the Start menu.
+1. Press :kbd:`Win+R` on your keyboard, or find and click :guilabel:`Run` on the Start menu.
+2. Type ``cmd`` in the Run window and click :guilabel:`OK` to open the Command Prompt terminal in a new window.
+3. Copy the J-Link script command below for the specific target:
 
-2. Type ``cmd`` in the Run window. This shortcut will open the Command Prompt terminal.
+.. tabs::
 
-3. Click ``OK`` in the Run window. This will run your shortcut command, and open the Command Prompt terminal in a new window.
-
-4. Copy the J-Link script command below for specific target:
-
-   - For KM4:
-
-     .. code-block::
-
-        "{Jlink_path}\JLink.exe" -device Cortex-M33 -if SWD -speed 4000 -autoconnect 1
-
-   - For KM0:
-
-     .. code-block::
-
-        "{Jlink_path}\JLink.exe" -device Cortex-M23 -if SWD -speed 4000 -autoconnect 1
-
-   .. note::
-
-      The J-Link connection command path mentioned above are:
-
-      - ``{Jlink_path}``: the path your Segger J-Link installed, default is ``C:\Program Files (x86)\SEGGER\JLink``.
-      - ``{script path}``: ``{SDK}\amebadplus_gcc_project\utils\jlink_script``.
+   .. include:: gcc_enter_debug_mode_jlink_dplus.rst
+   .. include:: gcc_enter_debug_mode_jlink_lite.rst
+   .. include:: gcc_enter_debug_mode_jlink_smart.rst
 
 命令
 ^^^^^^^

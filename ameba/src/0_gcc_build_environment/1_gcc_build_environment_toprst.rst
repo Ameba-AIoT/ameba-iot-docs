@@ -189,15 +189,14 @@ Downloading Image to Flash
 ----------------------------------------------------
 There are two ways to download image to Flash:
 
-1. Image Tool, a software provided by Realtek (recommended). For more information, refer to :ref:`Image Tool <image_tool>` for more information.
-
-2. GDB Server, mainly used for GDB debug user case.
+- Image Tool, a software provided by Realtek (recommended). For more information, refer to :ref:`Image Tool <image_tool>` for more information.
+- GDB Server, mainly used for GDB debug user case.
 
 This section illustrates the second method to download images to Flash.
 
 To download software into Device Board, make sure the steps mentioned in Section :ref:`building_code` are done, and then type ``$make flash`` command on MSYS2 (Windows) or terminal (Linux).
 
-Images are downloaded only under KM4 by this command. This command downloads the software into Flash and it will take several seconds to finish, as shown below.
+This command downloads the software into Flash and it will take several seconds to finish, as shown below.
 
 .. figure:: figures/downloading_image_to_flash.png
    :scale: 90%
@@ -211,17 +210,18 @@ Images are downloaded only under KM4 by this command. This command downloads the
 
    Download codes success log
 
-To check whether the image is downloaded correctly into memory, you can select ``verify download`` before downloading images, and during image download process, ``verified OK`` log will be shown.
+Images are downloaded only under KM4. To check whether the image is downloaded correctly into memory, you can select :guilabel:`verify download` before downloading images, and during image download process, ``verified OK`` log will be shown.
 
-.. figure:: figures/verify_download.png
+.. figure:: ../figures/verify_download.png
    :scale: 75%
    :align: center
 
    Verify download
 
-After download is successful, press ``Reset`` button and you will see that the device boots with the new image.
+After download is successful, press the :guilabel:`Reset` button and you will see that the device boots with the new image.
 
-.. note:: The command is only supported to use in KM4 project, and ``km4_boot_all.bin`` & ``KM0_km4_app.bin`` can be downloaded to Flash.
+.. note::
+   Only executing command under KM4 project is needed, because KM4 will download all the images.
 
 .. _entering_debug_mode:
 
@@ -232,52 +232,32 @@ GDB Server
 To enter GDB debugger mode, follow the steps below:
 
 1. Make sure that the steps mentioned in Sections :ref:`Configuring_sdk` to :ref:`setting_debugger` are finished, then reset the device.
-
-2. Change the directory to target project which can be ``project_km4`` or ``project_km0``, and type ``$make debug`` on MSYS2 (Windows) or terminal (Linux).
+2. Change the directory to target project, and type ``$make debug`` on MSYS2 (Windows) or terminal (Linux).
 
 J-Link
 ~~~~~~~~~~~~
 Steps
 ^^^^^^^^^^
-1. Press ``Win+R`` on your keyboard. Hold down the Windows key on your keyboard, and press the ``R`` button. This will open the ``Run`` tool in a new pop-up window. Alternatively, you can find and click ``Run`` on the Start menu.
+1. Press :kbd:`Win+R` on your keyboard, or find and click :guilabel:`Run` on the Start menu.
+2. Type ``cmd`` in the Run window and click :guilabel:`OK` to open the Command Prompt terminal in a new window.
+3. Copy the J-Link script command below for the specific target:
 
-2. Type ``cmd`` in the Run window. This shortcut will open the Command Prompt terminal.
+.. tabs::
 
-3. Click ``OK`` in the Run window. This will run your shortcut command, and open the Command Prompt terminal in a new window.
-
-4. Copy the J-Link script command below for specific target:
-
-- For KM4:
-
-  .. code-block::
-  
-     "{Jlink_path}\JLink.exe" -device Cortex-M33 -if SWD -speed 4000 -autoconnect 1
-  
-- For KM0:
-
-  .. code-block::
-  
-     "{Jlink_path}\JLink.exe" -device Cortex-M23 -if SWD -speed 4000 -autoconnect 1
-
-.. note::
-
-   The J-Link connection command path mentioned above are:
-
-   - ``{Jlink_path}``: the path your Segger J-Link installed, default is ``C:\Program Files (x86)\SEGGER\JLink``.
-  
-   - ``{script path}``: ``{SDK}\amebadplus_gcc_project\utils\jlink_script``.
-
+   .. include:: gcc_enter_debug_mode_jlink_dplus.rst
+   .. include:: gcc_enter_debug_mode_jlink_lite.rst
+   .. include:: gcc_enter_debug_mode_jlink_smart.rst
 
 Commands
-^^^^^^^^^^^^^^^^
+^^^^^^^^^^
 The following commands are often used when the program is stuck. All commands are accepted case insensitive.
 
-.. table:: Often used commands
+.. table::
    :width: 100%
    :widths: 15 15 30 40
-  
+
    +----------------+-----------------+--------------------------------------+-------------------------------------------------+
-   | Command (long) | Command (short) | Syntax                               | Explanation                                     |
+   | Command (long) | Command (short) | Syntax                               | Description                                     |
    +================+=================+======================================+=================================================+
    | Halt           | H               |                                      | Halt CPU                                        |
    +----------------+-----------------+--------------------------------------+-------------------------------------------------+
@@ -295,14 +275,13 @@ For more information, you can visit https://wiki.segger.com/J-Link_Commander.
 .. note::
 
    - You can type ``H`` and ``G`` several times and record the PC, then look for the PC in which function in asm file. This function might be where you get stuck.
-
    - You can also use ``mem`` to dump some address after ``sp``, from these addresses you can find the function call stack.
 
 Command Lists
---------------------------
+----------------
 The commands mentioned above are listed in the following table.
 
-.. table:: Command lists
+.. table::
    :width: 100%
    :widths: 10 30 60
 
@@ -321,7 +300,7 @@ The commands mentioned above are listed in the following table.
    +-------+-----------------------------------+---------------------------------------------+
 
 GDB Debugger Basic Usage
-------------------------------------------------
+---------------------------
 GDB, the GNU project debugger, allows you to examine the program while it executes, and it helps catch bugs.
 Section :ref:`entering_debug_mode` has described how to enter GDB debugger mode, and this section illustrates some basic usage of GDB commands.
 
