@@ -31,7 +31,6 @@ In each folder of application example, there are C source files, header files an
 The entry function of application example is :func:`app_example()`, and each application example has its own :func:`app_example()`.
 
 .. tabs::
-
    .. include:: sdk_example_application_run_dplus.rst
    .. include:: sdk_example_application_run_lite.rst
    .. include:: sdk_example_application_run_smart.rst
@@ -55,7 +54,6 @@ The peripheral examples are demos of peripherals. Most examples consist of raw a
 Each example folder has :file:`main.c` and :file:`README.txt`. There are example descriptions, required components, HW connection and expected behavior in :file:`README.txt`.
 
 .. tabs::
-
    .. include:: sdk_example_peripheral_run_dplus.rst
    .. include:: sdk_example_peripheral_run_lite.rst
    .. include:: sdk_example_peripheral_run_smart.rst
