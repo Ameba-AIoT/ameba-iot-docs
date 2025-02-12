@@ -226,35 +226,7 @@ This section introduces the steps to prepare the toolchain environment.
 
 Configuring SDK
 ------------------------------
-This section illustrates how to change SDK configurations.
 
-User can configure SDK options for KR4 and KM4 at the same time by ``$make menuconfig`` command.
-
-1. Switch to the directory ``{SDK}\amebalite_gcc_project``.
-
-2. Run ``$make menuconfig`` command on MSYS2 MinGW 64-bit (Windows) or terminal (Linux).
-
-.. note::
-   ``$make menuconfig`` command is only supported under ``{SDK}\amebalite_gcc_project``, but not supported under other paths.
-
-The main configurable options are divided into four parts:
-
-- ``General Config``: the shared kernel configurations for KM4 and KR4. The configurations will take effect in both KM4 and KR4.
-
-- ``Network Config``: the incompatible kernel configurations for KM4 and KR4. Take Wi-Fi processor role as an example, KR4 is AP when KM4 is NP, while KM4 is AP when KR4 is NP. The configurations will take effect in both KM4 and KR4.
-
-- ``KM4 Config``: the exclusive kernel configurations for KM4. The configurations will take effect only in KM4 but not in KR4.
-
-- ``KR4 Config``: the exclusive kernel configurations for KR4. The configurations will take effect only in KR4 but not in KM4.
-
-The following figure is the menuconfig UI, and the options in red may be used frequently.
-
-.. figure:: ../figures/menuconfig_ui.svg
-   :scale: 130%
-   :align: center
-   :name: menuconfig_ui
-
-   menuconfig UI
 
 .. _building_code:
 
@@ -281,80 +253,11 @@ There are two ways to build the SDK, you can choose either of them.
 
 Building One by One
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Follow these steps to build the SDK of KM4 and KR4 project one by one:
 
-1. Use ``$cd`` command to switch to the project directories of SDK.
-
-   - On Windows, open MSYS2 MinGW 64-bit terminal and use ``$cd`` command.
-
-   - On Linux, open its own terminal and use ``$cd`` command.
-
-   For example, you can type ``$cd {SDK}\amebalite_gcc_project\project_km4`` to switch to the KM4 project, the same operation for KR4 project.
-
-2. Build SDK under the KM4 or KR4 project directory on Windows or Linux.
-
-   - For normal image, simply use ``$make all`` command to build SDK.
-
-   - For MP image, refer to Section :ref:`how_to_build_mp_image` to build SDK.
-
-3. Check the command execution results. If somehow failed, type ``$make clean`` to clean and then redo the make procedure.
-
-   - For KM4 project, if the terminal contains ``target_img2.axf`` and ``Image manipulating end`` messages (see :ref:`km4_project_make_all`), it means that KM4 images have been built successfully. You can find them under ``amebalite_gcc_project\project_km4\asdk\image`` , as shown in :ref:`km4_image_generation`.
-
-      .. figure:: ../figures/km4_project_make_all.PNG
-         :scale: 75%
-         :align: center
-         :name: km4_project_make_all
-
-         KM4 project make all
-
-      .. figure:: ../figures/km4_image_generation.png
-         :scale: 95%
-         :align: center
-         :name: km4_image_generation
-
-         KM4 image generation
-
-   - For KR4 project, if the terminal contains ``kr4_image2_all.bin`` and ``Image manipulating end`` messages (see :ref:`kr4_project_make_all`), it means that KR4 images have been built successfully. You can find them under ``amebalite_gcc_project\project_kr4\vsdk\image`` , as shown in :ref:`kr4_image_generation`.
-
-      .. figure:: ../figures/kr4_project_make_all.PNG
-         :scale: 75%
-         :align: center
-         :name: kr4_project_make_all
-
-         KR4 project make all
-
-      .. figure:: ../figures/kr4_image_generation.png
-         :scale: 90%
-         :align: center
-         :name: kr4_image_generation
-
-         KR4 image generation
 
 Building Together
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-In order to improve the efficiency of building SDK, you can also execute ``$make all`` command once under ``{SDK}\amebalite_gcc_project``, instead of executing ``$make all`` command separately under the KR4 project and KM4 project.
 
-- If the terminal contains ``target_img2.axf`` and ``Image manipulating end`` message (see :ref:`km4_kr4_projects_make_all`), it means that all the images have been built successfully. The images are generated under ``amebalite_gcc_project`` , as shown in :ref:`km4_kr4_image_generation`. You can also find them under ``amebalite_gcc_project\project_kr4\vsdk\image`` and ``amebalite_gcc_project\project_km4\asdk\image``.
-
-- If somehow failed, type ``$make clean`` to clean and then redo the make procedure.
-
-.. figure:: ../figures/km4_kr4_projects_make_all.PNG
-   :scale: 75%
-   :align: center
-   :name: km4_kr4_projects_make_all
-
-   KM4 & KR4 projects make all
-
-.. figure:: ../figures/km4_kr4_image_generation.png
-   :scale: 90%
-   :align: center
-   :name: km4_kr4_image_generation
-
-   KM4 & KR4 image generation
-
-.. note::
-   If you want to search some ``.map`` files for debugging, get them under the directory ``amebalite_gcc_project\project_kr4\vsdk\image`` or ``amebalite_gcc_project\project_km4\asdk\image``, but not ``amebalite_gcc_project``.
 
 .. _setting_debugger:
 
@@ -463,85 +366,7 @@ After the installation of the software pack, there is a tool named ``JLinkGDBSer
 .. note::
    The version of J-Link GDB server below is just an example, you can select the latest version to download.
 
-KM4 Setup
-******************
-1. Connect to KM4
 
-   For KM4 project, open a new terminal under ``amebalite_gcc_project/utils/jlink_script``, and type ``$/opt/SEGGER/JLink/JLinkGDBServer -select USB-device Cortex-M33 -if SWD -scriptfile AP0_KM4.JLinkScript port 2335``.
-
-   .. figure:: ../figures/linux_km4_jlink_gdb_server_connection.png
-      :scale: 70%
-      :align: center
-
-      KM4 J-Link GDB server connection setting under Linux
-
-   If the connection is successful, the log is shown as below. This terminal should NOT be closed if you want to download software or enter GDB debugger mode.
-
-   .. figure:: ../figures/linux_km4_jlink_gdb_server_connection_success.png
-      :scale: 70%
-      :align: center
-
-      KM4 J-Link GDB server connection success under Linux
-
-2. Setup J-Link for KM4
-
-   a. Open a new terminal under project_km4 folder.
-
-   b. Type ``$make setup GDB_SERVER=jlink`` command before using J-Link to download software or enter GDB debugger.
-
-   .. figure:: ../figures/linux_km4_jlink_setup.png
-      :scale: 70%
-      :align: center
-
-      KM4 J-Link terminal setup under Linux
-
-KR4 Setup
-******************
-1. Connect to KR4
-
-   Before connecting to KR4, open a new terminal under ``amebalite_gcc_project/utils/jlink_script``, and type ``$/opt/SEGGER/JLink/ JLinkExe -device Cortex-M33 -if swd -autoconnect 1 -speed 1000 -JLinkScriptFile KM4_SEL.JLinkScript`` to connect to KM4 by J-Link at first.
-
-   .. figure:: ../figures/linux_kr4_setup_km4_jlink_gdb_server_connection.png
-      :scale: 70%
-      :align: center
-
-      KM4 J-Link connection setting under Linux
-
-   If the connection is successful, the log is shown as below.
-
-   .. figure:: ../figures/linux_kr4_setup_km4_jlink_gdb_server_connection_success.png
-      :scale: 70%
-      :align: center
-
-      KM4 J-Link connection success under Linux
-
-   After KM4 is connected by J-Link successfully, open a new terminal under the same working directory and type ``$/opt/SEGGER/JLink/JLinkGDBServer -select USB-device RV32 -if cjtag -port 2331`` to connect to KR4.
-
-   .. figure:: ../figures/linux_kr4_jlink_gdb_server_connection.png
-      :scale: 70%
-      :align: center
-
-      KR4 J-Link GDB server connection setting under Linux
-
-   If the connection is successful, the log is shown as below. This terminal should NOT be closed if you want to download software or enter GDB debugger mode. And it is OK to close the J-Link window of KM4.
-
-   .. figure:: ../figures/linux_kr4_jlink_gdb_server_connection_success.png
-      :scale: 70%
-      :align: center
-
-      KR4 J-Link GDB server connection success under Linux
-
-2. Setup J-Link for KR4
-
-   a. Open a new terminal under project_kr4.
-
-   b. Type ``$make setup GDB_SERVER=jlink`` command before using J-Link to download software or enter GDB debugger.
-
-   .. figure:: ../figures/linux_kr4_jlink_setup.png
-      :scale: 70%
-      :align: center
-
-      KR4 J-Link terminal setup under Linux
 
 Downloading Image to Flash
 -----------------------------
