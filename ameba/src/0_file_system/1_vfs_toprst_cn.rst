@@ -294,11 +294,11 @@ LittleFS Bin File Generation
 
    .. note::
       - **-b 4096** and **-p 256** are default configurations, users should adapt the configuration according to *block_size* and *cache_size* of ``lfs_config`` in ``{SDK}\component\file_system\littlefs\littlefs_adapter.c``.
-      - **-s 0x20000** is according to VFS region mentioned in Section :ref:`vfs_on_flash_section`.
+      - **-s 0x20000** is according to VFS region mentioned in Section :ref:`vfs_on_flash`.
 
 3. Download the image to the Flash.
 
-   The start address of Image Tool should be ``StartAddr`` of VFS Flash region mentioned in Section :ref:`vfs_on_flash_section`. The end address of Image Tool should be it's ``EndAddr`` + 1;
+   The start address of Image Tool should be ``StartAddr`` of VFS Flash region mentioned in Section :ref:`vfs_on_flash`. The end address of Image Tool should be it's ``EndAddr`` + 1;
 
    .. figure:: figures/littlefs_bin_download.png
       :scale: 60%

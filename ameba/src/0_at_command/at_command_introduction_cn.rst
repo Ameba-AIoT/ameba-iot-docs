@@ -335,7 +335,7 @@ This section demonstrates how to prepare a custom atcmd_config.json file and act
       linux@user:~$./mklittlefs -b 4096 -p 256 -s 131072 -c TEST lfs.bin
       /KV/atcmd_config.json
 
-4. Flash the generated lfs.bin file into the VFS1 region of the AT module according to the flash layout(refer to :ref:`VFS on Flash <vfs_on_flash_section>` for the specific address).
+4. Flash the generated lfs.bin file into the VFS1 region of the AT module according to the flash layout(refer to :ref:`VFS on Flash <vfs_on_flash>` for the specific address).
 
 5. Flash the application firmware that enables MCU Control Mode (refer to :ref:`atcmd_image_building` for specific instructions).
 
