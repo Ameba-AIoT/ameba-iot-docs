@@ -1,0 +1,130 @@
+.. _wifi_fullmac:
+
+支持的IC
+------------------------
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +------------+------------+----------+----------+----------+
+   | Ameba SoC  | RTL8721Dx  | RTL8726EA| RTL8720EA| RTL8730E |
+   +============+============+==========+==========+==========+
+   | Supported  |     Y      |     N    |     N    |     N    |
+   +------------+------------+----------+----------+----------+
+
+FullMAC简介
+------------------------
+在Wi-Fi FullMAC 方案中, Ameba作为网卡, 通过UART/SPI/SDIO/USB与主机MCU连接, 为主机MCU提供网络连接功能.
+
+FullMAC架构
+------------------------
+FullMAC 提供如下功能:
+
+- 提供了host和device之间基于UART/SPI/SDIO/USB的传输通路
+- 支持标准的Linux wpa_supplicant 和 cfg80211 无线架构
+- 传输接口除了可以用于传输WiFi/BT 相关的指令数据，还为客户提供了定制命令接口
+
+.. include:: fullmac_architecture.rst
+
+.. note:: **HOST操作系统**
+
+  - Linux
+  - FreeRTOS
+  - Zephyr
+
+.. note:: **BT 协议栈**
+
+  - Linux HOST：Bluez
+  - Zephyr HOST：Zephyr BT 协议栈
+  - FreeRTOS：Realtek BT 协议栈
+
+FullMAC传输接口
+------------------------
+
+.. tabs::
+
+   .. include:: fullmac_interface.rst
+
+FullMAC的特点
+------------------------
+.. include:: fullmac_features.rst
+
+FullMAC文件目录
+---------------
+
+Wi-Fi
+~~~~~~
+
+.. tabs::
+
+   .. include:: fullmac_filetree_rtos.rst
+
+   .. include:: fullmac_filetree_linux.rst
+
+Bluetooth
+~~~~~~~~~~
+
+.. tabs::
+
+   .. tab:: Device
+
+   .. tab:: RTOS HOST
+
+   .. tab:: Linux HOST
+
+FullMAC硬件配置
+----------------------
+.. include:: ../2_whc/whc_pins_connection_cn.rst
+
+
+FullMAC WiFi Device 驱动移植指南
+--------------------------------
+.. include:: fullmac_portingguide_wifi_dev_cn.rst
+
+FullMAC Wi-Fi Host 驱动移植指南
+--------------------------------
+.. tabs::
+
+   .. include:: fullmac_portingguide_wifi_rtos_cn.rst
+
+   .. include:: fullmac_portingguide_wifi_linux_cn.rst
+
+FullMAC BT Device 驱动移植指南
+---------------------------------------
+.. include:: fullmac_portingguide_bt_dev_cn.rst
+
+FullMAC BT Host 驱动移植指南
+-------------------------------
+.. tabs::
+
+   .. include:: fullmac_portingguide_bt_linux_cn.rst
+
+   .. include:: fullmac_portingguide_bt_rtos_cn.rst
+
+FullMAC WiFi 吞吐量
+-------------------
+.. tabs::
+
+   .. include:: fullmac_throughput_wifi_rtos.rst
+
+   .. include:: fullmac_throughput_wifi_linux.rst
+
+   - [1] The data is the test result of device code running in PSRAM, host driver running on Dell Optiplex 3080 MT.
+   - [2] The data is the test result of device code running in PSRAM, host driver running on Raspberry Pi 4.
+   - [3] The data is the test result of device code running in
+
+FullMAC 内存需求
+--------------------------
+Device
+~~~~~~~~
+.. tabs::
+
+   .. include:: fullmac_memsize_dev_dplus.rst
+
+Host
+~~~~~~~~
+.. tabs::
+
+   .. include:: fullmac_memsize_host_rtos.rst
+
+   .. include:: fullmac_memsize_host_linux.rst
