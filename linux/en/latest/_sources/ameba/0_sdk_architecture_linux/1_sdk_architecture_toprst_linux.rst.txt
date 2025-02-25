@@ -1,0 +1,574 @@
+.. _architecture:
+
+Overview
+----------------
+The Linux SDK architecture of Realtek is shown below.
+
+- Linux Software: running on the application processor (AP). It contains several component layers that provide different level interfaces to help user run their own applications.
+- OPTEE OS: running on the Arm TrustZone to provide security functionality.
+- Firmware: running on KM4, can provide task offload and low power actions.
+
+.. figure:: figures/sdk_arch_linux.svg
+   :scale: 120%
+   :align: center
+
+SDK Directory
+-----------------
+The Linux SDK directory architecture of Realtek is illustrated below.
+
+.. figure:: figures/sdk_directory_linux.svg
+   :scale: 120%
+   :align: center
+
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +---------------------+-------------------+-------------------------------------------------------------------+
+   | Path                | Component         | Description                                                       |
+   +=====================+===================+===================================================================+
+   | sources/boot        | Bootloader        | The bootloader includes arm-trusted-firmware, OPTEE OS and u-boot |
+   +---------------------+-------------------+-------------------------------------------------------------------+
+   | sources/development | Development tools | Development tools used for debug                                  |
+   +---------------------+-------------------+-------------------------------------------------------------------+
+   | sources/kernel      | Linux kernel      | Linux kernel 5.4                                                  |
+   +---------------------+-------------------+-------------------------------------------------------------------+
+   | sources/firmware    | KM4 firmware      | Firmware running on KM4                                           |
+   +---------------------+-------------------+-------------------------------------------------------------------+
+   | sources/yocto       | Yocto             | Yocto 4.0 Kirkstone                                               |
+   +---------------------+-------------------+-------------------------------------------------------------------+
+   | sources/tests       | Test cases        | Sample test for drivers                                           |
+   +---------------------+-------------------+-------------------------------------------------------------------+
+   | Tools               | Tools             | Flash download and debug tool                                     |
+   +---------------------+-------------------+-------------------------------------------------------------------+
+
+BSP
+------
+The SDK provides a series of BSP source packages.
+
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +-----------------------------------+------------------+-----------------------------------------------------------+
+   | Path                              | Component        | Description                                               |
+   +===================================+==================+===========================================================+
+   | sources/<linux>                   | Linux Kernel     | Linux kernel source codes                                 |
+   +-----------------------------------+------------------+-----------------------------------------------------------+
+   | sources/boot/arm-trusted-firmware | Trusted Firmware | Arm trusted firmware                                      |
+   +-----------------------------------+------------------+-----------------------------------------------------------+
+   | sources/boot/uboot                | U-Boot           | Application processor's second bootloader                 |
+   +-----------------------------------+------------------+-----------------------------------------------------------+
+   | sources/boot/optee                | Trusted OS       | OPTEE OS runs as a trusted OS to provide secure functions |
+   +-----------------------------------+------------------+-----------------------------------------------------------+
+
+Where :emphasis:`<linux>` means the kernel linux directory in sdk, which is ``kernel/linux-5.4`` for kernel 5.4.x, and ``kernel/linux-6.6`` for kernel 6.6.x.
+
+.. _sdk_architecutre_flash_layout:
+
+Flash Layout
+------------------
+NAND Flash Layout
+~~~~~~~~~~~~~~~~~~~
+Two default NAND Flash layouts are provided in SDK.
+
+- The 128MB NAND Flash layout is illustrated in the table below. The start address of SlotA KM4 bootloader is fixed to **0x0800_0000** and other start addresses are configurable for users.
+
+  .. table::
+     :width: 100%
+     :widths: auto
+  
+     +--------------------------+---------------------------------+-------------+--------------+---------------------------------------------------------------------------------------------+
+     | Item                     | Sub-item                        | Address     | Size (bytes) | Description                                                                                 |
+     +==========================+=================================+=============+==============+=============================================================================================+
+     | KM0/KM4/AP BOOT SlotA    | KM4 Bootloader                  | 0x0800_0000 | 24K          | KM4 bootloader code/data                                                                    |
+     |                          +---------------------------------+-------------+--------------+---------------------------------------------------------------------------------------------+
+     |                          | System Data                     | 0x0801_F000 | 4K           | System data                                                                                 |
+     |                          +---------------------------------+-------------+--------------+---------------------------------------------------------------------------------------------+
+     |                          | Key Certificate, KM0 & KM4 IMG2 | 0x0802_0000 | 1152K        | This image combines Key Certificate, KM0 image and KM4 image2.                              |
+     |                          |                                 |             |              |                                                                                             |
+     |                          |                                 |             |              | - Key Certificate: PK hash information for other images                                     |
+     |                          |                                 |             |              |                                                                                             |
+     |                          |                                 |             |              | - KM0_IMG: contains KM0 image code/data, mapped to virtual address 0x0C00_0000.             |
+     |                          |                                 |             |              |                                                                                             |
+     |                          |                                 |             |              | - KM4_IMG2: contains KM4 non-secure image code/data, mapped to virtual address 0x0E00_0000. |
+     |                          +---------------------------------+-------------+--------------+---------------------------------------------------------------------------------------------+
+     |                          | AP BL1 & FIP                    | 0x0814_0000 | 1536K        | AP BL1 & FIP image, including BL1, BL2, BL32 (OPTEE) and BL33 (U-Boot)                      |
+     +--------------------------+---------------------------------+-------------+--------------+---------------------------------------------------------------------------------------------+
+     | KM0/KM4/AP BOOT SlotB[1] | KM4 Bootloader                  | 0x082C_0000 | 256K         | The same as SlotA.                                                                          |
+     |                          +---------------------------------+-------------+--------------+---------------------------------------------------------------------------------------------+
+     |                          | Key Certificate, KM0 & KM4 IMG2 | 0x0830_0000 | 1152K        | The same as SlotA.                                                                          |
+     |                          +---------------------------------+-------------+--------------+---------------------------------------------------------------------------------------------+
+     |                          | AP BL1 & FIP                    | 0x0842_0000 | 1536K        | The same as SlotA.                                                                          |
+     +--------------------------+---------------------------------+-------------+--------------+---------------------------------------------------------------------------------------------+
+     |                          | A: AP Misc                      | 0x0862_0000 | 256K         | SlotA: AP Misc information for recovery                                                     |
+     |                          +---------------------------------+-------------+--------------+---------------------------------------------------------------------------------------------+
+     |                          | B: AP Misc Backup               | 0x0866_0000 | 256K         | SlotB: AP Misc information backup for recovery                                              |
+     |                          +---------------------------------+-------------+--------------+---------------------------------------------------------------------------------------------+
+     |                          | A: AP VBMeta                    | 0x086A_0000 | 256K         | SlotA: AP VBMeta information for secure boot                                                |
+     |                          +---------------------------------+-------------+--------------+---------------------------------------------------------------------------------------------+
+     |                          | B: AP VBMeta                    | 0x086E_0000 | 256K         | SlotB: AP VBMeta currently for recovery secure boot                                         |
+     |                          +---------------------------------+-------------+--------------+---------------------------------------------------------------------------------------------+
+     |                          | A: AP DTB                       | 0x0872_0000 | 384K         | SlotA: AP device tree binary                                                                |
+     |                          +---------------------------------+-------------+--------------+---------------------------------------------------------------------------------------------+
+     |                          | B: AP DTB                       | 0x0878_0000 | 384K         | SlotB: Currently for AP recovery device tree blob                                           |
+     |                          +---------------------------------+-------------+--------------+---------------------------------------------------------------------------------------------+
+     |                          | A: AP Kernel                    | 0x087E_0000 | 10M          | SlotA: AP Linux kernel image                                                                |
+     |                          +---------------------------------+-------------+--------------+---------------------------------------------------------------------------------------------+
+     |                          | B: AP Kernel                    | 0x091E_0000 | 10M          | SlotB: Currently for AP recovery kernel and initramfs                                       |
+     |                          +---------------------------------+-------------+--------------+---------------------------------------------------------------------------------------------+
+     |                          | AP Rootfs                       | 0x09BE_0000 | 60M          | AP rootfs binary                                                                            |
+     |                          +---------------------------------+-------------+--------------+---------------------------------------------------------------------------------------------+
+     |                          | AP Userdata                     | 0x0D7E_0000 | 40.125M      | AP UBIFS user data binary                                                                   |
+     +--------------------------+---------------------------------+-------------+--------------+---------------------------------------------------------------------------------------------+
+  
+  .. note::
+     [1]    SlotB is used for OTA.
+  
+- The 256MB NAND Flash layout is illustrated in the table below. The start address of slotA KM4 bootloader is fixed to **0x0800_0000** and other start addresses are configurable for users.
+
+  .. table::
+     :width: 100%
+     :widths: auto
+  
+     +-----------------------+---------------------------------+-------------+--------------+---------------------------------------------------------------------------------------------+
+     | Item                  | Sub-item                        | Address     | Size (bytes) | Description                                                                                 |
+     +=======================+=================================+=============+==============+=============================================================================================+
+     | KM0/KM4/AP BOOT SlotA | KM4 Bootloader                  | 0x0800_0000 | 24K          | KM4 bootloader code/data                                                                    |
+     |                       +---------------------------------+-------------+--------------+---------------------------------------------------------------------------------------------+
+     |                       | System Data                     | 0x0801_F000 | 4K           | System data                                                                                 |
+     |                       +---------------------------------+-------------+--------------+---------------------------------------------------------------------------------------------+
+     |                       | Key Certificate, KM0 & KM4 IMG2 | 0x0802_0000 | 1152K        | This image combines Key Certificate, KM0 image and KM4 image2.                              |
+     |                       |                                 |             |              |                                                                                             |
+     |                       |                                 |             |              | - Key Certificate: PK hash information for other images                                     |
+     |                       |                                 |             |              |                                                                                             |
+     |                       |                                 |             |              | - KM0_IMG: contains KM0 image code/data, mapped to virtual address 0x0C00_0000.             |
+     |                       |                                 |             |              |                                                                                             |
+     |                       |                                 |             |              | - KM4_IMG2: contains KM4 non-secure image code/data, mapped to virtual address 0x0E00_0000. |
+     |                       +---------------------------------+-------------+--------------+---------------------------------------------------------------------------------------------+
+     |                       | AP BL1 & FIP                    | 0x0814_0000 | 1536K        | AP BL1 & FIP image, including BL1, BL2, BL32 (OPTEE) and BL33 (U-Boot)                      |
+     +-----------------------+---------------------------------+-------------+--------------+---------------------------------------------------------------------------------------------+
+     | KM0/KM4/AP BOOT SlotB | KM4 Bootloader                  | 0x082C_0000 | 256K         | The same as SlotA.                                                                          |
+     |                       +---------------------------------+-------------+--------------+---------------------------------------------------------------------------------------------+
+     |                       | Key Certificate, KM0 & KM4 IMG2 | 0x0830_0000 | 1152K        | The same as SlotA.                                                                          |
+     |                       +---------------------------------+-------------+--------------+---------------------------------------------------------------------------------------------+
+     |                       | AP BL1 & FIP                    | 0x0842_0000 | 1536K        | The same as SlotA.                                                                          |
+     +-----------------------+---------------------------------+-------------+--------------+---------------------------------------------------------------------------------------------+
+     |                       | A: AP Misc                      | 0x0862_0000 | 256K         | SlotA: AP Misc information for recovery                                                     |
+     |                       +---------------------------------+-------------+--------------+---------------------------------------------------------------------------------------------+
+     |                       | B: AP Misc Backup               | 0x0866_0000 | 256K         | SlotB: AP Misc information backup for recovery                                              |
+     |                       +---------------------------------+-------------+--------------+---------------------------------------------------------------------------------------------+
+     |                       | A: AP VBMeta                    | 0x086A_0000 | 256K         | SlotA: AP meta data for secure boot                                                         |
+     |                       +---------------------------------+-------------+--------------+---------------------------------------------------------------------------------------------+
+     |                       | B: AP VBMeta                    | 0x086E_0000 | 256K         | SlotB: AP meta data currently for recovery secure boot                                      |
+     |                       +---------------------------------+-------------+--------------+---------------------------------------------------------------------------------------------+
+     |                       | A: AP DTB                       | 0x0872_0000 | 384K         | SlotA: AP device tree binary                                                                |
+     |                       +---------------------------------+-------------+--------------+---------------------------------------------------------------------------------------------+
+     |                       | B: AP DTB                       | 0x0878_0000 | 384K         | SlotB: Currently for AP recovery device tree blob                                           |
+     |                       +---------------------------------+-------------+--------------+---------------------------------------------------------------------------------------------+
+     |                       | A: AP Kernel                    | 0x087E_0000 | 15M          | SlotA: AP Linux kernel image                                                                |
+     |                       +---------------------------------+-------------+--------------+---------------------------------------------------------------------------------------------+
+     |                       | B: AP Kernel                    | 0x096E_0000 | 15M          | SlotB: Currently for AP recovery kernel and initramfs                                       |
+     |                       +---------------------------------+-------------+--------------+---------------------------------------------------------------------------------------------+
+     |                       | AP Rootfs                       | 0x0A5E_0000 | 120M         | AP rootfs binary                                                                            |
+     |                       +---------------------------------+-------------+--------------+---------------------------------------------------------------------------------------------+
+     |                       | AP Userdata                     | 0x11DE_0000 | 98.125M      | AP UBIFS user data binary                                                                   |
+     +-----------------------+---------------------------------+-------------+--------------+---------------------------------------------------------------------------------------------+
+
+Customize NAND Flash Layout
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Change the Flash layout in specific Linux DTS file as required.
+
+- For 128MB NAND Flash: `<linux>/arch/arm/boot/dts/rtl8730e-spi-nand-128m.dtsi`
+- For 256MB NAND Flash: `<linux>/arch/arm/boot/dts/rtl8730e-spi-nand-256m.dtsi`
+
+Change the reg and/or label properties of partition nodes as required:
+
+.. code-block::
+
+   partitions {
+       compatible = "fixed-partitions";
+       #address-cells = <1>;
+       #size-cells = <1>;
+       partition@0 {
+           label = "Miscellaneous Information";      # Partition name
+           reg = <0x620000 0x40000>;            # <offset size>
+       };
+       # More partitions
+   };
+   chosen {
+       bootargs = "console=ttyS0,1500000 earlycon psci=enable ubi.mtd=8 ubi.block=0,0 root=/dev/ubiblock0_0 rootfstype=squashfs,ubifs ubi.mtd=9";
+       stdout-path = &loguart;
+   };
+
+.. note::
+   - The partition offset shall correspond with its address: :emphasis:`offset | 0x0800_0000 = address`
+   - The partition offset and size of NAND Flash shall be aligned to NAND block size, e.g. normally 128KB for most SPI NAND Flash models, and each partition shall reserve at least one bock size for bad block management.
+   - Do not change the order of default partitions if not necessary; otherwise, the rootfs and userdata paths in bootargs shall also be changed accordingly.
+
+Change the U-Boot configurations as required.
+
+Find the default U-Boot configuration file under `<sdk>/sources/boot/uboot/configs` for specific board, e.g. :emphasis:`rtl8730elh-va7_defconfig` for :emphasis:`rtl8730elh-va7` board options. The available Flash layout configurations are listed as below.
+
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +----------------------------------------------------------------+------------------------------------+
+   | Item                                                           | U-Boot configuration               |
+   +================================================================+====================================+
+   | AP kernel start address                                        | CONFIG_IMG_FLASH_ADDR              |
+   +----------------------------------------------------------------+------------------------------------+
+   | AP kernel size                                                 | CONFIG_IMG_FLASH_SIZE              |
+   +----------------------------------------------------------------+------------------------------------+
+   | AP DTB start address (NOR Flash only)                          | CONFIG_FDT_FLASH_ADDR              |
+   +----------------------------------------------------------------+------------------------------------+
+   | AP DTB size                                                    | CONFIG_FDT_FLASH_SIZE              |
+   +----------------------------------------------------------------+------------------------------------+
+   | AP Misc start address (NOR Flash only)                         | CONFIG_BOOT_OPTION_MISC_FLASH_ADDR |
+   +----------------------------------------------------------------+------------------------------------+
+   | AP Misc size (NOR Flash only)                                  | CONFIG_BOOT_OPTION_MISC_FLASH_SIZE |
+   +----------------------------------------------------------------+------------------------------------+
+   | AP DTB for recovery start address (NOR Flash only)             | CONFIG_RECOVERY_FDT_FLASH_ADDR     |
+   +----------------------------------------------------------------+------------------------------------+
+   | AP DTB for recovery size                                       | CONFIG_RECOVERY_FDT_FLASH_SIZE     |
+   +----------------------------------------------------------------+------------------------------------+
+   | AP kernel + rootfs for recovery start address (NOR Flash only) | CONFIG_RECOVERY_IMG_FLASH_ADDR     |
+   +----------------------------------------------------------------+------------------------------------+
+   | AP kernel + rootfs for recovery size                           | CONFIG_RECOVERY_IMG_FLASH_SIZE     |
+   +----------------------------------------------------------------+------------------------------------+
+   | Partition info defined by mtdparts (NAND Flash only)           | CONFIG_MTDPARTS_DEFAULT            |
+   +----------------------------------------------------------------+------------------------------------+
+
+.. caution::
+   Do NOT rename the partitions defined in **CONFIG_MTDPARTS_DEFAULT**.
+
+Rebuild the images.
+
+Accordingly change the Flash layout in device profile via Device Profile Editor.
+
+DRAM Layout
+----------------------
+Taking 16MB DRAM as an example, the layout is illustrated in the figure below.
+
+.. figure:: figures/dram_layout_linux.svg
+   :scale: 130%
+   :align: center
+
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +----------+-----------------+------------------+--------------+---------------------------------------------------------------------------------+
+   | Item     | Sub-item        | Physical address | Size (bytes) | Description                                                                     |
+   +==========+=================+==================+==============+=================================================================================+
+   | KM4 IMG2 | KM4_IMG2_RAM_NS | 0x6000_0000      | 1.5M         | KM4 image2 SRAM, including CODE, DATA, BSS and HEAP                             |
+   +----------+-----------------+------------------+--------------+---------------------------------------------------------------------------------+
+   | AP IMG   | BL1_RO          | 0x6018_0000      | 128K         | AP BL1 CODE and RO DATA                                                         |
+   |          +-----------------+------------------+--------------+---------------------------------------------------------------------------------+
+   |          | BL1_RW          | 0x601A_0000      | 64K          | AP BL1 Stack and BSS                                                            |
+   |          +-----------------+------------------+--------------+---------------------------------------------------------------------------------+
+   |          | SHARED_RAM      | 0x601B_0000      | 64K          | AP shared memory for multi-core                                                 |
+   |          +-----------------+------------------+--------------+---------------------------------------------------------------------------------+
+   |          | BL2             | 0x601C_0000      | 256K         | AP BL2 CODE, DATA, Stack, BSS                                                   |
+   |          +-----------------+------------------+--------------+---------------------------------------------------------------------------------+
+   |          | BL32            | 0x6020_0000      | 1M           | AP BL32 CODE, DATA, Stack, BSS                                                  |
+   |          |                 |                  |              |                                                                                 |
+   |          |                 |                  |              | For Linux SDK, BL32 is OPTEE, which contains TEE_RAM, TA_RAM and shared memory. |
+   |          +-----------------+------------------+--------------+---------------------------------------------------------------------------------+
+   |          | BL33            | 0x6030_0000      | 448K         | AP BL33 CODE, DATA, Stack, BSS.                                                 |
+   |          |                 |                  |              |                                                                                 |
+   |          |                 |                  |              | For Linux SDK, BL33 is U-Boot.                                                  |
+   |          +-----------------+------------------+--------------+---------------------------------------------------------------------------------+
+   |          | DTB             | 0x6037_0000      | 64K          | AP device tree binary                                                           |
+   |          +-----------------+------------------+--------------+---------------------------------------------------------------------------------+
+   |          | Kernel          | 0x6038_0000      | \-           | AP Linux kernel image                                                           |
+   +----------+-----------------+------------------+--------------+---------------------------------------------------------------------------------+
+
+U-Boot
+------------
+Directory
+~~~~~~~~~~~~~~~~~~
+U-Boot code path: ``<sdk>/sources/boot/uboot``
+
+:emphasis:`<uboot>` will be used for short of above path in the following chapters.
+
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +-----------------------------+--------------------------------------+
+   | Item                        | Path                                 |
+   +=============================+======================================+
+   | Platform-specific code      | <uboot>/board/realtek/amebasmart/    |
+   +-----------------------------+--------------------------------------+
+   | Default configuration files | <uboot>/configs/                     |
+   +-----------------------------+--------------------------------------+
+   | DTS files                   | <uboot>/arch/arm/dts/                |
+   +-----------------------------+--------------------------------------+
+   | Peripheral drivers          | <uboot>/uboot/drivers/rtkdrivers/    |
+   +-----------------------------+--------------------------------------+
+   | DT-bindings                 | <uboot>/include/dt-bindings/realtek/ |
+   +-----------------------------+--------------------------------------+
+   | Customized commands         | <uboot>/cmd/                         |
+   +-----------------------------+--------------------------------------+
+
+DTS
+~~~~~~
+The DTS for U-Boot corresponds with different boards, only differ in chip and Flash layout, etc.
+
+The naming rule of board level DTS file is:
+
+.. code-block::
+
+   <SoC>-uboot-<Flash>.dts
+
+Where:
+
+:SoC: SoC RTL number, e.g. rtl8730e
+:Flash: Flash type, e.g. NAND or NOR
+
+For example, ``rtl8730e-uboot-nand.dts`` for all RTL8730E boards with NAND flash.
+
+Different with DTS for Linux kernel, DTS for U-Boot is minimized, providing minimum platform-specific support with the only purpose of booting Linux kernel.
+
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +--------------------------------+------------------------------------------------------------+--------------------------------------------+
+   | Item                           | DTS for U-Boot                                             | DTS for Linux kernel                       |
+   +================================+============================================================+============================================+
+   | DTB existence                  | Combined with U-Boot image                                 | Standalone image                           |
+   +--------------------------------+------------------------------------------------------------+--------------------------------------------+
+   | Runtime configuration (chosen) | stdout-path                                                | bootargs, stdout-path                      |
+   +--------------------------------+------------------------------------------------------------+--------------------------------------------+
+   | CPU (cpus)                     | No (Core 0 only, specified in default configuration files) | Yes (Core 0 + Core 1)                      |
+   +--------------------------------+------------------------------------------------------------+--------------------------------------------+
+   | Memory (memory)                | Fixed to 64MB                                              | 64/128/256MB (differs in different boards) |
+   +--------------------------------+------------------------------------------------------------+--------------------------------------------+
+   | Flash partitions (partitions)  | No (specified in default configuration files)              | Yes (differs in different boards)          |
+   +--------------------------------+------------------------------------------------------------+--------------------------------------------+
+   | Peripherals                    | Minimum support (LOGUART/SPIC/Flash/USB/OTP)               | Full support                               |
+   +--------------------------------+------------------------------------------------------------+--------------------------------------------+
+
+Drivers
+~~~~~~~~~~~~~~
+The U-Boot provides drivers for minimum peripherals with the only purpose of booting Linux kernel.
+
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +------------+----------------------------+-----------------------------------------------------------------+
+   | Driver     | Source code                | Description                                                     |
+   +============+============================+=================================================================+
+   | LOGUART    | drivers/rtkdrivers/serial/ | Console for logging and USB boot operation                      |
+   +------------+----------------------------+-----------------------------------------------------------------+
+   | OTP        | drivers/rtkdrivers/otp/    | OTP driver for accessing anti-rollback index during secure boot |
+   +------------+----------------------------+-----------------------------------------------------------------+
+   | SPIC       | drivers/rtkdrivers/spi/    | SPIC driver for accessing SPI NAND/NOR Flash                    |
+   +------------+----------------------------+-----------------------------------------------------------------+
+   | USB        | drivers/rtkdrivers/phy/    | USB phy & hcd driver for USB boot                               |
+   |            |                            |                                                                 |
+   |            | drivers/usb/               |                                                                 |
+   +------------+----------------------------+-----------------------------------------------------------------+
+   | NAND Flash | drivers/mtd/nand/spi/      | SPI NAND Flash driver                                           |
+   +------------+----------------------------+-----------------------------------------------------------------+
+   | NOR Flash  | drivers/mtd/spi-nor/       | SPI NOR Flash driver                                            |
+   +------------+----------------------------+-----------------------------------------------------------------+
+
+Linux Kernel
+---------------
+Directory
+~~~~~~~~~~~~~~~~~~
+Linux kernel code path: ``<sdk>/sources/kernel/linux-<version>``
+
+:emphasis:`<linux>` will be used for short of above path in the following chapters.
+
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +-----------------------------+--------------------------------------+
+   | Item                        | Path                                 |
+   +=============================+======================================+
+   | Platform-specific code      | <linux>/arch/arm/mach-amebasmart/    |
+   +-----------------------------+--------------------------------------+
+   | Default configuration files | <linux>/arch/arm/configs/            |
+   +-----------------------------+--------------------------------------+
+   | DTS files                   | <linux>/arch/arm/boot/dts/           |
+   +-----------------------------+--------------------------------------+
+   | Peripheral drivers          | <linux>/drivers/rtkdrivers/          |
+   +-----------------------------+--------------------------------------+
+   | Audio drivers               | <linux>/sound/soc/realtek/           |
+   |                             |                                      |
+   |                             | <linux>/sound/soc/codecs/            |
+   +-----------------------------+--------------------------------------+
+   | DT-bindings                 | <linux>/include/dt-bindings/realtek/ |
+   +-----------------------------+--------------------------------------+
+
+.. note::
+   :emphasis:`<dts>` will be used for short of Linux DTS files path in the following sections.
+
+DTS
+~~~~~~
+The DTS files for Linux kernel are organized in three levels:
+
+- Board level
+
+  Corresponds with different boards, may differ in chip, DRAM, Flash layout, bootargs, pinmux, etc.
+
+  The naming rule of board level DTS file is:
+
+  .. code-block::
+
+     <SoC>-<Feature>.dts
+
+  Where:
+
+  - SoC: SoC model name, e.g. :emphasis:`rtl8730elh-va7`, :emphasis:`rtl8730elh-va8`
+  - Feature:
+
+    - full: maximum features for development and demonstration
+    - generic: minimum features for customer design reference
+    - recovery: minimum features for recovery
+    - tests-xxx: features for QC test
+
+  For example, ``rtl8730elh-va8-generic.dts`` is for :emphasis:`rtl8730elh-va8` board with generic features.
+
+  Board level DTS can override the chip level DTS configurations.
+
+- Chip level
+
+  Corresponds with different chips, differs in CPU and peripherals.
+
+  For example, ``rtl8730e.dts`` is for RTL8730E SoC.
+
+- IP level
+
+  Corresponds with common on-chip modules, e.g.:
+
+  - ``rtl8730e-a32.dtsi``: CPU configurations for Cortex-A32
+  - ``rtl8730e-spi-nand-128m.dtsi``: SPI Flash controller, 128MB NAND Flash default layout and runtime configurations
+  - ``rtl8730e-spi-nand-256m.dtsi``: SPI Flash controller, 256MB NAND Flash default layout and runtime configurations
+  - ``rtl8730e-audio.dtsi``: Audio configurations
+  - ``rtl8730e-captouch.dtsi``: Cap-touch configurations
+  - ``rtl8730e-drm.dtsi``: DRM configurations
+  - ``rtl8730e-ocp.dtsi``: On-chip peripherals configurations, including ``rtl8730e-audio.dtsi``, ``rtl8730e-rcc.dtsi`` and ``rtl8730e-pinctrl.dtsi``
+  - ``rtl8730e-pinctrl.dtsi``: Pinmux configurations
+  - ``rtl8730e-rcc.dtsi``: Clock configurations
+
+Drivers
+~~~~~~~~~~~~~~
+Linux kernel provides full support for drivers of on-chip peripherals.
+
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +--------------+--------------------------------------+-----------------------------------------------------+
+   | Driver       | Source code                          | Description                                         |
+   +==============+======================================+=====================================================+
+   | ADC          | drivers/rtkdrivers/adc/              | IIO driver for ADC                                  |
+   +--------------+--------------------------------------+-----------------------------------------------------+
+   | Audio        | sound/soc/realtek/                   | Audio codec/platform/machine drivers                |
+   |              |                                      |                                                     |
+   |              | sound/soc/codecs/ameba*.c            |                                                     |
+   +--------------+--------------------------------------+-----------------------------------------------------+
+   | Bluetooth    | drivers/bluetooth/                   | Bluetooth controller power on driver and HCI driver |
+   |              |                                      |                                                     |
+   |              | drivers/rtkdrivers/misc/             |                                                     |
+   +--------------+--------------------------------------+-----------------------------------------------------+
+   | Cap-touch    | drivers/rtkdrivers/touchscreen/      | Cap-touch controller driver                         |
+   +--------------+--------------------------------------+-----------------------------------------------------+
+   | Clock        | drivers/rtkdrivers/clk/              | Driver for RCC (Reset and clock control) module     |
+   +--------------+--------------------------------------+-----------------------------------------------------+
+   | CPUFREQ      | drivers/rtkdrivers/cpufreq/          | Driver for CPU frequency and voltage scaling        |
+   +--------------+--------------------------------------+-----------------------------------------------------+
+   | Crypto       | drivers/rtkdrivers/crypto/           | Hardware crypto engine driver                       |
+   +--------------+--------------------------------------+-----------------------------------------------------+
+   | DMAC         | drivers/rtkdrivers/dma/              | DMA controller driver                               |
+   +--------------+--------------------------------------+-----------------------------------------------------+
+   | DM-Verity    | drivers/md/                          | DM verify driver for secure boot                    |
+   +--------------+--------------------------------------+-----------------------------------------------------+
+   | DRM          | drivers/rtkdrivers/drm/              | LCDC & MIPI-DSI driver                              |
+   +--------------+--------------------------------------+-----------------------------------------------------+
+   | GIC          | drivers/irqchip/                     | GIC driver                                          |
+   +--------------+--------------------------------------+-----------------------------------------------------+
+   | GPIO         | drivers/rtkdrivers/gpio/             | GPIO driver                                         |
+   +--------------+--------------------------------------+-----------------------------------------------------+
+   | I2C          | drivers/rtkdrivers/i2c/              | I2C master/slave driver                             |
+   +--------------+--------------------------------------+-----------------------------------------------------+
+   | IPC          | drivers/rtkdrivers/ipc/              | IPC driver                                          |
+   +--------------+--------------------------------------+-----------------------------------------------------+
+   | IR           | drivers/rtkdrivers/ir/               | IR remote control driver                            |
+   +--------------+--------------------------------------+-----------------------------------------------------+
+   | LEDC         | drivers/rtkdrivers/ledc/             | LEDC driver specific for WS28XXX                    |
+   +--------------+--------------------------------------+-----------------------------------------------------+
+   | LOGUART      | drivers/rtkdrivers/tty_serial/       | LOGUART driver for console                          |
+   +--------------+--------------------------------------+-----------------------------------------------------+
+   | NAND Flash   | drivers/mtd/nand/spi/                | SPI NAND flash driver                               |
+   +--------------+--------------------------------------+-----------------------------------------------------+
+   | NOR Flash    | drivers/mtd/spi-nor/                 | SPI NOR flash driver                                |
+   +--------------+--------------------------------------+-----------------------------------------------------+
+   | OTP          | drivers/rtkdrivers/otp/              | OTP driver                                          |
+   +--------------+--------------------------------------+-----------------------------------------------------+
+   | PINCTRL      | drivers/rtkdrivers/pinctrl/          | PIN controller driver                               |
+   +--------------+--------------------------------------+-----------------------------------------------------+
+   | RTC          | drivers/rtkdrivers/rtc/              | RTC driver                                          |
+   +--------------+--------------------------------------+-----------------------------------------------------+
+   | SDIOH        | drivers/rtkdrivers/mmc/              | SDIO host driver                                    |
+   +--------------+--------------------------------------+-----------------------------------------------------+
+   | SPI          | drivers/rtkdrivers/spi/              | General SPI controller driver                       |
+   +--------------+--------------------------------------+-----------------------------------------------------+
+   | SPIC         | drivers/rtkdrivers/spic/             | SPI flash controller driver                         |
+   +--------------+--------------------------------------+-----------------------------------------------------+
+   | System Timer | drivers/clocksource/arm_arch_timer.c | System timer driver                                 |
+   +--------------+--------------------------------------+-----------------------------------------------------+
+   | Thermal      | drivers/rtkdrivers/thermal/          | Thermal driver                                      |
+   +--------------+--------------------------------------+-----------------------------------------------------+
+   | TIMER        | drivers/rtkdrivers/clocksource/      | Clocksource/MFD/PWM drivers for TIMER module        |
+   |              |                                      |                                                     |
+   |              | drivers/rtkdrivers/mfd_timer/        |                                                     |
+   |              |                                      |                                                     |
+   |              | drivers/rtkdrivers/pwm/              |                                                     |
+   +--------------+--------------------------------------+-----------------------------------------------------+
+   | UART         | drivers/rtkdrivers/tty_serial/       | General UART driver                                 |
+   +--------------+--------------------------------------+-----------------------------------------------------+
+   | USB          | drivers/rtkdrivers/usb_phy/          | USB PHY/controller/class drivers                    |
+   |              |                                      |                                                     |
+   |              | drivers/usb/                         |                                                     |
+   +--------------+--------------------------------------+-----------------------------------------------------+
+   | Watchdog     | drivers/rtkdrivers/watchdog/         | Watchdog driver                                     |
+   +--------------+--------------------------------------+-----------------------------------------------------+
+   | Wi-Fi        | drivers/rtkdrivers/net/              | Wi-Fi driver                                        |
+   +--------------+--------------------------------------+-----------------------------------------------------+
+
+Configuration
+~~~~~~~~~~~~~~~
+To change the kernel configuration, execute the following command:
+
+.. code-block::
+
+   bitbake virtual/kernel -c menuconfig
+
+Here is an example to change configuration for peripheral drivers:
+
+1. Select :menuselection:`Device Drivers > Drivers for Realtek`.
+
+   .. figure:: figures/sdk_arch_configuration_1_linux.png
+      :scale: 90%
+      :align: center
+
+   .. figure:: figures/sdk_arch_configuration_2_linux.png
+      :scale: 90%
+      :align: center
+
+2. Configure the peripheral drivers as required.
+
+   .. figure:: figures/sdk_arch_configuration_3_linux.png
+      :scale: 90%
+      :align: center
+
+The configuration for Realtek peripheral drivers will be illustrated in details in the following chapters.
