@@ -163,7 +163,44 @@
              
   <section id="mpu">
 <h1>内存保护单元 (MPU)<a class="headerlink" href="#mpu" title="Link to this heading"></a></h1>
-<section id="introduction">
+<!-- 下拉菜单 -->
+<div style="margin: 20px 0; text-align: left;">
+    <div style="display: flex; align-items: center; gap: 10px;">
+        <span style="font-size: 14px;">IC: </span>
+        <select class="tab-selector" style="height: 22px; padding: 2px 8px; font-size: 13px;">
+            <option value="RTL8721Dx">RTL8721Dx</option>
+            <option value="RTL8720E">RTL8720E</option>
+            <option value="RTL8726E">RTL8726E</option>
+            <option value="RTL8730E">RTL8730E</option>
+        </select>
+    </div>
+</div>
+
+<!-- 修复后的 JavaScript -->
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const selector = document.querySelector('.tab-selector');
+
+    selector.addEventListener('change', function() {
+        const targetTab = this.value;
+        const tabs = document.querySelectorAll('.sphinx-tabs-tab');
+        let found = false;
+
+        tabs.forEach(tab => {
+            const tabText = tab.textContent.trim();
+            if (tabText === targetTab) {
+                tab.click();
+                window.dispatchEvent(new Event('resize')); // 触发插件更新
+                found = true;
+            }
+        });
+
+        if (!found) {
+            console.error("未找到选项卡:", targetTab);
+        }
+    });
+});
+</script><section id="introduction">
 <h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
 <p>The Memory Protection Unit (MPU) is a component provided by Arm and is used to provide hardware protection by software definition. The code in SDK provides the mpu_region_config struct to set the region memory attribute of MPU.</p>
 <p>The following table shows the member variables of the <code class="xref py py-class docutils literal notranslate"><span class="pre">mpu_region_config</span></code> struct.</p>

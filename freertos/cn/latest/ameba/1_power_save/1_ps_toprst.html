@@ -182,8 +182,45 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="power-architecture">
-<span id="power-saving"></span><h1>Power Architecture<a class="headerlink" href="#power-architecture" title="Link to this heading"></a></h1>
+  <span class="target" id="power-saving"></span><!-- 下拉菜单 -->
+<div style="margin: 20px 0; text-align: left;">
+    <div style="display: flex; align-items: center; gap: 10px;">
+        <span style="font-size: 14px;">IC: </span>
+        <select class="tab-selector" style="height: 22px; padding: 2px 8px; font-size: 13px;">
+            <option value="RTL8721Dx">RTL8721Dx</option>
+            <option value="RTL8720E">RTL8720E</option>
+            <option value="RTL8726E">RTL8726E</option>
+            <option value="RTL8730E">RTL8730E</option>
+        </select>
+    </div>
+</div>
+
+<!-- 修复后的 JavaScript -->
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const selector = document.querySelector('.tab-selector');
+
+    selector.addEventListener('change', function() {
+        const targetTab = this.value;
+        const tabs = document.querySelectorAll('.sphinx-tabs-tab');
+        let found = false;
+
+        tabs.forEach(tab => {
+            const tabText = tab.textContent.trim();
+            if (tabText === targetTab) {
+                tab.click();
+                window.dispatchEvent(new Event('resize')); // 触发插件更新
+                found = true;
+            }
+        });
+
+        if (!found) {
+            console.error("未找到选项卡:", targetTab);
+        }
+    });
+});
+</script><section id="power-architecture">
+<h1>Power Architecture<a class="headerlink" href="#power-architecture" title="Link to this heading"></a></h1>
 <p>SoC has an advanced Power Management Controller (PMC), which can flexibly power up different power domains of the chip, to achieve the best balance between chip performance and power consumption. AON, SYSON, SOC are three main power domains in digital system. Functions in different power domains will be turned off differently in different power-saving modes.</p>
 <div class="sphinx-tabs docutils container">
 <div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-0-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-0-0-0" name="0-0" role="tab" tabindex="0">RTL8721Dx</button><button aria-controls="panel-0-0-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-1" name="0-1" role="tab" tabindex="-1">RTL8726E</button><button aria-controls="panel-0-0-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-2" name="0-2" role="tab" tabindex="-1">RTL8720E</button><button aria-controls="panel-0-0-3" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-3" name="0-3" role="tab" tabindex="-1">RTL8730E</button></div><div aria-labelledby="tab-0-0-0" class="sphinx-tabs-panel" id="panel-0-0-0" name="0-0" role="tabpanel" tabindex="0"><figure class="align-center" id="id2">
