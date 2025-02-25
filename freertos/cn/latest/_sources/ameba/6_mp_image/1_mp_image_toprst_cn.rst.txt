@@ -1,0 +1,78 @@
+.. _mp_image:
+
+概述
+------------------------
+The MP image is used for Wi-Fi & BT performance verification and Wi-Fi & BT parameters calibration in massive production. This chapter mainly illustrates how to build and use the MP image.
+
+Refer to the MP document for more details about MP flow.
+
+.. _how_to_build_mp_image:
+
+编译 MP 固件
+-------------------------
+The steps of building MP image are depcited below:
+
+.. tabs::
+
+   .. include:: mp_image_build_dplus.rst
+   .. include:: mp_image_build_lite_20E.rst
+   .. include:: mp_image_build_lite_26E.rst
+   .. include:: mp_image_build_smart.rst
+
+.. _how_to_combine_images:
+
+合并固件
+------------------------
+Before downloading images into the chip, the MP image needs to be combined with normal image. In massive production, the MP image is used to calibrate the parameters first. After calibration, you can use the command illustrated in :ref:`how_to_switch_image` to switch to the normal image and boot from it. Since the chip boots from OTA1 by default when both OTA1 and OTA2 images are valid and with the same version number, the MP image should be located in the OTA1 field.
+
+The steps of combining images are depcited below:
+
+.. tabs::
+
+   .. include:: mp_image_combine_dplus.rst
+   .. include:: mp_image_combine_lite_20E.rst
+   .. include:: mp_image_combine_lite_26E.rst
+   .. include:: mp_image_combine_smart.rst
+
+
+启动流程
+------------------
+1. Reset the device after downloading image is finished.
+2. Check if the device boots from MP image successfully.
+
+   .. code-block::
+      :emphasize-lines: 3, 11
+
+      [BOOT-I] IMG2(OTA1) VALID, ret: 1
+      [BOOT-I] IMG2 BOOT from OTA 1, Version: 1.1 
+      [BOOT-I] IMG2 BOOT from OTA 1
+      [BOOT-I] Start NonSecure @ 0x60002049 ...
+      [APP-I] KM4 APP_START
+      ...
+      interface 0 is initialized
+      interface 1 is initialized
+      [WLAN-A] Init WIFI
+      [WLAN-A] Band=2.4G&5G
+      [WLAN-A] MP driver
+      [WLAN-A] NP consume heap 48888
+      [WLAN-I] AP consume heap 27192
+      [WLAN-I] _init_thread(74), Available heap 3493056
+      [WLAN-A] IPS in
+
+3. Start the massive production flow if the device boots from MP image successfully.
+
+.. _how_to_switch_image:
+
+切换固件
+--------------------------------------
+When MP is finished, you need to switch the image from MP image to the normal image to verify the application.
+
+.. tabs::
+
+   .. include:: mp_image_switch_dplus.rst
+   .. tab:: RTL8720E
+      .. include:: mp_image_switch_lite.rst
+   .. tab:: RTL8726E
+      .. include:: mp_image_switch_lite.rst
+   .. include:: mp_image_switch_smart.rst
+
