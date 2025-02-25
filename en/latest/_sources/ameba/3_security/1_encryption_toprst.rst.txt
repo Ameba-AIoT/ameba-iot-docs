@@ -1,4 +1,0 @@
-.. _encryption·:
-
-Introduction
-------------------------
