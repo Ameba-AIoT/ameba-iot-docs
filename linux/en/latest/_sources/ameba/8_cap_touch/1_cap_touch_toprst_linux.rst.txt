@@ -1,0 +1,200 @@
+.. _ctc:
+
+Introduction
+---------------
+Architecture
+~~~~~~~~~~~~~~
+The CTC driver follows Linux's Input subsystem. Input provides CTC interface to user space. The CTC software architecture is illustrated in the following figure.
+
+.. figure:: figures/ctc_software_architecture_linux.svg
+   :scale: 120%
+   :align: center
+
+The CTC software architecture contains the following parts:
+
+- Input driver: CTC driver.
+- Input core: Input subsystem core driver. It is the link and bridge between input driver layer and event handler layer, providing the interface downward to the hardware input driver layer and upward to the event processing layer.
+- Event handler: Interact with user space, it is used to report the events from the hardware driver layer to the user program.
+- Application: User space use. A simple example to show how to use CTC.
+
+For more details, refer to `How to Create Input Device Driver <https://www.kernel.org/doc/html/v5.4/input/input-programming.html?highlight=input%20uapi>`_.
+
+Implementation
+~~~~~~~~~~~~~~~~~~~~
+CTC driver is implemented as following files:
+
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +--------------------------------------------------------+------------------------------------------------------------------------------------------------------------+
+   | Driver location                                        | Introduction                                                                                               |
+   +========================================================+============================================================================================================+
+   | <linux>/drivers/rtkdrivers/captouch/Kconfig            | CTC driver Kconfig                                                                                         |
+   +--------------------------------------------------------+------------------------------------------------------------------------------------------------------------+
+   | <linux>/drivers/rtkdrivers/captouch/Makefile           | CTC driver Makefile                                                                                        |
+   +--------------------------------------------------------+------------------------------------------------------------------------------------------------------------+
+   | <linux>/drivers/rtkdrivers/captouch/realtek-captouch.c | CTC functions.                                                                                             |
+   +--------------------------------------------------------+------------------------------------------------------------------------------------------------------------+
+   | <linux>/drivers/rtkdrivers/captouch/realtek-captouch.h | CTC related function declaration, macro definition, structure definition and the other header files quoted |
+   +--------------------------------------------------------+------------------------------------------------------------------------------------------------------------+
+
+Configuration
+----------------
+DTS Configure
+~~~~~~~~~~~~~~~~~
+CTC DTS node:
+
+.. code-block::
+
+   captouch: captouch@42010000 {
+      compatible = "realtek,ameba-captouch";
+      reg = <0x42010000 0x500>
+         <0x420082F8 0x4>;//Control digital path input for ADC and CTC pad
+      interrupts = <GIC_SPI 13 IRQ_TYPE_LEVEL_HIGH>;
+      clocks = <&rcc RTK_CKE_CTC>, <&rcc RTK_CKE_ADC>;
+      clock-names = "rtk_ctc_clk", "rtk_adc_clk";
+      rtk,ctc-diffthr = <800>, <800>, <800>, <800>, <1000>, <1000>, <1000>, <1000>, <1000>;
+      rtk,ctc-mbias = <0x18>, <0x17>, <16>, <0x1B>, <0x00>, <0x00>, <0x00>, <0x00>, <0x00>;
+      rtk,ctc-nnoise = <400>, <400>, <400>, <400>, <1000>, <1000>, <1000>, <1000>, <1000>;
+      rtk,ctc-pnoise = <400>, <400>, <400>, <400>, <1000>, <1000>, <1000>, <1000>, <1000>;
+      rtk,ctc-ch-status = <1>, <1>, <1>, <1>, <1>, <1>,<1>, <1>, <1>;
+      rtk,ctc-keycodes = <KEY_1>, <KEY_2>, <KEY_3>, <KEY_4>, <KEY_5>, <KEY_6>, <KEY_7>, <KEY_8>, <KEY_9>;
+      nvmem-cells = <&efuse_ctc_mbias>;
+      nvmem-cell-names = "ctc_mbias";
+      status = "disabled";
+   };
+
+CTC DTS Configurations
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+The DTS Configurations of CTC are listed in the table below.
+
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +-------------------+---------------------------------------------------------------------------+---------------+
+   | Property          | Description                                                               | Configurable? |
+   +===================+===========================================================================+===============+
+   | compatible        | The description of CTC driver. Default: "realtek,ameba- captouch ".       | No            |
+   +-------------------+---------------------------------------------------------------------------+---------------+
+   | reg               | The hardware address and size for CTC device. Default: <0x42010000 0x500> | No            |
+   +-------------------+---------------------------------------------------------------------------+---------------+
+   | interrupts        | The GIC number of CTC device. Default: <GIC_SPI 13 IRQ_TYPE_LEVEL_HIGH>   | No            |
+   +-------------------+---------------------------------------------------------------------------+---------------+
+   | clocks            | The clock of CTC device. Default: <&rcc RTK_CKE_CTC>, <&rcc RTK_CKE_ADC>  | No            |
+   +-------------------+---------------------------------------------------------------------------+---------------+
+   | rtk,ctc-diffthr   | Cap-touch difference threshold for 9 channels. (see NOTE below)           | 0~4095        |
+   +-------------------+---------------------------------------------------------------------------+---------------+
+   | rtk,ctc-mbias     | Cap-touch mbias current for 9 channels. (see NOTE below)                  | 0~63          |
+   +-------------------+---------------------------------------------------------------------------+---------------+
+   | rtk,ctc-nnoise    | Cap-touch negative noise threshold for 9 channels. (see NOTE below)       | 0~4095        |
+   +-------------------+---------------------------------------------------------------------------+---------------+
+   | rtk,ctc-pnoise    | Cap-touch positive noise threshold for 9 channels. (see NOTE below)       | 0~4095        |
+   +-------------------+---------------------------------------------------------------------------+---------------+
+   | rtk,ctc-ch-status | Cap-touch channel enable control for 9 channels.                          | 0/1           |
+   |                   |                                                                           |               |
+   |                   | - 1: enable                                                               |               |
+   |                   | - 0: disable                                                              |               |
+   +-------------------+---------------------------------------------------------------------------+---------------+
+   | rtk,ctc-keycodes  | Cap-touch key codes corresponding to 9 channels.                          | No            |
+   +-------------------+---------------------------------------------------------------------------+---------------+
+   | nvmem-cells       | The nvmem cells for CTC.                                                  | Yes           |
+   +-------------------+---------------------------------------------------------------------------+---------------+
+   | nvmem-cell-names  | The names of nvmen cells for CTC                                          | Yes           |
+   +-------------------+---------------------------------------------------------------------------+---------------+
+   | status            | Whether enable the device.                                                | Yes           |
+   |                   |                                                                           |               |
+   |                   | - disabled                                                                |               |
+   |                   | - okay                                                                    |               |
+   +-------------------+---------------------------------------------------------------------------+---------------+
+
+.. note::
+      - Each parameter 9 values are corresponding to touch0~touch8 in sequence.
+      - Due to there are difference among channels and different boards, cap-touch is suggested to do calibration.
+      - For the parameters :emphasis:`ctc-diffthr`, :emphasis:`ctc-mbias`, :emphasis:`ctc-nnoise`, :emphasis:`ctc-pnoise` in table above, the factory should calibrate them for each channel, and write them into EFUSE. If the values in EFUSE are empty, the value in dts file will be used instead.
+
+Pinmux
+^^^^^^^^^^^^
+The pin assignments of captouch are listed in the table below.
+
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +-----------+----------+---------------------+
+   | Port name | Pin name | pinctrl description |
+   +===========+==========+=====================+
+   | PA0       | TOUCH0   | <&captouch_pins >   |
+   +-----------+----------+---------------------+
+   | PA1       | TOUCH1   | <&captouch_pins >   |
+   +-----------+----------+---------------------+
+   | PA2       | TOUCH2   | <&captouch_pins >   |
+   +-----------+----------+---------------------+
+   | PA3       | TOUCH3   | <&captouch_pins >   |
+   +-----------+----------+---------------------+
+   | PA4       | TOUCH4   | <&captouch_pins >   |
+   +-----------+----------+---------------------+
+   | PA5       | TOUCH5   | <&captouch_pins >   |
+   +-----------+----------+---------------------+
+   | PA6       | TOUCH6   | <&captouch_pins >   |
+   +-----------+----------+---------------------+
+   | PA7       | TOUCH7   | <&captouch_pins >   |
+   +-----------+----------+---------------------+
+   | PA8       | TOUCH8   | <&captouch_pins >   |
+   +-----------+----------+---------------------+
+
+Refer to pinctrl application note for more details.
+
+Build Configuration
+~~~~~~~~~~~~~~~~~~~~~~
+Select :menuselection:`Device Drivers > Drivers for Realtek > Captouch driver` in order:
+
+.. figure:: figures/cap_touch_build_configuration_linux.png
+   :scale: 90%
+   :align: center
+
+APIs
+--------
+APIs for User Space
+~~~~~~~~~~~~~~~~~~~~~~~~
+sysfs interface is used to interact with user space, device node locates in ``/dev/input/eventX``. User space can use :emphasis:`open()`, :emphasis:`read()` to get CTC event.
+
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +------------+-----------------------------+
+   | Items      | Description                 |
+   +============+=============================+
+   | evdev_open | Open input device.          |
+   +------------+-----------------------------+
+   | evdev_read | Get data from input device. |
+   +------------+-----------------------------+
+
+CTC demo for user space locates at: ``<test>/captouch``.
+
+APIs for Kernel Space
+~~~~~~~~~~~~~~~~~~~~~~~~~
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +----------------------------+---------------------------------------------+
+   | Items                      | Description                                 |
+   +============================+=============================================+
+   | devm_input_allocate_device | Allocate managed input device.              |
+   +----------------------------+---------------------------------------------+
+   | input_allocate_device      | Allocate memory for new input device.       |
+   +----------------------------+---------------------------------------------+
+   | input_free_device          | Free memory occupied by input_dev structure |
+   +----------------------------+---------------------------------------------+
+   | input_register_device      | Register device with input core.            |
+   +----------------------------+---------------------------------------------+
+   | input_unregister_device    | Unregister previously registered device.    |
+   +----------------------------+---------------------------------------------+
+   | input_event                | Report new input event.                     |
+   +----------------------------+---------------------------------------------+
+
+For more details, refer to `Input Subsystem kernel API <https://www.kernel.org/doc/html/v5.4/input/input_kapi.html>`_.
+

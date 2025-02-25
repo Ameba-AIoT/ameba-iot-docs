@@ -1,0 +1,760 @@
+.. _lcdc:
+
+The LCD-TFT (Liquid Crystal Display-Thin Film Transistor) display controller provides a 24-bit parallel digital RGB (Red, Green, Blue) and delivers all signals to VO interface, which can be used by MIPI Display Serial Interface directly to a broad range of LCD and TFT panels.
+
+Introduction
+------------------------
+Realtek LCDC driver follows Linux's DRM Framework architecture. The Linux Direct Rendering Manager (DRM) layer contains code intended to support the needs of complex graphics devices. Graphics drivers in the kernel may make use of DRM functions to make tasks like memory management, interrupt handling and DMA easier, and provide a uniform interface to applications.
+
+
+The LCDC driver basically consists of two parts:
+
+- LCDC driver - The LCDC driver handles the liquid crystal display controller, send the command to the controller.
+
+- MIPI-DSI driver - The MIPI-DSI driver handles the MIPI-DSI device, send the command to the Device and get the reply.
+
+Architecture
+~~~~~~~~~~~~~~~~~~~~~~~~
+LCDC uses the DRM (Direct Rendering Manager) framework to driver the LCDC device. The LCDC software architecture is illustrated in figure below.
+
+.. figure:: figures/lcdc_drm_software_arch_linux.svg
+   :scale: 120%
+   :align: center
+
+   DRM software architecture
+
+.. note::
+   LCDC has two parts, one is LCDC, and another is MIPI-DSI. DRM drivers the two parts.
+
+For details of Linux DRM system, refer to
+
+Implementation
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The implementation of Realtek DRM driver lies in the following directories.
+
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +---------------------------------------------------------+------------------------------------------------------------------------------+
+   | Driver location                                         | Introduction                                                                 |
+   +=========================================================+==============================================================================+
+   | :file:`<linux>/drivers/rtkdrivers/drm/ameba_drm_drv.c`  | Realtek LCDC Driver function.                                                |
+   +---------------------------------------------------------+------------------------------------------------------------------------------+
+   | :file:`<linux>/drivers/rtkdrivers/drm/ameba_drm_drv.h`  | Realtek LCDC Driver related function declaration, macro definition,          |
+   |                                                         |                                                                              |
+   |                                                         | structure definition and the other header files quoted.                      |
+   +---------------------------------------------------------+------------------------------------------------------------------------------+
+   | :file:`<linux>/drivers/rtkdrivers/drm/ameba_drm_obj.c`  | Realtek LCDC Driver functions.                                               |
+   +---------------------------------------------------------+------------------------------------------------------------------------------+
+   | :file:`<linux>/drivers/rtkdrivers/drm/ameba_drm_dsi.c`  | Realtek MIPI-DSI Driver function.                                            |
+   +---------------------------------------------------------+------------------------------------------------------------------------------+
+   | :file:`<linux>/drivers/rtkdrivers/drm/ameba_drm_dsi.h`  | Realtek MIPI-DSI Driver related function declaration, macro definition,      |
+   |                                                         |                                                                              |
+   |                                                         | structure definition and the other header files quoted.                      |
+   +---------------------------------------------------------+------------------------------------------------------------------------------+
+   | :file:`<linux>/drivers/rtkdrivers/drm/ameba_drm_util.c` | Realtek DRM Driver common function                                           |
+   +---------------------------------------------------------+------------------------------------------------------------------------------+
+   | :file:`<linux>/drivers/rtkdrivers/drm/ameba_drm_util.h` | Realtek DRM Driver common related function declaration, macro definition,    |
+   |                                                         |                                                                              |
+   |                                                         | structure definition and the other header files quoted.                      |
+   +---------------------------------------------------------+------------------------------------------------------------------------------+
+   | :file:`<linux>/drivers/rtkdrivers/drm/ameba_lcdc.c`     | Realtek LCDC hardware function                                               |
+   +---------------------------------------------------------+------------------------------------------------------------------------------+
+   | :file:`<linux>/drivers/rtkdrivers/drm/ameba_lcdc.h`     | Realtek LCDC hardware related function declaration, macro definition,        |
+   |                                                         |                                                                              |
+   |                                                         | structure definition and the other header files quoted.                      |
+   +---------------------------------------------------------+------------------------------------------------------------------------------+
+   | :file:`<linux>/drivers/rtkdrivers/drm/ameba_mipi.c`     | Realtek MIPI_DSI hardware function.                                          |
+   +---------------------------------------------------------+------------------------------------------------------------------------------+
+   | :file:`<linux>/drivers/rtkdrivers/drm/ameba_mipi.h`     | Realtek MIPI_DSI hardware related function declaration, macro definition,    |
+   |                                                         |                                                                              |
+   |                                                         | structure definition and the other header files quoted.                      |
+   +---------------------------------------------------------+------------------------------------------------------------------------------+
+
+Configuration
+--------------------------
+DTS Configure
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+The LCDC DTS includes two parts: LCDC and MIPI-DSI. The main DTS file locates at :file:`<dts>/rtl8730e-drm.dtsi`.
+
+.. code-block::
+
+   drm:drm@0x400D8000 {
+      compatible = "realtek,ameba-drm";
+      reg = <0x400D8000 0xE0>;
+      interrupts = <GIC_SPI 33 IRQ_TYPE_LEVEL_HIGH>;
+      clocks = <&rcc RTK_CKE_LCDCMIPI>;
+      memory-region = <&mem_drm_reserved>;
+      port {
+         #address-cells = <1>;
+         #size-cells = <0>;
+         dsi_out: endpoint@0 {
+            reg = <0>;
+            remote-endpoint = <&dsi_in>;
+         };
+         panel_out: endpoint@1 {
+            reg = <1>;
+            remote-endpoint = <&panel_in>;
+         };
+      };
+   };
+   dsi: dsi@0x400EA000 {
+      compatible = "realtek,ameba-dsi";
+      reg = <0x400EA000 0xC10>,
+      <0x4200825C 0x04>;
+      interrupts = <GIC_SPI 70 IRQ_TYPE_LEVEL_HIGH>;
+      clocks = <&rcc RTK_CKE_HPERI>;
+      rtk,lcdc-vo-clock = <&rcc>;
+      status = "disabled";
+      // 0 for input port
+      port {
+         #address-cells = <1>;
+         #size-cells = <0>;
+         dsi_in: endpoint@0 {
+            reg = <0>;
+            remote-endpoint = <&dsi_out>;
+         };
+      };
+   };
+
+:file:`<dts>/rtl8730e-pinctrl.dtsi`
+
+.. code-block::
+
+   drm_disable_swd_pins:drm_swd@0 {
+      pins {
+         pinmux = <REALTEK_PINMUX('A',14, GPIO)>;
+         bias-disable;
+         swd-disable;
+      };
+   };
+
+LCDC needs CMA (Contiguous Memory Allocation) support, according to different boards, modify <reserved-memory> in the DTS.
+
+.. code-block::
+
+   reserved-memory {
+      #address-cells = <1>;
+      #size-cells = <1>;
+      ranges;
+      /*reserver 32M mem for drm graphics , from 0x61000000 to 0x63000000*/
+      mem_drm_reserved: drm_buffer@0x61000000 {
+         compatible = "shared-dma-pool";
+         no-map;
+         reg = <0x61000000 0x2000000>;
+      };
+   };
+
+The basic information of LCDC is not suggested to revise.
+
+- For driver and device matching: compatible.
+- LCDC device REG: ``0x400D8000.MIPI_DSI`` device REG: ``0x400EA000``
+- LCDCMIPI Clock: <&rcc RTK_CKE_LCDCMIPI >
+- LCDC interrupt: irq num 33; MIPI_DSI interrupt: irq num 70.
+
+The pin assignments of LCDC are listed in table below.
+
+.. table:: 
+   :width: 100%
+   :widths: auto
+
+   +-----------+-------------------------------+
+   | Port name | Pin control DTS configuration |
+   +===========+===============================+
+   | PA4       | <&drm_disable_swd_pins>       |
+   +-----------+-------------------------------+
+
+LCDC has only one pinmux, therefore, only one pin is defined. PA13, PA14 also can be used in SWD, when used in LCDC, should disable SWD in DTS.
+
+LCDC needs CMA support, for different display resolution, CMA can be set to different size.
+
+Build Configuration
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+To change LCDC driver config, type the following command and choose "Device Drivers" > "Drivers for Realtek" > "DRM driver" in order.
+
+.. code-block::
+
+   make kernelconfig
+
+.. figure:: figures/lcdc_build_config_linux.svg
+   :scale: 100%
+   :align: center 
+
+APIs
+--------
+APIs for User Space
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+LCDC core APIs: The LCDC driver exports standard DRM interfaces to user space as bellow.
+
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +------------+----------------------------------------------------------+
+   | Interfaces | Introduction                                             |
+   +============+==========================================================+
+   | Open       | Open a DRM device (:file:`/dev/dri/card0`).              |
+   +------------+----------------------------------------------------------+
+   | Close      | Close a DRM device.                                      |
+   +------------+----------------------------------------------------------+
+   | Ioctl      | Interaction with DRM driver to read, write the property. |
+   +------------+----------------------------------------------------------+
+
+Libdrm APIs: Libdrm is a standard library to interface with DRM in the Linux kernel. It is open-source. The aims are:
+
+- The library offers 100% of the functionality of the kernel API.
+- The library adds major improvements in usability, making the application code simpler and better looking.
+- Future fixes or compatibility code may be placed in the library code instead of the kernel driver.
+
+For more details, refer to `libdrm <https://01.org/linuxgraphics/community/libdrm>`_.
+
+LCDC demo for user space locates at :file:`tests/fwk/display/libdrm`. There are many different test demos, shows in table below.
+
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +---------------------+-----------------------+--------------------------------------------+
+   | Demo name           | Demo description      | Location                                   |
+   +=====================+=======================+============================================+
+   | drm_plane_test_demo | Plane test demo       | :file:`tests/fwk/display/libdrm/planetest` |
+   +---------------------+-----------------------+--------------------------------------------+
+   | drm_vbl_test        | Drm vblank event test | :file:`tests/fwk/display/libdrm/vbltest`   |
+   +---------------------+-----------------------+--------------------------------------------+
+
+The LCDC demo just enables demo drm_plane_test_demo and drm_vbl_test to compile in SDK while lunch the test product target, refer to System Application Note (Chapter: Building Environment) to compile the test cases.
+
+After compiling and burning successfully, you can find the test case located in :file:`/bin/` directory.
+
+APIs for Kernel Space
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+LCDC Function Interfaces
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+LCDC_Init
+******************
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +--------------+-----------------------------------------------------------------------------------------+
+   | Items        | Description                                                                             |
+   +==============+=========================================================================================+
+   | Introduction | Initialize the LCDC register value with the ``LCDC_InitTypeDef`` struct value.          |
+   +--------------+-----------------------------------------------------------------------------------------+
+   | Parameters   | - ``LCDCx``: point to the register address.                                             |
+   |              | - ``LCDC_InitStruct``: point to an ``LCDC_InitTypeDef`` structure which is initialized. |
+   +--------------+-----------------------------------------------------------------------------------------+
+   | Return       | None                                                                                    |
+   +--------------+-----------------------------------------------------------------------------------------+
+
+LCDC_StructInit
+******************************
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +--------------+--------------------------------------------------------------------------------------------+
+   | Items        | Description                                                                                |
+   +==============+============================================================================================+
+   | Introduction | Initialize the parameters in the ``LCDC_InitTypeDef`` with default values.                 |
+   +--------------+--------------------------------------------------------------------------------------------+
+   | Parameters   | ``LCDC_InitStruct``: point to an ``LCDC_InitTypeDef`` structure which will be initialized. |
+   +--------------+--------------------------------------------------------------------------------------------+
+   | Return       | None                                                                                       |
+   +--------------+--------------------------------------------------------------------------------------------+
+
+LCDC_TrigerSHWReload
+*****************************
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +--------------+-------------------------------------------------------------------+
+   | Items        | Description                                                       |
+   +==============+===================================================================+
+   | Introduction | Triger Layer's shadow register reload to apply new configuration. |
+   +--------------+-------------------------------------------------------------------+
+   | Parameters   | ``LCDCx``: point to the register address.                         |
+   +--------------+-------------------------------------------------------------------+
+   | Return       | None                                                              |
+   +--------------+-------------------------------------------------------------------+
+
+LCDC_SetBkgColor
+************************
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +--------------+--------------------------------------------+
+   | Items        | Description                                |
+   +==============+============================================+
+   | Introduction | Set the back ground color                  |
+   +--------------+--------------------------------------------+
+   | Parameters   | - ``LCDCx``: point to the register address |
+   |              | - ``red_color``: red color value           |
+   |              | - ``green_color``: green color value       |
+   |              | - ``blue_color``: blue color value         |
+   +--------------+--------------------------------------------+
+   | Return       | None                                       |
+   +--------------+--------------------------------------------+
+
+LCDC_SetPlaneSize
+*********************
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +--------------+--------------------------------------------+
+   | Items        | Description                                |
+   +==============+============================================+
+   | Introduction | Set the display plane size                 |
+   +--------------+--------------------------------------------+
+   | Parameters   | - ``LCDCx``: point to the register address |
+   |              | - ``ImageWidth``: display plane width      |
+   |              | - ``ImageHeight``: display plane height    |
+   +--------------+--------------------------------------------+
+   | Return       | None                                       |
+   +--------------+--------------------------------------------+
+
+LCDC_Cmd
+****************
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +--------------+-----------------------------------------------------------------------------------------+
+   | Items        | Description                                                                             |
+   +==============+=========================================================================================+
+   | Introduction | Enable or disable the LCDC.                                                             |
+   +--------------+-----------------------------------------------------------------------------------------+
+   | Parameters   | - ``LCDCx``: where LCDCx can be LCDC.                                                   |
+   |              | - ``NewState``: new state of the LCDC. This parameter can be ``ENABLE`` or ``DISABLE``. |
+   +--------------+-----------------------------------------------------------------------------------------+
+   | Return       | None                                                                                    |
+   +--------------+-----------------------------------------------------------------------------------------+
+
+LCDC_GetINTStatus
+*********************
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +--------------+--------------------------------------+
+   | Items        | Description                          |
+   +==============+======================================+
+   | Introduction | Get LCDC interrupt status.           |
+   +--------------+--------------------------------------+
+   | Parameters   | ``LCDCx``: where LCDCx can be LCDC.  |
+   +--------------+--------------------------------------+
+   | Return       | The interrupt status                 |
+   +--------------+--------------------------------------+
+
+LCDC_ClearINT
+******************
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +--------------+----------------------------------------------------------------------------------------------------------------------+
+   | Items        | Description                                                                                                          |
+   +==============+======================================================================================================================+
+   | Introduction | Clears the LCDC's interrupt pending bits.                                                                            |
+   +--------------+----------------------------------------------------------------------------------------------------------------------+
+   | Parameters   | - ``LCDCx``: where LCDCx can be LCDC.                                                                                |
+   |              | - ``LCDC_IT``: specifies the interrupt to be cleared. This parameter can be any combination of the following values: |
+   |              |                                                                                                                      |
+   |              |   - ``LCDC_BIT_DMA_UN_INTS``: DMA FIFO under flow interrupt                                                          |
+   |              |   - ``LCDC_BIT_LCD_FRD_INTS``: refresh frame done interrupt                                                          |
+   |              |   - ``LCDC_BIT_LCD_LIN_INTS``: line interrupt                                                                        |
+   |              |   - ``LCDC_BIT_FRM_START_INTS``: Frame Start interrupt                                                               |
+   +--------------+----------------------------------------------------------------------------------------------------------------------+
+   | Return       | None                                                                                                                 |
+   +--------------+----------------------------------------------------------------------------------------------------------------------+
+
+LCDC_DMAModeConfig
+*************************
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +--------------+------------------------------------------------------------------+
+   | Items        | Description                                                      |
+   +==============+==================================================================+
+   | Introduction | Configure LCDC DMA burst size.                                   |
+   +--------------+------------------------------------------------------------------+
+   | Parameters   | - ``LCDCx``: where LCDCx can be LCDC.                            |
+   |              | - ``BurstSize``: DMA burst size; unit is 64 bytes.               |
+   |              |                                                                  |
+   |              |   - ``LCDC_LAYER_BURSTSIZE_1X64BYTES``:  Burst Transactions = 1; |
+   |              |   - ``LCDC_LAYER_BURSTSIZE_2X64BYTES``:  Burst Transactions = 2; |
+   |              |   - ``LCDC_LAYER_BURSTSIZE_3X64BYTES``:  Burst Transactions = 3; |
+   |              |   - ``LCDC_LAYER_BURSTSIZE_4X64BYTES``:  Burst Transactions = 4; |
+   +--------------+------------------------------------------------------------------+
+   | Return       | None                                                             |
+   +--------------+------------------------------------------------------------------+
+
+LCDC_DMAUnderFlowConfig
+**********************************************
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +--------------+-----------------------------------------------------------------------------------------------------+
+   | Items        | Description                                                                                         |
+   +==============+=====================================================================================================+
+   | Introduction | Configure LCDC DMA under flow mode and under flow error data .                                      |
+   +--------------+-----------------------------------------------------------------------------------------------------+
+   | Parameters   | - ``LCDCx``: where LCDCx can be LCDC.                                                               |
+   |              | - ``DmaUnFlwMode``: DMA under flow mode, this parameter can be one of the following values:         |
+   |              |                                                                                                     |
+   |              |   - ``LCDC_DMAUNFW_OUTPUT_LASTDATA``: output last data                                              |
+   |              |   - ``LCDC_DMAUNFW_OUTPUT_ERRORDATA``: output error data                                            |
+   |              |                                                                                                     |
+   |              | - ``ErrorData``: the output data when DMA FIFO underflow occurs. When under flow mode is configured |
+   |              |                                                                                                     |
+   |              | as ``LCDC_DMAUNFW_OUTPUT_ERRORDATA``, this parameter is needed; otherwise, it can be ignored.       |
+   +--------------+-----------------------------------------------------------------------------------------------------+
+   | Return       | None                                                                                                |
+   +--------------+-----------------------------------------------------------------------------------------------------+
+
+LCDC_GetCurPosStatus
+****************************************
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +--------------+-------------------------------------------------+
+   | Items        | Description                                     |
+   +==============+=================================================+
+   | Introduction | Get the current position.                       |
+   +--------------+-------------------------------------------------+
+   | Parameters   | - ``LCDCx``: where LCDCx can be LCDC.           |
+   |              | - ``pCurPosX``: the current X position pointer. |
+   |              | - ``pCurPosY``: the current Y position pointer. |
+   +--------------+-------------------------------------------------+
+   | Return       | None                                            |
+   +--------------+-------------------------------------------------+
+
+LCDC_GetDmaUnINTCnt
+**************************************
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +--------------+----------------------------------------------------------------+
+   | Items        | Description                                                    |
+   +==============+================================================================+
+   | Introduction | Get the DMA FIFO under flow interrupt count.                   |
+   +--------------+----------------------------------------------------------------+
+   | Parameters   | - ``LCDCx``: where LCDCx can be LCDC.                          |
+   |              | - ``DmaUnIntCnt``: the DMA under flow interrupt count pointer. |
+   +--------------+----------------------------------------------------------------+
+   | Return       | None                                                           |
+   +--------------+----------------------------------------------------------------+
+
+LCDC_INTConfig
+****************************
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +--------------+---------------------------------------------------------------------------------------------------------------+
+   | Items        | Description                                                                                                   |
+   +==============+===============================================================================================================+
+   | Introduction | Enables or disables the specified LCDC interrupts.                                                            |
+   +--------------+---------------------------------------------------------------------------------------------------------------+
+   | Parameters   | - ``LCDCx``: where LCDCx can be LCDC.                                                                         |
+   |              | - ``LCDC_IT``: specifies the LCDC interrupt sources to be enabled or disabled.                                |
+   |              |                                                                                                               |
+   |              |   - ``LCDC_BIT_DMA_UN_INTEN``: DMA FIFO underflow interrupt                                                   |
+   |              |   - ``LCDC_BIT_LCD_FRD_INTEN``: LCD refresh done interrupt                                                    |
+   |              |   - ``LCDC_BIT_LCD_LIN_INTEN``: line interrupt                                                                |
+   |              |   - ``LCDC_BIT_FRM_START_INTEN``: Frame Start interrupt                                                       |
+   |              |                                                                                                               |
+   |              | - ``NewState``: new state of the specified LCDC interrupts. This parameter can be: ``ENABLE`` or ``DISABLE``. |
+   +--------------+---------------------------------------------------------------------------------------------------------------+
+   | Return       | The read value                                                                                                |
+   +--------------+---------------------------------------------------------------------------------------------------------------+
+
+LCDC_LineINTPosConfig
+******************************************
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +--------------+----------------------------------------+
+   | Items        | Description                            |
+   +==============+========================================+
+   | Introduction | Configure line interrupt position.     |
+   +--------------+----------------------------------------+
+   | Parameters   | - ``LCDCx``: where LCDCx can be LCDC.  |
+   |              | - ``LineNum``: the line number.        |
+   +--------------+----------------------------------------+
+   | Return       | None                                   |
+   +--------------+----------------------------------------+
+
+LCDC_LayerConfig
+********************************
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +--------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
+   | Items        | Description                                                                                                                                     |
+   +==============+=================================================================================================================================================+
+   | Introduction | Initializes the LCDC Layer according to the specified parameters in the ``EachLayer``.                                                          |
+   +--------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
+   | Parameters   | - ``LCDCx``: where LCDCx can be LCDC.                                                                                                           |
+   |              | - ``LayerId``: layer index.                                                                                                                     |
+   |              | - ``EachLayer``: pointer to a ``LCDC_EachLayerInitTypeDef`` structure that contains the configuration information for the specified LCDC layer. |
+   +--------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
+   | Return       | None                                                                                                                                            |
+   +--------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
+
+LCDC_CheckLCDCReady
+**************************************
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +--------------+---------------------------------------------------------------------+
+   | Items        | Description                                                         |
+   +==============+=====================================================================+
+   | Introduction | Check LCDC is ready to work with VO interface after LCDC is enable. |
+   +--------------+---------------------------------------------------------------------+
+   | Parameters   | ``LCDCx``: where LCDCx can be LCDC.                                 |
+   +--------------+---------------------------------------------------------------------+
+   | Return       | Status:                                                             |
+   |              |                                                                     |
+   |              | - 1: Ready                                                          |
+   |              | - Others: Not Ready                                                 |
+   +--------------+---------------------------------------------------------------------+
+
+MIPI_DSI Function Interfaces
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+MIPI_Init
+******************
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +--------------+----------------------------------------------------------------------------------------+
+   | Items        | Description                                                                            |
+   +==============+========================================================================================+
+   | Introduction | Initialize the MIPI register value with the ``MIPI_InitTypeDef`` struct value.         |
+   +--------------+----------------------------------------------------------------------------------------+
+   | Parameters   | - ``MIPIx``: point to the MIPI register address.                                       |
+   |              | - ``MIPI_InitStruct``: point to a ``MIPI_InitTypeDef`` structure which is initialized. |
+   +--------------+----------------------------------------------------------------------------------------+
+   | Return       | None                                                                                   |
+   +--------------+----------------------------------------------------------------------------------------+
+
+MIPI_DSI_init
+**************************
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +--------------+----------------------------------------------------------------------------------------+
+   | Items        | Description                                                                            |
+   +==============+========================================================================================+
+   | Introduction | Initialize the MIPI_DSI register value with the ``MIPI_InitTypeDef`` struct value.     |
+   +--------------+----------------------------------------------------------------------------------------+
+   | Parameters   | - ``MIPIx``: point to the MIPI register address.                                       |
+   |              | - ``MIPI_InitStruct``: point to a ``MIPI_InitTypeDef`` structure which is initialized. |
+   +--------------+----------------------------------------------------------------------------------------+
+   | Return       | None                                                                                   |
+   +--------------+----------------------------------------------------------------------------------------+
+
+MIPI_DPHY_init
+****************************
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +--------------+----------------------------------------------------------------------------------------+
+   | Items        | Description                                                                            |
+   +==============+========================================================================================+
+   | Introduction | Initialize the MIPI_D-PHY register value with the ``MIPI_InitTypeDef`` struct value.   |
+   +--------------+----------------------------------------------------------------------------------------+
+   | Parameters   | - ``MIPIx``: point to the MIPI register address.                                       |
+   |              | - ``MIPI_InitStruct``: point to a ``MIPI_InitTypeDef`` structure which is initialized. |
+   +--------------+----------------------------------------------------------------------------------------+
+   | Return       | None                                                                                   |
+   +--------------+----------------------------------------------------------------------------------------+
+
+MIPI_InitStruct_Config
+********************************************
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +--------------+--------------------------------------------------------------------------------------+
+   | Items        | Description                                                                          |
+   +==============+======================================================================================+
+   | Introduction | Initialize the parameters in the ``MIPI_InitTypeDef`` with default values.           |
+   +--------------+--------------------------------------------------------------------------------------+
+   | Parameters   | ``MIPI_InitStruct``: point to a ``MIPI_InitTypeDef`` structure which is initialized. |
+   +--------------+--------------------------------------------------------------------------------------+
+   | Return       | None                                                                                 |
+   +--------------+--------------------------------------------------------------------------------------+
+
+MIPI_DSI_Mode_Switch
+****************************************
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +--------------+------------------------------------------------------------------------------------+
+   | Items        | Description                                                                        |
+   +==============+====================================================================================+
+   | Introduction | Initialize the MIPI_DSI register value with the ``MIPI_InitTypeDef`` struct value. |
+   +--------------+------------------------------------------------------------------------------------+
+   | Parameters   | - ``MIPIx``: point to the MIPI register address.                                   |
+   |              | - ``MIPI_VideoNCmdMode``: This parameter can be ``ENABLE`` or ``DISABLE``.         |
+   +--------------+------------------------------------------------------------------------------------+
+   | Return       | None                                                                               |
+   +--------------+------------------------------------------------------------------------------------+
+
+MIPI_DSI_CMD_Send
+**********************************
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +--------------+------------------------------------------------------------------+
+   | Items        | Description                                                      |
+   +==============+==================================================================+
+   | Introduction | Send a short packet to the panel in command mode.                |
+   +--------------+------------------------------------------------------------------+
+   | Parameters   | - ``MIPIx``: point to the MIPI register address                  |
+   |              | - ``DataId``: MIPI DSI Processor-to-Peripheral transaction types |
+   |              | - ``Byte0``: payload                                             |
+   |              | - ``Byte1``: payload                                             |
+   +--------------+------------------------------------------------------------------+
+   | Return       | None                                                             |
+   +--------------+------------------------------------------------------------------+
+
+MIPI_DSI_CMD_LongPkt_MemQWordRW
+**************************************
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +--------------+---------------------------------------------------------------------------+
+   | Items        | Description                                                               |
+   +==============+===========================================================================+
+   | Introduction | Send a long packet to the panel in command mode.                          |
+   +--------------+---------------------------------------------------------------------------+
+   | Parameters   | - ``MIPIx``: point to the MIPI register address.                          |
+   |              | - ``Addr``: address value of Command payload buffer in the MIPI DSI block |
+   |              | - ``Word0``: word0 value                                                  |
+   |              | - ``Word1``: word1 value                                                  |
+   |              | - ``IsRead``: read flag, if set , will read value from address            |
+   +--------------+---------------------------------------------------------------------------+
+   | Return       | None                                                                      |
+   +--------------+---------------------------------------------------------------------------+
+
+MIPI_DSI_CMD_Rxcv_CMD
+*************************
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +--------------+--------------------------------------------------------------+
+   | Items        | Description                                                  |
+   +==============+==============================================================+
+   | Introduction | Get status or packet from the panel in command mode          |
+   +--------------+--------------------------------------------------------------+
+   | Parameters   | - ``MIPIx``: point to the MIPI register address.             |
+   |              | - ``rcmd_idx``: Index which receive command register is read |
+   +--------------+--------------------------------------------------------------+
+   | Return       | The value of ``RCMD_1``/``RCMD_2``/``RCMD_3`` register       |
+   +--------------+--------------------------------------------------------------+
+
+MIPI_DSI_INT_Config
+**************************************
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +--------------+------------------------------------------------------------------------------+
+   | Items        | Description                                                                  |
+   +==============+==============================================================================+
+   | Introduction | Configure IRQ for MIPI_DIS.                                                  |
+   +--------------+------------------------------------------------------------------------------+
+   | Parameters   | - ``MIPIx``: pointer to the register address.                                |
+   |              | - ``AcpuEn``: acpu interrupt enable                                          |
+   |              | - ``ScpuEN``: scpu interrupt enable                                          |
+   |              | - ``IntSelAnS``: which CPU select index, 0 is command Mode, 1 is Video Mode. |
+   +--------------+------------------------------------------------------------------------------+
+   | Return       | None                                                                         |
+   +--------------+------------------------------------------------------------------------------+
+
+MIPI_DSI_INTS_Get
+**********************************
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +--------------+---------------------------------------------+
+   | Items        | Description                                 |
+   +==============+=============================================+
+   | Introduction | Get The Command Mode interrupt status.      |
+   +--------------+---------------------------------------------+
+   | Parameters   | ``MIPIx``: pointer to the register address. |
+   +--------------+---------------------------------------------+
+   | Return       | The Command Mode interrupt status           |
+   +--------------+---------------------------------------------+
+
+MIPI_DSI_INTS_Clr
+**********************************
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +--------------+--------------------------------------------------------+
+   | Items        | Description                                            |
+   +==============+========================================================+
+   | Introduction | Clears The Command Mode interrupt pending bits.        |
+   +--------------+--------------------------------------------------------+
+   | Parameters   | - ``MIPIx``: pointer to the register address.          |
+   |              | - ``DSI_INTS``: specifies the interrupt to be cleared. |
+   +--------------+--------------------------------------------------------+
+   | Return       | None                                                   |
+   +--------------+--------------------------------------------------------+
+
+MIPI_DSI_INTS_ACPU_Get
+********************************************
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +--------------+-----------------------------------------------------------------+
+   | Items        | Description                                                     |
+   +==============+=================================================================+
+   | Introduction | Get The Video Mode interrupt status.                            |
+   +--------------+-----------------------------------------------------------------+
+   | Parameters   | ``MIPIx``: pointer to the register address.                     |
+   +--------------+-----------------------------------------------------------------+
+   | Return       | The Video Mode interrupt status, which is frame done interrupt. |
+   +--------------+-----------------------------------------------------------------+
+
+MIPI_DSI_INTS_ACPU_Clr
+***************************
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +--------------+--------------------------------------------------------+
+   | Items        | Description                                            |
+   +==============+========================================================+
+   | Introduction | Clears The Video Mode interrupt pending bits.          |
+   +--------------+--------------------------------------------------------+
+   | Parameters   | - ``MIPIx``: pointer to the register address.          |
+   |              | - ``DSI_INTS``: specifies the interrupt to be cleared. |
+   +--------------+--------------------------------------------------------+
+   | Return       | None                                                   |
+   +--------------+--------------------------------------------------------+
+

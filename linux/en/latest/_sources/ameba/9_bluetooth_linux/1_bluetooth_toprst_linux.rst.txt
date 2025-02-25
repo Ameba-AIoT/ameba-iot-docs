@@ -1,0 +1,124 @@
+.. _bluetooth:
+
+Introduction
+-----------------
+Bluetooth controller power-on driver and Bluetooth HCI driver are designed to support Bluetooth module.
+
+Architecture
+~~~~~~~~~~~~~~~
+Bluetooth HCI driver architecture is summarized in the following figure.
+
+.. figure:: figures/bluetooth_hci_driver_arch_linux.svg
+   :scale: 120%
+   :align: center
+
+Implementation
+------------------
+Bluetooth Controller Power-on Driver
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Realtek's Bluetooth controller power-on driver is implemented in the following files:
+
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +---------------------------------------------------+------------------------------------------------------------+
+   | Driver location                                   | Introduction                                               |
+   +===================================================+============================================================+
+   | <linux>/drivers/rtkdrivers/bluetooth/realtek-bt.c | Include Realtek’s Bluetooth controller power-on functions. |
+   +---------------------------------------------------+------------------------------------------------------------+
+
+.. code-block:: c
+
+   static int rtk_bt_cdev_set_power(struct rtk_bt_power_info *info)
+
+.. _linux_bluetooth_hci_driver:
+
+Bluetooth HCI Driver
+~~~~~~~~~~~~~~~~~~~~~
+Original Bluetooth net are supported by Linux Bluetooth subsystem.
+
+Bluetooth HCI UART driver is implemented in the following files:
+
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +---------------------------------------+-----------------------------------------+
+   | Driver location                       | Introduction                            |
+   +=======================================+=========================================+
+   | <linux>/drivers/bluetooth/Kconfig     | Bluetooth HCI driver Kconfig            |
+   +---------------------------------------+-----------------------------------------+
+   | <linux>/drivers/bluetooth/Makefile    | Bluetooth HCI driver Makefile           |
+   +---------------------------------------+-----------------------------------------+
+   | <linux>/drivers/bluetooth/hci_h4.c    | HCI UART proto funcitons.               |
+   +---------------------------------------+-----------------------------------------+
+   | <linux>/drivers/bluetooth/hci_ldisc.c | HCI UART TTY line discipline functions. |
+   +---------------------------------------+-----------------------------------------+
+   | <linux>/drivers/bluetooth/rtk_coex.c  | HCI UART co-existence handle functions. |
+   +---------------------------------------+-----------------------------------------+
+
+Configuration
+-------------------
+DTS Configuration
+~~~~~~~~~~~~~~~~~~~~~
+Bluetooth HCI Driver
+^^^^^^^^^^^^^^^^^^^^^^^^^
+UART3 is the special UART for Bluetooth. DTS node are defined in <dts>/rtl8730e-ocp.dtsi.
+
+.. code-block::
+
+   uart3: serial@41007000 {
+      compatible = "realtek,ameba-uart";
+      reg = <0x41007000 0x100>;
+      clocks = <&rcc RTK_CKE_UART3>;
+      interrupts = <GIC_SPI 53 IRQ_TYPE_LEVEL_HIGH>;
+   };
+
+Where:
+
+:compatible: ID to match the driver and device, not configurable.
+:reg: Register resource, not configurable.
+:clocks: UART clock node, not configurable.
+:interrupts: SPI interrupt, not configurable.
+
+Build Configuration
+~~~~~~~~~~~~~~~~~~~~
+Bluetooth Controller Power-on Driver
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Select :menuselection:`Device Drivers > Drivers for Realtek > Realtek bluetooth ioctl driver`.
+
+.. figure:: figures/bluetooth_build_configuration_linux.png
+   :scale: 90%
+   :align: center
+
+Bluetooth OTP R/W Driver
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+Select :menuselection:`Device Drivers > Drivers for Realtek > OTP driver`.
+
+.. figure:: figures/bluetooth_otp_rw_driver_linux.png
+   :scale: 90%
+   :align: center
+
+Bluetooth HCI Driver
+^^^^^^^^^^^^^^^^^^^^^^
+1. Select :menuselection:`Networking support > Bluetooth subsystem support > Bluetooth device drivers > HCI UART driver`.
+
+   .. figure:: figures/bluetooth_hci_driver_part1_linux.jpeg
+      :scale: 90%
+      :align: center
+
+   .. figure:: figures/bluetooth_hci_driver_part2_linux.jpeg
+      :scale: 90%
+      :align: center
+
+   .. figure:: figures/bluetooth_hci_driver_part3_linux.jpeg
+      :scale: 90%
+      :align: center
+
+2. Select :menuselection:`Device Drivers > Drivers for Realtek > UART driver > General UART driver`.
+
+   .. figure:: figures/bluetooth_hci_driver_part4_linux.jpeg
+      :scale: 90%
+      :align: center
+

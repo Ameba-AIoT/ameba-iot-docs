@@ -1,0 +1,890 @@
+.. _gpio:
+
+General Purpose Input/Output (GPIO)
+=========================================
+
+Introduction
+---------------
+Architecture
+~~~~~~~~~~~~~~
+GPIO driver follows Linux's GPIO subsystem. GPIO lib provides GPIO interface to user space. The GPIO software architecture is illustrated in the following figure.
+
+.. figure:: figures/gpio_software_arch_linux.svg
+   :scale: 100%
+   :align: center
+
+   GPIO software architecture
+
+For details of Linux GPIO system, refer to https://www.kernel.org/doc/html/v5.4/driver-api/gpio/index.html?highlight=gpio.
+
+Implementation
+~~~~~~~~~~~~~~~~
+GPIO driver is implemented as following files:
+
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +------------------------------------------------+-------------------------------------------------------------------------------------------------------------+
+   | Driver location                                | Introduction                                                                                                |
+   +================================================+=============================================================================================================+
+   | <linux>/drivers/rtkdrivers/gpio/Kconfig        | GPIO driver Kconfig                                                                                         |
+   +------------------------------------------------+-------------------------------------------------------------------------------------------------------------+
+   | <linux>/drivers/rtkdrivers/gpio/Makefile       | GPIO driver Makefile                                                                                        |
+   +------------------------------------------------+-------------------------------------------------------------------------------------------------------------+
+   | <linux>/drivers/rtkdrivers/gpio/realtek-gpio.c | GPIO functions.                                                                                             |
+   +------------------------------------------------+-------------------------------------------------------------------------------------------------------------+
+   | <linux>/drivers/rtkdrivers/gpio/realtek-gpio.h | GPIO related function declaration, macro definition, structure definition and the other header files quoted |
+   +------------------------------------------------+-------------------------------------------------------------------------------------------------------------+
+
+Configuration
+------------------
+DTS Configuration
+~~~~~~~~~~~~~~~~~~~~~~~~
+GPIO DTS node:
+
+.. code-block::
+
+   gpioa: gpio@4200D000 {
+      compatible = "realtek,ameba-gpio";
+      gpio-controller;
+      #gpio-cells = <2>;
+      reg = <0x4200D000 0x400>;
+      rtk,gpio-bank = <0>;
+      interrupt-controller;
+      #interrupt-cells = <2>;
+      interrupts = <GIC_SPI 9 IRQ_TYPE_LEVEL_HIGH>;
+      clocks = <&rcc RTK_CKE_GPIO>;
+   };
+   gpiob: gpio@4200D400 {
+      compatible = "realtek,ameba-gpio";
+      gpio-controller;
+      #gpio-cells = <2>;
+      reg = <0x4200D400 0x400>;
+      rtk,gpio-bank = <1>;
+      interrupt-controller;
+      #interrupt-cells = <2>;
+      interrupts = <GIC_SPI 10 IRQ_TYPE_LEVEL_HIGH>;
+      clocks = <&rcc RTK_CKE_GPIO>;
+   };
+   gpioc: gpio@4200D800 {
+      compatible = "realtek,ameba-gpio";
+      gpio-controller;
+      #gpio-cells = <2>;
+      reg = <0x4200D800 0x400>;
+      rtk,gpio-bank = <2>;
+      interrupt-controller;
+      #interrupt-cells = <2>;
+      interrupts = <GIC_SPI 11 IRQ_TYPE_LEVEL_HIGH>;
+      clocks = <&rcc RTK_CKE_GPIO>;
+   };
+
+The DTS Configurations of GPIO are listed in the following table.
+
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +----------------------+--------------------------------------------------------------------------------+--------------------+---------------+
+   | Property             | Description                                                                    | Default            | Configurable? |
+   +======================+================================================================================+====================+===============+
+   | compatible           | The description of GPIO driver.                                                | realtek,ameba-gpio | No            |
+   +----------------------+--------------------------------------------------------------------------------+--------------------+---------------+
+   | reg                  | The hardware address and size for GPIO device.                                 |                    | No            |
+   |                      |                                                                                |                    |               |
+   |                      | - GPIOA: <0x4200D000 0x400>                                                    |                    |               |
+   |                      | - GPIOB: <0x4200D400 0x400>                                                    |                    |               |
+   |                      | - GPIOC: <0x4200D800 0x400>                                                    |                    |               |
+   +----------------------+--------------------------------------------------------------------------------+--------------------+---------------+
+   | interrupts           | The GIC number of GPIO device.                                                 |                    | No            |
+   |                      |                                                                                |                    |               |
+   |                      | - GPIOA: <GIC_SPI 9 IRQ_TYPE_LEVEL_HIGH>                                       |                    |               |
+   |                      | - GPIOB: <GIC_SPI 10 IRQ_TYPE_LEVEL_HIGH>                                      |                    |               |
+   |                      | - GPIOC: <GIC_SPI 11 IRQ_TYPE_LEVEL_HIGH>                                      |                    |               |
+   +----------------------+--------------------------------------------------------------------------------+--------------------+---------------+
+   | gpio-controller      | Indicates device node is a GPIO controller.                                    |                    | No            |
+   +----------------------+--------------------------------------------------------------------------------+--------------------+---------------+
+   | #gpio-cells          | Indicates how many cells are needed to specifically describe a GPIO.           | 2                  | No            |
+   +----------------------+--------------------------------------------------------------------------------+--------------------+---------------+
+   | interrupt-controller | Indicates device node is an interrupt controller.                              |                    | No            |
+   +----------------------+--------------------------------------------------------------------------------+--------------------+---------------+
+   | #interrupt-cells     | Indicates how many cells are needed to specifically describe a GPIO interrupt. | 2                  | No            |
+   +----------------------+--------------------------------------------------------------------------------+--------------------+---------------+
+   | realtek,gpio-bank    | GPIO port index:                                                               |                    | No            |
+   |                      |                                                                                |                    |               |
+   |                      | 0: portA                                                                       |                    |               |
+   |                      | 1: portB                                                                       |                    |               |
+   |                      | 2: portC                                                                       |                    |               |
+   +----------------------+--------------------------------------------------------------------------------+--------------------+---------------+
+   | clocks               | The clock of GPIO device.                                                      |                    | No            |
+   +----------------------+--------------------------------------------------------------------------------+--------------------+---------------+
+
+Build Configuration
+~~~~~~~~~~~~~~~~~~~~~~~
+Select :menuselection:`Device Drivers -> Drivers for Realtek -> GPIO driver`:
+
+.. figure:: figures/gpio_driver_linux.png
+   :scale: 100%
+   :align: center
+
+   GPIO driver
+
+APIs for User Space
+-----------------------
+sysfs
+~~~~~~~~~~
+Platforms which use the ``gpiolib`` implementors framework may choose to configure a sysfs user interface to GPIOs.
+
+Build Configuration
+^^^^^^^^^^^^^^^^^^^^^^^
+Select :menuselection:`Device Drivers -> GPIO Support -> /sys/class/gpio/... (sysfs interface)`:
+
+.. figure:: figures/sysfs_interface_linux.png
+   :scale: 60%
+   :align: center
+
+   sysfs interface
+
+sysfs Node
+^^^^^^^^^^^^^
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +----------------------------------+----------------------------+--------------------------+
+   | Node                             | Introduction               | Value                    |
+   +==================================+============================+==========================+
+   | /sys/class/gpio/export           | Open GPIO                  | GPIO pin number          |
+   +----------------------------------+----------------------------+--------------------------+
+   | /sys/class/gpio/unexport         | Close GPIO                 | GPIO pin number          |
+   +----------------------------------+----------------------------+--------------------------+
+   | /sys/class/gpio/gpioX/direction  | GPIO direction             | in/out                   |
+   +----------------------------------+----------------------------+--------------------------+
+   | /sys/class/gpio/gpioX/value      | GPIO value                 | 0/1                      |
+   +----------------------------------+----------------------------+--------------------------+
+   | /sys/class/gpio/gpioX/active_low | GPIO low level is active   | 0/1                      |
+   +----------------------------------+----------------------------+--------------------------+
+   | /sys/class/gpio/gpioX/edge       | GPIO pin edge trigger type | none/rising/falling/both |
+   +----------------------------------+----------------------------+--------------------------+
+
+.. note::
+
+   - X is GPIO number.
+   - The attribute files listed above under the gpioX path are all readable and writeable.
+
+
+Usage
+^^^^^^^^^^
+When operating a pin, the first step is to determine its number.
+This chip supports three independent GPIO IP: Port A (0~31), Port B (0~31), and Port C (0~7).
+BSP GPIO driver numbers all pins uniformly starting from 0 to 71. i.e. GPIOA-0 pin number is 0, and GPIOC-7 pin number is 71.
+
+Alternatively, you can get the starting value of this group's GPIO number through the base file in gpiochipX,
+and then the base plus the offset of the pin within the group is this GPIO pin number.
+
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +------------+-------------------+------+-------+
+   | gpiochipX  | label (GPIOA/B/C) | base | ngpio |
+   +============+===================+======+=======+
+   | gpiochip0  | GPIO0             | 0    | 32    |
+   +------------+-------------------+------+-------+
+   | gpiochip32 | GPIO1             | 32   | 32    |
+   +------------+-------------------+------+-------+
+   | gpiochip64 | GPIO2             | 64   | 8     |
+   +------------+-------------------+------+-------+
+
+.. note::
+
+   - Base: starting number of pin.
+   - Ngpio: how many pins of this port.
+   - X = base + offset, for example, GPIOB-8 pin number X = 32 + 8 = 40.
+
+Shell
+**********
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +--------------------------------------------+--------------------------------------+
+   | Command                                    | Introduction                         |
+   +============================================+======================================+
+   | echo X > /sys/class/gpio/export            | Open GPIO                            |
+   +--------------------------------------------+--------------------------------------+
+   | echo X > /sys/class/gpio/unexport          | Close GPIO                           |
+   +--------------------------------------------+--------------------------------------+
+   | echo out > /sys/class/gpio/gpioX/direction | Set GPIO direction as output         |
+   +--------------------------------------------+--------------------------------------+
+   | echo in > /sys/class/gpio/gpioX/direction  | Set GPIO direction as input          |
+   +--------------------------------------------+--------------------------------------+
+   | echo 1 > /sys/class/gpio/gpioX/value       | Set GPIO value to 1                  |
+   +--------------------------------------------+--------------------------------------+
+   | echo 0 > /sys/class/gpio/gpioX/value       | Set GPIO value to 0                  |
+   +--------------------------------------------+--------------------------------------+
+   | echo 1 > /sys/class/gpio/gpioX/active_low  | Set GPIO low level active            |
+   +--------------------------------------------+--------------------------------------+
+   | echo 0 > /sys/class/gpio/gpioX/active_low  | Set GPIO high level active (default) |
+   +--------------------------------------------+--------------------------------------+
+   | echo none > /sys/class/gpio/gpioX/edge     | Set GPIO to non-interrupt pin        |
+   +--------------------------------------------+--------------------------------------+
+   | echo rising > /sys/class/gpio/gpioX/edge   | Set GPIO pin as rising edge trigger  |
+   +--------------------------------------------+--------------------------------------+
+   | echo falling > /sys/class/gpio/gpioX/edge  | Set GPIO pin as falling edge trigger |
+   +--------------------------------------------+--------------------------------------+
+   | echo both > /sys/class/gpio/gpioX/edge     | Set GPIO pin as both edge trigger    |
+   +--------------------------------------------+--------------------------------------+
+   | cat /sys/class/gpio/gpioX/direction        | Get GPIO direction                   |
+   +--------------------------------------------+--------------------------------------+
+   | cat /sys/class/gpio/gpioX/value            | Get GPIO value                       |
+   +--------------------------------------------+--------------------------------------+
+   | cat /sys/class/gpio/gpioX/edge             | Get GPIO edge                        |
+   +--------------------------------------------+--------------------------------------+
+   | cat /sys/class/gpio/gpioX/active_low       | Get GPIO active low setting          |
+   +--------------------------------------------+--------------------------------------+
+
+1. Output test
+
+   a. Export one GPIO pin to user space.
+
+      .. code-block::
+
+         echo X > /sys/class/gpio/export
+
+   b. Set GPIO direction as output.
+
+      .. code-block::
+
+         echo out > /sys/class/gpio/gpioX/direction
+
+   c. Set GPIO logic value to 1.
+
+      .. code-block::
+
+         echo 1 > /sys/class/gpio/gpioX/value
+
+   d. Set GPIO logic value to 0.
+
+      .. code-block::
+
+         echo 0 > /sys/class/gpio/gpioX/value
+
+   e. Unexport the GPIO pin.
+
+      .. code-block::
+
+         echo X > /sys/class/gpio/unexport
+
+2. Input test
+
+   a. Export one GPIO pin to user space.
+
+      .. code-block::
+
+         echo X > /sys/class/gpio/export
+
+   b. Set GPIO direction as input.
+
+      .. code-block::
+
+         echo in > /sys/class/gpio/gpioX/direction
+
+   c. Get GPIO logic value.
+
+      .. code-block::
+
+         cat /sys/class/gpio/gpioX/value
+
+   d. Unexport the GPIO pin.
+
+      .. code-block::
+
+         echo X > /sys/class/gpio/unexport
+
+Application
+*************
+Write the test code according to the method of reading and writing files above.
+
+1. Output test
+
+   a. Export one GPIO pin to user space.
+
+      .. code-block:: c
+
+         int export_fd = open("/sys/class/gpio/export", O_WRONLY);
+         write(export_fd, "X", sizeof("X"));
+         close(export_fd);
+
+   b. Set GPIO direction as output.
+
+      .. code-block:: c
+
+         int direction_fd = open("/sys/class/gpio/gpioX/direction", O_WRONLY);
+         write(direction_fd, "out", sizeof("out"));
+         close(direction_fd);
+
+   c. Set GPIO logic value to 1.
+
+      .. code-block:: c
+
+         int gpiovalue_fd = open("/sys/class/gpio/gpioX/value", O_WRONLY);
+         write(gpiovalue_fd, "1", sizeof("1"));
+         close(gpiovalue_fd);
+
+   d. Set GPIO logic value to 0.
+
+      .. code-block:: c
+
+         int gpiovalue_fd = open("/sys/class/gpio/gpioX/value", O_WRONLY);
+         write(gpiovalue_fd, "0", sizeof("0"));
+         close(gpiovalue_fd);
+
+   e. Unexport the GPIO pin.
+
+      .. code-block:: c
+
+         int unexport_fd = open("/sys/class/gpio/unexport", O_WRONLY);
+         write(unexport_fd, "X", sizeof("X"));
+         close(unexport_fd);
+
+2. Input test
+
+   a. Export one GPIO pin to user space.
+
+      .. code-block:: c
+
+         int export_fd = open("/sys/class/gpio/export", O_WRONLY);
+         write(export_fd, "X", sizeof("X"));
+         close(export_fd);
+
+   b. Set GPIO direction as input.
+
+      .. code-block:: c
+
+         int direction_fd = open("/sys/class/gpio/gpioX/direction", O_WRONLY);
+         write(direction_fd, "in", sizeof("in"));
+         close(direction_fd);
+
+   c. Get GPIO logic value.
+
+      .. code-block:: c
+
+         char value;
+         int gpiovalue_fd = open("/sys/class/gpio/gpioX/value", O_RDONLY);
+         read(gpiovalue_fd, &value, 1);
+         close(gpiovalue_fd);
+
+   d. Unexport the GPIO pin.
+
+      .. code-block:: c
+
+         int unexport_fd = open("/sys/class/gpio/unexport", O_WRONLY);
+         write(unexport_fd, "X", sizeof("X"));
+         close(unexport_fd);
+
+3. Interrupt test
+
+   a. Export one GPIO pin to user space.
+
+      .. code-block:: c
+
+         int export_fd = open("/sys/class/gpio/export", O_WRONLY);
+         write(export_fd, "X", sizeof("X"));
+         close(export_fd);
+
+   b. Set GPIO direction as input.
+
+      .. code-block:: c
+
+         int direction_fd = open("/sys/class/gpio/gpioX/direction", O_WRONLY);
+         write(direction_fd, "in", sizeof("in"));
+         close(direction_fd);
+
+   c. Set GPIO trigger type. Trigger type can be set to one of the following values: ``rising``, ``falling``, ``both``.
+
+      .. code-block:: c
+
+         int edge_fd = open("/sys/class/gpio/gpioX/edge", O_WRONLY);
+         write(edge_fd, "rising", sizeof("rising"));
+         close(edge_fd);
+
+   d. Poll GPIO value wait for interrupt happen, and read GPIO value when interrupt happens.
+
+      .. code-block:: c
+
+         char val;
+         struct pollfd pfd;
+         pfd.events = POLLPRI;
+         pfd.fd = open("/sys/class/gpio/gpioX/value", O_RDONLY);
+         int ret = poll(&pfd, 1, -1);
+         if ((ret > 0) && (pfd.revents & POLLPRI)) {
+            read(pfd.fd, &val, 1));
+         }
+
+   e. Unexport the GPIO pin.
+
+      .. code-block:: c
+
+         int unexport_fd = open("/sys/class/gpio/unexport", O_WRONLY);
+         write(unexport_fd, "X", sizeof("X"));
+         close(unexport_fd);
+
+Char Device
+~~~~~~~~~~~~~~~
+The GPIO can be used as a char device, and the GPIO controller char device is ``/dev/gpiochipX``.
+Ioctl operation could get gpiochip info and test specific GPIO pin.
+
+.. note::
+
+   - /dev/gpiochip0     GPIOA
+   - /dev/gpiochip1     GPIOB
+   - /dev/gpiochip2     GPIOC
+
+IOCTL Command
+^^^^^^^^^^^^^^^^^^
+IOCTL command defined in ``linux/gpio.h``, so user main application must include ``linux/gpio.h``.
+
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +---------------------------+----------------------------------------------------------------------------------------------------------------------+
+   | IOCTL Command             | Description                                                                                                          |
+   +===========================+======================================================================================================================+
+   | GPIO_GET_CHIPINFO_IOCTL   | Get gpiochip information, including name label and how many GPIO lines of this gpiochip.                             |
+   +---------------------------+----------------------------------------------------------------------------------------------------------------------+
+   | GPIO_GET_LINEINFO_IOCTL   | Get GPIO line information, including specific pin information. Such as name and flags.                               |
+   +---------------------------+----------------------------------------------------------------------------------------------------------------------+
+   | GPIO_GET_LINEHANDLE_IOCTL | Get control of specific line, and then perform read and write operation on file descriptor.                          |
+   +---------------------------+----------------------------------------------------------------------------------------------------------------------+
+   | GPIO_GET_LINEEVENT_IOCTL  | Get event control of specific line, when an interrupt happens, read operation could get interrupt trigger timestamp. |
+   +---------------------------+----------------------------------------------------------------------------------------------------------------------+
+
+Usage
+^^^^^^^^^^
+1. Get GPIO info test
+
+   a. Open GPIO char device.
+
+      .. code-block:: c
+
+         int fd = open("/dev/gpiochp0", O_WRONLY);
+
+   b. Get GPIO chip information.
+
+      .. code-block:: c
+
+         struct gpiochip_info info;
+         ioctl(fd, GPIO_GET_CHIPINFO_IOCTL, &info);//get GPIOA information
+
+   c. Get GPIO line information.
+
+      .. code-block:: c
+
+         struct gpioline_info line_info;
+         line_info.line_offset = X;//get GPIOA pin X information
+         ioctl(fd, GPIO_GET_LINEINFO_IOCTL, &line_info);
+
+   d. Close GPIO char device.
+
+      .. code-block:: c
+
+         close(fd);
+
+2. Output test
+
+   a. Open GPIO char device.
+
+      .. code-block:: c
+
+         int fd = open("/dev/gpiochp0", O_WRONLY);
+
+   b. Get specific GPIO line handle.
+
+      .. code-block:: c
+
+         struct gpiohandle_request rq;
+         rq.lineoffsets[0] = offset;//offset in this gpio chip
+         rq.flags = GPIOHANDLE_REQUEST_OUTPUT;
+         rq.lines = 1;//one pin
+         ioctl(fd, GPIO_GET_LINEHANDLE_IOCTL, &rq);
+         close(fd);
+
+   c. Set GPIO pin value.
+
+      .. code-block:: c
+
+         struct gpiohandle_data data;
+         data.values[0] = value;
+         ioctl(rq.fd, GPIOHANDLE_SET_LINE_VALUES_IOCTL, &data);
+
+   d. Close GPIO char device.
+
+      .. code-block:: c
+
+         close(rq.fd);
+
+3. Input test
+
+   a. Open GPIO char device.
+
+      .. code-block:: c
+
+         int fd = open("/dev/gpiochp0", O_WRONLY);
+
+   b. Get specific GPIO line handle.
+
+      .. code-block:: c
+
+         struct gpiohandle_request rq;
+         rq.lineoffsets[0] = offset;
+         rq.flags = GPIOHANDLE_REQUEST_OUTPUT;
+         rq.lines = 1;
+         ioctl(fd, GPIO_GET_LINEHANDLE_IOCTL, &rq);
+         close(fd);
+
+   c. Get GPIO pin value.
+
+      .. code-block:: c
+
+         struct gpiohandle_data data;
+         ioctl(rq.fd, GPIOHANDLE_GET_LINE_VALUES_IOCTL, &data);
+         printf("Read value:%d\n",data.values[0]);
+
+   d. Close GPIO char device.
+
+      .. code-block:: c
+
+         close(rq.fd);
+
+4. Interrupt test
+
+   a. Open GPIO char device.
+
+      .. code-block:: c
+
+         int fd = open("/dev/gpiochp0", O_WRONLY);
+
+   b. Get specific GPIO line event handle. Trigger type can be set to one of the following values: `GPIOEVENT_EVENT_RISING_EDGE`, `GPIOEVENT_EVENT_FALLING_EDGE`, (`GPIOEVENT_EVENT_FALLING_EDGE|GPIOEVENT_EVENT_RISING_EDGE`).
+
+      .. code-block:: c
+
+         struct gpioevent_request event_req;
+         event_req.lineoffset = offset;
+         event_req.handleflags  = GPIOHANDLE_REQUEST_INPUT;//must set
+         event_req.eventflags = GPIOEVENT_EVENT_RISING_EDGE;
+         ioctl(fd, GPIO_GET_LINEEVENT_IOCTL, &event_req);
+         close(fd);
+
+   c. Poll GPIO value wait for an interrupt to happen, and get interrupt trigger timestamp.
+
+      .. code-block:: c
+
+         struct gpioevent_data event_data;
+         struct pollfd pfd;
+         pfd.fd = event_req.fd;
+         pfd.events = POLLIN;
+         int ret = poll(&pfd, 1, -1);
+         if ((ret > 0)&&(pfd.revents & POLLIN)) {
+            read(event_req.fd, &event_data, sizeof(event_data));
+            printf("event_data.timestamp:%llu,.id:%d \n",event_data.timestamp, event_data.id);//id for edge trigger type, 1:rising edge,2:falling edge.
+         }
+
+   d. Close GPIO char device.
+
+      .. code-block:: c
+
+         close(event_req.fd);
+
+UIO
+~~~~~~
+Each UIO device is accessed through a device file and several sysfs attribute files.
+The device file will be called ``/dev/uio0`` for the first device, and ``/dev/uio1``, ``/dev/uio2`` and so on for subsequent devices.
+Interrupts are handled by reading from ``/dev/uioX``. A blocking :func:`read()` from ``/dev/uioX`` will return as soon as an interrupt occurs.
+You can also use :func:`poll()` on ``/dev/uioX`` to wait for an interrupt. The integer value read from ``/dev/uioX`` represents the total interrupt count.
+You can use this number to figure out if you missed some interrupts.
+
+Details of Linux UIO system, refer to https://www.kernel.org/doc/html/v5.4/driver-api/uio-howto.html.
+
+Configuration
+^^^^^^^^^^^^^^^^^^^
+DTS Configuration
+**********************
+GPIO DTS UIO node:
+
+.. code-block:: c
+
+   gpio-uio-test {
+      compatible = "generic-uio";
+      status = "okay";
+      interrupt-parent = <&gpioa>;
+      interrupts = <15 IRQ_TYPE_EDGE_BOTH>;
+   };
+
+.. table:: GPIO UIO configurations
+   :width: 100%
+   :widths: auto
+
+   +------------------+-------------------------------------------------------------------------------+--------------+
+   | Property         | Description                                                                   | Configurable |
+   +==================+===============================================================================+==============+
+   | compatible       | The description of UIO driver. Default: "generic-uio".                        | No           |
+   +------------------+-------------------------------------------------------------------------------+--------------+
+   | interrupt-parent | GPIOA group                                                                   | Yes          |
+   +------------------+-------------------------------------------------------------------------------+--------------+
+   | interrupts       | This GPIO hardware interrupt number is 15, corresponding to the GPIOA pin 15. | Yes          |
+   |                  |                                                                               |              |
+   |                  | Trigger type: `IRQ_TYPE_EDGE_BOTH`                                            |              |
+   +------------------+-------------------------------------------------------------------------------+--------------+
+
+At the same time, add ``uio_pdrv_genirq.of_id=generic-uio`` to the bootargs property in the chosen node.
+
+Build Configuration
+*************************
+Select :menuselection:`Device Drivers -> Userspace I/O drivers`:
+
+.. figure:: figures/uio_driver_linux.png
+   :scale: 100%
+   :align: center
+
+   UIO driver
+
+Usage
+^^^^^^^^^^
+Interrupt test:
+
+1. Open GPIO UIO device.
+
+   .. code-block:: 
+
+      int uio_fd = open("/dev/uio0", O_RDWR);
+
+2. Write 1 to unmask the interrupt, must be set every time.
+
+   .. code-block:: 
+
+      uint32_t uio_int = 1;
+      write(uio_fd, &uio_int, sizeof(uio_int));
+
+3. Poll GPIO UIO device and wait for the interrupt happen, could read interrupt count value.
+
+   .. code-block:: 
+
+      struct pollfd pfd;
+      int uio_int;
+      pfd.events = POLLIN;
+      pfd.fd =uio_fd;
+      int ret = poll(&pfd, 1, -1);
+      if (ret > 0) {
+         read(pfd.fd, &uio_int, 1));
+      }
+
+4. Close GPIO UIO device.
+
+   .. code-block:: 
+
+      close(uio_fd);
+
+APIs for Kernel Space
+--------------------------
+Legacy APIs
+~~~~~~~~~~~~~~
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +-------------------------+--------------------------------------------------+
+   | API                     | Description                                      |
+   +=========================+==================================================+
+   | gpio_request            | Request a GPIO                                   |
+   +-------------------------+--------------------------------------------------+
+   | gpio_direction_output   | Set the GPIO direction to output                 |
+   +-------------------------+--------------------------------------------------+
+   | gpio_direction_input    | Set the GPIO direction to input                  |
+   +-------------------------+--------------------------------------------------+
+   | gpio_set_value          | Set the GPIO value (GPIO is in output direction) |
+   +-------------------------+--------------------------------------------------+
+   | gpio_get_value          | Get the GPIO value                               |
+   +-------------------------+--------------------------------------------------+
+   | gpio_free               | Free a GPIO                                      |
+   +-------------------------+--------------------------------------------------+
+   | gpio_export             | Export a GPIO through sysfs                      |
+   +-------------------------+--------------------------------------------------+
+   | gpio_unexport           | Reverse effect of :func:`gpio_export()`          |
+   +-------------------------+--------------------------------------------------+
+   | of_get_named_gpio_flags | Get a GPIO number and flags for GPIO API         |
+   +-------------------------+--------------------------------------------------+
+   | gpiochip_add_data       | Register a gpiochip.                             |
+   +-------------------------+--------------------------------------------------+
+   | gpiochip_remove         | Unregister a gpiochip.                           |
+   +-------------------------+--------------------------------------------------+
+   | gpio_set_debounce       | Set GPIO debounce function                       |
+   +-------------------------+--------------------------------------------------+
+   | gpio_to_irq             | Get GPIO pin virtual IRQ                         |
+   +-------------------------+--------------------------------------------------+
+
+Refer to `<linux>/Documentation/driver-api/gpio/legacy.rst` for more details.
+
+Descriptor-based APIs
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +------------------------+-----------------------------------------------------+
+   | API                    | Description                                         |
+   +========================+=====================================================+
+   | gpiod_get              | Obtain a GPIO for a given GPIO function             |
+   +------------------------+-----------------------------------------------------+
+   | gpiod_put              | Dispose of a GPIO descriptor.                       |
+   +------------------------+-----------------------------------------------------+
+   | gpiod_direction_output | Set the GPIO direction to output.                   |
+   +------------------------+-----------------------------------------------------+
+   | gpiod_direction_input  | Set the GPIO direction to input.                    |
+   +------------------------+-----------------------------------------------------+
+   | gpiod_set_value        | Assign a gpio's value. (contexts that cannot sleep) |
+   +------------------------+-----------------------------------------------------+
+   | gpiod_get_value        | Get the GPIO value. (contexts that cannot sleep)    |
+   +------------------------+-----------------------------------------------------+
+   | gpiod_set_debounce     | Set GPIO debounce function                          |
+   +------------------------+-----------------------------------------------------+
+
+Refer to `<linux>/Documentation/driver-api/gpio/consumer.rst` for more details.
+
+Usage
+~~~~~~~~~~
+1. Output test
+
+   a. Get GPIO pin index.
+
+      .. code-block:: c
+
+         gpio_index = of_get_named_gpio_flags(np, "test-gpios", 0, &flags);
+
+   b. Request a GPIO.
+
+      .. code-block:: c
+
+         gpio_request(gpio_index, NULL);
+
+   c. Set GPIO direction to output. The initial value is 0.
+
+      .. code-block:: c
+
+         gpio_direction_output(gpio_index, 0);
+
+   d. Write a logic value 1 to the specified pin of output port.
+
+      .. code-block:: c
+
+         gpio_set_value(gpio_index, 1);
+
+   e. Get the logic value from specified pin of output port, and check the value.
+
+      .. code-block:: c
+
+         gpio_get_value(gpio_index);
+
+   f. Free the GPIO pin.
+
+      .. code-block:: c
+
+         gpio_free(gpio_index);
+
+2. Input test
+
+   a. Get GPIO pin index.
+
+      .. code-block:: c
+
+         gpio_index = of_get_named_gpio_flags(np, "test-gpios", 0, &flags);
+
+   b. Request a GPIO.
+
+      .. code-block:: c
+
+         gpio_request(gpio_index, NULL);
+
+   c. Set GPIO direction to input.
+
+      .. code-block:: c
+
+         gpio_direction_input(gpio_index);
+
+   d. External pull the GPIO pin high or low.
+
+   e. Get the logic value from specified pin of input port, and check the value.
+
+      .. code-block:: c
+
+         gpio_get_value(gpio_index);
+
+   f. Free the GPIO pin.
+
+      .. code-block:: c
+
+         gpio_free(gpio_index);
+
+3. Interrupt test
+
+   a. Get GPIO pin index.
+
+      .. code-block:: c
+
+         gpio_index = of_get_named_gpio_flags(np, "test-gpios", 0, &flags);
+
+   b. Initialize a completion variable.
+
+      .. code-block:: c
+
+         reinit_completion(struct completion *x);
+
+   c. Request a GPIO.
+
+      .. code-block:: c
+
+         gpio_request(gpio_index, NULL);
+
+   d. Get GPIO virq.
+
+      .. code-block:: c
+
+         int virq = gpio_to_irq(gpio_index);
+
+   e. Request a trigger type. Trigger type can be set to one of the following values: `IRQF_TRIGGER_RISING`, `IRQF_TRIGGER_FALLING`, `IRQF_TRIGGER_HIGH`, `IRQF_TRIGGER_LOW`, (`IRQF_TRIGGER_FALLING | IRQF_TRIGGER_RISING`).
+
+      .. code-block:: c
+
+         request_irq(virq, rtk_gpio_irq_handler, trigger_type, "gpio_irq", NULL);
+
+   f. GPIO can be configured to either include or exclude a debounce capability by setting ``rtk,db_enable = "okay"`` and config debouce time.
+
+      .. code-block:: c
+
+         gpio_set_debounce(gpio_index,db_div_cnt);
+
+.. note::
+
+   virq is the virtual IRQ number, you can use :func:`gpio_to_irq(gpio_index)` to get the specified pin's virq.
+
+   a. External trigger, and wait for completion of the task.
+
+      .. code-block:: c
+
+         wait_for_completion_timeout(struct completion *x, unsigned long timeout);
+
+   b. Free the IRQ.
+
+      .. code-block:: c
+
+         free_irq(virq, NULL);
+
+   c. Free the GPIO pin.
+
+      .. code-block:: c
+
+         gpio_free(gpio_index);
+
+For more details, GPIO demo for kernel space is located at ``<test>/gpio``. Refer to ``readme.txt`` in this directory.
+

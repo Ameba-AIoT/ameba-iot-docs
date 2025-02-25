@@ -1,0 +1,124 @@
+.. _watchdog:
+
+Introduction
+---------------
+Architecture
+~~~~~~~~~~~~~~~
+Watchdog driver follows Linux's Watchdog core, Watchdog device system. Watchdog device system provides watchdog interfaces to user space.
+The watchdog software architecture is illustrated in the following figure.
+
+.. figure:: figures/watchdog_software_arch_linux.svg
+   :scale: 110%
+   :align: center
+
+   Watchdog software architecture
+
+.. note::
+   The hardware watchdog device for Linux system is watchdog 4.
+
+For more details on Linux watchdog system, refer to https://www.kernel.org/doc/html/v5.4/watchdog/index.html.
+
+Implementation
+~~~~~~~~~~~~~~~~
+Watchdog driver is implemented as following files:
+
+.. table::
+   :width: 100%
+   :widths: 60 40
+
+   +---------------------------------------------------+--------------------------+
+   | Driver location                                   | Introduction             |
+   +===================================================+==========================+
+   | <linux>/drivers/rtkdrivers/watchdog/Kconfig       | Watchdog driver Kconfig  |
+   +---------------------------------------------------+--------------------------+
+   | <linux>/drivers/rtkdrivers/watchdog/Makefile      | Watchdog driver Makefile |
+   +---------------------------------------------------+--------------------------+
+   | <linux>/drivers/rtkdrivers/watchdog/realtek-wdg.c | Watchdog functions.      |
+   +---------------------------------------------------+--------------------------+
+
+Configuration
+----------------
+DTS Configuration
+~~~~~~~~~~~~~~~~~~~~~
+Watchdog DTS node:
+
+.. code-block::
+
+   watchdog: wdg@410004C0 {
+      compatible = "realtek,ameba-watchdog";
+      reg = <0x410004C0 0x000010>;
+      interrupts = <GIC_SPI 62 IRQ_TYPE_LEVEL_HIGH>;
+      rtk,wdg-index = <4>;
+      rtk,wdg-timeout = <30>; // seconds
+      rtk,wdg-max-timeout-ms = <0xFFFF>; // 1~0xFFFF
+      rtk,wdg-window-protection-ms = <0xFFFF>; // 0xFFFF means disabled, usually: disabled.
+      rtk,wdg-int-trigger-threshold-ms = <50>;
+      rtk,wdg-interrupt-mode = <1>;
+   };
+
+The DTS configurations of watchdog are listed below:
+
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +----------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+---------------+
+   | Property                         | Description                                                                                                                                                                                 | Configurable? |
+   +==================================+=============================================================================================================================================================================================+===============+
+   | compatible                       | The description of Watchdog driver. Default: "realtek,ameba-watchdog".                                                                                                                      | No            |
+   +----------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+---------------+
+   | reg                              | The hardware address and size for Watchdog device. Default: <0x410004C0 0x000010>                                                                                                           | No            |
+   +----------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+---------------+
+   | interrupts                       | The GIC number of Watchdog device. Default: <GIC_SPI 62 IRQ_TYPE_LEVEL_HIGH>                                                                                                                | No            |
+   +----------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+---------------+
+   | rtk,wdg-index                    | Realtek watchdog index. Default: <4>, a non-secure watchdog timer for CA32                                                                                                                  | No            |
+   +----------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+---------------+
+   | rtk,wdg-timeout                  | Watchdog timeout in seconds                                                                                                                                                                 | 1~65          |
+   +----------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+---------------+
+   | rtk,wdg-max-timeout-ms           | Max watchdog timeout in ms, limited by hardware                                                                                                                                             | 1~0xFFFF      |
+   +----------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+---------------+
+   | rtk,wdg-window-protection-ms     | 0xFFFF means that watchdog window protection is disabled. If set n between 0 to 0xFFFE means: during watchdog window n, this watchdog cannot be refreshed. Usually, the window is disabled. | 0~0xFFFF      |
+   +----------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+---------------+
+   | rtk,wdg-interrupt-mode           | Generate an interrupt for CPU, when watchdog has not been refreshed for wdg-timeout minus wdg-int-trigger-threshold-ms. Default: open interrupt mode.                                       | 0/1           |
+   +----------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+---------------+
+   | rtk,wdg-int-trigger-threshold-ms | If interrupt mode enabled, this is a threshold for watchdog hardware interrupt CPU before watchdog timeout. Default: 50ms                                                                   | 0~0xFFFF      |
+   +----------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+---------------+
+
+Build Configuration
+~~~~~~~~~~~~~~~~~~~~~~~
+Select :menuselection:`Device Drivers > Drivers for Realtek > Watchdog driver`:
+
+.. figure:: figures/watchdog_driver_linux.png
+   :scale: 90%
+   :align: center
+
+   Watchdog driver
+
+APIs
+------
+APIs for User Space
+~~~~~~~~~~~~~~~~~~~~~~
+Watchdog interfaces for user space are provided by :file:`<linux>/drivers/watchdog/watchdog_dev.c`. Here are some commonly used APIs:
+
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +----------------+-----------------------------------------------------------+
+   | Interface      | Introduction                                              |
+   +================+===========================================================+
+   | watchdog_open  | Open an watchdog device                                   |
+   +----------------+-----------------------------------------------------------+
+   | watchdog_write | Ping watchdog                                             |
+   +----------------+-----------------------------------------------------------+
+   | watchdog_ioctl | Configure watchdog parameters. Can ping watchdog as well. |
+   +----------------+-----------------------------------------------------------+
+
+For more APIs, refer to https://www.kernel.org/doc/html/v5.4/watchdog/watchdog-api.html.
+
+Watchdog demo for user space is located at ``<test>/watchdog``. Read :file:`readme.txt` in the directory for more details.
+
+APIs for Kernel Space
+~~~~~~~~~~~~~~~~~~~~~~~
+None.
+

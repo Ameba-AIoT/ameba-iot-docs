@@ -1,0 +1,252 @@
+.. _hardware_crypto_engine:
+
+Introduction
+---------------
+Architecture
+~~~~~~~~~~~~~~~~
+Hardware crypto engine driver follows Linux's crypto subsystem. Linux crypto offers a rich set of cryptographic ciphers, as well as other data transformation mechanisms and methods to invoke these. Linux crypto provides APIs for kernel interface and user space.
+
+The crypto engine software architecture is illustrated below.
+
+.. figure:: figures/crypto_engine_software_arch_linux.svg
+   :scale: 130%
+   :align: center
+
+   Crypto engine software architecture
+
+Crypto engine software architecture contains the following parts:
+
+- **Crypto drivers:** crypto driver. It contains two parts:
+
+  - hash: Crypto hash functions.
+  - AES: Crypto AES functions.
+
+- **Crypto core:** crypto subsystem core drivers.
+
+  - Hash: Crypto core hash functions algorithms.
+  - Skcipher: Crypto core symmetric key cipher algorithms.
+  - AEAD: Crypto core authenticated encryption with associated data algorithms.
+  - Cryptographic API: Cryptographic API for algorithms (i.e., low-level API)
+
+- **Application:** User space use.
+
+For more details of crypto engine, refer to https://www.kernel.org/doc/html/v5.4/crypto/index.html.
+
+Implementation
+~~~~~~~~~~~~~~~~~~
+Crypto Engine driver is implemented as following files:
+
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +----------------------------------------------------+----------------------------------------------------------------------------------------------------------------------+
+   | File                                               | Description                                                                                                          |
+   +====================================================+======================================================================================================================+
+   | <linux>/drivers/rtkdrivers/crypto/Kconfig          | Crypto Engine driver Kconfig                                                                                         |
+   +----------------------------------------------------+----------------------------------------------------------------------------------------------------------------------+
+   | <linux>/drivers/rtkdrivers/crypto/Makefile         | Crypto Engine driver Makefile                                                                                        |
+   +----------------------------------------------------+----------------------------------------------------------------------------------------------------------------------+
+   | <linux>/drivers/rtkdrivers/crypto/realtek-hash.c   | Hash functions.                                                                                                      |
+   +----------------------------------------------------+----------------------------------------------------------------------------------------------------------------------+
+   | <linux>/drivers/rtkdrivers/crypto/realtek-hash.h   | Hash related function declaration, macro definition, structure definition and the other header files quoted          |
+   +----------------------------------------------------+----------------------------------------------------------------------------------------------------------------------+
+   | <linux>/drivers/rtkdrivers/crypto/realtek-aes.c    | AES functions.                                                                                                       |
+   +----------------------------------------------------+----------------------------------------------------------------------------------------------------------------------+
+   | <linux>/drivers/rtkdrivers/crypto/realtek-aes.h    | AES related function declaration, macro definition, structure definition and the other header files quoted           |
+   +----------------------------------------------------+----------------------------------------------------------------------------------------------------------------------+
+   | <linux>/drivers/rtkdrivers/crypto/realtek-crypto.h | Crypto common related function declaration, macro definition, structure definition and the other header files quoted |
+   +----------------------------------------------------+----------------------------------------------------------------------------------------------------------------------+
+
+Configuration
+------------------
+DTS Configuration
+~~~~~~~~~~~~~~~~~~~~~~
+Hash DTS node:
+
+.. code-block::
+
+   hash: hash@400C8000 {
+      compatible = "realtek,ameba-hash";
+      reg = <0x400C8000 0x2000>;
+      interrupts = <GIC_SPI 37 IRQ_TYPE_LEVEL_HIGH>;
+   };
+
+The DTS Configurations of hash are listed below.
+
+.. table:: Hash DTS configurations
+   :width: 100%
+   :widths: auto
+
+   +------------+-----------------------------------------------------------------------------+--------------+
+   | Property   | Description                                                                 | Configurable |
+   +============+=============================================================================+==============+
+   | compatible | The description of hash driver. Default: ``realtek,ameba-hash``.            | No           |
+   +------------+-----------------------------------------------------------------------------+--------------+
+   | reg        | The hardware address and size for hash device. Default: <0x400C8000 0x2000> | No           |
+   +------------+-----------------------------------------------------------------------------+--------------+
+   | interrupts | The GIC number of hash device. Default: <GIC_SPI 37 IRQ_TYPE_LEVEL_HIGH>    | No           |
+   +------------+-----------------------------------------------------------------------------+--------------+
+
+AES DTS node:
+
+.. code-block::
+
+   aes: aes@400C0000 {
+      compatible = "realtek,amebad2-aes";
+      reg = <0x400C0000 0x2000>;
+      interrupts = <GIC_SPI 36 IRQ_TYPE_LEVEL_HIGH>;
+   };
+
+The DTS configurations of AES are listed below.
+
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +------------+----------------------------------------------------------------------------+--------------+
+   | Property   | Description                                                                | Configurable |
+   +============+============================================================================+==============+
+   | compatible | The description of AES driver. Default: ``realtek,ameba-aes``.             | No           |
+   +------------+----------------------------------------------------------------------------+--------------+
+   | reg        | The hardware address and size for AES device. Default: <0x400C0000 0x2000> | No           |
+   +------------+----------------------------------------------------------------------------+--------------+
+   | interrupts | The GIC number of AES device. Default: <GIC_SPI 36 IRQ_TYPE_LEVEL_HIGH>    | No           |
+   +------------+----------------------------------------------------------------------------+--------------+
+
+Build Configuration
+~~~~~~~~~~~~~~~~~~~~~~
+Select :menuselection:`Device Drivers > Drivers for Realtek > Crypto Drivers > Hash driver and/or AES driver` as required.
+
+.. figure:: figures/build_config_crypto_drivers_linux.png
+   :scale: 70%
+   :align: center
+
+.. figure:: figures/build_config_hash_aes_linux.png
+   :scale: 70%
+   :align: center
+
+APIs
+------
+API for User Space
+~~~~~~~~~~~~~~~~~~~~~
+None.
+
+API for Kernel Space
+~~~~~~~~~~~~~~~~~~~~~~
+Hash APIs
+^^^^^^^^^^^^^
+.. table:: 
+   :width: 100%
+   :widths: auto
+
+   +----------------------------+------------------------------------------------------------------+
+   | Items                      | Description                                                      |
+   +============================+==================================================================+
+   | crypto_register_ahash      | Register an asynchronous hash algorithm to crypto subsystem.     |
+   +----------------------------+------------------------------------------------------------------+
+   | 1crypto_unregister_ahash   | Unregister an asynchronous hash algorithm from crypto subsystem. |
+   +----------------------------+------------------------------------------------------------------+
+   | crypto_alloc_ahash         | Allocate an asynchronous hash cipher handle.                     |
+   +----------------------------+------------------------------------------------------------------+
+   | crypto_free_ahash          | Zeroize and free the ahash handle.                               |
+   +----------------------------+------------------------------------------------------------------+
+   | ahash_request_alloc        | Allocate request data structure.                                 |
+   +----------------------------+------------------------------------------------------------------+
+   | ahash_request_free         | Zeroize and free the request data structure.                     |
+   +----------------------------+------------------------------------------------------------------+
+   | ahash_request_set_callback | Set asynchronous callback function.                              |
+   +----------------------------+------------------------------------------------------------------+
+   | ahash_request_set_crypt    | Set data buffers.                                                |
+   +----------------------------+------------------------------------------------------------------+
+   | crypto_ahash_setkey        | Set key for cipher handle.                                       |
+   +----------------------------+------------------------------------------------------------------+
+   | crypto_ahash_init          | Initialize message digest handle.                                |
+   +----------------------------+------------------------------------------------------------------+
+   | crypto_ahash_update        | Add data to message digest for processing.                       |
+   +----------------------------+------------------------------------------------------------------+
+   | crypto_ahash_final         | Calculate message digest.                                        |
+   +----------------------------+------------------------------------------------------------------+
+   | crypto_ahash_finup         | Update and finalize message digest.                              |
+   +----------------------------+------------------------------------------------------------------+
+   | crypto_ahash_digest        | Calculate message digest for a buffer.                           |
+   +----------------------------+------------------------------------------------------------------+
+   | crypto_ahash_export        | Extract current message digest state.                            |
+   +----------------------------+------------------------------------------------------------------+
+   | crypto_ahash_import        | Import message digest state.                                     |
+   +----------------------------+------------------------------------------------------------------+
+
+Symmetric Key Cipher APIs
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. table:: 
+   :width: 100%
+   :widths: auto
+
+   +-------------------------------+-----------------------------------------------------------------+
+   | Items                         | Description                                                     |
+   +===============================+=================================================================+
+   | crypto_register_algs          | Register a series of cipher algorithms to crypto subsystem.     |
+   +-------------------------------+-----------------------------------------------------------------+
+   | crypto_register_alg           | Register a cipher algorithm to crypto subsystem.                |
+   +-------------------------------+-----------------------------------------------------------------+
+   | crypto_unregister_algs        | Unregister a series of cipher algorithms from crypto subsystem. |
+   +-------------------------------+-----------------------------------------------------------------+
+   | crypto_unregister_alg         | Unregister a cipher algorithm from crypto subsystem.            |
+   +-------------------------------+-----------------------------------------------------------------+
+   | crypto_alloc_skcipher         | Allocate a symmetric key cipher handle.                         |
+   +-------------------------------+-----------------------------------------------------------------+
+   | crypto_free_skcipher          | Zeroize and free cipher handle.                                 |
+   +-------------------------------+-----------------------------------------------------------------+
+   | skcipher_request_alloc        | Allocate request data structure.                                |
+   +-------------------------------+-----------------------------------------------------------------+
+   | skcipher_request_free         | Zeroize and free request data structure.                        |
+   +-------------------------------+-----------------------------------------------------------------+
+   | crypto_skcipher_setkey        | Set key for cipher.                                             |
+   +-------------------------------+-----------------------------------------------------------------+
+   | skcipher_request_set_callback | Set cipher callback function.                                   |
+   +-------------------------------+-----------------------------------------------------------------+
+   | skcipher_request_set_crypt    | Set data buffers.                                               |
+   +-------------------------------+-----------------------------------------------------------------+
+   | crypto_skcipher_encrypt       | Execute encryption operation.                                   |
+   +-------------------------------+-----------------------------------------------------------------+
+   | crypto_skcipher_decrypt       | Execute decryption operation.                                   |
+   +-------------------------------+-----------------------------------------------------------------+
+
+AEAD Cipher APIs
+^^^^^^^^^^^^^^^^^^
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +---------------------------+-------------------------------------------------------------------------------------------------------+
+   | Items                     | Description                                                                                           |
+   +===========================+=======================================================================================================+
+   | crypto_register_aead      | Register an AEAD(Authenticated Encryption with Associated Data) cipher algorithm to crypto subsystem. |
+   +---------------------------+-------------------------------------------------------------------------------------------------------+
+   | crypto_unregister_aead    | Unregister an AEAD cipher algorithm from crypto subsystem.                                            |
+   +---------------------------+-------------------------------------------------------------------------------------------------------+
+   | crypto_alloc_aead         | Allocate an AEAD key cipher handle.                                                                   |
+   +---------------------------+-------------------------------------------------------------------------------------------------------+
+   | crypto_free_aead          | Zeroize and free aead handle.                                                                         |
+   +---------------------------+-------------------------------------------------------------------------------------------------------+
+   | aead_request_alloc        | Allocate request data structure.                                                                      |
+   +---------------------------+-------------------------------------------------------------------------------------------------------+
+   | aead_request_free         | Zeroize and free request data structure.                                                              |
+   +---------------------------+-------------------------------------------------------------------------------------------------------+
+   | crypto_aead_setkey        | Set key for AEAD cipher.                                                                              |
+   +---------------------------+-------------------------------------------------------------------------------------------------------+
+   | aead_request_set_callback | Set AEAD callback function.                                                                           |
+   +---------------------------+-------------------------------------------------------------------------------------------------------+
+   | aead_request_set_crypt    | Set data buffers.                                                                                     |
+   +---------------------------+-------------------------------------------------------------------------------------------------------+
+   | aead_request_set_ad       | Set associated data information.                                                                      |
+   +---------------------------+-------------------------------------------------------------------------------------------------------+
+   | crypto_aead_encrypt       | Execute AEAD encryption operation.                                                                    |
+   +---------------------------+-------------------------------------------------------------------------------------------------------+
+   | crypto_aead_decrypt       | Execute AEAD decryption operation.                                                                    |
+   +---------------------------+-------------------------------------------------------------------------------------------------------+
+
+Refer to https://www.kernel.org/doc/html/v5.4/crypto/index.html for more details.
+
+Crypto demo for kernel space locates at ``<test>/crypto``.
+

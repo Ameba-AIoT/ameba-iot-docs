@@ -1,0 +1,347 @@
+.. _power_management:
+
+Architecture
+------------------------
+Linux System Sleep Framework
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In order to reduce system power consumption, Linux provides a comprehensive power management framework. The power management system is a relatively extensive subsystem that covers aspects such as power supply, clocks, frequencies, voltages, and system sleep. Among these, system sleep acts as a crucial role in the overall power consumption of the system and is the primary focus of this chapter.
+
+The architecture of the Linux system sleep framework is illustrated in following figure.
+
+.. figure:: figures/sleep_framework_linux.svg
+   :scale: 140%
+   :align: center
+
+   Linux system sleep framework
+
+The user space can access the PM (Power Management) core through the sysfs layer to control entry into and exit from system sleep. The PM core also provides Kernel APIs for the Kernel space. The suspend core is the main component of the PM core. Since system sleep involves various aspects of the system, the suspend core may invoke other sub-frameworks, such as the interrupt subsystem. The PM core ultimately relies on architecture dependent drivers related to system sleep, including the drivers for the power management controller (PMC) and peripheral devices. The PMC requires the involvement of asymmetric multi-processors.
+
+This chip is an asymmetric multi-processors architecture, which includes CA32, KM4, and KM0. These cores can collaborate with each other to achieve lower power consumption. Inter-core communication is achieved through IPC (Inter-Process Communication). The PMC coordinates the involvement of multiple-cores in control.
+
+.. figure:: figures/multi_processors_arch_linux.svg
+   :scale: 140%
+   :align: center
+
+   Multi-processors architecture
+
+Another advantage of using an asymmetric multi-processors architecture is that simple functions can be developed on the small core, allowing for low power consumption while providing the required functionality for users.
+
+Sleep Mode
+~~~~~~~~~~~~~
+Because of the multi-processors architecture, system power consumption can be very low. At the same time, it provides more options for sleep states. Currently, it supports the following sleep modes.
+
+.. table:: 
+   :width: 100%
+   :widths: auto
+
+   +------------+-------+----------------------------------------------------------------------------------------------------------------------------------+
+   | Sleep mode | Label | Description                                                                                                                      |
+   +============+=======+==================================================================================================================================+
+   | Active     |   _   | - All processors are in the active state and automatically enter the tickless idle state (WFI) when there is no task processing. |
+   +------------+-------+----------------------------------------------------------------------------------------------------------------------------------+
+   | Standby    | mem   | - KM0 and KM4 are in the active state and automatically enter the tickless idle state (WFI) when there is no task processing.    |
+   |            |       | - All tasks of CA32 stop running, core0 enters WFI state, and core1 shuts down.                                                  |
+   +------------+-------+----------------------------------------------------------------------------------------------------------------------------------+
+   | CG         | cg    | - All processors are in the clock-gating state.                                                                                  |
+   |            |       | - DRAM enters a low-power state.                                                                                                 |
+   +------------+-------+----------------------------------------------------------------------------------------------------------------------------------+
+
+Users can control sleep modes through the sysfs interfaces. The "Label" indicates the value to be written to the relevant sysfs node when entering a specific sleep mode.
+
+Standby mode affects only CA32 itself and does not impact the states of KM0 and KM4. CG (clock gating) mode has a deeper sleep level and consumes much lower power than standby mode. CG mode affects all cores and DRAM states. When controlling CA32 to enter CG mode, CA32 will notify KM0 and KM4 through IPC to also enter CG mode. If KM4 and CA32 are in CG mode, DRAM will also enter low-power state. DRAM low power state means, if DRAM is DDR memory, it will enter self-refresh mode, which means it will maintain all memory but can't not be accessed. That state needs much lower power.
+
+.. note::
+   - PG (power gating) mode is in development. It will consume lower power than CG mode.
+   - Power consumption: PG < CG < standby.
+   - Time consumed during sleep/wakeup: PG > CG > standby.
+
+Usage
+----------
+Wakeup Source Configuration
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Introduction
+^^^^^^^^^^^^^^^^^^^^^^^^
+The peripherals listed below can be configured as wakeup sources now, and these peripherals' interrupts can wake up the system.
+
+The mapping between peripherals and wakeup sources is listed in the following table.
+
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +------------+-------------------+
+   | Peripheral | Wakeup source     |
+   +============+===================+
+   | GPIOA      | WAKE_SRC_GPIOA    |
+   +------------+-------------------+
+   | GPIOB      | WAKE_SRC_GPIOB    |
+   +------------+-------------------+
+   | GPIOC      | WAKE_SRC_GPIOC    |
+   +------------+-------------------+
+   | TIMER1     | WAKE_SRC_Timer1   |
+   +------------+-------------------+
+   | TIMER2     | WAKE_SRC_Timer2   |
+   +------------+-------------------+
+   | TIMER3     | WAKE_SRC_Timer3   |
+   +------------+-------------------+
+   | TIMER4     | WAKE_SRC_Timer4   |
+   +------------+-------------------+
+   | TIMER5     | WAKE_SRC_Timer5   |
+   +------------+-------------------+
+   | TIMER7     | WAKE_SRC_Timer7   |
+   +------------+-------------------+
+   | RTC        | WAKE_SRC_RTC      |
+   +------------+-------------------+
+   | ADC        | WAKE_SRC_ADC      |
+   +------------+-------------------+
+   | CAPTOUCH   | WAKE_SRC_CTOUCH   |
+   +------------+-------------------+
+   | UART0      | WAKE_SRC_UART0    |
+   +------------+-------------------+
+   | UART1      | WAKE_SRC_UART1    |
+   +------------+-------------------+
+   | UART2      | WAKE_SRC_UART2    |
+   +------------+-------------------+
+   | LOGUART    | WAKE_SRC_UART_LOG |
+   +------------+-------------------+
+
+.. note::
+   For LOGUART, it is normal for logs to be garbled during sleep and wakeup.
+
+General Configuration
+^^^^^^^^^^^^^^^^^^^^^^^^
+Follow the steps below to configure a wakeup source, taking ADC as an example:
+
+1. Modify the structure :class:`sleep_wevent_config` for sleep settings in the configuration file :file:`firmware/component/usrcfg/rtl8730e/ameba_sleepcfg.c`.
+
+   .. code-block:: c
+
+      /*wakeup attribute can be set to WAKEUP_NULL/WAKEUP_LP/WAKEUP_NP/WAKEUP_AP*/
+      WakeEvent_TypeDef sleep_wevent_config[] = {
+      // Module                               wakeup
+         {WAKE_SRC_nFIQOUT1_OR_nIRQOUT1,      WAKEUP_NULL},
+         {WAKE_SRC_nFIQOUT0_OR_nIRQOUT0,      WAKEUP_NULL},
+         {WAKE_SRC_BT_WAKE_HOST,              WAKEUP_NULL},
+         {WAKE_SRC_AON_WAKEPIN,               WAKEUP_LP},
+         {WAKE_SRC_WDG4,                      WAKEUP_NULL},
+         {WAKE_SRC_WDG3,                      WAKEUP_NULL},
+         {WAKE_SRC_WDG2,                      WAKEUP_NULL},
+         {WAKE_SRC_WDG1,                      WAKEUP_NULL},
+         {WAKE_SRC_UART2,                     WAKEUP_NULL},
+         {WAKE_SRC_UART1,                     WAKEUP_NULL},
+         {WAKE_SRC_UART0,                     WAKEUP_NULL},
+         {WAKE_SRC_SPI1,                      WAKEUP_NULL},
+         {WAKE_SRC_SPI0,                      WAKEUP_NULL},
+         {WAKE_SRC_USB_OTG,                   WAKEUP_NULL},
+         {WAKE_SRC_IPC_AP,                    WAKEUP_AP},
+         {WAKE_SRC_IPC_NP,                    WAKEUP_NP},
+         {WAKE_SRC_VADBT_OR_VADPC,            WAKEUP_NULL},
+         {WAKE_SRC_PWR_DOWN,                  WAKEUP_LP},
+         {WAKE_SRC_BOR,                       WAKEUP_NULL},
+         {WAKE_SRC_ADC_COMP,                  WAKEUP_NULL},
+         {WAKE_SRC_ADC,                       WAKEUP_NULL},
+         {WAKE_SRC_CTOUCH,                    WAKEUP_NULL},
+         {WAKE_SRC_RTC,                       WAKEUP_NULL},
+         {WAKE_SRC_GPIOC,                     WAKEUP_NULL},
+         {WAKE_SRC_GPIOB,                     WAKEUP_NULL},
+         {WAKE_SRC_GPIOA,                     WAKEUP_NULL},
+         {WAKE_SRC_UART_LOG,                  WAKEUP_NULL},
+         {WAKE_SRC_Timer7,                    WAKEUP_NULL},
+         {WAKE_SRC_Timer6,                    WAKEUP_NP},
+         {WAKE_SRC_Timer5,                    WAKEUP_NULL},
+         {WAKE_SRC_Timer4,                    WAKEUP_NULL},
+         {WAKE_SRC_Timer3,                    WAKEUP_NULL},
+         {WAKE_SRC_Timer2,                    WAKEUP_NULL},
+         {WAKE_SRC_Timer1,                    WAKEUP_NULL},
+         {WAKE_SRC_Timer0,                    WAKEUP_NULL},
+         {WAKE_SRC_WDG0,                      WAKEUP_NULL},
+         {WAKE_SRC_AP_WAKE,                   WAKEUP_NULL},
+         {WAKE_SRC_NP_WAKE,                   WAKEUP_NULL},
+         {WAKE_SRC_AON_TIM,                   WAKEUP_NULL},
+         {WAKE_SRC_WIFI_FTSR_MAILBOX,         WAKEUP_LP},
+         {WAKE_SRC_WIFI_FISR_FESR,            WAKEUP_LP},
+         {0xFFFFFFFF,                         WAKEUP_NULL},
+      };
+
+2. Set ``WAKE_SRC_ADC`` to ``WAKEUP_AP`` to tell the system to consider ADC interrupt as a wakeup event.
+
+   .. code-block:: c
+
+      {WAKE_SRC_ADC,    WAKEUP_AP},
+
+   When ADC interrupt occurs, it will wake the system.
+
+3. Recompile and download the firmware to apply the new settings.
+
+Once the firmware with the updated sleep configuration is programmed into the device and the system enters sleep mode, if there is an ADC interrupt (e.g., due to some predefined conditions according to users' needs), it will trigger the system to wake up from sleep.
+
+Special Configuration
+^^^^^^^^^^^^^^^^^^^^^^^^^
+Some peripherals have an additional configuration in addition to the general configuration.
+
+OSC4M
+**********
+ADC, CAPTOUCH, UART, LOGUART need OSC4M to drive itself when in sleep mode. Users should configure ``keep_OSC4M_on`` to TRUE in the structure :class:`ps_config` in :file:`firmware/component/usrcfg/rtl8730e/ameba_sleepcfg.c` to enable OSC4M.
+
+.. code-block:: c
+
+   PSCFG_TypeDef ps_config = {
+      .km0_tickles_debug = TRUE, /* if open Wi-Fi FW, should close it, or beacon will lost in WOWLAN */
+      .km0_pg_enable = FALSE,
+      .km0_pll_off = TRUE,
+      .km0_audio_vad_on = FALSE,
+   #if defined(CONFIG_CLINTWOOD ) && CONFIG_CLINTWOOD
+      .km0_config_psram = FALSE, /* if device enters sleep mode or not, false for keep active */
+      .km0_sleep_withM4 = FALSE,
+   #else
+      .km0_config_psram = TRUE, /* if device enters sleep mode or not, false for keep active */
+      .km0_sleep_withM4 = TRUE,
+   #endif
+      .keep_OSC4M_on = TRUE,
+      .xtal_mode_in_sleep = XTAL_OFF,
+      .swr_mode_in_sleep = SWR_PFM,
+   };
+
+User Space Development
+~~~~~~~~~~~~~~~~~~~~~~~~~
+Users can configure sleep mode through sysfs. The commonly used files related to sleep in sysfs are listed in following table.
+
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +-------------------------+---------------------------------------------------------------------------------------------------------+
+   | File                    | Description                                                                                             |
+   +=========================+=========================================================================================================+
+   | /sys/power/state        | Enter sleep mode at a certain level unconditionally                                                     |
+   +-------------------------+---------------------------------------------------------------------------------------------------------+
+   | /sys/power/wakeup_count | Synchronization mechanism for wakeup events in user space and kernel space                              |
+   +-------------------------+---------------------------------------------------------------------------------------------------------+
+   | /sys/power/autosleep    | Opportunistic sleep, automatically enter a certain level of sleep mode when there is no wakelock        |
+   +-------------------------+---------------------------------------------------------------------------------------------------------+
+   | /sys/power/wake_lock    | Writing a value to this file will add a wakelock, and the presence of a wakelock will prevent autosleep |
+   +-------------------------+---------------------------------------------------------------------------------------------------------+
+   | /sys/power/wake_unlock  | Writing a value to this file will clear a wakelock                                                      |
+   +-------------------------+---------------------------------------------------------------------------------------------------------+
+
+Unconditional Sleep
+^^^^^^^^^^^^^^^^^^^^^^^
+To enter sleep mode unconditionally, use the following command:
+
+.. code-block:: shell
+
+   echo label > /sys/power/state
+
+The value of label can be ``mem`` or ``cg``, representing Standby mode and CG mode respectively.
+
+Wakeup Count
+^^^^^^^^^^^^^^^^^^^^^^^^
+Sometimes the system should not enter sleep mode unconditionally because a wakeup event may occur at this time; otherwise, the wakeup event may lose. Therefore, Linux provides Wakeup Count, a synchronization mechanism between user space and kernel space for sleep and wake events.
+
+Its typical usage process is as follows:
+
+1. Read the value of ``wakeup_count``
+2. If the read is successful, write the read value back to ``wakeup_count``; otherwise, continue reading
+3. If the write is successful, it indicates that the kernel allows sleep; otherwise, repeat the above process
+4. Enter sleep mode
+
+Refer to ``<test>/pm_wakeup_count`` for more information.
+
+Autosleep and Wakelock
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+Autosleep, also known as opportunistic sleep, means being ready to enter sleep mode at any time. The wakelock can prevent the system from entering sleep mode. There can be multiple wakelocks, and currently the kernel limits the number of wakelocks to 100.
+
+1. Write the required value to :file:`/sys/power/wake_lock` will create a wakelock:
+
+   .. code-block:: shell
+
+      echo wakelock1 > /sys/power/wake_lock
+
+2. Write the required value to :file:`/sys/power/wake_unlock` will release the wakelock:
+
+   .. code-block:: shell
+
+      echo wakelock1 > /sys/power/wake_unlock
+
+3. Check all wakelocks:
+
+   .. code-block:: shell
+
+      cat /sys/power/wake_lock
+
+4. Enable autosleep, and when :file:`/sys/power/wake_lock` is empty, the system will enter sleep mode automatically:
+
+   .. code-block:: shell
+
+      echo label > /sys/power/autosleep
+
+   The value of label can be ``mem`` and ``cg`` like unconditional sleep (:file:`/sys/power/state`).
+
+5. Disable autosleep:
+
+   .. code-block:: shell
+
+      echo off > /sys/power/autosleep
+
+Refer to ``<test>/pm_wakelock`` for more information.
+
+.. note::
+   The wakelock can only prevent autosleep (:file:`/sys/power/autosleep`), not unconditional sleep (:file:`/sys/power/state`).
+
+Kernel APIs
+~~~~~~~~~~~~~~~~~
+
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +-----------------+-------------------------------------------------------------------------------------------------------+
+   | Interface       | Description                                                                                           |
+   +=================+=======================================================================================================+
+   | pm_stay_awake   | Notify the kernel that it is processing wakeup events, preventing the kernel from entering sleep mode |
+   +-----------------+-------------------------------------------------------------------------------------------------------+
+   | pm_relax        | Wakeup event processing completed                                                                     |
+   +-----------------+-------------------------------------------------------------------------------------------------------+
+   | pm_wakeup_event | Notify the kernel that the wakeup event will be processed within the specified time                   |
+   +-----------------+-------------------------------------------------------------------------------------------------------+
+
+Paired use of ``pm_stay_awake`` and ``pm_relax`` in the kernel can control whether to enter sleep mode or not.
+
+Application Development on KM0
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Due to the high power consumption of CA32 and DRAM, users can develop some simple applications on KM0, allowing CA32 and DRAM to enter low-power mode, which can achieve good power-saving effects.
+
+.. note::
+   KM0 runs the FreeRTOS operating system.
+
+By default, when both CA32 and KM4 are in CG mode, KM0 will also automatically enter CG mode. Similar to Linux, KM0 also provides a wakelock mechanism to restrict KM0 from entering sleep mode. Therefore, users can set a wakelock on KM0 and then enter CG on the Linux side, so that CA32, KM4, and DRAM will enter low-power mode, while KM0 and SRAM can continue to run.
+
+KM0 has predefined some wakelocks located in :file:`firmware/source/component/soc/amebasmart/misc/ameba_pmu.h`. Users can also add new wakelocks.
+
+.. code-block:: c
+
+   typedef enum {
+      PMU_OS             = 0,
+      PMU_WLAN_DEVICE    = 1,
+      PMU_KM4_RUN        = 2,
+      PMU_AP_RUN         = 3,
+      PMU_BT_DEVICE      = 4,
+      PMU_VAD_DEVICE     = 5,
+      PMU_DEV_USER_BASE  = 6, /*number 6 ~ 31 is reserved for customer use*/
+      PMU_MAX,
+   } PMU_DEVICE;
+
+If users want to use UART0 to transmit data on KM0 and do not want KM0 to enter sleep mode, the following code should be added to the application to acquire the wakelock.
+
+.. code-block:: c
+
+   pmu_acquire_wakelock(PMU_UART0_DEVICE);
+
+The method to release the wakelock is
+
+.. code-block:: c
+
+   pmu_release_wakelock(PMU_UART0_DEVICE);
+
+If all wakelocks are released, KM0 will enter sleep mode.
+

@@ -1,0 +1,558 @@
+.. _building_environment:
+
+Introduction
+------------------------
+This chapter describes how to build an image using an Ameba Yocto Linux SDK. It describes the Realtek Ameba release layer and Ameba-specific usage.
+
+The Yocto Project is an open-source collaboration focused on embedded Linux OS development. For more information on Yocto Project, refer to the `Yocto Project <https://www.yoctoproject.org>`_.
+
+Several documents on the Yocto Project home page describe in detail how to use the system. To use the basic Yocto Project without the Realtek Ameba release layer, follow the instructions in the Yocto Project Quick Start can be found at `Yocto Project Quick Build <https://docs.yoctoproject.org/brief-yoctoprojectqs/index.html>`_.
+
+Files used to build an image are stored in layers. Layers contain different types of customizations and come from different sources. Some of the files in a layer are called recipes. Yocto Project recipes contain the mechanism to retrieve source code, build and package a component.
+
+The following lists show the layers used in this release.
+
+- Ameba release layer:
+
+  - meta-realtek
+
+    - meta-realtek-bsp: Realtek BSP layer
+    - meta-sdk: Realtek specific SDK customization
+
+- Yocto Project community layers:
+
+  - poky
+
+Host Setup
+--------------------
+To build Ameba Yocto Linux SDK, you must use Linux. Building under either MacOS or Windows is not supported currently. You need install essential host packages on your build host. The following commands install the host packages based on an Ubuntu distribution.
+
+- Basic Utility - Host packages for SDK build.
+
+  .. code-block::
+
+     $sudo apt install chrpath diffstat liblz4-tool zstd mtd-utils python3 python3-dev python3-pip python3-pyelftools
+     $sudo pip install python-mbedtls sslcrypto cryptography pycryptodome ecdsa
+
+- Change shell to bash
+
+  .. code-block::
+
+     $sudo dpkg-reconfigure dash
+
+Toolchain Setup
+~~~~~~~~~~~~~~~~~~
+For Linux
+^^^^^^^^^^^^
+This section introduces the steps how to export yocto toolchain, when users need to use it to build codes.
+
+1. Choose product :emphasis:`rtl8730elh-va7` for example.
+
+   .. code-block::
+
+      source envsetup.sh -m rtl8730elh-va7 -d ameba-generic
+
+2. Execute the ``bitbake`` command for :emphasis:`meta-toolchain`.
+
+   .. code-block::
+
+      bitbake meta-toolchain
+
+3. Enter the sdk directory.
+
+   .. code-block::
+
+      cd build_rtl8730elh-va7_ameba-generic/tmp/deploy/sdk
+
+4. Execute the shell script file of producing toolchain.
+
+   .. code-block::
+
+      ./ameba-generic-glibc-x86_64-meta-toolchain-cortexa32hf-neon-rtl8730elh-va7-toolchain-4.0.7.sh -d <toolchain>
+
+   Where the ``<toolchain>`` is your customized directory to store the target toolchain.
+
+5. Select ``Y``.
+
+   The toolchain will be produced at the directory ``<toolchain>``.
+
+6. Enter the ``<toolchain>``.
+
+   .. code-block::
+
+      source environment-setup-cortexa32hf-neon-rtk-linux-gnueabi
+   
+   Then the toolchain is produced.
+
+For Windows
+^^^^^^^^^^^^^
+This section introduces the steps to prepare the toolchain environment.
+
+1. Acquire the zip files of toolchain from Realtek.
+
+.. _build_environment_windows_toolchain_step_2:
+
+2. Create a new directory ``rtk-toolchain`` under the path ``{MSYS2_path}\opt``.
+
+   Where the ``{MSYS2_path}`` is your MSYS2 installation path.
+
+3. Unzip ``asdk-10.3.x-mingw32-newlib-build-xxxx.zip`` and ``vsdk-10.3.x-mingw32-newlib-build-xxxx.zip``, and place the toolchain folders (``asdk-10.3.x`` and ``vsdk-10.3.x``) to the folder ``rtk-toolchain`` created in step :ref:`2 <build_environment_windows_toolchain_step_2>`.
+
+.. note::
+   - The unzip folders should stay the same with the figure above and do NOT change them, otherwise you need to modify the toolchain directory in makefile to customize the path.
+   - If an error of the toolchain, just like the log :emphasis:`"Error: No Toolchain in /opt/rtk-toolchain/vsdk-10.3.1/mingw32/newlib"` appears when building the project, find out if your toolchain files directory are not the same with the directory in the log. Place the toolchain files correctly and try again.
+
+Image Build
+----------------------
+This section provides the detailed information along with the process for building an image.
+
+Setup the Environment
+~~~~~~~~~~~~~~~~~~~~~~~~
+Ameba Yocto Linux SDK provides a script, ``envsetup.sh``, that simplifies the setup for Ameba machines. To use the script, the name of the specific machine to be built for needs to be specified as well as other parameters, such as distribution, build directory etc. The script sets up a directory and the configuration files for the specified machine.
+
+The syntax for the ``envsetup.sh`` script is shown below:
+
+.. code-block::
+
+   $source envsetup.sh [-h] [-m machine] [-d distro] [-b build dir] [-j jobs] [-t tasks]
+
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +-------------------+------------------------------------------------------------------------+
+   | Options           | Usage                                                                  |
+   +===================+========================================================================+
+   | -h                | Display help of the scripts.                                           |
+   +-------------------+------------------------------------------------------------------------+
+   | -m <machine>      | Set the target machine to be built.                                    |
+   +-------------------+------------------------------------------------------------------------+
+   | -d <distro>       | Set the distribution to be built.                                      |
+   +-------------------+------------------------------------------------------------------------+
+   | -b <build dir>    | Set the non-default path of project build folder.                      |
+   +-------------------+------------------------------------------------------------------------+
+   | -j <jobs>         | Set the number of jobs for make to spawn during the compilation stage. |
+   +-------------------+------------------------------------------------------------------------+
+   | -t <tasks>        | Set number of BitBake tasks that can be issued in parallel.            |
+   +-------------------+------------------------------------------------------------------------+
+   | -p <download dir> | Set the non-default path of DL_DIR.                                    |
+   +-------------------+------------------------------------------------------------------------+
+   | -c <sstate dir>   | Set the non-default path of SSTATE_DIR.                                |
+   +-------------------+------------------------------------------------------------------------+
+
+After the script runs, the working directory will be created by the script, specified by the :emphasis:`-b` option or a default name is used if no :emphasis:`-b` option specified. A conf folder is created containing the files ``bblayers.conf`` and ``local.conf``.
+
+- The ``<builddir>/conf/bblayers.conf`` file contains all the meta layers used in the Ameba Yocto Linux SDK release.
+- The :file:`local.conf` contains the machine and distro specifications:
+
+  .. code-block::
+
+     MACHINE ??= "rtl8730elh-va8"
+     DISTRO ?= "ameba-generic"
+
+The ``MACHINE`` and ``DISTRO`` configuration can be changed by editing this file, if necessary.
+
+In the :emphasis:`meta-realtek` layer, the following Ameba machine and distribution configuration that can be selected. Check either the release notes or the machine and distro directory for the latest additions.
+
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +---------------------+------------------------------------------------+-----------------------------------------------------------------------------------+
+   | Machine             | Target                                         | Configuration path                                                                |
+   +=====================+================================================+===================================================================================+
+   | rtl8730eah-va6      | Machine configuration for RTL8730EAH-VA6 chip. | sources/yocto/meta-realtek/meta-realtek-bsp/conf/machine/rtl8730eah-va6.conf      |
+   +---------------------+------------------------------------------------+-----------------------------------------------------------------------------------+
+   | rtl8730elh-va7      | Machine configuration for RTL8730ELH-VA7 chip. | sources/yocto/meta-realtek/meta-realtek-bsp/conf/machine/rtl8730elh-va7.conf      |
+   +---------------------+------------------------------------------------+-----------------------------------------------------------------------------------+
+   | rtl8730elh-va8      | Machine configuration for RTL8730ELH-VA8 chip. | sources/yocto/meta-realtek/meta-realtek-bsp/conf/machine/rtl8730elh-va8.conf      |
+   +---------------------+------------------------------------------------+-----------------------------------------------------------------------------------+
+   | rtl8730elh-recovery | Machine configuration to build recovery image. | sources/yocto/meta-realtek/meta-realtek-bsp/conf/machine/rtl8730elh-recovery.conf |
+   +---------------------+------------------------------------------------+-----------------------------------------------------------------------------------+
+
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +---------------+----------------------------------------------+--------------------------------------------------------------------+
+   | Distribution  | Target                                       | Configuration path                                                 |
+   +===============+==============================================+====================================================================+
+   | ameba-generic | A distribution contains basic functions.     | sources/yocto/meta-realtek/meta-sdk/conf/distro/ameba-generic.conf |
+   +---------------+----------------------------------------------+--------------------------------------------------------------------+
+   | ameba-full    | A distribution contains full demo functions. | sources/yocto/meta-realtek/meta-sdk/conf/distro/ameba-full.conf    |
+   +---------------+----------------------------------------------+--------------------------------------------------------------------+
+
+.. note::
+   The :emphasis:`RTL8730EAH-VA6` is for NOR flash.
+
+Build Image
+~~~~~~~~~~~~~~~
+The SDK provides two ways to build images for Ameba machines: quick command and manual build command.
+
+Quick command is a convenient command added by script ``envsetup.sh``. After source of ``envsetup.sh``, the following functions are added to the shell environment.
+
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +-----------+-------------------------------------------------------------------------------------------------------------+
+   | Command   | Description                                                                                                 |
+   +===========+=============================================================================================================+
+   | m         | Build all linux images for Ameba machine, including boot.img, kernel.img, rootfs.img, userdata.img and dtb. |
+   +-----------+-------------------------------------------------------------------------------------------------------------+
+   | m clean   | Clean all the build output                                                                                  |
+   +-----------+-------------------------------------------------------------------------------------------------------------+
+   | mfw       | Build firmware boot and images.                                                                             |
+   +-----------+-------------------------------------------------------------------------------------------------------------+
+   | mfw mp    | Build mp-firmware boot and images.                                                                          |
+   +-----------+-------------------------------------------------------------------------------------------------------------+
+   | mfw clean | Clean output files of firmware                                                                              |
+   +-----------+-------------------------------------------------------------------------------------------------------------+
+   | mrecovery | Build linux recovery images.                                                                                |
+   +-----------+-------------------------------------------------------------------------------------------------------------+
+   | mkernel   | Build kernel images.                                                                                        |
+   +-----------+-------------------------------------------------------------------------------------------------------------+
+
+To build all images to flash, run the following command:
+
+.. code-block::
+
+   $source envsetup.sh -m rtl8730elh-va8
+   $m
+   $mfw
+
+The Yocto Project build uses the bitbake command. For example, ``bitbake <component>`` builds the named component. Each component build has multiple tasks, such as fetching, configuration, compilation, packaging, and deploying to the target rootfs. The bitbake image build gathers all the components required by the image and build in order of the dependency per task.
+
+The following command is an example on how to build an image:
+
+.. code-block::
+
+   $bitbake ameba-image-core
+
+In the meta-realtek layer, the following images recipes can be selected to build.
+
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +----------------------+------------------------------------------------+
+   | Product name         | Description                                    |
+   +======================+================================================+
+   | ameba-image-core     | A core image contains basic functions.         |
+   +----------------------+------------------------------------------------+
+   | ameba-image-userdata | An image that used as user's data file system. |
+   +----------------------+------------------------------------------------+
+   | ameba-image-recovery | A small image for recovery system.             |
+   +----------------------+------------------------------------------------+
+
+Bitbake Options
+~~~~~~~~~~~~~~~~~~
+The bitbake command used to build an image is ``bitbake <image name>``. Additional parameters can be used for specific activities described below. The Bitbake provides various useful options for developing a single component.
+
+.. code-block::
+
+   bitbake <parameter> <component>
+
+Where ``<component>`` is a desired build package.
+
+The following table provides some Bitbake options.
+
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +-------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+   | Bitbake parameter | Description                                                                                                                                                                                                      |
+   +===================+==================================================================================================================================================================================================================+
+   | -c fetch          | Fetches if the downloads state is not marked as done.                                                                                                                                                            |
+   +-------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+   | -c cleanall       | Cleans the entire component build directory. All the changes in the build directory are lost. The rootfs and state of the component are also cleared. The component is also removed from the download directory. |
+   +-------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+   | -c deploy         | Deploys an image or component to the rootfs.                                                                                                                                                                     |
+   +-------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+   | -c compile -f     | It is not recommended that the source code under the temporary directory is changed directly, but if it is, the Yocto Project might not rebuild it unless this option is used.                                   |
+   |                   |                                                                                                                                                                                                                  |
+   |                   | Use this option to force a recompile after the image is deployed.                                                                                                                                                |
+   +-------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+   | -c menuconfig     | Execute make menuconfig for specific component if component supports.                                                                                                                                            |
+   +-------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+   | -e <component>    | Show the build environment for the component.                                                                                                                                                                    |
+   +-------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+   | -g                | Lists a dependency tree for an image or component.                                                                                                                                                               |
+   +-------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+   | -k                | Continues building components even if a build break occurs.                                                                                                                                                      |
+   +-------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+   | -DDD              | Turns on debug 3 levels deep. Each D adds another level of debug.                                                                                                                                                |
+   +-------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
+Image Deployment
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The final images to be programmed are deployed at ``<build directory>/tmp/deploy/images``.
+The image is specific to the machine set in the environment setup. After build successfully, the following Linux images are generated.
+
+- boot.img
+- kernel.img
+- rootfs.img
+- userdata.img
+- linux device tree images
+
+These device tree images have their own names. For example, the name of image for machine :emphasis:`rtl8730elh-va8 generic` is ``rtl8730elh-va7-generic.dtb``.
+
+The firmware boot image and application images are generated with mfw quick command:
+
+- km4_boot_all.bin
+- km0_km4_app.bin
+
+Download Images to Flash
+-------------------------------
+To download images to Flash:
+
+- Refer to :ref:`Image Tool <image_tool>` for Ameba Image Tool common operations.
+- Refer to :ref:`Flash layout <sdk_architecutre_flash_layout>`.
+
+Docker Container
+------------------------
+Docker is an open-source platform designed to automate the deployment, scaling, and management of applications in containers. Containers are lightweight, portable, and self-sufficient units that include everything needed to run a piece of software, such as code, runtime, libraries, and system tools.
+
+Here are key aspects of Docker technology:
+
+- Docker utilizes containerization to package an application and its dependencies into a single container. This ensures consistent behavior across different environments, such as development, testing, and production.
+- Containers can run virtually anywhere, on a developer’s machine, on physical or virtual machines in a data center, or in the cloud—without alteration.
+- Containers share the host system’s kernel, making them more lightweight than traditional virtual machines, which include an entire operating system per instance.
+- Each Docker container runs in a separate environment, providing a layer of isolation that ensures applications do not interfere with one another.
+- This is the core part of Docker, which creates, runs, and orchestrates the containers. It’s responsible for managing container lifecycle, images, and networking.
+- A cloud-based repository for sharing, storing, and managing Docker images. It acts like a GitHub for Docker images, allowing you to pull and push images from public and private repositories.
+
+Image
+~~~~~~~~~
+Build Image
+^^^^^^^^^^^^^^^^
+Before you need to build a new docker image, you should install docker on your computer. The procedure to install docker is refer to `Docker HomePage <https://www.docker.com>`_.
+
+You can run docker at Windows, Linux, MacOS system, etc. We introduce the procedure on Linux here, the procedure at other operation systems is same as Linux.
+
+At first, there should be a file named :emphasis:`Dockerfile` at your work directory.
+
+The content of Dockerfile is as below for example:
+
+.. code-block::
+
+   # Set the base system.
+   FROM ubuntu:20.04
+
+   # Set environment variables.
+   ENV DEBIAN_FRONTEND=noninteractive
+
+   # Update.
+   RUN apt-get update
+
+   # Install some tools.
+   RUN apt-get install -y sudo
+   RUN apt-get install -y make
+   RUN apt-get install -y make-guile
+   RUN apt-get install -y build-essential
+   RUN apt-get install -y gcc
+   RUN apt-get install -y g++
+   # Any other tools you need to install …
+   # ……
+
+   # Add toolchain.
+   ADD rtk-toolchain.tar.gz /opt
+
+   # Create a normal user named "ameba", with password "ameba".
+   RUN useradd -m -s /bin/bash ameba && echo "ameba:ameba" | chpasswd && adduser ameba sudo
+   RUN echo "ameba ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+   USER ameba
+
+   # Set work directory.
+   WORKDIR /home/ameba
+
+   # RUN shell command.
+   CMD ["/bin/bash"]
+
+Then, you can execute :emphasis:`docker build` command to build your image.
+
+.. code-block::
+
+   sudo docker build -t <image_name>:<image_tag> .
+
+Where the :emphasis:`<image_name>` means the name of docker image, :emphasis:`<image_tag>` is optional, which signs the different revision of docker image, if absent, it is :emphasis:`latest` as default.
+
+After building successfully, you can use :emphasis:`docker images` command to check whether this image is on your host.
+
+.. code-block::
+
+   sudo docker images
+
+You can add parameter :emphasis:`-a` to show all the images including hidden mid-layer images.
+
+.. code-block::
+
+   sudo docker images -a
+
+Then all the images including their names, tags, and IDs will be shown.
+
+You can add new name or tag to an image.
+
+.. code-block::
+
+   sudo docker tag <image_id> <new_image_name>:<new_image_tag>
+
+Load Image
+^^^^^^^^^^^^^^^^
+
+We provide ready-to-use Docker images for customers. Please contact Realtek to obtain the base image version for compiling the SDK.
+
+For example, wh
+en you got the image named :emphasis:`rtk_ameba_sdk_build_v1.1.tar`, you can load this on your host with command ``docker load``.
+
+.. code-block::
+
+   sudo docker load -i rtk_ameba_sdk_build_v1.1.tar
+
+Then you can use :emphasis:`docker images` command to check whether this image is on your host.
+
+.. code-block::
+
+   sudo docker images
+
+If the image is no longer needed, you can delete it by name and tag.
+
+.. code-block::
+
+   sudo docker rmi <image_name>:<image_tag>
+
+One :emphasis:`<image_id>` may correspond to one or more :emphasis:`<image_name>:<image_tag>`. When you tag one :emphasis:`<image_id>` with more than one :emphasis:`<image_name>:<image_tag>`, the command above will not delete this :emphasis:`<image_id>`, because there is other :emphasis:`<image_name>:<image_tag>`.
+
+You can delete docker image by ID, in this case, all the :emphasis:`<image_name>:<image_tag>` correspond to this :emphasis:`<image_id>` should be deleted at same time.
+
+.. code-block::
+
+   sudo docker rmi <image_id>
+
+Container
+~~~~~~~~~~~~~
+A Docker container is an instance of a Docker image. It is a executable unit of software that packages up the application along with everything it needs to run consistently in any environment.
+
+- Containers run in isolated environments, utilizing OS-level virtualization to share the host system’s kernel, ensuring minimal overhead compared to traditional virtual machines.
+- By default, containers are stateless and temporary, meaning any changes made during execution are not saved after they stop unless explicitly configured.
+- Containers can be easily configured with options for networking, storage, and other runtime attributes using Docker commands or a Docker Compose file.
+- Containers can be quickly scaled horizontally to handle varying loads, and because they’re portable, they run consistently across different computing environments.
+
+Run Container
+^^^^^^^^^^^^^^^^
+After building a new docker image, or loading a ready-to-use docker image, you can run a new container based on this image's name.
+
+.. code-block::
+
+   sudo docker run --name <container_name> -it <image_name>:<image_tag>
+
+Or, base on this image's ID.
+
+.. code-block::
+
+   sudo docker run --name <container_name> -it <image_id>
+
+Where the :emphasis:`<container_name>` should be different from the names of any existing containers, if absent, the docker will automatically assign a unique name to the container.
+
+And, if you want to mount your directory on host for this container, you can add parameter :emphasis:`-v`.
+
+.. code-block::
+
+   sudo docker run --name <container_name> -v <host_dir>:<container_dir> -it <image_name>:<image_tag>
+   sudo docker run --name <container_name> -v <host_dir>:<container_dir> -it <image_id>
+
+Where :emphasis:`<host_dir>` is a directory on your host, which should exist. The :emphasis:`<container_dir>` is a directory on your container, if it does not exist, the container can create it by only one layer. For example, the directory ``/home/ameba`` has already existed, if you set the :emphasis:`<container_dir>` as ``/home/ameba/my_dir``, the container will create it, but if you set the :emphasis:`<container_dir>` as ``/home/ameba/my_dir/deep_dir``, the container can not create it successfully.
+
+After mounting the directory successfully, user can operate this directory at host and container at same time.
+
+In container, you can run :emphasis:`exit` to back to your host.
+
+.. code-block::
+
+   exit
+
+Then you can use :emphasis:`docker ps` command to check whether this container is running.
+
+.. code-block::
+
+   sudo docker ps
+
+If you want to see all the containers including all ones running and not running, you can add parameter :emphasis:`-a`.
+
+.. code-block::
+
+   sudo docker ps -a
+
+If this container is no longer needed, you can delete it by :emphasis:`<container_name>` or :emphasis:`<container_id>`.
+
+.. code-block::
+
+   sudo docker rm <container_name>
+   sudo docker rm <container_id>
+
+Execute existing Container
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+If you want to execute a container not running, you should start it at first, by container name or ID.
+
+.. code-block::
+
+   sudo docker start <container_name>
+   sudo docker start <container_id>
+
+Then, run :emphasis:`docker exec` command to get into container, by container name or ID.
+
+.. code-block::
+
+   sudo docker exec -it <container_name> /bin/bash
+   sudo docker exec -it <container_id> /bin/bash
+
+After exiting the container, you can stop this container by name or ID as you wish.
+
+.. code-block::
+
+   sudo docker stop <container_name>
+   sudo docker stop <container_id>
+
+In addition, you can also directly use the following command with parameter :emphasis:`-ia` to start an existing container:
+
+.. code-block::
+
+   sudo docker start -ia <container_name>
+   sudo docker start -ia <container_id>
+
+Then run :emphasis:`exit` to exit container directly.
+
+.. code-block::
+
+   exit
+
+Build SDK at Container
+^^^^^^^^^^^^^^^^^^^^^^^
+For the images release by Realtek, the environment has been setup already, you can build the sdk directly.
+
+If you mount the directory of the host on container, you can put the sdk into the directory, then it can be seen at the container at same time, you can build the code directly.
+
+If you does not mount the directory of the host, you can use :emphasis:`docker cp` command to copy files or directory between host and container.
+
+Copy files or directory from host to container.
+
+.. code-block::
+
+   sudo docker cp <host_directory>/<files_or_directory> <container_name>:<container_directory>
+   sudo docker cp <host_directory>/<files_or_directory> <container_id>:<container_directory>
+
+After you building sdk successfully, you can copy files or directory from container to host.
+
+.. code-block::
+
+   sudo docker cp <container_name>:<container_directory_or_files> <host_directory>
+   sudo docker cp <container_id>:<container_directory_or_files> <host_directory>
+
+You can also get the sdk from github at container, which has the same procedure at host.
+
+Use Podman Instead
+^^^^^^^^^^^^^^^^^^^^
+The podman can also deal with the images and containers as well as docker. Users can get podman from `Podman HostPage <https://podman.io/get-started>`_.
+
+The command format for Podman and Docker is almost the same, you can simply replace the :emphasis:`docker` prefix with :emphasis:`podman` to use it directly. For example, you can use :emphasis:`podman build` instead of :emphasis:`docker build`, :emphasis:`podman images` instead of :emphasis:`docker images`, :emphasis:`podman ps` instead of :emphasis:`docker ps`, etc. All the procedures of dealing with images and containers are same for podman and docker.

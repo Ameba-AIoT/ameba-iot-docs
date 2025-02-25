@@ -1,0 +1,318 @@
+.. _secure_boot:
+
+Introduction
+-----------------
+Secure boot aims at firmware protection, which prevents attackers from modifying or replacing firmware maliciously. When the chip is powered on, the secure boot ROM executes to check the validation of the image signature.
+
+If the signature is valid, authentication will be successful, which means that the firmware is safe and the subsequent operations can be continued. Otherwise, the SoC clears the stack and goes into an endless loop.
+
+This chapter illustrates the usage of Linux verified boot.
+
+Secure Boot from ROM Code
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Linux secure boot should be guided to start from ROM code, which verifies the bootloader using Root of Trusted Key (RoT) saved in the OTP. Bootloader shall verify the KM0/KM4 images and :file:`cert.bin` in firmware. Except for RoT, all the keys are saved in :file:`cert.bin` (Key Cert).
+
+.. only:: nda
+
+   .. include:: 2_secure_boot_linux_nda.rst
+
+Linux Secure Boot Flow
+~~~~~~~~~~~~~~~~~~~~~~~~
+Linux secure boot is based on ROM/KM0/KM4 secure boot. The secure boot flow of Linux part is illustrated below.
+
+.. figure:: figures/verified_boot_sw_arch_linux.svg
+   :scale: 100%
+   :align: center
+
+   Linux verified boot software architecture
+
+.. note::
+   Normally, the kernel cmdline will be ``Kernel command line: console=ttyS0,1500000 earlycon psci=enable ubi.mtd=8 ubi.block=0,0 ubi.mtd=9 dm-mod.create="system,,0,ro, 0 55928 verity 1 /dev/ubiblock0_0 /dev/ubiblock0_0 4096 4096 6991 6991 sha512 <salt> <hash> 2 ignore_corruption ignore_zero_blocks" root=/dev/dm-0 rootfstype=squashfs``.
+   The cmdline is shown when kernel initializing and the content is given by ``<sdk>/sources/boot/uboot/cmd/realtek_avb.c``.
+   Function :func:`realtek_organize_cmdline` will abstract the key information and organize a new cmdline for secure boot.
+
+   - The ``ubi.mtd=8`` means the index of rootfs block in mtd, which is used to make mtd8 as character-device ubi0.
+   - The ``ubi.block=0,0`` means make character-device ubi0 as block-device ubiblock0, because the dm verity can only be done for block-devices.
+   - The ``dm-mod.create`` parameters are defined by dm-verity driver. Including the block-device to verify, the size of hash block, the numbers of hash block, the start address of rootfs hash tree, the salt and digest of verification and so on. The digest is the root hash of rootfs which has been verified by VBmeta in uboot.
+   - The ``ubi.block0_0`` is attached to dm-0. ``root=/dev/dm-0`` mounts dm-0 to root-filesystem which also means make informations in mtd8 area as rootfs. The dm-verity will do a dynamic hash calculation for any block and its related blocks when user accesses to some blocks in rootfs.
+
+For more details on dm-verity, refer to https://docs.kernel.org/admin-guide/device-mapper/verity.html.
+
+This section describes the Construction Parameters, Theory of operation, Hash Tree, On-disk format and some examples. The kernel command line is the only start-point for the hash-tree verification of rootfs, and the digest of root-hash for hash-tree will be inserted to VBmeta whose validity is confirmed by the former flow.
+
+Codes of the above framework can be divided into three parts: **Flash** area, **U-Boot** area and **kernel** area. Only the core code directories of each part are listed below.
+
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +--------+------------------------------------------------------+---------------------------------------------------------------------------------------------------------+
+   | Area   | Directory                                            | Introduction                                                                                            |
+   +========+======================================================+=========================================================================================================+
+   | Flash  | <sdk>/sources/yocto/meta-realtek/tools/verified_boot | The script of making secure related images.                                                             |
+   +--------+------------------------------------------------------+---------------------------------------------------------------------------------------------------------+
+   |        | <uboot>/cmd/mtd.c                                    | The operations of reading NAND Flash.                                                                   |
+   | U-Boot +------------------------------------------------------+---------------------------------------------------------------------------------------------------------+
+   |        | <uboot>/cmd/realtek-avb.c                            | The verification of vbmeta/public key/kernel/dtb.                                                       |
+   +--------+------------------------------------------------------+---------------------------------------------------------------------------------------------------------+
+   | Kernel | <linux>/drivers/md/*                                 | This directory is provided by GPI Linux kernel named dm-verity, used to verify the hash tree of rootfs. |
+   +--------+------------------------------------------------------+---------------------------------------------------------------------------------------------------------+
+
+More for android verified boot, refer to https://android.googlesource.com/platform/external/avb.
+
+.. _configuration:
+
+Configuration
+---------------
+Yocto SDK uses :file:`mksecure.sh` to build secure images, which is located at ``<sdk>/sources/yocto/meta-realtek/tools/verified_boot``.
+The usage of the script is illustrated below:
+
+.. code-block::
+
+   mksecure.sh
+   --key_dir=<secure key path>
+   --output_dir=<secure image output path>
+   --input_dir=<directory of the normal images>
+   --boot_image=<boot image path>
+   --dtb_image=<device tree blob image path>
+   --dtb_part_size=<tree blob image partition size>
+   --kernel_image=<kernel image path>
+   --kernel_part_size=<kernel partition size>
+   --recovery_dtb_image=<recovery device tree blob image path>
+   --recovery_dtb_part_size=<recovery device tree  blob partition size>
+   --recovery_kernel_image=<recovery kernel image path>
+   --recovery_kernel_part_size=<recovery kernel partition size>
+   --root_image=<rootfs image path>
+   --root_part_size=<rootfs partition size>
+   --km4_boot=<firmware boot image path>
+   --km4_app=<firmware app image path>
+   --imgtool_flashloader=<imgtool flashloader path>
+   --use_dtb_size =<enable the auto parse of image size>
+
+The parameters are illustrated below:
+
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +---------------------------+------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------+
+   | Parameter                 | Mandatory/Optional?                | Description                                                                                                                                |
+   +===========================+====================================+============================================================================================================================================+
+   | key_dir                   | Mandatory                          | Indicates where the secure keys locate at, default is ``<sdk>/sources/yocto/meta-realtek/tools/verified_boot/security_keys/test``.         |
+   +---------------------------+------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------+
+   | output_dir                | Mandatory                          | Indicates the output path of the secure images.                                                                                            |
+   +---------------------------+------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------+
+   | input_dir                 | Optional                           | | Indicates the directory of the normal images. Images inside this directory will be used as the source of secure images.                  |
+   |                           |                                    | | If *input_dir* is given, the boot_image, kernel_image, recovery_kernel_image, root_image, km4_boot, km4_app and                          |
+   |                           |                                    | | imgtool_flashloader can be omitted. The mksecure.sh will use boot.img, uImage, <va7, va8>.rootfs.squashfs, km4_boot_all.bin,             |
+   |                           |                                    | | km0_km4_app.bin, imgtool_flashloader.bin, and uImage-initramfs-rtl8730elh-recovery.bin by default inside the given *input_dir*.          |
+   |                           |                                    | | If some of the images are specified by other input parameter, mksecure.sh will use the specified path preferentially.                    |
+   |                           |                                    | | If *input_dir* is not given, all the image path shall be given each and every.                                                           |
+   +---------------------------+------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------+
+   | dtb_imag                  | Mandatory                          | Indicates the path of non-secure device tree blob images.                                                                                  |
+   +---------------------------+------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------+
+   | recovery_dtb_image        | Mandatory if recovery is enabled   | | Indicates the path of recovery device tree blob image, and this parameter is not mandatory if non-secure recovery images                 |
+   |                           |                                    | | need to be flashed.                                                                                                                      |
+   +---------------------------+------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------+
+   | boot_image                | Optional if *input_dir* is given   | Indicates the path of non-secure boot images.                                                                                              |
+   +---------------------------+------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------+
+   | kernel_image              | Optional if *input_dir* is given   | Indicates the path of non-secure kernal images.                                                                                            |
+   +---------------------------+------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------+
+   | recovery_kernel_image     | Optional if *input_dir* is given   | | Indicates the path of non-secure recovery kernal images, and this parameter is not mandatory if non-secure recovery images               |
+   |                           |                                    | | need to be flashed.                                                                                                                      |
+   +---------------------------+------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------+
+   | root_image                | Optional if *input_dir* is given   | Indicates the path of non-secure rootfs squashfs image, and only squashfs image is needed.                                                 |
+   +---------------------------+------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------+
+   | km4_boot                  | Optional if *input_dir* is given   | Indicates the path of non-secure firmware boot image.                                                                                      |
+   +---------------------------+------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------+
+   | km4_app                   | Optional if *input_dir* is given   | Indicates the path of non-secure firmware APP image.                                                                                       |
+   +---------------------------+------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------+
+   | km4_boot                  | Optional if *input_dir* is given   | Indicates the path of non-secure firmware boot image.                                                                                      |
+   +---------------------------+------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------+
+   | imgtool_flashloader       | Optional if *input_dir* is given   | Indicates the path of :file:`imgtool_flashloader.bin`.                                                                                     |
+   +---------------------------+------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------+
+   | use_dtb_size              | Optional, also named as *-s*       | | Set to 1 to enable automatically dtb parse. The :file:`mksecure.mk` will parse the size information according to the selected dtb_image. |
+   |                           |                                    | | If *-s* is enabled, the size information of dtb_part_size, kernel_part_size, recovery_dtb_part_size, recovery_kernel_part_size,          |
+   |                           |                                    | | and root_part_size can be omitted. However, make sure that the description for layout in dts includes the key names of                   |
+   |                           |                                    | | ``Device Tree Blob``, ``Kernel Image``, and ``Rootfs Image`` (the capitalization of letters is not important).                           |
+   +---------------------------+------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------+
+   | dtb_part_size             | Only useful when *-s* is not set   | | Indicates the partition size of device tree blob partition, which is described in                                                        |
+   |                           |                                    | | :file:`<dts_dir>/rtl8730e-spi-nand-256m.dtsi (rtl8730e-spi-nand-128m.dtsi)`.                                                             |
+   +---------------------------+------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------+
+   | kernel_part_size          | Only useful when *-s* is not set   | Indicates the partition size of kernel partition described in :file:`rtl8730e-spi-nand-256m.dtsi (rtl8730e-spi-nand-128m.dtsi)`.           |
+   +---------------------------+------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------+
+   | recovery_dtb_part_size    | Only useful when *-s* is not set   | | Indicates the partition size of recovery device tree blob described in :file:`rtl8730e-spi-nand-256m.dtsi (rtl8730e-spi-nand-128m.dtsi)`,|
+   |                           |                                    | | and this parameter is not mandatory if non-secure recovery images need to be flashed.                                                    |
+   +---------------------------+------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------+
+   | recovery_kernel_part_size | Only useful when *-s* is not set   | | Indicates the partition size of recovery kernel described in :file:`rtl8730e-spi-nand-256m.dtsi (rtl8730e-spi-nand-128m.dtsi)`,          |
+   |                           |                                    | | and this parameter is not mandatory if non-secure recovery images need to be flashed.                                                    |
+   +---------------------------+------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------+
+   | root_part_size            |                                    | Indicates the partition size of rootfs described in :file:`rtl8730e-spi-nand-256m.dtsi (rtl8730e-spi-nand-128m.dtsi)`.                     |
+   +---------------------------+------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------+
+
+Where `<dts_dir>` means the directory of dts files, which is ``<sdk>/kernel/linux-5.4/arch/arm/boot/dts`` for kernel 5.4.x, and ``<sdk>/kernel/linux-6.6/arch/arm/boot/dts/realtek/ameba`` for kernel 6.6.x.
+
+How to Use Secure Boot
+------------------------
+The following steps illustrate how to use secure boot.
+
+1. Enable uboot secure boot configs
+2. Prepare secure boot keys
+3. Make and generate raw images
+4. Make secure images
+5. Enable firmware secure boot related OTP bits after the system boots up
+
+Enable UBoot Secure Boot Config
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+To enable Linux secure boot, uboot related secure boot configs need to be opened, the uboot config listed at ``<sdk>/sources/boot/uboot/configs`` and secure boot related configs are listed below
+
+.. code-block::
+
+   CONFIG_VERIFIED_BOOT=y
+   CONFIG_OTP_RTK_AMEBA=y
+
+Make sure the configs above are enabled.
+
+Currently we have enabled the configs in default.
+   
+Prepare Secure Boot Key
+~~~~~~~~~~~~~~~~~~~~~~~~~
+To use Linux verified boot, secure keys should be prepared. Just as mentioned above, key path needs to be set by configuring ``--key_dir`` parameter when executing :file:`mksecure.sh`.
+
+The default manifest/key file (:file:`manifest.json/key.json`) and keys are located at ``<sdk>/sources/yocto/meta-realtek/tools/verified_boot/security_keys/test``.
+
+Linux SDK provides tool ``make_key`` (``<sdk>/sources/yocto/meta-realtek/tools/verified_boot``) for users to generate their own secure keys under specific key path. Use the following command to generate secure keys, which will be generated under the path below:
+
+.. code-block::
+
+   make_key <key path>
+
+Secure keys are listed below:
+
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +--------------------------------+----------------------------------------------------------+
+   | File                           | Description                                              |
+   +================================+==========================================================+
+   | fw.key                         | Used to sign the firmware bootloader and key certificate |
+   +--------------------------------+----------------------------------------------------------+
+   | root.key                       | Used to sign firmware NSPE/SPE and Linux boot image      |
+   +--------------------------------+----------------------------------------------------------+
+   | vbmeta.priv.key/vbmeta.pub.key | Used to sign Linux vbmeta image                          |
+   +--------------------------------+----------------------------------------------------------+
+
+Make Secure Image
+~~~~~~~~~~~~~~~~~~~~~
+Before making secure images, all the raw images (except firmware images) need to be generated first. Refer to :ref:`configuration` to use :file:`mksecure.sh` to make secure images if needed.
+
+elf2bin is used to make secure image in mksecure.sh, the usage of elf2bin is:
+
+.. code-block::
+
+   elf2bin manifest <manifest_json> <key_json> <img_file> <out_file> [app|boot]
+
+``elf2bin manifest`` is used to generate :file:`manifest.bin` for specific image.
+
+:<manifest_json>: manifest file describing related information for image. The default manifest file locates at ``<sdk>/sources/ yocto/meta-realtek/tools/verified_boot/security_keys/test``.
+:<key_json>: key file describing key-related information for image. The default key file locates at the path above too.
+:<img_file>: image needed to generate :file:`manifest.bin`.
+:<out_file>: output secure manifest file for ``<img_file>``
+:[app|boot]: indicates manifest type for image. ``boot`` is used for firmware boot, and ``app`` is for firmware app image including Linux bootloader.
+
+.. code-block::
+
+   elf2bin cert <manifest_json> <key_json> <out_file> <key_id1> [app|vbmeta] <key1_json>
+
+``elf2bin cert`` is used to generate :file:`cert.bin` for all app images. :file:`cert.bin` contains the app image secure information, and is used to verify each app image
+
+:<manifest_json>: 
+   | manifest file describing related information for image. The default 
+   | manifest file locates at 
+   | ``<sdk>/sources/yocto/meta-realtek/tools/verified_boot/security_keys/test``.
+
+:<key_json>: 
+   | key file describing key-related information for image. The default key file 
+   | locates at the path above too.
+
+:<out_file>: output secure cert file.
+
+:<key_id1> [app|vbmeta] <key1_json>:
+
+   - ``<key_id1>`` indicates key ID in :file:`cert.bin`, whose value begins from 0.
+
+   - | ``[app|vbmeta]`` indicates the image type described in ``<key1_json>``.
+     | ``vbmeta`` is used to verify Linux vbmeta image, and ``app`` is used to
+     | verify other app images (firmware app images, Linux bootloader).
+
+Enable Secure Boot
+-------------------------
+After flashing the secure images and system boots up, enable secure boot via programming OTP bit.
+
+1. Start km4_console to program OTP.
+
+   .. code-block::
+
+      $km4_console
+
+2. Program secure boot root public key hash in OTP.
+
+   The root public key hash value is from ``public key hash`` field of ``fw.key``.
+   
+   .. code-block::
+
+      {
+         "algorithm":"ed25519",
+         "private key":"6AA34203018334474B25A0600996CA0968AA6228B886FF234B4EB9628B703C0A",
+         "public key":"E2A0D6500BBF1DD8DC212098C230EB731ECE3A81AA11D0E6E538FA36BBA4FF6E",
+         "public key hash":"72B2E1CB0E8F715262AF38DFA0E522C95660D0EBFD920F4B1A229845E599C697"
+      }
+   
+   Use the following command to program OTP PK1:
+   
+   .. code-block::
+   
+      efuse wraw 320 20 72B2E1CB0E8F715262AF38DFA0E522C95660D0EBFD920F4B1A229845E599C697
+
+3. Enable secure boot in OTP.
+
+   a. Use ``efuse rmap`` first to check value in 0x2 and 0x3:
+
+      .. code-block::
+
+         $efuse rmap 0 16
+
+      .. figure:: figures/check_bit_linux.png
+         :scale: 40%
+         :align: center
+
+      The value of 0x2 0x3 is 1080.
+
+   b. Enable secure boot enable bit (set 0x3[2] to 1)
+
+      .. code-block::
+
+         $efuse wmap 2 2 1084
+
+      Using ``efuse rmap`` check if secure boot bit is set successfully.
+
+      .. figure:: figures/enable_bit_linux.png
+         :scale: 40%
+         :align: center
+
+4. Reset the board.
+
+   When secure boot is successful, you can see the following logs:
+
+   - **IMG1 SBOOT EN**: secure boot is enabled
+   - **IMG1(OTA1) VALID, ret: 0**: bootloader authentication pass
+   - **IMG2 VERIFY PASS**: IMAGE2 authentication pass
+   - **AP BL1&FIP VERIFY PASS**: AP uboot authentication pass
+   - **Public Key Hash Verified Success**
+   - **Rollback Index: Version PASS!**: rollback authentication pass
+   - **VbMeta Signature Verified Success!**: vbmeta authentication pass
+   - **Kernel Image verified success!**: linux kernel authentication pass
+   - **DTB/FDT Image verified success!**: Linux DTB authentication pass
+   - **linux verified boot: success!**
+

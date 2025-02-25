@@ -1,0 +1,99 @@
+.. _otp:
+
+Introduction
+----------------
+Architecture
+~~~~~~~~~~~~~~~~~
+The OTP driver follows Linux NVMEM framework, controls the firmware OTP controller, and performs the write and read of OTP. The OTP software architecture is illustrated in figure below.
+
+.. figure:: figures/otp_software_arch_linux.svg
+   :scale: 120%
+   :align: center
+
+   OTP software architecture
+
+The OTP driver provides the following two ways to control the hardware OTP device:
+
+- For user space, Linux NVMEM framework provides sysfs device for users to read and write.
+- For kernel space, Linux driver can control OTP device through NVMEM cell functions.
+
+Implementation
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The OTP driver is implemented as following files:
+
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +--------------------------------------------------+-------------------------+
+   | Driver location                                  | Introduction            |
+   +==================================================+=========================+
+   | :file:`<linux>/drivers/rtkdrivers/otp/Kconfig`   | OTP driver Kconfig      |
+   +--------------------------------------------------+-------------------------+
+   | :file:`<linux>/drivers/rtkdrivers/otp/Makefile`  | OTP driver Makefile     |
+   +--------------------------------------------------+-------------------------+
+   | :file:`<linux>/drivers/rtkdrivers/otp/rtk-otp.c` | OTP driver source code. |
+   +--------------------------------------------------+-------------------------+
+
+Configuration
+--------------------------
+Build Configuration: Select Device Drivers > Drivers for Realtek > NVMEM OTP driver.
+
+.. figure:: figures/otp_driver_linux.png
+   :scale: 90%
+   :align: center
+
+   OTP driver
+
+APIs
+--------
+APIs for User Space
+~~~~~~~~~~~~~~~~~~~~~~~~
+Just as mentioned above, Linux NVMEM framework provides sysfs device for user space to control the OTP device. Currently Realtek's OTP driver provides two sysfs interfaces (:file:`/sys/bus/nvmem/devices/otp_raw0/nvmem` and :file:`/sys/bus/nvmem/devices/otp_map0/nvmem`) for user space to control the OTP device.
+
+- ``otp_raw0`` device controls the physical map.
+- ``otp_map0`` device controls the logical map.
+
+The usage of demo is listed below:
+
+.. code-block::
+
+   efuse rraw/rmap [addr hex] [bytes]
+   efuse wraw/wmap [addr hex] [bytes] [val hex]
+
+For example:
+
+- Read value from physical address ``0x07F4`` ~ ``0x07F8``:
+
+  .. code-block::
+  
+     efuse rraw 7F4 4
+
+- Write the new value ``0x021b1c1d`` to logical address ``0x01e0`` ~ ``0x01e4``:
+
+  .. code-block::
+  
+     efuse wmap 1e0 4 021b1c1d
+
+Refer to :file:`sources/development/cmds/efuse/efuse.c` for more details.
+
+If you want to disable APIs for user space, disable sysfs interface in kernel config as below:
+
+.. figure:: figures/sysfs_interface_linux.png
+   :scale: 90%
+   :align: center
+
+   Sysfs interface
+
+APIs for Kernel Space
+~~~~~~~~~~~~~~~~~~~~~~~~
+For kernel space, NVMEM provides cell mechanism for other drivers to read or write the OTP, such as:
+
+.. figure:: figures/nvmem_cell_example_linux.png
+   :scale: 90%
+   :align: center
+
+   Nvmem-cell example
+
+Drivers can use NVMEM cell functions to get or set the corresponding OTP values.
+

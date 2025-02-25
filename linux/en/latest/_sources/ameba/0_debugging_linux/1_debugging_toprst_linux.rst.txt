@@ -1,0 +1,196 @@
+.. _system_debugging:
+
+Overview
+----------------
+This chapter describes how to set up ADB (Android Debug Bridge) and GDB (GNU Project Debugger) environments on PC and target board.
+
+ADB
+------
+The ADB is a versatile command-line tool that lets you communicate with a device. The :emphasis:`adb` command facilitates a variety of device actions, and it provides access to a Unix shell that you can use to run a variety of commands on a device. It is a client-server program including three components:
+
+- Client: sends commands. The client runs on your development machine.
+- Daemon (adbd): runs commands on a device. The daemon runs as a background process on device.
+- Server: manages communication between the client and the daemon. The server runs as a background process on your development machine.
+
+Setup ADB Environment on Host
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ADB is included in the Android SDK Platform-Tools package, which can be downloaded from `Adroid Studio SDK build tools <https://developer.android.com/studio/releases/platform-tools>`_.
+
+Windows
+^^^^^^^^^^^^^^
+1. Download ADB on PC.
+
+2. Setup environment variable on PC.
+
+   a. Right-click on :menuselection:`This PC`, and choose :menuselection:`Properties > Advanced system settings > Environment Variables…`.
+   b. Edit :emphasis:`Path` to create a new environment variable and input the ADB path (``adb.exe`` is in platform-tools, such as ``D:\adb\aosp-sdk-platform-tool``), then save it.
+
+3. Check ADB environment on host.
+
+Open Windows command line, input :emphasis:`adb --help`. If ADB version and global options is shown, the environment on host is OK.
+
+Linux
+^^^^^^^^^^
+1. Download ADB to host.
+
+2. Export ADB path to shell environment.
+
+   .. code-block::
+
+      export PATH=/xyz/platform-tools/bin:$PATH to .bashrc
+
+Setup ADB Environment on Board
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The adb supports both TCP/IP and USB protocol that enable you debug the target device with Wi-Fi or USB line.
+
+USB Mode
+^^^^^^^^^^^^^^^^
+1. Connect host and target board with USB cable and set device to USB mode.
+2. Switch USB mode and start adbd daemon on target board by executing ``/bin/usb.sh usbd_adb``.
+
+   .. code-block::
+
+      $/bin/usb.sh usbd_adb
+
+TCP/IP Mode
+^^^^^^^^^^^^^^^
+1. Setup Wi-Fi connection and ensure that :emphasis:`ping` between host and target board is OK.
+2. Start adbd daemon on target board.
+
+   .. code-block::
+
+      /bin/adbd &
+
+How to Use ADB
+~~~~~~~~~~~~~~~~
+Connect ADB
+^^^^^^^^^^^^^^^
+- USB Mode
+
+  After executing command above on board, host can use command :emphasis:`adb devices` to show the connected device.
+
+- TCP/IP Mode
+
+  Connect the target device with command :emphasis:`adb connect`. After successful connection, host can use command :emphasis:`adb devices` to show the connected device.
+
+  .. code-block::
+
+     $adb connect <board_ip>:5555
+     $adb devices
+
+ADB Commands
+^^^^^^^^^^^^^^^^
+Command ``adb --help`` on host can show all ADB commands, which are listed below.
+
+:adb devices: shows the connection states of all devices.
+:adb start-server: starts ADB server.
+:adb kill-server: stops ADB server.
+:adb connect ip:5555: connects devices for TCP/IP mode.
+:adb push <local> <remote>: pushes the specific file from host to device.
+
+  :<local>: indicates the file position stored in host.
+  :<remote>: indicates the destination needed to be pushed to the board.
+
+  For example:
+
+  .. code-block::
+
+     $adb push ~/system/lib/libfoo_bar.so /lib/
+
+:adb pull <remote> <local>: pulls the specific file from device to host.
+
+  :<remote>: indicates the file on board needed to be copied to host.
+  :<local>: indicates the position to store the file in host.
+
+  For example:
+
+  .. code-block::
+
+     $adb pull /lib/libfoo_bar.so ~/system/lib/
+
+:adb shell: Window command line or Linux shell can enter device command line. Use exit to return to Window command line or Linux shell.
+
+fastboot
+----------------
+The fastboot protocol is a mechanism for communicating with boot over USB. It is designed to download the images to the Flash. Generally, images are stored in flash and then loaded to RAM to boot system. The fastboot allows user to download images to ram and reboot it, or to burn images to the Flash.
+
+This section describes how to download the image to target board RAM with fastboot.
+
+Setup fastboot Environment on Board
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+1. To enable fastboot in U-boot, the following configuration should be enabled for U-Boot. In SDK, these configurations are enabled by default.
+
+   .. code-block::
+
+      CONFIG_FASTBOOT=y
+      CONFIG_CMD_FASTBOOT=y
+      USB_FUNCTION_FASTBOOT=y
+      CONFIG_USB_FUNCTION_FASTBOOT=y
+      CONFIG_ANDROID_BOOT_IMAGE=y
+      CONFIG_ANDROID_BOOT_IMAGE_CHECK=n
+      CONFIG_ANDROID_IMAGE_HEADER_LENGTH=0x800
+      CONFIG_FASTBOOT_FLASH_NAND=y
+      CONFIG_FASTBOOT_BUF_ADDR=0x60380000
+      CONFIG_FASTBOOT_BUF_SIZE=0xF00000
+      CONFIG_DM_USB_GADGET=y
+      CONFIG_USB_GADGET=y
+      CONFIG_USB_GADGET_VENDOR_NUM=0x18D1
+      CONFIG_USB_GADGET_PRODUCT_NUM=0x4E21
+      CONFIG_USB_GADGET_MANUFACTURER="realtek"
+      CONFIG_USB_GADGET_DWC2_OTG=y、
+      CONFIG_USB_GADGET_VBUS_DRAW=200
+      CONFIG_USB_GADGET_DOWNLOAD=y
+
+2. Input any content in time when booting system to enter U-Boot command line mode.
+
+Setup fastboot Environment on PC
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Download the fastboot tool for Windows from `platform-tools_r34.0.0-windows.zip <https://dl.google.com/android/repository/platform-tools_r34.0.0-windows.zip>`_ and unzip it, start a command window and switch to the directory where the fastboot program is located.
+
+How to Use fastboot
+~~~~~~~~~~~~~~~~~~~~~~
+1. Start fastboot on the U-boot of the target board.
+
+   .. code-block::
+
+      => fastboot usb 0
+
+2. Start fastboot client on PC, input command :emphasis:`fastboot.exe devices`, If the following information is displayed, fastboot runs success.
+
+   .. code-block::
+
+      => fastboot.exe devices
+      0123456789AB  fastboot
+
+3. Continue to input command :emphasis:`fastboot.exe boot d:\kernel.img` to load kernel image to RAM. It will display as follows.
+
+   .. code-block::
+
+      => fastboot.exe boot D:\kernel.img
+      creating boot image...
+      creating boot image - 3596288 bytes
+      Sending 'boot.img' (3512 KB)                       OKAY [  0.111s]
+      Booting                                            OKAY [  0.000s]
+      Finished. Total time: 0.549s
+
+4. The uboot will show below log, which means download to ram status, and boot from the ram address
+
+   .. code-block::
+
+      => fastboot usb 0
+      Starting download of 3596288 bytes
+      ...........................
+      downloading of 3596288 bytes finished
+      Booting kernel at 0x60380000...
+      ## Booting kernel from Legacy Image at 60380000 ...
+      Image Name:   Linux-5.4.63
+      Created:      2023-03-08  11:59:51 UTC
+      Image Type:   ARM Linux Kernel Image (uncompressed)
+      Data Size:    3593416 Bytes = 3.4 MiB
+      Load Address: 60388000
+      Entry Point:  60388000
+      Verifying Checksum ... OK
+      Loading Kernel Image ……
+
+For more details about fastboot, refer to `Android-specific doc <https://u-boot.readthedocs.io/en/latest/android/fastboot-protocol.html>`_.
+

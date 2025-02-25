@@ -1,0 +1,127 @@
+.. _wifi_fullmac:
+
+Supported ICs
+------------------------
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +------------+------------+----------+----------+----------+
+   | Ameba SoC  | RTL8721Dx  | RTL8726EA| RTL8720EA| RTL8730E |
+   +============+============+==========+==========+==========+
+   | Supported  |     Y      |     N    |     N    |     N    |
+   +------------+------------+----------+----------+----------+
+
+Introduction
+------------------------
+The FullMAC solution provides a standard wireless network interface for the host, allowing Wi-Fi and Bluetooth applications (such as wpa_supplicant, TCP/IP stack, etc.) to run smoothly on the operating system.
+
+
+
+Architecture
+------------------------
+The FullMAC driver implements the following modules:
+
+- Provide a data transmission path between the host and the device based on a private transmission protocol via the SDIO/SPI interface
+- Adapt the cfg80211 layer and register the wireless network interface (wlan0/1) in the kernel to enable network data packet interaction between the Linux kernel and the SoC
+- Provide commonly-used and proprietary commands to configure the parameters of Wi-Fi interface
+
+.. include:: fullmac_architecture.rst
+
+.. note:: **HOST OS**
+
+  - Linux
+  - FreeRTOS
+  - Zephyr
+
+.. note:: **BT Stack**
+
+  - Linux HOST：Bluez
+  - Zephyr HOST：Zephyr BT Stack
+  - FreeRTOS：Realtek BT Stack
+
+Transport Interface
+------------------------
+
+.. tabs::
+
+   .. include:: fullmac_interface.rst
+
+Features
+------------------------
+.. include:: fullmac_features.rst
+
+File Tree
+----------
+
+Wi-Fi
+~~~~~~
+
+.. tabs::
+
+   .. include:: fullmac_filetree_rtos.rst
+
+   .. include:: fullmac_filetree_linux.rst
+
+Bluetooth
+~~~~~~~~~~
+
+.. tabs::
+
+   .. tab:: Device
+
+   .. tab:: RTOS HOST
+
+   .. tab:: Linux Host
+
+Hardware Configuration
+----------------------
+.. include:: ../2_whc/whc_pins_connection.rst
+
+WiFi Device Driver Porting Guide
+--------------------------------
+.. include:: fullmac_portingguide_wifi_dev.rst
+
+Wi-Fi Host Driver Porting Guide
+--------------------------------
+.. tabs::
+
+   .. include:: fullmac_portingguide_wifi_rtos.rst
+
+   .. include:: fullmac_portingguide_wifi_linux.rst
+
+BT Device Driver Porting Guide
+-------------------------------
+.. include:: fullmac_portingguide_bt_dev.rst
+
+BT Host Driver Porting Guide
+-------------------------------
+.. tabs::
+
+   .. include:: fullmac_portingguide_bt_rtos.rst
+
+   .. include:: fullmac_portingguide_bt_linux.rst
+
+WiFi Throughput
+----------------
+.. tabs::
+
+   .. include:: fullmac_throughput_wifi_rtos.rst
+
+   .. include:: fullmac_throughput_wifi_linux.rst
+
+Memory Size Requirement
+--------------------------
+Device
+~~~~~~~~
+.. tabs::
+
+   .. include:: fullmac_memsize_dev_dplus.rst
+
+Host
+~~~~~~~~
+.. tabs::
+
+   .. include:: fullmac_memsize_host_rtos.rst
+
+   .. include:: fullmac_memsize_host_linux.rst

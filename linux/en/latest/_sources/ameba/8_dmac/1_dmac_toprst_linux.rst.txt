@@ -1,0 +1,184 @@
+.. _dmac:
+
+Introduction
+-------------
+Architecture
+~~~~~~~~~~~~~
+DMAC driver follows Linux framework: DMA engine, DMA virtual channels. The DMAC software architecture is illustrated in the following figure.
+
+.. figure:: figures/dmac_software_arch_linux.svg
+   :scale: 120%
+   :align: center
+
+Details for Linux DMA framework, refer to `DMA Engine documentation <https://www.kernel.org/doc/html/v5.4/driver-api/dmaengine/index.html?highlight=dma>`_.
+
+Implementation
+~~~~~~~~~~~~~~~
+DMAC driver is implemented as following files:
+
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +---------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------+
+   | File                                                          | Description                                                                                                  |
+   +===============================================================+==============================================================================================================+
+   | <linux>/drivers/rtkdrivers/dma/Kconfig                        | DMAC driver Kconfig                                                                                          |
+   +---------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------+
+   | <linux>/drivers/rtkdrivers/dma/Makefile                       | DMAC driver Makefile                                                                                         |
+   +---------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------+
+   | <linux>/drivers/rtkdrivers/dma/realtek_dmac.c                 | DMAC functions.                                                                                              |
+   +---------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------+
+   | <linux>/drivers/rtkdrivers/dma/realtek_dmac.h                 | DMAC related function declaration, macro definition, structure definition and the other header files quoted. |
+   +---------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------+
+   | <linux>/include/dt-bindings/realtek/dmac/realtek-ameba-dmac.h | The definition of GDMA handshake interfaces.                                                                 |
+   +---------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------+
+
+Configuration
+------------------
+DTS Configuration
+~~~~~~~~~~~~~~~~~~~~~~~
+DMAC DTS node:
+
+.. code-block::
+
+   dma: dma@400E0000 {
+     compatible = "realtek,ameba-rtk-dmac";
+     reg = <0x400E0000 0x000400>;
+     clocks = <&rcc RTK_CKE_GDMA>;
+     dma-channels = <8>;
+     dma-requests = <100>;
+     interrupts = <GIC_SPI 25 IRQ_TYPE_LEVEL_HIGH>,
+       <GIC_SPI 26 IRQ_TYPE_LEVEL_HIGH>,
+       <GIC_SPI 27 IRQ_TYPE_LEVEL_HIGH>,
+       <GIC_SPI 28 IRQ_TYPE_LEVEL_HIGH>,
+       <GIC_SPI 29 IRQ_TYPE_LEVEL_HIGH>,
+       <GIC_SPI 30 IRQ_TYPE_LEVEL_HIGH>,
+       <GIC_SPI 31 IRQ_TYPE_LEVEL_HIGH>,
+       <GIC_SPI 32 IRQ_TYPE_LEVEL_HIGH>;
+   };
+
+The DTS Configurations of DMAC are listed in the following table.
+
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +---------------+-----------------------------------------------------------------------+--------------+
+   | Property      | Description                                                           | Configurable?|
+   +===============+=======================================================================+==============+
+   | compatible    | The description of DMAC driver: ``realtek,ameba-rtk-dmac``            | No           |
+   +---------------+-----------------------------------------------------------------------+--------------+
+   | reg           | The hardware address and size for DMAC device: <0x400E0000 0x000400>. | No           |
+   +---------------+-----------------------------------------------------------------------+--------------+
+   | clocks        | The clock of DMAC device.                                             | No           |
+   +---------------+-----------------------------------------------------------------------+--------------+
+   | interrupts    | The GIC number of DMAC device: 25~32.                                 | No           |
+   +---------------+-----------------------------------------------------------------------+--------------+
+   | dma-channels  | Physicl channel number: 8.                                            | No           |
+   +---------------+-----------------------------------------------------------------------+--------------+
+   | dma-requestes | Virtual channel number: 100.                                          | No           |
+   +---------------+-----------------------------------------------------------------------+--------------+
+
+DMA Client DTS Configuration
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. code-block::
+
+   child-node: {
+     compatibale = "xxxxxxx";
+     dmas = <&dma [number]>;
+     dma-names = "[specific-name]";
+   }
+
+The DTS Configurations of DMAC client are listed in the following table.
+
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +------------+----------------------------------------------+---------------+
+   | Property   | Description                                  | Configurable? |
+   +============+==============================================+===============+
+   | compatible | DMA Client compatible name, e.g. audio, LEDC | No            |
+   +------------+----------------------------------------------+---------------+
+   | dmas       | Choose a physical channel for DMA process.   | 0~7           |
+   +------------+----------------------------------------------+---------------+
+   | dma-names  | Assign a name for this DMA channel.          | Yes           |
+   +------------+----------------------------------------------+---------------+
+
+Build Configuration
+~~~~~~~~~~~~~~~~~~~~~~~
+Select :menuselection:`Device Drivers > Drivers for Realtek > DMAC driver`:
+
+.. figure:: figures/dmac_driver_linux.png
+   :scale: 90%
+   :align: center
+
+APIs
+--------
+APIs for User Space
+~~~~~~~~~~~~~~~~~~~~~~~
+None.
+
+APIs for Kernel Space
+~~~~~~~~~~~~~~~~~~~~~~~~~
+DMA Address Mapping APIs
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +----------------------------+---------------------------------------------------------------------------+
+   | Interfaces                 | Introduction                                                              |
+   +============================+===========================================================================+
+   | dma_alloc_coherent         | Coherent mapping. Allocate a DMA address and size.                        |
+   +----------------------------+---------------------------------------------------------------------------+
+   | dma_free_coherent          | Coherent mapping. Free the allocated DMA address and size.                |
+   +----------------------------+---------------------------------------------------------------------------+
+   | dma_map_single             | Streaming mapping. Change the virtual buffer to DMA buffer.               |
+   +----------------------------+---------------------------------------------------------------------------+
+   | dma_unmap_single           | Streaming unmapping. Change the DMA buffer to virtual buffer.             |
+   +----------------------------+---------------------------------------------------------------------------+
+   | dma_sync_single_for_cpu    | Streaming mapping. Give the address controller to CPU.                    |
+   +----------------------------+---------------------------------------------------------------------------+
+   | dma_sync_single_for_device | Streaming mapping. Give the address controller to device, as well as DMA. |
+   +----------------------------+---------------------------------------------------------------------------+
+
+Refer to `DMA Engine API Guide <https://www.kernel.org/doc/html/v5.4/driver-api/dmaengine/client.html>`_ for more details.
+
+DMA Transfer APIs
+^^^^^^^^^^^^^^^^^^^^^^
+The DMA client usage consists of following steps:
+
+1. Allocate a DMA slave channel
+2. Set slave and controller specific parameters
+3. Get a descriptor for transaction
+4. Submit the transaction
+5. Issue pending requests and wait for callback notification
+
+DMAC master interfaces for kernel space are provided by ``<linux>/include/linux/dmaengine.h``.
+
+Here are some commonly used APIs to control DMA device:
+
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +---------------------------+--------------------------------------------------------------------------------------------------------------------------------+
+   | Interfaces                | Introduction                                                                                                                   |
+   +===========================+================================================================================================================================+
+   | dma_request_chan          | Allocate a DMA slave channel                                                                                                   |
+   +---------------------------+--------------------------------------------------------------------------------------------------------------------------------+
+   | dmaengine_slave_config    | Set slave and controller specific parameters                                                                                   |
+   +---------------------------+--------------------------------------------------------------------------------------------------------------------------------+
+   | dmaengine_prep_slave_sg   | Get a descriptor for transaction. DMA a list of scatter gather buffers from/to a peripheral                                    |
+   +---------------------------+--------------------------------------------------------------------------------------------------------------------------------+
+   | dmaengine_prep_dma_cyclic | Get a descriptor for transaction. Performing a cyclic DMA operation from/to a peripheral utill the operation explicitly stops. |
+   +---------------------------+--------------------------------------------------------------------------------------------------------------------------------+
+   | dmaengine_submit          | Submit the transaction                                                                                                         |
+   +---------------------------+--------------------------------------------------------------------------------------------------------------------------------+
+   | dma_async_issue_pending   | Issue pending DMA requests and wait for callback notification                                                                  |
+   +---------------------------+--------------------------------------------------------------------------------------------------------------------------------+
+
+DMAC demo for kernel space locates at ``<test>/dmac``. File ``readme.txt`` provides the detailed information.
+

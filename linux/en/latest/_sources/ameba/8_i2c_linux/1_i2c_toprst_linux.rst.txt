@@ -1,0 +1,293 @@
+.. _i2c_linux:
+
+Introduction
+---------------
+Architecture
+~~~~~~~~~~~~~~~
+The I2C driver follows Linux framework: :file:`i2c-core-base.c`, :file:`i2c-core-of.c`, :file:`i2c-dev.c`, :file:`i2c-boardinfo.c`. The I2C software architecture is illustrated below.
+
+.. figure:: figures/i2c_software_arch_linux.svg
+   :scale: 110%
+   :align: center
+
+Refer to `I2C <https://docs.kernel.org/i2c/index.html>`_ for more details of I2C framework.
+
+Implementation
+~~~~~~~~~~~~~~~~~~
+The I2C driver is implemented as following files:
+
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +---------------------------------------------------------+-------------------------------------------------------------------------------------------------------------+
+   | File                                                    | Description                                                                                                 |
+   +=========================================================+=============================================================================================================+
+   | ``<linux>/drivers/rtkdrivers/i2c/Kconfig``              | I2C driver Kconfig                                                                                          |
+   +---------------------------------------------------------+-------------------------------------------------------------------------------------------------------------+
+   | :file:`<linux>/drivers/rtkdrivers/i2c/Makefile`         | I2C driver Makefile                                                                                         |
+   +---------------------------------------------------------+-------------------------------------------------------------------------------------------------------------+
+   | :file:`<linux>/drivers/rtkdrivers/i2c/rtk-i2c-core.c`   | I2C core functions.                                                                                         |
+   +---------------------------------------------------------+-------------------------------------------------------------------------------------------------------------+
+   | :file:`<linux>/drivers/rtkdrivers/i2c/rtk-i2c-master.c` | I2C master functions.                                                                                       |
+   +---------------------------------------------------------+-------------------------------------------------------------------------------------------------------------+
+   | :file:`<linux>/drivers/rtkdrivers/i2c/rtk-i2c-slave.c`  | I2C slave functions.                                                                                        |
+   +---------------------------------------------------------+-------------------------------------------------------------------------------------------------------------+
+   | :file:`<linux>/drivers/rtkdrivers/i2c/i2c-realtek.h`    | I2C related function declaration, macro definition, structure definition and the other header files quoted. |
+   +---------------------------------------------------------+-------------------------------------------------------------------------------------------------------------+
+
+Configuration
+------------------
+DTS Configuration
+~~~~~~~~~~~~~~~~~~~
+I2C DTS:
+
+.. code-block::
+
+   i2c0: i2c0@4200F000 {
+      compatible = "realtek,ameba-i2c";
+      reg = <0x4200F000 0x100>;
+      interrupts = <GIC_SPI 22 IRQ_TYPE_LEVEL_HIGH>;
+      clocks = <&rcc RTK_CKE_I2C0>;
+      rtk,i2c-index = <0>;
+      rtk,use-poll-type = <0>;
+      rtk,i2c-clk = <100000>;
+      rtk,wait-timeout = <0x1000>;
+      rtk,i2c-reg-slave-num = <0>;
+      status = "disabled";
+   };
+
+.. _i2c_property_description:
+
+Property Description
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +-----------------------+---------------------------------------------------------------------------------------+---------------+
+   | Property              | Description                                                                           | Configurable? |
+   +=======================+=======================================================================================+===============+
+   | compatible            | The description of I2C driver: "realtek,ameba-i2c".                                   | No            |
+   +-----------------------+---------------------------------------------------------------------------------------+---------------+
+   | reg                   | The hardware address and size for I2C device: <0x4200F000 0x100>.                     | No            |
+   +-----------------------+---------------------------------------------------------------------------------------+---------------+
+   | interrupts            | The GIC number of I2C device: <GIC_SPI 22 IRQ_TYPE_LEVEL_HIGH>.                       | No            |
+   +-----------------------+---------------------------------------------------------------------------------------+---------------+
+   | clocks                | The clock of I2C device: <&rcc RTK_CKE_I2C0>.                                         | No            |
+   +-----------------------+---------------------------------------------------------------------------------------+---------------+
+   | rtk,use-poll-type     | 0: interrupt mode (default)                                                           | 0/1           |
+   |                       |                                                                                       |               |
+   |                       | 1: poll mode                                                                          |               |
+   +-----------------------+---------------------------------------------------------------------------------------+---------------+
+   | rtk,i2c-clk           | Specifies the I2C Bus Clock (in Hz).                                                  | 1~400000      |
+   +-----------------------+---------------------------------------------------------------------------------------+---------------+
+   | rtk,wait-timeout      | Setting 0x1000 means that I2C master will wait transfer for 4096ms, and then timeout. | Yes           |
+   +-----------------------+---------------------------------------------------------------------------------------+---------------+
+   | rtk,i2c-reg-slave-num | Register slaves on I2C bus.                                                           | 0/1/2         |
+   |                       |                                                                                       |               |
+   |                       | - 0: I2C master                                                                       |               |
+   |                       |                                                                                       |               |
+   |                       | - 1/2: I2C slave numbers                                                              |               |
+   +-----------------------+---------------------------------------------------------------------------------------+---------------+
+   | status                | Whether enable this device.                                                           | Yes           |
+   |                       |                                                                                       |               |
+   |                       | - "disabled"                                                                          |               |
+   |                       |                                                                                       |               |
+   |                       | - "okay"                                                                              |               |
+   +-----------------------+---------------------------------------------------------------------------------------+---------------+
+
+Pinmux
+^^^^^^^^^^^^
+
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +------------+-----------+----------+--------------------------------+
+   | I2C device | Port name | Pin name | pinctrl description            |
+   +============+===========+==========+================================+
+   | I2C0       | PA0       | SDA      | <&i2c0_pins>                   |
+   +------------+-----------+----------+--------------------------------+
+   | I2C0       | PA1       | SCL      | <&i2c0_pins>                   |
+   +------------+-----------+----------+--------------------------------+
+   | I2C0       | PA5       | SDA      | Shall revise pins in i2c0_pins |
+   +------------+-----------+----------+--------------------------------+
+   | I2C0       | PA6       | SCL      | Shall revise pins in i2c0_pins |
+   +------------+-----------+----------+--------------------------------+
+   | I2C0       | PA9       | SDA      | Shall revise pins in i2c0_pins |
+   +------------+-----------+----------+--------------------------------+
+   | I2C0       | PA10      | SCL      | Shall revise pins in i2c0_pins |
+   +------------+-----------+----------+--------------------------------+
+   | I2C0       | PA30      | SDA      | Shall revise pins in i2c0_pins |
+   +------------+-----------+----------+--------------------------------+
+   | I2C0       | PA31      | SCL      | Shall revise pins in i2c0_pins |
+   +------------+-----------+----------+--------------------------------+
+   | I2C0       | PB5       | SDA      | Shall revise pins in i2c0_pins |
+   +------------+-----------+----------+--------------------------------+
+   | I2C0       | PB6       | SCL      | Shall revise pins in i2c0_pins |
+   +------------+-----------+----------+--------------------------------+
+   | I2C0       | PB29      | SDA      | Shall revise pins in i2c0_pins |
+   +------------+-----------+----------+--------------------------------+
+   | I2C0       | PB30      | SCL      | Shall revise pins in i2c0_pins |
+   +------------+-----------+----------+--------------------------------+
+   | I2C1       | PA3       | SDA      | Shall revise pins in i2c1_pins |
+   +------------+-----------+----------+--------------------------------+
+   | I2C1       | PA4       | SCL      | Shall revise pins in i2c1_pins |
+   +------------+-----------+----------+--------------------------------+
+   | I2C1       | PA13      | SDA      | Shall revise pins in i2c1_pins |
+   +------------+-----------+----------+--------------------------------+
+   | I2C1       | PA14      | SCL      | Shall revise pins in i2c1_pins |
+   +------------+-----------+----------+--------------------------------+
+   | I2C1       | PA20      | SDA      | Shall revise pins in i2c1_pins |
+   +------------+-----------+----------+--------------------------------+
+   | I2C1       | PA21      | SCL      | Shall revise pins in i2c1_pins |
+   +------------+-----------+----------+--------------------------------+
+   | I2C1       | PA24      | SDA      | Shall revise pins in i2c1_pins |
+   +------------+-----------+----------+--------------------------------+
+   | I2C1       | PA25      | SCL      | Shall revise pins in i2c1_pins |
+   +------------+-----------+----------+--------------------------------+
+   | I2C1       | PB12      | SDA      | <&i2c1_pins>                   |
+   +------------+-----------+----------+--------------------------------+
+   | I2C1       | PB13      | SCL      | <&i2c1_pins>                   |
+   +------------+-----------+----------+--------------------------------+
+   | I2C1       | PB25      | SDA      | Shall revise pins in i2c1_pins |
+   +------------+-----------+----------+--------------------------------+
+   | I2C1       | PB26      | SCL      | Shall revise pins in i2c1_pins |
+   +------------+-----------+----------+--------------------------------+
+   | I2C2       | PA7       | SDA      | Shall revise pins in i2c2_pins |
+   +------------+-----------+----------+--------------------------------+
+   | I2C2       | PA8       | SCL      | Shall revise pins in i2c2_pins |
+   +------------+-----------+----------+--------------------------------+
+   | I2C2       | PA11      | SDA      | Shall revise pins in i2c2_pins |
+   +------------+-----------+----------+--------------------------------+
+   | I2C2       | PA12      | SCL      | Shall revise pins in i2c2_pins |
+   +------------+-----------+----------+--------------------------------+
+   | I2C2       | PA15      | SDA      | Shall revise pins in i2c2_pins |
+   +------------+-----------+----------+--------------------------------+
+   | I2C2       | PA16      | SCL      | Shall revise pins in i2c2_pins |
+   +------------+-----------+----------+--------------------------------+
+   | I2C2       | PA28      | SDA      | Shall revise pins in i2c2_pins |
+   +------------+-----------+----------+--------------------------------+
+   | I2C2       | PA29      | SCL      | Shall revise pins in i2c2_pins |
+   +------------+-----------+----------+--------------------------------+
+   | I2C2       | PB4       | SDA      | Shall revise pins in i2c2_pins |
+   +------------+-----------+----------+--------------------------------+
+   | I2C2       | PB3       | SCL      | Shall revise pins in i2c2_pins |
+   +------------+-----------+----------+--------------------------------+
+   | I2C2       | PB10      | SDA      | <&i2c2_pins>                   |
+   +------------+-----------+----------+--------------------------------+
+   | I2C2       | PB11      | SCL      | <&i2c2_pins>                   |
+   +------------+-----------+----------+--------------------------------+
+
+.. note::
+   The pinmux can be revised according to specific conditions in :file:`<dts>/rtl8730e-pinctrl.dtsi`.
+
+Refer to pinctrl application note for more details.
+
+I2C Group
+^^^^^^^^^^^^^^^^^^
+The I2C group has three I2C devices named I2C0, I2C1 and I2C2. The usage of I2C devices are the same.
+
+.. code-block::
+
+   aliases {
+      i2c0 = "/ocp/i2c0@0x4200F000";
+      i2c1 = "/ocp/i2c1@0x400EF000";
+      i2c2 = "/ocp/i2c2@0x400F0000";
+   };
+
+Build Configuration
+~~~~~~~~~~~~~~~~~~~~~~
+Select Drivers for Realtek > I2C controller driver. If I2C slave mode is expected, enter I2C controller driver and enable I2C slave driver.
+
+.. figure:: figures/i2c_driver_for_rtk_linux.png
+   :scale: 100%
+   :align: center
+
+.. figure:: figures/i2c_controller_driver_linux.png
+   :scale: 100%
+   :align: center
+
+APIs
+--------
+APIs for User Space
+~~~~~~~~~~~~~~~~~~~~
+Master Mode
+^^^^^^^^^^^^^^
+The I2C master interfaces for user space are provided by :file:`<linux>/drivers/i2c/dev.c`. Here are some commonly used APIs to control I2C device.
+
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +----------------+--------------------------------------------------------+
+   | Interfaces     | Introduction                                           |
+   +================+========================================================+
+   | i2cdev_open    | Open an I2C device.                                    |
+   +----------------+--------------------------------------------------------+
+   | i2cdev_release | Release an I2C device.                                 |
+   +----------------+--------------------------------------------------------+
+   | i2cdev_ioctl   | Configure I2C parameters, control read/write I2C data. |
+   +----------------+--------------------------------------------------------+
+   | i2cdev_write   | Call I2C driver to send a message.                     |
+   +----------------+--------------------------------------------------------+
+   | i2cdev_read    | Call I2C driver to read a message.                     |
+   +----------------+--------------------------------------------------------+
+
+.. note::
+   For more details, refer to the official document in `I2C Device Interface <https://www.kernel.org/doc/html/v5.4/i2c/dev-interface.html>`_
+
+The I2C master demo for user space is located at ``<test>/i2c``.
+
+Slave Mode
+^^^^^^^^^^^
+None.
+
+APIs for Kernel Space
+~~~~~~~~~~~~~~~~~~~~~~~
+Master Mode
+^^^^^^^^^^^^^^
+The I2C master interfaces for kernel space are provided by :file:`<linux>/drivers/i2c/i2c-core-base.c`. Here are some commonly used API to control I2C master device.
+
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +-------------------+------------------------------------------------------+
+   | Interfaces        | Introduction                                         |
+   +===================+======================================================+
+   | module_i2c_driver | Register an I2C client module.                       |
+   +-------------------+------------------------------------------------------+
+   | i2c_transfer      | Call I2C driver to send a message or read a message. |
+   |                   |                                                      |
+   |                   | msg->flags & I2C_M_RD = 1 // read                    |
+   |                   |                                                      |
+   |                   | msg->flags & I2C_M_RD = 0 // write                   |
+   +-------------------+------------------------------------------------------+
+
+.. note::
+   For more details, refer to `Writing I2C Clients <https://www.kernel.org/doc/html/v5.4/i2c/writing-clients.html>`_
+
+Slave Mode
+^^^^^^^^^^^^
+The I2C slave interfaces for kernel space are provided by :file:`<linux>/drivers/i2c/i2c-core-slave.c`. Here are some commonly used API to control I2C slave device.
+
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +----------------------+---------------------------------+
+   | Interfaces           | Introduction                    |
+   +======================+=================================+
+   | i2c_slave_register   | Register an I2C slave device.   |
+   +----------------------+---------------------------------+
+   | i2c_slave_unregister | Unregister an I2C slave device. |
+   +----------------------+---------------------------------+
+
+.. note::
+   For more details, refer to `I2C slave interface <https://www.kernel.org/doc/html/v5.4/i2c/slave-interface.html>`_
+
+The I2C slave demo is located at ``<test>/i2c-slave``. Pay attention to modify the ``rtk, i2c-reg-slave-num`` parameter in :ref:`Property Description <i2c_property_description>` to configure an I2C core for the slave.
+

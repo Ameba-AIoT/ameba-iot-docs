@@ -1,0 +1,213 @@
+.. _thermal_linux:
+
+Introduction
+------------------------
+Architecture
+~~~~~~~~~~~~~~~~~~~~~~~~
+Thermal driver follows Linux's thermal subsystem. Thermal subsystem provides thermal interface to user space. The thermal software architecture is illustrated in the following figure.
+
+.. figure:: figures/thermal_software_arch_linux.svg
+   :scale: 110%
+   :align: center
+
+   Thermal software architecture
+
+The thermal software architecture contains the following parts:
+
+- Thermal driver is divided into three parts:
+
+   - ``Thermal Governor``: Temperature control
+   - ``Thermal Zone Device``: Temperature get
+   - ``Thermal Cooling Devices``: Temperature cool
+
+- Thermal core: Thermal subsystem core drivers.
+- Application: User space. A simple example to show how to use thermal.
+
+.. note::
+   Thermal Governor and Thermal Cooling Devices are not implemented currently.
+
+For more details of thermal, refer to https://www.kernel.org/doc/html/v5.4/driver-api/thermal/index.html.
+
+Implementation
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The termal driver is implemented as following files:
+
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +------------------------------------------------------+----------------------------------------------------------------------------------------------------------------+
+   | Driver location                                      | Introduction                                                                                                   |
+   +======================================================+================================================================================================================+
+   | <linux>/drivers/rtkdrivers/thermal/Kconfig           | Thermal driver Kconfig                                                                                         |
+   +------------------------------------------------------+----------------------------------------------------------------------------------------------------------------+
+   | <linux>/drivers/rtkdrivers/thermal/Makefile          | Thermal driver Makefile                                                                                        |
+   +------------------------------------------------------+----------------------------------------------------------------------------------------------------------------+
+   | <linux>/drivers/rtkdrivers/thermal/realtek-thermal.c | Thermal functions.                                                                                             |
+   +------------------------------------------------------+----------------------------------------------------------------------------------------------------------------+
+   | <linux>/drivers/rtkdrivers/thermal/realtek-thermal.h | Thermal related function declaration, macro definition, structure definition and the other header files quoted |
+   +------------------------------------------------------+----------------------------------------------------------------------------------------------------------------+
+
+Configuration
+-------------------
+DTS Configuration
+~~~~~~~~~~~~~~~~~~~~~~~
+CPU Thermal
+^^^^^^^^^^^^^^^^^^^^^^
+CPU thermal DTS node:
+
+.. code-block::
+
+   thermal-zones {
+      cpu_thermal: cpu-thermal {
+         polling-delay-passive = <0>;
+         polling-delay = <0>;
+         thermal-sensors = <&thermal>;
+         trips {
+            cpu_alert1: cpu-alert1 {
+               temperature = <105000>;
+               hysteresis = <0>;
+               type = "passive";
+            };
+            cpu-crit {
+               temperature = <125000>;
+               hysteresis = <0>;
+               type = "critical";
+            };
+         };
+         cooling-maps {
+         };
+      };
+   };
+
+Thermal zone DTS contains thermal sensor, trip points and cooling device description. of-thermal module will auto register these description.
+
+The DTS Configurations of Thermal zones are listed below.
+
+.. table:: Thermal zones DTS configurations
+   :width: 100%
+   :widths: auto
+
+   +-----------------------+------------------------------------------------------------+---------------+
+   | Property              | Description                                                | Configurable? |
+   +=======================+============================================================+===============+
+   | polling-delay-passive | Polling interval while passive cooling is activated.       | Yes           |
+   +-----------------------+------------------------------------------------------------+---------------+
+   | polling-delay         | Zone polling interval.                                     | Yes           |
+   +-----------------------+------------------------------------------------------------+---------------+
+   | thermal-sensors       | Point to thermal sensor device node                        | No            |
+   +-----------------------+------------------------------------------------------------+---------------+
+   | temperature           | Trigger temperature value in miliCelsius.                  | Yes           |
+   +-----------------------+------------------------------------------------------------+---------------+
+   | hysteresis            | Relative hysteresis in miliCelsius.                        | Yes           |
+   +-----------------------+------------------------------------------------------------+---------------+
+   | type                  | Trip point type. There are four kinds of type:             | Yes           |
+   |                       |                                                            |               |
+   |                       | - passive                                                  |               |
+   |                       |                                                            |               |
+   |                       | - critical                                                 |               |
+   |                       |                                                            |               |
+   |                       | - active                                                   |               |
+   |                       |                                                            |               |
+   |                       | - hot                                                      |               |
+   +-----------------------+------------------------------------------------------------+---------------+
+   | cooling-maps          | Defines the relationship between trips and cooling device. | Yes           |
+   +-----------------------+------------------------------------------------------------+---------------+
+
+.. note::
+   Temperature is 1000 times setting trigger threshold.
+
+.. caution::
+   Cooling strategy is unrealized temporarily.
+
+Thermal
+^^^^^^^^^^^^^^
+Thermal DTS node:
+
+.. code-block::
+
+   thermal: thermal@42013000 {
+      compatible = "realtek,ameba-thermal";
+      reg = <0x42013000 0x100>;
+      interrupts = <GIC_SPI 21 IRQ_TYPE_LEVEL_HIGH>; /* use timer7, MP chip: 21 */
+      clocks = <&rcc RTK_CKE_ATIM>, <&rcc RTK_CKE_THM>;
+      clock-names = "rtk_aon_tim_clk", "rtk_thermal_clk";
+      #thermal-sensor-cells = <0>;
+   };
+
+The DTS Configurations of thermal are listed below.
+
+.. table:: Thermal DTS configurations
+   :width: 100%
+   :widths: auto
+
+   +-----------------------+--------------------------------------------------------------------------------+-----------------------------------------+---------------+
+   | Property              | Description                                                                    | Default                                 | Configurable? |
+   +=======================+================================================================================+=========================================+===============+
+   | compatible            | Description of thermal driver.                                                 | realtek,ameba-thermal                   | No            |
+   +-----------------------+--------------------------------------------------------------------------------+-----------------------------------------+---------------+
+   | reg                   | Hardware address and size for thermal device.                                  | <0x42013000 0x100>                      | No            |
+   +-----------------------+--------------------------------------------------------------------------------+-----------------------------------------+---------------+
+   | interrupts            | GIC number of thermal device.                                                  | <GIC_SPI 21 IRQ_TYPE_LEVEL_HIGH>        | No            |
+   +-----------------------+--------------------------------------------------------------------------------+-----------------------------------------+---------------+
+   | clocks                | Clock of thermal device.                                                       | <&rcc RTK_CKE_ATIM>, <&rcc RTK_CKE_THM> | No            |
+   +-----------------------+--------------------------------------------------------------------------------+-----------------------------------------+---------------+
+   | #thermal-sensor-cells | Indicates how many cells are needed to specifically describe a thermal sensor. | 0                                       | No            |
+   +-----------------------+--------------------------------------------------------------------------------+-----------------------------------------+---------------+
+
+Build Configuration
+~~~~~~~~~~~~~~~~~~~~~~~~
+Select :menuselection:`Device Drivers > Drivers for Realtek > Thermal driver`:
+
+.. figure:: figures/thermal_driver_build_option_linux.png
+   :scale: 80%
+   :align: center
+
+APIs
+--------
+APIs for User Space
+~~~~~~~~~~~~~~~~~~~~~~
+Thermal uses sysfs interface for user space.
+
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +---------------------------------------+----------------------+
+   | Interfaces                            | Introduction         |
+   +=======================================+======================+
+   | /sys/class/thermal/thermal_zone0/temp | Get Temperature.     |
+   +---------------------------------------+----------------------+
+   | /sys/class/thermal/thermal_zone0/type | Get Trip Point Type. |
+   +---------------------------------------+----------------------+
+
+Thermal demo for user space is located at ``<test>/thermal``.
+
+APIs for Kernel Space
+~~~~~~~~~~~~~~~~~~~~~~~~~
+.. table::
+   :width: 100%
+   :widths: auto
+
+   +----------------------------------------+------------------------------------------------------------------+
+   | Interfaces                             | Introduction                                                     |
+   +========================================+==================================================================+
+   | devm_thermal_zone_of_sensor_register   | Resource managed version of thermal_zone_of_sensor_register()    |
+   +----------------------------------------+------------------------------------------------------------------+
+   | devm_thermal_zone_of_sensor_unregister | Resource managed version of thermal_zone_of_sensor_unregister(). |
+   +----------------------------------------+------------------------------------------------------------------+
+   | thermal_zone_of_sensor_register        | Registers a sensor to a DT thermal zone.                         |
+   +----------------------------------------+------------------------------------------------------------------+
+   | thermal_zone_of_sensor_unregister      | Unregisters a sensor from a DT thermal zone.                     |
+   +----------------------------------------+------------------------------------------------------------------+
+   | of_thermal_get_trip_points             | Function to get access to a globally exported trip points.       |
+   +----------------------------------------+------------------------------------------------------------------+
+   | of_thermal_get_ntrips                  | Function to export number of available trip points.              |
+   +----------------------------------------+------------------------------------------------------------------+
+   | thermal_add_hwmon_sysfs                | Add a thermal zone device to hwmon sysfs.                        |
+   +----------------------------------------+------------------------------------------------------------------+
+   | thermal_remove_hwmon_sysfs             | Remove a thermal zone device to hwmon sysfs.                     |
+   +----------------------------------------+------------------------------------------------------------------+
+
+Refer to https://www.kernel.org/doc/html/v5.4/driver-api/thermal/sysfs-api.html?highlight=thermal for more details
+
