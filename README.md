@@ -1,8 +1,11 @@
 ## Reading the Docs
 Click the following URLs to view the documentations of the specific SoC.
-- English: https://ameba-aiot.github.io/ameba-iot-docs/freertos/en/latest/
-- Chinese: https://ameba-aiot.github.io/ameba-iot-docs/freertos/cn/latest/
-
+- FreeRTOS:
+  * English: https://ameba-aiot.github.io/ameba-iot-docs/freertos/en/latest/
+  * Chinese: https://ameba-aiot.github.io/ameba-iot-docs/freertos/cn/latest/
+- Linux:
+  * English: https://ameba-aiot.github.io/ameba-iot-docs/linux/en/latest/
+  * Chinese: https://ameba-aiot.github.io/ameba-iot-docs/linux/cn/latest/
 
 -----------------------------------------------------------------------------------------
 
