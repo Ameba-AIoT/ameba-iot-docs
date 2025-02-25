@@ -1,7 +1,7 @@
 ## Reading the Docs
 Click the following URLs to view the documentations of the specific SoC.
-- English: https://ameba-aiot.github.io/ameba-iot-docs/en/latest/
-- Chinese: https://ameba-aiot.github.io/ameba-iot-docs/cn/latest/
+- English: https://ameba-aiot.github.io/ameba-iot-docs/freertos/en/latest/
+- Chinese: https://ameba-aiot.github.io/ameba-iot-docs/freertos/cn/latest/
 
 
 -----------------------------------------------------------------------------------------
