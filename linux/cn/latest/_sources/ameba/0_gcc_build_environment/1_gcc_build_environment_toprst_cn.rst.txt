@@ -1,0 +1,455 @@
+.. _gcc_build_environment:
+
+.. IC 统一选择下拉菜单
+.. include:: ../ic_select_menu.rst
+
+概述
+------------------------
+本章节介绍如何为 Realtek SDK 搭建 GCC 环境，包括 Windows 平台和 Linux 平台，请根据操作系统选择对应的使用指南。
+
+- Windows 平台：以 Windows 10 64-bit 为例。
+- Linux 平台：以 Ubuntu 22.04 x86_64 为例。
+
+
+准备 GCC 环境
+--------------------------------------------------
+
+包括cmake编译环境，python环境，以及其他工具软件。用户可以采用两种方式搭建环境：一种是下载Realtek提供的免安装软件合集，并在构建前运行ameba脚本自动配置环境变量。这种方式不会影响用户原先的软件环境，并且可以避免软件版本带来的兼容性问题。
+当然，用户也可以采用第二种方式：自行下载安装需要的工具软件并配置对应的环境变量。
+
+下载免安装软件包（推荐）
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Windows
+^^^^^^^^^^^
+.. include:: gcc_preparing_environment_windows_cn.rst
+
+Linux
+^^^^^^^^^^^
+
+.. include:: gcc_preparing_environment_linux_cn.rst
+
+手动安装并配置环境
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+如果用户希望使用本地已有的环境，也可以手动下载所需要的软件，但这种方式可能会影响用户的其他环境。
+
+.. table:: software list
+   :width: 100%
+
+   +----------+------------------+
+   | Software | Version          |
+   +==========+==================+
+   | cmake    | >=3.20           |
+   +----------+------------------+
+   | ninja    | >=1.10.1         |
+   +----------+------------------+
+   | ccache   | >=4.5.1          |
+   +----------+------------------+
+   | python3  | >=3.10           |
+   +----------+------------------+
+   | wget     | recommand newest |
+   +----------+------------------+
+   | 7zip     | recommand newest |
+   +----------+------------------+
+
+Windows
+^^^^^^^^^^^^
+
+.. include:: gcc_preparing_environment_windows_manual_cn.rst
+
+Linux
+^^^^^^^^^^^
+
+.. include:: gcc_preparing_environment_linux_manual_cn.rst
+
+安装工具链
+------------------------
+自动安装
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. include:: gcc_installing_toolchain_auto_cn.rst
+
+.. _install_toolchain_manually:
+
+手动安装
+~~~~~~~~~~~~~~~~~~~~
+.. include:: gcc_installing_toolchain_manual_cn.rst
+
+.. _configuring_sdk:
+
+配置 SDK
+------------------------------
+本小节介绍如何修改SDK的配置。
+
+.. tabs::
+
+   .. include:: gcc_config_sdk_dplus_cn.rst
+   .. tab:: RTL8720E
+     .. include:: gcc_config_sdk_lite_cn.rst
+   .. tab:: RTL8726E
+     .. include:: gcc_config_sdk_lite_cn.rst
+   .. include:: gcc_config_sdk_smart_cn.rst
+
+.. _building_code:
+
+编译代码
+----------------
+
+本节介绍如何在Windows平台和Linux平台构建SDK，下方的表格列举了SDK中的所有GCC project路径。
+
+.. tabs::
+
+   .. tab:: RTL8721Dx
+
+      .. table::
+         :width: 100%
+         :widths: auto
+
+         +------------------+------------------------------------------------+
+         | GCC project      | Directory                                      |
+         +==================+================================================+
+         | KM4              | {SDK}\\amebadplus_gcc_project\\project_km4     |
+         +------------------+------------------------------------------------+
+         | KM0              | {SDK}\\amebadplus_gcc_project\\project_km0     |
+         +------------------+------------------------------------------------+
+
+   .. tab:: RTL8720E
+
+      .. table::
+         :width: 100%
+         :widths: auto
+
+         +-------------+--------------------------------------------+
+         | GCC project | Directory                                  |
+         +=============+============================================+
+         | KM4         | {SDK}\\amebalite_gcc_project\\project_km4  |
+         +-------------+--------------------------------------------+
+         | KR4         | {SDK}\\amebalite_gcc_project\\project_kr4  |
+         +-------------+--------------------------------------------+
+
+   .. tab:: RTL8726E
+
+      .. table::
+         :width: 100%
+         :widths: auto
+
+         +-------------+--------------------------------------------+
+         | GCC project | Directory                                  |
+         +=============+============================================+
+         | KM4         | {SDK}\\amebalite_gcc_project\\project_km4  |
+         +-------------+--------------------------------------------+
+         | KR4         | {SDK}\\amebalite_gcc_project\\project_kr4  |
+         +-------------+--------------------------------------------+
+
+   .. tab:: RTL8730E
+
+      .. table::
+         :width: 100%
+         :widths: auto
+
+         +-------------+-------------------------------------------+
+         | GCC project | Directory                                 |
+         +=============+===========================================+
+         | CA32        | {SDK}\\amebasmart_gcc_project\\project_ap |
+         +-------------+-------------------------------------------+
+         | KM4         | {SDK}\\amebasmart_gcc_project\\project_hp |
+         +-------------+-------------------------------------------+
+         | KM0         | {SDK}\\amebasmart_gcc_project\\project_lp |
+         +-------------+-------------------------------------------+
+
+.. note::
+
+   将表格中的 ``{SDK}`` 替换为用户自己的SDK路径。
+
+我们提供了两种构建方式，请选择任意一种方式进行构建。
+
+使用python脚本构建
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. include:: gcc_build_sdk_with_python_cn.rst
+
+
+直接使用CMake命令构建
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. include:: gcc_build_sdk_with_CMake_cn.rst
+
+构建产物
+~~~~~~~~~~
+
+.. tabs::
+
+   .. include:: gcc_build_sdk_product_dplus_cn.rst
+   .. tab:: RTL8720E
+     .. include:: gcc_build_sdk_product_lite_cn.rst
+   .. tab:: RTL8726E
+     .. include:: gcc_build_sdk_product_lite_cn.rst
+   .. include:: gcc_build_sdk_product_smart_cn.rst
+
+.. _setting_debugger:
+
+设置调试器
+------------
+.. include:: gcc_setting_debugger_probe_internal.rst
+
+J-Link
+~~~~~~~~~~~~
+Before setting J-Link debugger, you need to do some hardware configuration and download images first.
+
+1. Connect J-Link to the SWD interface.
+
+   a. Refer to the following figure to connect SWCLK pin of J-Link to SWD CLK pin, and SWDIO pin of J-Link to SWD DATA pin.
+   b. Connect the device to PC after finishing these configurations.
+
+      .. figure:: figures/connecting_jlink_to_swd.svg
+         :scale: 130%
+         :align: center
+
+         Wiring diagram of connecting J-Link to SWD
+
+   .. note::
+      J-Link version must be v9 or higher.
+      If Virtual Machine (VM) is used as your platform, make sure that the USB connection setting between VM host and client is correct, so that the VM host can detect the device.
+
+2. Download images via ImageTool.
+
+   ImageTool is a software tool provided by Realtek. For more information, refer to :ref:`Image Tool <image_tool>`.
+
+Windows
+^^^^^^^^^^^^^^
+Besides the hardware configuration, J-Link GDB server is also required to install.
+
+For Windows, click  and download the software in ``J-Link Software and Documentation Pack``, then install it correctly.
+
+.. note::
+   The version of J-Link GDB server below is just an example, you can select the latest version to download.
+
+.. tabs::
+
+   .. include:: gcc_setting_debugger_jlink_windows_dplus.rst
+   .. tab:: RTL8720E
+      .. include:: gcc_setting_debugger_jlink_windows_lite.rst
+   .. tab:: RTL8726E
+      .. include:: gcc_setting_debugger_jlink_windows_lite.rst
+   .. include:: gcc_setting_debugger_jlink_windows_smart.rst
+
+
+Linux
+^^^^^^^^^^
+For J-Link GDB server, click  and download the software in ``J-Link Software and Documentation Pack``. It is suggested to use Debian package manager to install the Debian version.
+
+Open a new terminal and type the following command to install GDB server. After the installation of the software pack, there is a tool named “JLinkGDBServer” under the J-Link directory. Take Ubuntu 18.04 as an example, the JLinkGDBServer can be found at ``/opt/SEGGER/JLink``.
+
+.. code::
+
+   $dpkg –i jlink_6.0.7_x86_64.deb
+
+.. note::
+   The version of J-Link GDB server below is just an example, you can select the latest version to download.
+
+.. tabs::
+
+   .. include:: gcc_setting_debugger_jlink_linux_dplus.rst
+   .. tab:: RTL8720E
+      .. include:: gcc_setting_debugger_jlink_linux_lite.rst
+   .. tab:: RTL8726E
+      .. include:: gcc_setting_debugger_jlink_linux_lite.rst
+   .. include:: gcc_setting_debugger_jlink_linux_smart.rst
+
+下载固件至 Flash
+----------------------------------------------------
+有两种方法可以下载固件至 Flash：
+
+- 使用 Realtek 提供的 Image Tool 软件（推荐）。更多信息请参考 :ref:`Image Tool <image_tool>`。
+
+- 利用 GDB Server，主要用于 GDB 调试的情形。
+
+本节主要介绍第二种下载固件到 Flash 的方式。
+
+要将固件下载到设备中，首先确认完成 :ref:`building_code` 中的步骤，然后键入 ``build.py -gdb`` 命令开始下载。
+
+
+通过此命令，固件将被 KM4 下载到 Flash 中，整个过程需要几秒钟才能完成，如下所示。
+
+.. figure:: figures/downloading_image_to_flash.png
+   :scale: 90%
+   :align: center
+
+   下载固件到Flash
+
+.. figure:: figures/download_codes_success.png
+   :scale: 80%
+   :align: center
+
+   下载成功的日志提示
+
+为确认固件是否被正确地下载进去，可以在下载之前勾选 :guilabel:`verify download` ，在固件下载过程中，将会有 ``verified OK`` 的日志提示。
+
+.. figure:: figures/verify_download.png
+   :scale: 75%
+   :align: center
+
+   Verify download
+
+下载完成后按下 ``Reset`` 按键，可以看到设备使用新的固件启动。
+
+.. only:: internal
+
+   .. note::
+
+      对于 Probe 下载:
+
+      - 在将代码下载到 Flash 之前，使芯片进入下载模式。
+      - Probe 使用 USB 1.0 接口，因此其下载速率受限于 USB 1.0 协议。
+
+.. _entering_debug_mode:
+
+进入调试模式
+------------------
+GDB Server
+~~~~~~~~~~~~~~~~~~~~
+要进入GDB 调试模式，请根据以下步骤执行：
+
+1. 确认 :ref:`Configuring_sdk` 章节到 :ref:`setting_debugger` 章节的步骤完成，并重启设备。
+2. 进入到SDK根目录, 输入： ``build.py -debug`` 。
+
+J-Link
+~~~~~~~~~~~~
+
+在命令提示符中拷贝对应target的 J-Link 命令并执行：
+
+.. tabs::
+
+   .. include:: gcc_enter_debug_mode_jlink_dplus.rst
+   .. tab:: RTL8720E
+      .. include:: gcc_enter_debug_mode_jlink_lite.rst
+   .. tab:: RTL8726E
+      .. include:: gcc_enter_debug_mode_jlink_lite.rst
+   .. include:: gcc_enter_debug_mode_jlink_smart.rst
+
+.. note::
+
+   - ``{Jlink_path}`` ： Segger J-Link 的安装路径，默认为 ``C:\Program Files (x86)\SEGGER\JLink``.
+   - ``{script_path}`` ： ``{SDK}\amebaxxx_gcc_project\utils\jlink_script``
+
+命令
+^^^^^^^
+以下命令在程序 stuck 时经常使用。所有命令均不区分大小写。
+
+.. table:: 常用命令
+   :width: 100%
+   :widths: 15 15 30 40
+
+   +----------------+-----------------+--------------------------------------+----------------------------+
+   | 命令（长）     | 命令 （短）     | 语法                                 | 解释                       |
+   +================+=================+======================================+============================+
+   | Halt           | H               |                                      | 暂停 CPU                   |
+   +----------------+-----------------+--------------------------------------+----------------------------+
+   | Go             | G               |                                      | 取消 CPU 暂停状态          |
+   +----------------+-----------------+--------------------------------------+----------------------------+
+   | Mem            |                 | Mem <Addr> <NumBytes>                | 读取内存并显示ASCII码值    |
+   +----------------+-----------------+--------------------------------------+----------------------------+
+   | SaveBin        |                 | SaveBin <FileName> <Addr> <NumBytes> | 将目标内存保存为二进制文件 |
+   +----------------+-----------------+--------------------------------------+----------------------------+
+   | Exit           |                 |                                      | 关闭 J-Link 连接并退出     |
+   +----------------+-----------------+--------------------------------------+----------------------------+
+
+更多信息参见： https://wiki.segger.com/J-Link_Commander.
+
+.. note::
+
+   - 可以多次输入 ``H`` 和 ``G`` 命令并记录程序计数器（PC）的值，然后在汇编文件中查找该 PC 值对应的函数。这个函数可能是您遇到问题的地方。
+
+   - 也可以使用 ``mem`` 命令来转储一些位于栈指针（sp）之后的地址内容，通过这些地址信息，您可以找到函数调用栈。
+
+.. _command_lists:
+
+命令列表
+--------------------------
+前面提到的命令列在下方表格中。
+
+.. table:: Command lists
+   :width: 100%
+   :widths: 10 30 60
+
+   +----------+--------------------------+------------------------+
+   | 功能     | 命令                     | 描述                   |
+   +==========+==========================+========================+
+   | 帮助     |  ``build.py -h``         | 列出支持的命令         |
+   +----------+--------------------------+------------------------+
+   | 构建     |  ``build.py``            | 增量构建工程           |
+   +----------+--------------------------+------------------------+
+   | 纯净构建 |  ``build.py -p``         | 移除所有产物并构建工程 |
+   +----------+--------------------------+------------------------+
+   | 指定示例 |  ``build.py -a <APP>``   | 构建名为 APP 的示例    |
+   +----------+--------------------------+------------------------+
+   | 指定目标 |  ``build.py -g target``  | 构建指定的 target      |
+   +----------+--------------------------+------------------------+
+   | 清理     |  ``build.py -c``         | 清理构建产物           |
+   +----------+--------------------------+------------------------+
+   | 下载     |  ``build.py -gdb``       | 通过GDB下载固件        |
+   +----------+--------------------------+------------------------+
+   | 调试     |  ``build.py -debug``     | 进入调试模式           |
+   +----------+--------------------------+------------------------+
+
+.. _gdb_command_lists:
+
+GDB 调试器的基本用法
+------------------------------------------------
+
+GDB（GNU项目调试器）允许您在程序执行过程中对其进行检查，并帮助捕捉错误。章节 :ref:`entering_debug_mode` 已经描述了如何进入GDB调试模式，而本节将展示一些GDB命令的基本用法。
+
+关于GDB调试器的更多信息，请访问 GNU官方网站。下表描述了常用的指令及其功能，具体使用方法请参见 `GDB用户手册 <https://www.sourceware.org/gdb/documentation/>`_。
+
+.. table::
+   :width: 100%
+   :widths: 20 10 70
+
+   +----------------------+------------+---------------------------------------------------------------------------------------------------------------------------------------------------+
+   | 功能                 | 命令       | 描述                                                                                                                                              |
+   +======================+============+===================================================================================================================================================+
+   | 断点                 | $break     | 断点可以通过 break 命令（缩写为 b）设置。                                                                                                         |
+   |                      |            |                                                                                                                                                   |
+   |                      |            |                                                                                                                                                   |
+   |                      |            | 使用方法请参见 **Setting Breakpoints** （设置断点）部分。                                                                                         |
+   +----------------------+------------+---------------------------------------------------------------------------------------------------------------------------------------------------+
+   | 观察点               | $watch     | 您可以使用观察点在表达式的值发生变化时停止执行。相关命令包括 watch、rwatch 和 awatch。使用方法请参见 **Setting Watchpoints** （设置观察点）部分。 |
+   |                      |            |                                                                                                                                                   |
+   |                      |            | .. note:: 保持观察点的范围小于 20 字节。                                                                                                          |
+   +----------------------+------------+---------------------------------------------------------------------------------------------------------------------------------------------------+
+   | 打印断点与观察点信息 | $info      | 要打印所有已设置且未删除的断点和观察点的表格，请使用 info 命令。                                                                                  |
+   |                      |            | 您可以简单地输入 info 来了解其用法。                                                                                                              |
+   +----------------------+------------+---------------------------------------------------------------------------------------------------------------------------------------------------+
+   | 删除断点             | $delete    | 要删除断点，请使用 delete 命令（缩写为 d）。                                                                                                      |
+   |                      |            |                                                                                                                                                   |
+   |                      |            | 使用方法请参见 **Deleting Breakpoints** （删除断点）部分。                                                                                        |
+   +----------------------+------------+---------------------------------------------------------------------------------------------------------------------------------------------------+
+   | 继续执行             | $continue  | 要恢复程序执行，请使用 continue 命令（缩写为 c）。                                                                                                |
+   |                      |            |                                                                                                                                                   |
+   |                      |            | 使用方法请参见 **Continue and Stepping** （继续和单步执行）部分。                                                                                 |
+   +----------------------+------------+---------------------------------------------------------------------------------------------------------------------------------------------------+
+   | Step                 | $step      | 要进入函数调用，请使用 step 命令（缩写为 s）。它将继续运行您的程序，直到控制到达不同的源代码行。                                                  |
+   |                      |            |                                                                                                                                                   |
+   |                      |            | 使用方法请参见 **Continue and Stepping** （继续和单步执行）部分。                                                                                 |
+   +----------------------+------------+---------------------------------------------------------------------------------------------------------------------------------------------------+
+   | Next                 | $next      | 要逐步执行程序，请使用 next 命令（缩写为 n）。执行将在原始堆栈级别的不同代码行处停止。                                                            |
+   |                      |            |                                                                                                                                                   |
+   |                      |            | 使用方法请参见 **Continue and Stepping** （继续和单步执行）部分。                                                                                 |
+   +----------------------+------------+---------------------------------------------------------------------------------------------------------------------------------------------------+
+   | 退出                 | $quit      | 要退出 GDB 调试器，请使用 quit 命令（缩写为 q），或键入文件结束字符（通常是 Ctrl-d）。                                                            |
+   |                      |            |                                                                                                                                                   |
+   |                      |            | 使用方法请参见 **Quitting GDB** （退出 GDB）部分。                                                                                                |
+   +----------------------+------------+---------------------------------------------------------------------------------------------------------------------------------------------------+
+   | 堆栈回溯             | $backtrace | 回溯是总结您的程序如何到达当前位置的一种方式。您可以使用 backtrace 命令（缩写为 bt）来打印整个堆栈的回溯。                                        |
+   |                      |            |                                                                                                                                                   |
+   |                      |            | 使用方法请参见 **Backtraces** （回溯）部分                                                                                                        |
+   +----------------------+------------+---------------------------------------------------------------------------------------------------------------------------------------------------+
+   | 打印源代码行         | $list      | 要打印源文件中的行，请使用 list 命令（缩写为 l）。                                                                                                |
+   |                      |            |                                                                                                                                                   |
+   |                      |            | 使用方法请参见 **Printing Source Lines** （打印源代码行）部分。                                                                                   |
+   +----------------------+------------+---------------------------------------------------------------------------------------------------------------------------------------------------+
+   | 检查数据             | $print     | 要检查程序中的数据，您可以使用 print 命令（缩写为 p）。它计算并打印表达式的值。                                                                   |
+   |                      |            |                                                                                                                                                   |
+   |                      |            | 使用方法请参见 **Examining Data** （检查数据）部分                                                                                                |
+   +----------------------+------------+---------------------------------------------------------------------------------------------------------------------------------------------------+
+
