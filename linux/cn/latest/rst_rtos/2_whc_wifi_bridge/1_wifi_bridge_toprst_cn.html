@@ -411,11 +411,6 @@
 │  ├─ README.md
 │  ├─ whc_def.h
 │  ├─ whc_dev
-│  │  ├─ ipc
-│  │  │  ├─ whc_ipc_dev_api.c
-│  │  │  ├─ whc_ipc_dev_trx.c
-│  │  │  ├─ whc_ipc_dev_trx.h
-│  │  │  └─ whc_ipc_device.c
 │  │  ├─ sdio
 │  │  │  ├─ whc_bridge_sdio_dev.c
 │  │  │  ├─ whc_bridge_sdio_dev.h
@@ -428,14 +423,14 @@
 │  │  │  ├─ whc_bridge_spi_dev.h
 │  │  │  ├─ whc_fullmac_spi_dev.c
 │  │  │  ├─ whc_fullmac_spi_dev.h
-<span class="hll">│  │  │  ├─ whc_spi_dev.c
-</span><span class="hll">│  │  │  └─ whc_spi_dev.h
-</span>│  │  ├─ usb
+│  │  │  ├─ whc_spi_dev.c
+│  │  │  └─ whc_spi_dev.h
+│  │  ├─ usb
 │  │  │  ├─ whc_usb_dev.c
 │  │  │  └─ whc_usb_dev.h
-│  │  ├─ whc_bridge_dev_api.c
-│  │  ├─ whc_bridge_dev_api.h
-│  │  ├─ whc_dev.h
+<span class="hll">│  │  ├─ whc_bridge_dev_api.c
+</span><span class="hll">│  │  ├─ whc_bridge_dev_api.h
+</span>│  │  ├─ whc_dev.h
 │  │  ├─ whc_dev_api.c
 │  │  ├─ whc_dev_api.h
 │  │  ├─ whc_dev_app.c
@@ -449,17 +444,14 @@
 │  │  ├─ whc_dev_protocal_offload.h
 │  │  ├─ whc_dev_struct.h
 │  │  ├─ whc_dev_trx.c
-│  │  └─ whc_dev_trx.h
-│  ├─ whc_host_rtos
-│  │  ├─ ipc
-│  │  │  ├─ whc_ipc_host.c
-│  │  │  ├─ whc_ipc_host_api.c
-│  │  │  ├─ whc_ipc_host_api.h
-│  │  │  ├─ whc_ipc_host_api_basic.c
-│  │  │  ├─ whc_ipc_host_api_ext.c
-│  │  │  ├─ whc_ipc_host_trx.c
-│  │  │  ├─ whc_ipc_host_trx.h
-│  │  │  └─ whc_ipc_host_zephyr.c
+│  │  ├─ whc_dev_trx.h
+│  │  ├─ whc_ipc.h
+│  │  ├─ whc_ipc_cfg.h
+│  │  ├─ whc_ipc_dev_api.c
+│  │  ├─ whc_ipc_dev_trx.c
+│  │  ├─ whc_ipc_dev_trx.h
+│  │  └─ whc_ipc_device.c
+│  ├─ whc_host
 │  │  ├─ spi
 │  │  │  ├─ whc_spi_host.c
 │  │  │  ├─ whc_spi_host.h
@@ -472,12 +464,17 @@
 │  │  ├─ whc_host_api_ext.c
 │  │  ├─ whc_host_cust_evt.c
 │  │  ├─ whc_host_cust_evt.h
+│  │  ├─ whc_ipc_host.c
+│  │  ├─ whc_ipc_host_api.c
+│  │  ├─ whc_ipc_host_api_basic.c
+│  │  ├─ whc_ipc_host_api_ext.c
+│  │  ├─ whc_ipc_host_trx.c
+│  │  ├─ whc_ipc_host_trx.h
+│  │  ├─ whc_ipc_host_zephyr.c
 │  │  └─ whc_rtos
 │  │     ├─ os_wrapper_memory.c
 │  │     ├─ os_wrapper_mutex.c
 │  │     └─ os_wrapper_semaphore.c
-│  ├─ whc_ipc.h
-│  ├─ whc_ipc_cfg.h
 │  ├─ whc_ipc_msg_queue.c
 │  └─ whc_ipc_msg_queue.h
 </pre></div>
@@ -485,61 +482,56 @@
 </div><div aria-labelledby="tab-1-1-1" class="sphinx-tabs-panel" hidden="true" id="panel-1-1-1" name="1-1" role="tabpanel" tabindex="0"><div class="highlight-default notranslate"><div class="highlight"><pre><span></span>├─ cfg80211_fullmac
 │  ├─ Kconfig
 │  ├─ Makefile
-│  ├─ fullmac_setup.sh
 │  ├─ bridge
-<span class="hll">│  │  ├─ Makefile
-</span><span class="hll">│  │  ├─ whc_bridge_host_api.c
-</span>│  │  ├─ whc_bridge_host_api.h
-│  │  ├─ whc_bridge_host_demo.c
-│  │  ├─ whc_bridge_host_intf.h
-│  │  ├─ whc_bridge_host_netlink.c
-│  │  ├─ whc_bridge_host_netlink.h
-│  │  ├─ whc_bridge_host_pkt_rx.c
-│  │  ├─ whc_bridge_host_tx.c
+│  │  ├─ Makefile
+<span class="hll">│  │  ├─ rtw_bridge_api.c
+</span><span class="hll">│  │  ├─ rtw_bridge_api.h
+</span>│  │  ├─ rtw_bridge_app.c
+│  │  ├─ rtw_bridge_llhw_app.c
+│  │  ├─ rtw_bridge_llhw_event_tx.c
+│  │  ├─ rtw_bridge_llhw_pkt_rx.c
+│  │  ├─ rtw_bridge_netlink.h
 │  │  ├─ sdio_bridge
 │  │  │  └─ Kbuild
-│  │  ├─ spi_bridge
-│  │  │  ├─ whc_bridge_host_spi.c.c
-│  │  │  └─ Kbuild
+│  │  └─ whc_bridge_host_demo.c
 │  ├─ common
 │  │  ├─ autoconf.h
-│  │  ├─ whc_host_event.h
-│  │  ├─ whc_host_hci.c
-│  │  ├─ whc_host_hci.h
-│  │  ├─ whc_host_memory.c
-│  │  ├─ whc_host_ops.c
-│  │  ├─ whc_host_pkt_rx.c
-│  │  ├─ whc_host_pkt_tx.c
-│  │  ├─ whc_host_trx.h
 │  │  ├─ netdev
-│  │  │  ├─ whc_host_drv_probe.c
-│  │  │  ├─ whc_host_drv_probe.h
-│  │  │  ├─ whc_host_ethtool_ops.c
-│  │  │  ├─ whc_host_ethtool_ops.h
-│  │  │  ├─ whc_host_function.h
-│  │  │  ├─ whc_host_linux.h
-│  │  │  ├─ whc_host_netdev_ops.c
-│  │  │  ├─ whc_host_netdev_ops.h
-│  │  │  └─ whc_host_wiphy.h
+│  │  │  ├─ rtw_cfg80211_fullmac.h
+│  │  │  ├─ rtw_drv_probe.c
+│  │  │  ├─ rtw_drv_probe.h
+│  │  │  ├─ rtw_ethtool_ops.c
+│  │  │  ├─ rtw_ethtool_ops.h
+│  │  │  ├─ rtw_functions.h
+│  │  │  ├─ rtw_netdev_ops.c
+│  │  │  ├─ rtw_netdev_ops.h
+│  │  │  └─ rtw_wiphy.h
+│  │  ├─ rtw_llhw_event.h
+│  │  ├─ rtw_llhw_hci.c
+│  │  ├─ rtw_llhw_hci.h
+│  │  ├─ rtw_llhw_memory.c
+│  │  ├─ rtw_llhw_ops.c
+│  │  ├─ rtw_llhw_pkt_tx.c
+│  │  ├─ rtw_llhw_trx.h
 │  │  ├─ sdio
-│  │  │  ├─ whc_sdio_host.h
-│  │  │  ├─ whc_sdio_host_drvio.c
-│  │  │  ├─ whc_sdio_host_drvio.h
-│  │  │  ├─ whc_sdio_host_fwdl.c
-│  │  │  ├─ whc_sdio_host_init.c
-│  │  │  ├─ whc_sdio_host_ops.c
-│  │  │  ├─ whc_sdio_host_ops.h
-│  │  │  ├─ whc_sdio_host_probe.c
-│  │  │  └─ whc_sdio_host_reg.h
+│  │  │  ├─ rtw_sdio.h
+│  │  │  ├─ rtw_sdio_drvio.c
+│  │  │  ├─ rtw_sdio_drvio.h
+│  │  │  ├─ rtw_sdio_fwdl.c
+│  │  │  ├─ rtw_sdio_init.c
+│  │  │  ├─ rtw_sdio_ops.c
+│  │  │  ├─ rtw_sdio_ops.h
+│  │  │  ├─ rtw_sdio_probe.c
+│  │  │  └─ rtw_sdio_reg.h
 │  │  ├─ spi
-│  │  │  ├─ whc_spi_host.h
-│  │  │  ├─ whc_spi_host_ops.c
-│  │  │  ├─ whc_spi_host_probe.c
+│  │  │  ├─ rtw_spi.h
+│  │  │  ├─ rtw_spi_ops.c
+│  │  │  ├─ rtw_spi_probe.c
 │  │  │  └─ spidev-overlay.dts
 │  │  └─ usb
-│  │     ├─ whc_usb_host.h
-│  │     ├─ whc_usb_host_ops.c
-│  │     └─ whc_usb_host_probe.c
+│  │     ├─ rtw_usb.h
+│  │     ├─ rtw_usb_ops.c
+│  │     └─ rtw_usb_probe.c
 </pre></div>
 </div>
 </div></div>
@@ -728,9 +720,9 @@
 <div class="admonition note">
 <p class="admonition-title">备注</p>
 <ul class="simple">
-<li><p>SPI DEV_TX_REQ: Ameba使用这根pin的上升沿告诉HOST自己有数据要发送。</p></li>
+<li><p>SPI DEV_TX_REQ: Ameba 使用这跟pin的上升延告诉HOST自己有数据要发送。</p></li>
 <li><dl class="simple">
-<dt>SPI DEV_READY: Ameba使用这根pin的高低电平告诉HOST自己是否已经准备好接收数据。</dt><dd><ul>
+<dt>SPI DEV_READY: Ameba 使用这跟pin的高低电平告诉HOST自己是否已经准备好接收数据。</dt><dd><ul>
 <li><p>1: Device 准备好接收数据.</p></li>
 <li><p>0: Device 忙碌，无法接收数据.</p></li>
 </ul>
@@ -742,18 +734,18 @@
 <div class="admonition note">
 <p class="admonition-title">备注</p>
 <ul>
-<li><p>以上Ameba的SDIO pin是SDK的默认pin脚，如果开发者使用另外的pin脚做SDIO，则需要修改如下文件中函数 <code class="docutils literal notranslate"><span class="pre">SPDIO_Board_Init的SDIO</span></code> pinmux配置。</p>
+<li><p>以上Ameba的SDIO pin是 SDK的默认pin脚，如果开发者使用另外的pin脚做SDIO，则需要修改如下文件中函数 <code class="docutils literal notranslate"><span class="pre">SPDIO_Board_Init的SDIO</span></code> pinmux配置。</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">component</span><span class="o">/</span><span class="n">soc</span><span class="o">/</span><span class="n">amebadplus</span><span class="o">/</span><span class="n">hal</span><span class="o">/</span><span class="n">src</span><span class="o">/</span><span class="n">spdio_api</span><span class="o">.</span><span class="n">c</span>
 </pre></div>
 </div>
 </li>
-<li><p>目前Host端的SDIO interrupt实现的是标准SDIO中断模式, SDIO_DATA1必须配置为SDIO而不是GPIO。如果Host端不支持SDIO中断，开发者可以考虑使用polling模。</p></li>
+<li><p>目前Host端的SDIO interrupt实现的是标准SDIO 中断模式, SDIO_DATA1必须配置为SDIO而不是GPIO。如果Host端不支持SDIO 中断，开发者可以考虑使用polling模。</p></li>
 </ul>
 </div>
 </section>
 <section id="sdio">
 <h2>SDIO转接板<a class="headerlink" href="#sdio" title="Link to this heading"></a></h2>
-<p>由于SDIO飞线可能会导致信号传输质量差，无法使用较高的频率传输。可以购买SDIO转接板连接到Ameba的SDIO pin脚，如下图所示：</p>
+<p>由于SDIO 飞线可能会导致信号传输质量差，无法使用较高的频率传输。可以购买SDIO转接板连接到Ameba的SDIO pin脚，如下图所示：</p>
 <blockquote>
 <div><figure class="align-center" id="id13">
 <a class="reference internal image-reference" href="../../_images/sdio_adapter_board.jpg"><img alt="../../_images/sdio_adapter_board.jpg" src="../../_images/sdio_adapter_board.jpg" style="width: 335.5px; height: 248.5px;" /></a>
@@ -785,78 +777,65 @@
 <ol class="arabic">
 <li><p>在工程目录（比如 <code class="docutils literal notranslate"><span class="pre">{SDK}/amebadplus_gcc_project</span></code>）中执行 <code class="docutils literal notranslate"><span class="pre">./menuconfig.py</span></code></p>
 <ol class="loweralpha">
-<li><p>找到 <span class="menuselection">CONFIG WHC ITNF &gt; WHC Mode &gt; FULLMAC_BRIDGE</span>, 选择需要的接口：</p>
+<li><p>找到 <span class="menuselection">CONFIG INIC ITNF &gt; INIC Mode &gt; FULLMAC_BRIDGE</span>, 选择需要的接口：</p>
 <figure class="align-center">
-<a class="reference internal image-reference" href="../../_images/bridge_sdio_spi_selection.png"><img alt="../../_images/bridge_sdio_spi_selection.png" src="../../_images/bridge_sdio_spi_selection.png" style="width: 613.6px; height: 238.4px;" /></a>
+<a class="reference internal image-reference" href="../../_images/bridge_sdio_spi_selection.png"><img alt="../../_images/bridge_sdio_spi_selection.png" src="../../_images/bridge_sdio_spi_selection.png" style="width: 750.4000000000001px; height: 311.20000000000005px;" /></a>
 </figure>
 </li>
 </ol>
 </li>
-<li><p>执行./build.py产生image.</p></li>
+<li><p>执行make产生image.</p></li>
 <li><p>使用image tool下载image到Demo板。</p></li>
 </ol>
 </section>
 <section id="wifi-bridge-host">
 <h1>WiFi Bridge Host 驱动移植指南<a class="headerlink" href="#wifi-bridge-host" title="Link to this heading"></a></h1>
 <div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-3-3-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-3-3-0" name="3-0" role="tab" tabindex="0">RTOS</button><button aria-controls="panel-3-3-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-3-3-1" name="3-1" role="tab" tabindex="-1">Linux</button><button aria-controls="panel-3-3-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-3-3-2" name="3-2" role="tab" tabindex="-1">Raspberry Pi</button></div><div aria-labelledby="tab-3-3-0" class="sphinx-tabs-panel" id="panel-3-3-0" name="3-0" role="tabpanel" tabindex="0"></div><div aria-labelledby="tab-3-3-1" class="sphinx-tabs-panel" hidden="true" id="panel-3-3-1" name="3-1" role="tabpanel" tabindex="0"><p>当前的linux host的驱动代码，在Linux kernel v5.15上已经经过测试和验证，如果您在其他的kernel版本上遇到编译错误，可以联系RTK团队。</p>
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-3-3-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-3-3-0" name="3-0" role="tab" tabindex="0">RTOS</button><button aria-controls="panel-3-3-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-3-3-1" name="3-1" role="tab" tabindex="-1">Linux</button><button aria-controls="panel-3-3-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-3-3-2" name="3-2" role="tab" tabindex="-1">Raspberry Pi</button></div><div aria-labelledby="tab-3-3-0" class="sphinx-tabs-panel" id="panel-3-3-0" name="3-0" role="tabpanel" tabindex="0"></div><div aria-labelledby="tab-3-3-1" class="sphinx-tabs-panel" hidden="true" id="panel-3-3-1" name="3-1" role="tabpanel" tabindex="0"><p>Host driver has been tested and verified to work on Linux kernel version v5.4. If you encounter any compilation errors on other kernel versions, please contact us.</p>
 <ol class="arabic">
-<li><p>安装必要的环境：</p>
+<li><p>Install build-essential</p>
 <div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="n">$sudo</span><span class="w"> </span><span class="n">apt</span><span class="o">-</span><span class="n">get</span><span class="w"> </span><span class="n">install</span><span class="w"> </span><span class="n">build</span><span class="o">-</span><span class="n">essential</span>
 </pre></div>
 </div>
 </li>
-<li><p>进入文件夹 <code class="docutils literal notranslate"><span class="pre">{SDK}/component/wifi/cfg80211_fullmac</span></code>, 然后执行以下cmd（其中的sdio可以替换为你想要的IP，比如spi）：</p>
-<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="p">.</span><span class="o">/</span><span class="n">fullmac_setup</span><span class="p">.</span><span class="n">sh</span><span class="w"> </span><span class="n">sdio</span><span class="w"> </span><span class="n">bridge</span>
+<li><p>Enter <code class="docutils literal notranslate"><span class="pre">{SDK}/component/wifi/cfg80211_fullmac</span></code>, and execute the following command</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="p">.</span><span class="o">/</span><span class="n">fullmac_setup</span><span class="p">.</span><span class="n">sh</span><span class="w"> </span><span class="n">sdiobridge</span>
 </pre></div>
 </div>
 </li>
-<li><p>根据提示选择target的device</p></li>
-<li><p>拷贝文件夹 <code class="docutils literal notranslate"><span class="pre">cfg80211_fullmac</span></code> 到linux host端。</p></li>
-<li><p>按照如下步骤编译并且安装ko文件(以SDIO为例，其他的IP只需要将下面的sdio替换为想要的IP，比如spi)：</p>
+<li><p>Enter <code class="docutils literal notranslate"><span class="pre">{SDK}/component/wifi/cfg80211_fullmac</span></code>, and execute the following command to choose target device ic</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="n">make</span><span class="w"> </span><span class="n">menuconfig</span>
+</pre></div>
+</div>
+</li>
+<li><p>Copy <code class="docutils literal notranslate"><span class="pre">cfg80211_fullmac</span></code> folder to host side</p></li>
+<li><p>Build and install host driver as below</p>
 <div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="n">$cd</span><span class="w"> </span><span class="p">{</span><span class="n">driver_path</span><span class="p">}</span><span class="o">/</span><span class="n">cfg80211_fullmac</span>
 <span class="n">$make</span>
-<span class="n">$sudo</span><span class="w"> </span><span class="n">cp</span><span class="w"> </span><span class="p">{</span><span class="n">driver_path</span><span class="p">}</span><span class="o">/</span><span class="n">cfg80211_fullmac</span><span class="o">/</span><span class="n">bridge</span><span class="o">/</span><span class="n">sdio_bridge</span><span class="o">/</span><span class="n">bridge_sdio</span><span class="p">.</span><span class="n">ko</span><span class="w"> </span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">modules</span><span class="o">/&lt;</span><span class="n">kernel</span><span class="o">-</span><span class="n">version</span><span class="o">&gt;</span>
 <span class="n">$sudo</span><span class="w"> </span><span class="n">systemctl</span><span class="w"> </span><span class="n">stop</span><span class="w"> </span><span class="n">dhcpcd</span><span class="p">.</span><span class="n">service</span>
-<span class="n">$sudo</span><span class="w"> </span><span class="n">depmod</span>
-<span class="n">$sudo</span><span class="w"> </span><span class="n">modprobe</span><span class="w"> </span><span class="n">bridge_sdio</span>
+<span class="n">$sudo</span><span class="w"> </span><span class="n">insmod</span><span class="w"> </span><span class="n">sdio_bridge</span><span class="o">/</span><span class="n">bridge_sdio</span><span class="p">.</span><span class="n">ko</span>
 </pre></div>
 </div>
-<p><code class="docutils literal notranslate"><span class="pre">{driver_path}</span></code> 是用户放置 <code class="docutils literal notranslate"><span class="pre">cfg80211_fullmac</span></code> 的目录。
-<code class="docutils literal notranslate"><span class="pre">&lt;kernel-version&gt;</span></code> 是用户自己linux host /lib/modules文件夹下的路径，用户根据自己当前的kernel version选择。可以使用cmd <code class="docutils literal notranslate"><span class="pre">uname</span> <span class="pre">-r</span></code> 查看当前版本信息。</p>
-</li>
-<li><p>完成以上步骤后，名为 <code class="docutils literal notranslate"><span class="pre">eth_sta0</span></code> 和 <code class="docutils literal notranslate"><span class="pre">eth_sta1</span></code> 的两个interface已经创建完成，用户可以根据需要使能想要的interface：</p>
-<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="n">$sudo</span><span class="w"> </span><span class="n">ifconfig</span><span class="w"> </span><span class="n">eth_sta0</span><span class="w"> </span><span class="n">up</span>
-<span class="n">$sudo</span><span class="w"> </span><span class="n">ifconfig</span><span class="w"> </span><span class="n">eth_sta1</span><span class="w"> </span><span class="n">up</span>
-</pre></div>
-</div>
-</li>
-<li><p>用户可以使用如下cmd查看当前的interface的信息：</p>
-<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="n">$ifconfig</span>
-</pre></div>
-</div>
+<p><code class="docutils literal notranslate"><span class="pre">{driver_path}</span></code> is the path where you put the <code class="docutils literal notranslate"><span class="pre">cfg80211_fullmac</span></code> folder.</p>
 </li>
 </ol>
-</div><div aria-labelledby="tab-3-3-2" class="sphinx-tabs-panel" hidden="true" id="panel-3-3-2" name="3-2" role="tabpanel" tabindex="0"><p>当前的树莓派host的驱动代码，在Raspberry Pi 4已经经过测试和验证。</p>
-<p>SDK内有提供``dtoverlay``来配置树莓派上的SDIO，用户需要再树莓派上输入以下命令：</p>
+<p>After these steps, there will be an interface named <code class="docutils literal notranslate"><span class="pre">eth_sta0</span></code>, which can be found by command <code class="docutils literal notranslate"><span class="pre">ifconfig</span></code>.</p>
+</div><div aria-labelledby="tab-3-3-2" class="sphinx-tabs-panel" hidden="true" id="panel-3-3-2" name="3-2" role="tabpanel" tabindex="0"><p>Host driver has been tested on Raspberry Pi 4.</p>
+<p>You can use <code class="docutils literal notranslate"><span class="pre">dtoverlay</span></code> command to configure SDIO on Raspberry Pi, please input the following command in Raspberry Pi:</p>
 <blockquote>
 <div><div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="n">dtoverlay</span><span class="w"> </span><span class="n">sdio</span><span class="w"> </span><span class="n">poll_once</span><span class="o">=</span><span class="n">off</span>
 </pre></div>
 </div>
 </div></blockquote>
-<p>接下来的步骤和linux host的porting guide一致。</p>
+<p>The subsequent steps are the same as descripted in list host porting guide.</p>
 </div></div>
 </section>
 <section id="wifi-bridge-linux">
 <h1>WiFi Bridge Linux 测试<a class="headerlink" href="#wifi-bridge-linux" title="Link to this heading"></a></h1>
 <section id="app">
 <h2>APP 架构<a class="headerlink" href="#app" title="Link to this heading"></a></h2>
-<p>APP的demo提供了测试所需要的CMD，目前CMD类型分为两类：</p>
-<ul class="simple">
-<li><p>一路是将cmd送到kernel：setmac来配置device的mac地址，netifon来配置netif_carrier_on</p></li>
-<li><p>一路是将cmd送到kernel后，经由kernel发送到device端：getmac获取device的mac地址，getip获取device的ip信息。</p></li>
-</ul>
-<p>APP使用 netlink 实现user space和kernel以及device的通信，当kernel里面的host driver收到从user space发来的命令，会根据命令内容选择配置kernel或者传给device，反之亦然。</p>
+<p>APP封装了一些WIFI 操作比如：连线，扫描，让Host可以控制Ameba的行为。</p>
+<p>APP使用 netlink 实现APP和底层通信，当底层驱动收到相关的命令之后, 会通过接口传给SoC让SoC执行相应的操作，反向亦然。</p>
 <figure class="align-center" id="id15">
 <a class="reference internal image-reference" href="../../_images/bridge_testapp_control_flow.svg"><img alt="../../_images/bridge_testapp_control_flow.svg" height="251" src="../../_images/bridge_testapp_control_flow.svg" width="338" /></a>
 <figcaption>
@@ -873,28 +852,26 @@
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>init</p></td>
-<td><p>初始化kernel内的netlink信息</p></td>
+<tr class="row-even"><td><p>wifi_connect param1 param2</p></td>
+<td><p>Connect to AP.</p>
+<dl class="field-list simple">
+<dt class="field-odd">param1<span class="colon">:</span></dt>
+<dd class="field-odd"><p>SSID</p>
+</dd>
+<dt class="field-even">param2<span class="colon">:</span></dt>
+<dd class="field-even"><p>password  (option)</p>
+</dd>
+</dl>
+</td>
 </tr>
-<tr class="row-odd"><td><p>getmac param1</p></td>
-<td><p>获取device的mac地址
-param1：Device的Index</p></td>
+<tr class="row-odd"><td><p>disconnect</p></td>
+<td><p>Disconnect to AP</p></td>
 </tr>
-<tr class="row-even"><td><p>getip  param1</p></td>
-<td><p>获取device的ip
-param1：Device的Index</p></td>
+<tr class="row-even"><td><p>scan</p></td>
+<td><p>Trigger scan</p></td>
 </tr>
-<tr class="row-odd"><td><p>setrdy</p></td>
-<td><p>告知device host已经ready，可以收包</p></td>
-</tr>
-<tr class="row-even"><td><p>setmac param1 param2</p></td>
-<td><p>设置interface的mac地址
-param1：interface的Index
-param2：mac地址</p></td>
-</tr>
-<tr class="row-odd"><td><p>netifon  param1</p></td>
-<td><p>设置carrier on
-param1：interface的Index</p></td>
+<tr class="row-odd"><td><p>scanres</p></td>
+<td><p>Get and print scan result</p></td>
 </tr>
 </tbody>
 </table>
@@ -902,12 +879,25 @@ param1：interface的Index</p></td>
 <section id="id9">
 <h2>APP 的编译和执行<a class="headerlink" href="#id9" title="Link to this heading"></a></h2>
 <ol class="arabic">
+<li><p>复制 <code class="docutils literal notranslate"><span class="pre">sdio_bridge/bridge_api</span></code> 到Host Kernel</p></li>
 <li><p>编译执行bridge，然后就可以输入相关的指令了</p>
-<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="n">$cd</span><span class="w"> </span><span class="p">{</span><span class="n">driver_path</span><span class="p">}</span><span class="o">/</span><span class="n">cfg80211_fullmac</span><span class="o">/</span><span class="n">bridge</span>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="n">$cd</span><span class="w"> </span><span class="n">sdio_bridge</span><span class="o">/</span><span class="n">bridge_api</span><span class="o">/</span><span class="n">testapp</span>
 <span class="n">$make</span>
 <span class="n">$sudo</span><span class="w"> </span><span class="p">.</span><span class="o">/</span><span class="n">bridge</span>
 </pre></div>
 </div>
+<figure class="align-center" id="bridge-testapp-control-flow">
+<a class="reference internal image-reference" href="../../_images/bridge_testapp_control_flow.png"><img alt="../../_images/bridge_testapp_control_flow.png" src="../../_images/bridge_testapp_control_flow.png" style="width: 382.2px; height: 276.0px;" /></a>
+<figcaption>
+<p><span class="caption-text">testapp control flow</span><a class="headerlink" href="#bridge-testapp-control-flow" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<figure class="align-center" id="bridge-ifconfig-result">
+<a class="reference internal image-reference" href="../../_images/bridge_ifconfig_result.png"><img alt="../../_images/bridge_ifconfig_result.png" src="../../_images/bridge_ifconfig_result.png" style="width: 433.2px; height: 286.2px;" /></a>
+<figcaption>
+<p><span class="caption-text">ifconfig result</span><a class="headerlink" href="#bridge-ifconfig-result" title="Link to this image"></a></p>
+</figcaption>
+</figure>
 </li>
 </ol>
 </section>
@@ -916,37 +906,12 @@ param1：interface的Index</p></td>
 <p>确保host 驱动正确编译并加载，APP正确编译之后，执行如下步骤测试数据通路：</p>
 <ol class="arabic simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">./bridge</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">init</span></code> 初始化kernel内的netlink信息</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">getmac</span> <span class="pre">0</span></code> 获取Wlan Station的mac地址</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">setmac</span> <span class="pre">0</span> <span class="pre">xx:xx:xx:xx:xx:xx</span></code> 根据netlink这边收到的mac地址，配置interface</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">getip</span> <span class="pre">0</span></code> 获取Wlan Station的mac地址</p></li>
-</ol>
-<p>然后在terminal窗口，执行以下步骤：</p>
-<ol class="arabic simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">ip</span> <span class="pre">addr</span> <span class="pre">add</span> <span class="pre">xx.xx.xx.xx/24</span> <span class="pre">dev</span> <span class="pre">eth_sta0</span></code> 根据netlink这边收到的ip地址，配置interface <code class="docutils literal notranslate"><span class="pre">eth_sta0</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">ifconfig</span> <span class="pre">eth_sta0</span> <span class="pre">up</span></code> 使能interface <code class="docutils literal notranslate"><span class="pre">eth_sta0</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">ifconfig</span></code> 查看interface <code class="docutils literal notranslate"><span class="pre">eth_sta0</span></code> 是否正确配置</p></li>
-</ol>
-<p>最后通过APP：</p>
-<ol class="arabic simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">setrdy</span></code> 通知device host已经ready，可以收包</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">netifon</span> <span class="pre">0</span></code> 设置carrier on</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">scan</span></code> 触发WiFi 扫描</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">scanres</span></code> 获取扫描列表</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">wifi_connect</span> <span class="pre">target_ssid</span> <span class="pre">password</span></code> 连接AP, 连线成功之后IP地址也会自动获取</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ifconfig</span></code> 检查 <code class="docutils literal notranslate"><span class="pre">eth_sta0</span></code> 的IP地址是否已经正确获取</p></li>
 </ol>
 <p>之后可以执行 <code class="docutils literal notranslate"><span class="pre">ping</span></code> 后者 <code class="docutils literal notranslate"><span class="pre">iperf</span></code> 命令测试数据通路</p>
-<blockquote>
-<div><figure class="align-center" id="bridge-testapp-control-flow">
-<a class="reference internal image-reference" href="../../_images/bridge_testapp_control_flow.png"><img alt="../../_images/bridge_testapp_control_flow.png" src="../../_images/bridge_testapp_control_flow.png" style="width: 561.6px; height: 323.20000000000005px;" /></a>
-<figcaption>
-<p><span class="caption-text">testapp control flow</span><a class="headerlink" href="#bridge-testapp-control-flow" title="Link to this image"></a></p>
-</figcaption>
-</figure>
-<figure class="align-center" id="bridge-ifconfig-result">
-<a class="reference internal image-reference" href="../../_images/bridge_ifconfig_result.png"><img alt="../../_images/bridge_ifconfig_result.png" src="../../_images/bridge_ifconfig_result.png" style="width: 901.6px; height: 363.20000000000005px;" /></a>
-<figcaption>
-<p><span class="caption-text">terminal control flow</span><a class="headerlink" href="#bridge-ifconfig-result" title="Link to this image"></a></p>
-</figcaption>
-</figure>
-</div></blockquote>
 </section>
 </section>
 <section id="id11">
