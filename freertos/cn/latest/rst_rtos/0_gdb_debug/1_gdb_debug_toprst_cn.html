@@ -78,10 +78,10 @@
 <li class="toctree-l1 current"><a class="reference internal" href="0_gdb_debug_index_cn.html">0.2 GDB调试</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">J-Link 硬件连接</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#id1">J-Link 软件连接和配置</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#j-linkflash">J-Link下载固件到Flash</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#entering-debug-mode">J-Link 进入调试模式</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#gdb">GDB 常用命令</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#gdb-command-lists">GDB 调试器基本用法</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">J-Link 固件烧录</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#entering-debug-mode">调试模式进入流程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#gdb">GDB 核心指令集</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#gdb-command-lists">GDB 调试器指南</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../0_gcc_build_library/0_gcc_build_library_index_cn.html">0.3 GCC 库的生成和使用</a></li>
@@ -163,212 +163,245 @@
              
   <section id="j-link">
 <span id="setting-debugger"></span><h1>J-Link 硬件连接<a class="headerlink" href="#j-link" title="Link to this heading"></a></h1>
-<p>参考下图连接 J-Link 的 SWCLK 和 SWDIO 到 SoC 的 SWD CLK 和 SWD DATA，然后将J-Link连接PC.</p>
-<figure class="align-center" id="id5">
+<p>参考下图将 J-Link 的 SWCLK 和 SWDIO 连接到 SoC 的 SWD CLK 和 SWD DATA，然后将 J-Link 连接到 PC。</p>
+<figure class="align-center" id="id6">
 <a class="reference internal image-reference" href="../../_images/connecting_jlink_to_swd.svg"><img alt="../../_images/connecting_jlink_to_swd.svg" height="210" src="../../_images/connecting_jlink_to_swd.svg" width="614" /></a>
 <figcaption>
-<p><span class="caption-text">Wiring diagram of connecting J-Link to SWD</span><a class="headerlink" href="#id5" title="Link to this image"></a></p>
+<p><span class="caption-text">J-Link 连接到 SWD 的接线图</span><a class="headerlink" href="#id6" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <div class="admonition note">
 <p class="admonition-title">备注</p>
 <ul class="simple">
-<li><p>J-Link 版本必须高于或等于 v9.</p></li>
+<li><p>J-Link 的版本必须高于或等于 v9。</p></li>
 </ul>
 </div>
 </section>
 <section id="id1">
 <h1>J-Link 软件连接和配置<a class="headerlink" href="#id1" title="Link to this heading"></a></h1>
 <div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-0-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-0-0-0" name="0-0" role="tab" tabindex="0">Windows</button><button aria-controls="panel-0-0-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-1" name="0-1" role="tab" tabindex="-1">Linux</button></div><div aria-labelledby="tab-0-0-0" class="sphinx-tabs-panel" id="panel-0-0-0" name="0-0" role="tabpanel" tabindex="0"><p>到SEGGER官网下载最新版本的 GDB server 并正确安装.</p>
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-0-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-0-0-0" name="0-0" role="tab" tabindex="0">Windows</button><button aria-controls="panel-0-0-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-1" name="0-1" role="tab" tabindex="-1">Linux</button></div><div aria-labelledby="tab-0-0-0" class="sphinx-tabs-panel" id="panel-0-0-0" name="0-0" role="tabpanel" tabindex="0"><p>从 SEGGER 官网下载并安装最新版 GDB Server：</p>
 <div class="sphinx-tabs docutils container">
 <div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-1-1-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-1-1-0" name="1-0" role="tab" tabindex="0">RTL8721Dx</button><button aria-controls="panel-1-1-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-1-1-1" name="1-1" role="tab" tabindex="-1">RTL8720E</button><button aria-controls="panel-1-1-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-1-1-2" name="1-2" role="tab" tabindex="-1">RTL8726E</button><button aria-controls="panel-1-1-3" aria-selected="false" class="sphinx-tabs-tab" id="tab-1-1-3" name="1-3" role="tab" tabindex="-1">RTL8730E</button></div><div aria-labelledby="tab-1-1-0" class="sphinx-tabs-panel" id="panel-1-1-0" name="1-0" role="tabpanel" tabindex="0"><div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-2-2-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-2-2-0" name="2-0" role="tab" tabindex="0">KM4 Setup</button><button aria-controls="panel-2-2-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-2-2-1" name="2-1" role="tab" tabindex="-1">KM0 Setup</button></div><div aria-labelledby="tab-2-2-0" class="sphinx-tabs-panel" id="panel-2-2-0" name="2-0" role="tabpanel" tabindex="0"><p><strong>连接J-Link</strong></p>
-<p>双击 <code class="docutils literal notranslate"><span class="pre">{SDK}\amebadplus_gcc_project\utils\jlink_script\cm4_jlink.bat</span></code>，如下图所示，您可以看到KM4和J-Link成功连接.</p>
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-2-2-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-2-2-0" name="2-0" role="tab" tabindex="0">KM4 配置</button><button aria-controls="panel-2-2-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-2-2-1" name="2-1" role="tab" tabindex="-1">KM0 配置</button></div><div aria-labelledby="tab-2-2-0" class="sphinx-tabs-panel" id="panel-2-2-0" name="2-0" role="tabpanel" tabindex="0"><p><strong>连接J-Link</strong></p>
+<p>双击 <code class="docutils literal notranslate"><span class="pre">{SDK}\amebadplus_gcc_project\utils\jlink_script\cm4_jlink.bat</span></code>，如下图所示，确认KM4与J-Link成功连接：</p>
 <figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/dplus_windows_km4_jlink_gdb_server_connection.png"><img alt="../../_images/dplus_windows_km4_jlink_gdb_server_connection.png" src="../../_images/dplus_windows_km4_jlink_gdb_server_connection.png" style="width: 567.9px; height: 394.2px;" /></a>
 </figure>
 <div class="admonition caution">
 <p class="admonition-title">小心</p>
 <ul class="simple">
-<li><p>您可以根据需要修改 <code class="docutils literal notranslate"><span class="pre">cm4_jlink.bat</span></code> 中 JLinkGDBServer.exe 和 JLink.exe 的路径.</p></li>
-<li><p>请保持这个窗口开启进行后续的下载和调试.</p></li>
+<li><p>可编辑 <code class="docutils literal notranslate"><span class="pre">cm4_jlink.bat</span></code> 调整 JLinkGDBServer.exe 和 JLink.exe 的路径</p></li>
+<li><p>保持此窗口开启以进行后续操作</p></li>
 </ul>
 </div>
-<p><strong>配置 J-Link</strong></p>
-<ul class="simple">
-<li><p>打开新终端进入目录project_km4</p></li>
-<li><p>执行 <code class="docutils literal notranslate"><span class="pre">$make</span> <span class="pre">setup</span> <span class="pre">GDB_SERVER=jlink</span></code>，如下图所示.</p></li>
-</ul>
+<p><strong>配置J-Link</strong></p>
+<ol class="arabic simple">
+<li><p>打开新终端，进入目录 <code class="docutils literal notranslate"><span class="pre">project_km4</span></code></p></li>
+<li><p>执行命令：
+$ make setup GDB_SERVER=jlink</p></li>
+</ol>
+<p>操作示例如下：</p>
 <figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/dplus_windows_km4_jlink_setup.png"><img alt="../../_images/dplus_windows_km4_jlink_setup.png" src="../../_images/dplus_windows_km4_jlink_setup.png" style="width: 636.3000000000001px; height: 237.6px;" /></a>
 </figure>
 </div><div aria-labelledby="tab-2-2-1" class="sphinx-tabs-panel" hidden="true" id="panel-2-2-1" name="2-1" role="tabpanel" tabindex="0"><p><strong>连接J-Link</strong></p>
-<p>双击 <code class="docutils literal notranslate"><span class="pre">{SDK}\amebadplus_gcc_project\utils\jlink_script\cm0_jlink.bat</span></code>, 如下图所示，您可以看到KM0和J-Link成功连接.</p>
+<p>双击 <code class="docutils literal notranslate"><span class="pre">{SDK}\amebadplus_gcc_project\utils\jlink_script\cm0_jlink.bat</span></code>，如下图所示，确认KM0与J-Link成功连接：</p>
 <figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/dplus_windows_km0_jlink_gdb_server_connection.png"><img alt="../../_images/dplus_windows_km0_jlink_gdb_server_connection.png" src="../../_images/dplus_windows_km0_jlink_gdb_server_connection.png" style="width: 562.5px; height: 396.0px;" /></a>
 </figure>
-<p><strong>配置 J-Link</strong></p>
-<ul class="simple">
-<li><p>打开新终端进入目录project_km0</p></li>
-<li><p>执行 <code class="docutils literal notranslate"><span class="pre">$make</span> <span class="pre">setup</span> <span class="pre">GDB_SERVER=jlink</span></code>，如下图所示</p></li>
-</ul>
+<p><strong>配置J-Link</strong></p>
+<ol class="arabic simple">
+<li><p>打开新终端，进入目录 <code class="docutils literal notranslate"><span class="pre">project_km0</span></code></p></li>
+<li><p>执行命令：
+$ make setup GDB_SERVER=jlink</p></li>
+</ol>
+<p>操作示例如下：</p>
 <figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/dplus_windows_km0_jlink_setup.png"><img alt="../../_images/dplus_windows_km0_jlink_setup.png" src="../../_images/dplus_windows_km0_jlink_setup.png" style="width: 643.5px; height: 234.9px;" /></a>
 </figure>
 </div></div>
 </div><div aria-labelledby="tab-1-1-1" class="sphinx-tabs-panel" hidden="true" id="panel-1-1-1" name="1-1" role="tabpanel" tabindex="0"><div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-3-3-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-3-3-0" name="3-0" role="tab" tabindex="0">KM4 Setup</button><button aria-controls="panel-3-3-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-3-3-1" name="3-1" role="tab" tabindex="-1">KR4 Setup</button></div><div aria-labelledby="tab-3-3-0" class="sphinx-tabs-panel" id="panel-3-3-0" name="3-0" role="tabpanel" tabindex="0"><p><strong>连接J-Link</strong></p>
-<p>双击 <code class="docutils literal notranslate"><span class="pre">{SDK}\amebalite_gcc_project\utils\jlink_script\km4_jlink_combination.bat</span></code>，如下图所示，您可以看到KM4和J-Link成功连接.</p>
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-3-3-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-3-3-0" name="3-0" role="tab" tabindex="0">KM4 配置</button><button aria-controls="panel-3-3-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-3-3-1" name="3-1" role="tab" tabindex="-1">KR4 配置</button></div><div aria-labelledby="tab-3-3-0" class="sphinx-tabs-panel" id="panel-3-3-0" name="3-0" role="tabpanel" tabindex="0"><p><strong>连接J-Link</strong></p>
+<p>双击 <code class="docutils literal notranslate"><span class="pre">{SDK}\amebalite_gcc_project\utils\jlink_script\km4_jlink_combination.bat</span></code>，如下图所示确认KM4与J-Link成功连接：</p>
 <figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/lite_windows_km4_jlink_gdb_server_connection.png"><img alt="../../_images/lite_windows_km4_jlink_gdb_server_connection.png" src="../../_images/lite_windows_km4_jlink_gdb_server_connection.png" style="width: 725.4px; height: 427.5px;" /></a>
 </figure>
 <div class="admonition caution">
 <p class="admonition-title">小心</p>
 <ul class="simple">
-<li><p>您可以根据需要修改 <code class="docutils literal notranslate"><span class="pre">km4_jlink_combination.bat</span></code> 中 JLinkGDBServer.exe 和 JLink.exe 的路径.</p></li>
-<li><p>请保持这个窗口开启进行后续的下载和调试.</p></li>
+<li><p>可编辑 <code class="docutils literal notranslate"><span class="pre">km4_jlink_combination.bat</span></code> 调整 JLinkGDBServer.exe/JLink.exe 路径</p></li>
+<li><p>保持此窗口开启以进行后续操作</p></li>
 </ul>
 </div>
-<p><strong>配置 J-Link</strong></p>
-<ul class="simple">
-<li><p>打开新终端进入目录project_km4</p></li>
-<li><p>执行 <code class="docutils literal notranslate"><span class="pre">$make</span> <span class="pre">setup</span> <span class="pre">GDB_SERVER=jlink</span></code></p></li>
-</ul>
+<p><strong>配置J-Link</strong></p>
+<ol class="arabic simple">
+<li><p>打开新终端，进入目录 <code class="docutils literal notranslate"><span class="pre">project_km4</span></code></p></li>
+<li><p>执行命令：
+$ make setup GDB_SERVER=jlink</p></li>
+</ol>
+<p>操作示例如下：</p>
 <figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/lite_windows_km4_jlink_setup.png"><img alt="../../_images/lite_windows_km4_jlink_setup.png" src="../../_images/lite_windows_km4_jlink_setup.png" style="width: 644.4px; height: 295.2px;" /></a>
 </figure>
 </div><div aria-labelledby="tab-3-3-1" class="sphinx-tabs-panel" hidden="true" id="panel-3-3-1" name="3-1" role="tabpanel" tabindex="0"><p><strong>连接J-Link</strong></p>
-<p>双击 <code class="docutils literal notranslate"><span class="pre">{SDK}\amebalite_gcc_project\utils\jlink_script\kr4_jlink_combination.bat</span></code>, 如下图所示，您可以看到KR4和J-Link成功连接.</p>
+<p>双击 <code class="docutils literal notranslate"><span class="pre">{SDK}\amebalite_gcc_project\utils\jlink_script\kr4_jlink_combination.bat</span></code>，如下图所示确认KR4与J-Link成功连接：</p>
 <figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/lite_windows_kr4_jlink_gdb_server_connection.png"><img alt="../../_images/lite_windows_kr4_jlink_gdb_server_connection.png" src="../../_images/lite_windows_kr4_jlink_gdb_server_connection.png" style="width: 729.0px; height: 428.40000000000003px;" /></a>
 </figure>
-<p><strong>配置 J-Link</strong></p>
-<ul class="simple">
-<li><p>打开新终端进入目录project_kr4</p></li>
-<li><p>执行 <code class="docutils literal notranslate"><span class="pre">$make</span> <span class="pre">setup</span> <span class="pre">GDB_SERVER=jlink</span></code></p></li>
-</ul>
+<p><strong>配置J-Link</strong></p>
+<ol class="arabic simple">
+<li><p>打开新终端，进入目录 <code class="docutils literal notranslate"><span class="pre">project_kr4</span></code></p></li>
+<li><p>执行命令：
+$ make setup GDB_SERVER=jlink</p></li>
+</ol>
+<p>操作示例如下：</p>
 <figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/lite_windows_kr4_jlink_setup.png"><img alt="../../_images/lite_windows_kr4_jlink_setup.png" src="../../_images/lite_windows_kr4_jlink_setup.png" style="width: 242.1px; height: 108.9px;" /></a>
 </figure>
 </div></div>
 </div><div aria-labelledby="tab-1-1-2" class="sphinx-tabs-panel" hidden="true" id="panel-1-1-2" name="1-2" role="tabpanel" tabindex="0"><div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-4-4-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-4-4-0" name="4-0" role="tab" tabindex="0">KM4 Setup</button><button aria-controls="panel-4-4-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-4-4-1" name="4-1" role="tab" tabindex="-1">KR4 Setup</button></div><div aria-labelledby="tab-4-4-0" class="sphinx-tabs-panel" id="panel-4-4-0" name="4-0" role="tabpanel" tabindex="0"><p><strong>连接J-Link</strong></p>
-<p>双击 <code class="docutils literal notranslate"><span class="pre">{SDK}\amebalite_gcc_project\utils\jlink_script\km4_jlink_combination.bat</span></code>，如下图所示，您可以看到KM4和J-Link成功连接.</p>
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-4-4-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-4-4-0" name="4-0" role="tab" tabindex="0">KM4 配置</button><button aria-controls="panel-4-4-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-4-4-1" name="4-1" role="tab" tabindex="-1">KR4 配置</button></div><div aria-labelledby="tab-4-4-0" class="sphinx-tabs-panel" id="panel-4-4-0" name="4-0" role="tabpanel" tabindex="0"><p><strong>连接J-Link</strong></p>
+<p>双击 <code class="docutils literal notranslate"><span class="pre">{SDK}\amebalite_gcc_project\utils\jlink_script\km4_jlink_combination.bat</span></code>，如下图所示确认KM4与J-Link成功连接：</p>
 <figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/lite_windows_km4_jlink_gdb_server_connection.png"><img alt="../../_images/lite_windows_km4_jlink_gdb_server_connection.png" src="../../_images/lite_windows_km4_jlink_gdb_server_connection.png" style="width: 725.4px; height: 427.5px;" /></a>
 </figure>
 <div class="admonition caution">
 <p class="admonition-title">小心</p>
 <ul class="simple">
-<li><p>您可以根据需要修改 <code class="docutils literal notranslate"><span class="pre">km4_jlink_combination.bat</span></code> 中 JLinkGDBServer.exe 和 JLink.exe 的路径.</p></li>
-<li><p>请保持这个窗口开启进行后续的下载和调试.</p></li>
+<li><p>可编辑 <code class="docutils literal notranslate"><span class="pre">km4_jlink_combination.bat</span></code> 调整 JLinkGDBServer.exe/JLink.exe 路径</p></li>
+<li><p>保持此窗口开启以进行后续操作</p></li>
 </ul>
 </div>
-<p><strong>配置 J-Link</strong></p>
-<ul class="simple">
-<li><p>打开新终端进入目录project_km4</p></li>
-<li><p>执行 <code class="docutils literal notranslate"><span class="pre">$make</span> <span class="pre">setup</span> <span class="pre">GDB_SERVER=jlink</span></code></p></li>
-</ul>
+<p><strong>配置J-Link</strong></p>
+<ol class="arabic simple">
+<li><p>打开新终端，进入目录 <code class="docutils literal notranslate"><span class="pre">project_km4</span></code></p></li>
+<li><p>执行命令：
+$ make setup GDB_SERVER=jlink</p></li>
+</ol>
+<p>操作示例如下：</p>
 <figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/lite_windows_km4_jlink_setup.png"><img alt="../../_images/lite_windows_km4_jlink_setup.png" src="../../_images/lite_windows_km4_jlink_setup.png" style="width: 644.4px; height: 295.2px;" /></a>
 </figure>
 </div><div aria-labelledby="tab-4-4-1" class="sphinx-tabs-panel" hidden="true" id="panel-4-4-1" name="4-1" role="tabpanel" tabindex="0"><p><strong>连接J-Link</strong></p>
-<p>双击 <code class="docutils literal notranslate"><span class="pre">{SDK}\amebalite_gcc_project\utils\jlink_script\kr4_jlink_combination.bat</span></code>, 如下图所示，您可以看到KR4和J-Link成功连接.</p>
+<p>双击 <code class="docutils literal notranslate"><span class="pre">{SDK}\amebalite_gcc_project\utils\jlink_script\kr4_jlink_combination.bat</span></code>，如下图所示确认KR4与J-Link成功连接：</p>
 <figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/lite_windows_kr4_jlink_gdb_server_connection.png"><img alt="../../_images/lite_windows_kr4_jlink_gdb_server_connection.png" src="../../_images/lite_windows_kr4_jlink_gdb_server_connection.png" style="width: 729.0px; height: 428.40000000000003px;" /></a>
 </figure>
-<p><strong>配置 J-Link</strong></p>
-<ul class="simple">
-<li><p>打开新终端进入目录project_kr4</p></li>
-<li><p>执行 <code class="docutils literal notranslate"><span class="pre">$make</span> <span class="pre">setup</span> <span class="pre">GDB_SERVER=jlink</span></code></p></li>
-</ul>
+<p><strong>配置J-Link</strong></p>
+<ol class="arabic simple">
+<li><p>打开新终端，进入目录 <code class="docutils literal notranslate"><span class="pre">project_kr4</span></code></p></li>
+<li><p>执行命令：
+$ make setup GDB_SERVER=jlink</p></li>
+</ol>
+<p>操作示例如下：</p>
 <figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/lite_windows_kr4_jlink_setup.png"><img alt="../../_images/lite_windows_kr4_jlink_setup.png" src="../../_images/lite_windows_kr4_jlink_setup.png" style="width: 242.1px; height: 108.9px;" /></a>
 </figure>
 </div></div>
 </div><div aria-labelledby="tab-1-1-3" class="sphinx-tabs-panel" hidden="true" id="panel-1-1-3" name="1-3" role="tabpanel" tabindex="0"><div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-5-5-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-5-5-0" name="5-0" role="tab" tabindex="0">CA32 Setup</button><button aria-controls="panel-5-5-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-5-5-1" name="5-1" role="tab" tabindex="-1">KM4 Setup</button><button aria-controls="panel-5-5-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-5-5-2" name="5-2" role="tab" tabindex="-1">KM0 Setup</button></div><div aria-labelledby="tab-5-5-0" class="sphinx-tabs-panel" id="panel-5-5-0" name="5-0" role="tabpanel" tabindex="0"><p>CA32为对称双核架构，两个core可以单独debug,对应的连接脚本为：</p>
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-5-5-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-5-5-0" name="5-0" role="tab" tabindex="0">CA32 配置</button><button aria-controls="panel-5-5-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-5-5-1" name="5-1" role="tab" tabindex="-1">KM4 配置</button><button aria-controls="panel-5-5-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-5-5-2" name="5-2" role="tab" tabindex="-1">KM0 配置</button></div><div aria-labelledby="tab-5-5-0" class="sphinx-tabs-panel" id="panel-5-5-0" name="5-0" role="tabpanel" tabindex="0"><p>CA32 采用对称双核架构，支持双核独立调试。核心对应连接脚本：</p>
 <ul class="simple">
-<li><p><code class="file docutils literal notranslate"><span class="pre">ca32_jlink_core0.bat</span></code> (默认 port 为 2337)</p></li>
-<li><p><code class="file docutils literal notranslate"><span class="pre">ca32_jlink_core1.bat</span></code> (默认 port 为 2339)</p></li>
+<li><p><code class="file docutils literal notranslate"><span class="pre">ca32_jlink_core0.bat</span></code> (默认端口 2337)</p></li>
+<li><p><code class="file docutils literal notranslate"><span class="pre">ca32_jlink_core1.bat</span></code> (默认端口 2339)</p></li>
 </ul>
 <div class="admonition caution">
 <p class="admonition-title">小心</p>
 <ul class="simple">
-<li><p>一旦开启core1的GDB server，遇到breakpoint or watchpoint core0和core1都会同时halt住，但是core1继续运行时core0不会一起运行，这是jlink软件的问题。</p></li>
-<li><p>如果需要单独分析core0和core1，请将AP3_CA32_Corex.JLinkScript文件中的EnabelCrossTrigger()函数注释掉.</p></li>
+<li><p>开启 core1 的 GDB server 时，遇到断点/观察点会导致双核同时挂起，但继续运行 core1 时 core0 不会同步运行（J-Link 软件限制）</p></li>
+<li><p>如需独立调试 core0/core1，请注释 AP3_CA32_Corex.JLinkScript 中的 EnabelCrossTrigger()：</p></li>
 </ul>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>void InitTarget(void) {
-   Report(&quot;******************************************************&quot;);
-   Report(&quot;J-Link script: AmebaSmart (Cortex-A32 CPU0) J-Link script&quot;);
-   Report(&quot;******************************************************&quot;);
-   …
-   //EnabelCrossTrigger();  // comment out if needed
-}
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="o">:</span><span class="n">emphasize</span><span class="o">-</span><span class="n">lines</span><span class="o">:</span><span class="w"> </span><span class="mi">6</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="n">InitTarget</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="n">Report</span><span class="p">(</span><span class="s">&quot;******************************************************&quot;</span><span class="p">);</span>
+<span class="w">   </span><span class="n">Report</span><span class="p">(</span><span class="s">&quot;J-Link script: AmebaSmart (Cortex-A32 CPU0) J-Link script&quot;</span><span class="p">);</span>
+<span class="w">   </span><span class="n">Report</span><span class="p">(</span><span class="s">&quot;******************************************************&quot;</span><span class="p">);</span>
+<span class="w">   </span><span class="cm">/*...*/</span>
+<span class="w">   </span><span class="c1">//EnabelCrossTrigger();  // 按需注释</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 </div>
 <p><strong>连接J-Link</strong></p>
-<p>双击 <code class="docutils literal notranslate"><span class="pre">{SDK}\amebasmart_gcc_project\utils\jlink_script\ca32_jlink_core0.bat</span></code>, 如下图所示，您可以看到core0和J-Link成功连接.</p>
+<ol class="arabic">
+<li><p>Core0 连接：
+- 双击 <code class="docutils literal notranslate"><span class="pre">{SDK}\amebasmart_gcc_project\utils\jlink_script\ca32_jlink_core0.bat</span></code></p>
 <figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/smart_ca32_core0_jlink_gdb_server_connection_under_windows.png"><img alt="../../_images/smart_ca32_core0_jlink_gdb_server_connection_under_windows.png" src="../../_images/smart_ca32_core0_jlink_gdb_server_connection_under_windows.png" style="width: 724.5px; height: 431.1px;" /></a>
 </figure>
-<p>双击 <code class="docutils literal notranslate"><span class="pre">{SDK}\amebasmart_gcc_project\utils\jlink_script\ca32_jlink_core0.bat</span></code>, 如下图所示，您可以看到core1和J-Link成功连接.</p>
+</li>
+<li><p>Core1 连接：
+- 双击 <code class="docutils literal notranslate"><span class="pre">{SDK}\amebasmart_gcc_project\utils\jlink_script\ca32_jlink_core1.bat</span></code></p>
 <figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/smart_ca32_core1_jlink_gdb_server_connection_under_windows.png"><img alt="../../_images/smart_ca32_core1_jlink_gdb_server_connection_under_windows.png" src="../../_images/smart_ca32_core1_jlink_gdb_server_connection_under_windows.png" style="width: 727.2px; height: 432.0px;" /></a>
 </figure>
-<p><strong>配置 J-Link</strong></p>
-<blockquote>
-<div><p>TBD</p>
-</div></blockquote>
-</div><div aria-labelledby="tab-5-5-1" class="sphinx-tabs-panel" hidden="true" id="panel-5-5-1" name="5-1" role="tabpanel" tabindex="0"><p><strong>连接J-Link</strong></p>
-<p>双击 <code class="docutils literal notranslate"><span class="pre">{SDK}\amebasmart_gcc_project\utils\jlink_script\cm4_jlink.bat</span></code>，如下图所示，您可以看到KM4和J-Link成功连接.</p>
+</li>
+</ol>
+<p><strong>配置 J-Link</strong>
+TBD</p>
+</div><div aria-labelledby="tab-5-5-1" class="sphinx-tabs-panel" hidden="true" id="panel-5-5-1" name="5-1" role="tabpanel" tabindex="0"><dl>
+<dt><strong>连接J-Link</strong></dt><dd><ul class="simple">
+<li><p>双击 <code class="docutils literal notranslate"><span class="pre">{SDK}\amebasmart_gcc_project\utils\jlink_script\cm4_jlink.bat</span></code></p></li>
+</ul>
 <figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/smart_km4_jlink_gdb_server_connection_under_windows.png"><img alt="../../_images/smart_km4_jlink_gdb_server_connection_under_windows.png" src="../../_images/smart_km4_jlink_gdb_server_connection_under_windows.png" style="width: 732.6px; height: 433.8px;" /></a>
 </figure>
+</dd>
+</dl>
 <div class="admonition caution">
 <p class="admonition-title">小心</p>
 <ul class="simple">
-<li><p>您可以根据需要修改 <code class="docutils literal notranslate"><span class="pre">cm4_jlink.bat</span></code> 中 JLinkGDBServer.exe 和 JLink.exe 的路径.</p></li>
-<li><p>请保持这个窗口开启进行后续的下载和调试.</p></li>
+<li><p>可编辑 <code class="docutils literal notranslate"><span class="pre">cm4_jlink.bat</span></code> 调整 JLinkGDBServer.exe/JLink.exe 路径</p></li>
+<li><p>保持此窗口开启以进行后续操作</p></li>
 </ul>
 </div>
-<p><strong>配置 J-Link</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><p>打开新终端进入目录project_km4</p></li>
-<li><p>执行 <code class="docutils literal notranslate"><span class="pre">$make</span> <span class="pre">setup</span> <span class="pre">GDB_SERVER=jlink</span></code></p></li>
-</ul>
+<dl>
+<dt><strong>配置J-Link</strong></dt><dd><ol class="arabic simple">
+<li><p>进入目录 <code class="docutils literal notranslate"><span class="pre">project_km4</span></code></p></li>
+<li><p>执行命令：
+$ make setup GDB_SERVER=jlink</p></li>
+</ol>
 <figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/dplus_windows_km4_jlink_setup.png"><img alt="../../_images/dplus_windows_km4_jlink_setup.png" src="../../_images/dplus_windows_km4_jlink_setup.png" style="width: 636.3000000000001px; height: 237.6px;" /></a>
 </figure>
-</div></blockquote>
-</div><div aria-labelledby="tab-5-5-2" class="sphinx-tabs-panel" hidden="true" id="panel-5-5-2" name="5-2" role="tabpanel" tabindex="0"><p><strong>连接J-Link</strong></p>
-<p>双击 <code class="docutils literal notranslate"><span class="pre">{SDK}\amebasmart_gcc_project\utils\jlink_script\cm0_jlink.bat</span></code>, 如下图所示，您可以看到KM0和J-Link成功连接.</p>
+</dd>
+</dl>
+</div><div aria-labelledby="tab-5-5-2" class="sphinx-tabs-panel" hidden="true" id="panel-5-5-2" name="5-2" role="tabpanel" tabindex="0"><dl>
+<dt><strong>连接J-Link</strong></dt><dd><ul class="simple">
+<li><p>双击 <code class="docutils literal notranslate"><span class="pre">{SDK}\amebasmart_gcc_project\utils\jlink_script\cm0_jlink.bat</span></code></p></li>
+</ul>
 <figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/smart_km0_jlink_gdb_server_connection_under_windows.png"><img alt="../../_images/smart_km0_jlink_gdb_server_connection_under_windows.png" src="../../_images/smart_km0_jlink_gdb_server_connection_under_windows.png" style="width: 728.1px; height: 433.8px;" /></a>
 </figure>
-<p><strong>配置 J-Link</strong></p>
-<ul class="simple">
-<li><p>打开新终端进入目录project_km0</p></li>
-<li><p>执行 <code class="docutils literal notranslate"><span class="pre">$make</span> <span class="pre">setup</span> <span class="pre">GDB_SERVER=jlink</span></code>，如下图所示</p></li>
-</ul>
+</dd>
+<dt><strong>配置J-Link</strong></dt><dd><ol class="arabic simple">
+<li><p>进入目录 <code class="docutils literal notranslate"><span class="pre">project_km0</span></code></p></li>
+<li><p>执行命令：
+$ make setup GDB_SERVER=jlink</p></li>
+</ol>
 <figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/dplus_windows_km0_jlink_setup.png"><img alt="../../_images/dplus_windows_km0_jlink_setup.png" src="../../_images/dplus_windows_km0_jlink_setup.png" style="width: 643.5px; height: 234.9px;" /></a>
 </figure>
+</dd>
+</dl>
 </div></div>
 </div></div>
-</div><div aria-labelledby="tab-0-0-1" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-1" name="0-1" role="tabpanel" tabindex="0"><p>下载最新的GDB server，然后打开一个新的终端输入如下指令安装 GDB server，安装完成后在J-Link目录下会看到名称为 <code class="docutils literal notranslate"><span class="pre">JLinkGDBServer</span></code> 的工具， 以Ubuntu 18.04 为例 <code class="docutils literal notranslate"><span class="pre">/opt/SEGGER/JLink</span></code> 下可以找到 <code class="docutils literal notranslate"><span class="pre">JLinkGDBServer</span></code>.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$dpkg –i jlink_6.0.7_x86_64.deb
-</pre></div>
-</div>
+</div><div aria-labelledby="tab-0-0-1" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-1" name="0-1" role="tabpanel" tabindex="0"><p>按以下步骤部署 GDB Server：</p>
+<ol class="arabic simple">
+<li><p>下载最新版 J-Link 软件包</p></li>
+<li><p>执行安装命令：
+$ dpkg -i jlink_6.0.7_x86_64.deb</p></li>
+<li><p>验证安装结果：
+<code class="docutils literal notranslate"><span class="pre">/opt/SEGGER/JLink/JLinkGDBServer</span></code></p></li>
+</ol>
 <div class="sphinx-tabs docutils container">
 <div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-6-6-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-6-6-0" name="6-0" role="tab" tabindex="0">RTL8721Dx</button><button aria-controls="panel-6-6-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-6-6-1" name="6-1" role="tab" tabindex="-1">RTL8720E</button><button aria-controls="panel-6-6-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-6-6-2" name="6-2" role="tab" tabindex="-1">RTL8726E</button><button aria-controls="panel-6-6-3" aria-selected="false" class="sphinx-tabs-tab" id="tab-6-6-3" name="6-3" role="tab" tabindex="-1">RTL8730E</button></div><div aria-labelledby="tab-6-6-0" class="sphinx-tabs-panel" id="panel-6-6-0" name="6-0" role="tabpanel" tabindex="0"><div class="sphinx-tabs docutils container">
 <div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-7-7-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-7-7-0" name="7-0" role="tab" tabindex="0">KM4 Setup</button><button aria-controls="panel-7-7-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-7-7-1" name="7-1" role="tab" tabindex="-1">KM0 Setup</button></div><div aria-labelledby="tab-7-7-0" class="sphinx-tabs-panel" id="panel-7-7-0" name="7-0" role="tabpanel" tabindex="0"><p><strong>连接 J-Link</strong></p>
 <ul class="simple">
-<li><p>打开新终端进入目录 <code class="docutils literal notranslate"><span class="pre">/amebadplus_gcc_project/utils/jlink_script</span></code></p></li>
-<li><p>执行 <code class="docutils literal notranslate"><span class="pre">$/opt/SEGGER/JLink/JLinkGDBServer</span> <span class="pre">-select</span> <span class="pre">USB-device</span> <span class="pre">Cortex-M33</span> <span class="pre">-if</span> <span class="pre">SWD</span> <span class="pre">-scriptfileAP2_KM4.JLinkScript</span> <span class="pre">port</span> <span class="pre">2335</span></code>.</p></li>
+<li><p>打开新终端，进入目录 <code class="docutils literal notranslate"><span class="pre">/amebadplus_gcc_project/utils/jlink_script</span></code></p></li>
+<li><p>执行命令：
+<code class="docutils literal notranslate"><span class="pre">$/opt/SEGGER/JLink/JLinkGDBServer</span> <span class="pre">-select</span> <span class="pre">USB-device</span> <span class="pre">Cortex-M33</span> <span class="pre">-if</span> <span class="pre">SWD</span> <span class="pre">-scriptfile</span> <span class="pre">AP2_KM4.JLinkScript</span> <span class="pre">port</span> <span class="pre">2335</span></code></p></li>
 </ul>
 <figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/dplus_linux_km4_jlink_gdb_server_connection.png"><img alt="../../_images/dplus_linux_km4_jlink_gdb_server_connection.png" src="../../_images/dplus_linux_km4_jlink_gdb_server_connection.png" style="width: 450.79999999999995px; height: 243.6px;" /></a>
@@ -378,16 +411,18 @@
 </figure>
 <p><strong>设置 J-Link</strong></p>
 <ul class="simple">
-<li><p>打开新终端进入目录project_km4</p></li>
-<li><p>执行 <code class="docutils literal notranslate"><span class="pre">$make</span> <span class="pre">setup</span> <span class="pre">GDB_SERVER=jlink</span></code></p></li>
+<li><p>打开新终端，进入目录 <code class="docutils literal notranslate"><span class="pre">project_km4</span></code></p></li>
+<li><p>执行命令：
+<code class="docutils literal notranslate"><span class="pre">$make</span> <span class="pre">setup</span> <span class="pre">GDB_SERVER=jlink</span></code></p></li>
 </ul>
 <figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/dplus_linux_km4_jlink_setup.png"><img alt="../../_images/dplus_linux_km4_jlink_setup.png" src="../../_images/dplus_linux_km4_jlink_setup.png" style="width: 450.09999999999997px; height: 221.2px;" /></a>
 </figure>
 </div><div aria-labelledby="tab-7-7-1" class="sphinx-tabs-panel" hidden="true" id="panel-7-7-1" name="7-1" role="tabpanel" tabindex="0"><p><strong>连接 J-Link</strong></p>
 <ul class="simple">
-<li><p>打开新终端进入目录 <code class="docutils literal notranslate"><span class="pre">/amebadplus_gcc_project/utils/jlink_script</span></code></p></li>
-<li><p>执行 <code class="docutils literal notranslate"><span class="pre">$/opt/SEGGER/JLink/JLinkGDBServer</span> <span class="pre">-select</span> <span class="pre">USB</span> <span class="pre">-device</span> <span class="pre">Cortex-M23</span> <span class="pre">-if</span> <span class="pre">SWD</span> <span class="pre">-scriptfile</span> <span class="pre">AP1_KM0.JLinkScript</span> <span class="pre">port</span> <span class="pre">2331</span></code>.</p></li>
+<li><p>打开新终端，进入目录 <code class="docutils literal notranslate"><span class="pre">/amebadplus_gcc_project/utils/jlink_script</span></code></p></li>
+<li><p>执行命令：
+<code class="docutils literal notranslate"><span class="pre">$/opt/SEGGER/JLink/JLinkGDBServer</span> <span class="pre">-select</span> <span class="pre">USB</span> <span class="pre">-device</span> <span class="pre">Cortex-M23</span> <span class="pre">-if</span> <span class="pre">SWD</span> <span class="pre">-scriptfile</span> <span class="pre">AP1_KM0.JLinkScript</span> <span class="pre">port</span> <span class="pre">2331</span></code></p></li>
 </ul>
 <figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/dplus_linux_km0_jlink_gdb_server_connection.png"><img alt="../../_images/dplus_linux_km0_jlink_gdb_server_connection.png" src="../../_images/dplus_linux_km0_jlink_gdb_server_connection.png" style="width: 474.59999999999997px; height: 246.39999999999998px;" /></a>
@@ -397,8 +432,9 @@
 </figure>
 <p><strong>设置 J-Link</strong></p>
 <ul class="simple">
-<li><p>打开新终端进入目录 project_km0</p></li>
-<li><p>执行``$make setup GDB_SERVER=jlink``</p></li>
+<li><p>打开新终端，进入目录 <code class="docutils literal notranslate"><span class="pre">project_km0</span></code></p></li>
+<li><p>执行命令：
+<code class="docutils literal notranslate"><span class="pre">$make</span> <span class="pre">setup</span> <span class="pre">GDB_SERVER=jlink</span></code></p></li>
 </ul>
 <figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/dplus_linux_km0_jlink_setup.png"><img alt="../../_images/dplus_linux_km0_jlink_setup.png" src="../../_images/dplus_linux_km0_jlink_setup.png" style="width: 441.0px; height: 237.99999999999997px;" /></a>
@@ -407,8 +443,9 @@
 </div><div aria-labelledby="tab-6-6-1" class="sphinx-tabs-panel" hidden="true" id="panel-6-6-1" name="6-1" role="tabpanel" tabindex="0"><div class="sphinx-tabs docutils container">
 <div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-8-8-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-8-8-0" name="8-0" role="tab" tabindex="0">KM4 Setup</button><button aria-controls="panel-8-8-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-8-8-1" name="8-1" role="tab" tabindex="-1">KR4 Setup</button></div><div aria-labelledby="tab-8-8-0" class="sphinx-tabs-panel" id="panel-8-8-0" name="8-0" role="tabpanel" tabindex="0"><p><strong>连接 J-Link</strong></p>
 <ul class="simple">
-<li><p>打开新终端进入目录 <code class="docutils literal notranslate"><span class="pre">amebalite_gcc_project/utils/jlink_script</span></code></p></li>
-<li><p>执行 <code class="docutils literal notranslate"><span class="pre">$/opt/SEGGER/JLink/JLinkGDBServer</span> <span class="pre">-select</span> <span class="pre">USB-device</span> <span class="pre">Cortex-M33</span> <span class="pre">-if</span> <span class="pre">SWD</span> <span class="pre">-scriptfile</span> <span class="pre">AP0_KM4.JLinkScript</span> <span class="pre">port</span> <span class="pre">2335</span></code>.</p></li>
+<li><p>打开新终端，进入目录 <code class="docutils literal notranslate"><span class="pre">amebalite_gcc_project/utils/jlink_script</span></code></p></li>
+<li><p>执行命令：
+<code class="docutils literal notranslate"><span class="pre">$/opt/SEGGER/JLink/JLinkGDBServer</span> <span class="pre">-select</span> <span class="pre">USB-device</span> <span class="pre">Cortex-M33</span> <span class="pre">-if</span> <span class="pre">SWD</span> <span class="pre">-scriptfile</span> <span class="pre">AP0_KM4.JLinkScript</span> <span class="pre">port</span> <span class="pre">2335</span></code></p></li>
 </ul>
 <figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/lite_linux_km4_jlink_gdb_server_connection.png"><img alt="../../_images/lite_linux_km4_jlink_gdb_server_connection.png" src="../../_images/lite_linux_km4_jlink_gdb_server_connection.png" style="width: 507.49999999999994px; height: 275.09999999999997px;" /></a>
@@ -418,16 +455,18 @@
 </figure>
 <p><strong>设置 J-Link</strong></p>
 <ul class="simple">
-<li><p>打开新终端进入目录project_km4</p></li>
-<li><p>执行 <code class="docutils literal notranslate"><span class="pre">$make</span> <span class="pre">setup</span> <span class="pre">GDB_SERVER=jlink</span></code></p></li>
+<li><p>打开新终端，进入目录 <code class="docutils literal notranslate"><span class="pre">project_km4</span></code></p></li>
+<li><p>执行命令：
+<code class="docutils literal notranslate"><span class="pre">$make</span> <span class="pre">setup</span> <span class="pre">GDB_SERVER=jlink</span></code></p></li>
 </ul>
 <figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/lite_linux_km4_jlink_setup.png"><img alt="../../_images/lite_linux_km4_jlink_setup.png" src="../../_images/lite_linux_km4_jlink_setup.png" style="width: 503.99999999999994px; height: 95.19999999999999px;" /></a>
 </figure>
 </div><div aria-labelledby="tab-8-8-1" class="sphinx-tabs-panel" hidden="true" id="panel-8-8-1" name="8-1" role="tabpanel" tabindex="0"><p><strong>KM4 连接 J-Link</strong></p>
 <ul class="simple">
-<li><p>打开新终端进入目录 <code class="docutils literal notranslate"><span class="pre">amebalite_gcc_project/utils/jlink_script</span></code></p></li>
-<li><p>执行 <code class="docutils literal notranslate"><span class="pre">$/opt/SEGGER/JLink/</span> <span class="pre">JLinkExe</span> <span class="pre">-device</span> <span class="pre">Cortex-M33</span> <span class="pre">-if</span> <span class="pre">swd</span> <span class="pre">-autoconnect</span> <span class="pre">1</span> <span class="pre">-speed</span> <span class="pre">1000</span> <span class="pre">-JLinkScriptFile</span> <span class="pre">KM4_SEL.JLinkScript</span></code></p></li>
+<li><p>打开新终端，进入目录 <code class="docutils literal notranslate"><span class="pre">amebalite_gcc_project/utils/jlink_script</span></code></p></li>
+<li><p>执行命令：
+<code class="docutils literal notranslate"><span class="pre">$/opt/SEGGER/JLink/JLinkExe</span> <span class="pre">-device</span> <span class="pre">Cortex-M33</span> <span class="pre">-if</span> <span class="pre">swd</span> <span class="pre">-autoconnect</span> <span class="pre">1</span> <span class="pre">-speed</span> <span class="pre">1000</span> <span class="pre">-JLinkScriptFile</span> <span class="pre">KM4_SEL.JLinkScript</span></code></p></li>
 </ul>
 <figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/lite_linux_kr4_setup_km4_jlink_gdb_server_connection.png"><img alt="../../_images/lite_linux_kr4_setup_km4_jlink_gdb_server_connection.png" src="../../_images/lite_linux_kr4_setup_km4_jlink_gdb_server_connection.png" style="width: 506.09999999999997px; height: 170.1px;" /></a>
@@ -436,18 +475,22 @@
 <a class="reference internal image-reference" href="../../_images/lite_linux_kr4_setup_km4_jlink_gdb_server_connection_success.png"><img alt="../../_images/lite_linux_kr4_setup_km4_jlink_gdb_server_connection_success.png" src="../../_images/lite_linux_kr4_setup_km4_jlink_gdb_server_connection_success.png" style="width: 381.5px; height: 162.39999999999998px;" /></a>
 </figure>
 <p><strong>KR4 连接 J-Link</strong></p>
-<p>KM4连接成功之后, 打开新终端在相同目录下执行 <code class="docutils literal notranslate"><span class="pre">$/opt/SEGGER/JLink/JLinkGDBServer</span> <span class="pre">-select</span> <span class="pre">USB-device</span> <span class="pre">RV32</span> <span class="pre">-if</span> <span class="pre">cjtag</span> <span class="pre">-port</span> <span class="pre">2331</span></code></p>
+<ul class="simple">
+<li><p>完成 KM4 连接后，在相同目录下执行：
+<code class="docutils literal notranslate"><span class="pre">$/opt/SEGGER/JLink/JLinkGDBServer</span> <span class="pre">-select</span> <span class="pre">USB-device</span> <span class="pre">RV32</span> <span class="pre">-if</span> <span class="pre">cjtag</span> <span class="pre">-port</span> <span class="pre">2331</span></code></p></li>
+<li><p><em>注意：需保持此终端开启以进行 KR4 调试，KM4 终端可关闭</em></p></li>
+</ul>
 <figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/lite_linux_kr4_jlink_gdb_server_connection.png"><img alt="../../_images/lite_linux_kr4_jlink_gdb_server_connection.png" src="../../_images/lite_linux_kr4_jlink_gdb_server_connection.png" style="width: 506.79999999999995px; height: 264.59999999999997px;" /></a>
 </figure>
-<p>连接成功之后，保持KR4的终端开启才能进行KR4的debug，但是KM4的终端可以关闭</p>
 <figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/lite_linux_kr4_jlink_gdb_server_connection_success.png"><img alt="../../_images/lite_linux_kr4_jlink_gdb_server_connection_success.png" src="../../_images/lite_linux_kr4_jlink_gdb_server_connection_success.png" style="width: 368.2px; height: 262.5px;" /></a>
 </figure>
 <p><strong>设置 J-Link</strong></p>
 <ul class="simple">
-<li><p>打开新终端进入目录project_kr4</p></li>
-<li><p>执行 <code class="docutils literal notranslate"><span class="pre">$make</span> <span class="pre">setup</span> <span class="pre">GDB_SERVER=jlink</span></code></p></li>
+<li><p>打开新终端，进入目录 <code class="docutils literal notranslate"><span class="pre">project_kr4</span></code></p></li>
+<li><p>执行命令：
+<code class="docutils literal notranslate"><span class="pre">$make</span> <span class="pre">setup</span> <span class="pre">GDB_SERVER=jlink</span></code></p></li>
 </ul>
 <figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/lite_linux_kr4_jlink_setup.png"><img alt="../../_images/lite_linux_kr4_jlink_setup.png" src="../../_images/lite_linux_kr4_jlink_setup.png" style="width: 506.79999999999995px; height: 95.89999999999999px;" /></a>
@@ -456,8 +499,9 @@
 </div><div aria-labelledby="tab-6-6-2" class="sphinx-tabs-panel" hidden="true" id="panel-6-6-2" name="6-2" role="tabpanel" tabindex="0"><div class="sphinx-tabs docutils container">
 <div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-9-9-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-9-9-0" name="9-0" role="tab" tabindex="0">KM4 Setup</button><button aria-controls="panel-9-9-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-9-9-1" name="9-1" role="tab" tabindex="-1">KR4 Setup</button></div><div aria-labelledby="tab-9-9-0" class="sphinx-tabs-panel" id="panel-9-9-0" name="9-0" role="tabpanel" tabindex="0"><p><strong>连接 J-Link</strong></p>
 <ul class="simple">
-<li><p>打开新终端进入目录 <code class="docutils literal notranslate"><span class="pre">amebalite_gcc_project/utils/jlink_script</span></code></p></li>
-<li><p>执行 <code class="docutils literal notranslate"><span class="pre">$/opt/SEGGER/JLink/JLinkGDBServer</span> <span class="pre">-select</span> <span class="pre">USB-device</span> <span class="pre">Cortex-M33</span> <span class="pre">-if</span> <span class="pre">SWD</span> <span class="pre">-scriptfile</span> <span class="pre">AP0_KM4.JLinkScript</span> <span class="pre">port</span> <span class="pre">2335</span></code>.</p></li>
+<li><p>打开新终端，进入目录 <code class="docutils literal notranslate"><span class="pre">amebalite_gcc_project/utils/jlink_script</span></code></p></li>
+<li><p>执行命令：
+<code class="docutils literal notranslate"><span class="pre">$/opt/SEGGER/JLink/JLinkGDBServer</span> <span class="pre">-select</span> <span class="pre">USB-device</span> <span class="pre">Cortex-M33</span> <span class="pre">-if</span> <span class="pre">SWD</span> <span class="pre">-scriptfile</span> <span class="pre">AP0_KM4.JLinkScript</span> <span class="pre">port</span> <span class="pre">2335</span></code></p></li>
 </ul>
 <figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/lite_linux_km4_jlink_gdb_server_connection.png"><img alt="../../_images/lite_linux_km4_jlink_gdb_server_connection.png" src="../../_images/lite_linux_km4_jlink_gdb_server_connection.png" style="width: 507.49999999999994px; height: 275.09999999999997px;" /></a>
@@ -467,16 +511,18 @@
 </figure>
 <p><strong>设置 J-Link</strong></p>
 <ul class="simple">
-<li><p>打开新终端进入目录project_km4</p></li>
-<li><p>执行 <code class="docutils literal notranslate"><span class="pre">$make</span> <span class="pre">setup</span> <span class="pre">GDB_SERVER=jlink</span></code></p></li>
+<li><p>打开新终端，进入目录 <code class="docutils literal notranslate"><span class="pre">project_km4</span></code></p></li>
+<li><p>执行命令：
+<code class="docutils literal notranslate"><span class="pre">$make</span> <span class="pre">setup</span> <span class="pre">GDB_SERVER=jlink</span></code></p></li>
 </ul>
 <figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/lite_linux_km4_jlink_setup.png"><img alt="../../_images/lite_linux_km4_jlink_setup.png" src="../../_images/lite_linux_km4_jlink_setup.png" style="width: 503.99999999999994px; height: 95.19999999999999px;" /></a>
 </figure>
 </div><div aria-labelledby="tab-9-9-1" class="sphinx-tabs-panel" hidden="true" id="panel-9-9-1" name="9-1" role="tabpanel" tabindex="0"><p><strong>KM4 连接 J-Link</strong></p>
 <ul class="simple">
-<li><p>打开新终端进入目录 <code class="docutils literal notranslate"><span class="pre">amebalite_gcc_project/utils/jlink_script</span></code></p></li>
-<li><p>执行 <code class="docutils literal notranslate"><span class="pre">$/opt/SEGGER/JLink/</span> <span class="pre">JLinkExe</span> <span class="pre">-device</span> <span class="pre">Cortex-M33</span> <span class="pre">-if</span> <span class="pre">swd</span> <span class="pre">-autoconnect</span> <span class="pre">1</span> <span class="pre">-speed</span> <span class="pre">1000</span> <span class="pre">-JLinkScriptFile</span> <span class="pre">KM4_SEL.JLinkScript</span></code></p></li>
+<li><p>打开新终端，进入目录 <code class="docutils literal notranslate"><span class="pre">amebalite_gcc_project/utils/jlink_script</span></code></p></li>
+<li><p>执行命令：
+<code class="docutils literal notranslate"><span class="pre">$/opt/SEGGER/JLink/JLinkExe</span> <span class="pre">-device</span> <span class="pre">Cortex-M33</span> <span class="pre">-if</span> <span class="pre">swd</span> <span class="pre">-autoconnect</span> <span class="pre">1</span> <span class="pre">-speed</span> <span class="pre">1000</span> <span class="pre">-JLinkScriptFile</span> <span class="pre">KM4_SEL.JLinkScript</span></code></p></li>
 </ul>
 <figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/lite_linux_kr4_setup_km4_jlink_gdb_server_connection.png"><img alt="../../_images/lite_linux_kr4_setup_km4_jlink_gdb_server_connection.png" src="../../_images/lite_linux_kr4_setup_km4_jlink_gdb_server_connection.png" style="width: 506.09999999999997px; height: 170.1px;" /></a>
@@ -485,18 +531,22 @@
 <a class="reference internal image-reference" href="../../_images/lite_linux_kr4_setup_km4_jlink_gdb_server_connection_success.png"><img alt="../../_images/lite_linux_kr4_setup_km4_jlink_gdb_server_connection_success.png" src="../../_images/lite_linux_kr4_setup_km4_jlink_gdb_server_connection_success.png" style="width: 381.5px; height: 162.39999999999998px;" /></a>
 </figure>
 <p><strong>KR4 连接 J-Link</strong></p>
-<p>KM4连接成功之后, 打开新终端在相同目录下执行 <code class="docutils literal notranslate"><span class="pre">$/opt/SEGGER/JLink/JLinkGDBServer</span> <span class="pre">-select</span> <span class="pre">USB-device</span> <span class="pre">RV32</span> <span class="pre">-if</span> <span class="pre">cjtag</span> <span class="pre">-port</span> <span class="pre">2331</span></code></p>
+<ul class="simple">
+<li><p>完成 KM4 连接后，在相同目录下执行：
+<code class="docutils literal notranslate"><span class="pre">$/opt/SEGGER/JLink/JLinkGDBServer</span> <span class="pre">-select</span> <span class="pre">USB-device</span> <span class="pre">RV32</span> <span class="pre">-if</span> <span class="pre">cjtag</span> <span class="pre">-port</span> <span class="pre">2331</span></code></p></li>
+<li><p><em>注意：需保持此终端开启以进行 KR4 调试，KM4 终端可关闭</em></p></li>
+</ul>
 <figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/lite_linux_kr4_jlink_gdb_server_connection.png"><img alt="../../_images/lite_linux_kr4_jlink_gdb_server_connection.png" src="../../_images/lite_linux_kr4_jlink_gdb_server_connection.png" style="width: 506.79999999999995px; height: 264.59999999999997px;" /></a>
 </figure>
-<p>连接成功之后，保持KR4的终端开启才能进行KR4的debug，但是KM4的终端可以关闭</p>
 <figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/lite_linux_kr4_jlink_gdb_server_connection_success.png"><img alt="../../_images/lite_linux_kr4_jlink_gdb_server_connection_success.png" src="../../_images/lite_linux_kr4_jlink_gdb_server_connection_success.png" style="width: 368.2px; height: 262.5px;" /></a>
 </figure>
 <p><strong>设置 J-Link</strong></p>
 <ul class="simple">
-<li><p>打开新终端进入目录project_kr4</p></li>
-<li><p>执行 <code class="docutils literal notranslate"><span class="pre">$make</span> <span class="pre">setup</span> <span class="pre">GDB_SERVER=jlink</span></code></p></li>
+<li><p>打开新终端，进入目录 <code class="docutils literal notranslate"><span class="pre">project_kr4</span></code></p></li>
+<li><p>执行命令：
+<code class="docutils literal notranslate"><span class="pre">$make</span> <span class="pre">setup</span> <span class="pre">GDB_SERVER=jlink</span></code></p></li>
 </ul>
 <figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/lite_linux_kr4_jlink_setup.png"><img alt="../../_images/lite_linux_kr4_jlink_setup.png" src="../../_images/lite_linux_kr4_jlink_setup.png" style="width: 506.79999999999995px; height: 95.89999999999999px;" /></a>
@@ -504,29 +554,33 @@
 </div></div>
 </div><div aria-labelledby="tab-6-6-3" class="sphinx-tabs-panel" hidden="true" id="panel-6-6-3" name="6-3" role="tabpanel" tabindex="0"><div class="sphinx-tabs docutils container">
 <div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-10-10-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-10-10-0" name="10-0" role="tab" tabindex="0">CA32 core0</button><button aria-controls="panel-10-10-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-10-10-1" name="10-1" role="tab" tabindex="-1">CA32 core1</button><button aria-controls="panel-10-10-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-10-10-2" name="10-2" role="tab" tabindex="-1">KM4 Setup</button><button aria-controls="panel-10-10-3" aria-selected="false" class="sphinx-tabs-tab" id="tab-10-10-3" name="10-3" role="tab" tabindex="-1">KM0 Setup</button></div><div aria-labelledby="tab-10-10-0" class="sphinx-tabs-panel" id="panel-10-10-0" name="10-0" role="tabpanel" tabindex="0"><ul class="simple">
-<li><p>打开新终端进入目录 <code class="docutils literal notranslate"><span class="pre">{SDK}/amebasmart_gcc_project/utils/jlink_script</span></code></p></li>
-<li><p>执行 <code class="docutils literal notranslate"><span class="pre">$/opt/SEGGER/JLink/JLinkGDBServer</span> <span class="pre">-device</span> <span class="pre">cortex-a32</span> <span class="pre">-if</span> <span class="pre">SWD</span> <span class="pre">-scriptfile</span> <span class="pre">AP3_CA32_Core0.JLinkScript</span> <span class="pre">-port</span> <span class="pre">2337</span></code></p></li>
+<li><p>打开新终端，进入目录 <code class="docutils literal notranslate"><span class="pre">{SDK}/amebasmart_gcc_project/utils/jlink_script</span></code></p></li>
+<li><p>执行命令：
+<code class="docutils literal notranslate"><span class="pre">$/opt/SEGGER/JLink/JLinkGDBServer</span> <span class="pre">-device</span> <span class="pre">cortex-a32</span> <span class="pre">-if</span> <span class="pre">SWD</span> <span class="pre">-scriptfile</span> <span class="pre">AP3_CA32_Core0.JLinkScript</span> <span class="pre">-port</span> <span class="pre">2337</span></code></p></li>
 </ul>
 <figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/smart_ca32_core0_jlink_gdb_server_connection.png"><img alt="../../_images/smart_ca32_core0_jlink_gdb_server_connection.png" src="../../_images/smart_ca32_core0_jlink_gdb_server_connection.png" style="width: 717.4px; height: 642.6px;" /></a>
 </figure>
 </div><div aria-labelledby="tab-10-10-1" class="sphinx-tabs-panel" hidden="true" id="panel-10-10-1" name="10-1" role="tabpanel" tabindex="0"><ul class="simple">
-<li><p>打开新终端进入目录 <code class="docutils literal notranslate"><span class="pre">{SDK}/amebasmart_gcc_project/utils/jlink_script</span></code></p></li>
-<li><p>执行 <code class="docutils literal notranslate"><span class="pre">$/opt/SEGGER/JLink/JLinkGDBServer</span> <span class="pre">-device</span> <span class="pre">cortex-a32</span> <span class="pre">-if</span> <span class="pre">SWD</span> <span class="pre">-scriptfile</span> <span class="pre">AP3_CA32_Core1.JLinkScript</span> <span class="pre">-port</span> <span class="pre">2339</span></code></p></li>
+<li><p>打开新终端，进入目录 <code class="docutils literal notranslate"><span class="pre">{SDK}/amebasmart_gcc_project/utils/jlink_script</span></code></p></li>
+<li><p>执行命令：
+<code class="docutils literal notranslate"><span class="pre">$/opt/SEGGER/JLink/JLinkGDBServer</span> <span class="pre">-device</span> <span class="pre">cortex-a32</span> <span class="pre">-if</span> <span class="pre">SWD</span> <span class="pre">-scriptfile</span> <span class="pre">AP3_CA32_Core1.JLinkScript</span> <span class="pre">-port</span> <span class="pre">2339</span></code></p></li>
 </ul>
 <figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/smart_ca32_core1_jlink_gdb_server_connection_under_linux.png"><img alt="../../_images/smart_ca32_core1_jlink_gdb_server_connection_under_linux.png" src="../../_images/smart_ca32_core1_jlink_gdb_server_connection_under_linux.png" style="width: 724.1999999999999px; height: 641.75px;" /></a>
 </figure>
 </div><div aria-labelledby="tab-10-10-2" class="sphinx-tabs-panel" hidden="true" id="panel-10-10-2" name="10-2" role="tabpanel" tabindex="0"><ul class="simple">
-<li><p>打开新终端进入目录 <code class="docutils literal notranslate"><span class="pre">{SDK}/amebasmart_gcc_project/utils/jlink_script</span></code></p></li>
-<li><p>执行 <code class="docutils literal notranslate"><span class="pre">$/opt/SEGGER/JLink/JLinkGDBServer</span> <span class="pre">-device</span> <span class="pre">cortex-m33</span> <span class="pre">-if</span> <span class="pre">SWD</span> <span class="pre">-scriptfile</span> <span class="pre">AP1_KM4.JLinkScript</span> <span class="pre">-port</span> <span class="pre">2335</span></code></p></li>
+<li><p>打开新终端，进入目录 <code class="docutils literal notranslate"><span class="pre">{SDK}/amebasmart_gcc_project/utils/jlink_script</span></code></p></li>
+<li><p>执行命令：
+<code class="docutils literal notranslate"><span class="pre">$/opt/SEGGER/JLink/JLinkGDBServer</span> <span class="pre">-device</span> <span class="pre">cortex-m33</span> <span class="pre">-if</span> <span class="pre">SWD</span> <span class="pre">-scriptfile</span> <span class="pre">AP1_KM4.JLinkScript</span> <span class="pre">-port</span> <span class="pre">2335</span></code></p></li>
 </ul>
 <figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/smart_km4_jlink_gdb_server_connection_success.png"><img alt="../../_images/smart_km4_jlink_gdb_server_connection_success.png" src="../../_images/smart_km4_jlink_gdb_server_connection_success.png" style="width: 720.8px; height: 625.6px;" /></a>
 </figure>
 </div><div aria-labelledby="tab-10-10-3" class="sphinx-tabs-panel" hidden="true" id="panel-10-10-3" name="10-3" role="tabpanel" tabindex="0"><ul class="simple">
-<li><p>打开新终端进入目录 <code class="docutils literal notranslate"><span class="pre">{SDK}/amebasmart_gcc_project/utils/jlink_script</span></code></p></li>
-<li><p>执行 <code class="docutils literal notranslate"><span class="pre">$/opt/SEGGER/JLink/JLinkGDBServer</span> <span class="pre">-device</span> <span class="pre">cortex-m23</span> <span class="pre">-if</span> <span class="pre">SWD</span> <span class="pre">-scriptfile</span> <span class="pre">AP0_KM0.JLinkScript</span> <span class="pre">-port</span> <span class="pre">2331</span></code></p></li>
+<li><p>打开新终端，进入目录 <code class="docutils literal notranslate"><span class="pre">{SDK}/amebasmart_gcc_project/utils/jlink_script</span></code></p></li>
+<li><p>执行命令：
+<code class="docutils literal notranslate"><span class="pre">$/opt/SEGGER/JLink/JLinkGDBServer</span> <span class="pre">-device</span> <span class="pre">cortex-m23</span> <span class="pre">-if</span> <span class="pre">SWD</span> <span class="pre">-scriptfile</span> <span class="pre">AP0_KM0.JLinkScript</span> <span class="pre">-port</span> <span class="pre">2331</span></code></p></li>
 </ul>
 <figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/smart_km0_jlink_gdb_server_connection_success.png"><img alt="../../_images/smart_km0_jlink_gdb_server_connection_success.png" src="../../_images/smart_km0_jlink_gdb_server_connection_success.png" style="width: 720.8px; height: 629.85px;" /></a>
@@ -535,51 +589,57 @@
 </div></div>
 </div></div>
 </section>
-<section id="j-linkflash">
-<h1>J-Link下载固件到Flash<a class="headerlink" href="#j-linkflash" title="Link to this heading"></a></h1>
-<p>我们更推荐使用 Realtek 提供的 Image Tool 软件下载flash。更多信息请参考 <a class="reference internal" href="../0_tools/1_image_tool_toprst_cn.html#image-tool"><span class="std std-ref">Image Tool</span></a>。</p>
-<p>如果必须要用J-Link下载固件，请参考如下内容：</p>
+<section id="id2">
+<h1>J-Link 固件烧录<a class="headerlink" href="#id2" title="Link to this heading"></a></h1>
+<p>我们更推荐使用 Realtek 提供的 Image Tool 软件下载固件。更多信息请参考 <a class="reference internal" href="../0_tools/1_image_tool_toprst_cn.html#image-tool"><span class="std std-ref">Image Tool</span></a>。</p>
+<p>如果必须使用 J-Link 下载固件，请参考如下内容：</p>
 <ol class="arabic simple">
-<li><p>编译image(参考 <a class="reference internal" href="../0_gcc_build_environment/1_gcc_build_environment_toprst_cn.html#building-code"><span class="std std-ref">编译代码</span></a>)并连接J-Link</p></li>
-<li><p>键入 <code class="docutils literal notranslate"><span class="pre">build.py</span> <span class="pre">-gdb</span></code> 命令开始下载，之后固件将被下载到 Flash 中，整个过程需要几秒钟，如下所示</p></li>
+<li><p>编译 image（参考 <a class="reference internal" href="../0_gcc_build_environment/1_gcc_build_environment_toprst_cn.html#building-code"><span class="std std-ref">编译代码</span></a>）并连接 J-Link</p></li>
+<li><p>键入 <code class="docutils literal notranslate"><span class="pre">build.py</span> <span class="pre">-gdb</span></code> 命令开始下载，之后固件将被下载到 Flash 中，整个过程需要几秒钟，如下所示：</p></li>
 </ol>
-<figure class="align-center" id="id6">
+<figure class="align-center" id="id7">
 <a class="reference internal image-reference" href="../../_images/downloading_image_to_flash.png"><img alt="../../_images/downloading_image_to_flash.png" src="../../_images/downloading_image_to_flash.png" style="width: 356.40000000000003px; height: 265.5px;" /></a>
 <figcaption>
-<p><span class="caption-text">下载固件到Flash</span><a class="headerlink" href="#id6" title="Link to this image"></a></p>
+<p><span class="caption-text">下载固件到 Flash</span><a class="headerlink" href="#id7" title="Link to this image"></a></p>
 </figcaption>
 </figure>
-<figure class="align-center" id="id7">
+<figure class="align-center" id="id8">
 <a class="reference internal image-reference" href="../../_images/download_codes_success.png"><img alt="../../_images/download_codes_success.png" src="../../_images/download_codes_success.png" style="width: 402.40000000000003px; height: 140.8px;" /></a>
 <figcaption>
-<p><span class="caption-text">下载成功的日志提示</span><a class="headerlink" href="#id7" title="Link to this image"></a></p>
+<p><span class="caption-text">下载成功的日志提示</span><a class="headerlink" href="#id8" title="Link to this image"></a></p>
 </figcaption>
 </figure>
-<p>为确认固件是否被正确地下载进去，可以在下载之前勾选 <span class="guilabel">verify download</span> ，在固件下载过程中，将会有 <code class="docutils literal notranslate"><span class="pre">verified</span> <span class="pre">OK</span></code> 的日志提示。</p>
-<figure class="align-center" id="id8">
+<p>为确认固件是否被正确地下载进去，可以在下载之前勾选 <span class="guilabel">verify download</span>，在固件下载过程中，将会有 <code class="docutils literal notranslate"><span class="pre">verified</span> <span class="pre">OK</span></code> 的日志提示。</p>
+<figure class="align-center" id="id9">
 <a class="reference internal image-reference" href="../../_images/verify_download.png"><img alt="../../_images/verify_download.png" src="../../_images/verify_download.png" style="width: 508.5px; height: 409.5px;" /></a>
 <figcaption>
-<p><span class="caption-text">Verify download</span><a class="headerlink" href="#id8" title="Link to this image"></a></p>
+<p><span class="caption-text">验证下载</span><a class="headerlink" href="#id9" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <p>下载完成后按下 <code class="docutils literal notranslate"><span class="pre">Reset</span></code> 按键，可以看到设备使用新的固件启动。</p>
 </section>
 <section id="entering-debug-mode">
-<span id="id2"></span><h1>J-Link 进入调试模式<a class="headerlink" href="#entering-debug-mode" title="Link to this heading"></a></h1>
+<span id="id3"></span><h1>调试模式进入流程<a class="headerlink" href="#entering-debug-mode" title="Link to this heading"></a></h1>
 <ol class="arabic simple">
-<li><p>编译image并连接J-Link</p></li>
-<li><p>进入到SDK根目录, 输入： <code class="docutils literal notranslate"><span class="pre">build.py</span> <span class="pre">-debug</span></code> ，在命令提示符中拷贝对应target的 J-Link 命令并执行：</p></li>
+<li><p><strong>编译镜像并连接 J-Link</strong></p></li>
+<li><p><strong>执行命令</strong>：</p>
+<ul class="simple">
+<li><p>进入 SDK 根目录</p></li>
+<li><p>运行 <code class="docutils literal notranslate"><span class="pre">build.py</span> <span class="pre">-debug</span></code></p></li>
+<li><p>根据目标设备选择对应命令：</p></li>
+</ul>
+</li>
 </ol>
 <div class="sphinx-tabs docutils container">
 <div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-11-11-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-11-11-0" name="11-0" role="tab" tabindex="0">RTL8721Dx</button><button aria-controls="panel-11-11-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-11-11-1" name="11-1" role="tab" tabindex="-1">RTL8720E</button><button aria-controls="panel-11-11-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-11-11-2" name="11-2" role="tab" tabindex="-1">RTL8726E</button><button aria-controls="panel-11-11-3" aria-selected="false" class="sphinx-tabs-tab" id="tab-11-11-3" name="11-3" role="tab" tabindex="-1">RTL8730E</button></div><div aria-labelledby="tab-11-11-0" class="sphinx-tabs-panel" id="panel-11-11-0" name="11-0" role="tabpanel" tabindex="0"><ul>
-<li><p>For KM4:</p>
+<li><p>KM4:</p>
 <blockquote>
 <div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;</span><span class="si">{Jlink_path}</span><span class="s2">\JLink.exe&quot;</span> <span class="o">-</span><span class="n">device</span> <span class="n">Cortex</span><span class="o">-</span><span class="n">M33</span> <span class="o">-</span><span class="k">if</span> <span class="n">SWD</span> <span class="o">-</span><span class="n">speed</span> <span class="mi">4000</span> <span class="o">-</span><span class="n">autoconnect</span> <span class="mi">1</span>
 </pre></div>
 </div>
 </div></blockquote>
 </li>
-<li><p>For KM0:</p>
+<li><p>KM0:</p>
 <blockquote>
 <div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;</span><span class="si">{Jlink_path}</span><span class="s2">\JLink.exe&quot;</span> <span class="o">-</span><span class="n">device</span> <span class="n">Cortex</span><span class="o">-</span><span class="n">M23</span> <span class="o">-</span><span class="k">if</span> <span class="n">SWD</span> <span class="o">-</span><span class="n">speed</span> <span class="mi">4000</span> <span class="o">-</span><span class="n">autoconnect</span> <span class="mi">1</span>
 </pre></div>
@@ -588,14 +648,14 @@
 </li>
 </ul>
 </div><div aria-labelledby="tab-11-11-1" class="sphinx-tabs-panel" hidden="true" id="panel-11-11-1" name="11-1" role="tabpanel" tabindex="0"><ul>
-<li><p>For KM4:</p>
+<li><p>KM4:</p>
 <blockquote>
 <div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;</span><span class="si">{Jlink_path}</span><span class="s2">\JLink.exe&quot;</span> <span class="o">-</span><span class="n">device</span> <span class="n">Cortex</span><span class="o">-</span><span class="n">M33</span> <span class="o">-</span><span class="k">if</span> <span class="n">SWD</span> <span class="o">-</span><span class="n">speed</span> <span class="mi">4000</span> <span class="o">-</span><span class="n">autoconnect</span> <span class="mi">1</span>
 </pre></div>
 </div>
 </div></blockquote>
 </li>
-<li><p>For KR4:</p>
+<li><p>KR4:</p>
 <blockquote>
 <div><p>First:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;</span><span class="si">{Jlink_path}</span><span class="s2">\JLink.exe&quot;</span> <span class="o">-</span><span class="n">device</span> <span class="n">Cortex</span><span class="o">-</span><span class="n">M33</span> <span class="o">-</span><span class="k">if</span> <span class="n">SWD</span> <span class="o">-</span><span class="n">speed</span> <span class="mi">4000</span> <span class="o">-</span><span class="n">autoconnect</span> <span class="mi">1</span> <span class="o">-</span><span class="n">JLinkScriptFile</span> <span class="p">{</span><span class="n">script_path</span><span class="p">}</span>\<span class="n">KM4_SEL</span><span class="o">.</span><span class="n">JLinkScript</span>
@@ -607,7 +667,7 @@
 </div>
 </div></blockquote>
 </li>
-<li><p>From KR4 to KM4:</p>
+<li><p>KR4-&gt;KM4:</p>
 <blockquote>
 <div><p>First:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;</span><span class="si">{Jlink_path}</span><span class="s2">\JLink.exe&quot;</span> <span class="o">-</span><span class="n">device</span> <span class="n">RV32</span> <span class="o">-</span><span class="k">if</span> <span class="n">cjtag</span> <span class="o">-</span><span class="n">speed</span> <span class="mi">4000</span> <span class="o">-</span><span class="n">JTAGConf</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="n">JLinkScriptFile</span> <span class="p">{</span><span class="n">script_path</span><span class="p">}</span>\<span class="n">KR4_DMI</span><span class="o">.</span><span class="n">JLinkScript</span>
@@ -621,14 +681,14 @@
 </li>
 </ul>
 </div><div aria-labelledby="tab-11-11-2" class="sphinx-tabs-panel" hidden="true" id="panel-11-11-2" name="11-2" role="tabpanel" tabindex="0"><ul>
-<li><p>For KM4:</p>
+<li><p>KM4:</p>
 <blockquote>
 <div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;</span><span class="si">{Jlink_path}</span><span class="s2">\JLink.exe&quot;</span> <span class="o">-</span><span class="n">device</span> <span class="n">Cortex</span><span class="o">-</span><span class="n">M33</span> <span class="o">-</span><span class="k">if</span> <span class="n">SWD</span> <span class="o">-</span><span class="n">speed</span> <span class="mi">4000</span> <span class="o">-</span><span class="n">autoconnect</span> <span class="mi">1</span>
 </pre></div>
 </div>
 </div></blockquote>
 </li>
-<li><p>For KR4:</p>
+<li><p>KR4:</p>
 <blockquote>
 <div><p>First:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;</span><span class="si">{Jlink_path}</span><span class="s2">\JLink.exe&quot;</span> <span class="o">-</span><span class="n">device</span> <span class="n">Cortex</span><span class="o">-</span><span class="n">M33</span> <span class="o">-</span><span class="k">if</span> <span class="n">SWD</span> <span class="o">-</span><span class="n">speed</span> <span class="mi">4000</span> <span class="o">-</span><span class="n">autoconnect</span> <span class="mi">1</span> <span class="o">-</span><span class="n">JLinkScriptFile</span> <span class="p">{</span><span class="n">script_path</span><span class="p">}</span>\<span class="n">KM4_SEL</span><span class="o">.</span><span class="n">JLinkScript</span>
@@ -640,7 +700,7 @@
 </div>
 </div></blockquote>
 </li>
-<li><p>From KR4 to KM4:</p>
+<li><p>KR4-&gt;KM4:</p>
 <blockquote>
 <div><p>First:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;</span><span class="si">{Jlink_path}</span><span class="s2">\JLink.exe&quot;</span> <span class="o">-</span><span class="n">device</span> <span class="n">RV32</span> <span class="o">-</span><span class="k">if</span> <span class="n">cjtag</span> <span class="o">-</span><span class="n">speed</span> <span class="mi">4000</span> <span class="o">-</span><span class="n">JTAGConf</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="n">JLinkScriptFile</span> <span class="p">{</span><span class="n">script_path</span><span class="p">}</span>\<span class="n">KR4_DMI</span><span class="o">.</span><span class="n">JLinkScript</span>
@@ -654,28 +714,28 @@
 </li>
 </ul>
 </div><div aria-labelledby="tab-11-11-3" class="sphinx-tabs-panel" hidden="true" id="panel-11-11-3" name="11-3" role="tabpanel" tabindex="0"><ul>
-<li><p>For KM4:</p>
+<li><p>KM4:</p>
 <blockquote>
 <div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;</span><span class="si">{Jlink_path}</span><span class="s2">\JLink.exe&quot;</span> <span class="o">-</span><span class="n">device</span> <span class="n">Cortex</span><span class="o">-</span><span class="n">M33</span> <span class="o">-</span><span class="k">if</span> <span class="n">SWD</span> <span class="o">-</span><span class="n">speed</span> <span class="mi">4000</span> <span class="o">-</span><span class="n">autoconnect</span> <span class="mi">1</span> <span class="o">-</span><span class="n">JLinkScriptFile</span> <span class="p">{</span><span class="n">script_path</span><span class="p">}</span>\<span class="n">AP1_KM4</span><span class="o">.</span><span class="n">JLinkScript</span>
 </pre></div>
 </div>
 </div></blockquote>
 </li>
-<li><p>For KM0:</p>
+<li><p>KM0:</p>
 <blockquote>
 <div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;</span><span class="si">{Jlink_path}</span><span class="s2">\JLink.exe&quot;</span> <span class="o">-</span><span class="n">device</span> <span class="n">Cortex</span><span class="o">-</span><span class="n">M23</span> <span class="o">-</span><span class="k">if</span> <span class="n">SWD</span> <span class="o">-</span><span class="n">speed</span> <span class="mi">4000</span> <span class="o">-</span><span class="n">autoconnect</span> <span class="mi">1</span> <span class="o">-</span><span class="n">JLinkScriptFile</span> <span class="p">{</span><span class="n">script_path</span><span class="p">}</span>\<span class="n">AP0_KM0</span><span class="o">.</span><span class="n">JLinkScript</span>
 </pre></div>
 </div>
 </div></blockquote>
 </li>
-<li><p>For CA32 core0:</p>
+<li><p>CA32 core0:</p>
 <blockquote>
 <div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;</span><span class="si">{Jlink_path}</span><span class="s2">\JLink.exe&quot;</span> <span class="o">-</span><span class="n">device</span> <span class="n">Cortex</span><span class="o">-</span><span class="n">A32</span> <span class="o">-</span><span class="k">if</span> <span class="n">SWD</span> <span class="o">-</span><span class="n">speed</span> <span class="mi">4000</span> <span class="o">-</span><span class="n">autoconnect</span> <span class="mi">1</span> <span class="o">-</span><span class="n">JLinkScriptFile</span> <span class="p">{</span><span class="n">script_path</span><span class="p">}</span>\<span class="n">AP3_CA32_Core0</span><span class="o">.</span><span class="n">JLinkScript</span>
 </pre></div>
 </div>
 </div></blockquote>
 </li>
-<li><p>For CA32 core1:</p>
+<li><p>CA32 core1:</p>
 <blockquote>
 <div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;</span><span class="si">{Jlink_path}</span><span class="s2">\JLink.exe&quot;</span> <span class="o">-</span><span class="n">device</span> <span class="n">Cortex</span><span class="o">-</span><span class="n">A32</span> <span class="o">-</span><span class="k">if</span> <span class="n">SWD</span> <span class="o">-</span><span class="n">speed</span> <span class="mi">4000</span> <span class="o">-</span><span class="n">autoconnect</span> <span class="mi">1</span> <span class="o">-</span><span class="n">JLinkScriptFile</span> <span class="p">{</span><span class="n">script_path</span><span class="p">}</span>\<span class="n">AP3_CA32_Core1</span><span class="o">.</span><span class="n">JlinkScript</span>
 </pre></div>
@@ -687,152 +747,140 @@
 <div class="admonition note">
 <p class="admonition-title">备注</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">{Jlink_path}</span></code> ： Segger J-Link 的安装路径，默认为 <code class="docutils literal notranslate"><span class="pre">C:\Program</span> <span class="pre">Files</span> <span class="pre">(x86)\SEGGER\JLink</span></code>.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">{script_path}</span></code> ： <code class="docutils literal notranslate"><span class="pre">{SDK}\amebaxxx_gcc_project\utils\jlink_script</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">{Jlink_path}</span></code>: J-Link 安装路径 (默认: <code class="docutils literal notranslate"><span class="pre">C:\Program</span> <span class="pre">Files</span> <span class="pre">(x86)\SEGGER\JLink</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">{script_path}</span></code>: <code class="docutils literal notranslate"><span class="pre">{SDK}\amebaxxx_gcc_project\utils\jlink_script</span></code></p></li>
 </ul>
 </div>
 </section>
 <section id="gdb">
-<h1>GDB 常用命令<a class="headerlink" href="#gdb" title="Link to this heading"></a></h1>
-<p>以下为常用的GDB 命令。所有命令均不区分大小写。</p>
-<table class="docutils align-default" id="id9" style="width: 100%">
-<caption><span class="caption-text">常用命令</span><a class="headerlink" href="#id9" title="Link to this table"></a></caption>
+<h1>GDB 核心指令集<a class="headerlink" href="#gdb" title="Link to this heading"></a></h1>
+<table class="docutils align-default" id="id10" style="width: 100%">
+<caption><span class="caption-text">常用命令速查表</span><a class="headerlink" href="#id10" title="Link to this table"></a></caption>
 <colgroup>
-<col style="width: 15.0%" />
-<col style="width: 15.0%" />
+<col style="width: 20.0%" />
+<col style="width: 20.0%" />
 <col style="width: 30.0%" />
-<col style="width: 40.0%" />
+<col style="width: 30.0%" />
 </colgroup>
 <thead>
-<tr class="row-odd"><th class="head"><p>命令（长）</p></th>
-<th class="head"><p>命令 （短）</p></th>
+<tr class="row-odd"><th class="head"><p>长命令</p></th>
+<th class="head"><p>短命令</p></th>
 <th class="head"><p>语法</p></th>
-<th class="head"><p>解释</p></th>
+<th class="head"><p>功能说明</p></th>
 </tr>
 </thead>
 <tbody>
 <tr class="row-even"><td><p>Halt</p></td>
 <td><p>H</p></td>
 <td></td>
-<td><p>暂停 CPU</p></td>
+<td><p>暂停 CPU 执行</p></td>
 </tr>
 <tr class="row-odd"><td><p>Go</p></td>
 <td><p>G</p></td>
 <td></td>
-<td><p>取消 CPU 暂停状态</p></td>
+<td><p>恢复 CPU 执行</p></td>
 </tr>
 <tr class="row-even"><td><p>Mem</p></td>
-<td></td>
-<td><p>Mem &lt;Addr&gt; &lt;NumBytes&gt;</p></td>
-<td><p>读取内存并显示ASCII码值</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+<td><p>Mem &lt;地址&gt; &lt;字节数&gt;</p></td>
+<td><p>读取内存(ASCII 格式)</p></td>
 </tr>
 <tr class="row-odd"><td><p>SaveBin</p></td>
-<td></td>
-<td><p>SaveBin &lt;FileName&gt; &lt;Addr&gt; &lt;NumBytes&gt;</p></td>
-<td><p>将目标内存保存为二进制文件</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+<td><p>SaveBin &lt;文件&gt; &lt;地址&gt; &lt;字节数&gt;</p></td>
+<td><p>内存转储为二进制文件</p></td>
 </tr>
 <tr class="row-even"><td><p>Exit</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
 <td></td>
-<td></td>
-<td><p>关闭 J-Link 连接并退出</p></td>
+<td><p>断开 J-Link 连接</p></td>
 </tr>
 </tbody>
 </table>
-<p>更多信息参考： <a class="reference external" href="https://wiki.segger.com/J-Link_Commander">https://wiki.segger.com/J-Link_Commander</a>.</p>
+<p>官方文档参考：<a class="reference external" href="https://wiki.segger.com/J-Link_Commander">https://wiki.segger.com/J-Link_Commander</a></p>
 <div class="admonition note">
 <p class="admonition-title">备注</p>
 <ul class="simple">
-<li><p>可以多次输入 <code class="docutils literal notranslate"><span class="pre">H</span></code> 和 <code class="docutils literal notranslate"><span class="pre">G</span></code> 命令并记录程序计数器（PC）的值，然后在汇编文件中查找该 PC 值对应的函数。这个函数可能是您遇到问题的地方。</p></li>
-<li><p>也可以使用 <code class="docutils literal notranslate"><span class="pre">mem</span></code> 命令来转储一些位于栈指针（sp）之后的地址内容，通过这些地址信息，您可以找到函数调用栈。</p></li>
+<li><p>通过多次执行 <code class="docutils literal notranslate"><span class="pre">H</span></code>/<code class="docutils literal notranslate"><span class="pre">G</span></code> 记录 PC 值，定位问题函数</p></li>
+<li><p>使用 <code class="docutils literal notranslate"><span class="pre">mem</span> <span class="pre">&lt;sp地址&gt;</span></code> 查看调用栈信息</p></li>
 </ul>
 </div>
 </section>
 <section id="gdb-command-lists">
-<span id="id3"></span><h1>GDB 调试器基本用法<a class="headerlink" href="#gdb-command-lists" title="Link to this heading"></a></h1>
-<p>GDB（GNU项目调试器）允许您在程序执行过程中对其进行检查，并帮助捕捉错误。</p>
-<p>章节 <a class="reference internal" href="#entering-debug-mode"><span class="std std-ref">J-Link 进入调试模式</span></a> 已经描述了如何进入GDB调试模式，而本节将展示常用GDB命令的基本用法。</p>
-<p>关于GDB调试器的更多信息，请访问 GNU官方网站。</p>
-<p>下表描述了常用的指令及其功能，具体使用方法请参见 <a class="reference external" href="https://www.sourceware.org/gdb/documentation/">GDB用户手册</a>。</p>
-<table class="docutils align-default" style="width: 100%">
+<span id="id4"></span><h1>GDB 调试器指南<a class="headerlink" href="#gdb-command-lists" title="Link to this heading"></a></h1>
+<p>GNU 调试器支持在程序运行时进行状态检查与错误追踪（参考章节 <a class="reference internal" href="#entering-debug-mode"><span class="std std-ref">调试模式进入流程</span></a>）</p>
+<p>完整文档：<a class="reference external" href="https://www.sourceware.org/gdb/documentation/">GDB 用户手册</a></p>
+<table class="docutils align-default" id="id11" style="width: 100%">
+<caption><span class="caption-text">功能指令对照表</span><a class="headerlink" href="#id11" title="Link to this table"></a></caption>
 <colgroup>
-<col style="width: 20.0%" />
-<col style="width: 10.0%" />
-<col style="width: 70.0%" />
+<col style="width: 25.0%" />
+<col style="width: 15.0%" />
+<col style="width: 60.0%" />
 </colgroup>
 <thead>
-<tr class="row-odd"><th class="head"><p>功能</p></th>
+<tr class="row-odd"><th class="head"><p>功能模块</p></th>
 <th class="head"><p>命令</p></th>
-<th class="head"><p>描述</p></th>
+<th class="head"><p>操作说明</p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>断点</p></td>
-<td><p>$break</p></td>
-<td><p>断点可以通过 break 命令（缩写为 b）设置。</p>
-<p>使用方法请参见 <strong>Setting Breakpoints</strong> （设置断点）部分。</p>
-</td>
+<tr class="row-even"><td><p>断点管理</p></td>
+<td><p>break (b)</p></td>
+<td><p>设置执行暂停点</p></td>
 </tr>
-<tr class="row-odd"><td><p>观察点</p></td>
-<td><p>$watch</p></td>
-<td><p>您可以使用观察点在表达式的值发生变化时停止执行。相关命令包括 watch、rwatch 和 awatch。使用方法请参见 <strong>Setting Watchpoints</strong> （设置观察点）部分。</p>
-<div class="admonition note">
+<tr class="row-odd"><td rowspan="2"><p>数据监视点</p></td>
+<td><p>watch</p></td>
+<td><p>监控变量变化 (含 watch/rwatch/awatch)</p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><div class="admonition note">
 <p class="admonition-title">备注</p>
-<p>保持观察点的范围小于 20 字节。</p>
+<p>监视范围建议小于 20 字节</p>
 </div>
 </td>
 </tr>
-<tr class="row-even"><td><p>打印断点与观察点信息</p></td>
-<td><p>$info</p></td>
-<td><p>要打印所有已设置且未删除的断点和观察点的表格，请使用 info 命令。
-您可以简单地输入 info 来了解其用法。</p></td>
+<tr class="row-odd"><td><p>断点列表</p></td>
+<td><p>info</p></td>
+<td><p>显示所有激活的断点/监视点</p></td>
 </tr>
-<tr class="row-odd"><td><p>删除断点</p></td>
-<td><p>$delete</p></td>
-<td><p>要删除断点，请使用 delete 命令（缩写为 d）。</p>
-<p>使用方法请参见 <strong>Deleting Breakpoints</strong> （删除断点）部分。</p>
-</td>
+<tr class="row-even"><td><p>断点删除</p></td>
+<td><p>delete (d)</p></td>
+<td><p>移除指定断点</p></td>
 </tr>
-<tr class="row-even"><td><p>继续执行</p></td>
-<td><p>$continue</p></td>
-<td><p>要恢复程序执行，请使用 continue 命令（缩写为 c）。</p>
-<p>使用方法请参见 <strong>Continue and Stepping</strong> （继续和单步执行）部分。</p>
-</td>
+<tr class="row-odd"><td><p>恢复执行</p></td>
+<td colspan="2"><p>continue (c)| 继续程序运行</p></td>
 </tr>
-<tr class="row-odd"><td><p>Step</p></td>
-<td><p>$step</p></td>
-<td><p>要进入函数调用，请使用 step 命令（缩写为 s）。它将继续运行您的程序，直到控制到达不同的源代码行。</p>
-<p>使用方法请参见 <strong>Continue and Stepping</strong> （继续和单步执行）部分。</p>
-</td>
+<tr class="row-even"><td><p>单步进入</p></td>
+<td><p>step (s)</p></td>
+<td><p>进入函数内部执行</p></td>
 </tr>
-<tr class="row-even"><td><p>Next</p></td>
-<td><p>$next</p></td>
-<td><p>要逐步执行程序，请使用 next 命令（缩写为 n）。执行将在原始堆栈级别的不同代码行处停止。</p>
-<p>使用方法请参见 <strong>Continue and Stepping</strong> （继续和单步执行）部分。</p>
-</td>
+<tr class="row-odd"><td><p>单步跳过</p></td>
+<td><p>next (n)</p></td>
+<td><p>执行当前行并跳至下一行</p></td>
 </tr>
-<tr class="row-odd"><td><p>退出</p></td>
-<td><p>$quit</p></td>
-<td><p>要退出 GDB 调试器，请使用 quit 命令（缩写为 q），或键入文件结束字符（通常是 Ctrl-d）。</p>
-<p>使用方法请参见 <strong>Quitting GDB</strong> （退出 GDB）部分。</p>
-</td>
+<tr class="row-even"><td><p>退出调试</p></td>
+<td><p>quit (q)</p></td>
+<td><p>终止调试会话</p></td>
 </tr>
-<tr class="row-even"><td><p>堆栈回溯</p></td>
-<td><p>$backtrace</p></td>
-<td><p>回溯是总结您的程序如何到达当前位置的一种方式。您可以使用 backtrace 命令（缩写为 bt）来打印整个堆栈的回溯。</p>
-<p>使用方法请参见 <strong>Backtraces</strong> （回溯）部分</p>
-</td>
+<tr class="row-odd"><td><p>调用追踪</p></td>
+<td colspan="2"><p>backtrace (bt)| 显示函数调用栈</p></td>
 </tr>
-<tr class="row-odd"><td><p>打印源代码行</p></td>
-<td><p>$list</p></td>
-<td><p>要打印源文件中的行，请使用 list 命令（缩写为 l）。</p>
-<p>使用方法请参见 <strong>Printing Source Lines</strong> （打印源代码行）部分。</p>
-</td>
+<tr class="row-even"><td><p>源码查看</p></td>
+<td><p>list (l)</p></td>
+<td><p>显示上下文代码</p></td>
 </tr>
-<tr class="row-even"><td><p>检查数据</p></td>
-<td><p>$print</p></td>
-<td><p>要检查程序中的数据，您可以使用 print 命令（缩写为 p）。它计算并打印表达式的值。</p>
-<p>使用方法请参见 <strong>Examining Data</strong> （检查数据）部分</p>
-</td>
+<tr class="row-odd"><td><p>数据检查</p></td>
+<td><p>print (p)</p></td>
+<td><p>输出变量/表达式值</p></td>
 </tr>
 </tbody>
 </table>
