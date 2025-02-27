@@ -293,8 +293,9 @@
 <p><strong>主要特点</strong></p>
 <ul class="simple">
 <li><p>WiFi-4 2.4G/5G双频 + Bluetooth 5.0 LE</p></li>
-<li><p>PSA Level-2</p></li>
+<li><p>PSA Level-2 安全认证</p></li>
 <li><p>超低功耗</p></li>
+<li><p>支持FreeRTOS/Zephyr</p></li>
 </ul>
 <p><strong>系统框图</strong></p>
 <figure class="align-center">
@@ -318,13 +319,13 @@
 </ul>
 </li>
 </ul>
-<p><strong>存储子系统</strong></p>
+<p><strong>存储系统</strong></p>
 <ul class="simple">
-<li><p>On-Chip存储：512KB SRAM</p></li>
-<li><p>外部扩展：</p>
+<li><p>片内存储：512KB SRAM</p></li>
+<li><p>扩展存储（包含KGD）:</p>
 <ul>
-<li><p>QSPI Flash（104MHz，支持byte/block访问）</p></li>
-<li><p>8-bit DQ PSRAM（200MHz）</p></li>
+<li><p>QSPI NOR Flash（最大频率 104MHz）</p></li>
+<li><p>DQ8 DDR mode PSRAM（最大频率 200MHz）</p></li>
 </ul>
 </li>
 <li><p>总线架构：Multi-layer AXI总线并行访问</p></li>
@@ -338,7 +339,7 @@
 <li><p>Read Protection (RDP)</p></li>
 <li><p>JTAG/SWD密码保护</p></li>
 <li><p>2KB OTP（用户可配置2Kb）</p></li>
-<li><p>PSA Level 2认证</p></li>
+<li><p>PSA Level 2 安全认证</p></li>
 </ul>
 <p><strong>外设接口</strong></p>
 <ul class="simple">
@@ -526,7 +527,6 @@
 <li><p>ARM/RISC-V双核心架构</p></li>
 <li><p>Wi-Fi 6 2.4GHz</p></li>
 <li><p>Bluetooth 5.2 LE</p></li>
-<li><p>支持FreeRTOS/Zephyr</p></li>
 </ul>
 <p><strong>系统框图</strong></p>
 <figure class="align-center">
@@ -552,11 +552,11 @@
 </ul>
 <p><strong>存储系统</strong></p>
 <ul class="simple">
-<li><p>片上内存：768KB SRAM</p></li>
-<li><p>扩展存储（包含MCM）：</p>
+<li><p>片内存储：768KB SRAM</p></li>
+<li><p>扩展存储（包含KGD）:</p>
 <ul>
-<li><p>支持100MHz QSPI Nor Flash</p></li>
-<li><p>8-bit DQ PSRAM（200MHz，最大64MB容量）</p></li>
+<li><p>QSPI NOR Flash（最大频率 104MHz）</p></li>
+<li><p>DQ8 DDR mode PSRAM（最大频率 200MHz）</p></li>
 </ul>
 </li>
 <li><p>总线架构：Multi-layer AXI总线并行访问</p></li>
@@ -715,7 +715,6 @@
 <li><p>Wi-Fi 6 2.4GHz</p></li>
 <li><p>Bluetooth 5.2 LE</p></li>
 <li><p>可用于语音识别等高算力需求场景</p></li>
-<li><p>支持FreeRTOS/Zephyr</p></li>
 </ul>
 <p><strong>系统框图</strong></p>
 <figure class="align-center">
@@ -750,11 +749,11 @@
 </ul>
 <p><strong>存储系统</strong></p>
 <ul class="simple">
-<li><p>片上内存：512KB SRAM</p></li>
-<li><p>扩展存储（包含MCM）：</p>
+<li><p>片内存储：512KB SRAM</p></li>
+<li><p>扩展存储（包含KGD）:</p>
 <ul>
-<li><p>支持100MHz QSPI Nor Flash</p></li>
-<li><p>8-bit DQ PSRAM（200MHz，最大64MB容量）</p></li>
+<li><p>QSPI NOR Flash（最大频率 104MHz）</p></li>
+<li><p>DQ8 DDR mode PSRAM（最大频率 250MHz）</p></li>
 </ul>
 </li>
 <li><p>总线架构：Multi-layer AXI总线并行访问</p></li>
@@ -1044,19 +1043,22 @@
 </li>
 </ul>
 </div></blockquote>
-<p><strong>存储子系统</strong></p>
+<p><strong>存储系统</strong></p>
 <blockquote>
 <div><ul class="simple">
 <li><p>片内存储: 256 KB静态随机存储器(SRAM)</p></li>
-<li><p>扩展存储:</p>
+<li><p>扩展存储（包含KGD）:</p>
 <ul>
-<li><p>通过SPI控制器(SPIC)访问NOR/NAND闪存(支持字节/块操作模式)</p></li>
-<li><p>堆叠式动态存储器支持DDR2/DDR3L/伪静态RAM(PSRAM)，最大容量256 MB</p></li>
+<li><p>QSPI NOR/NAND Flash（最大频率 104MHz）</p></li>
+<li><p>DQ8 DDR mode PSRAM（最大频率 200MHz）</p></li>
+<li><p>DQ16 DDR2/DDR3L(最大频率 533MHz)</p></li>
 </ul>
 </li>
-<li><p>总线架构: 多层AXI互连总线支持并发访问</p></li>
 </ul>
 </div></blockquote>
+<ul class="simple">
+<li><p>总线架构：Multi-layer AXI总线并行访问</p></li>
+</ul>
 <dl class="simple">
 <dt><strong>外设与接口</strong></dt><dd><ul class="simple">
 <li><p>可编程GPIO: 灵活配置的多功能引脚</p></li>
@@ -1221,7 +1223,6 @@
 <li><p>ARM/RISC-V双核心架构</p></li>
 <li><p>Wi-Fi 6 2.4GHz</p></li>
 <li><p>Bluetooth 5.2 LE</p></li>
-<li><p>支持FreeRTOS/Zephyr</p></li>
 </ul>
 <p><strong>系统框图</strong></p>
 <figure class="align-center">
@@ -1247,11 +1248,11 @@
 </ul>
 <p><strong>存储系统</strong></p>
 <ul class="simple">
-<li><p>片上内存：768KB SRAM</p></li>
-<li><p>扩展存储（包含MCM）：</p>
+<li><p>片内存储：768KB SRAM</p></li>
+<li><p>扩展存储（包含KGD）:</p>
 <ul>
-<li><p>支持100MHz QSPI Nor Flash</p></li>
-<li><p>8-bit DQ PSRAM（200MHz，最大64MB容量）</p></li>
+<li><p>QSPI NOR Flash（最大频率 104MHz）</p></li>
+<li><p>DQ8 DDR mode PSRAM（最大频率 200MHz）</p></li>
 </ul>
 </li>
 <li><p>总线架构：Multi-layer AXI总线并行访问</p></li>
@@ -1485,8 +1486,9 @@
 <p><strong>主要特点</strong></p>
 <ul class="simple">
 <li><p>WiFi-4 2.4G/5G双频 + Bluetooth 5.0 LE</p></li>
-<li><p>PSA Level-2</p></li>
+<li><p>PSA Level-2 安全认证</p></li>
 <li><p>超低功耗</p></li>
+<li><p>支持FreeRTOS/Zephyr</p></li>
 </ul>
 <p><strong>系统框图</strong></p>
 <figure class="align-center">
@@ -1510,13 +1512,13 @@
 </ul>
 </li>
 </ul>
-<p><strong>存储子系统</strong></p>
+<p><strong>存储系统</strong></p>
 <ul class="simple">
-<li><p>On-Chip存储：512KB SRAM</p></li>
-<li><p>外部扩展：</p>
+<li><p>片内存储：512KB SRAM</p></li>
+<li><p>扩展存储（包含KGD）:</p>
 <ul>
-<li><p>QSPI Flash（104MHz，支持byte/block访问）</p></li>
-<li><p>8-bit DQ PSRAM（200MHz）</p></li>
+<li><p>QSPI NOR Flash（最大频率 104MHz）</p></li>
+<li><p>DQ8 DDR mode PSRAM（最大频率 200MHz）</p></li>
 </ul>
 </li>
 <li><p>总线架构：Multi-layer AXI总线并行访问</p></li>
@@ -1530,7 +1532,7 @@
 <li><p>Read Protection (RDP)</p></li>
 <li><p>JTAG/SWD密码保护</p></li>
 <li><p>2KB OTP（用户可配置2Kb）</p></li>
-<li><p>PSA Level 2认证</p></li>
+<li><p>PSA Level 2 安全认证</p></li>
 </ul>
 <p><strong>外设接口</strong></p>
 <ul class="simple">
@@ -1682,7 +1684,6 @@
 <li><p>Wi-Fi 6 2.4GHz</p></li>
 <li><p>Bluetooth 5.2 LE</p></li>
 <li><p>可用于语音识别等高算力需求场景</p></li>
-<li><p>支持FreeRTOS/Zephyr</p></li>
 </ul>
 <p><strong>系统框图</strong></p>
 <figure class="align-center">
@@ -1717,11 +1718,11 @@
 </ul>
 <p><strong>存储系统</strong></p>
 <ul class="simple">
-<li><p>片上内存：512KB SRAM</p></li>
-<li><p>扩展存储（包含MCM）：</p>
+<li><p>片内存储：512KB SRAM</p></li>
+<li><p>扩展存储（包含KGD）:</p>
 <ul>
-<li><p>支持100MHz QSPI Nor Flash</p></li>
-<li><p>8-bit DQ PSRAM（200MHz，最大64MB容量）</p></li>
+<li><p>QSPI NOR Flash（最大频率 104MHz）</p></li>
+<li><p>DQ8 DDR mode PSRAM（最大频率 250MHz）</p></li>
 </ul>
 </li>
 <li><p>总线架构：Multi-layer AXI总线并行访问</p></li>
@@ -2011,19 +2012,22 @@
 </li>
 </ul>
 </div></blockquote>
-<p><strong>存储子系统</strong></p>
+<p><strong>存储系统</strong></p>
 <blockquote>
 <div><ul class="simple">
 <li><p>片内存储: 256 KB静态随机存储器(SRAM)</p></li>
-<li><p>扩展存储:</p>
+<li><p>扩展存储（包含KGD）:</p>
 <ul>
-<li><p>通过SPI控制器(SPIC)访问NOR/NAND闪存(支持字节/块操作模式)</p></li>
-<li><p>堆叠式动态存储器支持DDR2/DDR3L/伪静态RAM(PSRAM)，最大容量256 MB</p></li>
+<li><p>QSPI NOR/NAND Flash（最大频率 104MHz）</p></li>
+<li><p>DQ8 DDR mode PSRAM（最大频率 200MHz）</p></li>
+<li><p>DQ16 DDR2/DDR3L(最大频率 533MHz)</p></li>
 </ul>
 </li>
-<li><p>总线架构: 多层AXI互连总线支持并发访问</p></li>
 </ul>
 </div></blockquote>
+<ul class="simple">
+<li><p>总线架构：Multi-layer AXI总线并行访问</p></li>
+</ul>
 <dl class="simple">
 <dt><strong>外设与接口</strong></dt><dd><ul class="simple">
 <li><p>可编程GPIO: 灵活配置的多功能引脚</p></li>
@@ -2224,8 +2228,9 @@
 <p><strong>主要特点</strong></p>
 <ul class="simple">
 <li><p>WiFi-4 2.4G/5G双频 + Bluetooth 5.0 LE</p></li>
-<li><p>PSA Level-2</p></li>
+<li><p>PSA Level-2 安全认证</p></li>
 <li><p>超低功耗</p></li>
+<li><p>支持FreeRTOS/Zephyr</p></li>
 </ul>
 <p><strong>系统框图</strong></p>
 <figure class="align-center">
@@ -2249,13 +2254,13 @@
 </ul>
 </li>
 </ul>
-<p><strong>存储子系统</strong></p>
+<p><strong>存储系统</strong></p>
 <ul class="simple">
-<li><p>On-Chip存储：512KB SRAM</p></li>
-<li><p>外部扩展：</p>
+<li><p>片内存储：512KB SRAM</p></li>
+<li><p>扩展存储（包含KGD）:</p>
 <ul>
-<li><p>QSPI Flash（104MHz，支持byte/block访问）</p></li>
-<li><p>8-bit DQ PSRAM（200MHz）</p></li>
+<li><p>QSPI NOR Flash（最大频率 104MHz）</p></li>
+<li><p>DQ8 DDR mode PSRAM（最大频率 200MHz）</p></li>
 </ul>
 </li>
 <li><p>总线架构：Multi-layer AXI总线并行访问</p></li>
@@ -2269,7 +2274,7 @@
 <li><p>Read Protection (RDP)</p></li>
 <li><p>JTAG/SWD密码保护</p></li>
 <li><p>2KB OTP（用户可配置2Kb）</p></li>
-<li><p>PSA Level 2认证</p></li>
+<li><p>PSA Level 2 安全认证</p></li>
 </ul>
 <p><strong>外设接口</strong></p>
 <ul class="simple">
@@ -2421,7 +2426,6 @@
 <li><p>Wi-Fi 6 2.4GHz</p></li>
 <li><p>Bluetooth 5.2 LE</p></li>
 <li><p>可用于语音识别等高算力需求场景</p></li>
-<li><p>支持FreeRTOS/Zephyr</p></li>
 </ul>
 <p><strong>系统框图</strong></p>
 <figure class="align-center">
@@ -2456,11 +2460,11 @@
 </ul>
 <p><strong>存储系统</strong></p>
 <ul class="simple">
-<li><p>片上内存：512KB SRAM</p></li>
-<li><p>扩展存储（包含MCM）：</p>
+<li><p>片内存储：512KB SRAM</p></li>
+<li><p>扩展存储（包含KGD）:</p>
 <ul>
-<li><p>支持100MHz QSPI Nor Flash</p></li>
-<li><p>8-bit DQ PSRAM（200MHz，最大64MB容量）</p></li>
+<li><p>QSPI NOR Flash（最大频率 104MHz）</p></li>
+<li><p>DQ8 DDR mode PSRAM（最大频率 250MHz）</p></li>
 </ul>
 </li>
 <li><p>总线架构：Multi-layer AXI总线并行访问</p></li>
@@ -2750,19 +2754,22 @@
 </li>
 </ul>
 </div></blockquote>
-<p><strong>存储子系统</strong></p>
+<p><strong>存储系统</strong></p>
 <blockquote>
 <div><ul class="simple">
 <li><p>片内存储: 256 KB静态随机存储器(SRAM)</p></li>
-<li><p>扩展存储:</p>
+<li><p>扩展存储（包含KGD）:</p>
 <ul>
-<li><p>通过SPI控制器(SPIC)访问NOR/NAND闪存(支持字节/块操作模式)</p></li>
-<li><p>堆叠式动态存储器支持DDR2/DDR3L/伪静态RAM(PSRAM)，最大容量256 MB</p></li>
+<li><p>QSPI NOR/NAND Flash（最大频率 104MHz）</p></li>
+<li><p>DQ8 DDR mode PSRAM（最大频率 200MHz）</p></li>
+<li><p>DQ16 DDR2/DDR3L(最大频率 533MHz)</p></li>
 </ul>
 </li>
-<li><p>总线架构: 多层AXI互连总线支持并发访问</p></li>
 </ul>
 </div></blockquote>
+<ul class="simple">
+<li><p>总线架构：Multi-layer AXI总线并行访问</p></li>
+</ul>
 <dl class="simple">
 <dt><strong>外设与接口</strong></dt><dd><ul class="simple">
 <li><p>可编程GPIO: 灵活配置的多功能引脚</p></li>
@@ -2888,7 +2895,6 @@
 <li><p>Wi-Fi 6 2.4GHz</p></li>
 <li><p>Bluetooth 5.2 LE</p></li>
 <li><p>可用于语音识别等高算力需求场景</p></li>
-<li><p>支持FreeRTOS/Zephyr</p></li>
 </ul>
 <p><strong>系统框图</strong></p>
 <figure class="align-center">
@@ -2923,11 +2929,11 @@
 </ul>
 <p><strong>存储系统</strong></p>
 <ul class="simple">
-<li><p>片上内存：512KB SRAM</p></li>
-<li><p>扩展存储（包含MCM）：</p>
+<li><p>片内存储：512KB SRAM</p></li>
+<li><p>扩展存储（包含KGD）:</p>
 <ul>
-<li><p>支持100MHz QSPI Nor Flash</p></li>
-<li><p>8-bit DQ PSRAM（200MHz，最大64MB容量）</p></li>
+<li><p>QSPI NOR Flash（最大频率 104MHz）</p></li>
+<li><p>DQ8 DDR mode PSRAM（最大频率 250MHz）</p></li>
 </ul>
 </li>
 <li><p>总线架构：Multi-layer AXI总线并行访问</p></li>
@@ -3125,7 +3131,6 @@
 <li><p>ARM/RISC-V双核心架构</p></li>
 <li><p>Wi-Fi 6 2.4GHz</p></li>
 <li><p>Bluetooth 5.2 LE</p></li>
-<li><p>支持FreeRTOS/Zephyr</p></li>
 </ul>
 <p><strong>系统框图</strong></p>
 <figure class="align-center">
@@ -3151,11 +3156,11 @@
 </ul>
 <p><strong>存储系统</strong></p>
 <ul class="simple">
-<li><p>片上内存：768KB SRAM</p></li>
-<li><p>扩展存储（包含MCM）：</p>
+<li><p>片内存储：768KB SRAM</p></li>
+<li><p>扩展存储（包含KGD）:</p>
 <ul>
-<li><p>支持100MHz QSPI Nor Flash</p></li>
-<li><p>8-bit DQ PSRAM（200MHz，最大64MB容量）</p></li>
+<li><p>QSPI NOR Flash（最大频率 104MHz）</p></li>
+<li><p>DQ8 DDR mode PSRAM（最大频率 200MHz）</p></li>
 </ul>
 </li>
 <li><p>总线架构：Multi-layer AXI总线并行访问</p></li>
@@ -3445,19 +3450,22 @@
 </li>
 </ul>
 </div></blockquote>
-<p><strong>存储子系统</strong></p>
+<p><strong>存储系统</strong></p>
 <blockquote>
 <div><ul class="simple">
 <li><p>片内存储: 256 KB静态随机存储器(SRAM)</p></li>
-<li><p>扩展存储:</p>
+<li><p>扩展存储（包含KGD）:</p>
 <ul>
-<li><p>通过SPI控制器(SPIC)访问NOR/NAND闪存(支持字节/块操作模式)</p></li>
-<li><p>堆叠式动态存储器支持DDR2/DDR3L/伪静态RAM(PSRAM)，最大容量256 MB</p></li>
+<li><p>QSPI NOR/NAND Flash（最大频率 104MHz）</p></li>
+<li><p>DQ8 DDR mode PSRAM（最大频率 200MHz）</p></li>
+<li><p>DQ16 DDR2/DDR3L(最大频率 533MHz)</p></li>
 </ul>
 </li>
-<li><p>总线架构: 多层AXI互连总线支持并发访问</p></li>
 </ul>
 </div></blockquote>
+<ul class="simple">
+<li><p>总线架构：Multi-layer AXI总线并行访问</p></li>
+</ul>
 <dl class="simple">
 <dt><strong>外设与接口</strong></dt><dd><ul class="simple">
 <li><p>可编程GPIO: 灵活配置的多功能引脚</p></li>
@@ -3658,8 +3666,9 @@
 <p><strong>主要特点</strong></p>
 <ul class="simple">
 <li><p>WiFi-4 2.4G/5G双频 + Bluetooth 5.0 LE</p></li>
-<li><p>PSA Level-2</p></li>
+<li><p>PSA Level-2 安全认证</p></li>
 <li><p>超低功耗</p></li>
+<li><p>支持FreeRTOS/Zephyr</p></li>
 </ul>
 <p><strong>系统框图</strong></p>
 <figure class="align-center">
@@ -3683,13 +3692,13 @@
 </ul>
 </li>
 </ul>
-<p><strong>存储子系统</strong></p>
+<p><strong>存储系统</strong></p>
 <ul class="simple">
-<li><p>On-Chip存储：512KB SRAM</p></li>
-<li><p>外部扩展：</p>
+<li><p>片内存储：512KB SRAM</p></li>
+<li><p>扩展存储（包含KGD）:</p>
 <ul>
-<li><p>QSPI Flash（104MHz，支持byte/block访问）</p></li>
-<li><p>8-bit DQ PSRAM（200MHz）</p></li>
+<li><p>QSPI NOR Flash（最大频率 104MHz）</p></li>
+<li><p>DQ8 DDR mode PSRAM（最大频率 200MHz）</p></li>
 </ul>
 </li>
 <li><p>总线架构：Multi-layer AXI总线并行访问</p></li>
@@ -3703,7 +3712,7 @@
 <li><p>Read Protection (RDP)</p></li>
 <li><p>JTAG/SWD密码保护</p></li>
 <li><p>2KB OTP（用户可配置2Kb）</p></li>
-<li><p>PSA Level 2认证</p></li>
+<li><p>PSA Level 2 安全认证</p></li>
 </ul>
 <p><strong>外设接口</strong></p>
 <ul class="simple">
@@ -3983,19 +3992,22 @@
 </li>
 </ul>
 </div></blockquote>
-<p><strong>存储子系统</strong></p>
+<p><strong>存储系统</strong></p>
 <blockquote>
 <div><ul class="simple">
 <li><p>片内存储: 256 KB静态随机存储器(SRAM)</p></li>
-<li><p>扩展存储:</p>
+<li><p>扩展存储（包含KGD）:</p>
 <ul>
-<li><p>通过SPI控制器(SPIC)访问NOR/NAND闪存(支持字节/块操作模式)</p></li>
-<li><p>堆叠式动态存储器支持DDR2/DDR3L/伪静态RAM(PSRAM)，最大容量256 MB</p></li>
+<li><p>QSPI NOR/NAND Flash（最大频率 104MHz）</p></li>
+<li><p>DQ8 DDR mode PSRAM（最大频率 200MHz）</p></li>
+<li><p>DQ16 DDR2/DDR3L(最大频率 533MHz)</p></li>
 </ul>
 </li>
-<li><p>总线架构: 多层AXI互连总线支持并发访问</p></li>
 </ul>
 </div></blockquote>
+<ul class="simple">
+<li><p>总线架构：Multi-layer AXI总线并行访问</p></li>
+</ul>
 <dl class="simple">
 <dt><strong>外设与接口</strong></dt><dd><ul class="simple">
 <li><p>可编程GPIO: 灵活配置的多功能引脚</p></li>
@@ -4129,7 +4141,6 @@
 <li><p>Wi-Fi 6 2.4GHz</p></li>
 <li><p>Bluetooth 5.2 LE</p></li>
 <li><p>可用于语音识别等高算力需求场景</p></li>
-<li><p>支持FreeRTOS/Zephyr</p></li>
 </ul>
 <p><strong>系统框图</strong></p>
 <figure class="align-center">
@@ -4164,11 +4175,11 @@
 </ul>
 <p><strong>存储系统</strong></p>
 <ul class="simple">
-<li><p>片上内存：512KB SRAM</p></li>
-<li><p>扩展存储（包含MCM）：</p>
+<li><p>片内存储：512KB SRAM</p></li>
+<li><p>扩展存储（包含KGD）:</p>
 <ul>
-<li><p>支持100MHz QSPI Nor Flash</p></li>
-<li><p>8-bit DQ PSRAM（200MHz，最大64MB容量）</p></li>
+<li><p>QSPI NOR Flash（最大频率 104MHz）</p></li>
+<li><p>DQ8 DDR mode PSRAM（最大频率 250MHz）</p></li>
 </ul>
 </li>
 <li><p>总线架构：Multi-layer AXI总线并行访问</p></li>
@@ -4458,19 +4469,22 @@
 </li>
 </ul>
 </div></blockquote>
-<p><strong>存储子系统</strong></p>
+<p><strong>存储系统</strong></p>
 <blockquote>
 <div><ul class="simple">
 <li><p>片内存储: 256 KB静态随机存储器(SRAM)</p></li>
-<li><p>扩展存储:</p>
+<li><p>扩展存储（包含KGD）:</p>
 <ul>
-<li><p>通过SPI控制器(SPIC)访问NOR/NAND闪存(支持字节/块操作模式)</p></li>
-<li><p>堆叠式动态存储器支持DDR2/DDR3L/伪静态RAM(PSRAM)，最大容量256 MB</p></li>
+<li><p>QSPI NOR/NAND Flash（最大频率 104MHz）</p></li>
+<li><p>DQ8 DDR mode PSRAM（最大频率 200MHz）</p></li>
+<li><p>DQ16 DDR2/DDR3L(最大频率 533MHz)</p></li>
 </ul>
 </li>
-<li><p>总线架构: 多层AXI互连总线支持并发访问</p></li>
 </ul>
 </div></blockquote>
+<ul class="simple">
+<li><p>总线架构：Multi-layer AXI总线并行访问</p></li>
+</ul>
 <dl class="simple">
 <dt><strong>外设与接口</strong></dt><dd><ul class="simple">
 <li><p>可编程GPIO: 灵活配置的多功能引脚</p></li>
@@ -4671,8 +4685,9 @@
 <p><strong>主要特点</strong></p>
 <ul class="simple">
 <li><p>WiFi-4 2.4G/5G双频 + Bluetooth 5.0 LE</p></li>
-<li><p>PSA Level-2</p></li>
+<li><p>PSA Level-2 安全认证</p></li>
 <li><p>超低功耗</p></li>
+<li><p>支持FreeRTOS/Zephyr</p></li>
 </ul>
 <p><strong>系统框图</strong></p>
 <figure class="align-center">
@@ -4696,13 +4711,13 @@
 </ul>
 </li>
 </ul>
-<p><strong>存储子系统</strong></p>
+<p><strong>存储系统</strong></p>
 <ul class="simple">
-<li><p>On-Chip存储：512KB SRAM</p></li>
-<li><p>外部扩展：</p>
+<li><p>片内存储：512KB SRAM</p></li>
+<li><p>扩展存储（包含KGD）:</p>
 <ul>
-<li><p>QSPI Flash（104MHz，支持byte/block访问）</p></li>
-<li><p>8-bit DQ PSRAM（200MHz）</p></li>
+<li><p>QSPI NOR Flash（最大频率 104MHz）</p></li>
+<li><p>DQ8 DDR mode PSRAM（最大频率 200MHz）</p></li>
 </ul>
 </li>
 <li><p>总线架构：Multi-layer AXI总线并行访问</p></li>
@@ -4716,7 +4731,7 @@
 <li><p>Read Protection (RDP)</p></li>
 <li><p>JTAG/SWD密码保护</p></li>
 <li><p>2KB OTP（用户可配置2Kb）</p></li>
-<li><p>PSA Level 2认证</p></li>
+<li><p>PSA Level 2 安全认证</p></li>
 </ul>
 <p><strong>外设接口</strong></p>
 <ul class="simple">
@@ -4996,19 +5011,22 @@
 </li>
 </ul>
 </div></blockquote>
-<p><strong>存储子系统</strong></p>
+<p><strong>存储系统</strong></p>
 <blockquote>
 <div><ul class="simple">
 <li><p>片内存储: 256 KB静态随机存储器(SRAM)</p></li>
-<li><p>扩展存储:</p>
+<li><p>扩展存储（包含KGD）:</p>
 <ul>
-<li><p>通过SPI控制器(SPIC)访问NOR/NAND闪存(支持字节/块操作模式)</p></li>
-<li><p>堆叠式动态存储器支持DDR2/DDR3L/伪静态RAM(PSRAM)，最大容量256 MB</p></li>
+<li><p>QSPI NOR/NAND Flash（最大频率 104MHz）</p></li>
+<li><p>DQ8 DDR mode PSRAM（最大频率 200MHz）</p></li>
+<li><p>DQ16 DDR2/DDR3L(最大频率 533MHz)</p></li>
 </ul>
 </li>
-<li><p>总线架构: 多层AXI互连总线支持并发访问</p></li>
 </ul>
 </div></blockquote>
+<ul class="simple">
+<li><p>总线架构：Multi-layer AXI总线并行访问</p></li>
+</ul>
 <dl class="simple">
 <dt><strong>外设与接口</strong></dt><dd><ul class="simple">
 <li><p>可编程GPIO: 灵活配置的多功能引脚</p></li>
