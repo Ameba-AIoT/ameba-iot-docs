@@ -408,6 +408,11 @@
 │  ├─ README.md
 │  ├─ whc_def.h
 │  ├─ whc_dev
+│  │  ├─ ipc
+│  │  │  ├─ whc_ipc_dev_api.c
+│  │  │  ├─ whc_ipc_dev_trx.c
+│  │  │  ├─ whc_ipc_dev_trx.h
+│  │  │  └─ whc_ipc_device.c
 │  │  ├─ sdio
 │  │  │  ├─ whc_bridge_sdio_dev.c
 │  │  │  ├─ whc_bridge_sdio_dev.h
@@ -420,14 +425,14 @@
 │  │  │  ├─ whc_bridge_spi_dev.h
 │  │  │  ├─ whc_fullmac_spi_dev.c
 │  │  │  ├─ whc_fullmac_spi_dev.h
-│  │  │  ├─ whc_spi_dev.c
-│  │  │  └─ whc_spi_dev.h
-│  │  ├─ usb
+<span class="hll">│  │  │  ├─ whc_spi_dev.c
+</span><span class="hll">│  │  │  └─ whc_spi_dev.h
+</span>│  │  ├─ usb
 │  │  │  ├─ whc_usb_dev.c
 │  │  │  └─ whc_usb_dev.h
-<span class="hll">│  │  ├─ whc_bridge_dev_api.c
-</span><span class="hll">│  │  ├─ whc_bridge_dev_api.h
-</span>│  │  ├─ whc_dev.h
+│  │  ├─ whc_bridge_dev_api.c
+│  │  ├─ whc_bridge_dev_api.h
+│  │  ├─ whc_dev.h
 │  │  ├─ whc_dev_api.c
 │  │  ├─ whc_dev_api.h
 │  │  ├─ whc_dev_app.c
@@ -441,14 +446,17 @@
 │  │  ├─ whc_dev_protocal_offload.h
 │  │  ├─ whc_dev_struct.h
 │  │  ├─ whc_dev_trx.c
-│  │  ├─ whc_dev_trx.h
-│  │  ├─ whc_ipc.h
-│  │  ├─ whc_ipc_cfg.h
-│  │  ├─ whc_ipc_dev_api.c
-│  │  ├─ whc_ipc_dev_trx.c
-│  │  ├─ whc_ipc_dev_trx.h
-│  │  └─ whc_ipc_device.c
-│  ├─ whc_host
+│  │  └─ whc_dev_trx.h
+│  ├─ whc_host_rtos
+│  │  ├─ ipc
+│  │  │  ├─ whc_ipc_host.c
+│  │  │  ├─ whc_ipc_host_api.c
+│  │  │  ├─ whc_ipc_host_api.h
+│  │  │  ├─ whc_ipc_host_api_basic.c
+│  │  │  ├─ whc_ipc_host_api_ext.c
+│  │  │  ├─ whc_ipc_host_trx.c
+│  │  │  ├─ whc_ipc_host_trx.h
+│  │  │  └─ whc_ipc_host_zephyr.c
 │  │  ├─ spi
 │  │  │  ├─ whc_spi_host.c
 │  │  │  ├─ whc_spi_host.h
@@ -461,17 +469,12 @@
 │  │  ├─ whc_host_api_ext.c
 │  │  ├─ whc_host_cust_evt.c
 │  │  ├─ whc_host_cust_evt.h
-│  │  ├─ whc_ipc_host.c
-│  │  ├─ whc_ipc_host_api.c
-│  │  ├─ whc_ipc_host_api_basic.c
-│  │  ├─ whc_ipc_host_api_ext.c
-│  │  ├─ whc_ipc_host_trx.c
-│  │  ├─ whc_ipc_host_trx.h
-│  │  ├─ whc_ipc_host_zephyr.c
 │  │  └─ whc_rtos
 │  │     ├─ os_wrapper_memory.c
 │  │     ├─ os_wrapper_mutex.c
 │  │     └─ os_wrapper_semaphore.c
+│  ├─ whc_ipc.h
+│  ├─ whc_ipc_cfg.h
 │  ├─ whc_ipc_msg_queue.c
 │  └─ whc_ipc_msg_queue.h
 </pre></div>
@@ -479,56 +482,61 @@
 </div><div aria-labelledby="tab-1-1-1" class="sphinx-tabs-panel" hidden="true" id="panel-1-1-1" name="1-1" role="tabpanel" tabindex="0"><div class="highlight-default notranslate"><div class="highlight"><pre><span></span>├─ cfg80211_fullmac
 │  ├─ Kconfig
 │  ├─ Makefile
+│  ├─ fullmac_setup.sh
 │  ├─ bridge
-│  │  ├─ Makefile
-<span class="hll">│  │  ├─ rtw_bridge_api.c
-</span><span class="hll">│  │  ├─ rtw_bridge_api.h
-</span>│  │  ├─ rtw_bridge_app.c
-│  │  ├─ rtw_bridge_llhw_app.c
-│  │  ├─ rtw_bridge_llhw_event_tx.c
-│  │  ├─ rtw_bridge_llhw_pkt_rx.c
-│  │  ├─ rtw_bridge_netlink.h
+<span class="hll">│  │  ├─ Makefile
+</span><span class="hll">│  │  ├─ whc_bridge_host_api.c
+</span>│  │  ├─ whc_bridge_host_api.h
+│  │  ├─ whc_bridge_host_demo.c
+│  │  ├─ whc_bridge_host_intf.h
+│  │  ├─ whc_bridge_host_netlink.c
+│  │  ├─ whc_bridge_host_netlink.h
+│  │  ├─ whc_bridge_host_pkt_rx.c
+│  │  ├─ whc_bridge_host_tx.c
 │  │  ├─ sdio_bridge
 │  │  │  └─ Kbuild
-│  │  └─ whc_bridge_host_demo.c
+│  │  ├─ spi_bridge
+│  │  │  ├─ whc_bridge_host_spi.c.c
+│  │  │  └─ Kbuild
 │  ├─ common
 │  │  ├─ autoconf.h
+│  │  ├─ whc_host_event.h
+│  │  ├─ whc_host_hci.c
+│  │  ├─ whc_host_hci.h
+│  │  ├─ whc_host_memory.c
+│  │  ├─ whc_host_ops.c
+│  │  ├─ whc_host_pkt_rx.c
+│  │  ├─ whc_host_pkt_tx.c
+│  │  ├─ whc_host_trx.h
 │  │  ├─ netdev
-│  │  │  ├─ rtw_cfg80211_fullmac.h
-│  │  │  ├─ rtw_drv_probe.c
-│  │  │  ├─ rtw_drv_probe.h
-│  │  │  ├─ rtw_ethtool_ops.c
-│  │  │  ├─ rtw_ethtool_ops.h
-│  │  │  ├─ rtw_functions.h
-│  │  │  ├─ rtw_netdev_ops.c
-│  │  │  ├─ rtw_netdev_ops.h
-│  │  │  └─ rtw_wiphy.h
-│  │  ├─ rtw_llhw_event.h
-│  │  ├─ rtw_llhw_hci.c
-│  │  ├─ rtw_llhw_hci.h
-│  │  ├─ rtw_llhw_memory.c
-│  │  ├─ rtw_llhw_ops.c
-│  │  ├─ rtw_llhw_pkt_tx.c
-│  │  ├─ rtw_llhw_trx.h
+│  │  │  ├─ whc_host_drv_probe.c
+│  │  │  ├─ whc_host_drv_probe.h
+│  │  │  ├─ whc_host_ethtool_ops.c
+│  │  │  ├─ whc_host_ethtool_ops.h
+│  │  │  ├─ whc_host_function.h
+│  │  │  ├─ whc_host_linux.h
+│  │  │  ├─ whc_host_netdev_ops.c
+│  │  │  ├─ whc_host_netdev_ops.h
+│  │  │  └─ whc_host_wiphy.h
 │  │  ├─ sdio
-│  │  │  ├─ rtw_sdio.h
-│  │  │  ├─ rtw_sdio_drvio.c
-│  │  │  ├─ rtw_sdio_drvio.h
-│  │  │  ├─ rtw_sdio_fwdl.c
-│  │  │  ├─ rtw_sdio_init.c
-│  │  │  ├─ rtw_sdio_ops.c
-│  │  │  ├─ rtw_sdio_ops.h
-│  │  │  ├─ rtw_sdio_probe.c
-│  │  │  └─ rtw_sdio_reg.h
+│  │  │  ├─ whc_sdio_host.h
+│  │  │  ├─ whc_sdio_host_drvio.c
+│  │  │  ├─ whc_sdio_host_drvio.h
+│  │  │  ├─ whc_sdio_host_fwdl.c
+│  │  │  ├─ whc_sdio_host_init.c
+│  │  │  ├─ whc_sdio_host_ops.c
+│  │  │  ├─ whc_sdio_host_ops.h
+│  │  │  ├─ whc_sdio_host_probe.c
+│  │  │  └─ whc_sdio_host_reg.h
 │  │  ├─ spi
-│  │  │  ├─ rtw_spi.h
-│  │  │  ├─ rtw_spi_ops.c
-│  │  │  ├─ rtw_spi_probe.c
+│  │  │  ├─ whc_spi_host.h
+│  │  │  ├─ whc_spi_host_ops.c
+│  │  │  ├─ whc_spi_host_probe.c
 │  │  │  └─ spidev-overlay.dts
 │  │  └─ usb
-│  │     ├─ rtw_usb.h
-│  │     ├─ rtw_usb_ops.c
-│  │     └─ rtw_usb_probe.c
+│  │     ├─ whc_usb_host.h
+│  │     ├─ whc_usb_host_ops.c
+│  │     └─ whc_usb_host_probe.c
 </pre></div>
 </div>
 </div></div>
@@ -880,13 +888,13 @@
 </pre></div>
 </div>
 <figure class="align-center" id="bridge-testapp-control-flow">
-<a class="reference internal image-reference" href="../../_images/bridge_testapp_control_flow.png"><img alt="../../_images/bridge_testapp_control_flow.png" src="../../_images/bridge_testapp_control_flow.png" style="width: 382.2px; height: 276.0px;" /></a>
+<a class="reference internal image-reference" href="../../_images/bridge_testapp_control_flow.png"><img alt="../../_images/bridge_testapp_control_flow.png" src="../../_images/bridge_testapp_control_flow.png" style="width: 421.2px; height: 242.39999999999998px;" /></a>
 <figcaption>
 <p><span class="caption-text">testapp control flow</span><a class="headerlink" href="#bridge-testapp-control-flow" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <figure class="align-center" id="bridge-ifconfig-result">
-<a class="reference internal image-reference" href="../../_images/bridge_ifconfig_result.png"><img alt="../../_images/bridge_ifconfig_result.png" src="../../_images/bridge_ifconfig_result.png" style="width: 433.2px; height: 286.2px;" /></a>
+<a class="reference internal image-reference" href="../../_images/bridge_ifconfig_result.png"><img alt="../../_images/bridge_ifconfig_result.png" src="../../_images/bridge_ifconfig_result.png" style="width: 676.1999999999999px; height: 272.4px;" /></a>
 <figcaption>
 <p><span class="caption-text">ifconfig result</span><a class="headerlink" href="#bridge-ifconfig-result" title="Link to this image"></a></p>
 </figcaption>
