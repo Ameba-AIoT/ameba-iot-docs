@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>RAM Layout &mdash; Ameba IoT Docs  documentation</title>
+  <title>RAM Layout Configuration Guide &mdash; Ameba IoT Docs  documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
@@ -79,14 +79,14 @@
 <li class="toctree-l1"><a class="reference internal" href="../0_sdk_example/0_sdk_example_index.html">0.4 SDK Example</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="0_layout_index.html">0.5 Flash &amp; RAM Layout</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="1_flash_layout_toprst.html">Flash Layout</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">RAM Layout</a><ul>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">RAM Layout Configuration Guide</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#introduction">Introduction</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id2">RAM Layout</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#sram0-first-40kb-layout">SRAM0 (first 40KB) layout</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#ram-psram-layout">RAM &amp; PSRAM Layout</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#modifying-bootloader-size">Modifying Bootloader Size</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#modifying-bd-ram-bd-psram-size">Modifying BD_RAM BD_PSRAM Size</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#modifying-heap-size">Modifying Heap Size</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ram-memory-layout">RAM Memory Layout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sram0-layout-first-40kb">SRAM0 Layout (First 40KB)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ram-psram-hybrid-layout">RAM &amp; PSRAM Hybrid Layout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bootloader-size-configuration">Bootloader Size Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bd-ram-bd-psram-capacity-adjustment">BD_RAM/BD_PSRAM Capacity Adjustment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#heap-memory-configuration">Heap Memory Configuration</a></li>
 </ul>
 </li>
 </ul>
@@ -156,7 +156,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="0_layout_index.html">Flash and Memory Layout</a></li>
-      <li class="breadcrumb-item active">RAM Layout</li>
+      <li class="breadcrumb-item active">RAM Layout Configuration Guide</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -202,47 +202,47 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 });
-</script><section id="id1">
-<h1>RAM Layout<a class="headerlink" href="#id1" title="Link to this heading"></a></h1>
+</script><section id="ram-layout-configuration-guide">
+<h1>RAM Layout Configuration Guide<a class="headerlink" href="#ram-layout-configuration-guide" title="Link to this heading"></a></h1>
 <section id="introduction">
 <h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
-<p>This chapter introduces the default memory layout and how to modify the memory layout if needed.</p>
+<p>This chapter describes the default memory layout and provides guidance for customization.</p>
 </section>
-<section id="id2">
-<h2>RAM Layout<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+<section id="ram-memory-layout">
+<h2>RAM Memory Layout<a class="headerlink" href="#ram-memory-layout" title="Link to this heading"></a></h2>
 <div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-0-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-0-0-0" name="0-0" role="tab" tabindex="0">RTL8721Dx</button><button aria-controls="panel-0-0-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-1" name="0-1" role="tab" tabindex="-1">RTL8726E</button><button aria-controls="panel-0-0-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-2" name="0-2" role="tab" tabindex="-1">RTL8720E</button></div><div aria-labelledby="tab-0-0-0" class="sphinx-tabs-panel" id="panel-0-0-0" name="0-0" role="tabpanel" tabindex="0"><p>In total, there are 512KB SRAM on chip, and the size of PSRAM can be 0MB/4MB/8MB/16MB…, which is decided by users. The RAM layout is illustrated below.</p>
-<figure class="align-center" id="id3">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-0-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-0-0-0" name="0-0" role="tab" tabindex="0">RTL8721Dx</button><button aria-controls="panel-0-0-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-1" name="0-1" role="tab" tabindex="-1">RTL8726E</button><button aria-controls="panel-0-0-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-2" name="0-2" role="tab" tabindex="-1">RTL8720E</button></div><div aria-labelledby="tab-0-0-0" class="sphinx-tabs-panel" id="panel-0-0-0" name="0-0" role="tabpanel" tabindex="0"><p>Chipset integrates internal SRAM and expandable PSRAM with the following capacities:</p>
+<ul class="simple">
+<li><p><strong>Internal SRAM:</strong> 512KB</p></li>
+<li><p><strong>Expandable PSRAM:</strong> Available in various models with capacities including 0MB, 4MB, 8MB, and 16MB.</p></li>
+</ul>
+<figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/ram_layout_dplus.svg"><img alt="../../_images/ram_layout_dplus.svg" height="153" src="../../_images/ram_layout_dplus.svg" width="471" /></a>
-<figcaption>
-<p><span class="caption-text">RAM layout</span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
-</figcaption>
 </figure>
-</div><div aria-labelledby="tab-0-0-1" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-1" name="0-1" role="tabpanel" tabindex="0"><p>In total, there are 512KB SRAM on chip, and the size of PSRAM can be 0MB/4MB/8MB/16MB/32MB, which is decided by users. The default RAM layout is illustrated below.</p>
-<figure class="align-center" id="id4">
+</div><div aria-labelledby="tab-0-0-1" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-1" name="0-1" role="tabpanel" tabindex="0"><p>Chipset integrates internal SRAM and expandable PSRAM with the following capacities:</p>
+<ul class="simple">
+<li><p><strong>Internal SRAM:</strong> 512KB</p></li>
+<li><p><strong>Expandable PSRAM:</strong> Available in various models with capacities including 0MB, 4MB, 8MB, and 16MB.</p></li>
+</ul>
+<figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/ram_layout_other_lite.svg"><img alt="../../_images/ram_layout_other_lite.svg" height="202" src="../../_images/ram_layout_other_lite.svg" width="539" /></a>
-<figcaption>
-<p><span class="caption-text">RAM layout</span><a class="headerlink" href="#id4" title="Link to this image"></a></p>
-</figcaption>
 </figure>
-</div><div aria-labelledby="tab-0-0-2" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-2" name="0-2" role="tabpanel" tabindex="0"><p>In total, there are 768KB SRAM on chip, and the size of PSRAM can be 0MB/4MB, which is decided by users. The default RAM layout is illustrated below.</p>
-<figure class="align-center" id="id5">
+</div><div aria-labelledby="tab-0-0-2" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-2" name="0-2" role="tabpanel" tabindex="0"><p>Chipset integrates internal SRAM and expandable PSRAM with the following capacities:</p>
+<ul class="simple">
+<li><p><strong>Internal SRAM:</strong> 768KB</p></li>
+<li><p><strong>Expandable PSRAM:</strong> Available in various models with capacities including 0MB, 4MB.</p></li>
+</ul>
+<figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/ram_layout_8720_lite.svg"><img alt="../../_images/ram_layout_8720_lite.svg" height="292" src="../../_images/ram_layout_8720_lite.svg" width="539" /></a>
-<figcaption>
-<p><span class="caption-text">RAM layout</span><a class="headerlink" href="#id5" title="Link to this image"></a></p>
-</figcaption>
 </figure>
 </div></div>
 </section>
-<section id="sram0-first-40kb-layout">
-<h2>SRAM0 (first 40KB) layout<a class="headerlink" href="#sram0-first-40kb-layout" title="Link to this heading"></a></h2>
+<section id="sram0-layout-first-40kb">
+<h2>SRAM0 Layout (First 40KB)<a class="headerlink" href="#sram0-layout-first-40kb" title="Link to this heading"></a></h2>
+<p>The first 40KB of SRAM is reserved for storing ROM variables, BOOT code, and security processing functions, and this portion of memory is not accessible to users.</p>
 <div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-1-1-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-1-1-0" name="1-0" role="tab" tabindex="0">RTL8721Dx</button><button aria-controls="panel-1-1-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-1-1-1" name="1-1" role="tab" tabindex="-1">RTL8726E</button><button aria-controls="panel-1-1-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-1-1-2" name="1-2" role="tab" tabindex="-1">RTL8720E</button></div><div aria-labelledby="tab-1-1-0" class="sphinx-tabs-panel" id="panel-1-1-0" name="1-0" role="tabpanel" tabindex="0"><p>The first 40KB SRAM0 layout is illustrated in the following figure and table. It is the same for all situations.</p>
-<figure class="align-center" id="id6">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-1-1-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-1-1-0" name="1-0" role="tab" tabindex="0">RTL8721Dx</button><button aria-controls="panel-1-1-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-1-1-1" name="1-1" role="tab" tabindex="-1">RTL8726E</button><button aria-controls="panel-1-1-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-1-1-2" name="1-2" role="tab" tabindex="-1">RTL8720E</button></div><div aria-labelledby="tab-1-1-0" class="sphinx-tabs-panel" id="panel-1-1-0" name="1-0" role="tabpanel" tabindex="0"><figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/sram0_layout_dplus.svg"><img alt="../../_images/sram0_layout_dplus.svg" height="191" src="../../_images/sram0_layout_dplus.svg" width="631" /></a>
-<figcaption>
-<p><span class="caption-text">SRAM0 (first 40KB) layout</span><a class="headerlink" href="#id6" title="Link to this image"></a></p>
-</figcaption>
 </figure>
 <table class="docutils align-default" style="width: 100%">
 <thead>
@@ -328,12 +328,8 @@ document.addEventListener("DOMContentLoaded", function() {
 </tr>
 </tbody>
 </table>
-</div><div aria-labelledby="tab-1-1-1" class="sphinx-tabs-panel" hidden="true" id="panel-1-1-1" name="1-1" role="tabpanel" tabindex="0"><p>The first 40KB SRAM0 layout is illustrated in the following figure and table. It is the same for all situations.</p>
-<figure class="align-center" id="id7">
+</div><div aria-labelledby="tab-1-1-1" class="sphinx-tabs-panel" hidden="true" id="panel-1-1-1" name="1-1" role="tabpanel" tabindex="0"><figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/sram0_layout_lite.svg"><img alt="../../_images/sram0_layout_lite.svg" height="184" src="../../_images/sram0_layout_lite.svg" width="645" /></a>
-<figcaption>
-<p><span class="caption-text">SRAM0 (first 40KB) layout</span><a class="headerlink" href="#id7" title="Link to this image"></a></p>
-</figcaption>
 </figure>
 <table class="docutils align-default" style="width: 100%">
 <thead>
@@ -425,12 +421,8 @@ document.addEventListener("DOMContentLoaded", function() {
 </tr>
 </tbody>
 </table>
-</div><div aria-labelledby="tab-1-1-2" class="sphinx-tabs-panel" hidden="true" id="panel-1-1-2" name="1-2" role="tabpanel" tabindex="0"><p>The first 40KB SRAM0 layout is illustrated in the following figure and table. It is the same for all situations.</p>
-<figure class="align-center" id="id8">
+</div><div aria-labelledby="tab-1-1-2" class="sphinx-tabs-panel" hidden="true" id="panel-1-1-2" name="1-2" role="tabpanel" tabindex="0"><figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/sram0_layout_lite.svg"><img alt="../../_images/sram0_layout_lite.svg" height="184" src="../../_images/sram0_layout_lite.svg" width="645" /></a>
-<figcaption>
-<p><span class="caption-text">SRAM0 (first 40KB) layout</span><a class="headerlink" href="#id8" title="Link to this image"></a></p>
-</figcaption>
 </figure>
 <table class="docutils align-default" style="width: 100%">
 <thead>
@@ -524,15 +516,14 @@ document.addEventListener("DOMContentLoaded", function() {
 </table>
 </div></div>
 </section>
-<section id="ram-psram-layout">
-<h2>RAM &amp; PSRAM Layout<a class="headerlink" href="#ram-psram-layout" title="Link to this heading"></a></h2>
+<section id="ram-psram-hybrid-layout">
+<h2>RAM &amp; PSRAM Hybrid Layout<a class="headerlink" href="#ram-psram-hybrid-layout" title="Link to this heading"></a></h2>
 <div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-2-2-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-2-2-0" name="2-0" role="tab" tabindex="0">RTL8721Dx</button><button aria-controls="panel-2-2-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-2-2-1" name="2-1" role="tab" tabindex="-1">RTL8726E</button><button aria-controls="panel-2-2-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-2-2-2" name="2-2" role="tab" tabindex="-1">RTL8720E</button></div><div aria-labelledby="tab-2-2-0" class="sphinx-tabs-panel" id="panel-2-2-0" name="2-0" role="tabpanel" tabindex="0"><p>There are 352KB SRAM for KM4 and 96KB SRAM for KM0, which can be used for Power Management Controller (PMC) code and performance-cared text and data.
-The following figure and table illustrate the RAM layout with PSRAM.</p>
-<figure class="align-center" id="id9">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-2-2-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-2-2-0" name="2-0" role="tab" tabindex="0">RTL8721Dx</button><button aria-controls="panel-2-2-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-2-2-1" name="2-1" role="tab" tabindex="-1">RTL8726E</button><button aria-controls="panel-2-2-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-2-2-2" name="2-2" role="tab" tabindex="-1">RTL8720E</button></div><div aria-labelledby="tab-2-2-0" class="sphinx-tabs-panel" id="panel-2-2-0" name="2-0" role="tabpanel" tabindex="0"><p><strong>RAM layout With PSRAM</strong></p>
+<figure class="align-center" id="id1">
 <a class="reference internal image-reference" href="../../_images/ram_layout_with_psram2_dplus.svg"><img alt="../../_images/ram_layout_with_psram2_dplus.svg" height="383" src="../../_images/ram_layout_with_psram2_dplus.svg" width="567" /></a>
 <figcaption>
-<p><span class="caption-text">RAM layout (with PSRAM)</span><a class="headerlink" href="#id9" title="Link to this image"></a></p>
+<p><span class="caption-text">RAM layout (with PSRAM)</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <table class="docutils align-default" style="width: 100%">
@@ -595,12 +586,9 @@ The following figure and table illustrate the RAM layout with PSRAM.</p>
 </tr>
 </tbody>
 </table>
-</div><div aria-labelledby="tab-2-2-1" class="sphinx-tabs-panel" hidden="true" id="panel-2-2-1" name="2-1" role="tabpanel" tabindex="0"><p>The following figure and table illustrate the default RAM layout with PSRAM.</p>
-<figure class="align-center" id="id10">
+</div><div aria-labelledby="tab-2-2-1" class="sphinx-tabs-panel" hidden="true" id="panel-2-2-1" name="2-1" role="tabpanel" tabindex="0"><p><strong>RAM layout With PSRAM</strong></p>
+<figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/ram_psram_layout_8726_lite.svg"><img alt="../../_images/ram_psram_layout_8726_lite.svg" height="511" src="../../_images/ram_psram_layout_8726_lite.svg" width="691" /></a>
-<figcaption>
-<p><span class="caption-text">RAM &amp; PSRAM layout</span><a class="headerlink" href="#id10" title="Link to this image"></a></p>
-</figcaption>
 </figure>
 <table class="docutils align-default" style="width: 100%">
 <thead>
@@ -662,15 +650,9 @@ The following figure and table illustrate the RAM layout with PSRAM.</p>
 </tr>
 </tbody>
 </table>
-</div><div aria-labelledby="tab-2-2-2" class="sphinx-tabs-panel" hidden="true" id="panel-2-2-2" name="2-2" role="tabpanel" tabindex="0"><p>There are 352KB SRAM for KM4 and 96KB SRAM for KR4, which can be used for PMC (Power Management Controller) code and performance-cared text and data.
-The start address 0x2004_0020 is fixed for KR4.</p>
-<p><strong>With PSRAM</strong></p>
-<p>The following figure and table illustrate the default RAM layout with PSRAM.</p>
-<figure class="align-center" id="id11">
+</div><div aria-labelledby="tab-2-2-2" class="sphinx-tabs-panel" hidden="true" id="panel-2-2-2" name="2-2" role="tabpanel" tabindex="0"><p><strong>RAM layout With PSRAM</strong></p>
+<figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/ram_layout_with_psram_8720_lite.svg"><img alt="../../_images/ram_layout_with_psram_8720_lite.svg" height="510" src="../../_images/ram_layout_with_psram_8720_lite.svg" width="847" /></a>
-<figcaption>
-<p><span class="caption-text">RAM layout (with PSRAM)</span><a class="headerlink" href="#id11" title="Link to this image"></a></p>
-</figcaption>
 </figure>
 <table class="docutils align-default" style="width: 100%">
 <thead>
@@ -738,13 +720,9 @@ The start address 0x2004_0020 is fixed for KR4.</p>
 </tr>
 </tbody>
 </table>
-<p><strong>Without PSRAM</strong></p>
-<p>The following figure and table illustrate the default RAM layout without PSRAM.</p>
-<figure class="align-center" id="id12">
+<p><strong>RAM layout Without PSRAM</strong></p>
+<figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/ram_layout_without_psram_8720_lite.svg"><img alt="../../_images/ram_layout_without_psram_8720_lite.svg" height="403" src="../../_images/ram_layout_without_psram_8720_lite.svg" width="534" /></a>
-<figcaption>
-<p><span class="caption-text">RAM layout (without PSRAM)</span><a class="headerlink" href="#id12" title="Link to this image"></a></p>
-</figcaption>
 </figure>
 <table class="docutils align-default" style="width: 100%">
 <thead>
@@ -790,240 +768,339 @@ The start address 0x2004_0020 is fixed for KR4.</p>
 </table>
 </div></div>
 </section>
-<section id="modifying-bootloader-size">
-<h2>Modifying Bootloader Size<a class="headerlink" href="#modifying-bootloader-size" title="Link to this heading"></a></h2>
+<section id="bootloader-size-configuration">
+<h2>Bootloader Size Configuration<a class="headerlink" href="#bootloader-size-configuration" title="Link to this heading"></a></h2>
 <div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-3-3-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-3-3-0" name="3-0" role="tab" tabindex="0">RTL8721Dx</button><button aria-controls="panel-3-3-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-3-3-1" name="3-1" role="tab" tabindex="-1">RTL8720E</button><button aria-controls="panel-3-3-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-3-3-2" name="3-2" role="tab" tabindex="-1">RTL8726E</button></div><div aria-labelledby="tab-3-3-0" class="sphinx-tabs-panel" id="panel-3-3-0" name="3-0" role="tabpanel" tabindex="0"><p>If you need to enlarge the size of <code class="docutils literal notranslate"><span class="pre">KM4_BOOT_RAM_S</span></code>, the modified <code class="docutils literal notranslate"><span class="pre">KM4_BOOT_RAM_S</span></code> size should be 4KB aligned because the MPC protection is protected in unit 4KB.</p>
-<p>Follow the steps to modify the size of bootloader:</p>
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-3-3-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-3-3-0" name="3-0" role="tab" tabindex="0">RTL8721Dx</button><button aria-controls="panel-3-3-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-3-3-1" name="3-1" role="tab" tabindex="-1">RTL8720E</button><button aria-controls="panel-3-3-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-3-3-2" name="3-2" role="tab" tabindex="-1">RTL8726E</button></div><div aria-labelledby="tab-3-3-0" class="sphinx-tabs-panel" id="panel-3-3-0" name="3-0" role="tabpanel" tabindex="0"><p><strong>Bootloader Size Adjustment</strong></p>
+<p>When enlarging <cite>KM4_BOOT_RAM_S</cite>, ensure modified size is 4KB-aligned (MPC protection works in 4KB units).</p>
+<p>Steps to modify bootloader size:</p>
 <ol class="arabic">
-<li><p>Modify the <span class="guilabel">CONFIG Link Option</span> in menuconfig to choose whether to place the bootloader (IMG1) on Flash or SRAM.</p>
+<li><p>Configure <span class="guilabel">CONFIG Link Option</span> in menuconfig:</p>
 <ul class="simple">
-<li><p>When SRAM is selected, the size of <code class="docutils literal notranslate"><span class="pre">KM4_BOOTLOADER_RAM_S</span></code> is 24K.</p></li>
-<li><p>when FLASH is selected, the size of <code class="docutils literal notranslate"><span class="pre">KM4_BOOTLOADER_RAM_S</span></code> is 4K.</p></li>
+<li><p>SRAM selection sets <cite>KM4_BOOTLOADER_RAM_S</cite> to 24KB</p></li>
+<li><p>Flash selection sets <cite>KM4_BOOTLOADER_RAM_S</cite> to 4KB</p></li>
 </ul>
 <figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/modify_bootloader_size_step1_dplus.png"><img alt="../../_images/modify_bootloader_size_step1_dplus.png" src="../../_images/modify_bootloader_size_step1_dplus.png" style="width: 409.5px; height: 62.1px;" /></a>
 </figure>
 </li>
-<li><p>Change the size of <cite>KM4_BOOTLOADER_RAM_S</cite> by modifying <cite>KM4_IMG1_SIZE</cite> in <code class="docutils literal notranslate"><span class="pre">{SDK}\amebaxxx_gcc_project\amebaxxx_layout.ld</span></code>.</p></li>
-<li><p>Re-build the project to generate the bootloader.</p></li>
-<li><p>Modify the end address of <code class="docutils literal notranslate"><span class="pre">km4_boot_all.bin</span></code> if bootloader is too large, and download the new bootloader.</p>
+<li><p>Modify linker script parameter (path: <code class="docutils literal notranslate"><span class="pre">{SDK}\amebaxxx_gcc_project\amebaxxx_layout.ld</span></code>):</p>
+<ul class="simple">
+<li><p>Adjust <cite>KM4_IMG1_SIZE</cite> to change <cite>KM4_BOOTLOADER_RAM_S</cite> size</p></li>
+</ul>
+</li>
+<li><p>Rebuild project to generate new bootloader</p></li>
+<li><p>If bootloader exceeds size limit:</p>
+<ul class="simple">
+<li><p>Update end address in <code class="docutils literal notranslate"><span class="pre">km4_boot_all.bin</span></code></p></li>
+<li><p>Flash updated bootloader</p></li>
+</ul>
 <figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/modify_bootloader_size_step4_dplus.png"><img alt="../../_images/modify_bootloader_size_step4_dplus.png" src="../../_images/modify_bootloader_size_step4_dplus.png" style="width: 819.45px; height: 171.45000000000002px;" /></a>
 </figure>
 </li>
 </ol>
-<p>After that, boot ROM will load the new bootloader if the version of new bootloader is bigger.</p>
-</div><div aria-labelledby="tab-3-3-1" class="sphinx-tabs-panel" hidden="true" id="panel-3-3-1" name="3-1" role="tabpanel" tabindex="0"><p>If you need to enlarge the size of <code class="docutils literal notranslate"><span class="pre">KM4_BOOT_RAM_S</span></code>, the modified <code class="docutils literal notranslate"><span class="pre">KM4_BOOT_RAM_S</span></code> size should be 4KB aligned because the MPC protection is protected in unit 4KB.</p>
-<p>Follow the steps to modify the size of bootloader:</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>New bootloader version must be higher than current version for boot ROM loading</p>
+</div>
+</div><div aria-labelledby="tab-3-3-1" class="sphinx-tabs-panel" hidden="true" id="panel-3-3-1" name="3-1" role="tabpanel" tabindex="0"><p><strong>Bootloader Size Adjustment</strong></p>
+<p>When enlarging <cite>KM4_BOOT_RAM_S</cite>, ensure modified size is 4KB-aligned (MPC protection works in 4KB units).</p>
+<p>Steps to modify bootloader size:</p>
 <ol class="arabic">
-<li><p>Modify the <span class="guilabel">CONFIG Link Option</span> in menuconfig to choose whether to place the bootloader (IMG1) on Flash or SRAM.</p>
+<li><p>Configure <span class="guilabel">CONFIG Link Option</span> in menuconfig:</p>
 <ul class="simple">
-<li><p>When SRAM is selected, the size of <code class="docutils literal notranslate"><span class="pre">KM4_BOOTLOADER_RAM_S</span></code> is 24K.</p></li>
-<li><p>when FLASH is selected, the size of <code class="docutils literal notranslate"><span class="pre">KM4_BOOTLOADER_RAM_S</span></code> is 4K.</p></li>
+<li><p>SRAM selection sets <cite>KM4_BOOTLOADER_RAM_S</cite> to 24KB</p></li>
+<li><p>Flash selection sets <cite>KM4_BOOTLOADER_RAM_S</cite> to 4KB</p></li>
 </ul>
 <figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/modify_bootloader_size_step1_lite.png"><img alt="../../_images/modify_bootloader_size_step1_lite.png" src="../../_images/modify_bootloader_size_step1_lite.png" style="width: 549.9px; height: 36.9px;" /></a>
 </figure>
 </li>
-<li><p>Change the size of <cite>KM4_BOOTLOADER_RAM_S</cite> by modifying <cite>KM4_IMG1_SIZE</cite> in <code class="docutils literal notranslate"><span class="pre">{SDK}\amebaxxx_gcc_project\amebaxxx_layout.ld</span></code>.</p></li>
-<li><p>Re-build the project to generate the bootloader.</p></li>
-<li><p>Modify the end address of <code class="docutils literal notranslate"><span class="pre">km4_boot_all.bin</span></code> if bootloader is too large, and download the new bootloader.</p>
+<li><p>Modify linker script parameter (path: <code class="docutils literal notranslate"><span class="pre">{SDK}\amebaxxx_gcc_project\amebaxxx_layout.ld</span></code>):</p>
+<ul class="simple">
+<li><p>Adjust <cite>KM4_IMG1_SIZE</cite> to change <cite>KM4_BOOTLOADER_RAM_S</cite> size</p></li>
+</ul>
+</li>
+<li><p>Rebuild project to generate new bootloader</p></li>
+<li><p>If bootloader exceeds size limit:</p>
+<ul class="simple">
+<li><p>Update end address in <code class="docutils literal notranslate"><span class="pre">km4_boot_all.bin</span></code></p></li>
+<li><p>Flash updated bootloader</p></li>
+</ul>
 <figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/modify_bootloader_size_step4_lite.png"><img alt="../../_images/modify_bootloader_size_step4_lite.png" src="../../_images/modify_bootloader_size_step4_lite.png" style="width: 421.2px; height: 103.95px;" /></a>
 </figure>
 </li>
 </ol>
-<p>After that, boot ROM will load the new bootloader if the version of new bootloader is bigger.</p>
-</div><div aria-labelledby="tab-3-3-2" class="sphinx-tabs-panel" hidden="true" id="panel-3-3-2" name="3-2" role="tabpanel" tabindex="0"><p>If you need to enlarge the size of <code class="docutils literal notranslate"><span class="pre">KM4_BOOT_RAM_S</span></code>, the modified <code class="docutils literal notranslate"><span class="pre">KM4_BOOT_RAM_S</span></code> size should be 4KB aligned because the MPC protection is protected in unit 4KB.</p>
-<p>Follow the steps to modify the size of bootloader:</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>New bootloader version must be higher than current version for boot ROM loading</p>
+</div>
+</div><div aria-labelledby="tab-3-3-2" class="sphinx-tabs-panel" hidden="true" id="panel-3-3-2" name="3-2" role="tabpanel" tabindex="0"><p><strong>Bootloader Size Adjustment</strong></p>
+<p>When enlarging <cite>KM4_BOOT_RAM_S</cite>, ensure modified size is 4KB-aligned (MPC protection works in 4KB units).</p>
+<p>Steps to modify bootloader size:</p>
 <ol class="arabic">
-<li><p>Modify the <span class="guilabel">CONFIG Link Option</span> in menuconfig to choose whether to place the bootloader (IMG1) on Flash or SRAM.</p>
+<li><p>Configure <span class="guilabel">CONFIG Link Option</span> in menuconfig:</p>
 <ul class="simple">
-<li><p>When SRAM is selected, the size of <code class="docutils literal notranslate"><span class="pre">KM4_BOOTLOADER_RAM_S</span></code> is 24K.</p></li>
-<li><p>when FLASH is selected, the size of <code class="docutils literal notranslate"><span class="pre">KM4_BOOTLOADER_RAM_S</span></code> is 4K.</p></li>
+<li><p>SRAM selection sets <cite>KM4_BOOTLOADER_RAM_S</cite> to 24KB</p></li>
+<li><p>Flash selection sets <cite>KM4_BOOTLOADER_RAM_S</cite> to 4KB</p></li>
 </ul>
 <figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/modify_bootloader_size_step1_lite.png"><img alt="../../_images/modify_bootloader_size_step1_lite.png" src="../../_images/modify_bootloader_size_step1_lite.png" style="width: 549.9px; height: 36.9px;" /></a>
 </figure>
 </li>
-<li><p>Change the size of <cite>KM4_BOOTLOADER_RAM_S</cite> by modifying <cite>KM4_IMG1_SIZE</cite> in <code class="docutils literal notranslate"><span class="pre">{SDK}\amebaxxx_gcc_project\amebaxxx_layout.ld</span></code>.</p></li>
-<li><p>Re-build the project to generate the bootloader.</p></li>
-<li><p>Modify the end address of <code class="docutils literal notranslate"><span class="pre">km4_boot_all.bin</span></code> if bootloader is too large, and download the new bootloader.</p>
+<li><p>Modify linker script parameter (path: <code class="docutils literal notranslate"><span class="pre">{SDK}\amebaxxx_gcc_project\amebaxxx_layout.ld</span></code>):</p>
+<ul class="simple">
+<li><p>Adjust <cite>KM4_IMG1_SIZE</cite> to change <cite>KM4_BOOTLOADER_RAM_S</cite> size</p></li>
+</ul>
+</li>
+<li><p>Rebuild project to generate new bootloader</p></li>
+<li><p>If bootloader exceeds size limit:</p>
+<ul class="simple">
+<li><p>Update end address in <code class="docutils literal notranslate"><span class="pre">km4_boot_all.bin</span></code></p></li>
+<li><p>Flash updated bootloader</p></li>
+</ul>
 <figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/modify_bootloader_size_step4_lite.png"><img alt="../../_images/modify_bootloader_size_step4_lite.png" src="../../_images/modify_bootloader_size_step4_lite.png" style="width: 421.2px; height: 103.95px;" /></a>
 </figure>
 </li>
 </ol>
-<p>After that, boot ROM will load the new bootloader if the version of new bootloader is bigger.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>New bootloader version must be higher than current version for boot ROM loading</p>
+</div>
 </div></div>
 </section>
-<section id="modifying-bd-ram-bd-psram-size">
-<h2>Modifying BD_RAM BD_PSRAM Size<a class="headerlink" href="#modifying-bd-ram-bd-psram-size" title="Link to this heading"></a></h2>
+<section id="bd-ram-bd-psram-capacity-adjustment">
+<h2>BD_RAM/BD_PSRAM Capacity Adjustment<a class="headerlink" href="#bd-ram-bd-psram-capacity-adjustment" title="Link to this heading"></a></h2>
 <div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-4-4-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-4-4-0" name="4-0" role="tab" tabindex="0">RTL8721Dx</button><button aria-controls="panel-4-4-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-4-4-1" name="4-1" role="tab" tabindex="-1">RTL8720E</button><button aria-controls="panel-4-4-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-4-4-2" name="4-2" role="tab" tabindex="-1">RTL8726E</button></div><div aria-labelledby="tab-4-4-0" class="sphinx-tabs-panel" id="panel-4-4-0" name="4-0" role="tabpanel" tabindex="0"><p><strong>BD_RAM</strong></p>
-<p>Follow the steps to modify the size of KM4 BD_RAM:</p>
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-4-4-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-4-4-0" name="4-0" role="tab" tabindex="0">RTL8721Dx</button><button aria-controls="panel-4-4-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-4-4-1" name="4-1" role="tab" tabindex="-1">RTL8720E</button><button aria-controls="panel-4-4-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-4-4-2" name="4-2" role="tab" tabindex="-1">RTL8726E</button></div><div aria-labelledby="tab-4-4-0" class="sphinx-tabs-panel" id="panel-4-4-0" name="4-0" role="tabpanel" tabindex="0"><p><strong>BD_RAM Configuration</strong></p>
+<p>Steps to modify KM4 BD_RAM size:</p>
 <ol class="arabic">
-<li><p>Users can change the KM4 BD RAM size by modifying <code class="docutils literal notranslate"><span class="pre">RAM_KM0_IMG2_SIZE</span></code> in <code class="docutils literal notranslate"><span class="pre">{SDK}\amebadplus_gcc_project\amebaDplus_layout.ld</span></code> to change the end address of <code class="docutils literal notranslate"><span class="pre">KM4_BD_RAM</span></code>.</p>
+<li><p>Adjust <cite>KM4_BD_RAM</cite> end address by modifying <cite>RAM_KM0_IMG2_SIZE</cite> in:
+<code class="docutils literal notranslate"><span class="pre">{SDK}\amebadplus_gcc_project\amebaDplus_layout.ld</span></code></p>
 <figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/modify_sd_ram_step1_dplus.png"><img alt="../../_images/modify_sd_ram_step1_dplus.png" src="../../_images/modify_sd_ram_step1_dplus.png" style="width: 359.1px; height: 24.3px;" /></a>
 </figure>
 </li>
-<li><p>Re-build and download the new Bootloader and IMG2 OTA2 as described in Section section <strong>APP OTA1</strong>.</p></li>
+<li><p>Rebuild and flash Bootloader with IMG2 OTA2 following <strong>APP OTA1</strong> section</p></li>
 </ol>
-<p><strong>BD_PSRAM</strong></p>
-<p>If user wants to modify the KM4 BD PSRAM size, please modify the running position of IMG2 in menuconfig first. Any option with PSRAM is acceptable. Then modify <code class="docutils literal notranslate"><span class="pre">PSRAM_KM4_IMG2_SIZE</span></code> in <code class="docutils literal notranslate"><span class="pre">{SDK}\amebadplus_gcc_project\amebaDplus_layout.ld</span></code> to change the end address of <code class="docutils literal notranslate"><span class="pre">KM4_BD_PSRAM</span></code>.</p>
+<p><strong>BD_PSRAM Configuration</strong></p>
+<p>To modify KM4 BD_PSRAM size:</p>
+<ol class="arabic">
+<li><p>First configure IMG2 execution position in menuconfig (select any PSRAM-related option)</p></li>
+<li><p>Adjust <cite>KM4_BD_PSRAM</cite> end address by modifying <cite>PSRAM_KM4_IMG2_SIZE</cite> in:
+<code class="docutils literal notranslate"><span class="pre">{SDK}\amebadplus_gcc_project\amebaDplus_layout.ld</span></code></p>
 <figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/modify_sd_ram_step2_dplus.png"><img alt="../../_images/modify_sd_ram_step2_dplus.png" src="../../_images/modify_sd_ram_step2_dplus.png" style="width: 689.5px; height: 60.9px;" /></a>
 </figure>
-</div><div aria-labelledby="tab-4-4-1" class="sphinx-tabs-panel" hidden="true" id="panel-4-4-1" name="4-1" role="tabpanel" tabindex="0"><p><strong>BD_RAM</strong></p>
-<p>Follow the steps to modify the size of KM4 BD_RAM:</p>
+</li>
+</ol>
+</div><div aria-labelledby="tab-4-4-1" class="sphinx-tabs-panel" hidden="true" id="panel-4-4-1" name="4-1" role="tabpanel" tabindex="0"><p><strong>BD_RAM Configuration</strong></p>
+<p>Steps to modify KM4 BD_RAM size:</p>
 <ol class="arabic">
-<li><p>Modify the running position of IMG2 in menuconfig. Any option with SRAM is acceptable.</p>
+<li><p>Configure IMG2 execution position in menuconfig (select any SRAM-related option):</p>
 <figure class="align-center">
-<a class="reference internal image-reference" href="../../_images/modify_bd_ram_step1_lite.png"><img alt="../../_images/modify_bd_ram_step1_lite.png" src="../../_images/modify_bd_ram_step1_lite.png" style="width: 527.4px; height: 38.7px;" /></a>
+<a class="reference internal image-reference" href="../../_images/modify_bd_ram_step1_lite.png"><img alt="BD_RAM menuconfig configuration" src="../../_images/modify_bd_ram_step1_lite.png" style="width: 527.4px; height: 38.7px;" /></a>
 </figure>
 </li>
-<li><p>Modify <cite>RAM_KM4_IMG2_SIZE</cite> or <cite>RAM_KR4_IMG2_SIZE</cite> in <code class="docutils literal notranslate"><span class="pre">{SDK}\amebalite_gcc_project\amebalite_layout.ld</span></code> to change the end address of <cite>KM4_BD_RAM</cite>.</p>
+<li><p>Modify linker script parameters (path: <code class="docutils literal notranslate"><span class="pre">{SDK}\amebalite_gcc_project\amebalite_layout.ld</span></code>):
+- Adjust <code class="docutils literal notranslate"><span class="pre">RAM_KM4_IMG2_SIZE</span></code> or <code class="docutils literal notranslate"><span class="pre">RAM_KR4_IMG2_SIZE</span></code>
+- Update <cite>KM4_BD_RAM</cite> end address</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* IMG2 Size*/</span>
 <span class="cp">#if defined(CONFIG_AP_CORE_KM4)</span>
-<span class="hll"><span class="cp">#define RAM_KR4_IMG2_SIZE                 KBYTES(96)</span>
-</span><span class="cp">#define KM4_IMG2_RAM_START                        (KM4_RAM_TZ_SECURE_START + RAM_KM4_IMG3_SIZE)   </span><span class="cm">/* 0x20021400 ~ 0x20068000 | 0x2000D000 ~ 0x20068000*/</span>
-<span class="cp">#define KR4_IMG2_RAM_START                        (SRAM_END - RAM_KR4_IMG2_SIZE)                                  </span><span class="cm">/* 0x20068000 ~ 0x20078000 | 0x20068000 ~ 0x20078000*/</span>
-<span class="cp">#define RAM_KM4_IMG2_SIZE                 (KR4_IMG2_RAM_START - KM4_IMG2_RAM_START)</span>
+<span class="hll"><span class="w">  </span><span class="cp">#define RAM_KR4_IMG2_SIZE         KBYTES(96)</span>
+</span><span class="w">  </span><span class="cp">#define KM4_IMG2_RAM_START        (KM4_RAM_TZ_SECURE_START + RAM_KM4_IMG3_SIZE)</span>
+<span class="w">  </span><span class="cp">#define KR4_IMG2_RAM_START        (SRAM_END - RAM_KR4_IMG2_SIZE)</span>
+<span class="w">  </span><span class="cp">#define RAM_KM4_IMG2_SIZE         (KR4_IMG2_RAM_START - KM4_IMG2_RAM_START)</span>
 <span class="cp">#else</span>
-<span class="hll"><span class="cp">#define RAM_KM4_IMG2_SIZE                 KBYTES(96)</span>
-</span><span class="cp">#define KM4_IMG2_RAM_START                        (KM4_RAM_TZ_SECURE_START + RAM_KM4_IMG3_SIZE)   </span><span class="cm">/* 0x20021400 ~ 0x20039400 | 0x2000D000 ~ 0x20025000*/</span>
-<span class="cp">#define KR4_IMG2_RAM_START                        (KM4_IMG2_RAM_START + RAM_KM4_IMG2_SIZE)                </span><span class="cm">/* 0x20039400 ~ 0x20078000 | 0x20025000 ~ 0x20078000*/</span>
-<span class="cp">#define RAM_KR4_IMG2_SIZE                 (SRAM_END - KR4_IMG2_RAM_START)</span>
+<span class="hll"><span class="w">  </span><span class="cp">#define RAM_KM4_IMG2_SIZE         KBYTES(96)</span>
+</span><span class="w">  </span><span class="cp">#define KM4_IMG2_RAM_START        (KM4_RAM_TZ_SECURE_START + RAM_KM4_IMG3_SIZE)</span>
+<span class="w">  </span><span class="cp">#define KR4_IMG2_RAM_START        (KM4_IMG2_RAM_START + RAM_KM4_IMG2_SIZE)</span>
+<span class="w">  </span><span class="cp">#define RAM_KR4_IMG2_SIZE         (SRAM_END - KR4_IMG2_RAM_START)</span>
 <span class="cp">#endif</span>
 </pre></div>
 </div>
 </li>
-<li><p>Re-build and download the new bootloader and IMG2 OTA2 as described in Section <strong>APP OTA1</strong>.</p></li>
+<li><p>Rebuild and flash Bootloader with IMG2 OTA2 following <strong>APP OTA1</strong> section</p></li>
 </ol>
-<p><strong>BD_PSRAM</strong></p>
-<p>Follow the steps to modify the size of KM4 BD_PSRAM:</p>
+<p><strong>BD_PSRAM Configuration</strong></p>
+<p>Steps to modify KM4 BD_PSRAM size:</p>
 <ol class="arabic">
-<li><p>Modify the running position of IMG2 in menuconfig. Any option with PSRAM is acceptable.</p></li>
-<li><p>Modify <cite>PSRAM_KM4_IMG2_SIZE</cite> in <code class="docutils literal notranslate"><span class="pre">{SDK}\amebalite_gcc_project\amebalite_layout.ld</span></code> to change the end address of <cite>KM4_BD_PSRAM</cite>.</p>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="hll"><span class="cp">#define PSRAM_KM4_IMG2_SIZE               (KBYTES(1536) - (PSRAM_TZ_NSC_SIZE + PSRAM_TZ_ENTRY_SIZE + PSRAM_KM4_IMG3_SIZE))</span>
-</span><span class="cp">#define KM4_IMG2_PSRAM_START              (KM4_PSRAM_TZ_SECURE_START + PSRAM_KM4_IMG3_SIZE)       </span><span class="cm">/* 0x60010000 ~ 0x60180000 | 0x60000000 ~ 0x60180000*/</span>
-<span class="cp">#define KR4_IMG2_PSRAM_START              (KM4_IMG2_PSRAM_START + PSRAM_KM4_IMG2_SIZE)            </span><span class="cm">/* 0x60180000 ~ 0x60180000 | 0x60180000 ~ 0x60300000*/</span>
-<span class="cp">#define PSRAM_KR4_IMG2_SIZE               (PSRAM_DSP_START - KR4_IMG2_PSRAM_START)</span>
+<li><p>Configure IMG2 execution position in menuconfig (select any PSRAM-related option)</p></li>
+<li><p>Modify linker script parameters (path: <code class="docutils literal notranslate"><span class="pre">{SDK}\amebalite_gcc_project\amebalite_layout.ld</span></code>):
+- Adjust <cite>PSRAM_KM4_IMG2_SIZE</cite>
+- Update <cite>KM4_BD_PSRAM</cite> end address</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="hll"><span class="cp">#define PSRAM_KM4_IMG2_SIZE       (KBYTES(1536) - (PSRAM_TZ_NSC_SIZE + PSRAM_TZ_ENTRY_SIZE + PSRAM_KM4_IMG3_SIZE))</span>
+</span><span class="cp">#define KM4_IMG2_PSRAM_START      (KM4_PSRAM_TZ_SECURE_START + PSRAM_KM4_IMG3_SIZE)</span>
+<span class="cp">#define KR4_IMG2_PSRAM_START      (KM4_IMG2_PSRAM_START + PSRAM_KM4_IMG2_SIZE)</span>
+<span class="cp">#define PSRAM_KR4_IMG2_SIZE       (PSRAM_DSP_START - KR4_IMG2_PSRAM_START)</span>
 </pre></div>
 </div>
 </li>
 </ol>
-</div><div aria-labelledby="tab-4-4-2" class="sphinx-tabs-panel" hidden="true" id="panel-4-4-2" name="4-2" role="tabpanel" tabindex="0"><p><strong>BD_RAM</strong></p>
-<p>Follow the steps to modify the size of KM4 BD_RAM:</p>
+</div><div aria-labelledby="tab-4-4-2" class="sphinx-tabs-panel" hidden="true" id="panel-4-4-2" name="4-2" role="tabpanel" tabindex="0"><p><strong>BD_RAM Configuration</strong></p>
+<p>Steps to modify KM4 BD_RAM size:</p>
 <ol class="arabic">
-<li><p>Modify the running position of IMG2 in menuconfig. Any option with SRAM is acceptable.</p>
+<li><p>Configure IMG2 execution position in menuconfig (select any SRAM-related option):</p>
 <figure class="align-center">
-<a class="reference internal image-reference" href="../../_images/modify_bd_ram_step1_lite.png"><img alt="../../_images/modify_bd_ram_step1_lite.png" src="../../_images/modify_bd_ram_step1_lite.png" style="width: 527.4px; height: 38.7px;" /></a>
+<a class="reference internal image-reference" href="../../_images/modify_bd_ram_step1_lite.png"><img alt="BD_RAM menuconfig configuration" src="../../_images/modify_bd_ram_step1_lite.png" style="width: 527.4px; height: 38.7px;" /></a>
 </figure>
 </li>
-<li><p>Modify <cite>RAM_KM4_IMG2_SIZE</cite> or <cite>RAM_KR4_IMG2_SIZE</cite> in <code class="docutils literal notranslate"><span class="pre">{SDK}\amebalite_gcc_project\amebalite_layout.ld</span></code> to change the end address of <cite>KM4_BD_RAM</cite>.</p>
+<li><p>Modify linker script parameters (path: <code class="docutils literal notranslate"><span class="pre">{SDK}\amebalite_gcc_project\amebalite_layout.ld</span></code>):
+- Adjust <code class="docutils literal notranslate"><span class="pre">RAM_KM4_IMG2_SIZE</span></code> or <code class="docutils literal notranslate"><span class="pre">RAM_KR4_IMG2_SIZE</span></code>
+- Update <cite>KM4_BD_RAM</cite> end address</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* IMG2 Size*/</span>
 <span class="cp">#if defined(CONFIG_AP_CORE_KM4)</span>
-<span class="hll"><span class="cp">#define RAM_KR4_IMG2_SIZE                 KBYTES(96)</span>
-</span><span class="cp">#define KM4_IMG2_RAM_START                        (KM4_RAM_TZ_SECURE_START + RAM_KM4_IMG3_SIZE)   </span><span class="cm">/* 0x20021400 ~ 0x20068000 | 0x2000D000 ~ 0x20068000*/</span>
-<span class="cp">#define KR4_IMG2_RAM_START                        (SRAM_END - RAM_KR4_IMG2_SIZE)                                  </span><span class="cm">/* 0x20068000 ~ 0x20078000 | 0x20068000 ~ 0x20078000*/</span>
-<span class="cp">#define RAM_KM4_IMG2_SIZE                 (KR4_IMG2_RAM_START - KM4_IMG2_RAM_START)</span>
+<span class="hll"><span class="w">  </span><span class="cp">#define RAM_KR4_IMG2_SIZE         KBYTES(96)</span>
+</span><span class="w">  </span><span class="cp">#define KM4_IMG2_RAM_START        (KM4_RAM_TZ_SECURE_START + RAM_KM4_IMG3_SIZE)</span>
+<span class="w">  </span><span class="cp">#define KR4_IMG2_RAM_START        (SRAM_END - RAM_KR4_IMG2_SIZE)</span>
+<span class="w">  </span><span class="cp">#define RAM_KM4_IMG2_SIZE         (KR4_IMG2_RAM_START - KM4_IMG2_RAM_START)</span>
 <span class="cp">#else</span>
-<span class="hll"><span class="cp">#define RAM_KM4_IMG2_SIZE                 KBYTES(96)</span>
-</span><span class="cp">#define KM4_IMG2_RAM_START                        (KM4_RAM_TZ_SECURE_START + RAM_KM4_IMG3_SIZE)   </span><span class="cm">/* 0x20021400 ~ 0x20039400 | 0x2000D000 ~ 0x20025000*/</span>
-<span class="cp">#define KR4_IMG2_RAM_START                        (KM4_IMG2_RAM_START + RAM_KM4_IMG2_SIZE)                </span><span class="cm">/* 0x20039400 ~ 0x20078000 | 0x20025000 ~ 0x20078000*/</span>
-<span class="cp">#define RAM_KR4_IMG2_SIZE                 (SRAM_END - KR4_IMG2_RAM_START)</span>
+<span class="hll"><span class="w">  </span><span class="cp">#define RAM_KM4_IMG2_SIZE         KBYTES(96)</span>
+</span><span class="w">  </span><span class="cp">#define KM4_IMG2_RAM_START        (KM4_RAM_TZ_SECURE_START + RAM_KM4_IMG3_SIZE)</span>
+<span class="w">  </span><span class="cp">#define KR4_IMG2_RAM_START        (KM4_IMG2_RAM_START + RAM_KM4_IMG2_SIZE)</span>
+<span class="w">  </span><span class="cp">#define RAM_KR4_IMG2_SIZE         (SRAM_END - KR4_IMG2_RAM_START)</span>
 <span class="cp">#endif</span>
 </pre></div>
 </div>
 </li>
-<li><p>Re-build and download the new bootloader and IMG2 OTA2 as described in Section <strong>APP OTA1</strong>.</p></li>
+<li><p>Rebuild and flash Bootloader with IMG2 OTA2 following <strong>APP OTA1</strong> section</p></li>
 </ol>
-<p><strong>BD_PSRAM</strong></p>
-<p>Follow the steps to modify the size of KM4 BD_PSRAM:</p>
+<p><strong>BD_PSRAM Configuration</strong></p>
+<p>Steps to modify KM4 BD_PSRAM size:</p>
 <ol class="arabic">
-<li><p>Modify the running position of IMG2 in menuconfig. Any option with PSRAM is acceptable.</p></li>
-<li><p>Modify <cite>PSRAM_KM4_IMG2_SIZE</cite> in <code class="docutils literal notranslate"><span class="pre">{SDK}\amebalite_gcc_project\amebalite_layout.ld</span></code> to change the end address of <cite>KM4_BD_PSRAM</cite>.</p>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="hll"><span class="cp">#define PSRAM_KM4_IMG2_SIZE               (KBYTES(1536) - (PSRAM_TZ_NSC_SIZE + PSRAM_TZ_ENTRY_SIZE + PSRAM_KM4_IMG3_SIZE))</span>
-</span><span class="cp">#define KM4_IMG2_PSRAM_START              (KM4_PSRAM_TZ_SECURE_START + PSRAM_KM4_IMG3_SIZE)       </span><span class="cm">/* 0x60010000 ~ 0x60180000 | 0x60000000 ~ 0x60180000*/</span>
-<span class="cp">#define KR4_IMG2_PSRAM_START              (KM4_IMG2_PSRAM_START + PSRAM_KM4_IMG2_SIZE)            </span><span class="cm">/* 0x60180000 ~ 0x60180000 | 0x60180000 ~ 0x60300000*/</span>
-<span class="cp">#define PSRAM_KR4_IMG2_SIZE               (PSRAM_DSP_START - KR4_IMG2_PSRAM_START)</span>
+<li><p>Configure IMG2 execution position in menuconfig (select any PSRAM-related option)</p></li>
+<li><p>Modify linker script parameters (path: <code class="docutils literal notranslate"><span class="pre">{SDK}\amebalite_gcc_project\amebalite_layout.ld</span></code>):
+- Adjust <cite>PSRAM_KM4_IMG2_SIZE</cite>
+- Update <cite>KM4_BD_PSRAM</cite> end address</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="hll"><span class="cp">#define PSRAM_KM4_IMG2_SIZE       (KBYTES(1536) - (PSRAM_TZ_NSC_SIZE + PSRAM_TZ_ENTRY_SIZE + PSRAM_KM4_IMG3_SIZE))</span>
+</span><span class="cp">#define KM4_IMG2_PSRAM_START      (KM4_PSRAM_TZ_SECURE_START + PSRAM_KM4_IMG3_SIZE)</span>
+<span class="cp">#define KR4_IMG2_PSRAM_START      (KM4_IMG2_PSRAM_START + PSRAM_KM4_IMG2_SIZE)</span>
+<span class="cp">#define PSRAM_KR4_IMG2_SIZE       (PSRAM_DSP_START - KR4_IMG2_PSRAM_START)</span>
 </pre></div>
 </div>
 </li>
 </ol>
 </div></div>
 </section>
-<section id="modifying-heap-size">
-<h2>Modifying Heap Size<a class="headerlink" href="#modifying-heap-size" title="Link to this heading"></a></h2>
+<section id="heap-memory-configuration">
+<h2>Heap Memory Configuration<a class="headerlink" href="#heap-memory-configuration" title="Link to this heading"></a></h2>
 <div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-5-5-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-5-5-0" name="5-0" role="tab" tabindex="0">RTL8721Dx</button><button aria-controls="panel-5-5-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-5-5-1" name="5-1" role="tab" tabindex="-1">RTL8720E</button><button aria-controls="panel-5-5-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-5-5-2" name="5-2" role="tab" tabindex="-1">RTL8726E</button></div><div aria-labelledby="tab-5-5-0" class="sphinx-tabs-panel" id="panel-5-5-0" name="5-0" role="tabpanel" tabindex="0"><p>The heap size consists of multi-blocks and is passed to the operating system by the <code class="docutils literal notranslate"><span class="pre">os_heap_init()</span></code> function in <code class="docutils literal notranslate"><span class="pre">component\os\freertos\freertos_heap5_config.c</span></code>. By default, <code class="docutils literal notranslate"><span class="pre">PSRAM_HEAP1_START</span></code> is invalid address and <code class="docutils literal notranslate"><span class="pre">PSRAM_HEAP1_SIZE</span></code> is 0.</p>
-<figure class="align-center">
-<a class="reference internal image-reference" href="../../_images/modify_sd_ram_step2_2_dplus.png"><img alt="../../_images/modify_sd_ram_step2_2_dplus.png" src="../../_images/modify_sd_ram_step2_2_dplus.png" style="width: 714.0px; height: 30.799999999999997px;" /></a>
-</figure>
-<p>If the heap of KM4 is not enough, define Heap Start and Heap Size for some unused areas in <code class="docutils literal notranslate"><span class="pre">amebaDplus_layout.ld</span></code>, and then use the os_heap_add function to add the area to the heap array. The address shall be a valid value in PSRAM, then re-build and download the new image to let KM4 use the extended heap.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">bool</span> <span class="n">os_heap_add</span><span class="p">(</span><span class="n">u8</span> <span class="o">*</span><span class="n">start_addr</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">heap_size</span><span class="p">);</span>
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-5-5-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-5-5-0" name="5-0" role="tab" tabindex="0">RTL8721Dx</button><button aria-controls="panel-5-5-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-5-5-1" name="5-1" role="tab" tabindex="-1">RTL8720E</button><button aria-controls="panel-5-5-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-5-5-2" name="5-2" role="tab" tabindex="-1">RTL8726E</button></div><p>System heap consists of multiple blocks initialized by <code class="docutils literal notranslate"><span class="pre">os_heap_init()</span></code> in <code class="docutils literal notranslate"><span class="pre">component\os\freertos\freertos_heap5_config.c</span></code>.</p>
+<div aria-labelledby="tab-5-5-0" class="sphinx-tabs-panel" id="panel-5-5-0" name="5-0" role="tabpanel" tabindex="0"><p><strong>Initial PSRAM Heap Definition</strong></p>
+<ul class="simple">
+<li><p><cite>PSRAM_HEAP1_START</cite> is invalid address</p></li>
+<li><p><cite>PSRAM_HEAP1_SIZE</cite> set to 0</p></li>
+</ul>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text">Initial Heap Definition</span><a class="headerlink" href="#id2" title="Link to this code"></a></div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">KM4_PSRAM_HEAP_EXT</span><span class="w"> </span><span class="p">(</span><span class="n">rwx</span><span class="p">)</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">ORIGIN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x6FFFFFFF</span><span class="p">,</span><span class="w"> </span><span class="n">LENGTH</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x6FFFFFFF</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mh">0x6FFFFFFF</span><span class="w">  </span><span class="cm">/* KM4 PSRAM Extended Heap */</span>
+<span class="n">KM0_PSRAM_HEAP_EXT</span><span class="w"> </span><span class="p">(</span><span class="n">rwx</span><span class="p">)</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">ORIGIN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x6FFFFFFF</span><span class="p">,</span><span class="w"> </span><span class="n">LENGTH</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x6FFFFFFF</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mh">0x6FFFFFFF</span><span class="w">  </span><span class="cm">/* KM0 PSRAM Extended Heap */</span>
 </pre></div>
 </div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The symbols defined in linker script (<code class="docutils literal notranslate"><span class="pre">amebaDplus_layout.ld</span></code>) need to be declared in <code class="docutils literal notranslate"><span class="pre">ameba_boot.h</span></code> before they can be used.</p>
 </div>
-<p>If KM0 heap is not enough, modify the <code class="docutils literal notranslate"><span class="pre">KM0_PSRAM_HEAP_EXT</span></code> accordingly.</p>
-</div><div aria-labelledby="tab-5-5-1" class="sphinx-tabs-panel" hidden="true" id="panel-5-5-1" name="5-1" role="tabpanel" tabindex="0"><p>The heap size consists of multi-blocks and is passed to the operating system by <code class="xref py py-func docutils literal notranslate"><span class="pre">os_heap_init()</span></code> in <code class="docutils literal notranslate"><span class="pre">{SDK}\component\os\freerto\freertos_heap5_config.c</span></code>.
-By default, <cite>PSRAM_HEAP1_START</cite> is an invalid address and <cite>PSRAM_HEAP1_SIZE</cite> is 0.</p>
-<blockquote>
-<div><div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">KM4_PSRAM_HEAP_EXT</span><span class="w"> </span><span class="p">(</span><span class="n">rwx</span><span class="p">)</span><span class="w"> </span><span class="o">:</span><span class="w">              </span><span class="n">ORIGIN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x6FFFFFFF</span><span class="p">,</span><span class="w"> </span><span class="n">LENGTH</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x6FFFFFFF</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mh">0x6FFFFFFF</span><span class="w">     </span><span class="cm">/* KM4 PSRAM HEAP EXT */</span>
-<span class="n">KR4_PSRAM_HEAP_EXT</span><span class="w"> </span><span class="p">(</span><span class="n">rwx</span><span class="p">)</span><span class="w"> </span><span class="o">:</span><span class="w">              </span><span class="n">ORIGIN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x6FFFFFFF</span><span class="p">,</span><span class="w"> </span><span class="n">LENGTH</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x6FFFFFFF</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mh">0x6FFFFFFF</span><span class="w">     </span><span class="cm">/* KR4 PSRAM HEAP EXT */</span>
-</pre></div>
-</div>
-</div></blockquote>
-<p>If the heap of KM4 is not enough, follow the steps to extend the heap size of KM4:</p>
+<p><strong>KM4 Heap Extension</strong></p>
+<p>For insufficient KM4 heap:</p>
 <ol class="arabic">
-<li><p>Define Heap Start and Heap Size for some unused areas in <code class="file docutils literal notranslate"><span class="pre">amebalite_layout.ld</span></code>.</p></li>
-<li><p>Use <code class="xref py py-func docutils literal notranslate"><span class="pre">os_heap_add()</span></code> to add the area to the heap array.</p>
-<p>The address shall be a valid value in PSRAM</p>
+<li><p>Define unused PSRAM regions in linker script <code class="docutils literal notranslate"><span class="pre">amebaDplus_layout.ld</span></code>:</p>
+<ul class="simple">
+<li><p>Set valid <cite>Heap Start</cite> address</p></li>
+<li><p>Configure <cite>Heap Size</cite> value</p></li>
+</ul>
 </li>
-<li><p>Re-build the project and download the new image to let KM4 use the extended heap.</p>
+<li><p>Add heap blocks via system API:</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">bool</span><span class="w"> </span><span class="nf">os_heap_add</span><span class="p">(</span><span class="n">u8</span><span class="w"> </span><span class="o">*</span><span class="n">start_addr</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">heap_size</span><span class="p">);</span>
 </pre></div>
 </div>
 </li>
+<li><p>Rebuild and flash image to activate configuration</p></li>
 </ol>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
+<p>Symbols defined in linker script (<code class="docutils literal notranslate"><span class="pre">amebaDplus_layout.ld</span></code>) must be declared in <code class="docutils literal notranslate"><span class="pre">ameba_boot.h</span></code> before usage</p>
+</div>
+<p><strong>KM0 Heap Extension</strong></p>
+<p>For insufficient KM0 heap, modify <code class="docutils literal notranslate"><span class="pre">KM0_PSRAM_HEAP_EXT</span></code> parameter</p>
+</div><div aria-labelledby="tab-5-5-1" class="sphinx-tabs-panel" hidden="true" id="panel-5-5-1" name="5-1" role="tabpanel" tabindex="0"><p><strong>Initial PSRAM Heap Definition</strong></p>
 <ul class="simple">
-<li><p>The symbols defined in linker script (<code class="file docutils literal notranslate"><span class="pre">amebalite_layout.ld</span></code>) need to be declared in <code class="file docutils literal notranslate"><span class="pre">ameba_boot.h</span></code> before they can be used.</p></li>
-<li><p>If the heap of KR4 is not enough, the extension method is similar.</p></li>
+<li><p><cite>PSRAM_HEAP1_START</cite> is invalid address</p></li>
+<li><p><cite>PSRAM_HEAP1_SIZE</cite> set to 0</p></li>
+</ul>
+<div class="literal-block-wrapper docutils container" id="id3">
+<div class="code-block-caption"><span class="caption-text">Initial Heap Definition</span><a class="headerlink" href="#id3" title="Link to this code"></a></div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">KM4_PSRAM_HEAP_EXT</span><span class="w"> </span><span class="p">(</span><span class="n">rwx</span><span class="p">)</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">ORIGIN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x6FFFFFFF</span><span class="p">,</span><span class="w"> </span><span class="n">LENGTH</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x6FFFFFFF</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mh">0x6FFFFFFF</span><span class="w">  </span><span class="cm">/* KM4 PSRAM Extended Heap */</span>
+<span class="n">KR4_PSRAM_HEAP_EXT</span><span class="w"> </span><span class="p">(</span><span class="n">rwx</span><span class="p">)</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">ORIGIN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x6FFFFFFF</span><span class="p">,</span><span class="w"> </span><span class="n">LENGTH</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x6FFFFFFF</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mh">0x6FFFFFFF</span><span class="w">  </span><span class="cm">/* KR4 PSRAM Extended Heap */</span>
+</pre></div>
+</div>
+</div>
+<p><strong>KM4 Heap Extension Procedure</strong></p>
+<p>When KM4 heap is insufficient:</p>
+<ol class="arabic">
+<li><p>Define unused PSRAM regions in linker script <code class="file docutils literal notranslate"><span class="pre">amebalite_layout.ld</span></code>:</p>
+<ul class="simple">
+<li><p>Set valid <cite>Heap Start</cite> address</p></li>
+<li><p>Configure <cite>Heap Size</cite> value</p></li>
+</ul>
+</li>
+<li><p>Add heap blocks via system API:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">bool</span><span class="w"> </span><span class="nf">os_heap_add</span><span class="p">(</span><span class="n">u8</span><span class="w"> </span><span class="o">*</span><span class="n">start_addr</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">heap_size</span><span class="p">);</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Address must point to valid PSRAM space</p>
+</div>
+</li>
+<li><p>Rebuild project and flash new image to activate extended heap</p></li>
+</ol>
+<p><strong>General Notes</strong></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>Symbols defined in linker script (<code class="file docutils literal notranslate"><span class="pre">amebalite_layout.ld</span></code>) must be declared in <code class="file docutils literal notranslate"><span class="pre">ameba_boot.h</span></code></p></li>
+<li><p>KR4 heap extension follows the same procedure</p></li>
 </ul>
 </div>
-</div><div aria-labelledby="tab-5-5-2" class="sphinx-tabs-panel" hidden="true" id="panel-5-5-2" name="5-2" role="tabpanel" tabindex="0"><p>The heap size consists of multi-blocks and is passed to the operating system by <code class="xref py py-func docutils literal notranslate"><span class="pre">os_heap_init()</span></code> in <code class="docutils literal notranslate"><span class="pre">{SDK}\component\os\freerto\freertos_heap5_config.c</span></code>.
-By default, <cite>PSRAM_HEAP1_START</cite> is an invalid address and <cite>PSRAM_HEAP1_SIZE</cite> is 0.</p>
-<blockquote>
-<div><div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">KM4_PSRAM_HEAP_EXT</span><span class="w"> </span><span class="p">(</span><span class="n">rwx</span><span class="p">)</span><span class="w"> </span><span class="o">:</span><span class="w">              </span><span class="n">ORIGIN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x6FFFFFFF</span><span class="p">,</span><span class="w"> </span><span class="n">LENGTH</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x6FFFFFFF</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mh">0x6FFFFFFF</span><span class="w">     </span><span class="cm">/* KM4 PSRAM HEAP EXT */</span>
-<span class="n">KR4_PSRAM_HEAP_EXT</span><span class="w"> </span><span class="p">(</span><span class="n">rwx</span><span class="p">)</span><span class="w"> </span><span class="o">:</span><span class="w">              </span><span class="n">ORIGIN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x6FFFFFFF</span><span class="p">,</span><span class="w"> </span><span class="n">LENGTH</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x6FFFFFFF</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mh">0x6FFFFFFF</span><span class="w">     </span><span class="cm">/* KR4 PSRAM HEAP EXT */</span>
+</div><div aria-labelledby="tab-5-5-2" class="sphinx-tabs-panel" hidden="true" id="panel-5-5-2" name="5-2" role="tabpanel" tabindex="0"><p><strong>Initial PSRAM Heap Definition</strong></p>
+<ul class="simple">
+<li><p><cite>PSRAM_HEAP1_START</cite> is invalid address</p></li>
+<li><p><cite>PSRAM_HEAP1_SIZE</cite> set to 0</p></li>
+</ul>
+<div class="literal-block-wrapper docutils container" id="id4">
+<div class="code-block-caption"><span class="caption-text">Initial Heap Definition</span><a class="headerlink" href="#id4" title="Link to this code"></a></div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">KM4_PSRAM_HEAP_EXT</span><span class="w"> </span><span class="p">(</span><span class="n">rwx</span><span class="p">)</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">ORIGIN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x6FFFFFFF</span><span class="p">,</span><span class="w"> </span><span class="n">LENGTH</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x6FFFFFFF</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mh">0x6FFFFFFF</span><span class="w">  </span><span class="cm">/* KM4 PSRAM Extended Heap */</span>
+<span class="n">KR4_PSRAM_HEAP_EXT</span><span class="w"> </span><span class="p">(</span><span class="n">rwx</span><span class="p">)</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">ORIGIN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x6FFFFFFF</span><span class="p">,</span><span class="w"> </span><span class="n">LENGTH</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x6FFFFFFF</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mh">0x6FFFFFFF</span><span class="w">  </span><span class="cm">/* KR4 PSRAM Extended Heap */</span>
 </pre></div>
 </div>
-</div></blockquote>
-<p>If the heap of KM4 is not enough, follow the steps to extend the heap size of KM4:</p>
+</div>
+<p><strong>KM4 Heap Extension Procedure</strong></p>
+<p>When KM4 heap is insufficient:</p>
 <ol class="arabic">
-<li><p>Define Heap Start and Heap Size for some unused areas in <code class="file docutils literal notranslate"><span class="pre">amebalite_layout.ld</span></code>.</p></li>
-<li><p>Use <code class="xref py py-func docutils literal notranslate"><span class="pre">os_heap_add()</span></code> to add the area to the heap array.</p>
-<p>The address shall be a valid value in PSRAM</p>
+<li><p>Define unused PSRAM regions in linker script <code class="file docutils literal notranslate"><span class="pre">amebalite_layout.ld</span></code>:</p>
+<ul class="simple">
+<li><p>Set valid <cite>Heap Start</cite> address</p></li>
+<li><p>Configure <cite>Heap Size</cite> value</p></li>
+</ul>
 </li>
-<li><p>Re-build the project and download the new image to let KM4 use the extended heap.</p>
+<li><p>Add heap blocks via system API:</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">bool</span><span class="w"> </span><span class="nf">os_heap_add</span><span class="p">(</span><span class="n">u8</span><span class="w"> </span><span class="o">*</span><span class="n">start_addr</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">heap_size</span><span class="p">);</span>
 </pre></div>
 </div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Address must point to valid PSRAM space</p>
+</div>
 </li>
+<li><p>Rebuild project and flash new image to activate extended heap</p></li>
 </ol>
+<p><strong>General Notes</strong></p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <ul class="simple">
-<li><p>The symbols defined in linker script (<code class="file docutils literal notranslate"><span class="pre">amebalite_layout.ld</span></code>) need to be declared in <code class="file docutils literal notranslate"><span class="pre">ameba_boot.h</span></code> before they can be used.</p></li>
-<li><p>If the heap of KR4 is not enough, the extension method is similar.</p></li>
+<li><p>Symbols defined in linker script (<code class="file docutils literal notranslate"><span class="pre">amebalite_layout.ld</span></code>) must be declared in <code class="file docutils literal notranslate"><span class="pre">ameba_boot.h</span></code></p></li>
+<li><p>KR4 heap extension follows the same procedure</p></li>
 </ul>
 </div>
 </div></div>
