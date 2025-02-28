@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Flash布局 &mdash; Ameba IoT Docs  文档</title>
+  <title>Flash布局与配置 &mdash; Ameba IoT Docs  文档</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
@@ -35,7 +35,7 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="索引" href="../../genindex.html" />
     <link rel="search" title="搜索" href="../../search.html" />
-    <link rel="next" title="RAM 布局与配置指南" href="1_ram_layout_toprst_cn.html" />
+    <link rel="next" title="RAM 布局与配置" href="1_ram_layout_toprst_cn.html" />
     <link rel="prev" title="Flash 和 RAM 布局" href="0_layout_index_cn.html" />  
      
   <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
@@ -79,19 +79,18 @@
 <li class="toctree-l1"><a class="reference internal" href="../0_gcc_build_library/0_gcc_build_library_index_cn.html">0.3 GCC 库的生成和使用</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../0_sdk_example/0_sdk_example_index_cn.html">0.4 SDK 示例</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="0_layout_index_cn.html">0.5 Flash 和 RAM 布局</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Flash布局</a><ul>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Flash布局与配置</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#id1">简介</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#mmu">内存管理单元（MMU）</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#how-to-modify-flash-layout">Flash布局修改指南</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#how-to-modify-flash-layout">Flash布局修改</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#bootloader-ota2">修改Bootloader OTA2分区</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#id3">修改应用程序分区</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#ftl-vfs">修改FTL/VFS分区</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#flash-protect-enable">Flash写保护机制</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="1_ram_layout_toprst_cn.html">RAM 布局与配置指南</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1_ram_layout_toprst_cn.html">RAM 布局与配置</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../0_user_config/0_usrcfg_index_cn.html">0.6 开发者配置</a></li>
@@ -159,7 +158,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="0_layout_index_cn.html">Flash 和 RAM 布局</a></li>
-      <li class="breadcrumb-item active">Flash布局</li>
+      <li class="breadcrumb-item active">Flash布局与配置</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -206,7 +205,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 });
 </script><section id="flash">
-<h1>Flash布局<a class="headerlink" href="#flash" title="Link to this heading"></a></h1>
+<h1>Flash布局与配置<a class="headerlink" href="#flash" title="Link to this heading"></a></h1>
 <section id="id1">
 <h2>简介<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
 <p>本章介绍默认Flash存储布局及自定义修改方法。</p>
@@ -539,101 +538,68 @@ document.addEventListener("DOMContentLoaded", function() {
 </div></div>
 </section>
 <section id="how-to-modify-flash-layout">
-<span id="id2"></span><h2>Flash布局修改指南<a class="headerlink" href="#how-to-modify-flash-layout" title="Link to this heading"></a></h2>
+<span id="id2"></span><h2>Flash布局修改<a class="headerlink" href="#how-to-modify-flash-layout" title="Link to this heading"></a></h2>
 <p>支持修改的Flash区域包括：</p>
-<ul>
-<li><p>Bootloader OTA2分区</p></li>
-<li><p>应用程序分区</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>APP OTA1</p></li>
-<li><p>APP OTA2</p></li>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>分区名称</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Bootloader OTA2分区</p></td>
+<td><p>IMG_BOOT_OTA2</p></td>
+</tr>
+<tr class="row-odd"><td><p>应用程序分区</p></td>
+<td><ul class="simple">
+<li><p>APP OTA1: IMG_APP_OTA1</p></li>
+<li><p>APP OTA2: IMG_APP_OTA2</p></li>
 </ul>
-</div></blockquote>
-</li>
-<li><p>DSP固件分区（如存在）</p></li>
-<li><p>FTL/VFS分区</p></li>
-</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>DSP固件分区</p></td>
+<td><p>IMG_DSP（如存在）</p></td>
+</tr>
+<tr class="row-odd"><td><p>FTL/VFS分区</p></td>
+<td><p>FTL/VFS1</p></td>
+</tr>
+</tbody>
+</table>
+<p>在 <code class="docutils literal notranslate"><span class="pre">{SDK}\component\soc\amebaxxx\usrcfg\ameba_flashcfg.c</span></code> 中修改对应条目即可：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">FlashLayoutInfo_TypeDef</span><span class="w"> </span><span class="n">Flash_Layout</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="cm">/*Region_Type,   [StartAddr,   EndAddr]      */</span>
+<span class="w">   </span><span class="p">{</span><span class="n">IMG_BOOT</span><span class="p">,</span><span class="w">      </span><span class="mh">0x08000000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x08013FFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Boot Manifest(4K) + KM4 Bootloader(76K)</span>
+<span class="w">   </span><span class="c1">//Users should modify below according to their own memory</span>
+<span class="hll"><span class="w">   </span><span class="p">{</span><span class="n">IMG_APP_OTA1</span><span class="p">,</span><span class="w">  </span><span class="mh">0x08014000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x081F3FFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Certificate(4K) + Manifest(4K) + KR4 &amp; KM4 Application OTA1 + Manifest(4K) + RDP IMG OTA1</span>
+</span>
+<span class="hll"><span class="w">   </span><span class="p">{</span><span class="n">IMG_BOOT_OTA2</span><span class="p">,</span><span class="w"> </span><span class="mh">0x08200000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x08213FFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Boot Manifest(4K) + KM4 Bootloader(76K) OTA</span>
+</span><span class="hll"><span class="w">   </span><span class="p">{</span><span class="n">IMG_APP_OTA2</span><span class="p">,</span><span class="w">  </span><span class="mh">0x08214000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x083DCFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Certificate(4K) + Manifest(4K) + KR4 &amp; KM4 Application OTA2 + Manifest(4K) + RDP IMG OTA2</span>
+</span><span class="hll"><span class="w">   </span><span class="p">{</span><span class="n">FTL</span><span class="p">,</span><span class="w">           </span><span class="mh">0x083DD000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x083DFFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//FTL for BT(&gt;=12K), The start offset of flash pages allocated to FTL physical map</span>
+</span><span class="hll"><span class="w">   </span><span class="p">{</span><span class="n">VFS1</span><span class="p">,</span><span class="w">          </span><span class="mh">0x083E0000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x083FFFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//VFS region 1 (128K)</span>
+</span><span class="hll"><span class="w">   </span><span class="p">{</span><span class="n">IMG_DSP</span><span class="p">,</span><span class="w">       </span><span class="mh">0x08400000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x086FFFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Manifest(4K) + DSP firmware, only one DSP region in layout</span>
+</span><span class="w">   </span><span class="p">{</span><span class="n">VFS2</span><span class="p">,</span><span class="w">          </span><span class="mh">0xFFFFFFFF</span><span class="p">,</span><span class="w"> </span><span class="mh">0xFFFFFFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//VFS region 2</span>
+<span class="w">   </span><span class="p">{</span><span class="n">USER</span><span class="p">,</span><span class="w">          </span><span class="mh">0xFFFFFFFF</span><span class="p">,</span><span class="w"> </span><span class="mh">0xFFFFFFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//reserve for user</span>
+
+<span class="w">   </span><span class="cm">/* End */</span>
+<span class="w">   </span><span class="p">{</span><span class="mh">0xFF</span><span class="p">,</span><span class="w">          </span><span class="mh">0xFFFFFFFF</span><span class="p">,</span><span class="w"> </span><span class="mh">0xFFFFFFFF</span><span class="p">},</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>以上代码为示例，实际使用的IC可能不包含所有配置行，具体请参考对应IC的 <cite>Flash_Layout</cite>。</p>
+</div>
 <section id="bootloader-ota2">
 <h3>修改Bootloader OTA2分区<a class="headerlink" href="#bootloader-ota2" title="Link to this heading"></a></h3>
 <p>Bootloader OTA2分区地址需满足4KB对齐（默认禁用）。启用时需执行以下操作：</p>
 <ol class="arabic simple">
 <li><p>将OTA2起始地址右移12位后，烧录至OTP 0x36C~0x36D</p></li>
-<li><p>修改SDK路径下``{SDK}componentsocamebaxxxusrcfgameba_flashcfg.c``文件中*IMG_BOOT_OTA2*地址</p></li>
+<li><p>修改``{SDK}componentsocamebaxxxusrcfgameba_flashcfg.c``文件中 <cite>IMG_BOOT_OTA2</cite> 地址</p></li>
 <li><p>OTA烧录后，Boot ROM将根据版本号选择OTA1或OTA2引导程序</p></li>
 </ol>
-<div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-2-2-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-2-2-0" name="2-0" role="tab" tabindex="0">RTL8721Dx</button><button aria-controls="panel-2-2-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-2-2-1" name="2-1" role="tab" tabindex="-1">RTL8720E</button><button aria-controls="panel-2-2-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-2-2-2" name="2-2" role="tab" tabindex="-1">RTL8726E</button></div><div aria-labelledby="tab-2-2-0" class="sphinx-tabs-panel" id="panel-2-2-0" name="2-0" role="tabpanel" tabindex="0"><div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/*</span>
-<span class="cm">* @brif Flash layout is set according to Flash Layout in User Manual</span>
-<span class="cm">*  In each entry, the first item is flash region type, the second item is start address, the third item is end address */</span>
-<span class="n">FlashLayoutInfo_TypeDef</span><span class="w"> </span><span class="n">Flash_Layout</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
-<span class="w">   </span><span class="cm">/*Region_Type,  [StartAddr, EndAddr]   */</span>
-<span class="w">   </span><span class="p">{</span><span class="n">IMG_BOOT</span><span class="p">,</span><span class="w">      </span><span class="mh">0x08000000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x08013FFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Boot Manifest(4K) + KM4 Bootloader(76K)</span>
-<span class="w">   </span><span class="c1">//Users should modify below according to their own memory</span>
-<span class="w">   </span><span class="p">{</span><span class="n">IMG_APP_OTA1</span><span class="p">,</span><span class="w">  </span><span class="mh">0x08014000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x081F3FFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Certificate(4K) + Manifest(4K) + KR4 &amp; KM4 Application OTA1 + Manifest(4K) + RDP IMG OTA1</span>
-
-<span class="hll"><span class="w">   </span><span class="p">{</span><span class="n">IMG_BOOT_OTA2</span><span class="p">,</span><span class="w"> </span><span class="mh">0x08200000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x08213FFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Boot Manifest(4K) + KM4 Bootloader(76K) OTA</span>
-</span><span class="w">   </span><span class="p">{</span><span class="n">IMG_APP_OTA2</span><span class="p">,</span><span class="w">  </span><span class="mh">0x08214000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x083F3FFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Certificate(4K) + Manifest(4K) + KR4 &amp; KM4 Application OTA2 + Manifest(4K) + RDP IMG OTA2</span>
-<span class="w">   </span><span class="p">{</span><span class="n">IMG_DSP</span><span class="p">,</span><span class="w">       </span><span class="mh">0x08400000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x086FFFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Manifest(4K) + DSP IMG, only one DSP region in layout</span>
-
-<span class="w">   </span><span class="p">{</span><span class="n">FTL</span><span class="p">,</span><span class="w">           </span><span class="mh">0x08700000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x08702FFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//FTL for BT(&gt;=12K), The start offset of flash pages which is allocated to FTL physical map</span>
-<span class="w">   </span><span class="p">{</span><span class="n">VFS1</span><span class="p">,</span><span class="w">          </span><span class="mh">0x08703000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x08722FFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//VFS region 1 (128K)</span>
-<span class="w">   </span><span class="p">{</span><span class="n">USER</span><span class="p">,</span><span class="w">          </span><span class="mh">0xFFFFFFFF</span><span class="p">,</span><span class="w"> </span><span class="mh">0xFFFFFFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//reserve for user</span>
-
-<span class="w">   </span><span class="cm">/* End */</span>
-<span class="w">   </span><span class="p">{</span><span class="mh">0xFF</span><span class="p">,</span><span class="w">          </span><span class="mh">0xFFFFFFFF</span><span class="p">,</span><span class="w"> </span><span class="mh">0xFFFFFFFF</span><span class="p">},</span>
-<span class="p">};</span>
-</pre></div>
-</div>
 <ul class="simple">
 <li><p>如果启用了防回滚功能，以确保引导加载程序的版本只能递增而不能回退，那么在编译之前需要更改引导加载程序的版本。</p></li>
-<li><p>具体来说，需要修改位于 {SDK}amebadplus_gcc_projectmanifest.json 文件中的 <em>IMG_VER_xxxxx</em> 字段。</p></li>
-</ul>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="s">&quot;MANIFEST_VER&quot;</span><span class="o">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
-
-<span class="s">&quot;boot&quot;</span><span class="o">:</span>
-<span class="p">{</span>
-<span class="w">   </span><span class="s">&quot;IMG_ID&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;0&quot;</span><span class="p">,</span>
-<span class="hll"><span class="w">   </span><span class="s">&quot;IMG_VER_MAJOR&quot;</span><span class="o">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
-</span><span class="hll"><span class="w">   </span><span class="s">&quot;IMG_VER_MINOR&quot;</span><span class="o">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
-</span>
-<span class="w">   </span><span class="s">&quot;SEC_EPOCH&quot;</span><span class="o">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
-
-<span class="w">   </span><span class="s">&quot;HASH_ALG&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;sha256&quot;</span><span class="p">,</span>
-
-<span class="w">   </span><span class="s">&quot;RSIP_IV&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;01020304050607080000000000000000&quot;</span><span class="p">,</span>
-<span class="p">},</span>
-</pre></div>
-</div>
-<div class="admonition note">
-<p class="admonition-title">备注</p>
-<p>引导程序 OTA1 的地址固定为 0x0800_0000，无法修改。</p>
-</div>
-</div><div aria-labelledby="tab-2-2-1" class="sphinx-tabs-panel" hidden="true" id="panel-2-2-1" name="2-1" role="tabpanel" tabindex="0"><div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/*</span>
-<span class="cm">* @brif Flash layout is set according to Flash Layout in User Manual</span>
-<span class="cm">*  In each entry, the first item is flash region type, the second item is start address, the third item is end address */</span>
-<span class="n">FlashLayoutInfo_TypeDef</span><span class="w"> </span><span class="n">Flash_Layout</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
-<span class="w">   </span><span class="cm">/*Region_Type,    [StartAddr,     EndAddr]                */</span>
-<span class="w">   </span><span class="p">{</span><span class="n">IMG_BOOT</span><span class="p">,</span><span class="w">      </span><span class="mh">0x08000000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x08013FFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Boot Manifest(4K) + KM4 Bootloader(76K)</span>
-<span class="w">   </span><span class="c1">//Users should modify below according to their own memory</span>
-<span class="w">   </span><span class="p">{</span><span class="n">IMG_APP_OTA1</span><span class="p">,</span><span class="w">  </span><span class="mh">0x08014000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x081F3FFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Certificate(4K) + Manifest(4K) + KR4 &amp; KM4 Application OTA1 + Manifest(4K) + RDP IMG OTA1</span>
-
-<span class="hll"><span class="w">   </span><span class="p">{</span><span class="n">IMG_BOOT_OTA2</span><span class="p">,</span><span class="w"> </span><span class="mh">0x08200000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x08213FFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Boot Manifest(4K) + KM4 Bootloader(76K) OTA</span>
-</span><span class="w">   </span><span class="p">{</span><span class="n">IMG_APP_OTA2</span><span class="p">,</span><span class="w">  </span><span class="mh">0x08214000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x083DCFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Certificate(4K) + Manifest(4K) + KR4 &amp; KM4 Application OTA2 + Manifest(4K) + RDP IMG OTA2</span>
-<span class="w">   </span><span class="p">{</span><span class="n">FTL</span><span class="p">,</span><span class="w">           </span><span class="mh">0x083DD000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x083DFFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//FTL for BT(&gt;=12K), The start offset of flash pages which is allocated to FTL physical map.</span>
-<span class="w">   </span><span class="p">{</span><span class="n">VFS1</span><span class="p">,</span><span class="w">          </span><span class="mh">0x083E0000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x083FFFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//VFS region 1 (128K)</span>
-<span class="w">   </span><span class="p">{</span><span class="n">IMG_DSP</span><span class="p">,</span><span class="w">       </span><span class="mh">0x08400000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x086FFFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Manifest(4K) + DSP IMG, only one DSP region in layout</span>
-<span class="w">   </span><span class="p">{</span><span class="n">VFS2</span><span class="p">,</span><span class="w">          </span><span class="mh">0xFFFFFFFF</span><span class="p">,</span><span class="w"> </span><span class="mh">0xFFFFFFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//VFS region 2</span>
-<span class="w">   </span><span class="p">{</span><span class="n">USER</span><span class="p">,</span><span class="w">          </span><span class="mh">0xFFFFFFFF</span><span class="p">,</span><span class="w"> </span><span class="mh">0xFFFFFFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//reserve for user</span>
-
-<span class="w">   </span><span class="cm">/* End */</span>
-<span class="w">   </span><span class="p">{</span><span class="mh">0xFF</span><span class="p">,</span><span class="w">          </span><span class="mh">0xFFFFFFFF</span><span class="p">,</span><span class="w"> </span><span class="mh">0xFFFFFFFF</span><span class="p">},</span>
-<span class="p">};</span>
-</pre></div>
-</div>
-<ul class="simple">
-<li><p>如果启用了防回滚功能，以确保引导加载程序的版本只能递增而不能回退，那么在编译之前需要更改引导加载程序的版本。</p></li>
-<li><p>具体来说，需要修改位于 {SDK}amebalite_gcc_projectmanifest.json 文件中的 <em>IMG_VER_xxxxx</em> 字段。</p></li>
+<li><p>具体来说，需要修改位于 {SDK}amebaxxx_gcc_projectmanifest.json 文件中的 <cite>IMG_VER_xxxxx</cite> 字段。</p></li>
 </ul>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="s">&quot;MANIFEST_VER&quot;</span><span class="o">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
 
@@ -655,79 +621,13 @@ document.addEventListener("DOMContentLoaded", function() {
 <p class="admonition-title">备注</p>
 <p>引导程序 OTA1 的地址固定为 0x0800_0000，无法修改。</p>
 </div>
-</div><div aria-labelledby="tab-2-2-2" class="sphinx-tabs-panel" hidden="true" id="panel-2-2-2" name="2-2" role="tabpanel" tabindex="0"><div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/*</span>
-<span class="cm">* @brif Flash layout is set according to Flash Layout in User Manual</span>
-<span class="cm">*  In each entry, the first item is flash region type, the second item is start address, the third item is end address */</span>
-<span class="n">FlashLayoutInfo_TypeDef</span><span class="w"> </span><span class="n">Flash_Layout</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
-<span class="w">   </span><span class="cm">/*Region_Type,    [StartAddr,     EndAddr]                */</span>
-<span class="w">   </span><span class="p">{</span><span class="n">IMG_BOOT</span><span class="p">,</span><span class="w">      </span><span class="mh">0x08000000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x08013FFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Boot Manifest(4K) + KM4 Bootloader(76K)</span>
-<span class="w">   </span><span class="c1">//Users should modify below according to their own memory</span>
-<span class="w">   </span><span class="p">{</span><span class="n">IMG_APP_OTA1</span><span class="p">,</span><span class="w">  </span><span class="mh">0x08014000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x081F3FFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Certificate(4K) + Manifest(4K) + KR4 &amp; KM4 Application OTA1 + Manifest(4K) + RDP IMG OTA1</span>
-
-<span class="hll"><span class="w">   </span><span class="p">{</span><span class="n">IMG_BOOT_OTA2</span><span class="p">,</span><span class="w"> </span><span class="mh">0x08200000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x08213FFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Boot Manifest(4K) + KM4 Bootloader(76K) OTA</span>
-</span><span class="w">   </span><span class="p">{</span><span class="n">IMG_APP_OTA2</span><span class="p">,</span><span class="w">  </span><span class="mh">0x08214000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x083DCFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Certificate(4K) + Manifest(4K) + KR4 &amp; KM4 Application OTA2 + Manifest(4K) + RDP IMG OTA2</span>
-<span class="w">   </span><span class="p">{</span><span class="n">FTL</span><span class="p">,</span><span class="w">           </span><span class="mh">0x083DD000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x083DFFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//FTL for BT(&gt;=12K), The start offset of flash pages which is allocated to FTL physical map.</span>
-<span class="w">   </span><span class="p">{</span><span class="n">VFS1</span><span class="p">,</span><span class="w">          </span><span class="mh">0x083E0000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x083FFFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//VFS region 1 (128K)</span>
-<span class="w">   </span><span class="p">{</span><span class="n">IMG_DSP</span><span class="p">,</span><span class="w">       </span><span class="mh">0x08400000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x086FFFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Manifest(4K) + DSP IMG, only one DSP region in layout</span>
-<span class="w">   </span><span class="p">{</span><span class="n">VFS2</span><span class="p">,</span><span class="w">          </span><span class="mh">0xFFFFFFFF</span><span class="p">,</span><span class="w"> </span><span class="mh">0xFFFFFFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//VFS region 2</span>
-<span class="w">   </span><span class="p">{</span><span class="n">USER</span><span class="p">,</span><span class="w">          </span><span class="mh">0xFFFFFFFF</span><span class="p">,</span><span class="w"> </span><span class="mh">0xFFFFFFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//reserve for user</span>
-
-<span class="w">   </span><span class="cm">/* End */</span>
-<span class="w">   </span><span class="p">{</span><span class="mh">0xFF</span><span class="p">,</span><span class="w">          </span><span class="mh">0xFFFFFFFF</span><span class="p">,</span><span class="w"> </span><span class="mh">0xFFFFFFFF</span><span class="p">},</span>
-<span class="p">};</span>
-</pre></div>
-</div>
-<ul class="simple">
-<li><p>如果启用了防回滚功能，以确保引导加载程序的版本只能递增而不能回退，那么在编译之前需要更改引导加载程序的版本。</p></li>
-<li><p>具体来说，需要修改位于 {SDK}amebalite_gcc_projectmanifest.json 文件中的 <em>IMG_VER_xxxxx</em> 字段。</p></li>
-</ul>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="s">&quot;MANIFEST_VER&quot;</span><span class="o">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
-
-<span class="s">&quot;boot&quot;</span><span class="o">:</span>
-<span class="p">{</span>
-<span class="w">   </span><span class="s">&quot;IMG_ID&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;0&quot;</span><span class="p">,</span>
-<span class="hll"><span class="w">   </span><span class="s">&quot;IMG_VER_MAJOR&quot;</span><span class="o">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
-</span><span class="hll"><span class="w">   </span><span class="s">&quot;IMG_VER_MINOR&quot;</span><span class="o">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
-</span>
-<span class="w">   </span><span class="s">&quot;SEC_EPOCH&quot;</span><span class="o">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
-
-<span class="w">   </span><span class="s">&quot;HASH_ALG&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;sha256&quot;</span><span class="p">,</span>
-
-<span class="w">   </span><span class="s">&quot;RSIP_IV&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;0102030405060708&quot;</span><span class="p">,</span>
-<span class="p">},</span>
-</pre></div>
-</div>
-<div class="admonition note">
-<p class="admonition-title">备注</p>
-<p>引导程序 OTA1 的地址固定为 0x0800_0000，无法修改。</p>
-</div>
-</div></div>
 </section>
 <section id="id3">
 <h3>修改应用程序分区<a class="headerlink" href="#id3" title="Link to this heading"></a></h3>
 <div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-3-3-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-3-3-0" name="3-0" role="tab" tabindex="0">RTL8721Dx</button><button aria-controls="panel-3-3-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-3-3-1" name="3-1" role="tab" tabindex="-1">RTL8720E</button><button aria-controls="panel-3-3-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-3-3-2" name="3-2" role="tab" tabindex="-1">RTL8726E</button></div><div aria-labelledby="tab-3-3-0" class="sphinx-tabs-panel" id="panel-3-3-0" name="3-0" role="tabpanel" tabindex="0"><p><strong>APP OTA1</strong></p>
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-2-2-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-2-2-0" name="2-0" role="tab" tabindex="0">RTL8721Dx</button><button aria-controls="panel-2-2-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-2-2-1" name="2-1" role="tab" tabindex="-1">RTL8720E</button><button aria-controls="panel-2-2-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-2-2-2" name="2-2" role="tab" tabindex="-1">RTL8726E</button></div><div aria-labelledby="tab-2-2-0" class="sphinx-tabs-panel" id="panel-2-2-0" name="2-0" role="tabpanel" tabindex="0"><p><strong>APP OTA1</strong></p>
 <ol class="arabic">
-<li><p>在 <code class="docutils literal notranslate"><span class="pre">{SDK}\component\soc\amebaxxx\usrcfg\ameba_flashcfg.c</span></code> 中修改 <em>IMG_APP_OTA1</em> 的地址。</p>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">FlashLayoutInfo_TypeDef</span><span class="w"> </span><span class="n">Flash_Layout</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
-<span class="w">   </span><span class="cm">/*Region_Type,  [StartAddr, EndAddr]   */</span>
-<span class="w">   </span><span class="p">{</span><span class="n">IMG_BOOT</span><span class="p">,</span><span class="w">      </span><span class="mh">0x08000000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x08013FFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Boot Manifest(4K) + KM4 Bootloader(76K)</span>
-<span class="w">   </span><span class="c1">//Users should modify below according to their own memory</span>
-<span class="hll"><span class="w">   </span><span class="p">{</span><span class="n">IMG_APP_OTA1</span><span class="p">,</span><span class="w">  </span><span class="mh">0x08014000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x081F3FFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Certificate(4K) + Manifest(4K) + KM4 Application OTA1 + Manifest(4K) + RDP IMG OTA1</span>
-</span>
-<span class="w">   </span><span class="p">{</span><span class="n">IMG_BOOT_OTA2</span><span class="p">,</span><span class="w"> </span><span class="mh">0x08200000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x08213FFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Boot Manifest(4K) + KM4 Bootloader(76K) OTA</span>
-<span class="w">   </span><span class="p">{</span><span class="n">IMG_APP_OTA2</span><span class="p">,</span><span class="w">  </span><span class="mh">0x08214000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x083F3FFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Certificate(4K) + Manifest(4K) + KM4 Application OTA2 + Manifest(4K) + RDP IMG OTA2</span>
-
-<span class="w">   </span><span class="p">{</span><span class="n">FTL</span><span class="p">,</span><span class="w">           </span><span class="mh">0x08700000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x08702FFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//FTL for BT(&gt;=12K), The start offset of flash pages which is allocated to FTL physical map</span>
-<span class="w">   </span><span class="p">{</span><span class="n">VFS1</span><span class="p">,</span><span class="w">          </span><span class="mh">0x08703000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x08722FFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//VFS region 1 (128K)</span>
-<span class="w">   </span><span class="p">{</span><span class="n">USER</span><span class="p">,</span><span class="w">          </span><span class="mh">0xFFFFFFFF</span><span class="p">,</span><span class="w"> </span><span class="mh">0xFFFFFFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//reserve for user</span>
-
-<span class="w">   </span><span class="cm">/* End */</span>
-<span class="w">   </span><span class="p">{</span><span class="mh">0xFF</span><span class="p">,</span><span class="w">          </span><span class="mh">0xFFFFFFFF</span><span class="p">,</span><span class="w"> </span><span class="mh">0xFFFFFFFF</span><span class="p">},</span>
-<span class="p">};</span>
-</pre></div>
-</div>
-</li>
+<li><p>在 <code class="docutils literal notranslate"><span class="pre">{SDK}\component\soc\amebaxxx\usrcfg\ameba_flashcfg.c</span></code> 中修改 <em>IMG_APP_OTA1</em> 的地址。</p></li>
 <li><p>重新编译项目以生成引导加载程序和 APP OTA1。</p></li>
 <li><p>通过 ImageTool 修改 <code class="docutils literal notranslate"><span class="pre">km0_km4_app.bin</span></code> 的地址，并下载新的引导加载程序和 APP OTA1。</p>
 <figure class="align-center">
@@ -737,249 +637,47 @@ document.addEventListener("DOMContentLoaded", function() {
 </ol>
 <p>之后，如果 APP OTA1 的版本更大，引导加载程序将从 APP OTA1 的新位置加载固件。</p>
 <p><strong>APP OTA2</strong></p>
-<p>按照以下步骤修改 APP OTA2 的位置：</p>
-<ol class="arabic">
+<ol class="arabic simple">
 <li><p>在 <code class="docutils literal notranslate"><span class="pre">{SDK}\component\soc\amebaxxx\usrcfg\ameba_flashcfg.c</span></code> 中修改 <em>IMG_APP_OTA2</em> 的地址。</p></li>
-<li><p>如 <strong>APP OTA1</strong> 部分所述，重新构建并下载新的引导加载程序和 APP OTA2。</p>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/*</span>
-<span class="cm">* @brif Flash layout is set according to Flash Layout in User Manual</span>
-<span class="cm">*  In each entry, the first item is flash region type, the second item is start address, the third item is end address */</span>
-<span class="n">FlashLayoutInfo_TypeDef</span><span class="w"> </span><span class="n">Flash_Layout</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
-<span class="w">   </span><span class="cm">/*Region_Type,  [StartAddr, EndAddr]   */</span>
-<span class="w">   </span><span class="p">{</span><span class="n">IMG_BOOT</span><span class="p">,</span><span class="w">      </span><span class="mh">0x08000000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x08013FFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Boot Manifest(4K) + KM4 Bootloader(76K)</span>
-<span class="w">   </span><span class="c1">//Users should modify below according to their own memory</span>
-<span class="w">   </span><span class="p">{</span><span class="n">IMG_APP_OTA1</span><span class="p">,</span><span class="w">  </span><span class="mh">0x08014000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x081F3FFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Certificate(4K) + Manifest(4K) + KR4 &amp; KM4 Application OTA1 + Manifest(4K) + RDP IMG OTA1</span>
-
-<span class="w">   </span><span class="p">{</span><span class="n">IMG_BOOT_OTA2</span><span class="p">,</span><span class="w"> </span><span class="mh">0x08200000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x08213FFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Boot Manifest(4K) + KM4 Bootloader(76K) OTA</span>
-<span class="hll"><span class="w">   </span><span class="p">{</span><span class="n">IMG_APP_OTA2</span><span class="p">,</span><span class="w">  </span><span class="mh">0x08214000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x083F3FFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Certificate(4K) + Manifest(4K) + KR4 &amp; KM4 Application OTA2 + Manifest(4K) + RDP IMG OTA2</span>
-</span><span class="w">   </span><span class="p">{</span><span class="n">IMG_DSP</span><span class="p">,</span><span class="w">       </span><span class="mh">0x08400000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x086FFFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Manifest(4K) + DSP IMG, only one DSP region in layout</span>
-
-<span class="w">   </span><span class="p">{</span><span class="n">FTL</span><span class="p">,</span><span class="w">           </span><span class="mh">0x08700000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x08702FFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//FTL for BT(&gt;=12K), The start offset of flash pages which is allocated to FTL physical map</span>
-<span class="w">   </span><span class="p">{</span><span class="n">VFS1</span><span class="p">,</span><span class="w">          </span><span class="mh">0x08703000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x08722FFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//VFS region 1 (128K)</span>
-<span class="w">   </span><span class="p">{</span><span class="n">USER</span><span class="p">,</span><span class="w">          </span><span class="mh">0xFFFFFFFF</span><span class="p">,</span><span class="w"> </span><span class="mh">0xFFFFFFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//reserve for user</span>
-
-<span class="w">   </span><span class="cm">/* End */</span>
-<span class="w">   </span><span class="p">{</span><span class="mh">0xFF</span><span class="p">,</span><span class="w">          </span><span class="mh">0xFFFFFFFF</span><span class="p">,</span><span class="w"> </span><span class="mh">0xFFFFFFFF</span><span class="p">},</span>
-<span class="p">};</span>
-</pre></div>
-</div>
-</li>
+<li><p>按照 <strong>APP OTA1</strong> 中的步骤重新编译并下载固件。</p></li>
 </ol>
 <p>通过 OTA 将 APP OTA2 烧录到闪存后，如果 APP OTA2 的版本更大，引导加载程序将从 APP OTA2 的新位置加载固件。</p>
-</div><div aria-labelledby="tab-3-3-1" class="sphinx-tabs-panel" hidden="true" id="panel-3-3-1" name="3-1" role="tabpanel" tabindex="0"><p><strong>APP OTA1</strong></p>
-<p>按照以下步骤修改 APP OTA1 的位置：</p>
+</div><div aria-labelledby="tab-2-2-1" class="sphinx-tabs-panel" hidden="true" id="panel-2-2-1" name="2-1" role="tabpanel" tabindex="0"><p><strong>APP OTA1</strong></p>
 <ol class="arabic">
-<li><p><strong>更新 *IMG_APP_OTA1* 地址</strong>
-在 <code class="docutils literal notranslate"><span class="pre">{SDK}\component\soc\amebaxxx\usrcfg\ameba_flashcfg.c</span></code> 中修改地址范围：</p>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/*</span>
-<span class="cm">* @brif Flash layout is set according to Flash Layout in User Manual</span>
-<span class="cm">*  In each entry, the first item is flash region type, the second item is start address, the third item is end address */</span>
-<span class="n">FlashLayoutInfo_TypeDef</span><span class="w"> </span><span class="n">Flash_Layout</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
-<span class="w">   </span><span class="cm">/*Region_Type,   [StartAddr,   EndAddr]      */</span>
-<span class="w">   </span><span class="p">{</span><span class="n">IMG_BOOT</span><span class="p">,</span><span class="w">      </span><span class="mh">0x08000000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x08013FFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Boot Manifest(4K) + KM4 Bootloader(76K)</span>
-<span class="w">   </span><span class="c1">//Users should modify below according to their own memory</span>
-<span class="hll"><span class="w">   </span><span class="p">{</span><span class="n">IMG_APP_OTA1</span><span class="p">,</span><span class="w">  </span><span class="mh">0x08014000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x081F3FFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Certificate(4K) + Manifest(4K) + KR4 &amp; KM4 Application OTA1 + Manifest(4K) + RDP IMG OTA1</span>
-</span>
-<span class="w">   </span><span class="p">{</span><span class="n">IMG_BOOT_OTA2</span><span class="p">,</span><span class="w"> </span><span class="mh">0x08200000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x08213FFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Boot Manifest(4K) + KM4 Bootloader(76K) OTA</span>
-<span class="w">   </span><span class="p">{</span><span class="n">IMG_APP_OTA2</span><span class="p">,</span><span class="w">  </span><span class="mh">0x08214000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x083DCFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Certificate(4K) + Manifest(4K) + KR4 &amp; KM4 Application OTA2 + Manifest(4K) + RDP IMG OTA2</span>
-<span class="w">   </span><span class="p">{</span><span class="n">FTL</span><span class="p">,</span><span class="w">           </span><span class="mh">0x083DD000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x083DFFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//FTL for BT(&gt;=12K), The start offset of flash pages allocated to FTL physical map</span>
-<span class="w">   </span><span class="p">{</span><span class="n">VFS1</span><span class="p">,</span><span class="w">          </span><span class="mh">0x083E0000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x083FFFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//VFS region 1 (128K)</span>
-<span class="hll"><span class="w">   </span><span class="p">{</span><span class="n">IMG_DSP</span><span class="p">,</span><span class="w">       </span><span class="mh">0x08400000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x086FFFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Manifest(4K) + DSP IMG, only one DSP region in layout</span>
-</span><span class="w">   </span><span class="p">{</span><span class="n">VFS2</span><span class="p">,</span><span class="w">          </span><span class="mh">0xFFFFFFFF</span><span class="p">,</span><span class="w"> </span><span class="mh">0xFFFFFFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//VFS region 2</span>
-<span class="w">   </span><span class="p">{</span><span class="n">USER</span><span class="p">,</span><span class="w">          </span><span class="mh">0xFFFFFFFF</span><span class="p">,</span><span class="w"> </span><span class="mh">0xFFFFFFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//reserve for user</span>
-
-<span class="w">   </span><span class="cm">/* End */</span>
-<span class="w">   </span><span class="p">{</span><span class="mh">0xFF</span><span class="p">,</span><span class="w">          </span><span class="mh">0xFFFFFFFF</span><span class="p">,</span><span class="w"> </span><span class="mh">0xFFFFFFFF</span><span class="p">},</span>
-<span class="p">};</span>
-</pre></div>
-</div>
-</li>
-<li><p><strong>重新编译项目</strong>
-重新编译项目以生成更新后的引导加载程序和 APP OTA1 镜像。</p></li>
-<li><p><strong>通过 Image Tool 调整地址</strong>
-使用 Image Tool 修改 <code class="file docutils literal notranslate"><span class="pre">kr4_km4_app.bin</span></code> 的地址，并下载新的引导加载程序和 APP OTA1：</p>
+<li><p>在 <code class="docutils literal notranslate"><span class="pre">{SDK}\component\soc\amebaxxx\usrcfg\ameba_flashcfg.c</span></code> 中修改 <em>IMG_APP_OTA1</em> 的地址。</p></li>
+<li><p>重新编译项目以生成引导加载程序和 APP OTA1。</p></li>
+<li><p>通过 ImageTool 修改 <code class="docutils literal notranslate"><span class="pre">kr4_km4_app.bin</span></code> 的地址，并下载新的引导加载程序和 APP OTA1。</p>
 <figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/app_ota1_step3_lite.png"><img alt="../../_images/app_ota1_step3_lite.png" src="../../_images/app_ota1_step3_lite.png" style="width: 444.5px; height: 133.0px;" /></a>
 </figure>
-<p>仅当 APP OTA1 的版本号更高时，引导加载程序会从其新地址加载镜像。</p>
 </li>
 </ol>
+<p>仅当 APP OTA1 的版本号更高时，引导加载程序会从其新地址加载固件。</p>
 <p><strong>APP OTA2</strong></p>
-<p>按照以下步骤修改 APP OTA2 的位置：</p>
-<ol class="arabic">
-<li><p><strong>更新 *IMG_APP_OTA2* 地址</strong>
-在 <code class="docutils literal notranslate"><span class="pre">{SDK}\component\soc\amebaxxx\usrcfg\ameba_flashcfg.c</span></code> 中修改地址范围：</p>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/*</span>
-<span class="cm">* @brif Flash layout is set according to Flash Layout in User Manual</span>
-<span class="cm">*  In each entry, the first item is flash region type, the second item is start address, the third item is end address */</span>
-<span class="n">FlashLayoutInfo_TypeDef</span><span class="w"> </span><span class="n">Flash_Layout</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
-<span class="w">   </span><span class="cm">/*Region_Type,   [StartAddr,   EndAddr]      */</span>
-<span class="w">   </span><span class="p">{</span><span class="n">IMG_BOOT</span><span class="p">,</span><span class="w">      </span><span class="mh">0x08000000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x08013FFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Boot Manifest(4K) + KM4 Bootloader(76K)</span>
-<span class="w">   </span><span class="c1">//Users should modify below according to their own memory</span>
-<span class="w">   </span><span class="p">{</span><span class="n">IMG_APP_OTA1</span><span class="p">,</span><span class="w">  </span><span class="mh">0x08014000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x081F3FFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Certificate(4K) + Manifest(4K) + KR4 &amp; KM4 Application OTA1 + Manifest(4K) + RDP IMG OTA1</span>
-
-<span class="w">   </span><span class="p">{</span><span class="n">IMG_BOOT_OTA2</span><span class="p">,</span><span class="w"> </span><span class="mh">0x08200000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x08213FFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Boot Manifest(4K) + KM4 Bootloader(76K) OTA</span>
-<span class="hll"><span class="w">   </span><span class="p">{</span><span class="n">IMG_APP_OTA2</span><span class="p">,</span><span class="w">  </span><span class="mh">0x08214000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x083DCFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Certificate(4K) + Manifest(4K) + KR4 &amp; KM4 Application OTA2 + Manifest(4K) + RDP IMG OTA2</span>
-</span><span class="w">   </span><span class="p">{</span><span class="n">FTL</span><span class="p">,</span><span class="w">           </span><span class="mh">0x083DD000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x083DFFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//FTL for BT(&gt;=12K), The start offset of flash pages allocated to FTL physical map</span>
-<span class="w">   </span><span class="p">{</span><span class="n">VFS1</span><span class="p">,</span><span class="w">          </span><span class="mh">0x083E0000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x083FFFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//VFS region 1 (128K)</span>
-<span class="w">   </span><span class="p">{</span><span class="n">IMG_DSP</span><span class="p">,</span><span class="w">       </span><span class="mh">0x08400000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x086FFFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Manifest(4K) + DSP IMG, only one DSP region in layout</span>
-<span class="w">   </span><span class="p">{</span><span class="n">VFS2</span><span class="p">,</span><span class="w">          </span><span class="mh">0xFFFFFFFF</span><span class="p">,</span><span class="w"> </span><span class="mh">0xFFFFFFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//VFS region 2</span>
-<span class="w">   </span><span class="p">{</span><span class="n">USER</span><span class="p">,</span><span class="w">          </span><span class="mh">0xFFFFFFFF</span><span class="p">,</span><span class="w"> </span><span class="mh">0xFFFFFFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//reserve for user</span>
-
-<span class="w">   </span><span class="cm">/* End */</span>
-<span class="w">   </span><span class="p">{</span><span class="mh">0xFF</span><span class="p">,</span><span class="w">          </span><span class="mh">0xFFFFFFFF</span><span class="p">,</span><span class="w"> </span><span class="mh">0xFFFFFFFF</span><span class="p">},</span>
-<span class="p">};</span>
-</pre></div>
-</div>
-</li>
-<li><p><strong>重新编译并部署</strong>
-按照 <strong>APP OTA1</strong> 中的步骤重新编译并下载镜像。</p></li>
+<ol class="arabic simple">
+<li><p>在 <code class="docutils literal notranslate"><span class="pre">{SDK}\component\soc\amebaxxx\usrcfg\ameba_flashcfg.c</span></code> 中修改 <em>IMG_APP_OTA2</em> 的地址。</p></li>
+<li><p>按照 <strong>APP OTA1</strong> 中的步骤重新编译并下载固件。</p></li>
 </ol>
-<p>通过 OTA 烧录 APP OTA2 后，仅当其版本号更高时，引导加载程序会从新地址加载镜像。</p>
-</div><div aria-labelledby="tab-3-3-2" class="sphinx-tabs-panel" hidden="true" id="panel-3-3-2" name="3-2" role="tabpanel" tabindex="0"><p><strong>APP OTA1</strong></p>
-<p>按照以下步骤修改 APP OTA1 的位置：</p>
+<p>通过 OTA 烧录 APP OTA2 后，仅当其版本号更高时，引导加载程序会从新地址加载固件。</p>
+</div><div aria-labelledby="tab-2-2-2" class="sphinx-tabs-panel" hidden="true" id="panel-2-2-2" name="2-2" role="tabpanel" tabindex="0"><p><strong>APP OTA1</strong></p>
 <ol class="arabic">
-<li><p><strong>更新 *IMG_APP_OTA1* 地址</strong>
-在 <code class="docutils literal notranslate"><span class="pre">{SDK}\component\soc\amebaxxx\usrcfg\ameba_flashcfg.c</span></code> 中修改地址范围：</p>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/*</span>
-<span class="cm">* @brif Flash layout is set according to Flash Layout in User Manual</span>
-<span class="cm">*  In each entry, the first item is flash region type, the second item is start address, the third item is end address */</span>
-<span class="n">FlashLayoutInfo_TypeDef</span><span class="w"> </span><span class="n">Flash_Layout</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
-<span class="w">   </span><span class="cm">/*Region_Type,   [StartAddr,   EndAddr]      */</span>
-<span class="w">   </span><span class="p">{</span><span class="n">IMG_BOOT</span><span class="p">,</span><span class="w">      </span><span class="mh">0x08000000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x08013FFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Boot Manifest(4K) + KM4 Bootloader(76K)</span>
-<span class="w">   </span><span class="c1">//Users should modify below according to their own memory</span>
-<span class="hll"><span class="w">   </span><span class="p">{</span><span class="n">IMG_APP_OTA1</span><span class="p">,</span><span class="w">  </span><span class="mh">0x08014000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x081F3FFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Certificate(4K) + Manifest(4K) + KR4 &amp; KM4 Application OTA1 + Manifest(4K) + RDP IMG OTA1</span>
-</span>
-<span class="w">   </span><span class="p">{</span><span class="n">IMG_BOOT_OTA2</span><span class="p">,</span><span class="w"> </span><span class="mh">0x08200000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x08213FFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Boot Manifest(4K) + KM4 Bootloader(76K) OTA</span>
-<span class="w">   </span><span class="p">{</span><span class="n">IMG_APP_OTA2</span><span class="p">,</span><span class="w">  </span><span class="mh">0x08214000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x083DCFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Certificate(4K) + Manifest(4K) + KR4 &amp; KM4 Application OTA2 + Manifest(4K) + RDP IMG OTA2</span>
-<span class="w">   </span><span class="p">{</span><span class="n">FTL</span><span class="p">,</span><span class="w">           </span><span class="mh">0x083DD000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x083DFFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//FTL for BT(&gt;=12K), The start offset of flash pages allocated to FTL physical map</span>
-<span class="w">   </span><span class="p">{</span><span class="n">VFS1</span><span class="p">,</span><span class="w">          </span><span class="mh">0x083E0000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x083FFFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//VFS region 1 (128K)</span>
-<span class="hll"><span class="w">   </span><span class="p">{</span><span class="n">IMG_DSP</span><span class="p">,</span><span class="w">       </span><span class="mh">0x08400000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x086FFFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Manifest(4K) + DSP IMG, only one DSP region in layout</span>
-</span><span class="w">   </span><span class="p">{</span><span class="n">VFS2</span><span class="p">,</span><span class="w">          </span><span class="mh">0xFFFFFFFF</span><span class="p">,</span><span class="w"> </span><span class="mh">0xFFFFFFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//VFS region 2</span>
-<span class="w">   </span><span class="p">{</span><span class="n">USER</span><span class="p">,</span><span class="w">          </span><span class="mh">0xFFFFFFFF</span><span class="p">,</span><span class="w"> </span><span class="mh">0xFFFFFFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//reserve for user</span>
-
-<span class="w">   </span><span class="cm">/* End */</span>
-<span class="w">   </span><span class="p">{</span><span class="mh">0xFF</span><span class="p">,</span><span class="w">          </span><span class="mh">0xFFFFFFFF</span><span class="p">,</span><span class="w"> </span><span class="mh">0xFFFFFFFF</span><span class="p">},</span>
-<span class="p">};</span>
-</pre></div>
-</div>
-</li>
-<li><p><strong>重新编译项目</strong>
-重新编译项目以生成更新后的引导加载程序和 APP OTA1 镜像。</p></li>
-<li><p><strong>通过 Image Tool 调整地址</strong>
-使用 Image Tool 修改 <code class="file docutils literal notranslate"><span class="pre">kr4_km4_app.bin</span></code> 的地址，并下载新的引导加载程序和 APP OTA1：</p>
+<li><p>在 <code class="docutils literal notranslate"><span class="pre">{SDK}\component\soc\amebaxxx\usrcfg\ameba_flashcfg.c</span></code> 中修改 <em>IMG_APP_OTA1</em> 的地址。</p></li>
+<li><p>重新编译项目以生成引导加载程序和 APP OTA1。</p></li>
+<li><p>通过 ImageTool 修改 <code class="docutils literal notranslate"><span class="pre">kr4_km4_app.bin</span></code> 的地址，并下载新的引导加载程序和 APP OTA1。</p>
 <figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/app_ota1_step3_lite.png"><img alt="../../_images/app_ota1_step3_lite.png" src="../../_images/app_ota1_step3_lite.png" style="width: 444.5px; height: 133.0px;" /></a>
 </figure>
-<p>仅当 APP OTA1 的版本号更高时，引导加载程序会从其新地址加载镜像。</p>
 </li>
 </ol>
+<p>仅当 APP OTA1 的版本号更高时，引导加载程序会从其新地址加载固件。</p>
 <p><strong>APP OTA2</strong></p>
-<p>按照以下步骤修改 APP OTA2 的位置：</p>
-<ol class="arabic">
-<li><p><strong>更新 *IMG_APP_OTA2* 地址</strong>
-在 <code class="docutils literal notranslate"><span class="pre">{SDK}\component\soc\amebaxxx\usrcfg\ameba_flashcfg.c</span></code> 中修改地址范围：</p>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/*</span>
-<span class="cm">* @brif Flash layout is set according to Flash Layout in User Manual</span>
-<span class="cm">*  In each entry, the first item is flash region type, the second item is start address, the third item is end address */</span>
-<span class="n">FlashLayoutInfo_TypeDef</span><span class="w"> </span><span class="n">Flash_Layout</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
-<span class="w">   </span><span class="cm">/*Region_Type,   [StartAddr,   EndAddr]      */</span>
-<span class="w">   </span><span class="p">{</span><span class="n">IMG_BOOT</span><span class="p">,</span><span class="w">      </span><span class="mh">0x08000000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x08013FFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Boot Manifest(4K) + KM4 Bootloader(76K)</span>
-<span class="w">   </span><span class="c1">//Users should modify below according to their own memory</span>
-<span class="w">   </span><span class="p">{</span><span class="n">IMG_APP_OTA1</span><span class="p">,</span><span class="w">  </span><span class="mh">0x08014000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x081F3FFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Certificate(4K) + Manifest(4K) + KR4 &amp; KM4 Application OTA1 + Manifest(4K) + RDP IMG OTA1</span>
-
-<span class="w">   </span><span class="p">{</span><span class="n">IMG_BOOT_OTA2</span><span class="p">,</span><span class="w"> </span><span class="mh">0x08200000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x08213FFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Boot Manifest(4K) + KM4 Bootloader(76K) OTA</span>
-<span class="hll"><span class="w">   </span><span class="p">{</span><span class="n">IMG_APP_OTA2</span><span class="p">,</span><span class="w">  </span><span class="mh">0x08214000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x083DCFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Certificate(4K) + Manifest(4K) + KR4 &amp; KM4 Application OTA2 + Manifest(4K) + RDP IMG OTA2</span>
-</span><span class="w">   </span><span class="p">{</span><span class="n">FTL</span><span class="p">,</span><span class="w">           </span><span class="mh">0x083DD000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x083DFFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//FTL for BT(&gt;=12K), The start offset of flash pages allocated to FTL physical map</span>
-<span class="w">   </span><span class="p">{</span><span class="n">VFS1</span><span class="p">,</span><span class="w">          </span><span class="mh">0x083E0000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x083FFFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//VFS region 1 (128K)</span>
-<span class="w">   </span><span class="p">{</span><span class="n">IMG_DSP</span><span class="p">,</span><span class="w">       </span><span class="mh">0x08400000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x086FFFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Manifest(4K) + DSP IMG, only one DSP region in layout</span>
-<span class="w">   </span><span class="p">{</span><span class="n">VFS2</span><span class="p">,</span><span class="w">          </span><span class="mh">0xFFFFFFFF</span><span class="p">,</span><span class="w"> </span><span class="mh">0xFFFFFFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//VFS region 2</span>
-<span class="w">   </span><span class="p">{</span><span class="n">USER</span><span class="p">,</span><span class="w">          </span><span class="mh">0xFFFFFFFF</span><span class="p">,</span><span class="w"> </span><span class="mh">0xFFFFFFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//reserve for user</span>
-
-<span class="w">   </span><span class="cm">/* End */</span>
-<span class="w">   </span><span class="p">{</span><span class="mh">0xFF</span><span class="p">,</span><span class="w">          </span><span class="mh">0xFFFFFFFF</span><span class="p">,</span><span class="w"> </span><span class="mh">0xFFFFFFFF</span><span class="p">},</span>
-<span class="p">};</span>
-</pre></div>
-</div>
-</li>
-<li><p><strong>重新编译并部署</strong>
-按照 <strong>APP OTA1</strong> 中的步骤重新编译并下载镜像。</p></li>
+<ol class="arabic simple">
+<li><p>在 <code class="docutils literal notranslate"><span class="pre">{SDK}\component\soc\amebaxxx\usrcfg\ameba_flashcfg.c</span></code> 中修改 <em>IMG_APP_OTA2</em> 的地址。</p></li>
+<li><p>按照 <strong>APP OTA1</strong> 中的步骤重新编译并下载固件。</p></li>
 </ol>
-<p>通过 OTA 烧录 APP OTA2 后，仅当其版本号更高时，引导加载程序会从新地址加载镜像。</p>
+<p>通过 OTA 烧录 APP OTA2 后，仅当其版本号更高时，引导加载程序会从新地址加载固件。</p>
 <p><strong>DSP 固件的位置修改</strong></p>
 <p>参考 <strong>APP OTA1</strong> 修改 DSP 固件的位置.</p>
-</div></div>
-</section>
-<section id="ftl-vfs">
-<h3>修改FTL/VFS分区<a class="headerlink" href="#ftl-vfs" title="Link to this heading"></a></h3>
-<p>在 <code class="docutils literal notranslate"><span class="pre">{SDK}\component\soc\amebaxxx\usrcfg\ameba_flashcfg.c</span></code> 中修改地址范围：</p>
-<div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-4-4-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-4-4-0" name="4-0" role="tab" tabindex="0">RTL8721Dx</button><button aria-controls="panel-4-4-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-4-4-1" name="4-1" role="tab" tabindex="-1">RTL8720E</button><button aria-controls="panel-4-4-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-4-4-2" name="4-2" role="tab" tabindex="-1">RTL8726E</button></div><div aria-labelledby="tab-4-4-0" class="sphinx-tabs-panel" id="panel-4-4-0" name="4-0" role="tabpanel" tabindex="0"><div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/*</span>
-<span class="cm">* @brif Flash layout is set according to Flash Layout in User Manual</span>
-<span class="cm">*  In each entry, the first item is flash region type, the second item is start address, the third item is end address */</span>
-<span class="k">const</span><span class="w"> </span><span class="n">FlashLayoutInfo_TypeDef</span><span class="w"> </span><span class="n">Flash_Layout</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
-<span class="w">   </span><span class="cm">/*Region_Type,  [StartAddr, EndAddr]   */</span>
-<span class="w">   </span><span class="p">{</span><span class="n">IMG_BOOT</span><span class="p">,</span><span class="w">      </span><span class="mh">0x08000000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x08013FFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Boot Manifest(4K) + KM4 Bootloader(76K)</span>
-<span class="w">   </span><span class="c1">//Users should modify below according to their own memory</span>
-<span class="w">   </span><span class="p">{</span><span class="n">IMG_APP_OTA1</span><span class="p">,</span><span class="w">  </span><span class="mh">0x08014000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x081F3FFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Certificate(4K) + Manifest(4K) + KR4 &amp; KM4 Application OTA1 + Manifest(4K) + RDP IMG OTA1</span>
-
-<span class="w">   </span><span class="p">{</span><span class="n">IMG_BOOT_OTA2</span><span class="p">,</span><span class="w"> </span><span class="mh">0x08200000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x08213FFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Boot Manifest(4K) + KM4 Bootloader(76K) OTA</span>
-<span class="w">   </span><span class="p">{</span><span class="n">IMG_APP_OTA2</span><span class="p">,</span><span class="w">  </span><span class="mh">0x08214000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x083F3FFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Certificate(4K) + Manifest(4K) + KR4 &amp; KM4 Application OTA2 + Manifest(4K) + RDP IMG OTA2</span>
-<span class="w">   </span><span class="p">{</span><span class="n">IMG_DSP</span><span class="p">,</span><span class="w">       </span><span class="mh">0x08400000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x086FFFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Manifest(4K) + DSP IMG, only one DSP region in layout</span>
-
-<span class="hll"><span class="w">   </span><span class="p">{</span><span class="n">FTL</span><span class="p">,</span><span class="w">           </span><span class="mh">0x08700000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x08702FFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//FTL for BT(&gt;=12K), The start offset of flash pages which is allocated to FTL physical map</span>
-</span><span class="hll"><span class="w">   </span><span class="p">{</span><span class="n">VFS1</span><span class="p">,</span><span class="w">          </span><span class="mh">0x08703000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x08722FFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//VFS region 1 (128K)</span>
-</span><span class="w">   </span><span class="p">{</span><span class="n">USER</span><span class="p">,</span><span class="w">          </span><span class="mh">0xFFFFFFFF</span><span class="p">,</span><span class="w"> </span><span class="mh">0xFFFFFFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//reserve for user</span>
-
-<span class="w">   </span><span class="cm">/* End */</span>
-<span class="w">   </span><span class="p">{</span><span class="mh">0xFF</span><span class="p">,</span><span class="w">          </span><span class="mh">0xFFFFFFFF</span><span class="p">,</span><span class="w"> </span><span class="mh">0xFFFFFFFF</span><span class="p">},</span>
-<span class="p">};</span>
-</pre></div>
-</div>
-</div><div aria-labelledby="tab-4-4-1" class="sphinx-tabs-panel" hidden="true" id="panel-4-4-1" name="4-1" role="tabpanel" tabindex="0"><div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/*</span>
-<span class="cm">* @brif Flash layout is set according to Flash Layout in User Manual</span>
-<span class="cm">*  In each entry, the first item is flash region type, the second item is start address, the third item is end address */</span>
-<span class="n">FlashLayoutInfo_TypeDef</span><span class="w"> </span><span class="n">Flash_Layout</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
-<span class="w">   </span><span class="cm">/*Region_Type,    [StartAddr,     EndAddr]                */</span>
-<span class="w">   </span><span class="p">{</span><span class="n">IMG_BOOT</span><span class="p">,</span><span class="w">      </span><span class="mh">0x08000000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x08013FFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Boot Manifest(4K) + KM4 Bootloader(76K)</span>
-<span class="w">   </span><span class="c1">//Users should modify below according to their own memory</span>
-<span class="w">   </span><span class="p">{</span><span class="n">IMG_APP_OTA1</span><span class="p">,</span><span class="w">  </span><span class="mh">0x08014000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x081F3FFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Certificate(4K) + Manifest(4K) + KR4 &amp; KM4 Application OTA1 + Manifest(4K) + RDP IMG OTA1</span>
-
-<span class="w">   </span><span class="p">{</span><span class="n">IMG_BOOT_OTA2</span><span class="p">,</span><span class="w"> </span><span class="mh">0x08200000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x08213FFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Boot Manifest(4K) + KM4 Bootloader(76K) OTA</span>
-<span class="w">   </span><span class="p">{</span><span class="n">IMG_APP_OTA2</span><span class="p">,</span><span class="w">  </span><span class="mh">0x08214000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x083DCFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Certificate(4K) + Manifest(4K) + KR4 &amp; KM4 Application OTA2 + Manifest(4K) + RDP IMG OTA2</span>
-<span class="hll"><span class="w">   </span><span class="p">{</span><span class="n">FTL</span><span class="p">,</span><span class="w">           </span><span class="mh">0x083DD000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x083DFFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//FTL for BT(&gt;=12K), The start offset of flash pages which is allocated to FTL physical map.</span>
-</span><span class="hll"><span class="w">   </span><span class="p">{</span><span class="n">VFS1</span><span class="p">,</span><span class="w">          </span><span class="mh">0x083E0000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x083FFFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//VFS region 1 (128K)</span>
-</span><span class="w">   </span><span class="p">{</span><span class="n">IMG_DSP</span><span class="p">,</span><span class="w">       </span><span class="mh">0x08400000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x086FFFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Manifest(4K) + DSP IMG, only one DSP region in layout</span>
-<span class="w">   </span><span class="p">{</span><span class="n">VFS2</span><span class="p">,</span><span class="w">          </span><span class="mh">0xFFFFFFFF</span><span class="p">,</span><span class="w"> </span><span class="mh">0xFFFFFFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//VFS region 2</span>
-<span class="w">   </span><span class="p">{</span><span class="n">USER</span><span class="p">,</span><span class="w">          </span><span class="mh">0xFFFFFFFF</span><span class="p">,</span><span class="w"> </span><span class="mh">0xFFFFFFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//reserve for user</span>
-
-<span class="w">   </span><span class="cm">/* End */</span>
-<span class="w">   </span><span class="p">{</span><span class="mh">0xFF</span><span class="p">,</span><span class="w">          </span><span class="mh">0xFFFFFFFF</span><span class="p">,</span><span class="w"> </span><span class="mh">0xFFFFFFFF</span><span class="p">},</span>
-<span class="p">};</span>
-</pre></div>
-</div>
-</div><div aria-labelledby="tab-4-4-2" class="sphinx-tabs-panel" hidden="true" id="panel-4-4-2" name="4-2" role="tabpanel" tabindex="0"><div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/*</span>
-<span class="cm">* @brif Flash layout is set according to Flash Layout in User Manual</span>
-<span class="cm">*  In each entry, the first item is flash region type, the second item is start address, the third item is end address */</span>
-<span class="n">FlashLayoutInfo_TypeDef</span><span class="w"> </span><span class="n">Flash_Layout</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
-<span class="w">   </span><span class="cm">/*Region_Type,    [StartAddr,     EndAddr]                */</span>
-<span class="w">   </span><span class="p">{</span><span class="n">IMG_BOOT</span><span class="p">,</span><span class="w">      </span><span class="mh">0x08000000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x08013FFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Boot Manifest(4K) + KM4 Bootloader(76K)</span>
-<span class="w">   </span><span class="c1">//Users should modify below according to their own memory</span>
-<span class="w">   </span><span class="p">{</span><span class="n">IMG_APP_OTA1</span><span class="p">,</span><span class="w">  </span><span class="mh">0x08014000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x081F3FFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Certificate(4K) + Manifest(4K) + KR4 &amp; KM4 Application OTA1 + Manifest(4K) + RDP IMG OTA1</span>
-
-<span class="w">   </span><span class="p">{</span><span class="n">IMG_BOOT_OTA2</span><span class="p">,</span><span class="w"> </span><span class="mh">0x08200000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x08213FFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Boot Manifest(4K) + KM4 Bootloader(76K) OTA</span>
-<span class="w">   </span><span class="p">{</span><span class="n">IMG_APP_OTA2</span><span class="p">,</span><span class="w">  </span><span class="mh">0x08214000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x083DCFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Certificate(4K) + Manifest(4K) + KR4 &amp; KM4 Application OTA2 + Manifest(4K) + RDP IMG OTA2</span>
-<span class="hll"><span class="w">   </span><span class="p">{</span><span class="n">FTL</span><span class="p">,</span><span class="w">           </span><span class="mh">0x083DD000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x083DFFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//FTL for BT(&gt;=12K), The start offset of flash pages which is allocated to FTL physical map.</span>
-</span><span class="hll"><span class="w">   </span><span class="p">{</span><span class="n">VFS1</span><span class="p">,</span><span class="w">          </span><span class="mh">0x083E0000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x083FFFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//VFS region 1 (128K)</span>
-</span><span class="w">   </span><span class="p">{</span><span class="n">IMG_DSP</span><span class="p">,</span><span class="w">       </span><span class="mh">0x08400000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x086FFFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Manifest(4K) + DSP IMG, only one DSP region in layout</span>
-<span class="w">   </span><span class="p">{</span><span class="n">VFS2</span><span class="p">,</span><span class="w">          </span><span class="mh">0xFFFFFFFF</span><span class="p">,</span><span class="w"> </span><span class="mh">0xFFFFFFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//VFS region 2</span>
-<span class="w">   </span><span class="p">{</span><span class="n">USER</span><span class="p">,</span><span class="w">          </span><span class="mh">0xFFFFFFFF</span><span class="p">,</span><span class="w"> </span><span class="mh">0xFFFFFFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//reserve for user</span>
-
-<span class="w">   </span><span class="cm">/* End */</span>
-<span class="w">   </span><span class="p">{</span><span class="mh">0xFF</span><span class="p">,</span><span class="w">          </span><span class="mh">0xFFFFFFFF</span><span class="p">,</span><span class="w"> </span><span class="mh">0xFFFFFFFF</span><span class="p">},</span>
-<span class="p">};</span>
-</pre></div>
-</div>
 </div></div>
 </section>
 </section>
@@ -987,122 +685,50 @@ document.addEventListener("DOMContentLoaded", function() {
 <span id="id4"></span><h2>Flash写保护机制<a class="headerlink" href="#flash-protect-enable" title="Link to this heading"></a></h2>
 <p>Bootloader在加载APP固件前会读取Flash状态寄存器：</p>
 <ul class="simple">
-<li><p>若寄存器值与``Flash_AVL``（路径：<code class="docutils literal notranslate"><span class="pre">{SDK}\component\soc\amebaxxx\usrcfg\ameba_flashcfg.c</span></code>）中的``status_mask``按位与操作后仅设置QE位，则保持原状态</p></li>
+<li><p>若寄存器值与 <cite>Flash_AVL</cite> （路径：<code class="docutils literal notranslate"><span class="pre">{SDK}\component\soc\amebaxxx\usrcfg\ameba_flashcfg.c</span></code>）中的 <cite>status_mask</cite> 按位与操作后仅设置QE位，则保持原状态</p></li>
 <li><p>其他情况会将按位与结果写入状态寄存器</p></li>
 </ul>
-<div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-5-5-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-5-5-0" name="5-0" role="tab" tabindex="0">RTL8721Dx</button><button aria-controls="panel-5-5-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-5-5-1" name="5-1" role="tab" tabindex="-1">RTL8720E</button><button aria-controls="panel-5-5-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-5-5-2" name="5-2" role="tab" tabindex="-1">RTL8726E</button></div><div aria-labelledby="tab-5-5-0" class="sphinx-tabs-panel" id="panel-5-5-0" name="5-0" role="tabpanel" tabindex="0"><div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/**</span>
 <span class="cm">* @brif Flash_AVL maintains the flash IC supported by SDK.</span>
-<span class="cm">* If users want to adpot new flash, add item in the following AVL.</span>
-<span class="cm">* Note that, if new flash can be classfied as one of the Realtek-defined categories according to Classification SPEC,</span>
-<span class="cm">* filling in the defined class index is necessary. Otherwise, FlashClassUser can be used to indicate new class.</span>
-<span class="cm">* If (Status Register of flash &amp; status_mask in Flash_AVL) != (1 &lt;&lt; QE Bit), set (1 &lt;&lt; QE Bit) to Status Register of flash</span>
+<span class="cm">*     If users want to adpot new flash, add item in the following AVL.</span>
+<span class="cm">*     Note that, if new flash can be classfied as one of the Realtek-defined categories according to Classification SPEC,</span>
+<span class="cm">*     filling in the defined class index is necessary. Otherwise, FlashClassUser can be used to indicate new class.</span>
+<span class="cm">*     If (Status Register of flash &amp; status_mask in Flash_AVL) != (1 &lt;&lt; QE Bit), set (1 &lt;&lt; QE Bit) to Status Register of flash</span>
 <span class="cm">*/</span>
 <span class="k">const</span><span class="w"> </span><span class="n">FlashInfo_TypeDef</span><span class="w"> </span><span class="n">Flash_AVL</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
-<span class="w">   </span><span class="cm">/*flash_id,            flash_id_mask,  flash_class,            status_mask,    FlashInitHandler */</span>
+<span class="w">   </span><span class="cm">/*flash_id,                flash_id_mask,  flash_class,            status_mask,    FlashInitHandler */</span>
 
 <span class="w">   </span><span class="cm">/* case1: Realtek defined class, any modification is not allowed */</span>
-<span class="w">   </span><span class="p">{</span><span class="mh">0xEF</span><span class="p">,</span><span class="w">                 </span><span class="mh">0x000000FF</span><span class="p">,</span><span class="w">             </span><span class="n">FlashClass1</span><span class="p">,</span><span class="w">            </span><span class="mh">0x000043FC</span><span class="p">,</span><span class="w">             </span><span class="nb">NULL</span><span class="p">},</span><span class="w">  </span><span class="cm">/* Winbond: MANUFACTURER_ID_WINBOND */</span>
-<span class="w">   </span><span class="p">{</span><span class="mh">0xA1</span><span class="p">,</span><span class="w">                 </span><span class="mh">0x000000FF</span><span class="p">,</span><span class="w">             </span><span class="n">FlashClass1</span><span class="p">,</span><span class="w">            </span><span class="mh">0x0000FFFC</span><span class="p">,</span><span class="w">             </span><span class="nb">NULL</span><span class="p">},</span><span class="w">  </span><span class="cm">/* Fudan Micro: MANUFACTURER_ID_FM */</span>
-<span class="w">   </span><span class="p">{</span><span class="mh">0x0B</span><span class="p">,</span><span class="w">                 </span><span class="mh">0x000000FF</span><span class="p">,</span><span class="w">             </span><span class="n">FlashClass1</span><span class="p">,</span><span class="w">            </span><span class="mh">0x000043FC</span><span class="p">,</span><span class="w">             </span><span class="nb">NULL</span><span class="p">},</span><span class="w">  </span><span class="cm">/* XTX */</span>
-<span class="w">   </span><span class="p">{</span><span class="mh">0x0E</span><span class="p">,</span><span class="w">                 </span><span class="mh">0x000000FF</span><span class="p">,</span><span class="w">             </span><span class="n">FlashClass1</span><span class="p">,</span><span class="w">            </span><span class="mh">0x000043FC</span><span class="p">,</span><span class="w">             </span><span class="nb">NULL</span><span class="p">},</span><span class="w">  </span><span class="cm">/* XTX(FT) */</span>
-<span class="w">   </span><span class="p">{</span><span class="mh">0xC8</span><span class="p">,</span><span class="w">                 </span><span class="mh">0x000000FF</span><span class="p">,</span><span class="w">             </span><span class="n">FlashClass2</span><span class="p">,</span><span class="w">            </span><span class="mh">0x000043FC</span><span class="p">,</span><span class="w">             </span><span class="nb">NULL</span><span class="p">},</span><span class="w">  </span><span class="cm">/* GD normal: MANUFACTURER_ID_GD */</span>
-<span class="w">   </span><span class="p">{</span><span class="mh">0x28C2</span><span class="p">,</span><span class="w">               </span><span class="mh">0x0000FFFF</span><span class="p">,</span><span class="w">             </span><span class="n">FlashClass6</span><span class="p">,</span><span class="w">            </span><span class="mh">0x000200FC</span><span class="p">,</span><span class="w">             </span><span class="nb">NULL</span><span class="p">},</span><span class="w">  </span><span class="cm">/* MXIC wide-range VCC: MANUFACTURER_ID_MXIC */</span>
-<span class="w">   </span><span class="p">{</span><span class="mh">0xC2</span><span class="p">,</span><span class="w">                 </span><span class="mh">0x000000FF</span><span class="p">,</span><span class="w">             </span><span class="n">FlashClass3</span><span class="p">,</span><span class="w">            </span><span class="mh">0x000000FC</span><span class="p">,</span><span class="w">             </span><span class="nb">NULL</span><span class="p">},</span><span class="w">  </span><span class="cm">/* MXIC normal: MANUFACTURER_ID_BOHONG */</span>
-<span class="w">   </span><span class="p">{</span><span class="mh">0x68</span><span class="p">,</span><span class="w">                 </span><span class="mh">0x000000FF</span><span class="p">,</span><span class="w">             </span><span class="n">FlashClass3</span><span class="p">,</span><span class="w">            </span><span class="mh">0x000000FC</span><span class="p">,</span><span class="w">             </span><span class="nb">NULL</span><span class="p">},</span><span class="w">  </span><span class="cm">/* Hua Hong */</span>
-<span class="w">   </span><span class="p">{</span><span class="mh">0x51</span><span class="p">,</span><span class="w">                 </span><span class="mh">0x000000FF</span><span class="p">,</span><span class="w">             </span><span class="n">FlashClass3</span><span class="p">,</span><span class="w">            </span><span class="mh">0x000000FC</span><span class="p">,</span><span class="w">             </span><span class="nb">NULL</span><span class="p">},</span><span class="w">  </span><span class="cm">/* GD MD serial */</span>
-<span class="w">   </span><span class="p">{</span><span class="mh">0x1C</span><span class="p">,</span><span class="w">                 </span><span class="mh">0x000000FF</span><span class="p">,</span><span class="w">             </span><span class="n">FlashClass4</span><span class="p">,</span><span class="w">            </span><span class="mh">0x000000FC</span><span class="p">,</span><span class="w">             </span><span class="nb">NULL</span><span class="p">},</span><span class="w">  </span><span class="cm">/* ESMT: MANUFACTURER_ID_EON */</span>
-<span class="w">   </span><span class="p">{</span><span class="mh">0x20</span><span class="p">,</span><span class="w">                 </span><span class="mh">0x000000FF</span><span class="p">,</span><span class="w">             </span><span class="n">FlashClass1</span><span class="p">,</span><span class="w">            </span><span class="mh">0x000043FC</span><span class="p">,</span><span class="w">             </span><span class="nb">NULL</span><span class="p">},</span><span class="w">  </span><span class="cm">/* XMC: MANUFACTURER_ID_WINBOND */</span>
-<span class="w">   </span><span class="p">{</span><span class="mh">0x85</span><span class="p">,</span><span class="w">                 </span><span class="mh">0x000000FF</span><span class="p">,</span><span class="w">             </span><span class="n">FlashClass1</span><span class="p">,</span><span class="w">            </span><span class="mh">0x000043FC</span><span class="p">,</span><span class="w">             </span><span class="nb">NULL</span><span class="p">},</span><span class="w">  </span><span class="cm">/* Puya: 85-20-16 */</span>
-<span class="w">   </span><span class="p">{</span><span class="mh">0x5E</span><span class="p">,</span><span class="w">                 </span><span class="mh">0x000000FF</span><span class="p">,</span><span class="w">             </span><span class="n">FlashClass1</span><span class="p">,</span><span class="w">            </span><span class="mh">0x000043FC</span><span class="p">,</span><span class="w">             </span><span class="nb">NULL</span><span class="p">},</span><span class="w">  </span><span class="cm">/* Zbit: 5E-50-16 */</span>
-<span class="w">   </span><span class="c1">//{0x20,                       0x000000FF,             FlashClass5,            0x000000FC,             NULL},  /* Micron: MANUFACTURER_ID_MICRON */</span>
+<span class="w">   </span><span class="p">{</span><span class="mh">0xEF</span><span class="p">,</span><span class="w">                     </span><span class="mh">0x000000FF</span><span class="p">,</span><span class="w">             </span><span class="n">FlashClass1</span><span class="p">,</span><span class="w">            </span><span class="mh">0x000043FC</span><span class="p">,</span><span class="w">             </span><span class="nb">NULL</span><span class="p">},</span><span class="w">  </span><span class="cm">/* Winbond: MANUFACTURER_ID_WINBOND */</span>
+<span class="w">   </span><span class="p">{</span><span class="mh">0xA1</span><span class="p">,</span><span class="w">                     </span><span class="mh">0x000000FF</span><span class="p">,</span><span class="w">             </span><span class="n">FlashClass1</span><span class="p">,</span><span class="w">            </span><span class="mh">0x0000FFFC</span><span class="p">,</span><span class="w">             </span><span class="nb">NULL</span><span class="p">},</span><span class="w">  </span><span class="cm">/* Fudan Micro: MANUFACTURER_ID_FM */</span>
+<span class="w">   </span><span class="p">{</span><span class="mh">0x0B</span><span class="p">,</span><span class="w">                     </span><span class="mh">0x000000FF</span><span class="p">,</span><span class="w">             </span><span class="n">FlashClass1</span><span class="p">,</span><span class="w">            </span><span class="mh">0x000043FC</span><span class="p">,</span><span class="w">             </span><span class="nb">NULL</span><span class="p">},</span><span class="w">  </span><span class="cm">/* XTX */</span>
+<span class="w">   </span><span class="p">{</span><span class="mh">0x0E</span><span class="p">,</span><span class="w">                     </span><span class="mh">0x000000FF</span><span class="p">,</span><span class="w">             </span><span class="n">FlashClass1</span><span class="p">,</span><span class="w">            </span><span class="mh">0x000043FC</span><span class="p">,</span><span class="w">             </span><span class="nb">NULL</span><span class="p">},</span><span class="w">  </span><span class="cm">/* XTX(FT) */</span>
+<span class="w">   </span><span class="p">{</span><span class="mh">0xC8</span><span class="p">,</span><span class="w">                     </span><span class="mh">0x000000FF</span><span class="p">,</span><span class="w">             </span><span class="n">FlashClass2</span><span class="p">,</span><span class="w">            </span><span class="mh">0x000043FC</span><span class="p">,</span><span class="w">             </span><span class="nb">NULL</span><span class="p">},</span><span class="w">  </span><span class="cm">/* GD normal: MANUFACTURER_ID_GD */</span>
+<span class="w">   </span><span class="p">{</span><span class="mh">0x28C2</span><span class="p">,</span><span class="w">           </span><span class="mh">0x0000FFFF</span><span class="p">,</span><span class="w">             </span><span class="n">FlashClass6</span><span class="p">,</span><span class="w">            </span><span class="mh">0x000200FC</span><span class="p">,</span><span class="w">             </span><span class="nb">NULL</span><span class="p">},</span><span class="w">  </span><span class="cm">/* MXIC wide-range VCC: MANUFACTURER_ID_MXIC */</span>
+<span class="w">   </span><span class="p">{</span><span class="mh">0xC2</span><span class="p">,</span><span class="w">                     </span><span class="mh">0x000000FF</span><span class="p">,</span><span class="w">             </span><span class="n">FlashClass3</span><span class="p">,</span><span class="w">            </span><span class="mh">0x000000FC</span><span class="p">,</span><span class="w">             </span><span class="nb">NULL</span><span class="p">},</span><span class="w">  </span><span class="cm">/* MXIC normal: MANUFACTURER_ID_BOHONG */</span>
+<span class="w">   </span><span class="p">{</span><span class="mh">0x68</span><span class="p">,</span><span class="w">                     </span><span class="mh">0x000000FF</span><span class="p">,</span><span class="w">             </span><span class="n">FlashClass3</span><span class="p">,</span><span class="w">            </span><span class="mh">0x000000FC</span><span class="p">,</span><span class="w">             </span><span class="nb">NULL</span><span class="p">},</span><span class="w">  </span><span class="cm">/* Hua Hong */</span>
+<span class="w">   </span><span class="p">{</span><span class="mh">0x51</span><span class="p">,</span><span class="w">                     </span><span class="mh">0x000000FF</span><span class="p">,</span><span class="w">             </span><span class="n">FlashClass3</span><span class="p">,</span><span class="w">            </span><span class="mh">0x000000FC</span><span class="p">,</span><span class="w">             </span><span class="nb">NULL</span><span class="p">},</span><span class="w">  </span><span class="cm">/* GD MD serial */</span>
+<span class="w">   </span><span class="p">{</span><span class="mh">0x1C</span><span class="p">,</span><span class="w">                     </span><span class="mh">0x000000FF</span><span class="p">,</span><span class="w">             </span><span class="n">FlashClass4</span><span class="p">,</span><span class="w">            </span><span class="mh">0x000000FC</span><span class="p">,</span><span class="w">             </span><span class="nb">NULL</span><span class="p">},</span><span class="w">  </span><span class="cm">/* ESMT: MANUFACTURER_ID_EON */</span>
+<span class="w">   </span><span class="p">{</span><span class="mh">0x20</span><span class="p">,</span><span class="w">                     </span><span class="mh">0x000000FF</span><span class="p">,</span><span class="w">             </span><span class="n">FlashClass1</span><span class="p">,</span><span class="w">            </span><span class="mh">0x000043FC</span><span class="p">,</span><span class="w">             </span><span class="nb">NULL</span><span class="p">},</span><span class="w">  </span><span class="cm">/* XMC: MANUFACTURER_ID_WINBOND */</span>
+<span class="w">   </span><span class="p">{</span><span class="mh">0x85</span><span class="p">,</span><span class="w">                     </span><span class="mh">0x000000FF</span><span class="p">,</span><span class="w">             </span><span class="n">FlashClass1</span><span class="p">,</span><span class="w">            </span><span class="mh">0x000043FC</span><span class="p">,</span><span class="w">             </span><span class="nb">NULL</span><span class="p">},</span><span class="w">  </span><span class="cm">/* Puya: 85-20-16 */</span>
+<span class="w">   </span><span class="p">{</span><span class="mh">0x5E</span><span class="p">,</span><span class="w">                     </span><span class="mh">0x000000FF</span><span class="p">,</span><span class="w">             </span><span class="n">FlashClass1</span><span class="p">,</span><span class="w">            </span><span class="mh">0x000043FC</span><span class="p">,</span><span class="w">             </span><span class="nb">NULL</span><span class="p">},</span><span class="w">  </span><span class="cm">/* Zbit: 5E-50-16 */</span>
+<span class="w">   </span><span class="c1">//{0x20,                   0x000000FF,             FlashClass5,            0x000000FC,             NULL},  /* Micron: MANUFACTURER_ID_MICRON */</span>
 
 <span class="w">   </span><span class="cm">/* case2: new flash, ID is not included in case1 list, but specification is compatible with FlashClass1~FlashClass6 */</span>
-<span class="w">   </span><span class="c1">//{0xXX,                       0x0000XXXX,             FlashClassX,            0x0000XXXX,             NULL},</span>
+<span class="w">   </span><span class="c1">//{0xXX,                   0x0000XXXX,             FlashClassX,            0x0000XXXX,             NULL},</span>
 
 <span class="w">   </span><span class="cm">/* case3: new flash, ID is not included in case1 list, and specification is not compatible with FlashClass1~FlashClass6 */</span>
-<span class="w">   </span><span class="p">{</span><span class="mh">0x00</span><span class="p">,</span><span class="w">                 </span><span class="mh">0x000000FF</span><span class="p">,</span><span class="w">             </span><span class="n">FlashClassUser</span><span class="p">,</span><span class="w">         </span><span class="mh">0xFFFFFFFF</span><span class="p">,</span><span class="w">             </span><span class="o">&amp;</span><span class="n">flash_init_userdef</span><span class="p">},</span>
+<span class="w">   </span><span class="p">{</span><span class="mh">0x00</span><span class="p">,</span><span class="w">                     </span><span class="mh">0x000000FF</span><span class="p">,</span><span class="w">             </span><span class="n">FlashClassUser</span><span class="p">,</span><span class="w">         </span><span class="mh">0xFFFFFFFF</span><span class="p">,</span><span class="w">             </span><span class="o">&amp;</span><span class="n">flash_init_userdef</span><span class="p">},</span>
 
 <span class="w">   </span><span class="cm">/* End */</span>
-<span class="w">   </span><span class="p">{</span><span class="mh">0xFF</span><span class="p">,</span><span class="w">                 </span><span class="mh">0xFFFFFFFF</span><span class="p">,</span><span class="w">             </span><span class="n">FlashClassNone</span><span class="p">,</span><span class="w">         </span><span class="mh">0xFFFFFFFF</span><span class="p">,</span><span class="w">             </span><span class="nb">NULL</span><span class="p">},</span>
+<span class="w">   </span><span class="p">{</span><span class="mh">0xFF</span><span class="p">,</span><span class="w">                     </span><span class="mh">0xFFFFFFFF</span><span class="p">,</span><span class="w">             </span><span class="n">FlashClassNone</span><span class="p">,</span><span class="w">         </span><span class="mh">0xFFFFFFFF</span><span class="p">,</span><span class="w">             </span><span class="nb">NULL</span><span class="p">},</span>
 <span class="p">};</span>
 </pre></div>
 </div>
-</div><div aria-labelledby="tab-5-5-1" class="sphinx-tabs-panel" hidden="true" id="panel-5-5-1" name="5-1" role="tabpanel" tabindex="0"><div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/**</span>
-<span class="cm">* @brif Flash_AVL maintains the flash IC supported by SDK.</span>
-<span class="cm">*    If users want to adpot new flash, add item in the following AVL.</span>
-<span class="cm">*    Note that, if new flash can be classfied as one of the Realtek-defined categories according to Classification SPEC,</span>
-<span class="cm">*    filling in the defined class index is necessary. Otherwise, FlashClassUser can be used to indicate new class.</span>
-<span class="cm">*    If (Status Register of flash &amp; status_mask in Flash_AVL) != (1 &lt;&lt; QE Bit), set (1 &lt;&lt; QE Bit) to Status Register of flash</span>
-<span class="cm">*/</span>
-<span class="k">const</span><span class="w"> </span><span class="n">FlashInfo_TypeDef</span><span class="w"> </span><span class="n">Flash_AVL</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
-<span class="w">   </span><span class="cm">/*flash_id,               flash_id_mask,  flash_class,            status_mask,    FlashInitHandler */</span>
-
-<span class="w">   </span><span class="cm">/* case1: Realtek defined class, any modification is not allowed */</span>
-<span class="w">   </span><span class="p">{</span><span class="mh">0xEF</span><span class="p">,</span><span class="w">                    </span><span class="mh">0x000000FF</span><span class="p">,</span><span class="w">             </span><span class="n">FlashClass1</span><span class="p">,</span><span class="w">            </span><span class="mh">0x000043FC</span><span class="p">,</span><span class="w">             </span><span class="nb">NULL</span><span class="p">},</span><span class="w">  </span><span class="cm">/* Winbond: MANUFACTURER_ID_WINBOND */</span>
-<span class="w">   </span><span class="p">{</span><span class="mh">0xA1</span><span class="p">,</span><span class="w">                    </span><span class="mh">0x000000FF</span><span class="p">,</span><span class="w">             </span><span class="n">FlashClass1</span><span class="p">,</span><span class="w">            </span><span class="mh">0x0000FFFC</span><span class="p">,</span><span class="w">             </span><span class="nb">NULL</span><span class="p">},</span><span class="w">  </span><span class="cm">/* Fudan Micro: MANUFACTURER_ID_FM */</span>
-<span class="w">   </span><span class="p">{</span><span class="mh">0x0B</span><span class="p">,</span><span class="w">                    </span><span class="mh">0x000000FF</span><span class="p">,</span><span class="w">             </span><span class="n">FlashClass1</span><span class="p">,</span><span class="w">            </span><span class="mh">0x000043FC</span><span class="p">,</span><span class="w">             </span><span class="nb">NULL</span><span class="p">},</span><span class="w">  </span><span class="cm">/* XTX */</span>
-<span class="w">   </span><span class="p">{</span><span class="mh">0x0E</span><span class="p">,</span><span class="w">                    </span><span class="mh">0x000000FF</span><span class="p">,</span><span class="w">             </span><span class="n">FlashClass1</span><span class="p">,</span><span class="w">            </span><span class="mh">0x000043FC</span><span class="p">,</span><span class="w">             </span><span class="nb">NULL</span><span class="p">},</span><span class="w">  </span><span class="cm">/* XTX(FT) */</span>
-<span class="w">   </span><span class="p">{</span><span class="mh">0xC8</span><span class="p">,</span><span class="w">                    </span><span class="mh">0x000000FF</span><span class="p">,</span><span class="w">             </span><span class="n">FlashClass2</span><span class="p">,</span><span class="w">            </span><span class="mh">0x000043FC</span><span class="p">,</span><span class="w">             </span><span class="nb">NULL</span><span class="p">},</span><span class="w">  </span><span class="cm">/* GD normal: MANUFACTURER_ID_GD */</span>
-<span class="w">   </span><span class="p">{</span><span class="mh">0x28C2</span><span class="p">,</span><span class="w">          </span><span class="mh">0x0000FFFF</span><span class="p">,</span><span class="w">             </span><span class="n">FlashClass6</span><span class="p">,</span><span class="w">            </span><span class="mh">0x000200FC</span><span class="p">,</span><span class="w">             </span><span class="nb">NULL</span><span class="p">},</span><span class="w">  </span><span class="cm">/* MXIC wide-range VCC: MANUFACTURER_ID_MXIC */</span>
-<span class="w">   </span><span class="p">{</span><span class="mh">0xC2</span><span class="p">,</span><span class="w">                    </span><span class="mh">0x000000FF</span><span class="p">,</span><span class="w">             </span><span class="n">FlashClass3</span><span class="p">,</span><span class="w">            </span><span class="mh">0x000000FC</span><span class="p">,</span><span class="w">             </span><span class="nb">NULL</span><span class="p">},</span><span class="w">  </span><span class="cm">/* MXIC normal: MANUFACTURER_ID_BOHONG */</span>
-<span class="w">   </span><span class="p">{</span><span class="mh">0x68</span><span class="p">,</span><span class="w">                    </span><span class="mh">0x000000FF</span><span class="p">,</span><span class="w">             </span><span class="n">FlashClass3</span><span class="p">,</span><span class="w">            </span><span class="mh">0x000000FC</span><span class="p">,</span><span class="w">             </span><span class="nb">NULL</span><span class="p">},</span><span class="w">  </span><span class="cm">/* Hua Hong */</span>
-<span class="w">   </span><span class="p">{</span><span class="mh">0x51</span><span class="p">,</span><span class="w">                    </span><span class="mh">0x000000FF</span><span class="p">,</span><span class="w">             </span><span class="n">FlashClass3</span><span class="p">,</span><span class="w">            </span><span class="mh">0x000000FC</span><span class="p">,</span><span class="w">             </span><span class="nb">NULL</span><span class="p">},</span><span class="w">  </span><span class="cm">/* GD MD serial */</span>
-<span class="w">   </span><span class="p">{</span><span class="mh">0x1C</span><span class="p">,</span><span class="w">                    </span><span class="mh">0x000000FF</span><span class="p">,</span><span class="w">             </span><span class="n">FlashClass4</span><span class="p">,</span><span class="w">            </span><span class="mh">0x000000FC</span><span class="p">,</span><span class="w">             </span><span class="nb">NULL</span><span class="p">},</span><span class="w">  </span><span class="cm">/* ESMT: MANUFACTURER_ID_EON */</span>
-<span class="w">   </span><span class="p">{</span><span class="mh">0x20</span><span class="p">,</span><span class="w">                    </span><span class="mh">0x000000FF</span><span class="p">,</span><span class="w">             </span><span class="n">FlashClass1</span><span class="p">,</span><span class="w">            </span><span class="mh">0x000043FC</span><span class="p">,</span><span class="w">             </span><span class="nb">NULL</span><span class="p">},</span><span class="w">  </span><span class="cm">/* XMC: MANUFACTURER_ID_WINBOND */</span>
-<span class="w">   </span><span class="c1">//{0x20,                  0x000000FF,             FlashClass5,            0x000000FC,             NULL},  /* Micron: MANUFACTURER_ID_MICRON */</span>
-
-<span class="w">   </span><span class="cm">/* case2: new flash, ID is not included in case1 list, but specification is compatible with FlashClass1~FlashClass6 */</span>
-<span class="w">   </span><span class="c1">//{0xXX,                  0x0000XXXX,             FlashClassX,            0x0000XXXX,             NULL},</span>
-
-<span class="w">   </span><span class="cm">/* case3: new flash, ID is not included in case1 list, and specification is not compatible with FlashClass1~FlashClass6 */</span>
-<span class="w">   </span><span class="p">{</span><span class="mh">0x00</span><span class="p">,</span><span class="w">                    </span><span class="mh">0x000000FF</span><span class="p">,</span><span class="w">             </span><span class="n">FlashClassUser</span><span class="p">,</span><span class="w">         </span><span class="mh">0xFFFFFFFF</span><span class="p">,</span><span class="w">             </span><span class="o">&amp;</span><span class="n">flash_init_userdef</span><span class="p">},</span>
-
-<span class="w">   </span><span class="cm">/* End */</span>
-<span class="w">   </span><span class="p">{</span><span class="mh">0xFF</span><span class="p">,</span><span class="w">                    </span><span class="mh">0xFFFFFFFF</span><span class="p">,</span><span class="w">             </span><span class="n">FlashClassNone</span><span class="p">,</span><span class="w">         </span><span class="mh">0xFFFFFFFF</span><span class="p">,</span><span class="w">             </span><span class="nb">NULL</span><span class="p">},</span>
-<span class="p">};</span>
-</pre></div>
-</div>
-</div><div aria-labelledby="tab-5-5-2" class="sphinx-tabs-panel" hidden="true" id="panel-5-5-2" name="5-2" role="tabpanel" tabindex="0"><div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/**</span>
-<span class="cm">* @brif Flash_AVL maintains the flash IC supported by SDK.</span>
-<span class="cm">*    If users want to adpot new flash, add item in the following AVL.</span>
-<span class="cm">*    Note that, if new flash can be classfied as one of the Realtek-defined categories according to Classification SPEC,</span>
-<span class="cm">*    filling in the defined class index is necessary. Otherwise, FlashClassUser can be used to indicate new class.</span>
-<span class="cm">*    If (Status Register of flash &amp; status_mask in Flash_AVL) != (1 &lt;&lt; QE Bit), set (1 &lt;&lt; QE Bit) to Status Register of flash</span>
-<span class="cm">*/</span>
-<span class="k">const</span><span class="w"> </span><span class="n">FlashInfo_TypeDef</span><span class="w"> </span><span class="n">Flash_AVL</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
-<span class="w">   </span><span class="cm">/*flash_id,               flash_id_mask,  flash_class,            status_mask,    FlashInitHandler */</span>
-
-<span class="w">   </span><span class="cm">/* case1: Realtek defined class, any modification is not allowed */</span>
-<span class="w">   </span><span class="p">{</span><span class="mh">0xEF</span><span class="p">,</span><span class="w">                    </span><span class="mh">0x000000FF</span><span class="p">,</span><span class="w">             </span><span class="n">FlashClass1</span><span class="p">,</span><span class="w">            </span><span class="mh">0x000043FC</span><span class="p">,</span><span class="w">             </span><span class="nb">NULL</span><span class="p">},</span><span class="w">  </span><span class="cm">/* Winbond: MANUFACTURER_ID_WINBOND */</span>
-<span class="w">   </span><span class="p">{</span><span class="mh">0xA1</span><span class="p">,</span><span class="w">                    </span><span class="mh">0x000000FF</span><span class="p">,</span><span class="w">             </span><span class="n">FlashClass1</span><span class="p">,</span><span class="w">            </span><span class="mh">0x0000FFFC</span><span class="p">,</span><span class="w">             </span><span class="nb">NULL</span><span class="p">},</span><span class="w">  </span><span class="cm">/* Fudan Micro: MANUFACTURER_ID_FM */</span>
-<span class="w">   </span><span class="p">{</span><span class="mh">0x0B</span><span class="p">,</span><span class="w">                    </span><span class="mh">0x000000FF</span><span class="p">,</span><span class="w">             </span><span class="n">FlashClass1</span><span class="p">,</span><span class="w">            </span><span class="mh">0x000043FC</span><span class="p">,</span><span class="w">             </span><span class="nb">NULL</span><span class="p">},</span><span class="w">  </span><span class="cm">/* XTX */</span>
-<span class="w">   </span><span class="p">{</span><span class="mh">0x0E</span><span class="p">,</span><span class="w">                    </span><span class="mh">0x000000FF</span><span class="p">,</span><span class="w">             </span><span class="n">FlashClass1</span><span class="p">,</span><span class="w">            </span><span class="mh">0x000043FC</span><span class="p">,</span><span class="w">             </span><span class="nb">NULL</span><span class="p">},</span><span class="w">  </span><span class="cm">/* XTX(FT) */</span>
-<span class="w">   </span><span class="p">{</span><span class="mh">0xC8</span><span class="p">,</span><span class="w">                    </span><span class="mh">0x000000FF</span><span class="p">,</span><span class="w">             </span><span class="n">FlashClass2</span><span class="p">,</span><span class="w">            </span><span class="mh">0x000043FC</span><span class="p">,</span><span class="w">             </span><span class="nb">NULL</span><span class="p">},</span><span class="w">  </span><span class="cm">/* GD normal: MANUFACTURER_ID_GD */</span>
-<span class="w">   </span><span class="p">{</span><span class="mh">0x28C2</span><span class="p">,</span><span class="w">          </span><span class="mh">0x0000FFFF</span><span class="p">,</span><span class="w">             </span><span class="n">FlashClass6</span><span class="p">,</span><span class="w">            </span><span class="mh">0x000200FC</span><span class="p">,</span><span class="w">             </span><span class="nb">NULL</span><span class="p">},</span><span class="w">  </span><span class="cm">/* MXIC wide-range VCC: MANUFACTURER_ID_MXIC */</span>
-<span class="w">   </span><span class="p">{</span><span class="mh">0xC2</span><span class="p">,</span><span class="w">                    </span><span class="mh">0x000000FF</span><span class="p">,</span><span class="w">             </span><span class="n">FlashClass3</span><span class="p">,</span><span class="w">            </span><span class="mh">0x000000FC</span><span class="p">,</span><span class="w">             </span><span class="nb">NULL</span><span class="p">},</span><span class="w">  </span><span class="cm">/* MXIC normal: MANUFACTURER_ID_BOHONG */</span>
-<span class="w">   </span><span class="p">{</span><span class="mh">0x68</span><span class="p">,</span><span class="w">                    </span><span class="mh">0x000000FF</span><span class="p">,</span><span class="w">             </span><span class="n">FlashClass3</span><span class="p">,</span><span class="w">            </span><span class="mh">0x000000FC</span><span class="p">,</span><span class="w">             </span><span class="nb">NULL</span><span class="p">},</span><span class="w">  </span><span class="cm">/* Hua Hong */</span>
-<span class="w">   </span><span class="p">{</span><span class="mh">0x51</span><span class="p">,</span><span class="w">                    </span><span class="mh">0x000000FF</span><span class="p">,</span><span class="w">             </span><span class="n">FlashClass3</span><span class="p">,</span><span class="w">            </span><span class="mh">0x000000FC</span><span class="p">,</span><span class="w">             </span><span class="nb">NULL</span><span class="p">},</span><span class="w">  </span><span class="cm">/* GD MD serial */</span>
-<span class="w">   </span><span class="p">{</span><span class="mh">0x1C</span><span class="p">,</span><span class="w">                    </span><span class="mh">0x000000FF</span><span class="p">,</span><span class="w">             </span><span class="n">FlashClass4</span><span class="p">,</span><span class="w">            </span><span class="mh">0x000000FC</span><span class="p">,</span><span class="w">             </span><span class="nb">NULL</span><span class="p">},</span><span class="w">  </span><span class="cm">/* ESMT: MANUFACTURER_ID_EON */</span>
-<span class="w">   </span><span class="p">{</span><span class="mh">0x20</span><span class="p">,</span><span class="w">                    </span><span class="mh">0x000000FF</span><span class="p">,</span><span class="w">             </span><span class="n">FlashClass1</span><span class="p">,</span><span class="w">            </span><span class="mh">0x000043FC</span><span class="p">,</span><span class="w">             </span><span class="nb">NULL</span><span class="p">},</span><span class="w">  </span><span class="cm">/* XMC: MANUFACTURER_ID_WINBOND */</span>
-<span class="w">   </span><span class="c1">//{0x20,                  0x000000FF,             FlashClass5,            0x000000FC,             NULL},  /* Micron: MANUFACTURER_ID_MICRON */</span>
-
-<span class="w">   </span><span class="cm">/* case2: new flash, ID is not included in case1 list, but specification is compatible with FlashClass1~FlashClass6 */</span>
-<span class="w">   </span><span class="c1">//{0xXX,                  0x0000XXXX,             FlashClassX,            0x0000XXXX,             NULL},</span>
-
-<span class="w">   </span><span class="cm">/* case3: new flash, ID is not included in case1 list, and specification is not compatible with FlashClass1~FlashClass6 */</span>
-<span class="w">   </span><span class="p">{</span><span class="mh">0x00</span><span class="p">,</span><span class="w">                    </span><span class="mh">0x000000FF</span><span class="p">,</span><span class="w">             </span><span class="n">FlashClassUser</span><span class="p">,</span><span class="w">         </span><span class="mh">0xFFFFFFFF</span><span class="p">,</span><span class="w">             </span><span class="o">&amp;</span><span class="n">flash_init_userdef</span><span class="p">},</span>
-
-<span class="w">   </span><span class="cm">/* End */</span>
-<span class="w">   </span><span class="p">{</span><span class="mh">0xFF</span><span class="p">,</span><span class="w">                    </span><span class="mh">0xFFFFFFFF</span><span class="p">,</span><span class="w">             </span><span class="n">FlashClassNone</span><span class="p">,</span><span class="w">         </span><span class="mh">0xFFFFFFFF</span><span class="p">,</span><span class="w">             </span><span class="nb">NULL</span><span class="p">},</span>
-<span class="p">};</span>
-</pre></div>
-</div>
-</div></div>
 <div class="admonition note">
 <p class="admonition-title">备注</p>
 <ul class="simple">
-<li><p>默认设置QE位会解除所有块保护。如需保留块保护，需将``Flash_AVL``中对应型号的``status_mask``块保护位设为0（例如Winbond芯片需设为0x000043C0）</p></li>
+<li><p>默认设置QE位会解除所有块保护。如需保留块保护，需将 <cite>Flash_AVL</cite> 中对应型号的 <cite>status_mask</cite> 块保护位设为0（例如Winbond芯片需设为0x000043C0）</p></li>
 <li><p>使用LittleFS时建议将FTL分区移至Flash末端的64KB区域，并设置对应的块保护位</p></li>
 <li><p>OTA升级期间需解除Flash保护，完成后重新启用保护</p></li>
 <li><p>部分Flash芯片无法单独保护末端区块，此时建议启用前半部分块保护</p></li>
@@ -1116,7 +742,7 @@ document.addEventListener("DOMContentLoaded", function() {
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
         <a href="0_layout_index_cn.html" class="btn btn-neutral float-left" title="Flash 和 RAM 布局" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
-        <a href="1_ram_layout_toprst_cn.html" class="btn btn-neutral float-right" title="RAM 布局与配置指南" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="1_ram_layout_toprst_cn.html" class="btn btn-neutral float-right" title="RAM 布局与配置" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
