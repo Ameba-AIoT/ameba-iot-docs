@@ -104,7 +104,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#id5">FullMAC硬件配置</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#id6">接口连接</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#sdio">SDIO转接板</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id7">树莓派</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id7">树莓派直连方案</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#fullmac-wifi-device">FullMAC WiFi Device 驱动移植指南</a></li>
@@ -639,7 +639,7 @@
 <h1>FullMAC硬件配置<a class="headerlink" href="#id5" title="Link to this heading"></a></h1>
 <section id="id6">
 <h2>接口连接<a class="headerlink" href="#id6" title="Link to this heading"></a></h2>
-<p>下表所示是Ameba 和 Raspberry Pi的pin脚连接。</p>
+<p>Ameba与树莓派引脚对应关系如下：</p>
 <div class="sphinx-tabs docutils container">
 <div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-3-3-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-3-3-0" name="3-0" role="tab" tabindex="0">RTL8721Dx</button><button aria-controls="panel-3-3-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-3-3-1" name="3-1" role="tab" tabindex="-1">Raspberry Pi</button></div><div aria-labelledby="tab-3-3-0" class="sphinx-tabs-panel" id="panel-3-3-0" name="3-0" role="tabpanel" tabindex="0"><table class="docutils align-default" style="width: 100%">
 <thead>
@@ -819,56 +819,55 @@
 <div class="admonition note">
 <p class="admonition-title">备注</p>
 <ul class="simple">
-<li><p>SPI DEV_TX_REQ: Ameba使用这根pin的上升沿告诉HOST自己有数据要发送。</p></li>
-<li><dl class="simple">
-<dt>SPI DEV_READY: Ameba使用这根pin的高低电平告诉HOST自己是否已经准备好接收数据。</dt><dd><ul>
-<li><p>1: Device 准备好接收数据.</p></li>
-<li><p>0: Device 忙碌，无法接收数据.</p></li>
+<li><p><strong>SPI DEV_TX_REQ</strong>：Ameba通过此引脚上升沿通知Host有数据待发送</p></li>
+<li><p><strong>SPI DEV_READY</strong>：Ameba状态指示信号</p>
+<ul>
+<li><p>高电平(1)：设备就绪，可接收数据</p></li>
+<li><p>低电平(0)：设备繁忙，暂停传输</p></li>
 </ul>
-</dd>
-</dl>
 </li>
 </ul>
 </div>
 <div class="admonition note">
 <p class="admonition-title">备注</p>
 <ul>
-<li><p>以上Ameba的SDIO pin是SDK的默认pin脚，如果开发者使用另外的pin脚做SDIO，则需要修改如下文件中函数 <code class="docutils literal notranslate"><span class="pre">SPDIO_Board_Init的SDIO</span></code> pinmux配置。</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">component</span><span class="o">/</span><span class="n">soc</span><span class="o">/</span><span class="n">amebadplus</span><span class="o">/</span><span class="n">hal</span><span class="o">/</span><span class="n">src</span><span class="o">/</span><span class="n">spdio_api</span><span class="o">.</span><span class="n">c</span>
+<li><p>默认使用Ameba SDK预定义SDIO引脚，如需修改需调整以下文件中SPDIO_Board_Init函数中的pinmux配置：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">component</span><span class="o">/</span><span class="n">soc</span><span class="o">/</span><span class="n">amebadplus</span><span class="o">/</span><span class="n">hal</span><span class="o">/</span><span class="n">src</span><span class="o">/</span><span class="n">spdio_api</span><span class="p">.</span><span class="n">c</span>
 </pre></div>
 </div>
 </li>
-<li><p>目前Host端的SDIO interrupt实现的是标准SDIO中断模式, SDIO_DATA1必须配置为SDIO而不是GPIO。如果Host端不支持SDIO中断，开发者可以考虑使用polling模。</p></li>
+<li><p>Host端SDIO中断模式要求：</p>
+<ul class="simple">
+<li><p>SDIO_DATA1必须配置为SDIO功能（非GPIO）</p></li>
+<li><p>若Host不支持SDIO中断，可切换为polling模式</p></li>
+</ul>
+</li>
 </ul>
 </div>
 </section>
 <section id="sdio">
 <h2>SDIO转接板<a class="headerlink" href="#sdio" title="Link to this heading"></a></h2>
-<p>由于SDIO飞线可能会导致信号传输质量差，无法使用较高的频率传输。可以购买SDIO转接板连接到Ameba的SDIO pin脚，如下图所示：</p>
-<blockquote>
-<div><figure class="align-center" id="id10">
+<p>为避免飞线信号干扰，推荐使用专用转接板连接SDIO引脚：</p>
+<figure class="align-center" id="id10">
 <a class="reference internal image-reference" href="../../_images/sdio_adapter_board.jpg"><img alt="../../_images/sdio_adapter_board.jpg" src="../../_images/sdio_adapter_board.jpg" style="width: 335.5px; height: 248.5px;" /></a>
 <figcaption>
-<p><span class="caption-text">FullMAC SDIO 转接板</span><a class="headerlink" href="#id10" title="Link to this image"></a></p>
+<p><span class="caption-text">FullMAC SDIO转接板实物图</span><a class="headerlink" href="#id10" title="Link to this image"></a></p>
 </figcaption>
 </figure>
-</div></blockquote>
 <div class="admonition note">
 <p class="admonition-title">备注</p>
-<p>瑞昱的SDIO转接板也即将上线销售，当前可以先直接联系&lt;<a class="reference external" href="mailto:claire_wang&#37;&#52;&#48;realsil&#46;com&#46;cn">claire_wang<span>&#64;</span>realsil<span>&#46;</span>com<span>&#46;</span>cn</a>&gt;索取。</p>
+<p>瑞昱官方转接板即将上市，当前可邮件联系&lt;<a class="reference external" href="mailto:claire_wang&#37;&#52;&#48;realsil&#46;com&#46;cn">claire_wang<span>&#64;</span>realsil<span>&#46;</span>com<span>&#46;</span>cn</a>&gt;申请样品。</p>
 </div>
 </section>
 <section id="id7">
-<h2>树莓派<a class="headerlink" href="#id7" title="Link to this heading"></a></h2>
-<p>为了实现高速传输，建议将Amaba Demo板的 SDIO pin脚直接焊接到树莓派对应的pin脚，如下图所示：</p>
-<blockquote>
-<div><figure class="align-center" id="id11">
+<h2>树莓派直连方案<a class="headerlink" href="#id7" title="Link to this heading"></a></h2>
+<p>高速传输场景建议直接将Ameba SDIO引脚焊接至树莓派GPIO：</p>
+<figure class="align-center" id="id11">
 <a class="reference internal image-reference" href="../../_images/connection_with_raspberry_pi.jpg"><img alt="../../_images/connection_with_raspberry_pi.jpg" src="../../_images/connection_with_raspberry_pi.jpg" style="width: 254.5px; height: 227.0px;" /></a>
 <figcaption>
-<p><span class="caption-text">connection with Raspberry Pi</span><a class="headerlink" href="#id11" title="Link to this image"></a></p>
+<p><span class="caption-text">Ameba与树莓派直连示意图</span><a class="headerlink" href="#id11" title="Link to this image"></a></p>
 </figcaption>
 </figure>
-</div></blockquote>
 </section>
 </section>
 <section id="fullmac-wifi-device">
