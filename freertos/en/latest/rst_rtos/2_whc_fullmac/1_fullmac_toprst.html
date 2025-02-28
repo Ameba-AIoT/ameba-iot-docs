@@ -103,7 +103,12 @@
 <li class="toctree-l3"><a class="reference internal" href="#bluetooth">Bluetooth</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#hardware-configuration">Hardware Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hardware-configuration">Hardware Configuration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#interface-connections">Interface Connections</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sdio-adapter-board">SDIO Adapter Board</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#raspberry-pi-direct-connection">Raspberry Pi Direct Connection</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#wifi-device-driver-porting-guide">WiFi Device Driver Porting Guide</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#wi-fi-host-driver-porting-guide">Wi-Fi Host Driver Porting Guide</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#bt-device-driver-porting-guide">BT Device Driver Porting Guide</a></li>
@@ -634,8 +639,9 @@
 </section>
 <section id="hardware-configuration">
 <h1>Hardware Configuration<a class="headerlink" href="#hardware-configuration" title="Link to this heading"></a></h1>
-<p><strong>Interface Connection</strong></p>
-<p>Please connect Ameba SoC to host with jumper cables as mentioned below.</p>
+<section id="interface-connections">
+<h2>Interface Connections<a class="headerlink" href="#interface-connections" title="Link to this heading"></a></h2>
+<p>Pin connections between Ameba and Raspberry Pi are as follows:</p>
 <div class="sphinx-tabs docutils container">
 <div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-3-3-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-3-3-0" name="3-0" role="tab" tabindex="0">RTL8721Dx</button><button aria-controls="panel-3-3-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-3-3-1" name="3-1" role="tab" tabindex="-1">Raspberry Pi</button></div><div aria-labelledby="tab-3-3-0" class="sphinx-tabs-panel" id="panel-3-3-0" name="3-0" role="tabpanel" tabindex="0"><table class="docutils align-default" style="width: 100%">
 <thead>
@@ -815,49 +821,56 @@
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <ul class="simple">
-<li><p>SPI DEV_TX_REQ: Ameba SoC use rising edge of this pin to indicate if device has data to send to host</p></li>
-<li><dl class="simple">
-<dt>SPI DEV_READY: Ameba SoC use level of this pin to indicate if it is ready to receive host data</dt><dd><ul>
-<li><p>1: Device is ready.</p></li>
-<li><p>0: Device is busy.</p></li>
+<li><p><strong>SPI DEV_TX_REQ</strong>: Ameba notifies Host of pending data transmission via rising edge on this pin</p></li>
+<li><p><strong>SPI DEV_READY</strong>: Ameba status indicator</p>
+<ul>
+<li><p>High level (1): Device ready to receive data</p></li>
+<li><p>Low level (0): Device busy (pause transmission)</p></li>
 </ul>
-</dd>
-</dl>
 </li>
 </ul>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The above pins are the default pin configuration in the firmware code. If you need to change the pin configuration on the SDIO device side, modifications must be made in the <code class="docutils literal notranslate"><span class="pre">SPDIO_Board_Init</span></code> function to set the actual connected pins’ pinmux to SDIO. This function is located in the following file:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">component</span><span class="o">/</span><span class="n">soc</span><span class="o">/</span><span class="n">amebadplus</span><span class="o">/</span><span class="n">hal</span><span class="o">/</span><span class="n">src</span><span class="o">/</span><span class="n">spdio_api</span><span class="o">.</span><span class="n">c</span>
+<ul>
+<li><p>Default SDIO pins defined in Ameba SDK are used. Modify pinmux configuration in SPDIO_Board_Init function at:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">component</span><span class="o">/</span><span class="n">soc</span><span class="o">/</span><span class="n">amebadplus</span><span class="o">/</span><span class="n">hal</span><span class="o">/</span><span class="n">src</span><span class="o">/</span><span class="n">spdio_api</span><span class="p">.</span><span class="n">c</span>
 </pre></div>
 </div>
-<p>Currently, the host driver for OOB mode has not yet been developed; hence, the host side only supports SDIO interrupt mode. Consequently, the pinmux configuration for SDIO_DATA1 must be set to SDIO mode rather than GPIO mode.</p>
+</li>
+<li><p>Host-side SDIO interrupt requirements:</p>
+<ul class="simple">
+<li><p>SDIO_DATA1 must be configured for SDIO function (not GPIO)</p></li>
+<li><p>Switch to polling mode if Host doesn’t support SDIO interrupts</p></li>
+</ul>
+</li>
+</ul>
 </div>
-<p><strong>SDIO adapter</strong></p>
-<p>Ameba SoC can also convert to a standard SD card through the designed PCB board, as shown below. Some changes are nedded on Ameba demo board, please contact us about how to modify the demo board.</p>
-<blockquote>
-<div><figure class="align-center" id="id2">
+</section>
+<section id="sdio-adapter-board">
+<h2>SDIO Adapter Board<a class="headerlink" href="#sdio-adapter-board" title="Link to this heading"></a></h2>
+<p>To avoid signal interference from flying wires, use dedicated adapter board for SDIO connections:</p>
+<figure class="align-center" id="id2">
 <a class="reference internal image-reference" href="../../_images/sdio_adapter_board.jpg"><img alt="../../_images/sdio_adapter_board.jpg" src="../../_images/sdio_adapter_board.jpg" style="width: 335.5px; height: 248.5px;" /></a>
 <figcaption>
-<p><span class="caption-text">SDIO adapter board</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
+<p><span class="caption-text">FullMAC SDIO Adapter Board (Physical Diagram)</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
 </figcaption>
 </figure>
-</div></blockquote>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>SDIO adapter will be sold online latter，currently please contact &lt;<a class="reference external" href="mailto:claire_wang&#37;&#52;&#48;realsil&#46;com&#46;cn">claire_wang<span>&#64;</span>realsil<span>&#46;</span>com<span>&#46;</span>cn</a>&gt; to get SDIO adapter.</p>
+<p>Realtek official adapter boards will be available soon. Currently request samples via &lt;<a class="reference external" href="mailto:claire_wang&#37;&#52;&#48;realsil&#46;com&#46;cn">claire_wang<span>&#64;</span>realsil<span>&#46;</span>com<span>&#46;</span>cn</a>&gt;.</p>
 </div>
-<p><strong>Raspberry Pi</strong></p>
-<p>The pin layout of Ameba demo board refers the pin layout of Raspberry Pi and can be directly plugged into the Raspberry Pi demo board.</p>
-<blockquote>
-<div><figure class="align-center" id="id3">
+</section>
+<section id="raspberry-pi-direct-connection">
+<h2>Raspberry Pi Direct Connection<a class="headerlink" href="#raspberry-pi-direct-connection" title="Link to this heading"></a></h2>
+<p>For high-speed scenarios, directly solder Ameba SDIO pins to Raspberry Pi GPIO:</p>
+<figure class="align-center" id="id3">
 <a class="reference internal image-reference" href="../../_images/connection_with_raspberry_pi.jpg"><img alt="../../_images/connection_with_raspberry_pi.jpg" src="../../_images/connection_with_raspberry_pi.jpg" style="width: 254.5px; height: 227.0px;" /></a>
 <figcaption>
-<p><span class="caption-text">connection with Raspberry Pi</span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
+<p><span class="caption-text">Ameba-Raspberry Pi Direct Connection Diagram</span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
 </figcaption>
 </figure>
-</div></blockquote>
+</section>
 </section>
 <section id="wifi-device-driver-porting-guide">
 <h1>WiFi Device Driver Porting Guide<a class="headerlink" href="#wifi-device-driver-porting-guide" title="Link to this heading"></a></h1>

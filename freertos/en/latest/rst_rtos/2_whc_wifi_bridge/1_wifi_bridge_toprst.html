@@ -97,14 +97,25 @@
 <li class="toctree-l2"><a class="reference internal" href="#wifi-bridge-interfaces">WiFi Bridge Interfaces</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#wifi-bridge-features">WiFi Bridge Features</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#wifi-bridge-file-architecture">WiFi Bridge File Architecture</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#wifi-bridge-hardware-configuration">WiFi Bridge Hardware Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#wifi-bridge-hardware-configuration">WiFi Bridge Hardware Configuration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#interface-connections">Interface Connections</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sdio-adapter-board">SDIO Adapter Board</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#raspberry-pi-direct-connection">Raspberry Pi Direct Connection</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#wifi-bridge-device-porting-guide">WiFi Bridge Device Porting Guide</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#wifi-bridge-host-porting-guide">WiFi Bridge Host Porting Guide</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#wifi-bridge-linux-test">WiFi Bridge Linux Test</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#app-architecture">APP Architecture</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#app-commands">APP Commands</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#app-build-and-run">APP Build and Run</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#app-test-flow">APP Test Flow</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#app-architecture">APP Architecture</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#communication-stack">Communication Stack</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#supported-commands">Supported Commands</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#build-execution">Build &amp; Execution</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#testing-procedure">Testing Procedure</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#validation-results">Validation Results</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#wifi-bridge-throughput">WiFi Bridge Throughput</a></li>
@@ -204,21 +215,21 @@
 <section id="wifi-bridge-interfaces">
 <h1>WiFi Bridge Interfaces<a class="headerlink" href="#wifi-bridge-interfaces" title="Link to this heading"></a></h1>
 <div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-0-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-0-0-0" name="0-0" role="tab" tabindex="0">Linux HOST</button><button aria-controls="panel-0-0-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-1" name="0-1" role="tab" tabindex="-1">FreeRTOS HOST</button><button aria-controls="panel-0-0-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-2" name="0-2" role="tab" tabindex="-1">Zephyr HOST</button></div><div aria-labelledby="tab-0-0-0" class="sphinx-tabs-panel" id="panel-0-0-0" name="0-0" role="tabpanel" tabindex="0"><table class="docutils align-default" style="width: 100%">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-0-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-0-0-0" name="0-0" role="tab" tabindex="0">RTL8721Dx</button></div><div aria-labelledby="tab-0-0-0" class="sphinx-tabs-panel" id="panel-0-0-0" name="0-0" role="tabpanel" tabindex="0"><div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-1-1-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-1-1-0" name="1-0" role="tab" tabindex="0">Linux HOST</button><button aria-controls="panel-1-1-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-1-1-1" name="1-1" role="tab" tabindex="-1">FreeRTOS HOST</button><button aria-controls="panel-1-1-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-1-1-2" name="1-2" role="tab" tabindex="-1">Zephyr HOST</button></div><div aria-labelledby="tab-1-1-0" class="sphinx-tabs-panel" id="panel-1-1-0" name="1-0" role="tabpanel" tabindex="0"><table class="docutils align-center">
+<colgroup>
+<col style="width: 40.0%" />
+<col style="width: 30.0%" />
+<col style="width: 30.0%" />
+</colgroup>
 <thead>
-<tr class="row-odd"><th class="head"><p>Ameba SoC</p></th>
-<th class="head"><p>Interface</p></th>
+<tr class="row-odd"><th class="head"><p>Interface</p></th>
 <th class="head"><p>Wi-Fi</p></th>
 <th class="head"><p>BT</p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td rowspan="7"><div class="line-block">
-<div class="line">RTL8721Dx</div>
-<div class="line">RTL8711Dx</div>
-</div>
-</td>
-<td><p>SDIO</p></td>
+<tr class="row-even"><td><p>SDIO</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">Y</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">Y</span></code></p></td>
 </tr>
@@ -227,12 +238,12 @@
 <td><p><code class="docutils literal notranslate"><span class="pre">Y</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p>USB</p></td>
-<td><p>X</p></td>
-<td><p>X</p></td>
+<td><p>✗</p></td>
+<td><p>✗</p></td>
 </tr>
 <tr class="row-odd"><td><p>UART</p></td>
-<td><p>X</p></td>
-<td><p>X</p></td>
+<td><p>✗</p></td>
+<td><p>✗</p></td>
 </tr>
 <tr class="row-even"><td><p>SDIO (Wi-Fi) + UART (BT)</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">Y</span></code></p></td>
@@ -243,26 +254,25 @@
 <td><p><code class="docutils literal notranslate"><span class="pre">Y</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p>USB (Wi-Fi) + UART (BT)</p></td>
-<td><p>X</p></td>
-<td><p>X</p></td>
+<td><p>✗</p></td>
+<td><p>✗</p></td>
 </tr>
 </tbody>
 </table>
-</div><div aria-labelledby="tab-0-0-1" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-1" name="0-1" role="tabpanel" tabindex="0"><table class="docutils align-default" style="width: 100%">
+</div><div aria-labelledby="tab-1-1-1" class="sphinx-tabs-panel" hidden="true" id="panel-1-1-1" name="1-1" role="tabpanel" tabindex="0"><table class="docutils align-center">
+<colgroup>
+<col style="width: 40.0%" />
+<col style="width: 30.0%" />
+<col style="width: 30.0%" />
+</colgroup>
 <thead>
-<tr class="row-odd"><th class="head"><p>Ameba SoC</p></th>
-<th class="head"><p>Interface</p></th>
+<tr class="row-odd"><th class="head"><p>Interface</p></th>
 <th class="head"><p>Wi-Fi</p></th>
 <th class="head"><p>BT</p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td rowspan="7"><div class="line-block">
-<div class="line">RTL8721Dx</div>
-<div class="line">RTL8711Dx</div>
-</div>
-</td>
-<td><p>SDIO</p></td>
+<tr class="row-even"><td><p>SDIO</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">Y</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">Y</span></code></p></td>
 </tr>
@@ -271,12 +281,12 @@
 <td><p><code class="docutils literal notranslate"><span class="pre">Y</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p>USB</p></td>
-<td><p>X</p></td>
-<td><p>X</p></td>
+<td><p>✗</p></td>
+<td><p>✗</p></td>
 </tr>
 <tr class="row-odd"><td><p>UART</p></td>
-<td><p>X</p></td>
-<td><p>X</p></td>
+<td><p>✗</p></td>
+<td><p>✗</p></td>
 </tr>
 <tr class="row-even"><td><p>SDIO (Wi-Fi) + UART (BT)</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">Y</span></code></p></td>
@@ -287,55 +297,55 @@
 <td><p><code class="docutils literal notranslate"><span class="pre">Y</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p>USB (Wi-Fi) + UART (BT)</p></td>
-<td><p>X</p></td>
-<td><p>X</p></td>
+<td><p>✗</p></td>
+<td><p>✗</p></td>
 </tr>
 </tbody>
 </table>
-</div><div aria-labelledby="tab-0-0-2" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-2" name="0-2" role="tabpanel" tabindex="0"><table class="docutils align-default" style="width: 100%">
+</div><div aria-labelledby="tab-1-1-2" class="sphinx-tabs-panel" hidden="true" id="panel-1-1-2" name="1-2" role="tabpanel" tabindex="0"><table class="docutils align-center">
+<colgroup>
+<col style="width: 40.0%" />
+<col style="width: 30.0%" />
+<col style="width: 30.0%" />
+</colgroup>
 <thead>
-<tr class="row-odd"><th class="head"><p>Ameba SoC</p></th>
-<th class="head"><p>Interface</p></th>
+<tr class="row-odd"><th class="head"><p>Interface</p></th>
 <th class="head"><p>Wi-Fi</p></th>
 <th class="head"><p>BT</p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td rowspan="7"><div class="line-block">
-<div class="line">RTL8721Dx</div>
-<div class="line">RTL8711Dx</div>
-</div>
-</td>
-<td><p>SDIO</p></td>
+<tr class="row-even"><td><p>SDIO</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">Y</span></code></p></td>
-<td><p>X</p></td>
+<td><p>✗</p></td>
 </tr>
 <tr class="row-odd"><td><p>SPI</p></td>
-<td><p>X</p></td>
-<td><p>X</p></td>
+<td><p>✗</p></td>
+<td><p>✗</p></td>
 </tr>
 <tr class="row-even"><td><p>USB</p></td>
-<td><p>X</p></td>
-<td><p>X</p></td>
+<td><p>✗</p></td>
+<td><p>✗</p></td>
 </tr>
 <tr class="row-odd"><td><p>UART</p></td>
-<td><p>X</p></td>
-<td><p>X</p></td>
+<td><p>✗</p></td>
+<td><p>✗</p></td>
 </tr>
 <tr class="row-even"><td><p>SDIO (Wi-Fi) + UART (BT)</p></td>
-<td><p>X</p></td>
-<td><p>X</p></td>
+<td><p>✗</p></td>
+<td><p>✗</p></td>
 </tr>
 <tr class="row-odd"><td><p>SPI (Wi-Fi) + UART (BT)</p></td>
-<td><p>X</p></td>
-<td><p>X</p></td>
+<td><p>✗</p></td>
+<td><p>✗</p></td>
 </tr>
 <tr class="row-even"><td><p>USB (Wi-Fi) + UART (BT)</p></td>
-<td><p>X</p></td>
-<td><p>X</p></td>
+<td><p>✗</p></td>
+<td><p>✗</p></td>
 </tr>
 </tbody>
 </table>
+</div></div>
 </div></div>
 </section>
 <section id="wifi-bridge-features">
@@ -404,7 +414,7 @@
 <section id="wifi-bridge-file-architecture">
 <h1>WiFi Bridge File Architecture<a class="headerlink" href="#wifi-bridge-file-architecture" title="Link to this heading"></a></h1>
 <div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-1-1-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-1-1-0" name="1-0" role="tab" tabindex="0">RTOS HOST/DEV</button><button aria-controls="panel-1-1-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-1-1-1" name="1-1" role="tab" tabindex="-1">Linux HOST</button></div><div aria-labelledby="tab-1-1-0" class="sphinx-tabs-panel" id="panel-1-1-0" name="1-0" role="tabpanel" tabindex="0"><div class="highlight-default notranslate"><div class="highlight"><pre><span></span>├─ whc
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-2-2-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-2-2-0" name="2-0" role="tab" tabindex="0">RTOS HOST/DEV</button><button aria-controls="panel-2-2-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-2-2-1" name="2-1" role="tab" tabindex="-1">Linux HOST</button></div><div aria-labelledby="tab-2-2-0" class="sphinx-tabs-panel" id="panel-2-2-0" name="2-0" role="tabpanel" tabindex="0"><div class="highlight-default notranslate"><div class="highlight"><pre><span></span>├─ whc
 │  ├─ README.md
 │  ├─ whc_def.h
 │  ├─ whc_dev
@@ -479,7 +489,7 @@
 │  └─ whc_ipc_msg_queue.h
 </pre></div>
 </div>
-</div><div aria-labelledby="tab-1-1-1" class="sphinx-tabs-panel" hidden="true" id="panel-1-1-1" name="1-1" role="tabpanel" tabindex="0"><div class="highlight-default notranslate"><div class="highlight"><pre><span></span>├─ cfg80211_fullmac
+</div><div aria-labelledby="tab-2-2-1" class="sphinx-tabs-panel" hidden="true" id="panel-2-2-1" name="2-1" role="tabpanel" tabindex="0"><div class="highlight-default notranslate"><div class="highlight"><pre><span></span>├─ cfg80211_fullmac
 │  ├─ Kconfig
 │  ├─ Makefile
 │  ├─ fullmac_setup.sh
@@ -543,10 +553,11 @@
 </section>
 <section id="wifi-bridge-hardware-configuration">
 <h1>WiFi Bridge Hardware Configuration<a class="headerlink" href="#wifi-bridge-hardware-configuration" title="Link to this heading"></a></h1>
-<p><strong>Interface Connection</strong></p>
-<p>Please connect Ameba SoC to host with jumper cables as mentioned below.</p>
+<section id="interface-connections">
+<h2>Interface Connections<a class="headerlink" href="#interface-connections" title="Link to this heading"></a></h2>
+<p>Pin connections between Ameba and Raspberry Pi are as follows:</p>
 <div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-2-2-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-2-2-0" name="2-0" role="tab" tabindex="0">RTL8721Dx</button><button aria-controls="panel-2-2-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-2-2-1" name="2-1" role="tab" tabindex="-1">Raspberry Pi</button></div><div aria-labelledby="tab-2-2-0" class="sphinx-tabs-panel" id="panel-2-2-0" name="2-0" role="tabpanel" tabindex="0"><table class="docutils align-default" style="width: 100%">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-3-3-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-3-3-0" name="3-0" role="tab" tabindex="0">RTL8721Dx</button><button aria-controls="panel-3-3-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-3-3-1" name="3-1" role="tab" tabindex="-1">Raspberry Pi</button></div><div aria-labelledby="tab-3-3-0" class="sphinx-tabs-panel" id="panel-3-3-0" name="3-0" role="tabpanel" tabindex="0"><table class="docutils align-default" style="width: 100%">
 <thead>
 <tr class="row-odd"><th class="head"><p>Interface</p></th>
 <th class="head"><p>SoC</p></th>
@@ -633,7 +644,7 @@
 </tr>
 </tbody>
 </table>
-</div><div aria-labelledby="tab-2-2-1" class="sphinx-tabs-panel" hidden="true" id="panel-2-2-1" name="2-1" role="tabpanel" tabindex="0"><table class="docutils align-default" style="width: 100%">
+</div><div aria-labelledby="tab-3-3-1" class="sphinx-tabs-panel" hidden="true" id="panel-3-3-1" name="3-1" role="tabpanel" tabindex="0"><table class="docutils align-default" style="width: 100%">
 <thead>
 <tr class="row-odd"><th class="head"><p>Interface</p></th>
 <th class="head"><p>Raspberry Pi</p></th>
@@ -724,196 +735,285 @@
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <ul class="simple">
-<li><p>SPI DEV_TX_REQ: Ameba SoC use rising edge of this pin to indicate if device has data to send to host</p></li>
-<li><dl class="simple">
-<dt>SPI DEV_READY: Ameba SoC use level of this pin to indicate if it is ready to receive host data</dt><dd><ul>
-<li><p>1: Device is ready.</p></li>
-<li><p>0: Device is busy.</p></li>
+<li><p><strong>SPI DEV_TX_REQ</strong>: Ameba notifies Host of pending data transmission via rising edge on this pin</p></li>
+<li><p><strong>SPI DEV_READY</strong>: Ameba status indicator</p>
+<ul>
+<li><p>High level (1): Device ready to receive data</p></li>
+<li><p>Low level (0): Device busy (pause transmission)</p></li>
 </ul>
-</dd>
-</dl>
 </li>
 </ul>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The above pins are the default pin configuration in the firmware code. If you need to change the pin configuration on the SDIO device side, modifications must be made in the <code class="docutils literal notranslate"><span class="pre">SPDIO_Board_Init</span></code> function to set the actual connected pins’ pinmux to SDIO. This function is located in the following file:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">component</span><span class="o">/</span><span class="n">soc</span><span class="o">/</span><span class="n">amebadplus</span><span class="o">/</span><span class="n">hal</span><span class="o">/</span><span class="n">src</span><span class="o">/</span><span class="n">spdio_api</span><span class="o">.</span><span class="n">c</span>
+<ul>
+<li><p>Default SDIO pins defined in Ameba SDK are used. Modify pinmux configuration in SPDIO_Board_Init function at:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">component</span><span class="o">/</span><span class="n">soc</span><span class="o">/</span><span class="n">amebadplus</span><span class="o">/</span><span class="n">hal</span><span class="o">/</span><span class="n">src</span><span class="o">/</span><span class="n">spdio_api</span><span class="p">.</span><span class="n">c</span>
 </pre></div>
 </div>
-<p>Currently, the host driver for OOB mode has not yet been developed; hence, the host side only supports SDIO interrupt mode. Consequently, the pinmux configuration for SDIO_DATA1 must be set to SDIO mode rather than GPIO mode.</p>
+</li>
+<li><p>Host-side SDIO interrupt requirements:</p>
+<ul class="simple">
+<li><p>SDIO_DATA1 must be configured for SDIO function (not GPIO)</p></li>
+<li><p>Switch to polling mode if Host doesn’t support SDIO interrupts</p></li>
+</ul>
+</li>
+</ul>
 </div>
-<p><strong>SDIO adapter</strong></p>
-<p>Ameba SoC can also convert to a standard SD card through the designed PCB board, as shown below. Some changes are nedded on Ameba demo board, please contact us about how to modify the demo board.</p>
-<blockquote>
-<div><figure class="align-center" id="id2">
+</section>
+<section id="sdio-adapter-board">
+<h2>SDIO Adapter Board<a class="headerlink" href="#sdio-adapter-board" title="Link to this heading"></a></h2>
+<p>To avoid signal interference from flying wires, use dedicated adapter board for SDIO connections:</p>
+<figure class="align-center" id="id2">
 <a class="reference internal image-reference" href="../../_images/sdio_adapter_board.jpg"><img alt="../../_images/sdio_adapter_board.jpg" src="../../_images/sdio_adapter_board.jpg" style="width: 335.5px; height: 248.5px;" /></a>
 <figcaption>
-<p><span class="caption-text">SDIO adapter board</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
+<p><span class="caption-text">FullMAC SDIO Adapter Board (Physical Diagram)</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
 </figcaption>
 </figure>
-</div></blockquote>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>SDIO adapter will be sold online latter，currently please contact &lt;<a class="reference external" href="mailto:claire_wang&#37;&#52;&#48;realsil&#46;com&#46;cn">claire_wang<span>&#64;</span>realsil<span>&#46;</span>com<span>&#46;</span>cn</a>&gt; to get SDIO adapter.</p>
+<p>Realtek official adapter boards will be available soon. Currently request samples via &lt;<a class="reference external" href="mailto:claire_wang&#37;&#52;&#48;realsil&#46;com&#46;cn">claire_wang<span>&#64;</span>realsil<span>&#46;</span>com<span>&#46;</span>cn</a>&gt;.</p>
 </div>
-<p><strong>Raspberry Pi</strong></p>
-<p>The pin layout of Ameba demo board refers the pin layout of Raspberry Pi and can be directly plugged into the Raspberry Pi demo board.</p>
-<blockquote>
-<div><figure class="align-center" id="id3">
+</section>
+<section id="raspberry-pi-direct-connection">
+<h2>Raspberry Pi Direct Connection<a class="headerlink" href="#raspberry-pi-direct-connection" title="Link to this heading"></a></h2>
+<p>For high-speed scenarios, directly solder Ameba SDIO pins to Raspberry Pi GPIO:</p>
+<figure class="align-center" id="id3">
 <a class="reference internal image-reference" href="../../_images/connection_with_raspberry_pi.jpg"><img alt="../../_images/connection_with_raspberry_pi.jpg" src="../../_images/connection_with_raspberry_pi.jpg" style="width: 254.5px; height: 227.0px;" /></a>
 <figcaption>
-<p><span class="caption-text">connection with Raspberry Pi</span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
+<p><span class="caption-text">Ameba-Raspberry Pi Direct Connection Diagram</span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
 </figcaption>
 </figure>
-</div></blockquote>
+</section>
 </section>
 <section id="wifi-bridge-device-porting-guide">
 <h1>WiFi Bridge Device Porting Guide<a class="headerlink" href="#wifi-bridge-device-porting-guide" title="Link to this heading"></a></h1>
-<p>In order to build SDIO bridge image, choose <span class="guilabel">SDIO_BRIDGE</span> in menuconfig according to the following steps:</p>
 <ol class="arabic">
-<li><p>Enter menuconfig and select <span class="guilabel">CONFIG INIC INTF</span></p>
+<li><p><strong>Project Configuration</strong></p>
+<p>Execute in project directory (example path: <code class="docutils literal notranslate"><span class="pre">{SDK}/amebadplus_gcc_project</span></code>):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./menuconfig.py
+</pre></div>
+</div>
+<ol class="loweralpha">
+<li><p>Navigate through menu path for bridge mode selection:</p>
+<p><span class="menuselection">CONFIG_WHC_ITNF ‣ WHC Mode ‣ FULLMAC_BRIDGE</span></p>
 <figure class="align-center">
-<a class="reference internal image-reference" href="../../_images/bridge_config_inic_intf.png"><img alt="../../_images/bridge_config_inic_intf.png" src="../../_images/bridge_config_inic_intf.png" style="width: 569.2px; height: 316.0px;" /></a>
+<a class="reference internal image-reference" href="../../_images/bridge_sdio_spi_selection.png"><img alt="Bridge Mode Selection Interface" src="../../_images/bridge_sdio_spi_selection.png" style="width: 613.6px; height: 238.4px;" /></a>
 </figure>
 </li>
-<li><p>In INIC-INTF menu, select <span class="guilabel">INIC MODE</span></p>
-<figure class="align-center">
-<a class="reference internal image-reference" href="../../_images/bridge_inic_mode.png"><img alt="../../_images/bridge_inic_mode.png" src="../../_images/bridge_inic_mode.png" style="width: 576.8000000000001px; height: 316.8px;" /></a>
-</figure>
+</ol>
 </li>
-<li><p>In INIC Mode menu, select <span class="guilabel">SDIO_BRIDGE</span></p>
-<figure class="align-center">
-<a class="reference internal image-reference" href="../../_images/bridge_sdio_bridge.png"><img alt="../../_images/bridge_sdio_bridge.png" src="../../_images/bridge_sdio_bridge.png" style="width: 717.5px; height: 397.0px;" /></a>
-</figure>
+<li><p><strong>Firmware Compilation</strong></p>
+<p>Build the image with compile command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./build.py
+</pre></div>
+</div>
+</li>
+<li><p><strong>Image Flashing</strong></p>
+<p>Flash the generated image to development board using programming tool.</p>
 </li>
 </ol>
 </section>
 <section id="wifi-bridge-host-porting-guide">
 <h1>WiFi Bridge Host Porting Guide<a class="headerlink" href="#wifi-bridge-host-porting-guide" title="Link to this heading"></a></h1>
 <div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-3-3-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-3-3-0" name="3-0" role="tab" tabindex="0">RTOS</button><button aria-controls="panel-3-3-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-3-3-1" name="3-1" role="tab" tabindex="-1">Linux</button><button aria-controls="panel-3-3-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-3-3-2" name="3-2" role="tab" tabindex="-1">Raspberry Pi</button></div><div aria-labelledby="tab-3-3-0" class="sphinx-tabs-panel" id="panel-3-3-0" name="3-0" role="tabpanel" tabindex="0"></div><div aria-labelledby="tab-3-3-1" class="sphinx-tabs-panel" hidden="true" id="panel-3-3-1" name="3-1" role="tabpanel" tabindex="0"><p>Host driver has been tested and verified to work on Linux kernel version v5.4. If you encounter any compilation errors on other kernel versions, please contact us.</p>
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-4-4-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-4-4-0" name="4-0" role="tab" tabindex="0">RTOS</button><button aria-controls="panel-4-4-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-4-4-1" name="4-1" role="tab" tabindex="-1">Linux Environment</button><button aria-controls="panel-4-4-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-4-4-2" name="4-2" role="tab" tabindex="-1">Raspberry Pi</button></div><div aria-labelledby="tab-4-4-0" class="sphinx-tabs-panel" id="panel-4-4-0" name="4-0" role="tabpanel" tabindex="0"></div><div aria-labelledby="tab-4-4-1" class="sphinx-tabs-panel" hidden="true" id="panel-4-4-1" name="4-1" role="tabpanel" tabindex="0"><p>Currently validated on <strong>Linux Kernel v5.15</strong>. For compilation issues on other kernel versions, contact Realtek support team.</p>
 <ol class="arabic">
-<li><p>Install build-essential</p>
-<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="n">$sudo</span><span class="w"> </span><span class="n">apt</span><span class="o">-</span><span class="n">get</span><span class="w"> </span><span class="n">install</span><span class="w"> </span><span class="n">build</span><span class="o">-</span><span class="n">essential</span>
+<li><p>Install build tools:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>build-essential
 </pre></div>
 </div>
 </li>
-<li><p>Enter <code class="docutils literal notranslate"><span class="pre">{SDK}/component/wifi/cfg80211_fullmac</span></code>, and execute the following command</p>
-<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="p">.</span><span class="o">/</span><span class="n">fullmac_setup</span><span class="p">.</span><span class="n">sh</span><span class="w"> </span><span class="n">sdiobridge</span>
+<li><p>Navigate to configuration directory:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span><span class="o">{</span>SDK<span class="o">}</span>/component/wifi/cfg80211_fullmac
+</pre></div>
+</div>
+<p>Execute interface setup script (supports sdio/spi etc.):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./fullmac_setup.sh<span class="w"> </span>sdio<span class="w"> </span>bridge<span class="w">  </span><span class="c1"># Replace sdio with actual interface</span>
 </pre></div>
 </div>
 </li>
-<li><p>Enter <code class="docutils literal notranslate"><span class="pre">{SDK}/component/wifi/cfg80211_fullmac</span></code>, and execute the following command to choose target device ic</p>
-<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="n">make</span><span class="w"> </span><span class="n">menuconfig</span>
+<li><p>Select target device model in interactive menu</p></li>
+<li><p>Copy entire <code class="docutils literal notranslate"><span class="pre">cfg80211_fullmac</span></code> directory to Linux host</p></li>
+<li><p>Compile and load driver module (SDIO interface example):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span><span class="o">{</span>driver_path<span class="o">}</span>/cfg80211_fullmac
+make
+sudo<span class="w"> </span>cp<span class="w"> </span>bridge/sdio_bridge/bridge_sdio.ko<span class="w"> </span>/lib/modules/<span class="k">$(</span>uname<span class="w"> </span>-r<span class="k">)</span>/
+sudo<span class="w"> </span>systemctl<span class="w"> </span>stop<span class="w"> </span>dhcpcd.service
+sudo<span class="w"> </span>depmod<span class="w"> </span>-a
+sudo<span class="w"> </span>modprobe<span class="w"> </span>bridge_sdio
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">{driver_path}</span></code>: Actual driver directory path</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">$(uname</span> <span class="pre">-r)</span></code>: Automatically detects kernel version</p></li>
+</ul>
+</div>
+</li>
+<li><p>Enable network interfaces:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>ifconfig<span class="w"> </span>eth_sta0<span class="w"> </span>up
+sudo<span class="w"> </span>ifconfig<span class="w"> </span>eth_sta1<span class="w"> </span>up
 </pre></div>
 </div>
 </li>
-<li><p>Copy <code class="docutils literal notranslate"><span class="pre">cfg80211_fullmac</span></code> folder to host side</p></li>
-<li><p>Build and install host driver as below</p>
-<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="n">$cd</span><span class="w"> </span><span class="p">{</span><span class="n">driver_path</span><span class="p">}</span><span class="o">/</span><span class="n">cfg80211_fullmac</span>
-<span class="n">$make</span>
-<span class="n">$sudo</span><span class="w"> </span><span class="n">systemctl</span><span class="w"> </span><span class="n">stop</span><span class="w"> </span><span class="n">dhcpcd</span><span class="p">.</span><span class="n">service</span>
-<span class="n">$sudo</span><span class="w"> </span><span class="n">insmod</span><span class="w"> </span><span class="n">sdio_bridge</span><span class="o">/</span><span class="n">bridge_sdio</span><span class="p">.</span><span class="n">ko</span>
+<li><p>Verify interface status:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ifconfig<span class="w"> </span>eth_sta0
+ifconfig<span class="w"> </span>eth_sta1
 </pre></div>
 </div>
-<p><code class="docutils literal notranslate"><span class="pre">{driver_path}</span></code> is the path where you put the <code class="docutils literal notranslate"><span class="pre">cfg80211_fullmac</span></code> folder.</p>
 </li>
 </ol>
-<p>After these steps, there will be an interface named <code class="docutils literal notranslate"><span class="pre">eth_sta0</span></code>, which can be found by command <code class="docutils literal notranslate"><span class="pre">ifconfig</span></code>.</p>
-</div><div aria-labelledby="tab-3-3-2" class="sphinx-tabs-panel" hidden="true" id="panel-3-3-2" name="3-2" role="tabpanel" tabindex="0"><p>Host driver has been tested on Raspberry Pi 4.</p>
-<p>You can use <code class="docutils literal notranslate"><span class="pre">dtoverlay</span></code> command to configure SDIO on Raspberry Pi, please input the following command in Raspberry Pi:</p>
-<blockquote>
-<div><div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="n">dtoverlay</span><span class="w"> </span><span class="n">sdio</span><span class="w"> </span><span class="n">poll_once</span><span class="o">=</span><span class="n">off</span>
+</div><div aria-labelledby="tab-4-4-2" class="sphinx-tabs-panel" hidden="true" id="panel-4-4-2" name="4-2" role="tabpanel" tabindex="0"><p>Driver currently validated on <strong>Raspberry Pi 4 Model B</strong> (Broadcom BCM2711) with Raspberry Pi OS based on Debian 11.</p>
+<ol class="arabic">
+<li><p>Enable SDIO interface setup:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Add device tree overlay in /boot/config.txt</span>
+sudo<span class="w"> </span>sh<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;echo &quot;dtoverlay=sdio,poll_once=off&quot; &gt;&gt; /boot/config.txt&#39;</span>
 </pre></div>
 </div>
-</div></blockquote>
-<p>The subsequent steps are the same as descripted in list host porting guide.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This configuration disables SDIO bus polling for better stability</p>
+</div>
+</li>
+<li><p>Subsequent steps align with linux_host_porting steps 3-7:</p></li>
+</ol>
 </div></div>
 </section>
 <section id="wifi-bridge-linux-test">
 <h1>WiFi Bridge Linux Test<a class="headerlink" href="#wifi-bridge-linux-test" title="Link to this heading"></a></h1>
 <section id="app-architecture">
 <h2>APP Architecture<a class="headerlink" href="#app-architecture" title="Link to this heading"></a></h2>
-<p>The testapp wraps some Wi-Fi commands, such as Wi-Fi connect, Wi-Fi scan, which can be used to control Ameba from host side.</p>
-<p>The testapp uses netlink to communicate with SDIO host driver. When SDIO host driver receives related commands, the testapp will inform SDIO device to perform corresponding operation by SDIO interface. The control flow is illustrated below.</p>
-<figure class="align-center" id="id4">
+<p>The demo APP implements bidirectional control through two command categories:</p>
+<ol class="arabic simple">
+<li><p><strong>Kernel-level Configuration</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">setmac</span></code>: Configure device MAC address</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">netifon</span></code>: Activate network interface carrier</p></li>
+</ul>
+</li>
+<li><p><strong>Device-level Control</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">getmac</span></code>: Retrieve device MAC address</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">getip</span></code>: Fetch device IP configuration</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">setrdy</span></code>: Notify device host status</p></li>
+</ul>
+</li>
+</ol>
+<section id="communication-stack">
+<h3>Communication Stack<a class="headerlink" href="#communication-stack" title="Link to this heading"></a></h3>
+<figure class="align-center" id="control-flow-en">
 <a class="reference internal image-reference" href="../../_images/bridge_testapp_control_flow.svg"><img alt="../../_images/bridge_testapp_control_flow.svg" height="251" src="../../_images/bridge_testapp_control_flow.svg" width="338" /></a>
-<figcaption>
-<p><span class="caption-text">testapp control flow</span><a class="headerlink" href="#id4" title="Link to this image"></a></p>
-</figcaption>
 </figure>
 </section>
-<section id="app-commands">
-<h2>APP Commands<a class="headerlink" href="#app-commands" title="Link to this heading"></a></h2>
+</section>
+<section id="supported-commands">
+<h2>Supported Commands<a class="headerlink" href="#supported-commands" title="Link to this heading"></a></h2>
 <table class="docutils align-default" style="width: 100%">
 <thead>
-<tr class="row-odd"><th class="head"><p>Command</p></th>
+<tr class="row-odd"><th class="head"><p>Command Syntax</p></th>
 <th class="head"><p>Description</p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>wifi_connect param1 param2</p></td>
-<td><p>connect to AP.</p>
-<dl class="field-list simple">
-<dt class="field-odd">param1<span class="colon">:</span></dt>
-<dd class="field-odd"><p>SSID</p>
-</dd>
-<dt class="field-even">param2<span class="colon">:</span></dt>
-<dd class="field-even"><p>password (option)</p>
-</dd>
-</dl>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">init</span></code></p></td>
+<td><p>Initialize Netlink communication channel</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">getmac</span> <span class="pre">&lt;device_idx&gt;</span></code></p></td>
+<td><p>Retrieve device MAC address</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">device_idx</span></code>: 0-based device index</p></li>
+</ul>
 </td>
 </tr>
-<tr class="row-odd"><td><p>disconnect</p></td>
-<td><p>Disconnect to AP</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">getip</span> <span class="pre">&lt;device_idx&gt;</span></code></p></td>
+<td><p>Fetch network layer configuration</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">device_idx</span></code>: Device index</p></li>
+</ul>
+</td>
 </tr>
-<tr class="row-even"><td><p>scan</p></td>
-<td><p>Trigger scan</p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">setrdy</span></code></p></td>
+<td><p>Notify device host readiness</p></td>
 </tr>
-<tr class="row-odd"><td><p>scanres</p></td>
-<td><p>Get and print scan result</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">setmac</span> <span class="pre">&lt;iface_idx&gt;</span> <span class="pre">&lt;mac&gt;</span></code></p></td>
+<td><p>Configure interface hardware address</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">iface_idx</span></code>: Interface index</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mac</span></code>: MAC format (xx:xx:xx:xx:xx:xx)</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">netifon</span> <span class="pre">&lt;iface_idx&gt;</span></code></p></td>
+<td><p>Activate physical layer carrier</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">iface_idx</span></code>: Interface index</p></li>
+</ul>
+</td>
 </tr>
 </tbody>
 </table>
 </section>
-<section id="app-build-and-run">
-<h2>APP Build and Run<a class="headerlink" href="#app-build-and-run" title="Link to this heading"></a></h2>
-<ol class="arabic">
-<li><p>Copy <code class="docutils literal notranslate"><span class="pre">sdio_bridge/bridge_api</span></code> folder to host</p></li>
-<li><p>Compile and execute as below, then you can input test commands.</p>
-<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="n">$cd</span><span class="w"> </span><span class="n">sdio_bridge</span><span class="o">/</span><span class="n">bridge_api</span><span class="o">/</span><span class="n">testapp</span>
-<span class="n">$make</span>
-<span class="n">$sudo</span><span class="w"> </span><span class="p">.</span><span class="o">/</span><span class="n">bridge</span>
+<section id="build-execution">
+<h2>Build &amp; Execution<a class="headerlink" href="#build-execution" title="Link to this heading"></a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Navigate to bridge module</span>
+<span class="nb">cd</span><span class="w"> </span><span class="si">${</span><span class="nv">SDK</span><span class="si">}</span>/component/wifi/cfg80211_fullmac/bridge
+
+<span class="c1"># Build executable</span>
+make
+
+<span class="c1"># Run with privileges</span>
+sudo<span class="w"> </span>./bridge
 </pre></div>
 </div>
-<figure class="align-center" id="bridge-testapp-control-flow">
-<a class="reference internal image-reference" href="../../_images/bridge_testapp_control_flow.png"><img alt="../../_images/bridge_testapp_control_flow.png" src="../../_images/bridge_testapp_control_flow.png" style="width: 421.2px; height: 242.39999999999998px;" /></a>
-<figcaption>
-<p><span class="caption-text">testapp control flow</span><a class="headerlink" href="#bridge-testapp-control-flow" title="Link to this image"></a></p>
-</figcaption>
-</figure>
-<figure class="align-center" id="bridge-ifconfig-result">
-<a class="reference internal image-reference" href="../../_images/bridge_ifconfig_result.png"><img alt="../../_images/bridge_ifconfig_result.png" src="../../_images/bridge_ifconfig_result.png" style="width: 676.1999999999999px; height: 272.4px;" /></a>
-<figcaption>
-<p><span class="caption-text">ifconfig result</span><a class="headerlink" href="#bridge-ifconfig-result" title="Link to this image"></a></p>
-</figcaption>
-</figure>
+</section>
+<section id="testing-procedure">
+<h2>Testing Procedure<a class="headerlink" href="#testing-procedure" title="Link to this heading"></a></h2>
+<ol class="arabic">
+<li><p><strong>Initial Configuration</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Start console</span>
+&gt;<span class="w"> </span>init
+&gt;<span class="w"> </span>getmac<span class="w"> </span><span class="m">0</span>
+<span class="m">00</span>:0A:35:XX:XX:XX
+&gt;<span class="w"> </span>setmac<span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="m">00</span>:0A:35:11:22:33
+&gt;<span class="w"> </span>getip<span class="w"> </span><span class="m">0</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Network Configuration</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Assign IP address</span>
+sudo<span class="w"> </span>ip<span class="w"> </span>addr<span class="w"> </span>add<span class="w"> </span><span class="m">192</span>.168.1.100/24<span class="w"> </span>dev<span class="w"> </span>eth_sta0
+sudo<span class="w"> </span>ip<span class="w"> </span>link<span class="w"> </span><span class="nb">set</span><span class="w"> </span>eth_sta0<span class="w"> </span>up
+</pre></div>
+</div>
+</li>
+<li><p><strong>Data Path Validation</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Enable communication</span>
+&gt;<span class="w"> </span>setrdy
+&gt;<span class="w"> </span>netifon<span class="w"> </span><span class="m">0</span>
+
+<span class="c1"># Perform network test</span>
+ping<span class="w"> </span><span class="m">192</span>.168.1.1
+</pre></div>
+</div>
 </li>
 </ol>
+<section id="validation-results">
+<h3>Validation Results<a class="headerlink" href="#validation-results" title="Link to this heading"></a></h3>
+<figure class="align-center" id="bridge-testapp-control-flow-en">
+<a class="reference internal image-reference" href="../../_images/bridge_testapp_control_flow.png"><img alt="../../_images/bridge_testapp_control_flow.png" src="../../_images/bridge_testapp_control_flow.png" style="width: 561.6px; height: 323.20000000000005px;" /></a>
+<figcaption>
+<p><span class="caption-text">Test application control flow</span><a class="headerlink" href="#bridge-testapp-control-flow-en" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<figure class="align-center" id="ifconfig-result-en">
+<a class="reference internal image-reference" href="../../_images/bridge_ifconfig_result.png"><img alt="../../_images/bridge_ifconfig_result.png" src="../../_images/bridge_ifconfig_result.png" style="width: 70%;" /></a>
+<figcaption>
+<p><span class="caption-text">Interface status verification</span><a class="headerlink" href="#ifconfig-result-en" title="Link to this image"></a></p>
+</figcaption>
+</figure>
 </section>
-<section id="app-test-flow">
-<h2>APP Test Flow<a class="headerlink" href="#app-test-flow" title="Link to this heading"></a></h2>
-<p>The following is a simple operation flow. After configuration as below, data communication can be started.</p>
-<p>After make and install host driver, and successfully make testapp, enter <code class="docutils literal notranslate"><span class="pre">sdio_bridge/testapp</span> <span class="pre">folder</span></code>.</p>
-<ol class="arabic simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">./bridge</span></code> to start.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">scan</span></code> to trigger scan.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">scanres</span></code> to get and print scan result</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">wifi_connect</span> <span class="pre">target_ssid</span> <span class="pre">password</span></code> command to connect your target AP,  The IP address will also be obtained and configured after successfully connected to AP.</p></li>
-<li><p>After successfully connected, use the standard <code class="docutils literal notranslate"><span class="pre">ifconfig</span></code> to check the interface, and the IP address will be already configured.</p></li>
-</ol>
-<p>After these steps, data path can be started, you can use the standard <code class="docutils literal notranslate"><span class="pre">ping</span></code> command or <code class="docutils literal notranslate"><span class="pre">iperf</span></code> command to test the data path.</p>
 </section>
 </section>
 <section id="wifi-bridge-throughput">
