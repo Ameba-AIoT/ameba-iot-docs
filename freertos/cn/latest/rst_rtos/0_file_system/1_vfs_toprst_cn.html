@@ -211,7 +211,7 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 </script><section id="id1">
 <h1>概述<a class="headerlink" href="#id1" title="Link to this heading"></a></h1>
-<p>本节介绍如何在Ameba SoC上运行虚拟文件系统（VFS），其底层实现包含FatFS与LittleFS。用户可通过使用VFS忽略不同文件系统之间的差异。VFS提供了fopen、fclose、fwrite、fread等通用文件操作接口，键值对（KV）接口基于这些通用文件操作构建。</p>
+<p>本节介绍如何在Ameba SoC上运行虚拟文件系统（VFS），其底层实现包含FatFS与LittleFS。用户可通过使用VFS忽略不同文件系统之间的差异。VFS提供了fopen、fclose、fwrite、fread等通用文件操作接口，键值对（KV）接口基于这些通用文件操作编译。</p>
 <p>VFS的架构如下图所示：</p>
 <div class="sphinx-tabs docutils container">
 <div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-0-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-0-0-0" name="0-0" role="tab" tabindex="0">RTL8721Dx</button><button aria-controls="panel-0-0-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-1" name="0-1" role="tab" tabindex="-1">RTL8720E</button><button aria-controls="panel-0-0-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-2" name="0-2" role="tab" tabindex="-1">RTL8726E</button><button aria-controls="panel-0-0-3" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-3" name="0-3" role="tab" tabindex="-1">RTL8730E</button></div><div aria-labelledby="tab-0-0-0" class="sphinx-tabs-panel" id="panel-0-0-0" name="0-0" role="tabpanel" tabindex="0"><figure class="align-center" id="id7">
@@ -809,7 +809,7 @@ document.addEventListener("DOMContentLoaded", function() {
 <p>生成FatFS二进制文件的步骤如下：</p>
 <ol class="arabic">
 <li><p>使用 <code class="docutils literal notranslate"><span class="pre">root&#64;ubuntu</span> <span class="pre">#</span> <span class="pre">dd</span> <span class="pre">if=/dev/zero</span> <span class="pre">of=test.bin</span> <span class="pre">count=64</span> <span class="pre">bs=1KB</span></code> 命令创建 <code class="docutils literal notranslate"><span class="pre">test.bin</span></code> 文件，该文件包含64个块，每个块的大小为1KB。</p></li>
-<li><p>使用 <code class="docutils literal notranslate"><span class="pre">root&#64;ubuntu</span> <span class="pre">#</span> <span class="pre">mkfs.fat</span> <span class="pre">-S</span> <span class="pre">512-F</span> <span class="pre">12</span> <span class="pre">test.bin</span></code> 命令构建一个FAT文件系统。</p></li>
+<li><p>使用 <code class="docutils literal notranslate"><span class="pre">root&#64;ubuntu</span> <span class="pre">#</span> <span class="pre">mkfs.fat</span> <span class="pre">-S</span> <span class="pre">512-F</span> <span class="pre">12</span> <span class="pre">test.bin</span></code> 命令编译一个FAT文件系统。</p></li>
 <li><p>使用 <code class="docutils literal notranslate"><span class="pre">root&#64;ubuntu</span> <span class="pre">#</span> <span class="pre">sudo</span> <span class="pre">mount</span> <span class="pre">test.bin</span> <span class="pre">./fs``将</span> <span class="pre">``test.bin</span></code> 挂载到文件夹 <code class="docutils literal notranslate"><span class="pre">fs</span></code> 中。</p></li>
 <li><p>使用 <code class="docutils literal notranslate"><span class="pre">root&#64;ubuntu</span> <span class="pre">#</span> <span class="pre">sudo</span> <span class="pre">cp</span> <span class="pre">hello.txt</span> <span class="pre">./fs</span></code> 命令将用户需要存储的文件复制到 <code class="docutils literal notranslate"><span class="pre">test.bin</span></code> 中。</p>
 <p>这一步， <code class="docutils literal notranslate"><span class="pre">hello.txt</span></code> 文件被存储到 <code class="docutils literal notranslate"><span class="pre">test.bin</span></code> 中。</p>
