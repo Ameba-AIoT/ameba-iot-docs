@@ -299,7 +299,7 @@
 <span id="wi-fi-at-wlconn"></span><h2>AT+WLCONN<a class="headerlink" href="#at-wlconn" title="Link to this heading"></a></h2>
 <section id="id1">
 <h3>描述<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
-<p>Connect to AP (STA mode).</p>
+<p>连接至 AP（STA模式）</p>
 </section>
 <section id="id2">
 <h3>命令<a class="headerlink" href="#id2" title="Link to this heading"></a></h3>
@@ -321,7 +321,47 @@
 <h3>参数<a class="headerlink" href="#id4" title="Link to this heading"></a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">&lt;type&gt;<span class="colon">:</span></dt>
-<dd class="field-odd"><p>The type of the followed parameter &lt;value&gt;.</p>
+<dd class="field-odd"><p>参数 &lt;value&gt; 的类型，后跟&lt;value&gt;</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">ssid</span></code>: 后跟 &lt;ssid&gt;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bssid</span></code>: 后跟 &lt;bssid&gt;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ch</span></code>: 后跟 &lt;ch&gt;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pw</span></code>: 后跟 &lt;pw&gt;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">key_id</span></code>: 后跟 &lt;key_id&gt;</p></li>
+</ul>
+</dd>
+<dt class="field-even">&lt;value&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>对应 &lt;type&gt; 的参数值</p>
+</dd>
+<dt class="field-odd">&lt;ssid&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Wi-Fi SSID</p>
+<ul class="simple">
+<li><p>长度小于33的字符串</p></li>
+</ul>
+</dd>
+<dt class="field-even">&lt;bssid&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>Wi-Fi BSSID</p>
+<ul class="simple">
+<li><p>以冒号分隔的十六进制字符串，如：1a:2b:3c:4d:5e:6f</p></li>
+</ul>
+</dd>
+<dt class="field-odd">&lt;pw&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Wi-Fi 密码</p>
+</dd>
+<dt class="field-even">&lt;key_id&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>Wi-Fi密钥 ID</p>
+<ul class="simple">
+<li><p>[0,3]</p></li>
+</ul>
+</dd>
+<dt class="field-odd">&lt;ch&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Wi-Fi 信道</p>
+<ul class="simple">
+<li><p>缺省时，默认为 0</p></li>
+</ul>
+</dd>
+<dt class="field-even">&lt;type&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>The type of the followed parameter &lt;value&gt;.</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">ssid</span></code>: The &lt;ssid&gt; should be followed.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">bssid</span></code>: The &lt;bssid&gt; should be followed.</p></li>
@@ -330,35 +370,8 @@
 <li><p><code class="docutils literal notranslate"><span class="pre">key_id</span></code>: The &lt;key_id&gt; should be followed.</p></li>
 </ul>
 </dd>
-<dt class="field-even">&lt;value&gt;<span class="colon">:</span></dt>
-<dd class="field-even"><p>The parameter followed correspond &lt;type&gt;, as below:</p>
-</dd>
-<dt class="field-odd">&lt;ssid&gt;<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Wi-Fi SSID</p>
-<ul class="simple">
-<li><p>A name string with length shorter than 33.</p></li>
-</ul>
-</dd>
-<dt class="field-even">&lt;bssid&gt;<span class="colon">:</span></dt>
-<dd class="field-even"><p>The bssid of Wi-Fi.</p>
-<ul class="simple">
-<li><p>A hexadecimal number string separated by colons, such as 1a:2b:3c:4d:5e:6f.</p></li>
-</ul>
-</dd>
-<dt class="field-odd">&lt;pw&gt;<span class="colon">:</span></dt>
-<dd class="field-odd"><p>The password of Wi-Fi.</p>
-</dd>
-<dt class="field-even">&lt;key_id&gt;<span class="colon">:</span></dt>
-<dd class="field-even"><p>Key ID of Wi-Fi.</p>
-<ul class="simple">
-<li><p>[0,3]</p></li>
-</ul>
-</dd>
-<dt class="field-odd">&lt;ch&gt;<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Channel of Wi-Fi.</p>
-<ul class="simple">
-<li><p>The channel of Wi-Fi. It is 0 as default if this parameter is absent.</p></li>
-</ul>
+<dt class="field-odd">&lt;value&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The parameter followed correspond &lt;type&gt;, as below:</p>
 </dd>
 </dl>
 </section>
@@ -366,19 +379,19 @@
 <h3>错误码<a class="headerlink" href="#id5" title="Link to this heading"></a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">1<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Error parameter number.</p>
+<dd class="field-odd"><p>参数数量错误</p>
 </dd>
 <dt class="field-even">2<span class="colon">:</span></dt>
-<dd class="field-even"><p>Error parameter.</p>
+<dd class="field-even"><p>参数错误</p>
 </dd>
 <dt class="field-odd">3<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Memory failure.</p>
+<dd class="field-odd"><p>内存故障</p>
 </dd>
 <dt class="field-even">4<span class="colon">:</span></dt>
-<dd class="field-even"><p>Can not connect to this Wi-Fi.</p>
+<dd class="field-even"><p>无法连接至Wi-Fi</p>
 </dd>
 <dt class="field-odd">5<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Wi-Fi is not on.</p>
+<dd class="field-odd"><p>Wi-Fi未开启</p>
 </dd>
 </dl>
 </section>
@@ -401,7 +414,7 @@
 <span id="wi-fi-at-wldisconn"></span><h2>AT+WLDISCONN<a class="headerlink" href="#at-wldisconn" title="Link to this heading"></a></h2>
 <section id="id7">
 <h3>描述<a class="headerlink" href="#id7" title="Link to this heading"></a></h3>
-<p>Disconnect from AP.</p>
+<p>断开与AP的连接</p>
 </section>
 <section id="id8">
 <h3>命令<a class="headerlink" href="#id8" title="Link to this heading"></a></h3>
@@ -427,10 +440,10 @@
 <h3>错误码<a class="headerlink" href="#id11" title="Link to this heading"></a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">3<span class="colon">:</span></dt>
-<dd class="field-odd"><p>API error when disconnecting.</p>
+<dd class="field-odd"><p>断开连接时API错误</p>
 </dd>
 <dt class="field-even">4<span class="colon">:</span></dt>
-<dd class="field-even"><p>Timeout.</p>
+<dd class="field-even"><p>超时</p>
 </dd>
 </dl>
 </section>
@@ -439,7 +452,7 @@
 <span id="wi-fi-at-wlstaticip"></span><h2>AT+WLSTATICIP<a class="headerlink" href="#at-wlstaticip" title="Link to this heading"></a></h2>
 <section id="id12">
 <h3>描述<a class="headerlink" href="#id12" title="Link to this heading"></a></h3>
-<p>Set static IP for station.</p>
+<p>为STA设置静态IP</p>
 </section>
 <section id="id13">
 <h3>命令<a class="headerlink" href="#id13" title="Link to this heading"></a></h3>
@@ -461,21 +474,21 @@
 <h3>参数<a class="headerlink" href="#id15" title="Link to this heading"></a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">&lt;ip&gt;<span class="colon">:</span></dt>
-<dd class="field-odd"><p>IP address.</p>
+<dd class="field-odd"><p>IP 地址</p>
 <ul class="simple">
-<li><p>A data string of IP address, e.g. 192.168.10.33.</p></li>
+<li><p>IP 地址字符串，如：192.168.10.33</p></li>
 </ul>
 </dd>
 <dt class="field-even">&lt;gateway&gt;<span class="colon">:</span></dt>
-<dd class="field-even"><p>Gateway of station.</p>
+<dd class="field-even"><p>网关地址</p>
 <ul class="simple">
-<li><p>A data string of gateway, e.g. 192.168.10.1.</p></li>
+<li><p>网关地址字符串，如：192.168.10.1</p></li>
 </ul>
 </dd>
 <dt class="field-odd">&lt;netmask&gt;<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Netmask of station.</p>
+<dd class="field-odd"><p>子网掩码</p>
 <ul class="simple">
-<li><p>A data string of netmask, e.g. 255.255.255.0.</p></li>
+<li><p>子网掩码字符串，如：255.255.255.0</p></li>
 </ul>
 </dd>
 </dl>
@@ -484,10 +497,10 @@
 <h3>错误码<a class="headerlink" href="#id16" title="Link to this heading"></a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">3<span class="colon">:</span></dt>
-<dd class="field-odd"><p>API error when disconnecting.</p>
+<dd class="field-odd"><p>断开连接时API错误</p>
 </dd>
 <dt class="field-even">4<span class="colon">:</span></dt>
-<dd class="field-even"><p>Timeout.</p>
+<dd class="field-even"><p>超时</p>
 </dd>
 </dl>
 </section>
@@ -496,7 +509,7 @@
 <span id="wi-fi-at-ping"></span><h2>AT+PING<a class="headerlink" href="#at-ping" title="Link to this heading"></a></h2>
 <section id="id17">
 <h3>描述<a class="headerlink" href="#id17" title="Link to this heading"></a></h3>
-<p>PING a domain or IP address.</p>
+<p>Ping域名或IP地址</p>
 </section>
 <section id="id18">
 <h3>命令<a class="headerlink" href="#id18" title="Link to this heading"></a></h3>
@@ -519,45 +532,45 @@
 <h3>参数<a class="headerlink" href="#id20" title="Link to this heading"></a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">&lt;host&gt;<span class="colon">:</span></dt>
-<dd class="field-odd"><p>The address of host.</p>
+<dd class="field-odd"><p>主机地址</p>
 <ul class="simple">
-<li><p>An IP address, or dns address.</p></li>
+<li><p>可为IP地址或DNS地址</p></li>
 </ul>
 </dd>
 <dt class="field-even">&lt;-t&gt;<span class="colon">:</span></dt>
-<dd class="field-even"><p>It will followed by &lt;interval&gt;.</p>
+<dd class="field-even"><p>后跟&lt;interval&gt;</p>
 </dd>
 <dt class="field-odd">&lt;interval&gt;<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Interval time in second.</p>
+<dd class="field-odd"><p>间隔时间（秒）</p>
 <ul class="simple">
-<li><p>A positive number.</p></li>
-<li><p>If &lt;-t&gt; &lt;interval&gt; are absent, it is 1s as default.</p></li>
+<li><p>正整数</p></li>
+<li><p>如果&lt;-t&gt; &lt;interval&gt;省略，默认值为1s</p></li>
 </ul>
 </dd>
 <dt class="field-even">&lt;-n&gt;<span class="colon">:</span></dt>
-<dd class="field-even"><p>It will followed by &lt;count&gt;.</p>
+<dd class="field-even"><p>后跟&lt;count&gt;</p>
 </dd>
 <dt class="field-odd">&lt;count&gt;<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Ping packets number.</p>
+<dd class="field-odd"><p>Ping 包数量</p>
 <ul class="simple">
-<li><p>A positive number.</p></li>
-<li><p>If &lt;-n&gt; &lt;count&gt; are absent, it is 4 as default.</p></li>
+<li><p>正整数</p></li>
+<li><p>如果&lt;-n&gt; &lt;count&gt;省略，默认值为4s</p></li>
 </ul>
 </dd>
 <dt class="field-even">&lt;-l&gt;<span class="colon">:</span></dt>
-<dd class="field-even"><p>It will followed by &lt;size&gt;.</p>
+<dd class="field-even"><p>后跟&lt;size&gt;</p>
 </dd>
 <dt class="field-odd">&lt;size&gt;<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Ping packet size in byte.</p>
+<dd class="field-odd"><p>Ping 包大小（字节）</p>
 <ul class="simple">
-<li><p>A positive number.</p></li>
-<li><p>If &lt;-l&gt; &lt;size&gt; are absent, it is 32 bytes as default.</p></li>
+<li><p>正整数</p></li>
+<li><p>如果&lt;-l&gt; &lt;size&gt;省略，默认值为32字节</p></li>
 </ul>
 </dd>
 <dt class="field-even">&lt;stop&gt;<span class="colon">:</span></dt>
-<dd class="field-even"><p>Stop the ongoing ping procedure.</p>
+<dd class="field-even"><p>终止当前Ping任务</p>
 <ul class="simple">
-<li><p>“stop”: It will stop the ongoing ping procedure.</p></li>
+<li><p>stop: 终止当前Ping任务</p></li>
 </ul>
 </dd>
 </dl>
@@ -566,17 +579,19 @@
 <h3>错误码<a class="headerlink" href="#id21" title="Link to this heading"></a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">1<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Input null parameter.</p>
+<dd class="field-odd"><p>输入空参数</p>
 </dd>
 <dt class="field-even">2<span class="colon">:</span></dt>
-<dd class="field-even"><p>Error parameter number.</p>
+<dd class="field-even"><p>参数数量错误</p>
 </dd>
 </dl>
 <div class="admonition note">
 <p class="admonition-title">备注</p>
-<p>In this command, the sequence of &lt;-t&gt; &lt;-l&gt; &lt;-n&gt; is not required.</p>
-<p>The response of each packet can be only observed at log window.</p>
-<p>The response “OK” means this command’s format is correct, but not ping the target successfully.</p>
+<ul class="simple">
+<li><p>&lt;-t&gt; &lt;-l&gt; &lt;-n&gt;的参数顺修可随意排列。</p></li>
+<li><p>Ping响应结果仅在日志窗口显示。</p></li>
+<li><p>响应 <code class="docutils literal notranslate"><span class="pre">OK</span></code> 仅表示命令格式正确，不保证Ping成功。</p></li>
+</ul>
 </div>
 </section>
 <section id="id22">
@@ -606,7 +621,7 @@
 <span id="wi-fi-at-iperf"></span><h2>AT+IPERF<a class="headerlink" href="#at-iperf" title="Link to this heading"></a></h2>
 <section id="id23">
 <h3>描述<a class="headerlink" href="#id23" title="Link to this heading"></a></h3>
-<p>IPERF test for TCP or UDP.</p>
+<p>TCP/UDP网络带宽测试</p>
 </section>
 <section id="id24">
 <h3>命令<a class="headerlink" href="#id24" title="Link to this heading"></a></h3>
@@ -632,25 +647,25 @@
 <h3>参数<a class="headerlink" href="#id26" title="Link to this heading"></a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">&lt;-s&gt;<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Work as a server.</p>
+<dd class="field-odd"><p>作为服务端运行</p>
 </dd>
 <dt class="field-even">&lt;-c&gt;<span class="colon">:</span></dt>
-<dd class="field-even"><p>Work as a client.</p>
+<dd class="field-even"><p>作为客户端运行</p>
 </dd>
 <dt class="field-odd">&lt;-p&gt;<span class="colon">:</span></dt>
-<dd class="field-odd"><p>It will be followed by &lt;port&gt;.</p>
+<dd class="field-odd"><p>后跟 &lt;port&gt;</p>
 </dd>
 <dt class="field-even">&lt;port&gt;<span class="colon">:</span></dt>
-<dd class="field-even"><p>The server port.</p>
+<dd class="field-even"><p>服务端端口号</p>
 <ul class="simple">
-<li><p>[1,65535].</p></li>
-<li><p>It is 5001 as default if absent.</p></li>
+<li><p>[1,65535]</p></li>
+<li><p>默认为5001</p></li>
 </ul>
 </dd>
 <dt class="field-odd">&lt;-u&gt;<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Work in UDP.</p>
+<dd class="field-odd"><p>使用UDP协议</p>
 <ul class="simple">
-<li><p>If absent, it works in TCP as default.</p></li>
+<li><p>缺省时，默认为TCP</p></li>
 </ul>
 </dd>
 <dt class="field-even">&lt;host|stop&gt;<span class="colon">:</span></dt>
@@ -718,10 +733,10 @@
 <h3>错误码<a class="headerlink" href="#id27" title="Link to this heading"></a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">1<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Input null parameter.</p>
+<dd class="field-odd"><p>输入空参数</p>
 </dd>
 <dt class="field-even">3<span class="colon">:</span></dt>
-<dd class="field-even"><p>Error parameter number.</p>
+<dd class="field-even"><p>参数数量错误</p>
 </dd>
 </dl>
 <div class="admonition note">
@@ -841,10 +856,10 @@
 <h3>错误码<a class="headerlink" href="#id33" title="Link to this heading"></a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">1<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Input null parameter.</p>
+<dd class="field-odd"><p>输入空参数</p>
 </dd>
 <dt class="field-even">2<span class="colon">:</span></dt>
-<dd class="field-even"><p>Error parameter number.</p>
+<dd class="field-even"><p>参数数量错误</p>
 </dd>
 </dl>
 <div class="admonition note">
@@ -864,7 +879,7 @@
 <span id="wi-fi-at-wlscan"></span><h2>AT+WLSCAN<a class="headerlink" href="#at-wlscan" title="Link to this heading"></a></h2>
 <section id="id35">
 <h3>描述<a class="headerlink" href="#id35" title="Link to this heading"></a></h3>
-<p>Scan the Wi-Fi.</p>
+<p>扫描Wi-Fi</p>
 </section>
 <section id="id36">
 <h3>命令<a class="headerlink" href="#id36" title="Link to this heading"></a></h3>
@@ -916,10 +931,10 @@
 <dd class="field-odd"><p>Error Wi-Fi join status.</p>
 </dd>
 <dt class="field-even">3<span class="colon">:</span></dt>
-<dd class="field-even"><p>Memory failure.</p>
+<dd class="field-even"><p>内存故障</p>
 </dd>
 <dt class="field-odd">5<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Failed when scanning.</p>
+<dd class="field-odd"><p>扫描失败</p>
 </dd>
 </dl>
 <div class="admonition note">
@@ -1035,7 +1050,7 @@
 </ul>
 </dd>
 <dt class="field-even">&lt;pw&gt;<span class="colon">:</span></dt>
-<dd class="field-even"><p>The string of password.</p>
+<dd class="field-even"><p>密码字符串</p>
 </dd>
 </dl>
 </section>
@@ -1043,19 +1058,19 @@
 <h3>错误码<a class="headerlink" href="#id49" title="Link to this heading"></a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">1<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Input null parameter.</p>
+<dd class="field-odd"><p>输入空参数</p>
 </dd>
 <dt class="field-even">2<span class="colon">:</span></dt>
-<dd class="field-even"><p>Error parameter.</p>
+<dd class="field-even"><p>参数错误</p>
 </dd>
 <dt class="field-odd">3<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Timeout.</p>
+<dd class="field-odd"><p>超时</p>
 </dd>
 <dt class="field-even">4<span class="colon">:</span></dt>
-<dd class="field-even"><p>Failed when starting AP.</p>
+<dd class="field-even"><p>启动AP失败</p>
 </dd>
 <dt class="field-odd">5<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Memory failure.</p>
+<dd class="field-odd"><p>内存故障</p>
 </dd>
 </dl>
 </section>
@@ -1160,7 +1175,7 @@ MAC =&gt; &lt;client_mac_address&gt;
 <span id="wi-fi-at-wlreconn"></span><h2>AT+WLRECONN<a class="headerlink" href="#at-wlreconn" title="Link to this heading"></a></h2>
 <section id="id58">
 <h3>描述<a class="headerlink" href="#id58" title="Link to this heading"></a></h3>
-<p>Enable or disable Wi-Fi auto-connection.</p>
+<p>启用/禁用Wi-Fi自动连接</p>
 </section>
 <section id="id59">
 <h3>命令<a class="headerlink" href="#id59" title="Link to this heading"></a></h3>
@@ -1201,10 +1216,10 @@ MAC =&gt; &lt;client_mac_address&gt;
 <h3>错误码<a class="headerlink" href="#id62" title="Link to this heading"></a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">1<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Error parameter number.</p>
+<dd class="field-odd"><p>参数数量错误</p>
 </dd>
 <dt class="field-even">2<span class="colon">:</span></dt>
-<dd class="field-even"><p>Invalid &lt;enable&gt; value.</p>
+<dd class="field-even"><p>enable值无效</p>
 </dd>
 </dl>
 </section>
@@ -1213,7 +1228,7 @@ MAC =&gt; &lt;client_mac_address&gt;
 <span id="wi-fi-at-wlpromisc"></span><h2>AT+WLPROMISC<a class="headerlink" href="#at-wlpromisc" title="Link to this heading"></a></h2>
 <section id="id63">
 <h3>描述<a class="headerlink" href="#id63" title="Link to this heading"></a></h3>
-<p>Enable or disable Wi-Fi promisc.</p>
+<p>启用/禁用Wi-Fi promisc</p>
 </section>
 <section id="id64">
 <h3>命令<a class="headerlink" href="#id64" title="Link to this heading"></a></h3>
@@ -1235,7 +1250,7 @@ MAC =&gt; &lt;client_mac_address&gt;
 <h3>参数<a class="headerlink" href="#id66" title="Link to this heading"></a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">&lt;enable&gt;<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Enable or disable Wi-Fi promisc, with string format.</p>
+<dd class="field-odd"><p>启用/禁用Wi-Fi promisc, with string format.</p>
 <ul class="simple">
 <li><p>“enable”: Enable.</p></li>
 <li><p>“disable”: Disable.</p></li>
@@ -1260,7 +1275,7 @@ MAC =&gt; &lt;client_mac_address&gt;
 <span id="wi-fi-at-wldbg"></span><h2>AT+WLDBG<a class="headerlink" href="#at-wldbg" title="Link to this heading"></a></h2>
 <section id="id67">
 <h3>描述<a class="headerlink" href="#id67" title="Link to this heading"></a></h3>
-<p>Test Wi-Fi iwpriv command.</p>
+<p>测试Wi-Fi iwpriv命令</p>
 </section>
 <section id="id68">
 <h3>命令<a class="headerlink" href="#id68" title="Link to this heading"></a></h3>
@@ -1299,10 +1314,10 @@ MAC =&gt; &lt;client_mac_address&gt;
 <h3>错误码<a class="headerlink" href="#id71" title="Link to this heading"></a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">1<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Input error parameter</p>
+<dd class="field-odd"><p>参数错误</p>
 </dd>
 <dt class="field-even">2<span class="colon">:</span></dt>
-<dd class="field-even"><p>Failed when doing iwpriv testing</p>
+<dd class="field-even"><p>执行iwpriv测试失败</p>
 </dd>
 </dl>
 </section>
@@ -1311,7 +1326,7 @@ MAC =&gt; &lt;client_mac_address&gt;
 <span id="wi-fi-at-wlwps"></span><h2>AT+WLWPS<a class="headerlink" href="#at-wlwps" title="Link to this heading"></a></h2>
 <section id="id72">
 <h3>描述<a class="headerlink" href="#id72" title="Link to this heading"></a></h3>
-<p>Test Wi-Fi wps command.</p>
+<p>测试Wi-Fi WPS命令</p>
 </section>
 <section id="id73">
 <h3>命令<a class="headerlink" href="#id73" title="Link to this heading"></a></h3>
@@ -1352,7 +1367,7 @@ MAC =&gt; &lt;client_mac_address&gt;
 <h3>错误码<a class="headerlink" href="#id76" title="Link to this heading"></a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">1<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Input error parameter</p>
+<dd class="field-odd"><p>参数错误</p>
 </dd>
 </dl>
 <div class="admonition note">
@@ -1365,7 +1380,7 @@ MAC =&gt; &lt;client_mac_address&gt;
 <span id="wi-fi-at-wlps"></span><h2>AT+WLPS<a class="headerlink" href="#at-wlps" title="Link to this heading"></a></h2>
 <section id="id77">
 <h3>描述<a class="headerlink" href="#id77" title="Link to this heading"></a></h3>
-<p>Enable or disable LPS, IPS.</p>
+<p>启用/禁用LPS, IPS</p>
 </section>
 <section id="id78">
 <h3>命令<a class="headerlink" href="#id78" title="Link to this heading"></a></h3>
@@ -1394,10 +1409,10 @@ MAC =&gt; &lt;client_mac_address&gt;
 </ul>
 </dd>
 <dt class="field-even">&lt;enable&gt;<span class="colon">:</span></dt>
-<dd class="field-even"><p>Enable or disable LPS/IPS.</p>
+<dd class="field-even"><p>启用/禁用LPS, IPS</p>
 <ul class="simple">
-<li><p>0: Disable</p></li>
-<li><p>1: Enable</p></li>
+<li><p>0: 禁用</p></li>
+<li><p>1: 启用</p></li>
 </ul>
 </dd>
 </dl>
@@ -1406,10 +1421,10 @@ MAC =&gt; &lt;client_mac_address&gt;
 <h3>错误码<a class="headerlink" href="#id81" title="Link to this heading"></a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">1<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Input error parameter number</p>
+<dd class="field-odd"><p>参数数量错误</p>
 </dd>
 <dt class="field-even">2<span class="colon">:</span></dt>
-<dd class="field-even"><p>Error &lt;lps_ips&gt;</p>
+<dd class="field-even"><p>lps_ips错误</p>
 </dd>
 </dl>
 </section>
