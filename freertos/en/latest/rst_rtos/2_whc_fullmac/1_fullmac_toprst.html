@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Supported ICs &mdash; Ameba IoT Docs  documentation</title>
+  <title>Supported Chips &mdash; Ameba IoT Docs  documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
@@ -93,28 +93,28 @@
 <li class="toctree-l1"><a class="reference internal" href="../1_power_save/0_ps_index.html">1.9 Power Save</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../2_whc_wifi_bridge/0_wifi_bridge_index.html">2.1 WHC Bridge</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="0_fullmac_index.html">2.2 WHC FullMAC</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Supported ICs</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#introduction">Introduction</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#architecture">Architecture</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#transport-interface">Transport Interface</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#features">Features</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#file-tree">File Tree</a><ul>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Supported Chips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#fullmac-overview">FullMAC Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#fullmac-architecture">FullMAC Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#fullmac-transmission-interface-specifications">FullMAC Transmission Interface Specifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#fullmac-feature-details">FullMAC Feature Details</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#fullmac-file-structure">FullMAC File Structure</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#wi-fi">Wi-Fi</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#bluetooth">Bluetooth</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#hardware-configuration">Hardware Configuration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#fullmac-hardware-configuration">FullMAC Hardware Configuration</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#interface-connections">Interface Connections</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#sdio-adapter-board">SDIO Adapter Board</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#raspberry-pi-direct-connection">Raspberry Pi Direct Connection</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#wifi-device-driver-porting-guide">WiFi Device Driver Porting Guide</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#wi-fi-host-driver-porting-guide">Wi-Fi Host Driver Porting Guide</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#bt-device-driver-porting-guide">BT Device Driver Porting Guide</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#bt-host-driver-porting-guide">BT Host Driver Porting Guide</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#wifi-throughput">WiFi Throughput</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#memory-size-requirement">Memory Size Requirement</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#fullmac-wifi-device-driver-porting-guide">FullMAC WiFi Device Driver Porting Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#fullmac-wi-fi-host-driver-porting-guide">FullMAC Wi-Fi Host Driver Porting Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#fullmac-bt-device-driver-porting-guide">FullMAC BT Device Driver Porting Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#fullmac-bt-host-driver-porting-guide">FullMAC BT Host Driver Porting Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#fullmac-wifi-throughput">FullMAC WiFi Throughput</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#fullmac-memory-footprint">FullMAC Memory Footprint</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#device">Device</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#host">Host</a></li>
 </ul>
@@ -171,7 +171,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="0_fullmac_index.html">FullMAC</a></li>
-      <li class="breadcrumb-item active">Supported ICs</li>
+      <li class="breadcrumb-item active">Supported Chips</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -180,8 +180,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="supported-ics">
-<span id="wifi-fullmac"></span><h1>Supported ICs<a class="headerlink" href="#supported-ics" title="Link to this heading"></a></h1>
+  <section id="supported-chips">
+<span id="wifi-fullmac"></span><h1>Supported Chips<a class="headerlink" href="#supported-chips" title="Link to this heading"></a></h1>
 <table class="docutils align-default" style="width: 100%">
 <thead>
 <tr class="row-odd"><th class="head"><p>Ameba SoC</p></th>
@@ -201,17 +201,17 @@
 </tbody>
 </table>
 </section>
-<section id="introduction">
-<h1>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h1>
-<p>The FullMAC solution provides a standard wireless network interface for the host, allowing Wi-Fi and Bluetooth applications (such as wpa_supplicant, TCP/IP stack, etc.) to run smoothly on the operating system.</p>
+<section id="fullmac-overview">
+<h1>FullMAC Overview<a class="headerlink" href="#fullmac-overview" title="Link to this heading"></a></h1>
+<p>In the WHC FullMAC solution, Ameba acts as a network interface card connected to the host MCU via UART/SPI/SDIO/USB, providing network connectivity.</p>
 </section>
-<section id="architecture">
-<h1>Architecture<a class="headerlink" href="#architecture" title="Link to this heading"></a></h1>
-<p>The FullMAC driver implements the following modules:</p>
+<section id="fullmac-architecture">
+<h1>FullMAC Architecture<a class="headerlink" href="#fullmac-architecture" title="Link to this heading"></a></h1>
+<p>Core Features:</p>
 <ul class="simple">
-<li><p>Provide a data transmission path between the host and the device based on a private transmission protocol via the SDIO/SPI interface</p></li>
-<li><p>Adapt the cfg80211 layer and register the wireless network interface (wlan0/1) in the kernel to enable network data packet interaction between the Linux kernel and the SoC</p></li>
-<li><p>Provide commonly-used and proprietary commands to configure the parameters of Wi-Fi interface</p></li>
+<li><p>Establishes UART/SPI/SDIO/USB transmission channels between Host and Device</p></li>
+<li><p>Compatible with Linux standard wpa_supplicant and cfg80211 wireless framework</p></li>
+<li><p>Supports WiFi/BT command transmission and customized command extensions</p></li>
 </ul>
 <figure class="align-center" id="id1">
 <a class="reference internal image-reference" href="../../_images/wifi_fullmac_architecture.svg"><img alt="../../_images/wifi_fullmac_architecture.svg" height="431" src="../../_images/wifi_fullmac_architecture.svg" width="893" /></a>
@@ -221,7 +221,7 @@
 </figure>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p><strong>HOST OS</strong></p>
+<p><strong>Host OS Support</strong></p>
 <ul class="simple">
 <li><p>Linux</p></li>
 <li><p>FreeRTOS</p></li>
@@ -230,32 +230,28 @@
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p><strong>BT Stack</strong></p>
+<p><strong>Bluetooth Stack Compatibility</strong></p>
 <ul class="simple">
-<li><p>Linux HOST：Bluez</p></li>
-<li><p>Zephyr HOST：Zephyr BT Stack</p></li>
-<li><p>FreeRTOS：Realtek BT Stack</p></li>
+<li><p>Linux Host: Bluez Stack</p></li>
+<li><p>Zephyr Host: Zephyr BT Stack</p></li>
+<li><p>FreeRTOS: Realtek BT Stack</p></li>
 </ul>
 </div>
 </section>
-<section id="transport-interface">
-<h1>Transport Interface<a class="headerlink" href="#transport-interface" title="Link to this heading"></a></h1>
-<div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-0-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-0-0-0" name="0-0" role="tab" tabindex="0">Linux</button><button aria-controls="panel-0-0-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-1" name="0-1" role="tab" tabindex="-1">FreeRTOS</button><button aria-controls="panel-0-0-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-2" name="0-2" role="tab" tabindex="-1">Zephyr</button></div><div aria-labelledby="tab-0-0-0" class="sphinx-tabs-panel" id="panel-0-0-0" name="0-0" role="tabpanel" tabindex="0"><table class="docutils align-default" style="width: 100%">
+<section id="fullmac-transmission-interface-specifications">
+<h1>FullMAC Transmission Interface Specifications<a class="headerlink" href="#fullmac-transmission-interface-specifications" title="Link to this heading"></a></h1>
+<blockquote>
+<div><div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-0-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-0-0-0" name="0-0" role="tab" tabindex="0">RTL8721Dx</button></div><div aria-labelledby="tab-0-0-0" class="sphinx-tabs-panel" id="panel-0-0-0" name="0-0" role="tabpanel" tabindex="0"><div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-1-1-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-1-1-0" name="1-0" role="tab" tabindex="0">Linux</button><button aria-controls="panel-1-1-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-1-1-1" name="1-1" role="tab" tabindex="-1">FreeRTOS</button><button aria-controls="panel-1-1-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-1-1-2" name="1-2" role="tab" tabindex="-1">Zephyr</button></div><div aria-labelledby="tab-1-1-0" class="sphinx-tabs-panel" id="panel-1-1-0" name="1-0" role="tabpanel" tabindex="0"><table class="docutils align-default" style="width: 100%">
 <thead>
-<tr class="row-odd"><th class="head"><p>Ameba SoC</p></th>
-<th class="head"><p>Interface</p></th>
+<tr class="row-odd"><th class="head"><p>Interface</p></th>
 <th class="head"><p>Wi-Fi</p></th>
 <th class="head"><p>BT</p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td rowspan="7"><div class="line-block">
-<div class="line">RTL8721Dx</div>
-<div class="line">RTL8711Dx</div>
-</div>
-</td>
-<td><p>SDIO</p></td>
+<tr class="row-even"><td><p>SDIO</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">Y</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">Y</span></code></p></td>
 </tr>
@@ -285,21 +281,15 @@
 </tr>
 </tbody>
 </table>
-</div><div aria-labelledby="tab-0-0-1" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-1" name="0-1" role="tabpanel" tabindex="0"><table class="docutils align-default" style="width: 100%">
+</div><div aria-labelledby="tab-1-1-1" class="sphinx-tabs-panel" hidden="true" id="panel-1-1-1" name="1-1" role="tabpanel" tabindex="0"><table class="docutils align-default" style="width: 100%">
 <thead>
-<tr class="row-odd"><th class="head"><p>Ameba SoC</p></th>
-<th class="head"><p>Interface</p></th>
+<tr class="row-odd"><th class="head"><p>Interface</p></th>
 <th class="head"><p>Wi-Fi</p></th>
 <th class="head"><p>BT</p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td rowspan="7"><div class="line-block">
-<div class="line">RTL8721Dx</div>
-<div class="line">RTL8711Dx</div>
-</div>
-</td>
-<td><p>SDIO</p></td>
+<tr class="row-even"><td><p>SDIO</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">Y</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">Y</span></code></p></td>
 </tr>
@@ -329,21 +319,15 @@
 </tr>
 </tbody>
 </table>
-</div><div aria-labelledby="tab-0-0-2" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-2" name="0-2" role="tabpanel" tabindex="0"><table class="docutils align-default" style="width: 100%">
+</div><div aria-labelledby="tab-1-1-2" class="sphinx-tabs-panel" hidden="true" id="panel-1-1-2" name="1-2" role="tabpanel" tabindex="0"><table class="docutils align-default" style="width: 100%">
 <thead>
-<tr class="row-odd"><th class="head"><p>Ameba SoC</p></th>
-<th class="head"><p>Interface</p></th>
+<tr class="row-odd"><th class="head"><p>Interface</p></th>
 <th class="head"><p>Wi-Fi</p></th>
 <th class="head"><p>BT</p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td rowspan="7"><div class="line-block">
-<div class="line">RTL8721Dx</div>
-<div class="line">RTL8711Dx</div>
-</div>
-</td>
-<td><p>SDIO</p></td>
+<tr class="row-even"><td><p>SDIO</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">Y</span></code></p></td>
 <td><p>X</p></td>
 </tr>
@@ -374,9 +358,11 @@
 </tbody>
 </table>
 </div></div>
+</div></div>
+</div></blockquote>
 </section>
-<section id="features">
-<h1>Features<a class="headerlink" href="#features" title="Link to this heading"></a></h1>
+<section id="fullmac-feature-details">
+<h1>FullMAC Feature Details<a class="headerlink" href="#fullmac-feature-details" title="Link to this heading"></a></h1>
 <table class="docutils align-default" style="width: 100%">
 <thead>
 <tr class="row-odd"><th class="head"><p>Features</p></th>
@@ -461,15 +447,20 @@
 </tbody>
 </table>
 </section>
-<section id="file-tree">
-<h1>File Tree<a class="headerlink" href="#file-tree" title="Link to this heading"></a></h1>
+<section id="fullmac-file-structure">
+<h1>FullMAC File Structure<a class="headerlink" href="#fullmac-file-structure" title="Link to this heading"></a></h1>
 <section id="wi-fi">
 <h2>Wi-Fi<a class="headerlink" href="#wi-fi" title="Link to this heading"></a></h2>
 <div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-1-1-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-1-1-0" name="1-0" role="tab" tabindex="0">RTOS HOST/DEV</button><button aria-controls="panel-1-1-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-1-1-1" name="1-1" role="tab" tabindex="-1">Linux HOST</button></div><div aria-labelledby="tab-1-1-0" class="sphinx-tabs-panel" id="panel-1-1-0" name="1-0" role="tabpanel" tabindex="0"><div class="highlight-default notranslate"><div class="highlight"><pre><span></span>├─ whc
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-2-2-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-2-2-0" name="2-0" role="tab" tabindex="0">RTOS HOST/DEV</button><button aria-controls="panel-2-2-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-2-2-1" name="2-1" role="tab" tabindex="-1">Linux HOST</button></div><div aria-labelledby="tab-2-2-0" class="sphinx-tabs-panel" id="panel-2-2-0" name="2-0" role="tabpanel" tabindex="0"><div class="highlight-default notranslate"><div class="highlight"><pre><span></span>├─ whc
 │  ├─ README.md
 │  ├─ whc_def.h
 │  ├─ whc_dev
+│  │  ├─ ipc
+│  │  │  ├─ whc_ipc_dev_api.c
+│  │  │  ├─ whc_ipc_dev_trx.c
+│  │  │  ├─ whc_ipc_dev_trx.h
+│  │  │  └─ whc_ipc_device.c
 │  │  ├─ sdio
 │  │  │  ├─ whc_bridge_sdio_dev.c
 │  │  │  ├─ whc_bridge_sdio_dev.h
@@ -482,9 +473,9 @@
 │  │  │  ├─ whc_bridge_spi_dev.h
 │  │  │  ├─ whc_fullmac_spi_dev.c
 │  │  │  ├─ whc_fullmac_spi_dev.h
-│  │  │  ├─ whc_spi_dev.c
-│  │  │  └─ whc_spi_dev.h
-│  │  ├─ usb
+<span class="hll">│  │  │  ├─ whc_spi_dev.c
+</span><span class="hll">│  │  │  └─ whc_spi_dev.h
+</span>│  │  ├─ usb
 │  │  │  ├─ whc_usb_dev.c
 │  │  │  └─ whc_usb_dev.h
 │  │  ├─ whc_bridge_dev_api.c
@@ -503,14 +494,17 @@
 │  │  ├─ whc_dev_protocal_offload.h
 │  │  ├─ whc_dev_struct.h
 │  │  ├─ whc_dev_trx.c
-│  │  ├─ whc_dev_trx.h
-│  │  ├─ whc_ipc.h
-│  │  ├─ whc_ipc_cfg.h
-│  │  ├─ whc_ipc_dev_api.c
-│  │  ├─ whc_ipc_dev_trx.c
-│  │  ├─ whc_ipc_dev_trx.h
-│  │  └─ whc_ipc_device.c
-│  ├─ whc_host
+│  │  └─ whc_dev_trx.h
+│  ├─ whc_host_rtos
+│  │  ├─ ipc
+│  │  │  ├─ whc_ipc_host.c
+│  │  │  ├─ whc_ipc_host_api.c
+│  │  │  ├─ whc_ipc_host_api.h
+│  │  │  ├─ whc_ipc_host_api_basic.c
+│  │  │  ├─ whc_ipc_host_api_ext.c
+│  │  │  ├─ whc_ipc_host_trx.c
+│  │  │  ├─ whc_ipc_host_trx.h
+│  │  │  └─ whc_ipc_host_zephyr.c
 │  │  ├─ spi
 │  │  │  ├─ whc_spi_host.c
 │  │  │  ├─ whc_spi_host.h
@@ -523,110 +517,91 @@
 │  │  ├─ whc_host_api_ext.c
 │  │  ├─ whc_host_cust_evt.c
 │  │  ├─ whc_host_cust_evt.h
-│  │  ├─ whc_ipc_host.c
-│  │  ├─ whc_ipc_host_api.c
-│  │  ├─ whc_ipc_host_api_basic.c
-│  │  ├─ whc_ipc_host_api_ext.c
-│  │  ├─ whc_ipc_host_trx.c
-│  │  ├─ whc_ipc_host_trx.h
-│  │  ├─ whc_ipc_host_zephyr.c
 │  │  └─ whc_rtos
 │  │     ├─ os_wrapper_memory.c
 │  │     ├─ os_wrapper_mutex.c
 │  │     └─ os_wrapper_semaphore.c
+│  ├─ whc_ipc.h
+│  ├─ whc_ipc_cfg.h
 │  ├─ whc_ipc_msg_queue.c
 │  └─ whc_ipc_msg_queue.h
 </pre></div>
 </div>
-</div><div aria-labelledby="tab-1-1-1" class="sphinx-tabs-panel" hidden="true" id="panel-1-1-1" name="1-1" role="tabpanel" tabindex="0"><div class="highlight-default notranslate"><div class="highlight"><pre><span></span>├─ cfg80211_fullmac
+</div><div aria-labelledby="tab-2-2-1" class="sphinx-tabs-panel" hidden="true" id="panel-2-2-1" name="2-1" role="tabpanel" tabindex="0"><div class="highlight-default notranslate"><div class="highlight"><pre><span></span>├─ cfg80211_fullmac
 │  ├─ Kconfig
 │  ├─ Makefile
+│  ├─ fullmac_setup.sh
+│  ├─ fullmac
+<span class="hll">│  │  ├─ whc_fullmac_host_wiphy.c
+</span><span class="hll">│  │  ├─ whc_fullmac_host_regd.c
+</span>│  │  ├─ whc_fullmac_host_regd.h
+│  │  ├─ whc_fullmac_host_protocal_offload.c
+│  │  ├─ whc_fullmac_host_promisc.c
+│  │  ├─ whc_fullmac_host_promisc.h
+│  │  ├─ whc_fullmac_host_proc.c
+│  │  ├─ whc_fullmac_host_proc.h
+│  │  ├─ whc_fullmac_host_pkt_rx.c
+│  │  ├─ whc_fullmac_host_ops_p2p.c
+│  │  ├─ whc_fullmac_host_ops_nan.c
+│  │  ├─ whc_fullmac_host_ops_key.c
+│  │  ├─ whc_fullmac_host_ops_ap.c
+│  │  ├─ whc_fullmac_host_ops.c
+│  │  ├─ whc_fullmac_host_netdev_ops_p2p.c
+│  │  ├─ whc_fullmac_host_ioctl.c
+│  │  ├─ whc_fullmac_host_ioctl.h
+│  │  ├─ whc_fullmac_host_event_tx.c
+│  │  ├─ whc_fullmac_host_event_rx.c
+│  │  ├─ whc_fullmac_host_cust_evt.c
+│  │  ├─ whc_fullmac_host_cust_evt.h
+│  │  ├─ whc_fullmac_host_cfgvendor.c
+│  │  ├─ whc_fullmac_host_cfgvendor.h
+│  │  ├─ whc_fullmac_host_acs.c
+│  │  ├─ whc_fullmac_host_acs.h
+│  │  ├─ usb
+│  │  │  └─ Kbuild
+│  │  ├─ spi
+│  │  │  └─ Kbuild
+│  │  ├─ sdio
+│  │  │  └─ Kbuild
 │  ├─ common
 │  │  ├─ autoconf.h
+│  │  ├─ whc_host_event.h
+│  │  ├─ whc_host_hci.c
+│  │  ├─ whc_host_hci.h
+│  │  ├─ whc_host_memory.c
+│  │  ├─ whc_host_ops.c
+│  │  ├─ whc_host_pkt_rx.c
+│  │  ├─ whc_host_pkt_tx.c
+│  │  ├─ whc_host_trx.h
 │  │  ├─ netdev
-│  │  │  ├─ rtw_cfg80211_fullmac.h
-│  │  │  ├─ rtw_drv_probe.c
-│  │  │  ├─ rtw_drv_probe.h
-│  │  │  ├─ rtw_ethtool_ops.c
-│  │  │  ├─ rtw_ethtool_ops.h
-│  │  │  ├─ rtw_functions.h
-│  │  │  ├─ rtw_netdev_ops.c
-│  │  │  ├─ rtw_netdev_ops.h
-│  │  │  └─ rtw_wiphy.h
-│  │  ├─ rtw_llhw_event.h
-│  │  ├─ rtw_llhw_hci.c
-│  │  ├─ rtw_llhw_hci.h
-│  │  ├─ rtw_llhw_memory.c
-│  │  ├─ rtw_llhw_ops.c
-│  │  ├─ rtw_llhw_pkt_tx.c
-│  │  ├─ rtw_llhw_trx.h
+│  │  │  ├─ whc_host_drv_probe.c
+│  │  │  ├─ whc_host_drv_probe.h
+│  │  │  ├─ whc_host_ethtool_ops.c
+│  │  │  ├─ whc_host_ethtool_ops.h
+│  │  │  ├─ whc_host_function.h
+│  │  │  ├─ whc_host_linux.h
+│  │  │  ├─ whc_host_netdev_ops.c
+│  │  │  ├─ whc_host_netdev_ops.h
+│  │  │  └─ whc_host_wiphy.h
 │  │  ├─ sdio
-│  │  │  ├─ rtw_sdio.h
-│  │  │  ├─ rtw_sdio_drvio.c
-│  │  │  ├─ rtw_sdio_drvio.h
-│  │  │  ├─ rtw_sdio_fwdl.c
-│  │  │  ├─ rtw_sdio_init.c
-│  │  │  ├─ rtw_sdio_ops.c
-│  │  │  ├─ rtw_sdio_ops.h
-│  │  │  ├─ rtw_sdio_probe.c
-│  │  │  └─ rtw_sdio_reg.h
+│  │  │  ├─ whc_sdio_host.h
+│  │  │  ├─ whc_sdio_host_drvio.c
+│  │  │  ├─ whc_sdio_host_drvio.h
+│  │  │  ├─ whc_sdio_host_fwdl.c
+│  │  │  ├─ whc_sdio_host_init.c
+│  │  │  ├─ whc_sdio_host_ops.c
+│  │  │  ├─ whc_sdio_host_ops.h
+│  │  │  ├─ whc_sdio_host_probe.c
+│  │  │  └─ whc_sdio_host_reg.h
 │  │  ├─ spi
-│  │  │  ├─ rtw_spi.h
-│  │  │  ├─ rtw_spi_ops.c
-│  │  │  ├─ rtw_spi_probe.c
+│  │  │  ├─ whc_spi_host.h
+│  │  │  ├─ whc_spi_host_ops.c
+│  │  │  ├─ whc_spi_host_probe.c
 │  │  │  └─ spidev-overlay.dts
 │  │  └─ usb
-│  │     ├─ rtw_usb.h
-│  │     ├─ rtw_usb_ops.c
-│  │     └─ rtw_usb_probe.c
-│  ├─ fullmac
-│  │  ├─ ipc
-│  │  │  ├─ ameba_wificfg.c
-│  │  │  ├─ rtw_llhw_event.c
-│  │  │  ├─ rtw_llhw_event.h
-│  │  │  ├─ rtw_llhw_hci.c
-│  │  │  ├─ rtw_llhw_hci.h
-│  │  │  ├─ rtw_llhw_mem.c
-│  │  │  ├─ rtw_llhw_mem.h
-│  │  │  ├─ rtw_llhw_msg.c
-│  │  │  ├─ rtw_llhw_msg.h
-│  │  │  ├─ rtw_llhw_ops.c
-│  │  │  ├─ rtw_llhw_ops.h
-│  │  │  ├─ rtw_llhw_recv.c
-│  │  │  ├─ rtw_llhw_trx.h
-│  │  │  └─ rtw_llhw_xmit.c
-│  │  ├─ rtw_acs.c
-│  │  ├─ rtw_acs.h
-│  │  ├─ rtw_cfg80211_ops.c
-│  │  ├─ rtw_cfg80211_ops_ap.c
-│  │  ├─ rtw_cfg80211_ops_key.c
-│  │  ├─ rtw_cfg80211_ops_nan.c
-│  │  ├─ rtw_cfg80211_ops_p2p.c
-│  │  ├─ rtw_cfgvendor.c
-│  │  ├─ rtw_cfgvendor.h
-│  │  ├─ rtw_ioctl.c
-│  │  ├─ rtw_ioctl.h
-│  │  ├─ rtw_llhw_cust_evt.c
-│  │  ├─ rtw_llhw_cust_evt.h
-│  │  ├─ rtw_llhw_event_rx.c
-│  │  ├─ rtw_llhw_event_tx.c
-│  │  ├─ rtw_llhw_pkt_rx.c
-│  │  ├─ rtw_netdev_ops_p2p.c
-│  │  ├─ rtw_proc.c
-│  │  ├─ rtw_proc.h
-│  │  ├─ rtw_promisc.c
-│  │  ├─ rtw_promisc.h
-│  │  ├─ rtw_protocal_offload.c
-│  │  ├─ rtw_regd.c
-│  │  ├─ rtw_regd.h
-│  │  ├─ rtw_wiphy.c
-│  │  ├─ sdio
-│  │  │  └─ Kbuild
-│  │  ├─ spi
-│  │  │  └─ Kbuild
-│  │  └─ usb
-│  │     └─ Kbuild
-│  └─ fullmac_setup.sh
+│  │     ├─ whc_usb_host.h
+│  │     ├─ whc_usb_host_ops.c
+│  │     └─ whc_usb_host_probe.c
 </pre></div>
 </div>
 </div></div>
@@ -634,16 +609,16 @@
 <section id="bluetooth">
 <h2>Bluetooth<a class="headerlink" href="#bluetooth" title="Link to this heading"></a></h2>
 <div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-2-2-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-2-2-0" name="2-0" role="tab" tabindex="0">Device</button><button aria-controls="panel-2-2-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-2-2-1" name="2-1" role="tab" tabindex="-1">RTOS HOST</button><button aria-controls="panel-2-2-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-2-2-2" name="2-2" role="tab" tabindex="-1">Linux Host</button></div><div aria-labelledby="tab-2-2-0" class="sphinx-tabs-panel" id="panel-2-2-0" name="2-0" role="tabpanel" tabindex="0"></div><div aria-labelledby="tab-2-2-1" class="sphinx-tabs-panel" hidden="true" id="panel-2-2-1" name="2-1" role="tabpanel" tabindex="0"></div><div aria-labelledby="tab-2-2-2" class="sphinx-tabs-panel" hidden="true" id="panel-2-2-2" name="2-2" role="tabpanel" tabindex="0"></div></div>
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-3-3-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-3-3-0" name="3-0" role="tab" tabindex="0">Device</button><button aria-controls="panel-3-3-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-3-3-1" name="3-1" role="tab" tabindex="-1">RTOS Host</button><button aria-controls="panel-3-3-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-3-3-2" name="3-2" role="tab" tabindex="-1">Linux Host</button></div><div aria-labelledby="tab-3-3-0" class="sphinx-tabs-panel" id="panel-3-3-0" name="3-0" role="tabpanel" tabindex="0"></div><div aria-labelledby="tab-3-3-1" class="sphinx-tabs-panel" hidden="true" id="panel-3-3-1" name="3-1" role="tabpanel" tabindex="0"></div><div aria-labelledby="tab-3-3-2" class="sphinx-tabs-panel" hidden="true" id="panel-3-3-2" name="3-2" role="tabpanel" tabindex="0"></div></div>
 </section>
 </section>
-<section id="hardware-configuration">
-<h1>Hardware Configuration<a class="headerlink" href="#hardware-configuration" title="Link to this heading"></a></h1>
+<section id="fullmac-hardware-configuration">
+<h1>FullMAC Hardware Configuration<a class="headerlink" href="#fullmac-hardware-configuration" title="Link to this heading"></a></h1>
 <section id="interface-connections">
 <h2>Interface Connections<a class="headerlink" href="#interface-connections" title="Link to this heading"></a></h2>
 <p>Pin connections between Ameba and Raspberry Pi are as follows:</p>
 <div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-3-3-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-3-3-0" name="3-0" role="tab" tabindex="0">RTL8721Dx</button><button aria-controls="panel-3-3-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-3-3-1" name="3-1" role="tab" tabindex="-1">Raspberry Pi</button></div><div aria-labelledby="tab-3-3-0" class="sphinx-tabs-panel" id="panel-3-3-0" name="3-0" role="tabpanel" tabindex="0"><table class="docutils align-default" style="width: 100%">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-4-4-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-4-4-0" name="4-0" role="tab" tabindex="0">RTL8721Dx</button><button aria-controls="panel-4-4-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-4-4-1" name="4-1" role="tab" tabindex="-1">Raspberry Pi</button></div><div aria-labelledby="tab-4-4-0" class="sphinx-tabs-panel" id="panel-4-4-0" name="4-0" role="tabpanel" tabindex="0"><table class="docutils align-default" style="width: 100%">
 <thead>
 <tr class="row-odd"><th class="head"><p>Interface</p></th>
 <th class="head"><p>SoC</p></th>
@@ -730,7 +705,7 @@
 </tr>
 </tbody>
 </table>
-</div><div aria-labelledby="tab-3-3-1" class="sphinx-tabs-panel" hidden="true" id="panel-3-3-1" name="3-1" role="tabpanel" tabindex="0"><table class="docutils align-default" style="width: 100%">
+</div><div aria-labelledby="tab-4-4-1" class="sphinx-tabs-panel" hidden="true" id="panel-4-4-1" name="4-1" role="tabpanel" tabindex="0"><table class="docutils align-default" style="width: 100%">
 <thead>
 <tr class="row-odd"><th class="head"><p>Interface</p></th>
 <th class="head"><p>Raspberry Pi</p></th>
@@ -872,80 +847,101 @@
 </figure>
 </section>
 </section>
-<section id="wifi-device-driver-porting-guide">
-<h1>WiFi Device Driver Porting Guide<a class="headerlink" href="#wifi-device-driver-porting-guide" title="Link to this heading"></a></h1>
+<section id="fullmac-wifi-device-driver-porting-guide">
+<h1>FullMAC WiFi Device Driver Porting Guide<a class="headerlink" href="#fullmac-wifi-device-driver-porting-guide" title="Link to this heading"></a></h1>
 <ol class="arabic">
-<li><p>Execute <code class="docutils literal notranslate"><span class="pre">./menuconfig.py</span></code> under the path <code class="docutils literal notranslate"><span class="pre">{SDK}/amebadplus_gcc_project</span></code></p>
+<li><p>In the directory <code class="docutils literal notranslate"><span class="pre">{SDK}/amebadplus_gcc_project</span></code>, execute <code class="docutils literal notranslate"><span class="pre">./menuconfig.py</span></code>:</p>
 <ol class="loweralpha">
-<li><p>Click <span class="menuselection">CONFIG Link Option &gt; IMG2(Application) running on FLASH or PSRAM?</span>, and select <span class="menuselection">PSRAM</span></p>
+<li><p>Locate <span class="menuselection">CONFIG Link Option &gt; IMG2(Application) running on FLASH or PSRAM?</span>, and select <span class="menuselection">PSRAM</span>:</p>
 <figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/sdio_config_flash_or_psram.png"><img alt="../../_images/sdio_config_flash_or_psram.png" src="../../_images/sdio_config_flash_or_psram.png" style="width: 920.8000000000001px; height: 264.0px;" /></a>
 </figure>
 </li>
-<li><p>Click <span class="menuselection">CONFIG INIC ITNF &gt; INIC Mode &gt; FULLMAC</span>, select <span class="menuselection">SDIO_FULLMAC</span> for SDIO interface or <span class="menuselection">SPI_FULLMAC</span> for SPI interface.</p>
+<li><p>Locate <span class="menuselection">CONFIG WHC ITNF &gt; WHC Mode &gt; FULLMAC</span>, and select the desired interface:</p>
 <figure class="align-center">
-<a class="reference internal image-reference" href="../../_images/wifi_sdio_spi_selection.png"><img alt="../../_images/wifi_sdio_spi_selection.png" src="../../_images/wifi_sdio_spi_selection.png" style="width: 304.0px; height: 101.60000000000001px;" /></a>
+<a class="reference internal image-reference" href="../../_images/wifi_sdio_spi_selection.png"><img alt="../../_images/wifi_sdio_spi_selection.png" src="../../_images/wifi_sdio_spi_selection.png" style="width: 782.4000000000001px; height: 308.8px;" /></a>
 </figure>
 </li>
 </ol>
 </li>
-<li><p>Execute the make command to generate <code class="file docutils literal notranslate"><span class="pre">km4_boot_all.bin</span></code> and <code class="file docutils literal notranslate"><span class="pre">km0_km4_app.bin</span></code> after the build is successfully complete.</p></li>
-<li><p>Use the ImageTool download images and reset the device.</p></li>
+<li><p>Run <code class="docutils literal notranslate"><span class="pre">./build.py</span></code> to generate <code class="file docutils literal notranslate"><span class="pre">km4_boot_all.bin</span></code> and <code class="file docutils literal notranslate"><span class="pre">km0_km4_app.bin</span></code>.</p></li>
+<li><p>Use the image tool to download the image to the development board.</p></li>
 </ol>
 </section>
-<section id="wi-fi-host-driver-porting-guide">
-<h1>Wi-Fi Host Driver Porting Guide<a class="headerlink" href="#wi-fi-host-driver-porting-guide" title="Link to this heading"></a></h1>
+<section id="fullmac-wi-fi-host-driver-porting-guide">
+<h1>FullMAC Wi-Fi Host Driver Porting Guide<a class="headerlink" href="#fullmac-wi-fi-host-driver-porting-guide" title="Link to this heading"></a></h1>
 <div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-4-4-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-4-4-0" name="4-0" role="tab" tabindex="0">RTOS</button><button aria-controls="panel-4-4-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-4-4-1" name="4-1" role="tab" tabindex="-1">Linux</button></div><div aria-labelledby="tab-4-4-0" class="sphinx-tabs-panel" id="panel-4-4-0" name="4-0" role="tabpanel" tabindex="0"><p>If use this chip as SPI Fullmac Host:</p>
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-5-5-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-5-5-0" name="5-0" role="tab" tabindex="0">RTOS</button><button aria-controls="panel-5-5-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-5-5-1" name="5-1" role="tab" tabindex="-1">Linux</button></div><div aria-labelledby="tab-5-5-0" class="sphinx-tabs-panel" id="panel-5-5-0" name="5-0" role="tabpanel" tabindex="0"><p><strong>Ameba as FullMAC Host Guide</strong></p>
 <ol class="arabic">
-<li><p>Execute <code class="docutils literal notranslate"><span class="pre">./menuconfig.py</span></code> under the path <code class="docutils literal notranslate"><span class="pre">{SDK}/amebadplus_gcc_project</span></code></p>
+<li><p><strong>Configuration</strong></p>
+<p>Execute config tool in directory <code class="docutils literal notranslate"><span class="pre">{SDK}/amebadplus_gcc_project</span></code>:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>./menuconfig.py
+</pre></div>
+</div>
 <ol class="loweralpha">
-<li><p>Click <span class="menuselection">CONFIG INIC ITNF &gt; INIC Mode</span>, select <span class="menuselection">SPI_FULLMAC_HOST</span> for SPI interface.</p>
+<li><p>Navigate to <span class="menuselection">CONFIG WHC ITNF &gt; WHC Mode</span> and select interface:</p>
 <figure class="align-center">
-<a class="reference internal image-reference" href="../../_images/spi_config_fullmac_host.png"><img alt="../../_images/spi_config_fullmac_host.png" src="../../_images/spi_config_fullmac_host.png" style="width: 308.0px; height: 80.0px;" /></a>
+<a class="reference internal image-reference" href="../../_images/spi_config_fullmac_host.png"><img alt="Interface selection diagram" src="../../_images/spi_config_fullmac_host.png" style="width: 771.2px; height: 200.8px;" /></a>
 </figure>
 </li>
 </ol>
 </li>
-<li><p>Execute the make command to generate <code class="file docutils literal notranslate"><span class="pre">km4_boot_all.bin</span></code> and <code class="file docutils literal notranslate"><span class="pre">km0_km4_app.bin</span></code> after the build is successfully complete.</p></li>
-<li><p>Use the ImageTool download images and reset the device.</p></li>
+<li><p><strong>Firmware Compilation</strong></p>
+<p>Generate target files:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>./build.py
+</pre></div>
+</div>
+<p><strong>Output Files</strong>:</p>
+<ul class="simple">
+<li><p><code class="file docutils literal notranslate"><span class="pre">km4_boot_all.bin</span></code></p></li>
+<li><p><code class="file docutils literal notranslate"><span class="pre">km0_km4_app.bin</span></code></p></li>
+</ul>
+</li>
+<li><p><strong>Firmware Flashing</strong></p>
+<p>Use dedicated flashing tool to program development board</p>
+</li>
 </ol>
-<p>If use other rtos IC as SPI/SDIO Fullmac Host, files showed in file tree can be used.</p>
-</div><div aria-labelledby="tab-4-4-1" class="sphinx-tabs-panel" hidden="true" id="panel-4-4-1" name="4-1" role="tabpanel" tabindex="0"><p>The FullMAC driver has been tested and verified to work on Linux kernel versions 5.4 and 5.10.
-If you encounter any compilation errors on other kernel versions, please contact us.</p>
+<div class="important admonition">
+<p class="admonition-title">Third-party Platform Porting</p>
+<p>For other host chips, port these directories to target system:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">component/os/freertos</span></code></p></li>
+</ul>
+</div>
+</div><div aria-labelledby="tab-5-5-1" class="sphinx-tabs-panel" hidden="true" id="panel-5-5-1" name="5-1" role="tabpanel" tabindex="0"><p>FullMAC is currently tested and validated on Linux kernels 5.4 and 5.10. If you encounter compilation issues on other kernel versions, contact &lt;<a class="reference external" href="mailto:claire_wang&#37;&#52;&#48;realsil&#46;com&#46;cn">claire_wang<span>&#64;</span>realsil<span>&#46;</span>com<span>&#46;</span>cn</a>&gt;.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The SPI operates using DMA, and the data for the SPI device is stored in RAM. When the nCS pin is asserted low, DMA transfers the data from RAM to the bus. Under normal conditions, this data transfer occurs without issues. However, if the bus is busy, a delay can occur during the data transfer, leading to potential problems. Our developer identified and tested this issue, determining that a delay of 7 microseconds provides sufficient time to ensure safe data transfer to the bus, even when it is busy. In some older versions of the Linux kernel, the SPI driver does not support the struct spi_delay, which prevents setting the delay between nCS and the clock signal through the interface. As a result, it may be necessary to modify the driver code directly to achieve the desired delay configuration.</p>
+<p>SPI initiates data transfer immediately after CS pin is pulled low and CLK is detected. Corner cases may occur during bus busy states.
+Testing shows adding a 7μs delay between CS low and host CLK push ensures safe data transmission.
+However, older SPI drivers without <code class="docutils literal notranslate"><span class="pre">spi_delay</span></code> support may require direct code modification.</p>
 </div>
 <div class="admonition-prerequisites admonition">
 <p class="admonition-title">Prerequisites</p>
-<p>Install the following software packages on Linux system first.</p>
+<p>Install dependencies on Linux:</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>build-essential
-sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>dhcpcd
-sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>hostapd
-sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>dhcpd
+sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>dhcpcd<span class="w"> </span>hostapd<span class="w"> </span>dhcpd
 </pre></div>
 </div>
 </div>
 <ol class="arabic">
-<li><p>Enable the SDIO, SPI, or USB function.</p>
+<li><p><strong>Interface Activation</strong></p>
 <ul class="simple">
-<li><p>For Linux PC, skip this step.</p></li>
-<li><p>For Raspberry Pi:</p></li>
+<li><p><strong>Linux PC</strong>: Skip this step</p></li>
+<li><p><strong>Raspberry Pi</strong>:</p></li>
 </ul>
 <div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-5-5-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-5-5-0" name="5-0" role="tab" tabindex="0">SDIO</button><button aria-controls="panel-5-5-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-5-5-1" name="5-1" role="tab" tabindex="-1">SPI</button><button aria-controls="panel-5-5-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-5-5-2" name="5-2" role="tab" tabindex="-1">USB</button></div><div aria-labelledby="tab-5-5-0" class="sphinx-tabs-panel" id="panel-5-5-0" name="5-0" role="tabpanel" tabindex="0"><p>Use <code class="docutils literal notranslate"><span class="pre">dtoverlay</span></code> command to configure SDIO.</p>
-<p>For Raspberry Pi 4, type the following command:</p>
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-6-6-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-6-6-0" name="6-0" role="tab" tabindex="0">SDIO</button><button aria-controls="panel-6-6-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-6-6-1" name="6-1" role="tab" tabindex="-1">SPI</button><button aria-controls="panel-6-6-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-6-6-2" name="6-2" role="tab" tabindex="-1">USB</button></div><div aria-labelledby="tab-6-6-0" class="sphinx-tabs-panel" id="panel-6-6-0" name="6-0" role="tabpanel" tabindex="0"><p>Configure SDIO via <code class="docutils literal notranslate"><span class="pre">dtoverlay</span></code>:</p>
+<p><em>For Raspberry Pi 4</em>:</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>dtoverlay<span class="w"> </span>sdio<span class="w"> </span><span class="nv">poll_once</span><span class="o">=</span>off
 </pre></div>
 </div>
-</div><div aria-labelledby="tab-5-5-1" class="sphinx-tabs-panel" hidden="true" id="panel-5-5-1" name="5-1" role="tabpanel" tabindex="0"><ol class="lowerroman">
-<li><p>Enable the SPI peripheral.</p>
+</div><div aria-labelledby="tab-6-6-1" class="sphinx-tabs-panel" hidden="true" id="panel-6-6-1" name="6-1" role="tabpanel" tabindex="0"><ol class="lowerroman">
+<li><p>Enable SPI interface:</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>raspi-config
 </pre></div>
 </div>
 </li>
-<li><p>Select <span class="menuselection">Interface Options &gt; SPI &gt; Yes</span></p></li>
+<li><p>Select <span class="menuselection">Interface Options &gt; SPI &gt; Yes</span>:</p></li>
 </ol>
 <blockquote>
 <div><figure class="align-center">
@@ -953,7 +949,7 @@ sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> <
 </figure>
 </div></blockquote>
 <ol class="lowerroman simple" start="3">
-<li><p>Generate and apply Device Tree Overlay</p></li>
+<li><p>Generate device tree overlay:</p></li>
 </ol>
 <blockquote>
 <div><div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>su
@@ -964,27 +960,28 @@ dtoverlay<span class="w"> </span>inic_spidev
 </pre></div>
 </div>
 </div></blockquote>
-</div><div aria-labelledby="tab-5-5-2" class="sphinx-tabs-panel" hidden="true" id="panel-5-5-2" name="5-2" role="tabpanel" tabindex="0"></div></div>
+</div><div aria-labelledby="tab-6-6-2" class="sphinx-tabs-panel" hidden="true" id="panel-6-6-2" name="6-2" role="tabpanel" tabindex="0"></div></div>
 </li>
-<li><p>Build the module.</p>
+<li><p><strong>Driver Compilation</strong></p>
 <ol class="loweralpha simple">
-<li><p>In the path <code class="docutils literal notranslate"><span class="pre">/component/wifi/cfg80211_fullmac</span></code>, execute the following script with an interface parameter to configure the host driver.</p></li>
+<li><p>In directory <code class="docutils literal notranslate"><span class="pre">/component/wifi/cfg80211_fullmac</span></code>, run:</p></li>
 </ol>
 <div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-6-6-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-6-6-0" name="6-0" role="tab" tabindex="0">SDIO</button><button aria-controls="panel-6-6-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-6-6-1" name="6-1" role="tab" tabindex="-1">SPI</button><button aria-controls="panel-6-6-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-6-6-2" name="6-2" role="tab" tabindex="-1">USB</button></div><div aria-labelledby="tab-6-6-0" class="sphinx-tabs-panel" id="panel-6-6-0" name="6-0" role="tabpanel" tabindex="0"><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">fullmac_setup</span><span class="o">.</span><span class="n">sh</span> <span class="n">sdio</span>
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-7-7-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-7-7-0" name="7-0" role="tab" tabindex="0">SDIO</button><button aria-controls="panel-7-7-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-7-7-1" name="7-1" role="tab" tabindex="-1">SPI</button><button aria-controls="panel-7-7-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-7-7-2" name="7-2" role="tab" tabindex="-1">USB</button></div><div aria-labelledby="tab-7-7-0" class="sphinx-tabs-panel" id="panel-7-7-0" name="7-0" role="tabpanel" tabindex="0"><div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>./fullmac_setup.sh<span class="w"> </span>sdio
 </pre></div>
 </div>
-</div><div aria-labelledby="tab-6-6-1" class="sphinx-tabs-panel" hidden="true" id="panel-6-6-1" name="6-1" role="tabpanel" tabindex="0"><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">fullmac_setup</span><span class="o">.</span><span class="n">sh</span> <span class="n">spi</span>
+</div><div aria-labelledby="tab-7-7-1" class="sphinx-tabs-panel" hidden="true" id="panel-7-7-1" name="7-1" role="tabpanel" tabindex="0"><div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>./fullmac_setup.sh<span class="w"> </span>spi
 </pre></div>
 </div>
-</div><div aria-labelledby="tab-6-6-2" class="sphinx-tabs-panel" hidden="true" id="panel-6-6-2" name="6-2" role="tabpanel" tabindex="0"><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">fullmac_setup</span><span class="o">.</span><span class="n">sh</span> <span class="n">usb</span>
+</div><div aria-labelledby="tab-7-7-2" class="sphinx-tabs-panel" hidden="true" id="panel-7-7-2" name="7-2" role="tabpanel" tabindex="0"><div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>./fullmac_setup.sh<span class="w"> </span>usb
 </pre></div>
 </div>
 </div></div>
 <ol class="loweralpha" start="2">
-<li><p>Copy the folder of <code class="docutils literal notranslate"><span class="pre">cfg80211_fullmac</span></code> to the Linux system.</p></li>
-<li><p>Open the terminal and execute the following command:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="p">{</span><span class="n">driver_path</span><span class="p">}</span><span class="o">/</span><span class="n">cfg80211_fullmac</span><span class="p">;</span><span class="n">make</span>
+<li><p>Copy <code class="docutils literal notranslate"><span class="pre">cfg80211_fullmac</span></code> to Linux kernel source tree</p></li>
+<li><p>Open new terminal and compile:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span><span class="o">{</span>driver_path<span class="o">}</span>/cfg80211_fullmac
+make
 </pre></div>
 </div>
 </li>
@@ -992,168 +989,135 @@ dtoverlay<span class="w"> </span>inic_spidev
 </li>
 </ol>
 <ol class="arabic" id="load-the-module-step" start="3">
-<li><p>Load the module.</p>
+<li><p><strong>Driver Loading</strong></p>
 <div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-7-7-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-7-7-0" name="7-0" role="tab" tabindex="0">SDIO</button><button aria-controls="panel-7-7-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-7-7-1" name="7-1" role="tab" tabindex="-1">SPI</button><button aria-controls="panel-7-7-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-7-7-2" name="7-2" role="tab" tabindex="-1">USB</button></div><div aria-labelledby="tab-7-7-0" class="sphinx-tabs-panel" id="panel-7-7-0" name="7-0" role="tabpanel" tabindex="0"><p><code class="file docutils literal notranslate"><span class="pre">fullmac_sdio.ko</span></code> is generated in <code class="docutils literal notranslate"><span class="pre">/cfg80211_fullmac/sdio</span></code>.</p>
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-8-8-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-8-8-0" name="8-0" role="tab" tabindex="0">SDIO</button><button aria-controls="panel-8-8-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-8-8-1" name="8-1" role="tab" tabindex="-1">SPI</button><button aria-controls="panel-8-8-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-8-8-2" name="8-2" role="tab" tabindex="-1">USB</button></div><div aria-labelledby="tab-8-8-0" class="sphinx-tabs-panel" id="panel-8-8-0" name="8-0" role="tabpanel" tabindex="0"><p><strong>Module Path</strong>: <code class="docutils literal notranslate"><span class="pre">/cfg80211_fullmac/sdio/fullmac_sdio.ko</span></code></p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>su
-cp<span class="w"> </span>sdio/fullmac_sdio.ko<span class="w"> </span>/lib/modules/XXX/
-depmod
+cp<span class="w"> </span>sdio/fullmac_sdio.ko<span class="w"> </span>/lib/modules/<span class="k">$(</span>uname<span class="w"> </span>-r<span class="k">)</span>/
+depmod<span class="w"> </span>-a
 modprobe<span class="w"> </span>fullmac_sdio
 </pre></div>
 </div>
-</div><div aria-labelledby="tab-7-7-1" class="sphinx-tabs-panel" hidden="true" id="panel-7-7-1" name="7-1" role="tabpanel" tabindex="0"><p><code class="file docutils literal notranslate"><span class="pre">fullmac_spi.ko</span></code> is generated in <code class="docutils literal notranslate"><span class="pre">/cfg80211_fullmac/spi</span></code>.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">su</span>
-<span class="n">cp</span> <span class="n">spi</span><span class="o">/</span><span class="n">fullmac_spi</span><span class="o">.</span><span class="n">ko</span> <span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">modules</span><span class="o">/</span><span class="n">XXX</span><span class="o">/</span>
-<span class="n">depmod</span>
-<span class="n">modprobe</span> <span class="n">fullmac_spi</span>
+</div><div aria-labelledby="tab-8-8-1" class="sphinx-tabs-panel" hidden="true" id="panel-8-8-1" name="8-1" role="tabpanel" tabindex="0"><p><strong>Module Path</strong>: <code class="docutils literal notranslate"><span class="pre">/cfg80211_fullmac/spi/fullmac_spi.ko</span></code></p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>su
+cp<span class="w"> </span>spi/fullmac_spi.ko<span class="w"> </span>/lib/modules/<span class="k">$(</span>uname<span class="w"> </span>-r<span class="k">)</span>/
+depmod<span class="w"> </span>-a
+modprobe<span class="w"> </span>fullmac_spi
 </pre></div>
 </div>
-</div><div aria-labelledby="tab-7-7-2" class="sphinx-tabs-panel" hidden="true" id="panel-7-7-2" name="7-2" role="tabpanel" tabindex="0"><p><code class="file docutils literal notranslate"><span class="pre">fullmac_spi.ko</span></code> is generated in <code class="docutils literal notranslate"><span class="pre">/cfg80211_fullmac/usb</span></code>.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">su</span>
-<span class="n">cp</span> <span class="n">usb</span><span class="o">/</span><span class="n">fullmac_spi</span><span class="o">.</span><span class="n">ko</span> <span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">modules</span><span class="o">/</span><span class="n">XXX</span><span class="o">/</span>
-<span class="n">depmod</span>
-<span class="n">modprobe</span> <span class="n">fullmac_usb</span>
+</div><div aria-labelledby="tab-8-8-2" class="sphinx-tabs-panel" hidden="true" id="panel-8-8-2" name="8-2" role="tabpanel" tabindex="0"><p><strong>Module Path</strong>: <code class="docutils literal notranslate"><span class="pre">/cfg80211_fullmac/usb/fullmac_usb.ko</span></code></p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>su
+cp<span class="w"> </span>usb/fullmac_usb.ko<span class="w"> </span>/lib/modules/<span class="k">$(</span>uname<span class="w"> </span>-r<span class="k">)</span>/
+depmod<span class="w"> </span>-a
+modprobe<span class="w"> </span>fullmac_usb
 </pre></div>
 </div>
 </div></div>
-<p>When loading module is successful, use <code class="docutils literal notranslate"><span class="pre">ifconfig</span></code> command to get the information of net device.
-The net device whose MAC address starts with <code class="docutils literal notranslate"><span class="pre">00:e0:4c</span></code> is STA, and the net device whose MAC address starts with <code class="docutils literal notranslate"><span class="pre">00:e1:4c</span> <span class="pre">is</span></code> softAP.</p>
-<p>The following is an example, in which <strong>wlan1</strong> is STA and <strong>wlan2</strong> is softAP.</p>
+<p>After successful loading, run <code class="docutils literal notranslate"><span class="pre">ifconfig</span></code> to verify WiFi devices:
+<strong>Sample Output</strong>:</p>
+<ul class="simple">
+<li><p>Station mode MAC prefix: <code class="docutils literal notranslate"><span class="pre">00:e0:4c</span></code></p></li>
+<li><p>SoftAP mode MAC prefix: <code class="docutils literal notranslate"><span class="pre">00:e1:4c</span></code></p></li>
+</ul>
 <figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/ifconfig_sta_softap.png"><img alt="../../_images/ifconfig_sta_softap.png" src="../../_images/ifconfig_sta_softap.png" style="width: 569.0px; height: 524.0px;" /></a>
 </figure>
 </li>
-<li><p>Connect to STA.</p>
+<li><p><strong>Connect to AP</strong></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><strong>For Ubuntu</strong>: Stop NetworkManager and DHCP services if using CLI:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>systemctl<span class="w"> </span>stop<span class="w"> </span>NetworkManager<span class="w"> </span>dhcpcd.service
+sudo<span class="w"> </span>systemctl<span class="w"> </span>disable<span class="w"> </span>NetworkManager
+</pre></div>
+</div>
+</div>
 <ol class="loweralpha">
-<li><p>Create <code class="file docutils literal notranslate"><span class="pre">wpa_supplicant.conf</span></code> under the path <code class="docutils literal notranslate"><span class="pre">/etc/wpa_supplicant/</span></code> and add AP information.</p>
-<p>There is an example configuration for WPA2.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ctrl_interface</span><span class="o">=/</span><span class="n">var</span><span class="o">/</span><span class="n">run</span><span class="o">/</span><span class="n">wpa_supplicant</span>
-<span class="n">network</span><span class="o">=</span><span class="p">{</span>
-         <span class="n">ssid</span><span class="o">=</span><span class="s2">&quot;HUAWEI-JX2UX5_HiLink_5G&quot;</span>
-         <span class="n">psk</span><span class="o">=</span><span class="s2">&quot;12345678&quot;</span>
-<span class="p">}</span>
+<li><p>Create <code class="docutils literal notranslate"><span class="pre">/etc/wpa_supplicant/wpa_supplicant.conf</span></code>:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>ctrl_interface=/var/run/wpa_supplicant
+network={
+    ssid=&quot;HUAWEI-JX2UX5_HiLink_5G&quot;
+    psk=&quot;12345678&quot;
+}
 </pre></div>
 </div>
 </li>
-<li><p>Connect with the following command:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Wpa_supplicant</span> <span class="o">-</span><span class="n">D</span> <span class="n">nl80211</span> <span class="o">-</span><span class="n">i</span> <span class="n">wlanX</span> <span class="o">-</span><span class="n">c</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">wpa_supplicant</span><span class="o">/</span><span class="n">wpa_supplicant</span><span class="o">.</span><span class="n">conf</span> <span class="o">-</span><span class="n">dd</span> <span class="o">&gt;</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">wifi_log</span>
-</pre></div>
-</div>
-</li>
-<li><p>Obtain the IP address with the following command:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dhcpcd</span> <span class="n">wlanX</span>
+<li><p>Connect to AP:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>wpa_supplicant<span class="w"> </span>-D<span class="w"> </span>nl80211<span class="w"> </span>-i<span class="w"> </span>wlanX<span class="w"> </span>-c<span class="w"> </span>/etc/wpa_supplicant/wpa_supplicant.conf<span class="w"> </span>-dd<span class="w"> </span>&gt;<span class="w"> </span>/var/wifi_log
 </pre></div>
 </div>
 </li>
 </ol>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<ul class="simple">
-<li><p>The <em>wlanX</em> in the above command refers to the name of STA obtained from <a class="reference internal" href="#load-the-module-step"><span class="std std-ref">Step 3</span></a>.</p></li>
-<li><p>The configuration files of OPEN and WPA3 are different, please refer to the official supplicant documentation for details.</p></li>
-<li><p>For Ubuntu system, if you want to manually connect using command <code class="docutils literal notranslate"><span class="pre">wpa_supplicant</span></code> and obtain an IP address, first stop NetworkManager and DHCP service to avoid the influence of NetworkManager on <em>wpa_supplicant</em>.</p></li>
-</ul>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>su
-systemctl<span class="w"> </span>stop<span class="w"> </span>NetworkManager
-systemctl<span class="w"> </span>disable<span class="w"> </span>NetworkManager
-systemctl<span class="w"> </span>stop<span class="w"> </span>dhcpcd.service
-</pre></div>
+<p><code class="docutils literal notranslate"><span class="pre">wlanX</span></code> refers to Station mode device from <a class="reference internal" href="#load-the-module-step"><span class="std std-ref">Step 3</span></a></p>
 </div>
-</div>
-</li>
-<li><p>Setup the softAP.</p>
-<ol class="loweralpha">
-<li><p>Create <code class="file docutils literal notranslate"><span class="pre">hostapd.conf</span></code> under the path <code class="docutils literal notranslate"><span class="pre">/etc/hostapd/</span></code> and add the configuration information.</p>
-<p>Take WPA2 as an example, you can add the following information:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">driver</span><span class="o">=</span><span class="n">nl80211</span>
-
-<span class="n">logger_syslog</span><span class="o">=-</span><span class="mi">1</span>
-<span class="n">logger_syslog_level</span><span class="o">=</span><span class="mi">2</span>
-<span class="n">logger_stdout</span><span class="o">=-</span><span class="mi">1</span>
-<span class="n">logger_stdout_level</span><span class="o">=</span><span class="mi">2</span>
-
-<span class="n">ctrl_interface</span><span class="o">=/</span><span class="n">var</span><span class="o">/</span><span class="n">run</span><span class="o">/</span><span class="n">hostapd</span>
-
-<span class="n">hw_mode</span><span class="o">=</span><span class="n">g</span>
-<span class="n">channel</span><span class="o">=</span><span class="mi">6</span>
-<span class="n">ssid</span><span class="o">=</span><span class="n">aaa_test</span>
-<span class="n">beacon_int</span><span class="o">=</span><span class="mi">100</span>
-<span class="n">dtim_period</span><span class="o">=</span><span class="mi">1</span>
-<span class="n">max_num_sta</span><span class="o">=</span><span class="mi">8</span>
-<span class="n">rts_threshold</span><span class="o">=</span><span class="mi">2347</span>
-<span class="n">fragm_threshold</span><span class="o">=</span><span class="mi">2346</span>
-
-<span class="n">ieee80211n</span><span class="o">=</span><span class="mi">1</span>
-
-<span class="n">erp_send_reauth_start</span><span class="o">=</span><span class="mi">1</span>
-
-<span class="n">wpa</span><span class="o">=</span><span class="mi">2</span>
-<span class="n">wpa_key_mgmt</span><span class="o">=</span><span class="n">WPA</span><span class="o">-</span><span class="n">PSK</span>
-<span class="n">wpa_pairwise</span><span class="o">=</span><span class="n">CCMP</span>
-<span class="n">wpa_passphrase</span><span class="o">=</span><span class="mi">12345678</span>
-</pre></div>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>This configuration file is applicable for WPA2 softAP.
-If you want to use OPEN or WPA3, please refer to the official hostapd documentation to set the parameters.</p>
-</div>
-</li>
-<li><p>Create <code class="file docutils literal notranslate"><span class="pre">udhcpd_wlanX.conf</span></code> under the path <code class="docutils literal notranslate"><span class="pre">/etc/</span></code> and add the following information:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># The start and end of the IP lease block</span>
-<span class="n">start</span>               <span class="mf">192.168.43.20</span>
-<span class="n">end</span>         <span class="mf">192.168.43.254</span>
-
-<span class="c1"># The interface that udhcpd will use</span>
-<span class="n">interface</span>   <span class="n">wlanX</span>
-
-<span class="n">opt</span> <span class="n">dns</span>     <span class="mf">192.168.43.1</span> <span class="mf">129.219.13.81</span>
-<span class="n">option</span>      <span class="n">subnet</span>  <span class="mf">255.255.255.0</span>
-<span class="n">opt</span> <span class="n">router</span>  <span class="mf">192.168.43.1</span>
-<span class="n">option</span>      <span class="n">domain</span>  <span class="n">local</span>
-<span class="n">option</span>      <span class="n">lease</span>   <span class="mi">864000</span>          <span class="c1"># default: 10 days</span>
-<span class="n">option</span>      <span class="n">msstaticroutes</span>  <span class="mf">10.0.0.0</span><span class="o">/</span><span class="mi">8</span> <span class="mf">10.127.0.1</span>           <span class="c1"># single static route</span>
-<span class="n">option</span>      <span class="n">staticroutes</span>    <span class="mf">10.0.0.0</span><span class="o">/</span><span class="mi">8</span> <span class="mf">10.127.0.1</span><span class="p">,</span> <span class="mf">10.11.12.0</span><span class="o">/</span><span class="mi">24</span> <span class="mf">10.11.12.1</span>
-<span class="n">option</span>      <span class="mh">0x08</span>    <span class="mi">01020304</span>        <span class="c1"># option 8: &quot;cookie server IP addr: 1.2.3.4&quot;</span>
-</pre></div>
-</div>
-</li>
-<li><p>Start the softAP.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">hostapd</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">hostapd</span><span class="o">/</span><span class="n">hostapd</span><span class="o">.</span><span class="n">conf</span> <span class="o">-</span><span class="n">i</span> <span class="n">wlanX</span>
-</pre></div>
-</div>
-</li>
-<li><p>Set the IP address.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ifconfig</span> <span class="n">wlanX</span> <span class="mf">192.168.43.1</span>
-</pre></div>
-</div>
-</li>
-<li><p>Start the DHCP server.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">udhcpd</span> <span class="o">-</span><span class="n">f</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">udhcpd_wlanX</span><span class="o">.</span><span class="n">conf</span>
+<ol class="loweralpha" start="3">
+<li><p>Obtain IP:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>dhcpcd<span class="w"> </span>wlanX
 </pre></div>
 </div>
 </li>
 </ol>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The <em>wlanX</em> in the above command refers to the name of softAP obtained from <a class="reference internal" href="#load-the-module-step"><span class="std std-ref">Step 3</span></a>.</p>
+</li>
+<li><p><strong>SoftAP Setup</strong></p>
+<ol class="loweralpha">
+<li><p>Create <code class="docutils literal notranslate"><span class="pre">/etc/hostapd/hostapd.conf</span></code>:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>driver=nl80211
+logger_syslog=-1
+logger_syslog_level=2
+hw_mode=g
+channel=6
+ssid=aaa_test
+wpa=2
+wpa_passphrase=12345678
+wpa_key_mgmt=WPA-PSK
+wpa_pairwise=CCMP
+</pre></div>
 </div>
+</li>
+<li><p>Create DHCP config <code class="docutils literal notranslate"><span class="pre">/etc/udhcpd_wlanX.conf</span></code>:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>start 192.168.43.20
+end 192.168.43.254
+interface wlanX
+opt dns 192.168.43.1
+option subnet 255.255.255.0
+opt router 192.168.43.1
+</pre></div>
+</div>
+</li>
+<li><p>Start SoftAP:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>hostapd<span class="w"> </span>/etc/hostapd/hostapd.conf<span class="w"> </span>-i<span class="w"> </span>wlanX
+</pre></div>
+</div>
+</li>
+<li><p>Set AP IP:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>ifconfig<span class="w"> </span>wlanX<span class="w"> </span><span class="m">192</span>.168.43.1
+</pre></div>
+</div>
+</li>
+<li><p>Launch DHCP:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>udhcpd<span class="w"> </span>-f<span class="w"> </span>/etc/udhcpd_wlanX.conf
+</pre></div>
+</div>
+</li>
+</ol>
 </li>
 </ol>
 </div></div>
 </section>
-<section id="bt-device-driver-porting-guide">
-<h1>BT Device Driver Porting Guide<a class="headerlink" href="#bt-device-driver-porting-guide" title="Link to this heading"></a></h1>
+<section id="fullmac-bt-device-driver-porting-guide">
+<h1>FullMAC BT Device Driver Porting Guide<a class="headerlink" href="#fullmac-bt-device-driver-porting-guide" title="Link to this heading"></a></h1>
 </section>
-<section id="bt-host-driver-porting-guide">
-<h1>BT Host Driver Porting Guide<a class="headerlink" href="#bt-host-driver-porting-guide" title="Link to this heading"></a></h1>
+<section id="fullmac-bt-host-driver-porting-guide">
+<h1>FullMAC BT Host Driver Porting Guide<a class="headerlink" href="#fullmac-bt-host-driver-porting-guide" title="Link to this heading"></a></h1>
 <div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-8-8-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-8-8-0" name="8-0" role="tab" tabindex="0">RTOS</button><button aria-controls="panel-8-8-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-8-8-1" name="8-1" role="tab" tabindex="-1">Linux</button></div><div aria-labelledby="tab-8-8-0" class="sphinx-tabs-panel" id="panel-8-8-0" name="8-0" role="tabpanel" tabindex="0"></div><div aria-labelledby="tab-8-8-1" class="sphinx-tabs-panel" hidden="true" id="panel-8-8-1" name="8-1" role="tabpanel" tabindex="0"></div></div>
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-9-9-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-9-9-0" name="9-0" role="tab" tabindex="0">Linux</button><button aria-controls="panel-9-9-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-9-9-1" name="9-1" role="tab" tabindex="-1">RTOS</button></div><div aria-labelledby="tab-9-9-0" class="sphinx-tabs-panel" id="panel-9-9-0" name="9-0" role="tabpanel" tabindex="0"></div><div aria-labelledby="tab-9-9-1" class="sphinx-tabs-panel" hidden="true" id="panel-9-9-1" name="9-1" role="tabpanel" tabindex="0"></div></div>
 </section>
-<section id="wifi-throughput">
-<h1>WiFi Throughput<a class="headerlink" href="#wifi-throughput" title="Link to this heading"></a></h1>
+<section id="fullmac-wifi-throughput">
+<h1>FullMAC WiFi Throughput<a class="headerlink" href="#fullmac-wifi-throughput" title="Link to this heading"></a></h1>
 <div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-9-9-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-9-9-0" name="9-0" role="tab" tabindex="0">RTOS HOST</button><button aria-controls="panel-9-9-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-9-9-1" name="9-1" role="tab" tabindex="-1">Linux HOST</button></div><div aria-labelledby="tab-9-9-0" class="sphinx-tabs-panel" id="panel-9-9-0" name="9-0" role="tabpanel" tabindex="0"><table class="docutils align-default" style="width: 100%">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-10-10-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-10-10-0" name="10-0" role="tab" tabindex="0">RTOS HOST</button><button aria-controls="panel-10-10-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-10-10-1" name="10-1" role="tab" tabindex="-1">Linux HOST</button></div><div aria-labelledby="tab-10-10-0" class="sphinx-tabs-panel" id="panel-10-10-0" name="10-0" role="tabpanel" tabindex="0"><table class="docutils align-default" style="width: 100%">
 <thead>
 <tr class="row-odd"><th class="head"><p>Interface</p></th>
 <th class="head"><p>Item</p></th>
@@ -1179,7 +1143,7 @@ If you want to use OPEN or WPA3, please refer to the official hostapd documentat
 <ul class="simple">
 <li><p>[1] The data is the test result of device code running in PSRAM, host driver running on 8721Dx (260MHz).</p></li>
 </ul>
-</div><div aria-labelledby="tab-9-9-1" class="sphinx-tabs-panel" hidden="true" id="panel-9-9-1" name="9-1" role="tabpanel" tabindex="0"><table class="docutils align-default" style="width: 100%">
+</div><div aria-labelledby="tab-10-10-1" class="sphinx-tabs-panel" hidden="true" id="panel-10-10-1" name="10-1" role="tabpanel" tabindex="0"><table class="docutils align-default" style="width: 100%">
 <thead>
 <tr class="row-odd"><th class="head"><p>Interface</p></th>
 <th class="head"><p>Wi-Fi driver location</p></th>
@@ -1275,16 +1239,18 @@ If you want to use OPEN or WPA3, please refer to the official hostapd documentat
 <ul class="simple">
 <li><p>[1] The data is the test result of device code running in PSRAM, host driver running on Dell Optiplex 3080 MT(SDIO CLK: 50MHz，Kernel: 5.10.25-051025-lowlatency)</p></li>
 <li><p>[2] The data is the test result of device code running in PSRAM, host driver running on Raspberry Pi 4 Model B(64bit quad-core Cortex-A72 processor, 8GB LPDDR4 RAM, CPU CLK: 1.5GHz，SDIO CLK: 41.67MHz, Kernel: Linux raspberrypi 6.1.0-rpi4-rpi-v8)</p></li>
-<li><p>[3] The data is the test result of device code running in</p></li>
+<li><p>[3] The data is the test result of device code running in PSRAM.</p></li>
 </ul>
 </div></div>
 </section>
-<section id="memory-size-requirement">
-<h1>Memory Size Requirement<a class="headerlink" href="#memory-size-requirement" title="Link to this heading"></a></h1>
+<section id="fullmac-memory-footprint">
+<h1>FullMAC Memory Footprint<a class="headerlink" href="#fullmac-memory-footprint" title="Link to this heading"></a></h1>
 <section id="device">
 <h2>Device<a class="headerlink" href="#device" title="Link to this heading"></a></h2>
 <div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-10-10-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-10-10-0" name="10-0" role="tab" tabindex="0">RTL8721Dx</button></div><div aria-labelledby="tab-10-10-0" class="sphinx-tabs-panel" id="panel-10-10-0" name="10-0" role="tabpanel" tabindex="0"><p>Take the Wi-Fi driver running on KM0 for an example:</p>
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-11-11-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-11-11-0" name="11-0" role="tab" tabindex="0">RTL8721Dx</button></div><div aria-labelledby="tab-11-11-0" class="sphinx-tabs-panel" id="panel-11-11-0" name="11-0" role="tabpanel" tabindex="0"><blockquote>
+<div><p>Example with Wi-Fi running on KM0:</p>
+</div></blockquote>
 <table class="docutils align-default" style="width: 100%">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1316,11 +1282,11 @@ If you want to use OPEN or WPA3, please refer to the official hostapd documentat
 <section id="host">
 <h2>Host<a class="headerlink" href="#host" title="Link to this heading"></a></h2>
 <div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-11-11-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-11-11-0" name="11-0" role="tab" tabindex="0">RTOS</button><button aria-controls="panel-11-11-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-11-11-1" name="11-1" role="tab" tabindex="-1">Linux</button></div><div aria-labelledby="tab-11-11-0" class="sphinx-tabs-panel" id="panel-11-11-0" name="11-0" role="tabpanel" tabindex="0"><table class="docutils align-default" style="width: 100%">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-12-12-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-12-12-0" name="12-0" role="tab" tabindex="0">RTOS</button><button aria-controls="panel-12-12-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-12-12-1" name="12-1" role="tab" tabindex="-1">Linux</button></div><div aria-labelledby="tab-12-12-0" class="sphinx-tabs-panel" id="panel-12-12-0" name="12-0" role="tabpanel" tabindex="0"><table class="docutils align-default" style="width: 100%">
 <thead>
 <tr class="row-odd"><th class="head"><p>Host</p></th>
 <th class="head"><p>Item</p></th>
-<th class="head"><p>inic</p></th>
+<th class="head"><p>whc</p></th>
 </tr>
 </thead>
 <tbody>
@@ -1336,7 +1302,7 @@ If you want to use OPEN or WPA3, please refer to the official hostapd documentat
 </tr>
 </tbody>
 </table>
-</div><div aria-labelledby="tab-11-11-1" class="sphinx-tabs-panel" hidden="true" id="panel-11-11-1" name="11-1" role="tabpanel" tabindex="0"><table class="docutils align-default" style="width: 100%">
+</div><div aria-labelledby="tab-12-12-1" class="sphinx-tabs-panel" hidden="true" id="panel-12-12-1" name="12-1" role="tabpanel" tabindex="0"><table class="docutils align-default" style="width: 100%">
 <thead>
 <tr class="row-odd"><th class="head"><p>Host</p></th>
 <th class="head"><p>Item</p></th>
