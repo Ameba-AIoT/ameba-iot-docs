@@ -126,7 +126,8 @@
 <li class="toctree-l1 current"><a class="reference internal" href="0_rtc_io_index.html">8.9 RTC-IO</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Supported ICs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#introduction">Introduction</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#usage">Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hardware-connections">Hardware connections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#application-scenario">Application Scenario</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../8_lcdc/0_lcdc_index.html">8.A LCDC</a></li>
@@ -179,39 +180,43 @@
 </section>
 <section id="introduction">
 <h1>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h1>
-<p>The RTC_IO module serves to store the RTC time and count the power-off time temporarily when the chip is in power off period.
-After repower on, the stored time data and counter during power-off can be read back according to a certain procedure.</p>
-<p>Through the read back time information, current time can be calculated and set to the RTC module.
-Therefore, the timer starts to run as new time, which guarantees that the time information will not be affected by chip power down.</p>
+<p>The RTC_IO module is designed to store RTC time and temporarily log power-off duration during chip power-off periods. After repowering the system, the stored time data and counters from the power-off period can be retrieved through specific procedures.</p>
+<p>By reading back the time information, the current time can be calculated and synchronized with the RTC module, ensuring uninterrupted timekeeping even during power interruptions.</p>
 </section>
-<section id="usage">
-<h1>Usage<a class="headerlink" href="#usage" title="Link to this heading"></a></h1>
-<p>There are two sceneries and respective operation flows when using the RTC_IO module, and this section introduces the detailed usage.</p>
-<p>To keep RTC_IO powered on when the chip is powered off, it is supposed to perform the following connections via Dupont Lines:</p>
+<section id="hardware-connections">
+<h1>Hardware connections<a class="headerlink" href="#hardware-connections" title="Link to this heading"></a></h1>
+<p>To maintain RTC_IO power supply during chip power-off, implement the following connections using Dupont lines:</p>
 <ul class="simple">
 <li><p>Connect the power supply pin of <code class="docutils literal notranslate"><span class="pre">VDH_RTC</span></code> to 3.3V power supply</p></li>
-<li><p>Connect the GND of the development board to the common ground of the 3.3V power supply</p></li>
+<li><p>Connect the <code class="docutils literal notranslate"><span class="pre">GND</span></code> pin of the development board to the common ground of the 3.3V power supply</p></li>
 </ul>
-<p>For the first time power on, follow these steps:</p>
+</section>
+<section id="application-scenario">
+<h1>Application Scenario<a class="headerlink" href="#application-scenario" title="Link to this heading"></a></h1>
+<p>There are two sceneries of using the RTC_IO module:</p>
+<ul class="simple">
+<li><p>First-time power on</p></li>
+<li><p>Repower on</p></li>
+</ul>
+<p><strong>First-time power on</strong></p>
+<p>For the first-time power on, follow these steps:</p>
 <ol class="arabic">
-<li><p>Write 6’d0 (Reset) to register <code class="docutils literal notranslate"><span class="pre">rtc_io_test_din</span></code> bit field, and shift into RTC_IO</p>
+<li><p>Write 6’d0 (Reset) to register <code class="docutils literal notranslate"><span class="pre">rtc_io_test_din</span></code> bit field, and shift into RTC_IO.</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">RTCIO_SetRValue</span><span class="p">(</span><span class="n">RTCIO_RECV_RVAL_RST</span><span class="p">);</span>
 </pre></div>
 </div>
 </li>
-</ol>
-<ol class="arabic" id="rtc-io-first-time-power-on-step-2" start="2">
-<li><p>Perform 131K calibration, in order to acquire the calibration parameter which will be shifted into RTC_IO</p>
+<li><p>Perform 131K calibration to obtain calibration parameter which will be shifted into RTC_IO.</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">OSC131K_Calibration</span><span class="p">(</span><span class="mi">30000</span><span class="p">);</span>
 </pre></div>
 </div>
 </li>
-<li><p>Acquire the RVAL produced by Step <a class="reference internal" href="#rtc-io-first-time-power-on-step-2"><span class="std std-ref">2</span></a> and shift into RTC_IO.</p>
+<li><p>Acquire the RVAL produced by <strong>Step 2</strong> and shift into RTC_IO.</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">RTCIO_SetRValue</span><span class="p">(</span><span class="n">RTCIO_RECV_RVAL_CAL</span><span class="p">);</span>
 </pre></div>
 </div>
 </li>
-<li><p>Prepare time data that will be set to the device through the RTC module</p>
+<li><p>Prepare time data that will be set to the device through the RTC module.</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">RTC_TimeTypeDef</span><span class="w"> </span><span class="n">RTC_TimeStruct</span><span class="p">;</span>
 <span class="n">RTC_TimeStructInit</span><span class="p">(</span><span class="o">&amp;</span><span class="n">RTC_TimeStruct</span><span class="p">);</span>
 <span class="n">RTC_TimeStruct</span><span class="p">.</span><span class="n">RTC_Year</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2024</span><span class="p">;</span>
@@ -221,9 +226,7 @@ Therefore, the timer starts to run as new time, which guarantees that the time i
 </pre></div>
 </div>
 </li>
-</ol>
-<ol class="arabic" id="rtc-io-first-time-power-on-step-5" start="5">
-<li><p>Initialize and enable RTC module</p>
+<li><p>Initialize and enable RTC module.</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">RCC_PeriphClockCmd</span><span class="p">(</span><span class="n">APBPeriph_RTC</span><span class="p">,</span><span class="w"> </span><span class="n">APBPeriph_RTC_CLOCK</span><span class="p">,</span><span class="w"> </span><span class="n">ENABLE</span><span class="p">);</span>
 <span class="n">RTC_StructInit</span><span class="p">(</span><span class="o">&amp;</span><span class="n">RTC_InitStruct</span><span class="p">);</span>
 <span class="n">RTC_Init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">RTC_InitStruct</span><span class="p">);</span>
@@ -232,6 +235,7 @@ Therefore, the timer starts to run as new time, which guarantees that the time i
 </div>
 </li>
 </ol>
+<p><strong>Repower on</strong></p>
 <p>In case of the chip repower on, but RTC_IO domain keeps powering on during power off period, it is supposed to follow these steps:</p>
 <ol class="arabic">
 <li><p>Check the <code class="xref py py-func docutils literal notranslate"><span class="pre">BOOT_Reason()</span></code> return value.</p>
@@ -240,7 +244,7 @@ Therefore, the timer starts to run as new time, which guarantees that the time i
 <li><p>Check the <code class="xref py py-func docutils literal notranslate"><span class="pre">RTCIO_IsEnabled()</span></code> return value.</p>
 <p>Continue the next steps when return TRUE, otherwise perform the procedures as mentioned above for the first time power on.</p>
 </li>
-<li><p>Shift out the stored time data and counter during power off period</p>
+<li><p>Shift out the stored time data and counter during power off period.</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">RTCIO_TimeInfo</span><span class="w"> </span><span class="n">RTCIO_TimeStruct</span><span class="p">;</span>
 <span class="n">RTC_TimeTypeDef</span><span class="w"> </span><span class="n">RTC_TimeStruct</span><span class="p">;</span>
 <span class="k">if</span><span class="p">(</span><span class="n">BOOT_Reason</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
@@ -259,7 +263,7 @@ Therefore, the timer starts to run as new time, which guarantees that the time i
 <li><p>Calculate new time through the struct <code class="docutils literal notranslate"><span class="pre">RTCIO_TimeStruct</span></code>, and the result store into struct <code class="docutils literal notranslate"><span class="pre">RTC_TimeStruct</span></code>. The later will be set to the device.</p>
 <p>The function <code class="xref py py-func docutils literal notranslate"><span class="pre">app_calc_new_time()</span></code> is just an example. It should be achieved according to actual application.</p>
 </li>
-<li><p>Initialize and enable the RTC module again as the Step <a class="reference internal" href="#rtc-io-first-time-power-on-step-5"><span class="std std-ref">5</span></a> in first time power on, and set the above calculated new time to device.</p></li>
+<li><p>Initialize and enable the RTC module again as the <strong>Step 5</strong> in first time power on, and set the above calculated new time to device.</p></li>
 </ol>
 </section>
 
