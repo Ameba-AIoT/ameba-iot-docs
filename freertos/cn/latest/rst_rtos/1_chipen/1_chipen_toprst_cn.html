@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Introduction &mdash; Ameba IoT Docs  文档</title>
+  <title>概述 &mdash; Ameba IoT Docs  文档</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
@@ -35,7 +35,7 @@
     <link rel="index" title="索引" href="../../genindex.html" />
     <link rel="search" title="搜索" href="../../search.html" />
     <link rel="next" title="Inter-Processor Communication (IPC)" href="../1_ipc/0_ipc_index_cn.html" />
-    <link rel="prev" title="CHIP Enable" href="0_chipen_index_cn.html" />  
+    <link rel="prev" title="芯片使能（CHIP_EN）" href="0_chipen_index_cn.html" />  
      
   <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -87,16 +87,16 @@
 <li class="toctree-l1"><a class="reference internal" href="../1_boot_process/0_boot_index_cn.html">1.1 BOOT 过程</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../1_ota/0_ota_index_cn.html">1.2 固件在线升级(OTA)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../1_otpc/0_otpc_index.html">1.3 OTP存储器</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="0_chipen_index_cn.html">1.4 CHIPEN</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Introduction</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#three-working-modes">Three Working Modes</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#level-reset-mode">Level Reset Mode</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#interrupt-reset-mode">Interrupt Reset Mode</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#pulse-reset-mode">Pulse Reset Mode</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="0_chipen_index_cn.html">1.4 CHIP_EN</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">概述</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">工作模式</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id3">电平复位模式</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">中断复位模式</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">脉冲复位模式</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#how-to-choose-work-mode">How to Choose Work Mode</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#chip-en-driver-apis">CHIP_EN Driver APIs</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id6">工作模式选择</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#api">API 参考</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#chipen-workmode">CHIPEN_WorkMode</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#chipen-debounceset">CHIPEN_DebounceSet</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#chipen-thresholdset">CHIPEN_ThresHoldSet</a></li>
@@ -162,8 +162,8 @@
           <div role="navigation" aria-label="页面导航">
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="0_chipen_index_cn.html">CHIP Enable</a></li>
-      <li class="breadcrumb-item active">Introduction</li>
+          <li class="breadcrumb-item"><a href="0_chipen_index_cn.html">芯片使能（CHIP_EN）</a></li>
+      <li class="breadcrumb-item active">概述</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -172,47 +172,55 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="introduction">
-<span id="chip-enable"></span><h1>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h1>
-<p>The CHIP_EN (chip enable) is an external pin that can be used to control the reset status of the whole SoC. This pin can work in level reset mode, interrupt reset mode or pulse reset mode. By default, it works in level reset mode. This pin always has the function of resetting system no matter in which mode.</p>
-<p>The button with <code class="docutils literal notranslate"><span class="pre">CHIP_EN</span></code> is connected to the <code class="docutils literal notranslate"><span class="pre">CHIP_EN</span></code> pin, as <a class="reference internal" href="#chip-en-on-board"><span class="std std-ref">CHIP_EN on board</span></a> shows.</p>
-<figure class="align-center" id="id1">
-<span id="chip-en-on-board"></span><a class="reference internal image-reference" href="../../_images/chip_en_on_board.png"><img alt="../../_images/chip_en_on_board.png" src="../../_images/chip_en_on_board.png" style="width: 588.0px; height: 338.0px;" /></a>
-<figcaption>
-<p><span class="caption-text">CHIP_EN on board</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
-</figcaption>
+  <section id="chip-enable">
+<span id="id1"></span><h1>概述<a class="headerlink" href="#chip-enable" title="Link to this heading"></a></h1>
+<p>芯片使能（CHIP_EN）引脚是一个外部引脚，用于控制系统级复位状态，支持电平复位（默认）、中断复位、脉冲复位三种模式。该引脚在任何模式下均具备强制复位能力。</p>
+<p>开发板上的 <code class="docutils literal notranslate"><span class="pre">CHIP_EN</span></code> 按钮连接如下图所示：</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/chip_en_on_board.png"><img alt="../../_images/chip_en_on_board.png" src="../../_images/chip_en_on_board.png" style="width: 588.0px; height: 338.0px;" /></a>
 </figure>
 </section>
-<section id="three-working-modes">
-<h1>Three Working Modes<a class="headerlink" href="#three-working-modes" title="Link to this heading"></a></h1>
-<p>There are three working modes of CHIP_EN for different usages.</p>
-<section id="level-reset-mode">
-<h2>Level Reset Mode<a class="headerlink" href="#level-reset-mode" title="Link to this heading"></a></h2>
-<p>Level reset mode is the default mode of CHIP_EN. In this mode, a low level on this pin longer than debounce time will trigger RESET directly and the SoC will reboot when this pin goes from low to high.</p>
-<p>User can reset the whole chip by simply pressing down and releasing the CHIP_EN button. When low level is detected longer than debounce time, the chip will be reset after the CHIP_EN button is released. So user can adjust the sensitivity of CHIP_EN by setting different debounce time from 100us to 16ms.</p>
+<section id="id2">
+<h1>工作模式<a class="headerlink" href="#id2" title="Link to this heading"></a></h1>
+<p>CHIP_EN 有三种工作模式，适用于不同的应用场景。</p>
+<section id="id3">
+<h2>电平复位模式<a class="headerlink" href="#id3" title="Link to this heading"></a></h2>
+<p>电平复位模式是CHIP_EN的默认模式。在这种模式下，当CHIP_EN引脚的低电平持续时间超过消抖时间（100μs~16ms，用户可调）时，将直接触发芯片复位，并在该引脚电平由低变高时重启SoC。</p>
+<p>用户只需按下并松开 <code class="docutils literal notranslate"><span class="pre">CHIP_EN</span></code> 按钮，即可对整个芯片进行复位。</p>
 </section>
-<section id="interrupt-reset-mode">
-<h2>Interrupt Reset Mode<a class="headerlink" href="#interrupt-reset-mode" title="Link to this heading"></a></h2>
-<p>In interrupt reset mode, a low level on this pin longer than the sum of debounce and short press time can trigger an interrupt instead of resetting the system directly. Thus, software can handle the interrupt and choose whether to reset the system.</p>
-<p>The interrupt reset mode is mainly designed for the power save scenario. The CHIP_EN button just likes the power button of the smartphone: a short press will trigger the system to enter low power mode or wake up the system; a long press will trigger an interrupt to remind the user whether to reset the system. The reboot will happen if user chooses reboot or the system crashed.</p>
-</section>
-<section id="pulse-reset-mode">
-<h2>Pulse Reset Mode<a class="headerlink" href="#pulse-reset-mode" title="Link to this heading"></a></h2>
-<p>In pulse reset mode, a low level on this pin longer than debounce time will trigger RESET directly and the SoC will reboot immediately. User can read the status of the CHIPEN pin in boot code to distinguish short/long press. This mode usually can be found in router. Short press will cause the system cold boot; long press will cause the system code boot and restore factory settings.</p>
-<p>Once the chip is configured working in Pulse Reset Mode, software cannot change the mode anymore. Only power off will take the chip to Level Reset Mode.</p>
-</section>
-</section>
-<section id="how-to-choose-work-mode">
-<h1>How to Choose Work Mode<a class="headerlink" href="#how-to-choose-work-mode" title="Link to this heading"></a></h1>
+<section id="id4">
+<h2>中断复位模式<a class="headerlink" href="#id4" title="Link to this heading"></a></h2>
+<p>中断复位模式是CHIP_EN的一种工作模式，主要用于省电场景。在此模式下，当CHIP_EN引脚的低电平持续时间超过消抖时间与短按时间之和时，系统将触发中断而非直接复位。软件可以通过处理该中断来决定是否执行系统复位。</p>
+<p><code class="docutils literal notranslate"><span class="pre">CHIP_EN</span></code> 按钮的功能类似于智能手机的电源按钮：</p>
 <ul class="simple">
-<li><p>For device does not need any control on this pin, tie this pin to <code class="docutils literal notranslate"><span class="pre">high</span></code>.</p></li>
-<li><p>For simply reset requirement, use the <code class="docutils literal notranslate"><span class="pre">default</span> <span class="pre">level</span> <span class="pre">reset</span> <span class="pre">mode</span></code>.</p></li>
-<li><p>If both reset and re-storage of factory settings are needed, use the <code class="docutils literal notranslate"><span class="pre">pulse</span> <span class="pre">reset</span> <span class="pre">mode</span></code>.</p></li>
-<li><p>For low power scenario, power control and reset are needed on a single pin, use the <code class="docutils literal notranslate"><span class="pre">interrupt</span> <span class="pre">reset</span> <span class="pre">mode</span></code>.</p></li>
+<li><p>短按：触发系统进入低功耗模式或唤醒系统</p></li>
+<li><p>长按：触发中断，提醒用户是否需要复位系统。</p></li>
+</ul>
+<p>用户选择重启系统，或者系统崩溃，才会进行重启操作。</p>
+</section>
+<section id="id5">
+<h2>脉冲复位模式<a class="headerlink" href="#id5" title="Link to this heading"></a></h2>
+<p>在脉冲复位模式下，当CHIP_EN引脚的低电平持续时间超过消抖时间时，会直接触发复位操作，SoC将立即重启。</p>
+<p>用户可以在启动代码中读取 CHIP_EN引脚的状态，以区分短按和长按操作。</p>
+<ul class="simple">
+<li><p>短按：触发使系统冷启动</p></li>
+<li><p>长按：恢复出厂设置</p></li>
+</ul>
+<p>这种模式通常在路由器中较为常见。</p>
+<p>一旦芯片被配置为脉冲复位模式，软件就无法再更改该模式。只有断电才能使芯片回到电平复位模式。</p>
+</section>
+</section>
+<section id="id6">
+<h1>工作模式选择<a class="headerlink" href="#id6" title="Link to this heading"></a></h1>
+<ul class="simple">
+<li><p>对于不需要对CHIP_EN引脚进行任何控制的设备，将此引脚连接到高电平。</p></li>
+<li><p>对于仅需要简单复位功能的场景，使用默认的电平复位模式。</p></li>
+<li><p>如果既需要复位功能，又需要恢复出厂设置的功能，则使用脉冲复位模式。</p></li>
+<li><p>对于低功耗场景，且需要在单个引脚上实现电源控制和复位功能时，使用中断复位模式。</p></li>
 </ul>
 </section>
-<section id="chip-en-driver-apis">
-<h1>CHIP_EN Driver APIs<a class="headerlink" href="#chip-en-driver-apis" title="Link to this heading"></a></h1>
+<section id="api">
+<h1>API 参考<a class="headerlink" href="#api" title="Link to this heading"></a></h1>
 <section id="chipen-workmode">
 <h2>CHIPEN_WorkMode<a class="headerlink" href="#chipen-workmode" title="Link to this heading"></a></h2>
 <table class="docutils align-default" style="width: 100%">
@@ -228,13 +236,10 @@
 </td>
 </tr>
 <tr class="row-odd"><td><p>Parameters</p></td>
-<td><p>mode: new work mode of CHIPEN, which can be</p>
-<ul class="simple">
-<li><p>CHIPEN_HW_RESET_MODE</p></li>
-<li><p>CHIPEN_INT_RESET_MODE</p></li>
-<li><p>CHIPEN_PULSE_RESET_MODE</p></li>
-</ul>
-</td>
+<td><p>mode: new work mode of CHIPEN, which can be
+- CHIPEN_HW_RESET_MODE
+- CHIPEN_INT_RESET_MODE
+- CHIPEN_PULSE_RESET_MODE</p></td>
 </tr>
 <tr class="row-even"><td><p>Return</p></td>
 <td><p>None</p></td>
@@ -287,10 +292,9 @@
 <td><p>Set long press and short press threshold, which only works in interrupt reset mode</p></td>
 </tr>
 <tr class="row-odd"><td><p>Parameters</p></td>
-<td><ul>
+<td><ul class="simple">
 <li><p>Thres_LP: long press threshold</p>
-<blockquote>
-<div><ul class="simple">
+<ul>
 <li><p>CHIPEN_LP_1S</p></li>
 <li><p>CHIPEN_LP_1P5S</p></li>
 <li><p>CHIPEN_LP_2S</p></li>
@@ -300,11 +304,9 @@
 <li><p>CHIPEN_LP_4S</p></li>
 <li><p>CHIPEN_LP_4P5S</p></li>
 </ul>
-</div></blockquote>
 </li>
 <li><p>Thres_SP: short press threshold</p>
-<blockquote>
-<div><ul class="simple">
+<ul>
 <li><p>CHIPEN_SP_50MS</p></li>
 <li><p>CHIPEN_SP_100MS</p></li>
 <li><p>CHIPEN_SP_150MS</p></li>
@@ -313,7 +315,6 @@
 <li><p>CHIPEN_SP_300MS</p></li>
 <li><p>CHIPEN_SP_350MS</p></li>
 </ul>
-</div></blockquote>
 </li>
 </ul>
 </td>
@@ -402,7 +403,7 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
-        <a href="0_chipen_index_cn.html" class="btn btn-neutral float-left" title="CHIP Enable" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="0_chipen_index_cn.html" class="btn btn-neutral float-left" title="芯片使能（CHIP_EN）" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
         <a href="../1_ipc/0_ipc_index_cn.html" class="btn btn-neutral float-right" title="Inter-Processor Communication (IPC)" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
