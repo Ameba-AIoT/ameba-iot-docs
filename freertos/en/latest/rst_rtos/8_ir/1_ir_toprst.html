@@ -124,11 +124,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#introduction">Introduction</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ir-sending">IR Sending</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#tx-polling-mode">Tx Polling Mode</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#special-notes">Special Notes</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#tx-fifo-offset-issue">Tx FIFO Offset Issue</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#tx-last-packet-cannot-let-fsm-enter-idle-issue">Tx Last Packet Cannot Let FSM Enter Idle Issue</a></li>
-</ul>
-</li>
+<li class="toctree-l3"><a class="reference internal" href="#special-notes">Special Notes</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#ir-receiving">IR Receiving</a><ul>
@@ -192,7 +188,7 @@
 </section>
 <section id="introduction">
 <h1>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h1>
-<p>The Infrared Radiation (IR) provides hardware modulation for Infrared Radiation sending and hardware auto capture for receiving.</p>
+<p>The Infrared (IR) module provides hardware-modulated transmission and automatic capture reception capabilities. This chapter details operational specifications.</p>
 <p>This chapter introduces how to use IR.</p>
 </section>
 <section id="ir-sending">
@@ -201,54 +197,42 @@
 <span id="ir-tx-polling-mode"></span><h2>Tx Polling Mode<a class="headerlink" href="#tx-polling-mode" title="Link to this heading"></a></h2>
 <p>To use IR sending function, the following steps are mandatory.</p>
 <ol class="arabic">
-<li><p>Configure the IR pin according to the pinmux table.</p>
-<p>For example, in order to use <em>PB4</em> as IR Tx pin, call the following function. It is the same for other IR pins.</p>
+<li><p>Configure IR pin multiplexing according to the pinmux table.</p>
+<p>For example, in order to use <strong>PB4</strong> as IR Tx pin, call the following function. It is the same for other IR pins.</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Pinmux_Config</span><span class="p">(</span><span class="n">_PB_4</span><span class="p">,</span><span class="w"> </span><span class="n">PINMUX_FUNCTION_IR_TX</span><span class="p">);</span>
 </pre></div>
 </div>
 </li>
-</ol>
-<ol class="arabic simple" id="ir-sending-step-2" start="2">
 <li><p>Call <code class="xref py py-func docutils literal notranslate"><span class="pre">IR_Cmd()</span></code> to disable IR.</p></li>
-</ol>
-<ol class="arabic" id="ir-sending-step-3" start="3">
 <li><p>Set parameters, and modify some parameters if needed.</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">IR_StructInit</span><span class="p">(</span><span class="n">IR_InitTypeDef</span><span class="w"> </span><span class="o">*</span><span class="n">IR_InitStruct</span><span class="p">);</span>
 </pre></div>
 </div>
 </li>
-<li><p>Initialize the hardware using the parameters in <a class="reference internal" href="#ir-sending-step-3"><span class="std std-ref">Step 3</span></a>.</p>
+<li><p>Initialize the hardware using the parameters in <strong>Step 3</strong>.</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">IR_Init</span><span class="p">(</span><span class="n">IR_InitTypeDef</span><span class="w"> </span><span class="o">*</span><span class="n">IR_InitStruct</span><span class="p">);</span>
 </pre></div>
 </div>
 </li>
-</ol>
-<ol class="arabic simple" id="ir-sending-step-5" start="5">
 <li><p>Write Tx data to FIFO by using <code class="xref py py-func docutils literal notranslate"><span class="pre">IR_SendBuf()</span></code> or <code class="xref py py-func docutils literal notranslate"><span class="pre">IR_SendData()</span></code>.</p></li>
-</ol>
-<ol class="arabic simple" id="ir-sending-step-6" start="6">
 <li><p>Call <code class="xref py py-func docutils literal notranslate"><span class="pre">cIR_Cmd()</span></code> to enable IR to start transmission.</p></li>
 <li><p>Write more data to FIFO if needed.</p></li>
 </ol>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <ul class="simple">
-<li><p>In <a class="reference internal" href="#ir-sending-step-2"><span class="std std-ref">Step 2</span></a> to <a class="reference internal" href="#ir-sending-step-6"><span class="std std-ref">Step 6</span></a>, It is suggested that disabling IR at first, and then enabling IR after writing data to FIFO.</p></li>
-<li><p>In <a class="reference internal" href="#ir-sending-step-5"><span class="std std-ref">Step 5</span></a>, pay attention to convert the data into the appropriate format that Tx FIFO register can recognize before writing data to FIFO.</p></li>
+<li><p>In <strong>Step 2</strong> to <strong>Step 6</strong>, It is suggested that disabling IR at first, and then enabling IR after writing data to FIFO.</p></li>
+<li><p>In <strong>Step 5</strong>, pay attention to convert the data into the appropriate format that Tx FIFO register can recognize before writing data to FIFO.</p></li>
 </ul>
 </div>
 </section>
 <section id="special-notes">
 <h2>Special Notes<a class="headerlink" href="#special-notes" title="Link to this heading"></a></h2>
-<section id="tx-fifo-offset-issue">
-<h3>Tx FIFO Offset Issue<a class="headerlink" href="#tx-fifo-offset-issue" title="Link to this heading"></a></h3>
+<p><strong>Tx FIFO Offset Issue</strong></p>
 <p>If you want to judge whether Tx data in FIFO has been sent completely or not, you’d better check Tx FIFO empty flag rather than <em>TX_FIFO_OFFSET</em>.</p>
-</section>
-<section id="tx-last-packet-cannot-let-fsm-enter-idle-issue">
-<h3>Tx Last Packet Cannot Let FSM Enter Idle Issue<a class="headerlink" href="#tx-last-packet-cannot-let-fsm-enter-idle-issue" title="Link to this heading"></a></h3>
+<p><strong>Tx Last Packet Cannot Let FSM Enter Idle Issue</strong></p>
 <p>If the last packet written to Tx FIFO cannot let Tx state machine enter idle, it is suggested write some data packets to Tx FIFO before enabling IR Tx.</p>
-<p>Refer to <a class="reference internal" href="#ir-sending-step-2"><span class="std std-ref">Step 2</span></a> to <a class="reference internal" href="#ir-sending-step-6"><span class="std std-ref">Step 6</span></a> in Section <a class="reference internal" href="#ir-tx-polling-mode"><span class="std std-ref">Tx Polling Mode</span></a>.</p>
-</section>
+<p>Refer to <strong>Step 2</strong> to <strong>Step 6</strong> in Section <a class="reference internal" href="#ir-tx-polling-mode"><span class="std std-ref">Tx Polling Mode</span></a>.</p>
 </section>
 </section>
 <section id="ir-receiving">
@@ -258,19 +242,17 @@
 <p>To use IR receiving function, the following steps are mandatory.</p>
 <ol class="arabic">
 <li><p>Configure the IR pin according to the pinmux table.</p>
-<p>For example, in order to use <em>PB5</em> as IR Rx pin, call the following function. It is the same for other IR pins.</p>
+<p>For example, in order to use <strong>PB5</strong> as IR Rx pin, call the following function. It is the same for other IR pins.</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Pinmux_Config</span><span class="p">(</span><span class="n">_PB_5</span><span class="p">,</span><span class="w"> </span><span class="n">PINMUX_FUNCTION_IR_RX</span><span class="p">);</span>
 </pre></div>
 </div>
 </li>
-</ol>
-<ol class="arabic" id="ir-receiving-step-2" start="2">
 <li><p>Set parameters, such as sampling frequency, Rx FIFO threshold level, Rx counter threshold type, Rx counter threshold level, and Rx trigger mode if needed.</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">IR_StructInit</span><span class="p">(</span><span class="n">IR_InitTypeDef</span><span class="w"> </span><span class="o">*</span><span class="n">IR_InitStruct</span><span class="p">);</span>
 </pre></div>
 </div>
 </li>
-<li><p>Initialize the hardware using the parameters in <a class="reference internal" href="#ir-receiving-step-2"><span class="std std-ref">Step 2</span></a>.</p>
+<li><p>Initialize the hardware using the parameters in <strong>Step 2</strong>.</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">IR_Init</span><span class="p">(</span><span class="n">IR_InitTypeDef</span><span class="w"> </span><span class="o">*</span><span class="n">IR_InitStruct</span><span class="p">);</span>
 </pre></div>
 </div>
@@ -284,22 +266,20 @@
 </li>
 <li><p>Call <code class="xref py py-func docutils literal notranslate"><span class="pre">IR_Cmd()</span></code> to enable IR.</p></li>
 <li><p>Call <code class="xref py py-func docutils literal notranslate"><span class="pre">IR_ClearRxFIFO()</span></code> to clear Rx FIFO.</p></li>
-</ol>
-<ol class="arabic simple" id="ir-receiving-step-7" start="7">
 <li><p>When Rx FIFO threshold interrupt triggers, read data from Rx FIFO with <code class="xref py py-func docutils literal notranslate"><span class="pre">IR_ReceiveBuf()</span></code> and <code class="xref py py-func docutils literal notranslate"><span class="pre">IR_ReceiveData()</span></code>, and make further processing in interrupt handle function.</p></li>
 </ol>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <ul class="simple">
-<li><p>In <a class="reference internal" href="#ir-receiving-step-7"><span class="std std-ref">Step 7</span></a>, to decode the receiving data correctly, you should understand the data format in Rx FIFO register.</p></li>
+<li><p>In <strong>Step 7</strong>, to decode the receiving data correctly, you should understand the data format in Rx FIFO register.</p></li>
 <li><p>Waveform inverse issue: in Rx ending, if the waveform is inverse, you should define <em>INVERSE_DATA</em> in <code class="file docutils literal notranslate"><span class="pre">Ir_nec_protocol.h</span></code> and set <code class="docutils literal notranslate"><span class="pre">IR_InitStruct.IR_RxCntThrType</span> <span class="pre">=</span> <span class="pre">IR_RX_COUNT_HIGH_LEVEL</span></code>.</p></li>
 </ul>
 </div>
 </section>
 <section id="rx-learning">
 <h2>Rx Learning<a class="headerlink" href="#rx-learning" title="Link to this heading"></a></h2>
-<p>The process of Rx learning is similar to common Rx.
-The difference is that in interrupt handle function, Rx learning should store each pulse of the Rx waveform, while common Rx only needs to store the carrier or un-carrier duration.</p>
+<p>The process of Rx learning is similar to common Rx.</p>
+<p>The difference is that in interrupt handle function, Rx learning should store each pulse of the Rx waveform, while common Rx only needs to store the carrier or un-carrier duration.</p>
 <figure class="align-center" id="id1">
 <a class="reference internal image-reference" href="../../_images/difference_of_waveform_between_rx_learning_and_common_rx.svg"><img alt="../../_images/difference_of_waveform_between_rx_learning_and_common_rx.svg" height="133" src="../../_images/difference_of_waveform_between_rx_learning_and_common_rx.svg" width="535" /></a>
 <figcaption>
