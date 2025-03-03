@@ -878,8 +878,8 @@ document.addEventListener("DOMContentLoaded", function() {
 <div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-4-4-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-4-4-0" name="4-0" role="tab" tabindex="0">RTL8721Dx</button><button aria-controls="panel-4-4-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-4-4-1" name="4-1" role="tab" tabindex="-1">RTL8720E</button><button aria-controls="panel-4-4-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-4-4-2" name="4-2" role="tab" tabindex="-1">RTL8726E</button></div><div aria-labelledby="tab-4-4-0" class="sphinx-tabs-panel" id="panel-4-4-0" name="4-0" role="tabpanel" tabindex="0"><p><strong>BD_RAM Configuration</strong></p>
 <p>Steps to modify KM4 BD_RAM size:</p>
 <ol class="arabic">
-<li><p>Adjust <cite>KM4_BD_RAM</cite> end address by modifying <cite>RAM_KM0_IMG2_SIZE</cite> in:
-<code class="docutils literal notranslate"><span class="pre">{SDK}\amebadplus_gcc_project\amebaDplus_layout.ld</span></code></p>
+<li><p>Adjust <cite>KM4_BD_RAM</cite> end address by modifying <cite>RAM_KM0_IMG2_SIZE</cite> in:</p>
+<p><code class="docutils literal notranslate"><span class="pre">{SDK}\amebadplus_gcc_project\amebaDplus_layout.ld</span></code></p>
 <figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/modify_sd_ram_step1_dplus.png"><img alt="../../_images/modify_sd_ram_step1_dplus.png" src="../../_images/modify_sd_ram_step1_dplus.png" style="width: 359.1px; height: 24.3px;" /></a>
 </figure>
@@ -890,8 +890,8 @@ document.addEventListener("DOMContentLoaded", function() {
 <p>To modify KM4 BD_PSRAM size:</p>
 <ol class="arabic">
 <li><p>First configure IMG2 execution position in menuconfig (select any PSRAM-related option)</p></li>
-<li><p>Adjust <cite>KM4_BD_PSRAM</cite> end address by modifying <cite>PSRAM_KM4_IMG2_SIZE</cite> in:
-<code class="docutils literal notranslate"><span class="pre">{SDK}\amebadplus_gcc_project\amebaDplus_layout.ld</span></code></p>
+<li><p>Adjust <cite>KM4_BD_PSRAM</cite> end address by modifying <cite>PSRAM_KM4_IMG2_SIZE</cite> in:</p>
+<p><code class="docutils literal notranslate"><span class="pre">{SDK}\amebadplus_gcc_project\amebaDplus_layout.ld</span></code></p>
 <figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/modify_sd_ram_step2_dplus.png"><img alt="../../_images/modify_sd_ram_step2_dplus.png" src="../../_images/modify_sd_ram_step2_dplus.png" style="width: 689.5px; height: 60.9px;" /></a>
 </figure>
@@ -905,9 +905,11 @@ document.addEventListener("DOMContentLoaded", function() {
 <a class="reference internal image-reference" href="../../_images/modify_bd_ram_step1_lite.png"><img alt="BD_RAM menuconfig configuration" src="../../_images/modify_bd_ram_step1_lite.png" style="width: 527.4px; height: 38.7px;" /></a>
 </figure>
 </li>
-<li><p>Modify linker script parameters (path: <code class="docutils literal notranslate"><span class="pre">{SDK}\amebalite_gcc_project\amebalite_layout.ld</span></code>):
-- Adjust <code class="docutils literal notranslate"><span class="pre">RAM_KM4_IMG2_SIZE</span></code> or <code class="docutils literal notranslate"><span class="pre">RAM_KR4_IMG2_SIZE</span></code>
-- Update <cite>KM4_BD_RAM</cite> end address</p>
+<li><p>Modify linker script parameters (path: <code class="docutils literal notranslate"><span class="pre">{SDK}\amebalite_gcc_project\amebalite_layout.ld</span></code>):</p>
+<ul class="simple">
+<li><p>Adjust <code class="docutils literal notranslate"><span class="pre">RAM_KM4_IMG2_SIZE</span></code> or <code class="docutils literal notranslate"><span class="pre">RAM_KR4_IMG2_SIZE</span></code></p></li>
+<li><p>Update <cite>KM4_BD_RAM</cite> end address</p></li>
+</ul>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* IMG2 Size*/</span>
 <span class="cp">#if defined(CONFIG_AP_CORE_KM4)</span>
 <span class="hll"><span class="w">  </span><span class="cp">#define RAM_KR4_IMG2_SIZE         KBYTES(96)</span>
@@ -929,9 +931,11 @@ document.addEventListener("DOMContentLoaded", function() {
 <p>Steps to modify KM4 BD_PSRAM size:</p>
 <ol class="arabic">
 <li><p>Configure IMG2 execution position in menuconfig (select any PSRAM-related option)</p></li>
-<li><p>Modify linker script parameters (path: <code class="docutils literal notranslate"><span class="pre">{SDK}\amebalite_gcc_project\amebalite_layout.ld</span></code>):
-- Adjust <cite>PSRAM_KM4_IMG2_SIZE</cite>
-- Update <cite>KM4_BD_PSRAM</cite> end address</p>
+<li><p>Modify linker script parameters (path: <code class="docutils literal notranslate"><span class="pre">{SDK}\amebalite_gcc_project\amebalite_layout.ld</span></code>):</p>
+<ul class="simple">
+<li><p>Adjust <cite>PSRAM_KM4_IMG2_SIZE</cite></p></li>
+<li><p>Update <cite>KM4_BD_PSRAM</cite> end address</p></li>
+</ul>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="hll"><span class="cp">#define PSRAM_KM4_IMG2_SIZE       (KBYTES(1536) - (PSRAM_TZ_NSC_SIZE + PSRAM_TZ_ENTRY_SIZE + PSRAM_KM4_IMG3_SIZE))</span>
 </span><span class="cp">#define KM4_IMG2_PSRAM_START      (KM4_PSRAM_TZ_SECURE_START + PSRAM_KM4_IMG3_SIZE)</span>
 <span class="cp">#define KR4_IMG2_PSRAM_START      (KM4_IMG2_PSRAM_START + PSRAM_KM4_IMG2_SIZE)</span>
@@ -948,9 +952,11 @@ document.addEventListener("DOMContentLoaded", function() {
 <a class="reference internal image-reference" href="../../_images/modify_bd_ram_step1_lite.png"><img alt="BD_RAM menuconfig configuration" src="../../_images/modify_bd_ram_step1_lite.png" style="width: 527.4px; height: 38.7px;" /></a>
 </figure>
 </li>
-<li><p>Modify linker script parameters (path: <code class="docutils literal notranslate"><span class="pre">{SDK}\amebalite_gcc_project\amebalite_layout.ld</span></code>):
-- Adjust <code class="docutils literal notranslate"><span class="pre">RAM_KM4_IMG2_SIZE</span></code> or <code class="docutils literal notranslate"><span class="pre">RAM_KR4_IMG2_SIZE</span></code>
-- Update <cite>KM4_BD_RAM</cite> end address</p>
+<li><p>Modify linker script parameters (path: <code class="docutils literal notranslate"><span class="pre">{SDK}\amebalite_gcc_project\amebalite_layout.ld</span></code>):</p>
+<ul class="simple">
+<li><p>Adjust <code class="docutils literal notranslate"><span class="pre">RAM_KM4_IMG2_SIZE</span></code> or <code class="docutils literal notranslate"><span class="pre">RAM_KR4_IMG2_SIZE</span></code></p></li>
+<li><p>Update <cite>KM4_BD_RAM</cite> end address</p></li>
+</ul>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* IMG2 Size*/</span>
 <span class="cp">#if defined(CONFIG_AP_CORE_KM4)</span>
 <span class="hll"><span class="w">  </span><span class="cp">#define RAM_KR4_IMG2_SIZE         KBYTES(96)</span>
@@ -972,9 +978,11 @@ document.addEventListener("DOMContentLoaded", function() {
 <p>Steps to modify KM4 BD_PSRAM size:</p>
 <ol class="arabic">
 <li><p>Configure IMG2 execution position in menuconfig (select any PSRAM-related option)</p></li>
-<li><p>Modify linker script parameters (path: <code class="docutils literal notranslate"><span class="pre">{SDK}\amebalite_gcc_project\amebalite_layout.ld</span></code>):
-- Adjust <cite>PSRAM_KM4_IMG2_SIZE</cite>
-- Update <cite>KM4_BD_PSRAM</cite> end address</p>
+<li><p>Modify linker script parameters (path: <code class="docutils literal notranslate"><span class="pre">{SDK}\amebalite_gcc_project\amebalite_layout.ld</span></code>):</p>
+<ul class="simple">
+<li><p>Adjust <cite>PSRAM_KM4_IMG2_SIZE</cite></p></li>
+<li><p>Update <cite>KM4_BD_PSRAM</cite> end address</p></li>
+</ul>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="hll"><span class="cp">#define PSRAM_KM4_IMG2_SIZE       (KBYTES(1536) - (PSRAM_TZ_NSC_SIZE + PSRAM_TZ_ENTRY_SIZE + PSRAM_KM4_IMG3_SIZE))</span>
 </span><span class="cp">#define KM4_IMG2_PSRAM_START      (KM4_PSRAM_TZ_SECURE_START + PSRAM_KM4_IMG3_SIZE)</span>
 <span class="cp">#define KR4_IMG2_PSRAM_START      (KM4_IMG2_PSRAM_START + PSRAM_KM4_IMG2_SIZE)</span>
