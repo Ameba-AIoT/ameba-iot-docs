@@ -24,6 +24,7 @@
         <script src="../../_static/doctools.js?v=9a2dae69"></script>
         <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+        <script src="../../_static/tabs.js?v=3030b3cb"></script>
         <script>let toggleHintShow = 'Click to show';</script>
         <script>let toggleHintHide = 'Click to hide';</script>
         <script>let toggleOpenOnPrint = 'true';</script>
@@ -34,7 +35,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="RTC_IO" href="../8_rtc_io/0_rtc_io_index.html" />
-    <link rel="prev" title="KEY-SCAN" href="0_key_scan_index.html" />  
+    <link rel="prev" title="Key-Scan" href="0_key_scan_index.html" />  
      
   <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -121,26 +122,25 @@
 <li class="toctree-l1"><a class="reference internal" href="../8_adc/0_adc_index.html">8.4 ADC</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../8_ir/0_ir_index.html">8.5 IR</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../8_ledc/0_ledc_index.html">8.6 LEDC</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../8_cap_touch/0_cap_touch_index.html">8.7 CAP-TOUCH</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="0_key_scan_index.html">8.8 KEY-SCAN</a><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../8_cap_touch/0_cap_touch_index.html">8.7 Cap-Touch</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="0_key_scan_index.html">8.8 Key-Scan</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Supported ICs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#introduction">Introduction</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#block-diagram">Block Diagram</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#keypad">Keypad</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#work-mode">Work Mode</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#fifo-mechanism">FIFO Mechanism</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#low-power">Low Power</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#active">Active</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#sleep">Sleep</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#stuck-key">Stuck Key</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#work-mode">Work Mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#fifo-mechanism">FIFO Mechanism</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#low-power">Low Power</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#active-mode">Active Mode</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sleep-mode">Sleep Mode</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#stuck-key">Stuck Key</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#usage">Usage</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#event-trigger-mode">Event Trigger Mode</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#regular-scan-mode">Regular Scan Mode</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#key-stuck">Key Stuck</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#normal-operation">Normal Operation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#key-stuck-handling">Key Stuck Handling</a></li>
 </ul>
 </li>
 </ul>
@@ -163,7 +163,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="0_key_scan_index.html">KEY-SCAN</a></li>
+          <li class="breadcrumb-item"><a href="0_key_scan_index.html">Key-Scan</a></li>
       <li class="breadcrumb-item active">Supported ICs</li>
       <li class="wy-breadcrumbs-aside">
       </li>
@@ -196,63 +196,71 @@
 </section>
 <section id="introduction">
 <h1>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h1>
-<p>As a keypad scan device, Key-Scan supports up to 8*8 keypad array, and its rows and columns are configurable. Key-Scan supports multi-key detect, and it can work in low power mode.</p>
+<p>As a keypad scanning device, Key-Scan supports up to 8x8 keypad arrays with configurable rows and columns. It features multi-key detection and low-power operation modes.</p>
 <section id="block-diagram">
 <h2>Block Diagram<a class="headerlink" href="#block-diagram" title="Link to this heading"></a></h2>
 <p>The block diagram of Key-Scan is illustrated in the following figure.</p>
-<figure class="align-center" id="id1">
+<figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/key_scan_block_diagram.svg"><img alt="../../_images/key_scan_block_diagram.svg" height="252" src="../../_images/key_scan_block_diagram.svg" width="611" /></a>
-<figcaption>
-<p><span class="caption-text">Key-Scan block diagram</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
-</figcaption>
 </figure>
-<p>Key-Scan contains 6 main parts:</p>
+<p>Key-Scan contains 6 key Components:</p>
 <ul class="simple">
-<li><p><strong>Interrupt control</strong>: control and manage interrupts.</p></li>
-<li><p><strong>Register and FIFO</strong>: configure Key-Scan parameters and FIFO.</p></li>
-<li><p><strong>Clock</strong>: Key-Scan clock, 131K clock is used for stuck row detect.</p></li>
-<li><p><strong>Keypad control</strong>: contains Key-Scan control, wake up control and key input/output control.</p></li>
-<li><p><strong>Keypad</strong>: up to 8*8 keypad array with use of 16 GPIOs</p></li>
+<li><p><strong>Interrupt Control</strong>: control and manage interrupts</p></li>
+<li><p><strong>Registers and FIFO</strong>: configure Key-Scan parameters and FIFO</p></li>
+<li><p><strong>Clock</strong>: 131KHz clock for stuck row detection</p></li>
+<li><p><strong>Keypad Control</strong>: scanning logic, wakeup control, and input/output control</p></li>
+<li><p><strong>Keypad</strong>: 16 GPIOs for 8x8 array implementation</p></li>
 </ul>
 </section>
 <section id="keypad">
 <h2>Keypad<a class="headerlink" href="#keypad" title="Link to this heading"></a></h2>
 <p>The columns and rows of Key-Scan are configurable, and the maximum columns or rows can be as 8.</p>
-<figure class="align-center" id="keypad-array">
+<figure class="align-center" id="id1">
 <a class="reference internal image-reference" href="../../_images/keypad_array.svg"><img alt="../../_images/keypad_array.svg" height="705" src="../../_images/keypad_array.svg" width="830" /></a>
 <figcaption>
-<p><span class="caption-text">Keypad array</span><a class="headerlink" href="#keypad-array" title="Link to this image"></a></p>
+<p><span class="caption-text">Keypad array</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
 </figcaption>
 </figure>
-<p>At the beginning, all columns output low, and all rows are set as input with internal pull up.
-When there is a key or multiple keys pressed (short between the Column and the Row), it triggers an internal state machine to start a Key-Scan cycle to determine the column and row of the key that is pressed.
-The state machine sets first column as an output low and all other columns are in Hi-Z state. The state machine then scans all rows to determine which keys are being pressed, and then second column is output low until the last column.</p>
+<ul class="simple">
+<li><p>At the beginning, all columns output low, and all rows are set as input with internal pull up.</p></li>
+<li><p>When there is a key or multiple keys pressed (short between the Column and the Row), it triggers an internal state machine to start a Key-Scan cycle to determine the column and row of the key that is pressed.</p></li>
+<li><p>The state machine sets first column as an output low and all other columns are in Hi-Z state. The state machine then scans all rows to determine which keys are being pressed, and then second column is output low until the last column.</p></li>
+</ul>
+</section>
 </section>
 <section id="work-mode">
-<h2>Work Mode<a class="headerlink" href="#work-mode" title="Link to this heading"></a></h2>
-<p>Key-Scan contains two work modes: Event Trigger Mode and Regular Scan Mode. The following figure shows the difference of FIFO items between Event Trigger Mode and Regular Scan Mode during a key press and release.</p>
-<ul class="simple">
-<li><p>In Event Trigger Mode, key press or release event is stored in the key event FIFO only once in each key press and release operation.</p></li>
-<li><p>In Regular Scan Mode, at each full scan, any key press event is stored in the key event FIFO until it is released (in this condition, only key press event is stored in the key event FIFO).</p></li>
-</ul>
-<figure class="align-center" id="id2">
+<h1>Work Mode<a class="headerlink" href="#work-mode" title="Link to this heading"></a></h1>
+<p>Key-Scan contains two work modes: Event Trigger Mode and Regular Scan Mode.</p>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Work mode</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Event Trigger</p></td>
+<td><p>key press/release event is stored in the FIFO only once during each key press/release operation</p></td>
+</tr>
+<tr class="row-odd"><td><p>Regular Scan</p></td>
+<td><p>At each full scan, any key press event is stored in the FIFO until it is released</p></td>
+</tr>
+</tbody>
+</table>
+<p>The following figure shows the difference of FIFO items between Event Trigger Mode and Regular Scan Mode during a key press and release.</p>
+<figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/difference_FIFO_items_between_two_work_modes.svg"><img alt="../../_images/difference_FIFO_items_between_two_work_modes.svg" height="341" src="../../_images/difference_FIFO_items_between_two_work_modes.svg" width="500" /></a>
-<figcaption>
-<p><span class="caption-text">Difference of FIFO items between two work modes</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
-</figcaption>
 </figure>
 </section>
 <section id="fifo-mechanism">
-<h2>FIFO Mechanism<a class="headerlink" href="#fifo-mechanism" title="Link to this heading"></a></h2>
-<p>The FIFO depth of Key-Scan is 16, and the FIFO entry width is 12 bits. Its structure is illustrated in the following figure.</p>
-<figure class="align-center" id="id3">
-<a class="reference internal image-reference" href="../../_images/FIFO_structure.svg"><img alt="../../_images/FIFO_structure.svg" height="54" src="../../_images/FIFO_structure.svg" width="543" /></a>
-<figcaption>
-<p><span class="caption-text">FIFO structure</span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
-</figcaption>
+<h1>FIFO Mechanism<a class="headerlink" href="#fifo-mechanism" title="Link to this heading"></a></h1>
+<p>The FIFO of Key-Scan has a depth of 16 and an entry width of 12 bits. The FIFO structure of Key-Scan is illustrated below.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/FIFO_structure.svg"><img alt="../../_images/FIFO_structure.svg" height="63" src="../../_images/FIFO_structure.svg" width="627" /></a>
 </figure>
-<table class="docutils align-default" id="id4" style="width: 100%">
-<caption><span class="caption-text">FIFO Structure</span><a class="headerlink" href="#id4" title="Link to this table"></a></caption>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<table class="docutils align-default" style="width: 100%">
 <thead>
 <tr class="row-odd"><th class="head"><p>Bit</p></th>
 <th class="head"><p>Indication</p></th>
@@ -263,8 +271,8 @@ The state machine sets first column as an output low and all other columns are i
 <tr class="row-even"><td><p>[8]</p></td>
 <td><p>Event</p></td>
 <td><ul class="simple">
-<li><p>1: key press event.</p></li>
-<li><p>0: key release event.</p></li>
+<li><p>1: key press event</p></li>
+<li><p>0: key release event</p></li>
 </ul>
 </td>
 </tr>
@@ -294,39 +302,40 @@ The state machine sets first column as an output low and all other columns are i
 </table>
 </section>
 <section id="low-power">
-<h2>Low Power<a class="headerlink" href="#low-power" title="Link to this heading"></a></h2>
-<section id="active">
-<h3>Active<a class="headerlink" href="#active" title="Link to this heading"></a></h3>
-<p>In active mode, Key-Scan circuit keeps power on all the time. When Key-Scan scans column <em>x</em> (<em>x</em> is any column), it sets column <em>x</em> as an output low and all other columns are in Hi-Z state, then it scans all rows to determine which keys are being pressed or released, after this, one column scans end. Key-Scan scans column in sequence, and will be cyclic scanning column by column.</p>
+<h1>Low Power<a class="headerlink" href="#low-power" title="Link to this heading"></a></h1>
+<section id="active-mode">
+<h2>Active Mode<a class="headerlink" href="#active-mode" title="Link to this heading"></a></h2>
+<p>In active mode, Key-Scan circuit keeps power on all the time.</p>
+<p>When Key-Scan scans column <em>x</em> (<em>x</em> is any column), it sets column <em>x</em> as an output low and all other columns are in Hi-Z state. Then, it scans all rows to determine which keys are being pressed or released, completing one column scan.</p>
+<p>Key-Scan scans column sequentially , and will ba periodic scan column by column.</p>
 </section>
-<section id="sleep">
-<h3>Sleep<a class="headerlink" href="#sleep" title="Link to this heading"></a></h3>
-<p>In practical application scenarios, Key-Scan keeps active is high power consumption. To save power consumption and optimize application, Key-Scan often works in sleep mode.</p>
-<p>In sleep mode, CPU enter in low power state, but when a key or keys are pressed, it will wake up CPU and then Key-Scan will start to scan to determine which keys are being pressed. Key-Scan keeps scanning when keys are pressed, after keys are released and there is no other event occurs, CPU sleeps again.</p>
+<section id="sleep-mode">
+<h2>Sleep Mode<a class="headerlink" href="#sleep-mode" title="Link to this heading"></a></h2>
+<p>In practical application scenarios, keeping Key-Scan active consumes a significant amount of power. To save power and optimize applications, Key-Scan usually operates in the sleep mode.</p>
+<p>In the sleep mode, the CPU enters a low-power state. However, when a key is pressed, it wakes up the CPU, and then Key-Scan starts scanning to determine which keys are pressed. Key-Scan continues to scan while the keys are pressed. After the keys are released and no other events occur, the CPU enters the sleep state again.</p>
 </section>
 </section>
 <section id="stuck-key">
-<h2>Stuck Key<a class="headerlink" href="#stuck-key" title="Link to this heading"></a></h2>
-<p>Key stuck may occur in some applications. In this case, if there is no solution in reply to key stuck, CPU will keep active to perform continuous keypad scans, thus CPU cannot enter low power mode, which will result in high power consumption.</p>
-<p>To solve this problem, the Key-Scan supports auto check key stuck function. When enabling this function, if a key stuck time is over than stuck time threshold, this key will be regarded as a stuck key. Read key stuck status registers to get the stuck key, and set the default status of the stuck key row to let CPU enter low power mode.</p>
-<p>To lower the power consumption, stuck row detection function may be enabled to set row pins “no pull” detection time interval.</p>
-</section>
+<h1>Stuck Key<a class="headerlink" href="#stuck-key" title="Link to this heading"></a></h1>
+<p>Key stuck may occur in some applications. Without a solution for stuck keys, CPU will keep active to perform continuous keypad scans, preventing it from entering the low-power mode and resulting in high power consumption.</p>
+<p>To solve this problem, the Key-Scan supports automatic  check key stuck function. When enabling this function, if a key stuck time is over than stuck time threshold, this key will be regarded as a stuck key. Read key stuck status registers to get the stuck key, and set the default status of the stuck key row to let CPU enter low power mode.</p>
+<p>To reduce the power consumption, stuck row detection function may be enabled to set the detection time interval for row pins with <code class="docutils literal notranslate"><span class="pre">no</span> <span class="pre">pull</span></code>.</p>
 </section>
 <section id="usage">
 <h1>Usage<a class="headerlink" href="#usage" title="Link to this heading"></a></h1>
-<section id="event-trigger-mode">
-<h2>Event Trigger Mode<a class="headerlink" href="#event-trigger-mode" title="Link to this heading"></a></h2>
-<p>To use Key-Scan event trigger mode, perform the following procedures:</p>
+<section id="normal-operation">
+<h2>Normal Operation<a class="headerlink" href="#normal-operation" title="Link to this heading"></a></h2>
+<p>To use Key-Scan in either Event Trigger Mode or Regular Scan Mode, perform the following steps:</p>
 <ol class="arabic">
-<li><p>Configure Pinmux for Key-Scan keypads.</p>
+<li><p>Configure the pin multiplexing for Key-Scan keypads.</p>
 <ol class="loweralpha">
-<li><p>Set column pads to no-pull, and set column pinmux function.</p>
+<li><p>Set the column pins to no pull and configure the column pin multiplexing function.</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">PAD_PullCtrl</span><span class="p">(</span><span class="n">pad_colx</span><span class="p">,</span><span class="w"> </span><span class="n">GPIO_PuPd_NOPULL</span><span class="p">);</span>
 <span class="n">Pinmux_Config</span><span class="p">(</span><span class="n">pad_colx</span><span class="p">,</span><span class="w"> </span><span class="n">PINMUX_FUNCTION_KEY_COLx</span><span class="p">);</span>
 </pre></div>
 </div>
 </li>
-<li><p>Set row pads to pull-up, and set key row pinmux function.</p>
+<li><p>Set the row pins to pull-up and configure the row pin multiplexing function.</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">PAD_PullCtrl</span><span class="p">(</span><span class="n">pad_rowx</span><span class="p">,</span><span class="w"> </span><span class="n">GPIO_PuPd_UP</span><span class="p">);</span>
 <span class="n">Pinmux_Config</span><span class="p">(</span><span class="n">pad_rowx</span><span class="p">,</span><span class="w"> </span><span class="n">PINMUX_FUNCTION_KEY_ROWx</span><span class="p">);</span>
 </pre></div>
@@ -335,76 +344,46 @@ The state machine sets first column as an output low and all other columns are i
 </ol>
 </li>
 <li><p>Initialize Key-Scan parameters.</p>
-<p>Select key row number and column number (one bit one row or column) according to keypads, and set work mode to event trigger mode, etc.</p>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">KeyScan_StructInit</span><span class="p">(</span><span class="o">&amp;</span><span class="n">KeyScan_InitStruct</span><span class="p">);</span>
+<p>Select the number of key rows and columns (one bit corresponds to one row or column) according to keypads, and set work mode to Event Trigger Mode or Regular Scan Mode, etc.</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-0-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-0-0-0" name="0-0" role="tab" tabindex="0">Event Trigger Mode</button><button aria-controls="panel-0-0-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-1" name="0-1" role="tab" tabindex="-1">Regular Scan Mode</button></div><div aria-labelledby="tab-0-0-0" class="sphinx-tabs-panel" id="panel-0-0-0" name="0-0" role="tabpanel" tabindex="0"><div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">KeyScan_StructInit</span><span class="p">(</span><span class="o">&amp;</span><span class="n">KeyScan_InitStruct</span><span class="p">);</span>
 <span class="n">KeyScan_InitStruct</span><span class="p">.</span><span class="n">KS_ColSel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0xFF</span><span class="p">;</span><span class="w">  </span><span class="c1">//8 columns</span>
 <span class="n">KeyScan_InitStruct</span><span class="p">.</span><span class="n">KS_RowSel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0xFF</span><span class="p">;</span><span class="w">  </span><span class="c1">//8 rows</span>
 <span class="n">KeyScan_InitStruct</span><span class="p">.</span><span class="n">KS_WorkMode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">KS_EVENT_TRIGGER_MODE</span><span class="p">;</span>
 <span class="n">KeyScan_Init</span><span class="p">(</span><span class="n">KeyScan</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">KeyScan_InitStruct</span><span class="p">);</span>
 </pre></div>
 </div>
-</li>
-<li><p>Enable Key-Scan interrupt and register Key-Scan interrupt handle.</p></li>
-<li><p>Enable Key-Scan.</p>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">KeyScan_Cmd</span><span class="p">(</span><span class="n">KeyScan</span><span class="p">,</span><span class="w"> </span><span class="n">ENABLE</span><span class="p">);</span>
-</pre></div>
-</div>
-</li>
-<li><p>Wait Key-Scan interrupt, and handle Key-Scan interrupts.</p></li>
-</ol>
-</section>
-<section id="regular-scan-mode">
-<h2>Regular Scan Mode<a class="headerlink" href="#regular-scan-mode" title="Link to this heading"></a></h2>
-<p>To use Key-Scan regular scan mode, perform the following procedures:</p>
-<ol class="arabic">
-<li><p>Configure Pinmux for Key-Scan keypads.</p>
-<ol class="loweralpha">
-<li><p>Set column pads to no-pull, and set column pinmux function.</p>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">PAD_PullCtrl</span><span class="p">(</span><span class="n">pad_colx</span><span class="p">,</span><span class="w"> </span><span class="n">GPIO_PuPd_NOPULL</span><span class="p">);</span>
-<span class="n">Pinmux_Config</span><span class="p">(</span><span class="n">pad_colx</span><span class="p">,</span><span class="w"> </span><span class="n">PINMUX_FUNCTION_KEY_COLx</span><span class="p">);</span>
-</pre></div>
-</div>
-</li>
-<li><p>Set row pads to pull-up, and set key row pinmux function.</p>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">PAD_PullCtrl</span><span class="p">(</span><span class="n">pad_rowx</span><span class="p">,</span><span class="w"> </span><span class="n">GPIO_PuPd_UP</span><span class="p">);</span>
-<span class="n">Pinmux_Config</span><span class="p">(</span><span class="n">pad_rowx</span><span class="p">,</span><span class="w"> </span><span class="n">PINMUX_FUNCTION_KEY_ROWx</span><span class="p">);</span>
-</pre></div>
-</div>
-</li>
-</ol>
-</li>
-<li><p>Initialize Key-Scan parameters.</p>
-<p>Select key row number and column number (one bit one row or column) according to keypads, set work mode to regular scan mode, etc.</p>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">KeyScan_StructInit</span><span class="p">(</span><span class="o">&amp;</span><span class="n">KeyScan_InitStruct</span><span class="p">);</span>
+</div><div aria-labelledby="tab-0-0-1" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-1" name="0-1" role="tabpanel" tabindex="0"><div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">KeyScan_StructInit</span><span class="p">(</span><span class="o">&amp;</span><span class="n">KeyScan_InitStruct</span><span class="p">);</span>
 <span class="n">KeyScan_InitStruct</span><span class="p">.</span><span class="n">KS_ColSel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0xFF</span><span class="p">;</span><span class="w">  </span><span class="c1">//8 columns</span>
 <span class="n">KeyScan_InitStruct</span><span class="p">.</span><span class="n">KS_RowSel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0xFF</span><span class="p">;</span><span class="w">  </span><span class="c1">//8 rows</span>
 <span class="n">KeyScan_InitStruct</span><span class="p">.</span><span class="n">KS_WorkMode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">KS_REGULAR_SCAN_MODE</span><span class="p">;</span>
 <span class="n">KeyScan_Init</span><span class="p">(</span><span class="n">KeyScan</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">KeyScan_InitStruct</span><span class="p">);</span>
 </pre></div>
 </div>
+</div></div>
 </li>
-<li><p>Enable Key-Scan interrupt and register Key-Scan interrupt handle.</p></li>
+<li><p>Enable Key-Scan interrupt and register Key-Scan interrupt handler.</p></li>
 <li><p>Enable Key-Scan.</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">KeyScan_Cmd</span><span class="p">(</span><span class="n">KeyScan</span><span class="p">,</span><span class="w"> </span><span class="n">ENABLE</span><span class="p">);</span>
 </pre></div>
 </div>
 </li>
-<li><p>Wait Key-Scan interrupt, and handle Key-Scan interrupts.</p></li>
+<li><p>Wait for the Key-Scan interrupt and handle items.</p></li>
 </ol>
 </section>
-<section id="key-stuck">
-<h2>Key Stuck<a class="headerlink" href="#key-stuck" title="Link to this heading"></a></h2>
-<p>When existing key stuck, perform the following procedures:</p>
+<section id="key-stuck-handling">
+<h2>Key Stuck Handling<a class="headerlink" href="#key-stuck-handling" title="Link to this heading"></a></h2>
+<p>When a stuck key occurs, perform the following steps:</p>
 <ol class="arabic">
-<li><p>Configure Pinmux for Key-Scan keypads.</p>
+<li><p>Configure the pin multiplexing for Key-Scan keypads.</p>
 <ol class="loweralpha">
-<li><p>Set column pads to no-pull, and set column pinmux function.</p>
+<li><p>Set the column pins to no pull and configure the column pin multiplexing function.</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">PAD_PullCtrl</span><span class="p">(</span><span class="n">pad_colx</span><span class="p">,</span><span class="w"> </span><span class="n">GPIO_PuPd_NOPULL</span><span class="p">);</span>
 <span class="n">Pinmux_Config</span><span class="p">(</span><span class="n">pad_colx</span><span class="p">,</span><span class="w"> </span><span class="n">PINMUX_FUNCTION_KEY_COLx</span><span class="p">);</span>
 </pre></div>
 </div>
 </li>
-<li><p>Set row pads to pull-up, and set key row pinmux function.</p>
+<li><p>Set the row pins to pull-up and configure the row pin multiplexing function.</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">PAD_PullCtrl</span><span class="p">(</span><span class="n">pad_rowx</span><span class="p">,</span><span class="w"> </span><span class="n">GPIO_PuPd_UP</span><span class="p">);</span>
 <span class="n">Pinmux_Config</span><span class="p">(</span><span class="n">pad_rowx</span><span class="p">,</span><span class="w"> </span><span class="n">PINMUX_FUNCTION_KEY_ROWx</span><span class="p">);</span>
 </pre></div>
@@ -413,7 +392,7 @@ The state machine sets first column as an output low and all other columns are i
 </ol>
 </li>
 <li><p>Initialize Key-Scan parameters.</p>
-<p>Select key row number and column number (one bit one row or column) according to keypads, set work mode to regular scan mode, etc.</p>
+<p>Select the number of key rows and columns (one bit corresponds to one row or column) according to keypads, and set work mode to Regular Scan Mode, etc.</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">KeyScan_StructInit</span><span class="p">(</span><span class="o">&amp;</span><span class="n">KeyScan_InitStruct</span><span class="p">);</span>
 <span class="n">KeyScan_InitStruct</span><span class="p">.</span><span class="n">KS_ColSel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0xFF</span><span class="p">;</span><span class="w">  </span><span class="c1">//8 columns</span>
 <span class="n">KeyScan_InitStruct</span><span class="p">.</span><span class="n">KS_RowSel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0xFF</span><span class="p">;</span><span class="w">  </span><span class="c1">//8 rows</span>
@@ -421,32 +400,35 @@ The state machine sets first column as an output low and all other columns are i
 </pre></div>
 </div>
 </li>
-<li><p>Enable Key-Scan stuck auto check function.</p>
+<li><p>Enable the Key-Scan stuck key auto-detection function.</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">KeyScan_StuckAutoCmd</span><span class="p">(</span><span class="n">KeyScan</span><span class="p">,</span><span class="w"> </span><span class="n">ENABLE</span><span class="p">);</span>
 </pre></div>
 </div>
 </li>
-<li><p>Set stuck time threshold, and configure stuckrow detect time and interval time.</p>
+<li><p>Set the stuck time threshold and configure the stuck row detection time and interval.</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">KeyScan_SetStuckThreshold</span><span class="p">(</span><span class="n">KeyScan</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">);</span><span class="w">  </span><span class="c1">//stuck time threshold: 10ms</span>
 <span class="n">KeyScan_StuckPeriodicalPull</span><span class="p">(</span><span class="n">KeyScan</span><span class="p">,</span><span class="mi">2000</span><span class="p">,</span><span class="mi">4000</span><span class="p">);</span><span class="c1">//pull time:2000us, no pull time:4000us</span>
 </pre></div>
 </div>
 </li>
-<li><p>Enable Key-Scan stuck and all default interrupt and register Key-Scan interrupt handle.</p></li>
-<li><p>Enable Key-Scan.</p>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">KeyScan_Cmd</span><span class="p">(</span><span class="n">KeyScan</span><span class="p">,</span><span class="w"> </span><span class="n">ENABLE</span><span class="p">);</span>
+</ol>
+<p>5. Enable the Key-Scan stuck key and all default interrupts, and register the Key-Scan interrupt handler.
+7. Enable Key-Scan.</p>
+<blockquote>
+<div><div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">KeyScan_Cmd</span><span class="p">(</span><span class="n">KeyScan</span><span class="p">,</span><span class="w"> </span><span class="n">ENABLE</span><span class="p">);</span>
 </pre></div>
 </div>
-</li>
-<li><p>Wait Key-Scan interrupt, and handle Key-Scan interrupts.</p>
+</div></blockquote>
+<ol class="arabic" start="8">
+<li><p>Wait for the Key-Scan interrupt and handle it.</p>
 <ul>
-<li><p>In stuck event interrupt, get row status, and set row default status to indicate stuck row, then mask all the keys of the stuck row.</p>
+<li><p>In stuck key event interrupt, get the row status, set the default row status to indicate stuck row, and mask all the keys of the stuck row.</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">row_status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">KeyScan_GetStuckRow</span><span class="p">(</span><span class="n">KeyScan</span><span class="p">);</span>
 <span class="n">KeyScan_SetStuckRow</span><span class="p">(</span><span class="n">KeyScan</span><span class="p">,</span><span class="w"> </span><span class="n">row_status</span><span class="p">);</span>
 </pre></div>
 </div>
 </li>
-<li><p>In all default interrupt, reset row default status to initial value, disable stuck event interrupt and all default interrupt, enable scan event interrupt and all release interrupt, then other keys except the stuck key can work normally.</p>
+<li><p>In all default interrupts, reset row default status to initial value, disable stuck key event interrupt and all default interrupts, enable scan event interrupt and all release the interrupt, then other keys except the stuck key can work normally.</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">KeyScan_INTConfig</span><span class="p">(</span><span class="n">KeyScan</span><span class="p">,</span><span class="w"> </span><span class="n">KS_BIT_ALL_DEFAULT_INT_MASK</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">KS_BIT_STUCK_EVENT_INT_MASK</span><span class="p">,</span><span class="w"> </span><span class="n">DISABLE</span><span class="p">);</span>
 <span class="n">KeyScan_SetStuckRow</span><span class="p">(</span><span class="n">KeyScan</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
 <span class="n">KeyScan_INTConfig</span><span class="p">(</span><span class="n">KeyScan</span><span class="p">,</span><span class="w"> </span><span class="n">KS_BIT_ALL_RELEASE_INT_MASK</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">KS_BIT_SCAN_EVENT_INT_MASK</span><span class="p">,</span><span class="w"> </span><span class="n">ENABLE</span><span class="p">);</span>
@@ -455,7 +437,7 @@ The state machine sets first column as an output low and all other columns are i
 </li>
 </ul>
 </li>
-<li><p>Key or keys except the stuck press or release will generate the corresponding interrupt normally.</p></li>
+<li><p>Key or keys except the stuck key press or release will generate the corresponding interrupts normally.</p></li>
 </ol>
 </section>
 </section>
@@ -464,7 +446,7 @@ The state machine sets first column as an output low and all other columns are i
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="0_key_scan_index.html" class="btn btn-neutral float-left" title="KEY-SCAN" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="0_key_scan_index.html" class="btn btn-neutral float-left" title="Key-Scan" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="../8_rtc_io/0_rtc_io_index.html" class="btn btn-neutral float-right" title="RTC_IO" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
