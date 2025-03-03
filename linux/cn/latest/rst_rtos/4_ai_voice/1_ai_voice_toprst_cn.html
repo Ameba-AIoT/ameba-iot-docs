@@ -524,13 +524,13 @@
 </table>
 <div class="admonition attention">
 <p class="admonition-title">注意</p>
-<p>在这些流程中创建实例之前必须设置KWS模式：</p>
-<blockquote>
-<div><ul class="simple">
+<dl class="simple">
+<dt>在这些流程中创建实例之前必须设置KWS模式：</dt><dd><ul class="simple">
 <li><p>aivoice_iface_full_flow_v1</p></li>
 <li><p>aivoice_iface_afe_kws_v1</p></li>
 </ul>
-</div></blockquote>
+</dd>
+</dl>
 </div>
 </section>
 </section>
@@ -544,10 +544,8 @@
 <ol class="arabic">
 <li><p>选择需要的aivoice流程或模块。如果使用full_flow或afe_kws流程，需要指定KWS模式为单路或多路模式。</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* step 1:</span>
-
 <span class="cm"> * Select the aivoice flow you want to use.</span>
 <span class="cm"> * Refer to the end of aivoice_interface.h to see which flows are supported.</span>
-
 <span class="cm"> */</span>
 <span class="k">const</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">rtk_aivoice_iface</span><span class="w"> </span><span class="o">*</span><span class="n">aivoice</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">aivoice_iface_full_flow_v1</span><span class="p">;</span>
 <span class="n">rtk_aivoice_set_multi_kws_mode</span><span class="p">();</span>
@@ -556,10 +554,8 @@
 </li>
 <li><p>准备配置参数。</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* step 2:</span>
-
 <span class="cm"> * Modify the default configure if needed.</span>
 <span class="cm"> * You can modify 0 or more configures of afe/vad/kws/...</span>
-
 <span class="cm"> */</span>
 <span class="k">struct</span><span class="w"> </span><span class="nc">aivoice_config</span><span class="w"> </span><span class="n">config</span><span class="p">;</span>
 <span class="n">memset</span><span class="p">(</span><span class="o">&amp;</span><span class="n">config</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">config</span><span class="p">));</span>
@@ -570,7 +566,6 @@
 <span class="cm"> * refer to aivoce_afe_config.h for details;</span>
 <span class="cm"> *</span>
 <span class="cm"> * afe_config.mic_array MUST match the afe resource you linked.</span>
-
 <span class="cm"> */</span>
 <span class="k">struct</span><span class="w"> </span><span class="nc">afe_config</span><span class="w"> </span><span class="n">afe_param</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AFE_CONFIG_ASR_DEFAULT</span><span class="p">();</span>
 <span class="n">afe_param</span><span class="p">.</span><span class="n">mic_array</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AFE_LINEAR_2MIC_50MM</span><span class="p">;</span><span class="w">  </span><span class="c1">// change this according to the linked afe resource.</span>
@@ -580,7 +575,6 @@
 <span class="cm"> * ONLY turn on these settings when you are sure about what you are doing.</span>
 <span class="cm"> * it is recommend to use the default configure,</span>
 <span class="cm"> * if you do not know the meaning of these configure parameters.</span>
-
 <span class="cm"> */</span>
 <span class="k">struct</span><span class="w"> </span><span class="nc">vad_config</span><span class="w"> </span><span class="n">vad_param</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">VAD_CONFIG_DEFAULT</span><span class="p">();</span>
 <span class="n">vad_param</span><span class="p">.</span><span class="n">left_margin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">300</span><span class="p">;</span><span class="w"> </span><span class="c1">// you can change the configure if needed</span>
@@ -600,9 +594,7 @@
 </li>
 <li><p>使用 <code class="xref py py-func docutils literal notranslate"><span class="pre">create()</span></code> 和指定配置来创建并初始化aivoice实例。</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* step 3:</span>
-
 <span class="cm"> * Create the aivoice instance.</span>
-
 <span class="cm"> */</span>
 <span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">handle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">aivoice</span><span class="o">-&gt;</span><span class="n">create</span><span class="p">(</span><span class="o">&amp;</span><span class="n">config</span><span class="p">);</span>
 <span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">handle</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
@@ -613,12 +605,10 @@
 </li>
 <li><p>注册回调函数。</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* step 4:</span>
-
 <span class="cm"> * Register a callback function.</span>
 <span class="cm"> * You may only receive some of the aivoice_out_event_type in this example,</span>
 <span class="cm"> * depending on the flow you use.</span>
 <span class="cm"> * */</span>
-
 <span class="n">rtk_aivoice_register_callback</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span><span class="w"> </span><span class="n">aivoice_callback_process</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span>
 </pre></div>
 </div>
@@ -678,10 +668,8 @@
 <ol class="arabic" start="6">
 <li><p>使用 <code class="xref py py-func docutils literal notranslate"><span class="pre">feed()</span></code> 给aivoice输入音频数据。</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* when run on chips, we get online audio stream,</span>
-
 <span class="cm"> * here we use a fix audio.</span>
 <span class="cm"> * */</span>
-
 <span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">audio</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">get_test_wav</span><span class="p">();</span>
 <span class="kt">int</span><span class="w"> </span><span class="n">len</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_test_wav_len</span><span class="p">();</span>
 <span class="kt">int</span><span class="w"> </span><span class="n">audio_offset</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">44</span><span class="p">;</span>
@@ -689,10 +677,8 @@
 <span class="kt">int</span><span class="w"> </span><span class="n">afe_frame_bytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">mics_num</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">afe_param</span><span class="p">.</span><span class="n">ref_num</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">afe_param</span><span class="p">.</span><span class="n">frame_size</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="kt">short</span><span class="p">);</span>
 <span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">audio_offset</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">len</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">afe_frame_bytes</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="cm">/* step 5:</span>
-
 <span class="cm">         * Feed the audio to the aivoice instance.</span>
 <span class="cm">         * */</span>
-
 <span class="w">        </span><span class="n">aivoice</span><span class="o">-&gt;</span><span class="n">feed</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span>
 <span class="w">                      </span><span class="p">(</span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">audio</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">audio_offset</span><span class="p">,</span>
 <span class="w">                      </span><span class="n">afe_frame_bytes</span><span class="p">);</span>
@@ -705,9 +691,7 @@
 <li><p>（可选） 如果需要重置状态, 使用 <code class="xref py py-func docutils literal notranslate"><span class="pre">reset()</span></code>。</p></li>
 <li><p>如果不再需要aivoice，使用 <code class="xref py py-func docutils literal notranslate"><span class="pre">destroy()</span></code> 销毁实例。</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* step 6:</span>
-
 <span class="cm">* Destroy the aivoice instance */</span>
-
 <span class="n">aivoice</span><span class="o">-&gt;</span><span class="n">destroy</span><span class="p">(</span><span class="n">handle</span><span class="p">);</span>
 </pre></div>
 </div>
