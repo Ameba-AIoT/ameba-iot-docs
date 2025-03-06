@@ -41,6 +41,8 @@
     <link rel="prev" title="Flash" href="0_flash_index_cn.html" />
    
   
+  <link id="swal-css" rel="preload" as="style" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+  
   <script type="text/javascript" src="../../_static/js/selector.js"></script>
 
   <style>
@@ -133,7 +135,6 @@
       </nav>
 
       <div class="wy-nav-content">
-
         <div class="rst-content">
           <div role="navigation" aria-label="页面导航">
   <ul class="wy-breadcrumbs">
@@ -402,7 +403,6 @@
 
 </footer>
         </div>
-
       </div>
     </section>
   </div>
@@ -411,8 +411,47 @@
           SphinxRtdTheme.Navigation.enable(true);
       });
   </script>
- 
+   
+  
+  
+  <script>
+  (() => {
+    // 严格限制在受控页面执行
+    const authContainer = document.querySelector('[data-auth-container]');
+    if (!authContainer) return;
 
+    // 异步加载资源
+    const loadSwal = () => {
+      return new Promise((resolve) => {
+        const script = document.createElement('script');
+        script.src = 'https://cdn.jsdelivr.net/npm/sweetalert2@11';
+        script.onload = resolve;
+        script.onerror = () => {
+          console.error('SweetAlert2加载失败，显示内容');
+          authContainer.style.display = 'block';
+          resolve();
+        };
+        document.head.appendChild(script);
+      });
+    };
+
+    loadSwal().then(() => {
+      if (typeof Swal === 'undefined') return;
+      
+      Swal.fire({
+        title: '访问授权',
+        input: 'password',
+        showCancelButton: true
+      }).then((result) => {
+        if (result.isConfirmed && result.value === '123') {
+          authContainer.style.display = 'block';
+        } else {
+          window.history.back();
+        }
+      });
+    });
+  })();
+  </script>
 
 
 </body>
