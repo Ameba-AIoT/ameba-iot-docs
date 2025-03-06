@@ -1,0 +1,750 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>简介 &mdash; Ameba IoT Docs  文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom_cn.css?v=0d22fac7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/tabs.css?v=a5c4661c" />
+      <link rel="stylesheet" type="text/css" href="../../_static/_static/custom_cn.css" />
+
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=7d86a446"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+        <script>let toggleHintShow = 'Click to show';</script>
+        <script>let toggleHintHide = 'Click to hide';</script>
+        <script>let toggleOpenOnPrint = 'true';</script>
+        <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+        <script src="../../_static/translations.js?v=beaddf03"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="SDK Architecture" href="../0_sdk_architecture/0_sdk_architecture_index_cn.html" />
+    <link rel="prev" title="编译环境" href="0_gcc_build_index_cn.html" />
+   
+  
+  <script type="text/javascript" src="../../_static/js/selector.js"></script>
+
+  <style>
+    .wy-nav-content {max-width: 1000px;} /* 设置最大宽度 */
+  </style>
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Ameba IoT Docs
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../rst_rtos/0_ameba_product/0_ameba_product_center_index_cn.html">产品中心</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rst_rtos/0_ameba_sdk/0_ameba_sdks_index_cn.html">Ameba SDK</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_release_packages/0_release_packages_index_cn.html">0.0 释放包</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="0_gcc_build_index_cn.html">0.1 GCC 编译环境</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">简介</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">主机设置</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id3">工具链设置</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#linux">Linux系统</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#windows">Windows系统</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id4">固件编译</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id5">设置环境</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id6">加速编译</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id7">编译固件</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bitbake">Bitbake 选项</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id8">固件部署</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#flash">下载固件到 flash</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#docker">Docker 容器</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id9">影像</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id10">制作影像</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id12">载入影像</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id13">容器</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id14">运行容器</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id15">运行已有的容器</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sdk">在容器内编译 SDK</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#podman">使用 Podman 替代</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../0_sdk_architecture/0_sdk_architecture_index_cn.html">0.2 SDK 架构</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rst_rtos/0_tools/0_tools_index_cn.html">0.7 工具</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_question_help/0_question_help_index_cn.html">0.A 问题与帮助</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_debugging/0_debugging_index_cn.html">0.B 系统调试</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_boot_process/0_boot_index_cn.html">1.1 启动流程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_ota/0_ota_index_cn.html">1.2 固件在线升级（OTA）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_otpc/0_otpc_index_cn.html">1.3 OTP 存储器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_flash/0_flash_index_cn.html">1.4 闪存</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_gpio/0_gpio_index_cn.html">1.7 通用输入输出端口</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_power_save/0_ps_index_cn.html">1.8 电源管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_secure_boot/0_secure_boot_index_nda_cn.html">3.6 安全启动</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../7_usb_boot/0_usb_boot_index_cn.html">3.7 USB 启动</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_crypto_engine/0_crypto_engine_index_cn.html">3.8 加密引擎</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../4_multimedia/0_multimedia_index_cn.html">4.3 多媒体</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../7_usb/0_usb_index_cn.html">7.1 USB 主机与设备</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../7_sdio/0_sdioh_index_cn.html">7.2 SDIO 主机</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_dmac/0_dmac_index_cn.html">8.1 DMA 控制器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_rtc/0_rtc_index_cn.html">8.2 实时时钟（RTC）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_thermal/0_thermal_index_cn.html">8.3 热计量器（Thermel）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_adc/0_adc_index_cn.html">8.4 模数转换器（ADC）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_cap_touch/0_cap_touch_index_cn.html">8.5 电容触摸（Cap-touch）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_ir/0_ir_index_cn.html">8.6 红外收发器（IR）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_ledc/0_ledc_index_cn.html">8.7 LED 灯控制器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_i2c/0_i2c_index_cn.html">8.8 集成电路间通信（I2C）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_uart/0_uart_index_cn.html">8.9 通用异步收发传输器（UART）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_lcdc/0_lcdc_index_cn.html">8.A 液晶显示控制器（LCDC）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_spi/0_spi_index_cn.html">8.B 串行外设接口（SPI）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_spic/0_spic_index_cn.html">8.C SPI 闪存控制器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_timer/0_timer_index_cn.html">8.D 计时器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_wdg/0_wdg_index_cn.html">8.E 看门狗</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../9_bluetooth/0_bluetooth_index_cn.html">9.1 蓝牙</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Ameba IoT Docs</a>
+      </nav>
+
+      <div class="wy-nav-content">
+
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="0_gcc_build_index_cn.html">编译环境</a></li>
+      <li class="breadcrumb-item active">简介</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="building-environment">
+<span id="id1"></span><h1>简介<a class="headerlink" href="#building-environment" title="Link to this heading"></a></h1>
+<p>本章介绍如何使用Ameba Yocto Linux SDK编译固件。它描述了Realtek Ameba发布层和Ameba特定的使用方法。</p>
+<p>Yocto项目是一个专注于嵌入式Linux操作系统开发的开源协作项目。有关Yocto项目的更多信息，请参考 <a class="reference external" href="https://www.yoctoproject.org">Yocto Project</a> 。</p>
+<p>Yocto项目主页上的几份文档详细描述了如何使用该系统。要在没有Realtek Ameba发布层的情况下使用基础的Yocto项目，请按照《Yocto Project 快速入门》中的说明进行操作，具体在 <a class="reference external" href="https://docs.yoctoproject.org/brief-yoctoprojectqs/index.html">Yocto Project Quick Build</a> 中获取。</p>
+<p>用于编译固件的文件存储在层中。层包含不同类型的自定义内容，并来自不同的来源。层中的一些文件被称为配方。Yocto项目的配方包含了获取源代码、编译和打包组件的机制。</p>
+<p>以下列表显示了此版本中使用的层。</p>
+<ul class="simple">
+<li><p>Ameba 发布层：</p>
+<ul>
+<li><p>meta-realtek</p>
+<ul>
+<li><p>meta-realtek-bsp: Realtek BSP layer</p></li>
+<li><p>meta-sdk: Realtek specific SDK customization</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Yocto 项目社区层：</p>
+<ul>
+<li><p>poky</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="id2">
+<h1>主机设置<a class="headerlink" href="#id2" title="Link to this heading"></a></h1>
+<p>要编译 Ameba Yocto Linux SDK，你必须使用 Linux。目前不支持在 MacOS 或 Windows 下编译。你需要在编译主机上安装必要的主机软件包。以下命令是在 Ubuntu 发行版上安装主机软件包。</p>
+<ul>
+<li><p>基本工具 - 用于 SDK 编译的主机软件包。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$sudo apt install chrpath diffstat liblz4-tool zstd mtd-utils python3 python3-dev python3-pip python3-pyelftools
+$sudo pip install python-mbedtls sslcrypto cryptography pycryptodome ecdsa
+</pre></div>
+</div>
+</li>
+<li><p>将shell更改为bash</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$sudo dpkg-reconfigure dash
+</pre></div>
+</div>
+</li>
+</ul>
+<section id="id3">
+<h2>工具链设置<a class="headerlink" href="#id3" title="Link to this heading"></a></h2>
+<section id="linux">
+<h3>Linux系统<a class="headerlink" href="#linux" title="Link to this heading"></a></h3>
+<p>本节介绍了在用户需要使用 yocto 工具链来编译代码时，如何导出 yocto 工具链的步骤。</p>
+<ol class="arabic">
+<li><p>以产品 <em>rtl8730elh-va7</em> 为例。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">source</span> <span class="n">envsetup</span><span class="o">.</span><span class="n">sh</span> <span class="o">-</span><span class="n">m</span> <span class="n">rtl8730elh</span><span class="o">-</span><span class="n">va7</span> <span class="o">-</span><span class="n">d</span> <span class="n">ameba</span><span class="o">-</span><span class="n">generic</span>
+</pre></div>
+</div>
+</li>
+<li><p>执行 <code class="docutils literal notranslate"><span class="pre">bitbake</span></code> 命令用于 <em>meta-toolchain</em>。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">bitbake</span> <span class="n">meta</span><span class="o">-</span><span class="n">toolchain</span>
+</pre></div>
+</div>
+</li>
+<li><p>跳转到 sdk 目录。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">build_rtl8730elh</span><span class="o">-</span><span class="n">va7_ameba</span><span class="o">-</span><span class="n">generic</span><span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">deploy</span><span class="o">/</span><span class="n">sdk</span>
+</pre></div>
+</div>
+</li>
+<li><p>执行生成工具链的 shell 脚本文件。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">ameba</span><span class="o">-</span><span class="n">generic</span><span class="o">-</span><span class="n">glibc</span><span class="o">-</span><span class="n">x86_64</span><span class="o">-</span><span class="n">meta</span><span class="o">-</span><span class="n">toolchain</span><span class="o">-</span><span class="n">cortexa32hf</span><span class="o">-</span><span class="n">neon</span><span class="o">-</span><span class="n">rtl8730elh</span><span class="o">-</span><span class="n">va7</span><span class="o">-</span><span class="n">toolchain</span><span class="o">-</span><span class="mf">4.0.7</span><span class="o">.</span><span class="n">sh</span> <span class="o">-</span><span class="n">d</span> <span class="o">&lt;</span><span class="n">toolchain</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>其中 <code class="docutils literal notranslate"><span class="pre">&lt;toolchain&gt;</span></code> 是你用于存储目标工具链的自定义目录。</p>
+</li>
+<li><p>选择 <code class="docutils literal notranslate"><span class="pre">Y</span></code>。</p>
+<p>工具链会在目录 <code class="docutils literal notranslate"><span class="pre">&lt;toolchain&gt;</span></code> 中生成。</p>
+</li>
+<li><p>跳转到 <code class="docutils literal notranslate"><span class="pre">&lt;toolchain&gt;</span></code>。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">source</span> <span class="n">environment</span><span class="o">-</span><span class="n">setup</span><span class="o">-</span><span class="n">cortexa32hf</span><span class="o">-</span><span class="n">neon</span><span class="o">-</span><span class="n">rtk</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">gnueabi</span>
+</pre></div>
+</div>
+<p>然后工具链便在此生成。</p>
+</li>
+</ol>
+</section>
+<section id="windows">
+<h3>Windows系统<a class="headerlink" href="#windows" title="Link to this heading"></a></h3>
+<p>本节介绍了准备工具链环境的步骤。</p>
+<ol class="arabic simple">
+<li><p>从 Realtek 获取工具链的压缩文件。</p></li>
+</ol>
+<ol class="arabic" id="build-environment-windows-toolchain-step-2" start="2">
+<li><p>在路径 <code class="docutils literal notranslate"><span class="pre">{MSYS2_path}\opt</span></code> 下创建一个目录 <code class="docutils literal notranslate"><span class="pre">rtk-toolchain</span></code>。</p>
+<p>其中 <code class="docutils literal notranslate"><span class="pre">{MSYS2_path}</span></code> 是你安装 MSYS2 的路径。</p>
+</li>
+<li><p>解压 <code class="docutils literal notranslate"><span class="pre">asdk-10.3.x-mingw32-newlib-build-xxxx.zip</span></code> 与 <code class="docutils literal notranslate"><span class="pre">vsdk-10.3.x-mingw32-newlib-build-xxxx.zip</span></code> ，把工具链目录 （<code class="docutils literal notranslate"><span class="pre">asdk-10.3.x</span></code> 与 <code class="docutils literal notranslate"><span class="pre">vsdk-10.3.x</span></code>） 放到由步骤 <a class="reference internal" href="#build-environment-windows-toolchain-step-2"><span class="std std-ref">2</span></a> 生成的 <code class="docutils literal notranslate"><span class="pre">rtk-toolchain</span></code> 目录下。</p></li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<ul class="simple">
+<li><p>解压后的文件夹应与上述保持一致，不要更改它们，否则你需要在 makefile 中修改工具链目录以自定义路径。</p></li>
+<li><p>如果在编译项目时出现工具链错误，例如日志显示 <em>“Error: No Toolchain in /opt/rtk-toolchain/vsdk-10.3.1/mingw32/newlib”</em>，请检查你的工具链文件目录是否与日志中的目录不同。将工具链文件放置在正确的位置，然后重试。</p></li>
+</ul>
+</div>
+</section>
+</section>
+</section>
+<section id="id4">
+<h1>固件编译<a class="headerlink" href="#id4" title="Link to this heading"></a></h1>
+<p>本节提供了编译固件的详细信息和流程。</p>
+<section id="id5">
+<h2>设置环境<a class="headerlink" href="#id5" title="Link to this heading"></a></h2>
+<p>Ameba Yocto Linux SDK 提供了一个脚本 <code class="docutils literal notranslate"><span class="pre">envsetup.sh</span></code>，该脚本简化了为 Ameba 机器进行设置的过程。要使用该脚本，需要指定要编译的特定机器的名称以及其他参数，如发行版、编译目录等。该脚本会为指定的机器设置目录和配置文件。</p>
+<p><code class="docutils literal notranslate"><span class="pre">envsetup.sh</span></code> 脚本的语法如下所示：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$source envsetup.sh [-h] [-m machine] [-d distro] [-b build dir] [-j jobs] [-t tasks]
+</pre></div>
+</div>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>选项</p></th>
+<th class="head"><p>用途</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>-h</p></td>
+<td><p>显示脚本的帮助信息。</p></td>
+</tr>
+<tr class="row-odd"><td><p>-m &lt;machine&gt;</p></td>
+<td><p>设置要编译的目标机器。</p></td>
+</tr>
+<tr class="row-even"><td><p>-d &lt;distro&gt;</p></td>
+<td><p>设置要编译的发行版。</p></td>
+</tr>
+<tr class="row-odd"><td><p>-b &lt;build dir&gt;</p></td>
+<td><p>设置项目编译文件夹的非默认路径。</p></td>
+</tr>
+<tr class="row-even"><td><p>-j &lt;jobs&gt;</p></td>
+<td><p>设置在编译阶段由 make 生成的任务数。</p></td>
+</tr>
+<tr class="row-odd"><td><p>-t &lt;tasks&gt;</p></td>
+<td><p>设置可以并行执行的 BitBake 任务数。</p></td>
+</tr>
+<tr class="row-even"><td><p>-p &lt;download dir&gt;</p></td>
+<td><p>设置 DL_DIR 的非默认路径。</p></td>
+</tr>
+<tr class="row-odd"><td><p>-c &lt;sstate dir&gt;</p></td>
+<td><p>设置 SSTATE_DIR 的非默认路径。</p></td>
+</tr>
+</tbody>
+</table>
+<p>脚本运行后，将由脚本创建工作目录，可以通过 <em>-b</em> 选项指定，如果未指定 <em>-b</em> 选项，则使用默认名称。一个包含 <code class="docutils literal notranslate"><span class="pre">bblayers.conf</span></code> 和 <code class="docutils literal notranslate"><span class="pre">local.conf</span></code> 文件的 conf 文件夹将被创建。</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">&lt;builddir&gt;/conf/bblayers.conf</span></code> 文件包含 Ameba Yocto Linux SDK 发行版中使用的所有元层。</p></li>
+<li><p><code class="file docutils literal notranslate"><span class="pre">local.conf</span></code> 文件包含机器和发行版的规范：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>MACHINE ??= &quot;rtl8730elh-va8&quot;
+DISTRO ?= &quot;ameba-generic&quot;
+</pre></div>
+</div>
+</li>
+</ul>
+<p>如果需要，可以通过编辑此文件来更改 <code class="docutils literal notranslate"><span class="pre">MACHINE</span></code> 和 <code class="docutils literal notranslate"><span class="pre">DISTRO</span></code> 配置。</p>
+<p>在 <em>meta-realtek`</em> 层中，可以选择以下 Ameba 机器和发行版配置。请查看发行说明或机器和发行版目录以获取最新添加的信息。</p>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>机器</p></th>
+<th class="head"><p>目标版本</p></th>
+<th class="head"><p>配置路径</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>rtl8730eah-va6</p></td>
+<td><p>RTL8730EAH-VA6 芯片的机器配置。</p></td>
+<td><p>sources/yocto/meta-realtek/meta-realtek-bsp/conf/machine/rtl8730eah-va6.conf</p></td>
+</tr>
+<tr class="row-odd"><td><p>rtl8730elh-va7</p></td>
+<td><p>RTL8730ELH-VA7 芯片的机器配置。</p></td>
+<td><p>sources/yocto/meta-realtek/meta-realtek-bsp/conf/machine/rtl8730elh-va7.conf</p></td>
+</tr>
+<tr class="row-even"><td><p>rtl8730elh-va8</p></td>
+<td><p>RTL8730ELH-VA8 芯片的机器配置。</p></td>
+<td><p>sources/yocto/meta-realtek/meta-realtek-bsp/conf/machine/rtl8730elh-va8.conf</p></td>
+</tr>
+<tr class="row-odd"><td><p>rtl8730elh-recovery</p></td>
+<td><p>编译 recovery 固件的机器配置。</p></td>
+<td><p>sources/yocto/meta-realtek/meta-realtek-bsp/conf/machine/rtl8730elh-recovery.conf</p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>发行版</p></th>
+<th class="head"><p>目标版本</p></th>
+<th class="head"><p>配置路径</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>ameba-generic</p></td>
+<td><p>发行版包含基本功能。</p></td>
+<td><p>sources/yocto/meta-realtek/meta-sdk/conf/distro/ameba-generic.conf</p></td>
+</tr>
+<tr class="row-odd"><td><p>ameba-full</p></td>
+<td><p>发行版包含完整的演示功能。</p></td>
+<td><p>sources/yocto/meta-realtek/meta-sdk/conf/distro/ameba-full.conf</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p><em>RTL8730EAH-VA6</em> 专用于 NOR flash。</p>
+</div>
+<section id="id6">
+<h3>加速编译<a class="headerlink" href="#id6" title="Link to this heading"></a></h3>
+<p>在编译之前，用户可以提前下载编译加速包，该包通常包括下载文件和 sstate-cache。请联系 Realtek 获取此包。假设下载后已将它们存储在路径 <code class="docutils literal notranslate"><span class="pre">&lt;packages&gt;</span></code> 中。在执行 <code class="docutils literal notranslate"><span class="pre">envsetup.sh</span></code> 后，为它们在指定的 <code class="docutils literal notranslate"><span class="pre">build-&lt;machine&gt;</span></code> 目录中创建软链接。通过这种方式，可以节省编译过程中的下载时间。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">build</span><span class="o">-&lt;</span><span class="n">machine</span><span class="o">&gt;</span>
+<span class="n">ln</span> <span class="o">-</span><span class="n">s</span> <span class="o">&lt;</span><span class="n">packages</span><span class="o">&gt;/</span><span class="n">downloads</span> <span class="o">.</span>
+<span class="n">ln</span> <span class="o">-</span><span class="n">s</span> <span class="o">&lt;</span><span class="n">packages</span><span class="o">&gt;/</span><span class="n">sstate</span><span class="o">-</span><span class="n">cache</span> <span class="o">.</span>
+</pre></div>
+</div>
+<p>如果用户之前成功编译了 SDK，他们还可以将之前编译过程中下载的软件包单独保存，然后在新的 SDK 编译过程中创建指向它们的软链接。假设之前的编译目录是 <code class="docutils literal notranslate"><span class="pre">build-&lt;machine&gt;-1</span></code>，当前的编译目录是 <code class="docutils literal notranslate"><span class="pre">build-&lt;machine&gt;-2</span></code>。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">build</span><span class="o">-&lt;</span><span class="n">machine</span><span class="o">&gt;-</span><span class="mi">2</span>
+<span class="n">ln</span> <span class="o">-</span><span class="n">s</span> <span class="n">build</span><span class="o">-&lt;</span><span class="n">machine</span><span class="o">&gt;-</span><span class="mi">1</span><span class="o">/</span><span class="n">downloads</span> <span class="o">.</span>
+<span class="n">ln</span> <span class="o">-</span><span class="n">s</span> <span class="n">build</span><span class="o">-&lt;</span><span class="n">machine</span><span class="o">&gt;-</span><span class="mi">1</span><span class="o">/</span><span class="n">sstate</span><span class="o">-</span><span class="n">cache</span> <span class="o">.</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id7">
+<h2>编译固件<a class="headerlink" href="#id7" title="Link to this heading"></a></h2>
+<p>SDK 为 Ameba 机器提供了两种编译固件的方法：快速命令和手动编译命令。</p>
+<p>快速命令是通过脚本 <code class="docutils literal notranslate"><span class="pre">envsetup.sh</span></code> 添加的便捷命令。执行 <code class="docutils literal notranslate"><span class="pre">envsetup.sh</span></code> 后，以下功能会被添加到 shell 环境中。</p>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>命令</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>m</p></td>
+<td><p>为 Ameba 机器编译所有 Linux 固件，包括 boot.img、kernel.img、rootfs.img、userdata.img 和 dtb。</p></td>
+</tr>
+<tr class="row-odd"><td><p>m clean</p></td>
+<td><p>清理所有编译输出。</p></td>
+</tr>
+<tr class="row-even"><td><p>mfw</p></td>
+<td><p>编译 firmware 启动与固件。</p></td>
+</tr>
+<tr class="row-odd"><td><p>mfw mp</p></td>
+<td><p>编译量产 firmware 启动与固件。</p></td>
+</tr>
+<tr class="row-even"><td><p>mfw clean</p></td>
+<td><p>清理编译 firmware 的输出文件。</p></td>
+</tr>
+<tr class="row-odd"><td><p>mrecovery</p></td>
+<td><p>编译 linux recovery 固件。</p></td>
+</tr>
+<tr class="row-even"><td><p>mkernel</p></td>
+<td><p>编译 kernel 固件。</p></td>
+</tr>
+</tbody>
+</table>
+<p>要编译所有需刷写的固件，请运行如下命令：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$source envsetup.sh -m rtl8730elh-va8
+$m
+$mfw
+</pre></div>
+</div>
+<p>Yocto 项目的编译使用 bitbake 命令。例如，<code class="docutils literal notranslate"><span class="pre">bitbake</span> <span class="pre">&lt;component&gt;</span></code> 用于编译指定的组件。每个组件的编译都有多个任务，如获取、配置、编译、打包和部署到目标根文件系统。bitbake 固件编译会收集固件所需的所有组件，并按照每个任务的依赖顺序进行编译。</p>
+<p>下面的命令是编译一份固件的示例：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$bitbake ameba-image-core
+</pre></div>
+</div>
+<p>在 meta-realtek 层，你可以选择以下固件配方进行编译。</p>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>产品名称</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>ameba-image-core</p></td>
+<td><p>核心固件包含基本功能。</p></td>
+</tr>
+<tr class="row-odd"><td><p>ameba-image-userdata</p></td>
+<td><p>用作用户数据文件系统的固件。</p></td>
+</tr>
+<tr class="row-even"><td><p>ameba-image-recovery</p></td>
+<td><p>用于恢复系统的小型固件。</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="bitbake">
+<h2>Bitbake 选项<a class="headerlink" href="#bitbake" title="Link to this heading"></a></h2>
+<p>用于编译固件的 bitbake 命令是 <code class="docutils literal notranslate"><span class="pre">bitbake</span> <span class="pre">&lt;image</span> <span class="pre">name&gt;</span></code>。可以使用附加参数来进行下文描述的特定活动。Bitbake 提供了多种有用的选项来开发单个组件。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">bitbake</span> <span class="o">&lt;</span><span class="n">parameter</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">component</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>其中 <code class="docutils literal notranslate"><span class="pre">&lt;component&gt;</span></code> 是期望编译的包。</p>
+<p>下表提供了部分 Bitbake 的选项。</p>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Bitbake 参数</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>-c fetch</p></td>
+<td><p>如果下载状态未标记为完成，则获取。</p></td>
+</tr>
+<tr class="row-odd"><td><p>-c cleanall</p></td>
+<td><p>清理整个组件编译目录。编译目录中的所有更改都会丢失。组件的 rootfs 和状态也会被清除。该组件也会从下载目录中移除。</p></td>
+</tr>
+<tr class="row-even"><td><p>-c deploy</p></td>
+<td><p>将固件、组件部署到 rootfs。</p></td>
+</tr>
+<tr class="row-odd"><td><p>-c compile -f</p></td>
+<td><p>不建议直接更改临时目录下的源代码，但如果进行了更改，Yocto 项目可能不会重建它，除非使用此选项。</p>
+<p>在固件部署后使用此选项以强制重新编译。</p>
+</td>
+</tr>
+<tr class="row-even"><td><p>-c menuconfig</p></td>
+<td><p>如果组件支持，执行 make menuconfig 针对特定组件。</p></td>
+</tr>
+<tr class="row-odd"><td><p>-e &lt;component&gt;</p></td>
+<td><p>显示组件的编译环境。</p></td>
+</tr>
+<tr class="row-even"><td><p>-g</p></td>
+<td><p>列出固件、组件的依赖关系树。</p></td>
+</tr>
+<tr class="row-odd"><td><p>-k</p></td>
+<td><p>即使出现编译中断，仍继续编译组件。</p></td>
+</tr>
+<tr class="row-even"><td><p>-DDD</p></td>
+<td><p>开启三级深度的调试。每增加一个“D”就增加一级调试等级。</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id8">
+<h2>固件部署<a class="headerlink" href="#id8" title="Link to this heading"></a></h2>
+<p>最终要编辑的固件被部署在``&lt;build directory&gt;/tmp/deploy/images``。</p>
+<p>该固件特定于环境设置中设定的机器。成功编译后，将生成以下 Linux 固件。</p>
+<ul class="simple">
+<li><p>boot.img</p></li>
+<li><p>kernel.img</p></li>
+<li><p>rootfs.img</p></li>
+<li><p>userdata.img</p></li>
+<li><p>linux device tree images</p></li>
+</ul>
+<p>这些设备树固件都有各自的名称。例如，用于机器 <em>rtl8730elh-va7-generic</em> 的固件名称是 <code class="docutils literal notranslate"><span class="pre">rtl8730elh-va7-generic.dtb</span></code>。</p>
+<p>firmware启动固件和应用固件是通过 mfw 快速命令生成的：</p>
+<ul class="simple">
+<li><p>km4_boot_all.bin</p></li>
+<li><p>km0_km4_app.bin</p></li>
+</ul>
+</section>
+</section>
+<section id="flash">
+<h1>下载固件到 flash<a class="headerlink" href="#flash" title="Link to this heading"></a></h1>
+<p>为了下载固件到 flash：</p>
+<ul class="simple">
+<li><p>参考 <a class="reference internal" href="../../rst_rtos/0_tools/1_image_tool_toprst_cn.html#image-tool"><span class="std std-ref">Image Tool</span></a> 获取 Ameba 固件工具的常用操作。</p></li>
+<li><p>参考 <a class="reference internal" href="../0_sdk_architecture/1_sdk_architecture_toprst_cn.html#sdk-architecutre-flash-layout"><span class="std std-ref">Flash layout</span></a>。</p></li>
+</ul>
+</section>
+<section id="docker">
+<h1>Docker 容器<a class="headerlink" href="#docker" title="Link to this heading"></a></h1>
+<p>Docker 是一个开源平台，旨在自动化应用程序在容器中的部署、扩展和管理。容器是轻量级、可移植且自给自足的单元，其中包含运行软件所需的一切，如代码、运行环境、库和系统工具。</p>
+<ul class="simple">
+<li><p>Docker 利用容器化技术将应用程序及其依赖项打包到一个单独的容器中。这确保了在不同环境（如开发、测试和生产）中的一致行为。</p></li>
+<li><p>容器几乎可以在任何地方运行，无论是在开发人员的机器上，还是在数据中心的物理或虚拟机上，亦或是在云中运行，并且无需改动。</p></li>
+<li><p>容器共享主机系统的内核，使其比传统的虚拟机更轻量化，后者在每个实例中都包含一个完整的操作系统。</p></li>
+</ul>
+<section id="id9">
+<h2>影像<a class="headerlink" href="#id9" title="Link to this heading"></a></h2>
+<section id="id10">
+<h3>制作影像<a class="headerlink" href="#id10" title="Link to this heading"></a></h3>
+<p>在制作新的 Docker 影像之前，你需要在计算机上安装 Docker。安装 Docker 的步骤请参考 <a class="reference external" href="https://www.docker.com">Docker 首页</a> 。</p>
+<p>你可以在 Windows、Linux、MacOS 等系统上运行 Docker。这里我们介绍在 Linux 上的安装步骤，其他操作系统上的步骤与 Linux 相同。</p>
+<p>首先，你的工作目录中应该有一个名为 <em>Dockerfile</em> 的文件。</p>
+<p>下面是一个 Dockerfile 的内容的示例：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set the base system.</span>
+<span class="n">FROM</span> <span class="n">ubuntu</span><span class="p">:</span><span class="mf">20.04</span>
+
+<span class="c1"># Set environment variables.</span>
+<span class="n">ENV</span> <span class="n">DEBIAN_FRONTEND</span><span class="o">=</span><span class="n">noninteractive</span>
+
+<span class="c1"># Update.</span>
+<span class="n">RUN</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">update</span>
+
+<span class="c1"># Install some tools.</span>
+<span class="n">RUN</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="n">sudo</span>
+<span class="n">RUN</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="n">make</span>
+<span class="n">RUN</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="n">make</span><span class="o">-</span><span class="n">guile</span>
+<span class="n">RUN</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="n">build</span><span class="o">-</span><span class="n">essential</span>
+<span class="n">RUN</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="n">gcc</span>
+<span class="n">RUN</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="n">g</span><span class="o">++</span>
+<span class="c1"># Any other tools you need to install …</span>
+<span class="c1"># ……</span>
+
+<span class="c1"># Add toolchain.</span>
+<span class="n">ADD</span> <span class="n">rtk</span><span class="o">-</span><span class="n">toolchain</span><span class="o">.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span> <span class="o">/</span><span class="n">opt</span>
+
+<span class="c1"># Create a normal user named &quot;ameba&quot;, with password &quot;ameba&quot;.</span>
+<span class="n">RUN</span> <span class="n">useradd</span> <span class="o">-</span><span class="n">m</span> <span class="o">-</span><span class="n">s</span> <span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">bash</span> <span class="n">ameba</span> <span class="o">&amp;&amp;</span> <span class="n">echo</span> <span class="s2">&quot;ameba:ameba&quot;</span> <span class="o">|</span> <span class="n">chpasswd</span> <span class="o">&amp;&amp;</span> <span class="n">adduser</span> <span class="n">ameba</span> <span class="n">sudo</span>
+<span class="n">RUN</span> <span class="n">echo</span> <span class="s2">&quot;ameba ALL=(ALL) NOPASSWD: ALL&quot;</span> <span class="o">&gt;&gt;</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">sudoers</span>
+<span class="n">USER</span> <span class="n">ameba</span>
+
+<span class="c1"># Set work directory.</span>
+<span class="n">WORKDIR</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">ameba</span>
+
+<span class="c1"># RUN shell command.</span>
+<span class="n">CMD</span> <span class="p">[</span><span class="s2">&quot;/bin/bash&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>然后，你可以执行 <em>docker build</em> 命令来制作你的影像。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">docker</span> <span class="n">build</span> <span class="o">-</span><span class="n">t</span> <span class="o">&lt;</span><span class="n">image_name</span><span class="o">&gt;</span><span class="p">:</span><span class="o">&lt;</span><span class="n">image_tag</span><span class="o">&gt;</span> <span class="o">.</span>
+</pre></div>
+</div>
+<p>这里 <em>&lt;image_name&gt;</em> 表示 docker 影像的名字，<em>&lt;image_tag&gt;</em> 是可选的，用于标记 docker 影像的不同版本，如果没有它，则默认其为 <em>latest</em>。</p>
+<p>制作成功之后，你可以用 <em>docker images</em> 命令查看你的主机中是否存在这个影像。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">docker</span> <span class="n">images</span>
+</pre></div>
+</div>
+<p>你可以假设参数 <em>-a</em> 来展示包括隐藏层在内的所有影像。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">docker</span> <span class="n">images</span> <span class="o">-</span><span class="n">a</span>
+</pre></div>
+</div>
+<p>然后，所有影像及其名称、标签和 ID 都会被显示出来。</p>
+<p>你可以给一个影像添加新的名字、标签。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">docker</span> <span class="n">tag</span> <span class="o">&lt;</span><span class="n">image_id</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">new_image_name</span><span class="o">&gt;</span><span class="p">:</span><span class="o">&lt;</span><span class="n">new_image_tag</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</section>
+<section id="id12">
+<h3>载入影像<a class="headerlink" href="#id12" title="Link to this heading"></a></h3>
+<p>我们为客户提供即用型的 Docker 影像。请联系 Realtek 获取用于编译 SDK 的基础影像版本。</p>
+<p>For example, when you got the image named <em>rtk_ameba_sdk_build_v1.1.tar</em>, you can load this on your host with command <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">load</span></code>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">docker</span> <span class="n">load</span> <span class="o">-</span><span class="n">i</span> <span class="n">rtk_ameba_sdk_build_v1</span><span class="mf">.1</span><span class="o">.</span><span class="n">tar</span>
+</pre></div>
+</div>
+<p>例如，当你获得名为 <em>rtk_ameba_sdk_build_v1.1.tar</em> 的影像时，可以使用命令 <em>docker load</em> 在你的主机上加载它。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">docker</span> <span class="n">images</span>
+</pre></div>
+</div>
+<p>如果你不再需要某个影像，你可以通过名字和标签删除它。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">docker</span> <span class="n">rmi</span> <span class="o">&lt;</span><span class="n">image_name</span><span class="o">&gt;</span><span class="p">:</span><span class="o">&lt;</span><span class="n">image_tag</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>一个 <em>&lt;image_id&gt;</em> 可能对应一个或多个 <em>&lt;image_name&gt;:&lt;image_tag&gt;</em> ，当你给一个 <em>&lt;image_id&gt;</em> 标记多个 <em>&lt;image_name&gt;:&lt;image_tag&gt;</em> 时，上面这个命令不会删除掉对应的 <em>&lt;image_id&gt;</em> ，因为还有其它的 <em>&lt;image_name&gt;:&lt;image_tag&gt;</em> 存在。</p>
+<p>你可以通过ID来删除影像，在这种情况下，所有对应于这个 <em>&lt;image_id&gt;</em> 的 <em>&lt;image_name&gt;:&lt;image_tag&gt;</em> 都会被同时删除。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">docker</span> <span class="n">rmi</span> <span class="o">&lt;</span><span class="n">image_id</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id13">
+<h2>容器<a class="headerlink" href="#id13" title="Link to this heading"></a></h2>
+<p>Docker 容器是 Docker 影像的一个实例。它是一个可执行的软件单元，将应用程序与其在任何环境中一致运行所需的所有内容打包在一起。</p>
+<ul class="simple">
+<li><p>容器在隔离的环境中运行，利用操作系统级别的虚拟化共享主机系统的内核，与传统虚拟机相比，确保了最低的开销。</p></li>
+<li><p>默认情况下，容器是无状态和临时的，这意味着在执行期间所做的任何更改在停止后不会保存，除非进行了明确的配置。</p></li>
+</ul>
+<section id="id14">
+<h3>运行容器<a class="headerlink" href="#id14" title="Link to this heading"></a></h3>
+<p>在制作新的 Docker 影像或加载现成的 Docker 影像后，您可以根据该影像的名称运行一个新的容器。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">docker</span> <span class="n">run</span> <span class="o">--</span><span class="n">name</span> <span class="o">&lt;</span><span class="n">container_name</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">it</span> <span class="o">&lt;</span><span class="n">image_name</span><span class="o">&gt;</span><span class="p">:</span><span class="o">&lt;</span><span class="n">image_tag</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>或者，基于这个影像的ID。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">docker</span> <span class="n">run</span> <span class="o">--</span><span class="n">name</span> <span class="o">&lt;</span><span class="n">container_name</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">it</span> <span class="o">&lt;</span><span class="n">image_id</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>这里 <em>&lt;container_name&gt;</em> 必须区别于已有的其它容器的名字，如果没有这个参数，docker 会自动分配一个唯一性的名字给这个容器。</p>
+<p>此外，如果您想在此容器上挂载主机上的目录，可以添加参数 <em>-v</em> 。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">docker</span> <span class="n">run</span> <span class="o">--</span><span class="n">name</span> <span class="o">&lt;</span><span class="n">container_name</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">v</span> <span class="o">&lt;</span><span class="n">host_dir</span><span class="o">&gt;</span><span class="p">:</span><span class="o">&lt;</span><span class="n">container_dir</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">it</span> <span class="o">&lt;</span><span class="n">image_name</span><span class="o">&gt;</span><span class="p">:</span><span class="o">&lt;</span><span class="n">image_tag</span><span class="o">&gt;</span>
+<span class="n">sudo</span> <span class="n">docker</span> <span class="n">run</span> <span class="o">--</span><span class="n">name</span> <span class="o">&lt;</span><span class="n">container_name</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">v</span> <span class="o">&lt;</span><span class="n">host_dir</span><span class="o">&gt;</span><span class="p">:</span><span class="o">&lt;</span><span class="n">container_dir</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">it</span> <span class="o">&lt;</span><span class="n">image_id</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>这里 <em>&lt;host_dir&gt;</em> 是您主机上的一个目录，它应该是已经存在的。 <em>&lt;container_dir&gt;</em> 是容器内的一个目录，如果不存在，容器可以创建它，但只能创建一层。例如，目录 <code class="docutils literal notranslate"><span class="pre">/home/ameba</span></code> 已经存在，如果您将 <em>&lt;container_dir&gt;</em> 设置为 <code class="docutils literal notranslate"><span class="pre">/home/ameba/my_dir</span></code> ，容器会创建它，但如果您将 <em>&lt;container_dir&gt;</em> 设置为 <code class="docutils literal notranslate"><span class="pre">/home/ameba/my_dir/deep_dir</span></code> ，容器将无法成功创建。</p>
+<p>在成功挂载目录后，用户可以同时在主机和容器中操作该目录。</p>
+<p>在容器中，你可以执行 <em>exit</em> 来退回到主机。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">exit</span>
+</pre></div>
+</div>
+<p>然后你可以使用 <em>docker ps</em> 命令来查看容器是否在运行。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">docker</span> <span class="n">ps</span>
+</pre></div>
+</div>
+<p>如果你想要查看所有的容器，包括运行的和不在运行的，你可以添加参数 <em>-a</em> 。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">docker</span> <span class="n">ps</span> <span class="o">-</span><span class="n">a</span>
+</pre></div>
+</div>
+<p>如果某个容器不再需要了，你可以通过 <em>&lt;container_name&gt;</em> 或者 <em>&lt;container_id&gt;</em> 来删除它。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">docker</span> <span class="n">rm</span> <span class="o">&lt;</span><span class="n">container_name</span><span class="o">&gt;</span>
+<span class="n">sudo</span> <span class="n">docker</span> <span class="n">rm</span> <span class="o">&lt;</span><span class="n">container_id</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</section>
+<section id="id15">
+<h3>运行已有的容器<a class="headerlink" href="#id15" title="Link to this heading"></a></h3>
+<p>如果您想执行一个未运行的容器，应首先通过容器名称或ID启动它。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">docker</span> <span class="n">start</span> <span class="o">&lt;</span><span class="n">container_name</span><span class="o">&gt;</span>
+<span class="n">sudo</span> <span class="n">docker</span> <span class="n">start</span> <span class="o">&lt;</span><span class="n">container_id</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>然后，执行 <em>docker exec</em> 命令来通过容器名字或ID进入容器。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">docker</span> <span class="n">exec</span> <span class="o">-</span><span class="n">it</span> <span class="o">&lt;</span><span class="n">container_name</span><span class="o">&gt;</span> <span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">bash</span>
+<span class="n">sudo</span> <span class="n">docker</span> <span class="n">exec</span> <span class="o">-</span><span class="n">it</span> <span class="o">&lt;</span><span class="n">container_id</span><span class="o">&gt;</span> <span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">bash</span>
+</pre></div>
+</div>
+<p>在退出容器之后，你可以通过容器名字或ID来停止容器。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">docker</span> <span class="n">stop</span> <span class="o">&lt;</span><span class="n">container_name</span><span class="o">&gt;</span>
+<span class="n">sudo</span> <span class="n">docker</span> <span class="n">stop</span> <span class="o">&lt;</span><span class="n">container_id</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>此外，您还可以直接使用以下带有参数 <em>-ia</em> 的命令来启动一个已存在的容器：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">docker</span> <span class="n">start</span> <span class="o">-</span><span class="n">ia</span> <span class="o">&lt;</span><span class="n">container_name</span><span class="o">&gt;</span>
+<span class="n">sudo</span> <span class="n">docker</span> <span class="n">start</span> <span class="o">-</span><span class="n">ia</span> <span class="o">&lt;</span><span class="n">container_id</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>然后运行 <em>exit</em> 来直接退出容器，退出的同时容器也会停止。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">exit</span>
+</pre></div>
+</div>
+</section>
+<section id="sdk">
+<h3>在容器内编译 SDK<a class="headerlink" href="#sdk" title="Link to this heading"></a></h3>
+<p>对于 Realtek 发布的影像，环境已配置好，您可以直接编译 SDK。</p>
+<p>如果您将主机的目录挂载到容器上，可以将 SDK 放入该目录，然后它也会同步出现在容器内，您可以直接编译代码。</p>
+<p>如果您没有挂载主机的目录，可以使用命令 <em>docker cp</em> 在主机和容器之间复制文件或目录。</p>
+<p>从主机复制文件或目录到容器。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">docker</span> <span class="n">cp</span> <span class="o">&lt;</span><span class="n">host_directory</span><span class="o">&gt;/&lt;</span><span class="n">files_or_directory</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">container_name</span><span class="o">&gt;</span><span class="p">:</span><span class="o">&lt;</span><span class="n">container_directory</span><span class="o">&gt;</span>
+<span class="n">sudo</span> <span class="n">docker</span> <span class="n">cp</span> <span class="o">&lt;</span><span class="n">host_directory</span><span class="o">&gt;/&lt;</span><span class="n">files_or_directory</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">container_id</span><span class="o">&gt;</span><span class="p">:</span><span class="o">&lt;</span><span class="n">container_directory</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>在成功编译 SDK 之后，您可以将文件或目录从容器复制到主机。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">docker</span> <span class="n">cp</span> <span class="o">&lt;</span><span class="n">container_name</span><span class="o">&gt;</span><span class="p">:</span><span class="o">&lt;</span><span class="n">container_directory_or_files</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">host_directory</span><span class="o">&gt;</span>
+<span class="n">sudo</span> <span class="n">docker</span> <span class="n">cp</span> <span class="o">&lt;</span><span class="n">container_id</span><span class="o">&gt;</span><span class="p">:</span><span class="o">&lt;</span><span class="n">container_directory_or_files</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">host_directory</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>您也可以在容器中从 GitHub 获取 SDK，操作步骤与在主机上相同。</p>
+</section>
+<section id="podman">
+<h3>使用 Podman 替代<a class="headerlink" href="#podman" title="Link to this heading"></a></h3>
+<p>Podman 也可以像 Docker 一样处理影像和容器。用户可以从 <a class="reference external" href="https://podman.io/get-started">Podman 首页</a> 获取 podman。</p>
+<p>Podman 和 Docker 的命令格式几乎相同，您可以直接将前缀 <em>docker</em> 替换为 <em>podman</em> 来使用。例如，您可以使用 <em>podman build</em> 代替 <em>docker build</em> ，使用 <em>podman images</em> 代替 <em>docker images</em> ，使用 <em>podman ps</em> 代替 <em>docker ps</em> ，等等。处理影像和容器的所有过程对于 podman 和 docker 来说都是相同的。</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="0_gcc_build_index_cn.html" class="btn btn-neutral float-left" title="编译环境" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="../0_sdk_architecture/0_sdk_architecture_index_cn.html" class="btn btn-neutral float-right" title="SDK Architecture" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2025, Realsil。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+ 
+
+
+
+</body>
+</html>

@@ -1,0 +1,1181 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>General Purpose Input/Output (GPIO) &mdash; Ameba IoT Docs  文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom_cn.css?v=0d22fac7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/tabs.css?v=a5c4661c" />
+      <link rel="stylesheet" type="text/css" href="../../_static/_static/custom_cn.css" />
+
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=7d86a446"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+        <script>let toggleHintShow = 'Click to show';</script>
+        <script>let toggleHintHide = 'Click to hide';</script>
+        <script>let toggleOpenOnPrint = 'true';</script>
+        <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+        <script src="../../_static/translations.js?v=beaddf03"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="Pin Controller (Pinctrl)" href="1_pinctrl_toprst_cn.html" />
+    <link rel="prev" title="GPIO and Pinctrl" href="0_gpio_index_cn.html" />
+   
+  
+  <script type="text/javascript" src="../../_static/js/selector.js"></script>
+
+  <style>
+    .wy-nav-content {max-width: 1000px;} /* 设置最大宽度 */
+  </style>
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Ameba IoT Docs
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../rst_rtos/0_ameba_product/0_ameba_product_center_index_cn.html">产品中心</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rst_rtos/0_ameba_sdk/0_ameba_sdks_index_cn.html">Ameba SDK</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_release_packages/0_release_packages_index_cn.html">0.0 释放包</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_gcc_build_environment/0_gcc_build_index_cn.html">0.1 GCC 编译环境</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_sdk_architecture/0_sdk_architecture_index_cn.html">0.2 SDK 架构</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rst_rtos/0_tools/0_tools_index_cn.html">0.7 工具</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_question_help/0_question_help_index_cn.html">0.A 问题与帮助</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_debugging/0_debugging_index_cn.html">0.B 系统调试</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_boot_process/0_boot_index_cn.html">1.1 启动流程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_ota/0_ota_index_cn.html">1.2 固件在线升级（OTA）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_otpc/0_otpc_index_cn.html">1.3 OTP 存储器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_flash/0_flash_index_cn.html">1.4 闪存</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="0_gpio_index_cn.html">1.7 通用输入输出端口</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">General Purpose Input/Output (GPIO)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#introduction">Introduction</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#architecture">Architecture</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#implementation">Implementation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#configuration">Configuration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#dts-configuration">DTS Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#build-configuration">Build Configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#apis-for-user-space">APIs for User Space</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#sysfs">sysfs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#char-device">Char Device</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#uio">UIO</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#apis-for-kernel-space">APIs for Kernel Space</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#legacy-apis">Legacy APIs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#descriptor-based-apis">Descriptor-based APIs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id7">Usage</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="1_pinctrl_toprst_cn.html">Pin Controller (Pinctrl)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../1_power_save/0_ps_index_cn.html">1.8 电源管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_secure_boot/0_secure_boot_index_nda_cn.html">3.6 安全启动</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../7_usb_boot/0_usb_boot_index_cn.html">3.7 USB 启动</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_crypto_engine/0_crypto_engine_index_cn.html">3.8 加密引擎</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../4_multimedia/0_multimedia_index_cn.html">4.3 多媒体</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../7_usb/0_usb_index_cn.html">7.1 USB 主机与设备</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../7_sdio/0_sdioh_index_cn.html">7.2 SDIO 主机</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_dmac/0_dmac_index_cn.html">8.1 DMA 控制器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_rtc/0_rtc_index_cn.html">8.2 实时时钟（RTC）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_thermal/0_thermal_index_cn.html">8.3 热计量器（Thermel）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_adc/0_adc_index_cn.html">8.4 模数转换器（ADC）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_cap_touch/0_cap_touch_index_cn.html">8.5 电容触摸（Cap-touch）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_ir/0_ir_index_cn.html">8.6 红外收发器（IR）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_ledc/0_ledc_index_cn.html">8.7 LED 灯控制器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_i2c/0_i2c_index_cn.html">8.8 集成电路间通信（I2C）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_uart/0_uart_index_cn.html">8.9 通用异步收发传输器（UART）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_lcdc/0_lcdc_index_cn.html">8.A 液晶显示控制器（LCDC）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_spi/0_spi_index_cn.html">8.B 串行外设接口（SPI）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_spic/0_spic_index_cn.html">8.C SPI 闪存控制器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_timer/0_timer_index_cn.html">8.D 计时器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_wdg/0_wdg_index_cn.html">8.E 看门狗</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../9_bluetooth/0_bluetooth_index_cn.html">9.1 蓝牙</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Ameba IoT Docs</a>
+      </nav>
+
+      <div class="wy-nav-content">
+
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="0_gpio_index_cn.html">GPIO and Pinctrl</a></li>
+      <li class="breadcrumb-item active">General Purpose Input/Output (GPIO)</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="general-purpose-input-output-gpio">
+<span id="gpio"></span><h1>General Purpose Input/Output (GPIO)<a class="headerlink" href="#general-purpose-input-output-gpio" title="Link to this heading"></a></h1>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
+<section id="architecture">
+<h3>Architecture<a class="headerlink" href="#architecture" title="Link to this heading"></a></h3>
+<p>GPIO driver follows Linux’s GPIO subsystem. GPIO lib provides GPIO interface to user space. The GPIO software architecture is illustrated in the following figure.</p>
+<figure class="align-center" id="id8">
+<a class="reference internal image-reference" href="../../_images/gpio_software_arch.svg"><img alt="../../_images/gpio_software_arch.svg" height="328" src="../../_images/gpio_software_arch.svg" width="385" /></a>
+<figcaption>
+<p><span class="caption-text">GPIO software architecture</span><a class="headerlink" href="#id8" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p>For details of Linux GPIO system, refer to <a class="reference external" href="https://www.kernel.org/doc/html/v5.4/driver-api/gpio/index.html?highlight=gpio">https://www.kernel.org/doc/html/v5.4/driver-api/gpio/index.html?highlight=gpio</a>.</p>
+</section>
+<section id="implementation">
+<h3>Implementation<a class="headerlink" href="#implementation" title="Link to this heading"></a></h3>
+<p>GPIO driver is implemented as following files:</p>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Driver location</p></th>
+<th class="head"><p>Introduction</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>&lt;linux&gt;/drivers/rtkdrivers/gpio/Kconfig</p></td>
+<td><p>GPIO driver Kconfig</p></td>
+</tr>
+<tr class="row-odd"><td><p>&lt;linux&gt;/drivers/rtkdrivers/gpio/Makefile</p></td>
+<td><p>GPIO driver Makefile</p></td>
+</tr>
+<tr class="row-even"><td><p>&lt;linux&gt;/drivers/rtkdrivers/gpio/realtek-gpio.c</p></td>
+<td><p>GPIO functions.</p></td>
+</tr>
+<tr class="row-odd"><td><p>&lt;linux&gt;/drivers/rtkdrivers/gpio/realtek-gpio.h</p></td>
+<td><p>GPIO related function declaration, macro definition, structure definition and the other header files quoted</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Link to this heading"></a></h2>
+<section id="dts-configuration">
+<h3>DTS Configuration<a class="headerlink" href="#dts-configuration" title="Link to this heading"></a></h3>
+<p>GPIO DTS node:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gpioa</span><span class="p">:</span> <span class="n">gpio</span><span class="o">@</span><span class="mi">4200</span><span class="n">D000</span> <span class="p">{</span>
+   <span class="n">compatible</span> <span class="o">=</span> <span class="s2">&quot;realtek,ameba-gpio&quot;</span><span class="p">;</span>
+   <span class="n">gpio</span><span class="o">-</span><span class="n">controller</span><span class="p">;</span>
+   <span class="c1">#gpio-cells = &lt;2&gt;;</span>
+   <span class="n">reg</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mh">0x4200D000</span> <span class="mh">0x400</span><span class="o">&gt;</span><span class="p">;</span>
+   <span class="n">rtk</span><span class="p">,</span><span class="n">gpio</span><span class="o">-</span><span class="n">bank</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mi">0</span><span class="o">&gt;</span><span class="p">;</span>
+   <span class="n">interrupt</span><span class="o">-</span><span class="n">controller</span><span class="p">;</span>
+   <span class="c1">#interrupt-cells = &lt;2&gt;;</span>
+   <span class="n">interrupts</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">GIC_SPI</span> <span class="mi">9</span> <span class="n">IRQ_TYPE_LEVEL_HIGH</span><span class="o">&gt;</span><span class="p">;</span>
+   <span class="n">clocks</span> <span class="o">=</span> <span class="o">&lt;&amp;</span><span class="n">rcc</span> <span class="n">RTK_CKE_GPIO</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="p">};</span>
+<span class="n">gpiob</span><span class="p">:</span> <span class="n">gpio</span><span class="o">@</span><span class="mi">4200</span><span class="n">D400</span> <span class="p">{</span>
+   <span class="n">compatible</span> <span class="o">=</span> <span class="s2">&quot;realtek,ameba-gpio&quot;</span><span class="p">;</span>
+   <span class="n">gpio</span><span class="o">-</span><span class="n">controller</span><span class="p">;</span>
+   <span class="c1">#gpio-cells = &lt;2&gt;;</span>
+   <span class="n">reg</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mh">0x4200D400</span> <span class="mh">0x400</span><span class="o">&gt;</span><span class="p">;</span>
+   <span class="n">rtk</span><span class="p">,</span><span class="n">gpio</span><span class="o">-</span><span class="n">bank</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mi">1</span><span class="o">&gt;</span><span class="p">;</span>
+   <span class="n">interrupt</span><span class="o">-</span><span class="n">controller</span><span class="p">;</span>
+   <span class="c1">#interrupt-cells = &lt;2&gt;;</span>
+   <span class="n">interrupts</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">GIC_SPI</span> <span class="mi">10</span> <span class="n">IRQ_TYPE_LEVEL_HIGH</span><span class="o">&gt;</span><span class="p">;</span>
+   <span class="n">clocks</span> <span class="o">=</span> <span class="o">&lt;&amp;</span><span class="n">rcc</span> <span class="n">RTK_CKE_GPIO</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="p">};</span>
+<span class="n">gpioc</span><span class="p">:</span> <span class="n">gpio</span><span class="o">@</span><span class="mi">4200</span><span class="n">D800</span> <span class="p">{</span>
+   <span class="n">compatible</span> <span class="o">=</span> <span class="s2">&quot;realtek,ameba-gpio&quot;</span><span class="p">;</span>
+   <span class="n">gpio</span><span class="o">-</span><span class="n">controller</span><span class="p">;</span>
+   <span class="c1">#gpio-cells = &lt;2&gt;;</span>
+   <span class="n">reg</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mh">0x4200D800</span> <span class="mh">0x400</span><span class="o">&gt;</span><span class="p">;</span>
+   <span class="n">rtk</span><span class="p">,</span><span class="n">gpio</span><span class="o">-</span><span class="n">bank</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mi">2</span><span class="o">&gt;</span><span class="p">;</span>
+   <span class="n">interrupt</span><span class="o">-</span><span class="n">controller</span><span class="p">;</span>
+   <span class="c1">#interrupt-cells = &lt;2&gt;;</span>
+   <span class="n">interrupts</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">GIC_SPI</span> <span class="mi">11</span> <span class="n">IRQ_TYPE_LEVEL_HIGH</span><span class="o">&gt;</span><span class="p">;</span>
+   <span class="n">clocks</span> <span class="o">=</span> <span class="o">&lt;&amp;</span><span class="n">rcc</span> <span class="n">RTK_CKE_GPIO</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>The DTS Configurations of GPIO are listed in the following table.</p>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Property</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Default</p></th>
+<th class="head"><p>Configurable?</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>compatible</p></td>
+<td><p>The description of GPIO driver.</p></td>
+<td><p>realtek,ameba-gpio</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="row-odd"><td><p>reg</p></td>
+<td><p>The hardware address and size for GPIO device.</p>
+<ul class="simple">
+<li><p>GPIOA: &lt;0x4200D000 0x400&gt;</p></li>
+<li><p>GPIOB: &lt;0x4200D400 0x400&gt;</p></li>
+<li><p>GPIOC: &lt;0x4200D800 0x400&gt;</p></li>
+</ul>
+</td>
+<td></td>
+<td><p>No</p></td>
+</tr>
+<tr class="row-even"><td><p>interrupts</p></td>
+<td><p>The GIC number of GPIO device.</p>
+<ul class="simple">
+<li><p>GPIOA: &lt;GIC_SPI 9 IRQ_TYPE_LEVEL_HIGH&gt;</p></li>
+<li><p>GPIOB: &lt;GIC_SPI 10 IRQ_TYPE_LEVEL_HIGH&gt;</p></li>
+<li><p>GPIOC: &lt;GIC_SPI 11 IRQ_TYPE_LEVEL_HIGH&gt;</p></li>
+</ul>
+</td>
+<td></td>
+<td><p>No</p></td>
+</tr>
+<tr class="row-odd"><td><p>gpio-controller</p></td>
+<td><p>Indicates device node is a GPIO controller.</p></td>
+<td></td>
+<td><p>No</p></td>
+</tr>
+<tr class="row-even"><td><p>#gpio-cells</p></td>
+<td><p>Indicates how many cells are needed to specifically describe a GPIO.</p></td>
+<td><p>2</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="row-odd"><td><p>interrupt-controller</p></td>
+<td><p>Indicates device node is an interrupt controller.</p></td>
+<td></td>
+<td><p>No</p></td>
+</tr>
+<tr class="row-even"><td><p>#interrupt-cells</p></td>
+<td><p>Indicates how many cells are needed to specifically describe a GPIO interrupt.</p></td>
+<td><p>2</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="row-odd"><td><p>realtek,gpio-bank</p></td>
+<td><p>GPIO port index:</p>
+<p>0: portA
+1: portB
+2: portC</p>
+</td>
+<td></td>
+<td><p>No</p></td>
+</tr>
+<tr class="row-even"><td><p>clocks</p></td>
+<td><p>The clock of GPIO device.</p></td>
+<td></td>
+<td><p>No</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="build-configuration">
+<h3>Build Configuration<a class="headerlink" href="#build-configuration" title="Link to this heading"></a></h3>
+<p>Select <span class="menuselection">Device Drivers -&gt; Drivers for Realtek -&gt; GPIO driver</span>:</p>
+<figure class="align-center" id="id9">
+<a class="reference internal image-reference" href="../../_images/gpio_driver.png"><img alt="../../_images/gpio_driver.png" src="../../_images/gpio_driver.png" style="width: 413.0px; height: 516.0px;" /></a>
+<figcaption>
+<p><span class="caption-text">GPIO driver</span><a class="headerlink" href="#id9" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+</section>
+<section id="apis-for-user-space">
+<h2>APIs for User Space<a class="headerlink" href="#apis-for-user-space" title="Link to this heading"></a></h2>
+<section id="sysfs">
+<h3>sysfs<a class="headerlink" href="#sysfs" title="Link to this heading"></a></h3>
+<p>Platforms which use the <code class="docutils literal notranslate"><span class="pre">gpiolib</span></code> implementors framework may choose to configure a sysfs user interface to GPIOs.</p>
+<section id="id1">
+<h4>Build Configuration<a class="headerlink" href="#id1" title="Link to this heading"></a></h4>
+<p>Select <span class="menuselection">Device Drivers -&gt; GPIO Support -&gt; /sys/class/gpio/… (sysfs interface)</span>:</p>
+<figure class="align-center" id="id10">
+<a class="reference internal image-reference" href="../../_images/sysfs_interface.png"><img alt="../../_images/sysfs_interface.png" src="../../_images/sysfs_interface.png" style="width: 865.8px; height: 231.0px;" /></a>
+<figcaption>
+<p><span class="caption-text">sysfs interface</span><a class="headerlink" href="#id10" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="sysfs-node">
+<h4>sysfs Node<a class="headerlink" href="#sysfs-node" title="Link to this heading"></a></h4>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Node</p></th>
+<th class="head"><p>Introduction</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>/sys/class/gpio/export</p></td>
+<td><p>Open GPIO</p></td>
+<td><p>GPIO pin number</p></td>
+</tr>
+<tr class="row-odd"><td><p>/sys/class/gpio/unexport</p></td>
+<td><p>Close GPIO</p></td>
+<td><p>GPIO pin number</p></td>
+</tr>
+<tr class="row-even"><td><p>/sys/class/gpio/gpioX/direction</p></td>
+<td><p>GPIO direction</p></td>
+<td><p>in/out</p></td>
+</tr>
+<tr class="row-odd"><td><p>/sys/class/gpio/gpioX/value</p></td>
+<td><p>GPIO value</p></td>
+<td><p>0/1</p></td>
+</tr>
+<tr class="row-even"><td><p>/sys/class/gpio/gpioX/active_low</p></td>
+<td><p>GPIO low level is active</p></td>
+<td><p>0/1</p></td>
+</tr>
+<tr class="row-odd"><td><p>/sys/class/gpio/gpioX/edge</p></td>
+<td><p>GPIO pin edge trigger type</p></td>
+<td><p>none/rising/falling/both</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<ul class="simple">
+<li><p>X is GPIO number.</p></li>
+<li><p>The attribute files listed above under the gpioX path are all readable and writeable.</p></li>
+</ul>
+</div>
+</section>
+<section id="usage">
+<h4>Usage<a class="headerlink" href="#usage" title="Link to this heading"></a></h4>
+<p>When operating a pin, the first step is to determine its number.
+This chip supports three independent GPIO IP: Port A (0~31), Port B (0~31), and Port C (0~7).
+BSP GPIO driver numbers all pins uniformly starting from 0 to 71. i.e. GPIOA-0 pin number is 0, and GPIOC-7 pin number is 71.</p>
+<p>Alternatively, you can get the starting value of this group’s GPIO number through the base file in gpiochipX,
+and then the base plus the offset of the pin within the group is this GPIO pin number.</p>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>gpiochipX</p></th>
+<th class="head"><p>label (GPIOA/B/C)</p></th>
+<th class="head"><p>base</p></th>
+<th class="head"><p>ngpio</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>gpiochip0</p></td>
+<td><p>GPIO0</p></td>
+<td><p>0</p></td>
+<td><p>32</p></td>
+</tr>
+<tr class="row-odd"><td><p>gpiochip32</p></td>
+<td><p>GPIO1</p></td>
+<td><p>32</p></td>
+<td><p>32</p></td>
+</tr>
+<tr class="row-even"><td><p>gpiochip64</p></td>
+<td><p>GPIO2</p></td>
+<td><p>64</p></td>
+<td><p>8</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<ul class="simple">
+<li><p>Base: starting number of pin.</p></li>
+<li><p>Ngpio: how many pins of this port.</p></li>
+<li><p>X = base + offset, for example, GPIOB-8 pin number X = 32 + 8 = 40.</p></li>
+</ul>
+</div>
+<section id="shell">
+<h5>Shell<a class="headerlink" href="#shell" title="Link to this heading"></a></h5>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Command</p></th>
+<th class="head"><p>Introduction</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>echo X &gt; /sys/class/gpio/export</p></td>
+<td><p>Open GPIO</p></td>
+</tr>
+<tr class="row-odd"><td><p>echo X &gt; /sys/class/gpio/unexport</p></td>
+<td><p>Close GPIO</p></td>
+</tr>
+<tr class="row-even"><td><p>echo out &gt; /sys/class/gpio/gpioX/direction</p></td>
+<td><p>Set GPIO direction as output</p></td>
+</tr>
+<tr class="row-odd"><td><p>echo in &gt; /sys/class/gpio/gpioX/direction</p></td>
+<td><p>Set GPIO direction as input</p></td>
+</tr>
+<tr class="row-even"><td><p>echo 1 &gt; /sys/class/gpio/gpioX/value</p></td>
+<td><p>Set GPIO value to 1</p></td>
+</tr>
+<tr class="row-odd"><td><p>echo 0 &gt; /sys/class/gpio/gpioX/value</p></td>
+<td><p>Set GPIO value to 0</p></td>
+</tr>
+<tr class="row-even"><td><p>echo 1 &gt; /sys/class/gpio/gpioX/active_low</p></td>
+<td><p>Set GPIO low level active</p></td>
+</tr>
+<tr class="row-odd"><td><p>echo 0 &gt; /sys/class/gpio/gpioX/active_low</p></td>
+<td><p>Set GPIO high level active (default)</p></td>
+</tr>
+<tr class="row-even"><td><p>echo none &gt; /sys/class/gpio/gpioX/edge</p></td>
+<td><p>Set GPIO to non-interrupt pin</p></td>
+</tr>
+<tr class="row-odd"><td><p>echo rising &gt; /sys/class/gpio/gpioX/edge</p></td>
+<td><p>Set GPIO pin as rising edge trigger</p></td>
+</tr>
+<tr class="row-even"><td><p>echo falling &gt; /sys/class/gpio/gpioX/edge</p></td>
+<td><p>Set GPIO pin as falling edge trigger</p></td>
+</tr>
+<tr class="row-odd"><td><p>echo both &gt; /sys/class/gpio/gpioX/edge</p></td>
+<td><p>Set GPIO pin as both edge trigger</p></td>
+</tr>
+<tr class="row-even"><td><p>cat /sys/class/gpio/gpioX/direction</p></td>
+<td><p>Get GPIO direction</p></td>
+</tr>
+<tr class="row-odd"><td><p>cat /sys/class/gpio/gpioX/value</p></td>
+<td><p>Get GPIO value</p></td>
+</tr>
+<tr class="row-even"><td><p>cat /sys/class/gpio/gpioX/edge</p></td>
+<td><p>Get GPIO edge</p></td>
+</tr>
+<tr class="row-odd"><td><p>cat /sys/class/gpio/gpioX/active_low</p></td>
+<td><p>Get GPIO active low setting</p></td>
+</tr>
+</tbody>
+</table>
+<ol class="arabic">
+<li><p>Output test</p>
+<ol class="loweralpha">
+<li><p>Export one GPIO pin to user space.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">echo</span> <span class="n">X</span> <span class="o">&gt;</span> <span class="o">/</span><span class="n">sys</span><span class="o">/</span><span class="n">class</span><span class="o">/</span><span class="n">gpio</span><span class="o">/</span><span class="n">export</span>
+</pre></div>
+</div>
+</li>
+<li><p>Set GPIO direction as output.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">echo</span> <span class="n">out</span> <span class="o">&gt;</span> <span class="o">/</span><span class="n">sys</span><span class="o">/</span><span class="n">class</span><span class="o">/</span><span class="n">gpio</span><span class="o">/</span><span class="n">gpioX</span><span class="o">/</span><span class="n">direction</span>
+</pre></div>
+</div>
+</li>
+<li><p>Set GPIO logic value to 1.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">echo</span> <span class="mi">1</span> <span class="o">&gt;</span> <span class="o">/</span><span class="n">sys</span><span class="o">/</span><span class="n">class</span><span class="o">/</span><span class="n">gpio</span><span class="o">/</span><span class="n">gpioX</span><span class="o">/</span><span class="n">value</span>
+</pre></div>
+</div>
+</li>
+<li><p>Set GPIO logic value to 0.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">echo</span> <span class="mi">0</span> <span class="o">&gt;</span> <span class="o">/</span><span class="n">sys</span><span class="o">/</span><span class="n">class</span><span class="o">/</span><span class="n">gpio</span><span class="o">/</span><span class="n">gpioX</span><span class="o">/</span><span class="n">value</span>
+</pre></div>
+</div>
+</li>
+<li><p>Unexport the GPIO pin.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">echo</span> <span class="n">X</span> <span class="o">&gt;</span> <span class="o">/</span><span class="n">sys</span><span class="o">/</span><span class="n">class</span><span class="o">/</span><span class="n">gpio</span><span class="o">/</span><span class="n">unexport</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</li>
+<li><p>Input test</p>
+<ol class="loweralpha">
+<li><p>Export one GPIO pin to user space.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">echo</span> <span class="n">X</span> <span class="o">&gt;</span> <span class="o">/</span><span class="n">sys</span><span class="o">/</span><span class="n">class</span><span class="o">/</span><span class="n">gpio</span><span class="o">/</span><span class="n">export</span>
+</pre></div>
+</div>
+</li>
+<li><p>Set GPIO direction as input.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">echo</span> <span class="ow">in</span> <span class="o">&gt;</span> <span class="o">/</span><span class="n">sys</span><span class="o">/</span><span class="n">class</span><span class="o">/</span><span class="n">gpio</span><span class="o">/</span><span class="n">gpioX</span><span class="o">/</span><span class="n">direction</span>
+</pre></div>
+</div>
+</li>
+<li><p>Get GPIO logic value.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cat</span> <span class="o">/</span><span class="n">sys</span><span class="o">/</span><span class="n">class</span><span class="o">/</span><span class="n">gpio</span><span class="o">/</span><span class="n">gpioX</span><span class="o">/</span><span class="n">value</span>
+</pre></div>
+</div>
+</li>
+<li><p>Unexport the GPIO pin.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">echo</span> <span class="n">X</span> <span class="o">&gt;</span> <span class="o">/</span><span class="n">sys</span><span class="o">/</span><span class="n">class</span><span class="o">/</span><span class="n">gpio</span><span class="o">/</span><span class="n">unexport</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</li>
+</ol>
+</section>
+<section id="application">
+<h5>Application<a class="headerlink" href="#application" title="Link to this heading"></a></h5>
+<p>Write the test code according to the method of reading and writing files above.</p>
+<ol class="arabic">
+<li><p>Output test</p>
+<ol class="loweralpha">
+<li><p>Export one GPIO pin to user space.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">export_fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">open</span><span class="p">(</span><span class="s">&quot;/sys/class/gpio/export&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">O_WRONLY</span><span class="p">);</span>
+<span class="n">write</span><span class="p">(</span><span class="n">export_fd</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;X&quot;</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="s">&quot;X&quot;</span><span class="p">));</span>
+<span class="n">close</span><span class="p">(</span><span class="n">export_fd</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+<li><p>Set GPIO direction as output.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">direction_fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">open</span><span class="p">(</span><span class="s">&quot;/sys/class/gpio/gpioX/direction&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">O_WRONLY</span><span class="p">);</span>
+<span class="n">write</span><span class="p">(</span><span class="n">direction_fd</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;out&quot;</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="s">&quot;out&quot;</span><span class="p">));</span>
+<span class="n">close</span><span class="p">(</span><span class="n">direction_fd</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+<li><p>Set GPIO logic value to 1.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">gpiovalue_fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">open</span><span class="p">(</span><span class="s">&quot;/sys/class/gpio/gpioX/value&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">O_WRONLY</span><span class="p">);</span>
+<span class="n">write</span><span class="p">(</span><span class="n">gpiovalue_fd</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;1&quot;</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="s">&quot;1&quot;</span><span class="p">));</span>
+<span class="n">close</span><span class="p">(</span><span class="n">gpiovalue_fd</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+<li><p>Set GPIO logic value to 0.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">gpiovalue_fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">open</span><span class="p">(</span><span class="s">&quot;/sys/class/gpio/gpioX/value&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">O_WRONLY</span><span class="p">);</span>
+<span class="n">write</span><span class="p">(</span><span class="n">gpiovalue_fd</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;0&quot;</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="s">&quot;0&quot;</span><span class="p">));</span>
+<span class="n">close</span><span class="p">(</span><span class="n">gpiovalue_fd</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+<li><p>Unexport the GPIO pin.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">unexport_fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">open</span><span class="p">(</span><span class="s">&quot;/sys/class/gpio/unexport&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">O_WRONLY</span><span class="p">);</span>
+<span class="n">write</span><span class="p">(</span><span class="n">unexport_fd</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;X&quot;</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="s">&quot;X&quot;</span><span class="p">));</span>
+<span class="n">close</span><span class="p">(</span><span class="n">unexport_fd</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</li>
+<li><p>Input test</p>
+<ol class="loweralpha">
+<li><p>Export one GPIO pin to user space.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">export_fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">open</span><span class="p">(</span><span class="s">&quot;/sys/class/gpio/export&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">O_WRONLY</span><span class="p">);</span>
+<span class="n">write</span><span class="p">(</span><span class="n">export_fd</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;X&quot;</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="s">&quot;X&quot;</span><span class="p">));</span>
+<span class="n">close</span><span class="p">(</span><span class="n">export_fd</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+<li><p>Set GPIO direction as input.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">direction_fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">open</span><span class="p">(</span><span class="s">&quot;/sys/class/gpio/gpioX/direction&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">O_WRONLY</span><span class="p">);</span>
+<span class="n">write</span><span class="p">(</span><span class="n">direction_fd</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;in&quot;</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="s">&quot;in&quot;</span><span class="p">));</span>
+<span class="n">close</span><span class="p">(</span><span class="n">direction_fd</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+<li><p>Get GPIO logic value.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">char</span><span class="w"> </span><span class="n">value</span><span class="p">;</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">gpiovalue_fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">open</span><span class="p">(</span><span class="s">&quot;/sys/class/gpio/gpioX/value&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">O_RDONLY</span><span class="p">);</span>
+<span class="n">read</span><span class="p">(</span><span class="n">gpiovalue_fd</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">value</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+<span class="n">close</span><span class="p">(</span><span class="n">gpiovalue_fd</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+<li><p>Unexport the GPIO pin.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">unexport_fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">open</span><span class="p">(</span><span class="s">&quot;/sys/class/gpio/unexport&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">O_WRONLY</span><span class="p">);</span>
+<span class="n">write</span><span class="p">(</span><span class="n">unexport_fd</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;X&quot;</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="s">&quot;X&quot;</span><span class="p">));</span>
+<span class="n">close</span><span class="p">(</span><span class="n">unexport_fd</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</li>
+<li><p>Interrupt test</p>
+<ol class="loweralpha">
+<li><p>Export one GPIO pin to user space.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">export_fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">open</span><span class="p">(</span><span class="s">&quot;/sys/class/gpio/export&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">O_WRONLY</span><span class="p">);</span>
+<span class="n">write</span><span class="p">(</span><span class="n">export_fd</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;X&quot;</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="s">&quot;X&quot;</span><span class="p">));</span>
+<span class="n">close</span><span class="p">(</span><span class="n">export_fd</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+<li><p>Set GPIO direction as input.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">direction_fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">open</span><span class="p">(</span><span class="s">&quot;/sys/class/gpio/gpioX/direction&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">O_WRONLY</span><span class="p">);</span>
+<span class="n">write</span><span class="p">(</span><span class="n">direction_fd</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;in&quot;</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="s">&quot;in&quot;</span><span class="p">));</span>
+<span class="n">close</span><span class="p">(</span><span class="n">direction_fd</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+<li><p>Set GPIO trigger type. Trigger type can be set to one of the following values: <code class="docutils literal notranslate"><span class="pre">rising</span></code>, <code class="docutils literal notranslate"><span class="pre">falling</span></code>, <code class="docutils literal notranslate"><span class="pre">both</span></code>.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">edge_fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">open</span><span class="p">(</span><span class="s">&quot;/sys/class/gpio/gpioX/edge&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">O_WRONLY</span><span class="p">);</span>
+<span class="n">write</span><span class="p">(</span><span class="n">edge_fd</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;rising&quot;</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="s">&quot;rising&quot;</span><span class="p">));</span>
+<span class="n">close</span><span class="p">(</span><span class="n">edge_fd</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+<li><p>Poll GPIO value wait for interrupt happen, and read GPIO value when interrupt happens.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">char</span><span class="w"> </span><span class="n">val</span><span class="p">;</span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">pollfd</span><span class="w"> </span><span class="n">pfd</span><span class="p">;</span>
+<span class="n">pfd</span><span class="p">.</span><span class="n">events</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">POLLPRI</span><span class="p">;</span>
+<span class="n">pfd</span><span class="p">.</span><span class="n">fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">open</span><span class="p">(</span><span class="s">&quot;/sys/class/gpio/gpioX/value&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">O_RDONLY</span><span class="p">);</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">ret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">poll</span><span class="p">(</span><span class="o">&amp;</span><span class="n">pfd</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">-1</span><span class="p">);</span>
+<span class="k">if</span><span class="w"> </span><span class="p">((</span><span class="n">ret</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="p">(</span><span class="n">pfd</span><span class="p">.</span><span class="n">revents</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">POLLPRI</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="n">read</span><span class="p">(</span><span class="n">pfd</span><span class="p">.</span><span class="n">fd</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">val</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">));</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><p>Unexport the GPIO pin.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">unexport_fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">open</span><span class="p">(</span><span class="s">&quot;/sys/class/gpio/unexport&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">O_WRONLY</span><span class="p">);</span>
+<span class="n">write</span><span class="p">(</span><span class="n">unexport_fd</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;X&quot;</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="s">&quot;X&quot;</span><span class="p">));</span>
+<span class="n">close</span><span class="p">(</span><span class="n">unexport_fd</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</li>
+</ol>
+</section>
+</section>
+</section>
+<section id="char-device">
+<h3>Char Device<a class="headerlink" href="#char-device" title="Link to this heading"></a></h3>
+<p>The GPIO can be used as a char device, and the GPIO controller char device is <code class="docutils literal notranslate"><span class="pre">/dev/gpiochipX</span></code>.
+Ioctl operation could get gpiochip info and test specific GPIO pin.</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<ul class="simple">
+<li><p>/dev/gpiochip0     GPIOA</p></li>
+<li><p>/dev/gpiochip1     GPIOB</p></li>
+<li><p>/dev/gpiochip2     GPIOC</p></li>
+</ul>
+</div>
+<section id="ioctl-command">
+<h4>IOCTL Command<a class="headerlink" href="#ioctl-command" title="Link to this heading"></a></h4>
+<p>IOCTL command defined in <code class="docutils literal notranslate"><span class="pre">linux/gpio.h</span></code>, so user main application must include <code class="docutils literal notranslate"><span class="pre">linux/gpio.h</span></code>.</p>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>IOCTL Command</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>GPIO_GET_CHIPINFO_IOCTL</p></td>
+<td><p>Get gpiochip information, including name label and how many GPIO lines of this gpiochip.</p></td>
+</tr>
+<tr class="row-odd"><td><p>GPIO_GET_LINEINFO_IOCTL</p></td>
+<td><p>Get GPIO line information, including specific pin information. Such as name and flags.</p></td>
+</tr>
+<tr class="row-even"><td><p>GPIO_GET_LINEHANDLE_IOCTL</p></td>
+<td><p>Get control of specific line, and then perform read and write operation on file descriptor.</p></td>
+</tr>
+<tr class="row-odd"><td><p>GPIO_GET_LINEEVENT_IOCTL</p></td>
+<td><p>Get event control of specific line, when an interrupt happens, read operation could get interrupt trigger timestamp.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id2">
+<h4>Usage<a class="headerlink" href="#id2" title="Link to this heading"></a></h4>
+<ol class="arabic">
+<li><p>Get GPIO info test</p>
+<ol class="loweralpha">
+<li><p>Open GPIO char device.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">open</span><span class="p">(</span><span class="s">&quot;/dev/gpiochp0&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">O_WRONLY</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+<li><p>Get GPIO chip information.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">gpiochip_info</span><span class="w"> </span><span class="n">info</span><span class="p">;</span>
+<span class="n">ioctl</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span><span class="w"> </span><span class="n">GPIO_GET_CHIPINFO_IOCTL</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">info</span><span class="p">);</span><span class="c1">//get GPIOA information</span>
+</pre></div>
+</div>
+</li>
+<li><p>Get GPIO line information.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">gpioline_info</span><span class="w"> </span><span class="n">line_info</span><span class="p">;</span>
+<span class="n">line_info</span><span class="p">.</span><span class="n">line_offset</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">X</span><span class="p">;</span><span class="c1">//get GPIOA pin X information</span>
+<span class="n">ioctl</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span><span class="w"> </span><span class="n">GPIO_GET_LINEINFO_IOCTL</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">line_info</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+<li><p>Close GPIO char device.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">close</span><span class="p">(</span><span class="n">fd</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</li>
+<li><p>Output test</p>
+<ol class="loweralpha">
+<li><p>Open GPIO char device.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">open</span><span class="p">(</span><span class="s">&quot;/dev/gpiochp0&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">O_WRONLY</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+<li><p>Get specific GPIO line handle.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">gpiohandle_request</span><span class="w"> </span><span class="n">rq</span><span class="p">;</span>
+<span class="n">rq</span><span class="p">.</span><span class="n">lineoffsets</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">offset</span><span class="p">;</span><span class="c1">//offset in this gpio chip</span>
+<span class="n">rq</span><span class="p">.</span><span class="n">flags</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GPIOHANDLE_REQUEST_OUTPUT</span><span class="p">;</span>
+<span class="n">rq</span><span class="p">.</span><span class="n">lines</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="c1">//one pin</span>
+<span class="n">ioctl</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span><span class="w"> </span><span class="n">GPIO_GET_LINEHANDLE_IOCTL</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">rq</span><span class="p">);</span>
+<span class="n">close</span><span class="p">(</span><span class="n">fd</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+<li><p>Set GPIO pin value.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">gpiohandle_data</span><span class="w"> </span><span class="n">data</span><span class="p">;</span>
+<span class="n">data</span><span class="p">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">value</span><span class="p">;</span>
+<span class="n">ioctl</span><span class="p">(</span><span class="n">rq</span><span class="p">.</span><span class="n">fd</span><span class="p">,</span><span class="w"> </span><span class="n">GPIOHANDLE_SET_LINE_VALUES_IOCTL</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">data</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+<li><p>Close GPIO char device.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">close</span><span class="p">(</span><span class="n">rq</span><span class="p">.</span><span class="n">fd</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</li>
+<li><p>Input test</p>
+<ol class="loweralpha">
+<li><p>Open GPIO char device.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">open</span><span class="p">(</span><span class="s">&quot;/dev/gpiochp0&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">O_WRONLY</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+<li><p>Get specific GPIO line handle.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">gpiohandle_request</span><span class="w"> </span><span class="n">rq</span><span class="p">;</span>
+<span class="n">rq</span><span class="p">.</span><span class="n">lineoffsets</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">offset</span><span class="p">;</span>
+<span class="n">rq</span><span class="p">.</span><span class="n">flags</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GPIOHANDLE_REQUEST_OUTPUT</span><span class="p">;</span>
+<span class="n">rq</span><span class="p">.</span><span class="n">lines</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="n">ioctl</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span><span class="w"> </span><span class="n">GPIO_GET_LINEHANDLE_IOCTL</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">rq</span><span class="p">);</span>
+<span class="n">close</span><span class="p">(</span><span class="n">fd</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+<li><p>Get GPIO pin value.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">gpiohandle_data</span><span class="w"> </span><span class="n">data</span><span class="p">;</span>
+<span class="n">ioctl</span><span class="p">(</span><span class="n">rq</span><span class="p">.</span><span class="n">fd</span><span class="p">,</span><span class="w"> </span><span class="n">GPIOHANDLE_GET_LINE_VALUES_IOCTL</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">data</span><span class="p">);</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">&quot;Read value:%d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="n">data</span><span class="p">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+</pre></div>
+</div>
+</li>
+<li><p>Close GPIO char device.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">close</span><span class="p">(</span><span class="n">rq</span><span class="p">.</span><span class="n">fd</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</li>
+<li><p>Interrupt test</p>
+<ol class="loweralpha">
+<li><p>Open GPIO char device.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">open</span><span class="p">(</span><span class="s">&quot;/dev/gpiochp0&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">O_WRONLY</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+<li><p>Get specific GPIO line event handle. Trigger type can be set to one of the following values: <cite>GPIOEVENT_EVENT_RISING_EDGE</cite>, <cite>GPIOEVENT_EVENT_FALLING_EDGE</cite>, (<cite>GPIOEVENT_EVENT_FALLING_EDGE|GPIOEVENT_EVENT_RISING_EDGE</cite>).</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">gpioevent_request</span><span class="w"> </span><span class="n">event_req</span><span class="p">;</span>
+<span class="n">event_req</span><span class="p">.</span><span class="n">lineoffset</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">offset</span><span class="p">;</span>
+<span class="n">event_req</span><span class="p">.</span><span class="n">handleflags</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">GPIOHANDLE_REQUEST_INPUT</span><span class="p">;</span><span class="c1">//must set</span>
+<span class="n">event_req</span><span class="p">.</span><span class="n">eventflags</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GPIOEVENT_EVENT_RISING_EDGE</span><span class="p">;</span>
+<span class="n">ioctl</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span><span class="w"> </span><span class="n">GPIO_GET_LINEEVENT_IOCTL</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">event_req</span><span class="p">);</span>
+<span class="n">close</span><span class="p">(</span><span class="n">fd</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+<li><p>Poll GPIO value wait for an interrupt to happen, and get interrupt trigger timestamp.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">gpioevent_data</span><span class="w"> </span><span class="n">event_data</span><span class="p">;</span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">pollfd</span><span class="w"> </span><span class="n">pfd</span><span class="p">;</span>
+<span class="n">pfd</span><span class="p">.</span><span class="n">fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">event_req</span><span class="p">.</span><span class="n">fd</span><span class="p">;</span>
+<span class="n">pfd</span><span class="p">.</span><span class="n">events</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">POLLIN</span><span class="p">;</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">ret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">poll</span><span class="p">(</span><span class="o">&amp;</span><span class="n">pfd</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">-1</span><span class="p">);</span>
+<span class="k">if</span><span class="w"> </span><span class="p">((</span><span class="n">ret</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="o">&amp;&amp;</span><span class="p">(</span><span class="n">pfd</span><span class="p">.</span><span class="n">revents</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">POLLIN</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="n">read</span><span class="p">(</span><span class="n">event_req</span><span class="p">.</span><span class="n">fd</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">event_data</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">event_data</span><span class="p">));</span>
+<span class="w">   </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;event_data.timestamp:%llu,.id:%d </span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="n">event_data</span><span class="p">.</span><span class="n">timestamp</span><span class="p">,</span><span class="w"> </span><span class="n">event_data</span><span class="p">.</span><span class="n">id</span><span class="p">);</span><span class="c1">//id for edge trigger type, 1:rising edge,2:falling edge.</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><p>Close GPIO char device.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">close</span><span class="p">(</span><span class="n">event_req</span><span class="p">.</span><span class="n">fd</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</li>
+</ol>
+</section>
+</section>
+<section id="uio">
+<h3>UIO<a class="headerlink" href="#uio" title="Link to this heading"></a></h3>
+<p>Each UIO device is accessed through a device file and several sysfs attribute files.
+The device file will be called <code class="docutils literal notranslate"><span class="pre">/dev/uio0</span></code> for the first device, and <code class="docutils literal notranslate"><span class="pre">/dev/uio1</span></code>, <code class="docutils literal notranslate"><span class="pre">/dev/uio2</span></code> and so on for subsequent devices.
+Interrupts are handled by reading from <code class="docutils literal notranslate"><span class="pre">/dev/uioX</span></code>. A blocking <code class="xref py py-func docutils literal notranslate"><span class="pre">read()</span></code> from <code class="docutils literal notranslate"><span class="pre">/dev/uioX</span></code> will return as soon as an interrupt occurs.
+You can also use <code class="xref py py-func docutils literal notranslate"><span class="pre">poll()</span></code> on <code class="docutils literal notranslate"><span class="pre">/dev/uioX</span></code> to wait for an interrupt. The integer value read from <code class="docutils literal notranslate"><span class="pre">/dev/uioX</span></code> represents the total interrupt count.
+You can use this number to figure out if you missed some interrupts.</p>
+<p>Details of Linux UIO system, refer to <a class="reference external" href="https://www.kernel.org/doc/html/v5.4/driver-api/uio-howto.html">https://www.kernel.org/doc/html/v5.4/driver-api/uio-howto.html</a>.</p>
+<section id="id3">
+<h4>Configuration<a class="headerlink" href="#id3" title="Link to this heading"></a></h4>
+<section id="id4">
+<h5>DTS Configuration<a class="headerlink" href="#id4" title="Link to this heading"></a></h5>
+<p>GPIO DTS UIO node:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">gpio</span><span class="o">-</span><span class="n">uio</span><span class="o">-</span><span class="n">test</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="n">compatible</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;generic-uio&quot;</span><span class="p">;</span>
+<span class="w">   </span><span class="n">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;okay&quot;</span><span class="p">;</span>
+<span class="w">   </span><span class="n">interrupt</span><span class="o">-</span><span class="n">parent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;&amp;</span><span class="n">gpioa</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="w">   </span><span class="n">interrupts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;</span><span class="mi">15</span><span class="w"> </span><span class="n">IRQ_TYPE_EDGE_BOTH</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<table class="docutils align-default" id="id11" style="width: 100%">
+<caption><span class="caption-text">GPIO UIO configurations</span><a class="headerlink" href="#id11" title="Link to this table"></a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>Property</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Configurable</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>compatible</p></td>
+<td><p>The description of UIO driver. Default: “generic-uio”.</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="row-odd"><td><p>interrupt-parent</p></td>
+<td><p>GPIOA group</p></td>
+<td><p>Yes</p></td>
+</tr>
+<tr class="row-even"><td><p>interrupts</p></td>
+<td><p>This GPIO hardware interrupt number is 15, corresponding to the GPIOA pin 15.</p>
+<p>Trigger type: <cite>IRQ_TYPE_EDGE_BOTH</cite></p>
+</td>
+<td><p>Yes</p></td>
+</tr>
+</tbody>
+</table>
+<p>At the same time, add <code class="docutils literal notranslate"><span class="pre">uio_pdrv_genirq.of_id=generic-uio</span></code> to the bootargs property in the chosen node.</p>
+</section>
+<section id="id5">
+<h5>Build Configuration<a class="headerlink" href="#id5" title="Link to this heading"></a></h5>
+<p>Select <span class="menuselection">Device Drivers -&gt; Userspace I/O drivers</span>:</p>
+<figure class="align-center" id="id12">
+<a class="reference internal image-reference" href="../../_images/uio_driver.png"><img alt="../../_images/uio_driver.png" src="../../_images/uio_driver.png" style="width: 696.0px; height: 190.0px;" /></a>
+<figcaption>
+<p><span class="caption-text">UIO driver</span><a class="headerlink" href="#id12" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+</section>
+<section id="id6">
+<h4>Usage<a class="headerlink" href="#id6" title="Link to this heading"></a></h4>
+<p>Interrupt test:</p>
+<ol class="arabic">
+<li><p>Open GPIO UIO device.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">int</span> <span class="n">uio_fd</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;/dev/uio0&quot;</span><span class="p">,</span> <span class="n">O_RDWR</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+<li><p>Write 1 to unmask the interrupt, must be set every time.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">uint32_t</span> <span class="n">uio_int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+<span class="n">write</span><span class="p">(</span><span class="n">uio_fd</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">uio_int</span><span class="p">,</span> <span class="n">sizeof</span><span class="p">(</span><span class="n">uio_int</span><span class="p">));</span>
+</pre></div>
+</div>
+</li>
+<li><p>Poll GPIO UIO device and wait for the interrupt happen, could read interrupt count value.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">struct</span> <span class="n">pollfd</span> <span class="n">pfd</span><span class="p">;</span>
+<span class="nb">int</span> <span class="n">uio_int</span><span class="p">;</span>
+<span class="n">pfd</span><span class="o">.</span><span class="n">events</span> <span class="o">=</span> <span class="n">POLLIN</span><span class="p">;</span>
+<span class="n">pfd</span><span class="o">.</span><span class="n">fd</span> <span class="o">=</span><span class="n">uio_fd</span><span class="p">;</span>
+<span class="nb">int</span> <span class="n">ret</span> <span class="o">=</span> <span class="n">poll</span><span class="p">(</span><span class="o">&amp;</span><span class="n">pfd</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">ret</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+   <span class="n">read</span><span class="p">(</span><span class="n">pfd</span><span class="o">.</span><span class="n">fd</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">uio_int</span><span class="p">,</span> <span class="mi">1</span><span class="p">));</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><p>Close GPIO UIO device.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">close</span><span class="p">(</span><span class="n">uio_fd</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+</section>
+</section>
+<section id="apis-for-kernel-space">
+<h2>APIs for Kernel Space<a class="headerlink" href="#apis-for-kernel-space" title="Link to this heading"></a></h2>
+<section id="legacy-apis">
+<h3>Legacy APIs<a class="headerlink" href="#legacy-apis" title="Link to this heading"></a></h3>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>API</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>gpio_request</p></td>
+<td><p>Request a GPIO</p></td>
+</tr>
+<tr class="row-odd"><td><p>gpio_direction_output</p></td>
+<td><p>Set the GPIO direction to output</p></td>
+</tr>
+<tr class="row-even"><td><p>gpio_direction_input</p></td>
+<td><p>Set the GPIO direction to input</p></td>
+</tr>
+<tr class="row-odd"><td><p>gpio_set_value</p></td>
+<td><p>Set the GPIO value (GPIO is in output direction)</p></td>
+</tr>
+<tr class="row-even"><td><p>gpio_get_value</p></td>
+<td><p>Get the GPIO value</p></td>
+</tr>
+<tr class="row-odd"><td><p>gpio_free</p></td>
+<td><p>Free a GPIO</p></td>
+</tr>
+<tr class="row-even"><td><p>gpio_export</p></td>
+<td><p>Export a GPIO through sysfs</p></td>
+</tr>
+<tr class="row-odd"><td><p>gpio_unexport</p></td>
+<td><p>Reverse effect of <code class="xref py py-func docutils literal notranslate"><span class="pre">gpio_export()</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>of_get_named_gpio_flags</p></td>
+<td><p>Get a GPIO number and flags for GPIO API</p></td>
+</tr>
+<tr class="row-odd"><td><p>gpiochip_add_data</p></td>
+<td><p>Register a gpiochip.</p></td>
+</tr>
+<tr class="row-even"><td><p>gpiochip_remove</p></td>
+<td><p>Unregister a gpiochip.</p></td>
+</tr>
+<tr class="row-odd"><td><p>gpio_set_debounce</p></td>
+<td><p>Set GPIO debounce function</p></td>
+</tr>
+<tr class="row-even"><td><p>gpio_to_irq</p></td>
+<td><p>Get GPIO pin virtual IRQ</p></td>
+</tr>
+</tbody>
+</table>
+<p>Refer to <cite>&lt;linux&gt;/Documentation/driver-api/gpio/legacy.rst</cite> for more details.</p>
+</section>
+<section id="descriptor-based-apis">
+<h3>Descriptor-based APIs<a class="headerlink" href="#descriptor-based-apis" title="Link to this heading"></a></h3>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>API</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>gpiod_get</p></td>
+<td><p>Obtain a GPIO for a given GPIO function</p></td>
+</tr>
+<tr class="row-odd"><td><p>gpiod_put</p></td>
+<td><p>Dispose of a GPIO descriptor.</p></td>
+</tr>
+<tr class="row-even"><td><p>gpiod_direction_output</p></td>
+<td><p>Set the GPIO direction to output.</p></td>
+</tr>
+<tr class="row-odd"><td><p>gpiod_direction_input</p></td>
+<td><p>Set the GPIO direction to input.</p></td>
+</tr>
+<tr class="row-even"><td><p>gpiod_set_value</p></td>
+<td><p>Assign a gpio’s value. (contexts that cannot sleep)</p></td>
+</tr>
+<tr class="row-odd"><td><p>gpiod_get_value</p></td>
+<td><p>Get the GPIO value. (contexts that cannot sleep)</p></td>
+</tr>
+<tr class="row-even"><td><p>gpiod_set_debounce</p></td>
+<td><p>Set GPIO debounce function</p></td>
+</tr>
+</tbody>
+</table>
+<p>Refer to <cite>&lt;linux&gt;/Documentation/driver-api/gpio/consumer.rst</cite> for more details.</p>
+</section>
+<section id="id7">
+<h3>Usage<a class="headerlink" href="#id7" title="Link to this heading"></a></h3>
+<ol class="arabic">
+<li><p>Output test</p>
+<ol class="loweralpha">
+<li><p>Get GPIO pin index.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">gpio_index</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">of_get_named_gpio_flags</span><span class="p">(</span><span class="n">np</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;test-gpios&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">flags</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+<li><p>Request a GPIO.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">gpio_request</span><span class="p">(</span><span class="n">gpio_index</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+<li><p>Set GPIO direction to output. The initial value is 0.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">gpio_direction_output</span><span class="p">(</span><span class="n">gpio_index</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+<li><p>Write a logic value 1 to the specified pin of output port.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">gpio_set_value</span><span class="p">(</span><span class="n">gpio_index</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+<li><p>Get the logic value from specified pin of output port, and check the value.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">gpio_get_value</span><span class="p">(</span><span class="n">gpio_index</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+<li><p>Free the GPIO pin.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">gpio_free</span><span class="p">(</span><span class="n">gpio_index</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</li>
+<li><p>Input test</p>
+<ol class="loweralpha">
+<li><p>Get GPIO pin index.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">gpio_index</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">of_get_named_gpio_flags</span><span class="p">(</span><span class="n">np</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;test-gpios&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">flags</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+<li><p>Request a GPIO.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">gpio_request</span><span class="p">(</span><span class="n">gpio_index</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+<li><p>Set GPIO direction to input.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">gpio_direction_input</span><span class="p">(</span><span class="n">gpio_index</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+<li><p>External pull the GPIO pin high or low.</p></li>
+<li><p>Get the logic value from specified pin of input port, and check the value.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">gpio_get_value</span><span class="p">(</span><span class="n">gpio_index</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+<li><p>Free the GPIO pin.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">gpio_free</span><span class="p">(</span><span class="n">gpio_index</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</li>
+<li><p>Interrupt test</p>
+<ol class="loweralpha">
+<li><p>Get GPIO pin index.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">gpio_index</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">of_get_named_gpio_flags</span><span class="p">(</span><span class="n">np</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;test-gpios&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">flags</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+<li><p>Initialize a completion variable.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">reinit_completion</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">completion</span><span class="w"> </span><span class="o">*</span><span class="n">x</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+<li><p>Request a GPIO.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">gpio_request</span><span class="p">(</span><span class="n">gpio_index</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+<li><p>Get GPIO virq.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">virq</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">gpio_to_irq</span><span class="p">(</span><span class="n">gpio_index</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+<li><p>Request a trigger type. Trigger type can be set to one of the following values: <cite>IRQF_TRIGGER_RISING</cite>, <cite>IRQF_TRIGGER_FALLING</cite>, <cite>IRQF_TRIGGER_HIGH</cite>, <cite>IRQF_TRIGGER_LOW</cite>, (<cite>IRQF_TRIGGER_FALLING | IRQF_TRIGGER_RISING</cite>).</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">request_irq</span><span class="p">(</span><span class="n">virq</span><span class="p">,</span><span class="w"> </span><span class="n">rtk_gpio_irq_handler</span><span class="p">,</span><span class="w"> </span><span class="n">trigger_type</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;gpio_irq&quot;</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+<li><p>GPIO can be configured to either include or exclude a debounce capability by setting <code class="docutils literal notranslate"><span class="pre">rtk,db_enable</span> <span class="pre">=</span> <span class="pre">&quot;okay&quot;</span></code> and config debouce time.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">gpio_set_debounce</span><span class="p">(</span><span class="n">gpio_index</span><span class="p">,</span><span class="n">db_div_cnt</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>virq is the virtual IRQ number, you can use <code class="xref py py-func docutils literal notranslate"><span class="pre">gpio_to_irq(gpio_index)()</span></code> to get the specified pin’s virq.</p>
+<ol class="loweralpha">
+<li><p>External trigger, and wait for completion of the task.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">wait_for_completion_timeout</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">completion</span><span class="w"> </span><span class="o">*</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">timeout</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+<li><p>Free the IRQ.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">free_irq</span><span class="p">(</span><span class="n">virq</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+<li><p>Free the GPIO pin.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">gpio_free</span><span class="p">(</span><span class="n">gpio_index</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+<p>For more details, GPIO demo for kernel space is located at <code class="docutils literal notranslate"><span class="pre">&lt;test&gt;/gpio</span></code>. Refer to <code class="docutils literal notranslate"><span class="pre">readme.txt</span></code> in this directory.</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="0_gpio_index_cn.html" class="btn btn-neutral float-left" title="GPIO and Pinctrl" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="1_pinctrl_toprst_cn.html" class="btn btn-neutral float-right" title="Pin Controller (Pinctrl)" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2025, Realsil。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+ 
+
+
+
+</body>
+</html>

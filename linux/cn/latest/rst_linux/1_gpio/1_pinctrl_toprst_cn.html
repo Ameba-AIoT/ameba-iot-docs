@@ -1,0 +1,509 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pin Controller (Pinctrl) &mdash; Ameba IoT Docs  文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom_cn.css?v=0d22fac7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/tabs.css?v=a5c4661c" />
+      <link rel="stylesheet" type="text/css" href="../../_static/_static/custom_cn.css" />
+
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=7d86a446"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+        <script>let toggleHintShow = 'Click to show';</script>
+        <script>let toggleHintHide = 'Click to hide';</script>
+        <script>let toggleOpenOnPrint = 'true';</script>
+        <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+        <script src="../../_static/translations.js?v=beaddf03"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="Power Management" href="../1_power_save/0_ps_index_cn.html" />
+    <link rel="prev" title="General Purpose Input/Output (GPIO)" href="1_gpio_toprst_cn.html" />
+   
+  
+  <script type="text/javascript" src="../../_static/js/selector.js"></script>
+
+  <style>
+    .wy-nav-content {max-width: 1000px;} /* 设置最大宽度 */
+  </style>
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Ameba IoT Docs
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../rst_rtos/0_ameba_product/0_ameba_product_center_index_cn.html">产品中心</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rst_rtos/0_ameba_sdk/0_ameba_sdks_index_cn.html">Ameba SDK</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_release_packages/0_release_packages_index_cn.html">0.0 释放包</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_gcc_build_environment/0_gcc_build_index_cn.html">0.1 GCC 编译环境</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_sdk_architecture/0_sdk_architecture_index_cn.html">0.2 SDK 架构</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rst_rtos/0_tools/0_tools_index_cn.html">0.7 工具</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_question_help/0_question_help_index_cn.html">0.A 问题与帮助</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_debugging/0_debugging_index_cn.html">0.B 系统调试</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_boot_process/0_boot_index_cn.html">1.1 启动流程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_ota/0_ota_index_cn.html">1.2 固件在线升级（OTA）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_otpc/0_otpc_index_cn.html">1.3 OTP 存储器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_flash/0_flash_index_cn.html">1.4 闪存</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="0_gpio_index_cn.html">1.7 通用输入输出端口</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="1_gpio_toprst_cn.html">General Purpose Input/Output (GPIO)</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Pin Controller (Pinctrl)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#introduction">Introduction</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#architecture">Architecture</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#implementation">Implementation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#configuration">Configuration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#dts-configuration">DTS Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#build-configuration">Build Configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#apis">APIs</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#apis-for-user-space">APIs for User Space</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apis-for-kernel-space">APIs for Kernel Space</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../1_power_save/0_ps_index_cn.html">1.8 电源管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_secure_boot/0_secure_boot_index_nda_cn.html">3.6 安全启动</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../7_usb_boot/0_usb_boot_index_cn.html">3.7 USB 启动</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_crypto_engine/0_crypto_engine_index_cn.html">3.8 加密引擎</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../4_multimedia/0_multimedia_index_cn.html">4.3 多媒体</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../7_usb/0_usb_index_cn.html">7.1 USB 主机与设备</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../7_sdio/0_sdioh_index_cn.html">7.2 SDIO 主机</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_dmac/0_dmac_index_cn.html">8.1 DMA 控制器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_rtc/0_rtc_index_cn.html">8.2 实时时钟（RTC）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_thermal/0_thermal_index_cn.html">8.3 热计量器（Thermel）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_adc/0_adc_index_cn.html">8.4 模数转换器（ADC）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_cap_touch/0_cap_touch_index_cn.html">8.5 电容触摸（Cap-touch）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_ir/0_ir_index_cn.html">8.6 红外收发器（IR）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_ledc/0_ledc_index_cn.html">8.7 LED 灯控制器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_i2c/0_i2c_index_cn.html">8.8 集成电路间通信（I2C）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_uart/0_uart_index_cn.html">8.9 通用异步收发传输器（UART）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_lcdc/0_lcdc_index_cn.html">8.A 液晶显示控制器（LCDC）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_spi/0_spi_index_cn.html">8.B 串行外设接口（SPI）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_spic/0_spic_index_cn.html">8.C SPI 闪存控制器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_timer/0_timer_index_cn.html">8.D 计时器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_wdg/0_wdg_index_cn.html">8.E 看门狗</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../9_bluetooth/0_bluetooth_index_cn.html">9.1 蓝牙</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Ameba IoT Docs</a>
+      </nav>
+
+      <div class="wy-nav-content">
+
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="0_gpio_index_cn.html">GPIO and Pinctrl</a></li>
+      <li class="breadcrumb-item active">Pin Controller (Pinctrl)</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="pin-controller-pinctrl">
+<span id="pinctrl"></span><h1>Pin Controller (Pinctrl)<a class="headerlink" href="#pin-controller-pinctrl" title="Link to this heading"></a></h1>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
+<section id="architecture">
+<h3>Architecture<a class="headerlink" href="#architecture" title="Link to this heading"></a></h3>
+<p>The pinctrl driver follows Linux’s pin control subsystem. Pin control subsystem deals with:</p>
+<ul class="simple">
+<li><p>Enumerating and naming controllable pins</p></li>
+<li><p>Multiplexing of pins, pads, fingers, etc.</p></li>
+<li><p>Configuration of pins, pads, fingers, etc., such as software-controlled biasing specific pins, such as pull-up/down, open drain, load capacitance.</p></li>
+</ul>
+<p>The pinctrl software architecture is shown below.</p>
+<figure class="align-center" id="id2">
+<a class="reference internal image-reference" href="../../_images/pinctrl_software_arch.svg"><img alt="../../_images/pinctrl_software_arch.svg" height="463" src="../../_images/pinctrl_software_arch.svg" width="511" /></a>
+<figcaption>
+<p><span class="caption-text">pinctrl software architecture</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p>Refer to <a class="reference external" href="https://www.kernel.org/doc/html/v5.4/driver-api/pinctl.html?highlight=pinctrl">https://www.kernel.org/doc/html/v5.4/driver-api/pinctl.html?highlight=pinctrl</a> for more details of Linux pinctrl system.</p>
+</section>
+<section id="implementation">
+<h3>Implementation<a class="headerlink" href="#implementation" title="Link to this heading"></a></h3>
+<p>The pinctrl driver is implemented as following files:</p>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Driver location</p></th>
+<th class="head"><p>Introduction</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>&lt;linux&gt;/drivers/rtkdrivers/pinctrl/Kconfig</p></td>
+<td><p>Pinctrl driver Kconfig</p></td>
+</tr>
+<tr class="row-odd"><td><p>&lt;linux&gt;/drivers/rtkdrivers/pinctrl/Makefile</p></td>
+<td><p>Pinctrl driver Makefile</p></td>
+</tr>
+<tr class="row-even"><td><p>&lt;linux&gt;/drivers/rtkdrivers/pinctrl/realtek-pinctrl-ameba.c</p></td>
+<td><p>Pinctrl functions table and initialization</p></td>
+</tr>
+<tr class="row-odd"><td><p>&lt;linux&gt;/drivers/rtkdrivers/pinctrl/realtek-pinctrl.c</p></td>
+<td><p>Pinctrl functions</p></td>
+</tr>
+<tr class="row-even"><td><p>&lt;linux&gt;/drivers/rtkdrivers/pinctrl/realtek-pinctrl.h</p></td>
+<td><p>Pinctrl related function declaration, macro definition,</p>
+<p>structure definition and the other header files quoted</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p>&lt;linux&gt;/include/dt-bindings/realtek/pinctrl/realtek-ameba-pinfunc.h</p></td>
+<td><p>Pinctrl definition</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Link to this heading"></a></h2>
+<section id="dts-configuration">
+<h3>DTS Configuration<a class="headerlink" href="#dts-configuration" title="Link to this heading"></a></h3>
+<p>The DTS for pinctrl is defined in <code class="docutils literal notranslate"><span class="pre">&lt;dts&gt;/rtl8730e-pinctrl.dtsi</span></code>.</p>
+<section id="pinctrl-driver-dts-configuration">
+<h4>pinctrl Driver DTS Configuration<a class="headerlink" href="#pinctrl-driver-dts-configuration" title="Link to this heading"></a></h4>
+<p>The parent part of pinctrl is listed in the following table.</p>
+<table class="docutils align-default" id="pinctrl-node-dts-configurations" style="width: 100%">
+<caption><span class="caption-text">pinctrl node DTS configurations</span><a class="headerlink" href="#pinctrl-node-dts-configurations" title="Link to this table"></a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>Property</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Default</p></th>
+<th class="head"><p>Configurable?</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>compatible</p></td>
+<td><p>The description of IR driver.</p></td>
+<td><p>realtek,ameba-pinctrl</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="row-odd"><td><p>reg</p></td>
+<td><p>The hardware address and size for IR device.</p></td>
+<td><p>&lt;0x42008A00 0x120&gt;</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="row-even"><td><p>address-cells</p></td>
+<td><p>Indicates sub node address length, unit is 32 bits.</p></td>
+<td><p>1</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="row-odd"><td><p>size-cells</p></td>
+<td><p>Indicates sub node length, unit is 32 bits.</p></td>
+<td><p>1</p></td>
+<td><p>No</p></td>
+</tr>
+</tbody>
+</table>
+<p>The pinctrl is a platform bus-device-driver model. In Linux kernel, when one platform device and platform driver matches, before its driver/bus probe, Linux kernel will automatically execute device and pinctrl subsystem binding, and auto configure the corresponding pin function and features.</p>
+</section>
+<section id="pinctrl-configuration-for-other-drivers">
+<span id="id1"></span><h4>pinctrl Configuration for Other Drivers<a class="headerlink" href="#pinctrl-configuration-for-other-drivers" title="Link to this heading"></a></h4>
+<p>The way to support other drivers is to define a child-node under the pinctrl node. The format is:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">driver_name</span><span class="p">]</span><span class="n">_pins_</span><span class="p">[</span><span class="n">pin_name</span><span class="p">]:</span> <span class="p">[</span><span class="n">abbreviation</span><span class="p">]</span><span class="o">@</span><span class="p">[</span><span class="n">pin_num</span><span class="p">]</span> <span class="p">{</span>
+  <span class="n">pins</span> <span class="p">{</span>
+    <span class="n">pinmux</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">REALTEK_PINMUX</span><span class="p">(</span><span class="s1">&#39;[A/B/C]&#39;</span><span class="p">,</span> <span class="p">[</span><span class="n">pin_num</span><span class="p">],</span> <span class="p">[</span><span class="n">hardware_driver_id</span><span class="p">])</span><span class="o">&gt;</span><span class="p">,</span>
+      <span class="o">&lt;</span><span class="n">REALTEK_PINMUX</span><span class="p">(</span><span class="s1">&#39;[A/B/C]&#39;</span><span class="p">,</span> <span class="p">[</span><span class="n">pin_num</span><span class="p">],</span> <span class="p">[</span><span class="n">hardware_driver_id</span><span class="p">])</span><span class="o">&gt;</span><span class="p">,</span>
+      <span class="o">&lt;</span><span class="n">REALTEK_PINMUX</span><span class="p">(</span><span class="s1">&#39;[A/B/C]&#39;</span><span class="p">,</span> <span class="p">[</span><span class="n">pin_num</span><span class="p">],</span> <span class="p">[</span><span class="n">hardware_driver_id</span><span class="p">])</span><span class="o">&gt;</span><span class="p">,</span>
+      <span class="o">&lt;</span><span class="n">REALTEK_PINMUX</span><span class="p">(</span><span class="s1">&#39;[A/B/C]&#39;</span><span class="p">,</span> <span class="p">[</span><span class="n">pin_num</span><span class="p">],</span> <span class="p">[</span><span class="n">hardware_driver_id</span><span class="p">])</span><span class="o">&gt;</span><span class="p">;</span>
+    <span class="n">bias</span><span class="o">-</span><span class="n">pull</span><span class="o">-</span><span class="n">up</span><span class="p">;</span>
+    <span class="n">slew</span><span class="o">-</span><span class="n">rate</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mi">0</span><span class="o">&gt;</span><span class="p">;</span>
+    <span class="n">drive</span><span class="o">-</span><span class="n">strength</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mi">0</span><span class="o">&gt;</span><span class="p">;</span>
+  <span class="p">};</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>If user need to add more pins (2 pins for example here), the format is:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">driver_name</span><span class="p">]</span><span class="n">_pins_</span><span class="p">[</span><span class="n">pin_name</span><span class="p">]:</span> <span class="p">[</span><span class="n">abbreviation</span><span class="p">]</span><span class="o">@</span><span class="p">[</span><span class="n">pin_num</span><span class="p">]</span> <span class="p">{</span>
+  <span class="n">pins1</span> <span class="p">{</span>
+    <span class="n">pinmux</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">REALTEK_PINMUX</span><span class="p">(</span><span class="s1">&#39;[A/B/C]&#39;</span><span class="p">,</span> <span class="p">[</span><span class="n">pin_num</span><span class="p">],</span> <span class="p">[</span><span class="n">hardware_driver_id</span><span class="p">])</span><span class="o">&gt;</span><span class="p">,</span>
+    <span class="o">&lt;</span><span class="n">REALTEK_PINMUX</span><span class="p">(</span><span class="s1">&#39;[A/B/C]&#39;</span><span class="p">,</span> <span class="p">[</span><span class="n">pin_num</span><span class="p">],</span> <span class="p">[</span><span class="n">hardware_driver_id</span><span class="p">])</span><span class="o">&gt;</span><span class="p">,</span>
+    <span class="o">&lt;</span><span class="n">REALTEK_PINMUX</span><span class="p">(</span><span class="s1">&#39;[A/B/C]&#39;</span><span class="p">,</span> <span class="p">[</span><span class="n">pin_num</span><span class="p">],</span> <span class="p">[</span><span class="n">hardware_driver_id</span><span class="p">])</span><span class="o">&gt;</span><span class="p">,</span>
+    <span class="o">&lt;</span><span class="n">REALTEK_PINMUX</span><span class="p">(</span><span class="s1">&#39;[A/B/C]&#39;</span><span class="p">,</span> <span class="p">[</span><span class="n">pin_num</span><span class="p">],</span> <span class="p">[</span><span class="n">hardware_driver_id</span><span class="p">])</span><span class="o">&gt;</span><span class="p">;</span>
+    <span class="n">bias</span><span class="o">-</span><span class="n">pull</span><span class="o">-</span><span class="n">up</span><span class="p">;</span>
+    <span class="n">slew</span><span class="o">-</span><span class="n">rate</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mi">0</span><span class="o">&gt;</span><span class="p">;</span>
+    <span class="n">drive</span><span class="o">-</span><span class="n">strength</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mi">0</span><span class="o">&gt;</span><span class="p">;</span>
+  <span class="p">};</span>
+  <span class="n">pins2</span> <span class="p">{</span>
+    <span class="n">pinmux</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">REALTEK_PINMUX</span><span class="p">(</span><span class="s1">&#39;[A/B/C]&#39;</span><span class="p">,</span> <span class="p">[</span><span class="n">pin_num</span><span class="p">],</span> <span class="p">[</span><span class="n">hardware_driver_id</span><span class="p">])</span><span class="o">&gt;</span><span class="p">;</span>
+    <span class="n">bias</span><span class="o">-</span><span class="n">pull</span><span class="o">-</span><span class="n">up</span><span class="p">;</span>
+    <span class="n">swd</span><span class="o">-</span><span class="n">disable</span><span class="p">;</span>
+    <span class="n">slew</span><span class="o">-</span><span class="n">rate</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mi">0</span><span class="o">&gt;</span><span class="p">;</span>
+    <span class="n">drive</span><span class="o">-</span><span class="n">strength</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mi">0</span><span class="o">&gt;</span><span class="p">;</span>
+  <span class="p">};</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>Descriptions in ‘[]’ should be specified by driver.</p>
+<ul class="simple">
+<li><p>[driver_name]_pins_[pin_name] will be used when a driver is adding pinctrl to its own dts node.</p></li>
+<li><p>[A/B/C] means PA, PB or PC group, refer to pinmux hardware for more information.</p></li>
+<li><p>The [pin_num] of PA1 is 1, refer to pinmux hardware for more information.</p></li>
+<li><p>[hardware_driver_id] can be found in <code class="docutils literal notranslate"><span class="pre">&lt;sdk&gt;/sources/kernel/&lt;linux&gt;/include/dt-bindings/realtek/pinctrl/realtek-ameba-pinfunc.h</span></code>. Each [hardware_driver_id] in <code class="docutils literal notranslate"><span class="pre">realtek-ameba-pinfunc.h</span></code> means a mapping to its hardware function. Example: when adding I2C pinmux, just use I2C macro here.</p></li>
+</ul>
+<p>Other description of properties is listed in the following table.</p>
+<table class="docutils align-default" id="id3" style="width: 100%">
+<caption><span class="caption-text">pinctrl child-node DTS configurations</span><a class="headerlink" href="#id3" title="Link to this table"></a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>Property</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Configurable?</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>pinmux</p></td>
+<td><p>Defines pin bank, number, and function.</p></td>
+<td><p>Yes</p></td>
+</tr>
+<tr class="row-odd"><td><p>pull type</p></td>
+<td><p>Pull type, it can be set as one of the following:</p>
+<ul class="simple">
+<li><p>bias-disable: means no pull</p></li>
+<li><p>bias-pull-up: means pull up</p></li>
+<li><p>bias-pull-down: means pull down</p></li>
+</ul>
+</td>
+<td><p>Yes</p></td>
+</tr>
+<tr class="row-even"><td><p>slew rate</p></td>
+<td><p>PAD slew rate control, it can be set to 0 or 1.</p></td>
+<td><p>0/1</p></td>
+</tr>
+<tr class="row-odd"><td><p>drive-strength</p></td>
+<td><p>PAD driving ability control, it can be set to 0 or 1.</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="row-even"><td><p>swd-disable</p></td>
+<td><p>Disable pad SWD function.</p></td>
+<td><p>Optional</p></td>
+</tr>
+<tr class="row-odd"><td><p>audio-share-enable</p></td>
+<td><p>Disable pad audio function.</p></td>
+<td><p>Optional</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<ul class="simple">
+<li><p>Pins means a group of pin functions and properties. If a device has multiple properties, the sub-nodes can be named pins1, pins2 … rather than pins.</p></li>
+<li><p>If PA13 or PA14 is not used to set SWD function, it needs to add property <strong>swd-disable</strong>.</p></li>
+<li><p>If PA18 ~ PB6 are not set to Audio function, it needs to add property <strong>audio-share-enable</strong>.</p></li>
+</ul>
+</div>
+</section>
+<section id="pinctrl-quote">
+<h4>pinctrl Quote<a class="headerlink" href="#pinctrl-quote" title="Link to this heading"></a></h4>
+<p>The pinmux for drivers is board specific. When configuring pinmux for a specified driver. The steps are as follows:</p>
+<ol class="arabic">
+<li><p>Find the board specified DTS in directory: &lt;dts&gt; by the board name. Example: for 256M nand common board, the DTS is <code class="docutils literal notranslate"><span class="pre">rtl8730elh-va8-xxx.dts</span></code>.</p></li>
+<li><p>Find the entire name of this driver [driver_name], such as i2c0.</p></li>
+<li><p>Add the pinctrl quote:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&amp;</span><span class="p">[</span><span class="n">driver_name</span><span class="p">]{</span>
+  <span class="n">pinctrl</span><span class="o">-</span><span class="n">names</span> <span class="o">=</span> <span class="s2">&quot;default&quot;</span><span class="p">;</span>
+  <span class="n">pinctrl</span><span class="o">-</span><span class="mi">0</span> <span class="o">=</span> <span class="o">&lt;&amp;</span><span class="p">[</span><span class="n">driver_name</span><span class="p">]</span><span class="n">_pins_</span><span class="p">[</span><span class="n">pin_name</span><span class="p">]</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>[driver_name]_pins_[pin_name]: refer to <a class="reference internal" href="#pinctrl-configuration-for-other-drivers"><span class="std std-ref">pinctrl Configuration for Other Drivers</span></a></p>
+</li>
+<li><p>There will be several groups of pinmux with different [pin_name] but the same [driver_name]. Choose the currect one according to the board layout. Refer to hardware user guide for more details.</p></li>
+<li><p>If the specific pinmux is not listed in pinctrl dts, find the corresponding [driver_name], and revise the [A/B/C], [pin_num] according to the guidance in <a class="reference internal" href="#pinctrl-configuration-for-other-drivers"><span class="std std-ref">pinctrl Configuration for Other Drivers</span></a></p></li>
+</ol>
+<p>When there are multiple pinctrl state and phandle list, the node need to configure as following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&amp;</span><span class="p">[</span><span class="n">driver_name</span><span class="p">]{</span>
+<span class="n">pinctrl</span><span class="o">-</span><span class="n">names</span> <span class="o">=</span> <span class="s2">&quot;default&quot;</span><span class="p">,</span> <span class="s2">&quot;sleep&quot;</span><span class="p">;</span>
+<span class="n">pinctrl</span><span class="o">-</span><span class="mi">0</span> <span class="o">=</span> <span class="p">[</span><span class="n">driver_name</span><span class="p">]</span><span class="n">_pins_</span><span class="p">[</span><span class="n">pin_name</span><span class="p">]</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="n">pinctrl</span><span class="o">-</span><span class="mi">1</span> <span class="o">=</span> <span class="p">[</span><span class="n">driver_name</span><span class="p">]</span><span class="n">_pins_</span><span class="p">[</span><span class="n">pin_name</span><span class="p">];</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="build-configuration">
+<h3>Build Configuration<a class="headerlink" href="#build-configuration" title="Link to this heading"></a></h3>
+<p>Select <span class="menuselection">Device Drivers &gt; Drivers for Realtek &gt; pinctrl driver</span>:</p>
+<figure class="align-center" id="id4">
+<a class="reference internal image-reference" href="../../_images/pinctrl_driver.png"><img alt="../../_images/pinctrl_driver.png" src="../../_images/pinctrl_driver.png" style="width: 329.6px; height: 409.6px;" /></a>
+<figcaption>
+<p><span class="caption-text">pinctrl driver</span><a class="headerlink" href="#id4" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+</section>
+<section id="apis">
+<h2>APIs<a class="headerlink" href="#apis" title="Link to this heading"></a></h2>
+<section id="apis-for-user-space">
+<h3>APIs for User Space<a class="headerlink" href="#apis-for-user-space" title="Link to this heading"></a></h3>
+<p>None.</p>
+</section>
+<section id="apis-for-kernel-space">
+<h3>APIs for Kernel Space<a class="headerlink" href="#apis-for-kernel-space" title="Link to this heading"></a></h3>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Items</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>pinctrl_get</p></td>
+<td><p>Retrieves the pinctrl handle for a device</p></td>
+</tr>
+<tr class="row-odd"><td><p>pinctrl_put</p></td>
+<td><p>Decrease use count on a previously claimed pinctrl handle</p></td>
+</tr>
+<tr class="row-even"><td><p>devm_pinctrl_get</p></td>
+<td><p>Resource managed <code class="xref py py-func docutils literal notranslate"><span class="pre">pinctrl_get()</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>devm_pinctrl_put</p></td>
+<td><p>Resource managed <code class="xref py py-func docutils literal notranslate"><span class="pre">pinctrl_put()</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>pinctrl_loopup_state</p></td>
+<td><p>Retrieves a state handle from a pinctrl handle</p></td>
+</tr>
+<tr class="row-odd"><td><p>pinctrl_select_state</p></td>
+<td><p>Select/activate/program a pinctrl state to HW</p></td>
+</tr>
+<tr class="row-even"><td><p>pinctrl_get_select_default</p></td>
+<td><p>Retrieves the pinctrl handle for a device, and set the pinctrl handle to default state.</p></td>
+</tr>
+<tr class="row-odd"><td><p>pinctrl_get_select</p></td>
+<td><p>Retrieves the pinctrl handle for a device, and set the pinctrl handle to select state.</p></td>
+</tr>
+<tr class="row-even"><td><p>devm_pinctrl_get_select_default</p></td>
+<td><p>Resource managed <code class="xref py py-func docutils literal notranslate"><span class="pre">pinctrl_get_select_default()</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>devm_pinctrl_get_select</p></td>
+<td><p>Resource managed <code class="xref py py-func docutils literal notranslate"><span class="pre">pinctrl_get_select()</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>devm_pinctrl_register</p></td>
+<td><p>Resource managed version of <code class="xref py py-func docutils literal notranslate"><span class="pre">pinctrl_register()</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p>pinctrl_register</p></td>
+<td><p>Register a pin controller device</p></td>
+</tr>
+<tr class="row-even"><td><p>pinctrl_unregister</p></td>
+<td><p>Unregister pinmux</p></td>
+</tr>
+</tbody>
+</table>
+<p>To use pinmux, you can do as follows:</p>
+<ol class="arabic">
+<li><p>Request all pinctrl resource.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">devm_pinctrl_get_select_default</span><span class="p">(</span><span class="n">dev</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p>Get pinctrl handle.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pinctrl</span> <span class="o">=</span> <span class="n">pinctrl_get</span><span class="p">(</span><span class="n">dev</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+<li><p>Retrieves a state handle from a pinctrl handle, such as “default” state.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pinctrl_lookup_state</span><span class="p">(</span><span class="n">pinctrl</span><span class="p">,</span> <span class="s2">&quot;default&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+<li><p>Select a pinctrl state to HW.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pinctrl_select_state</span><span class="p">(</span><span class="n">pinctrl</span><span class="p">,</span> <span class="n">state</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+<li><p>Release the pinctrl handle.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pinctrl_put</span><span class="p">(</span><span class="n">pinctrl</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<p>Refer to <a class="reference external" href="https://www.kernel.org/doc/html/v5.4/driver-api/pinctl.html">https://www.kernel.org/doc/html/v5.4/driver-api/pinctl.html</a> for more details.</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="1_gpio_toprst_cn.html" class="btn btn-neutral float-left" title="General Purpose Input/Output (GPIO)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="../1_power_save/0_ps_index_cn.html" class="btn btn-neutral float-right" title="Power Management" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2025, Realsil。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+ 
+
+
+
+</body>
+</html>

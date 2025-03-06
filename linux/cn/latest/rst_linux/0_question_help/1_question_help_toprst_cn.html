@@ -1,0 +1,565 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>调整 Linux 布局 &mdash; Ameba IoT Docs  文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom_cn.css?v=0d22fac7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/tabs.css?v=a5c4661c" />
+      <link rel="stylesheet" type="text/css" href="../../_static/_static/custom_cn.css" />
+
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=7d86a446"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+        <script>let toggleHintShow = 'Click to show';</script>
+        <script>let toggleHintHide = 'Click to hide';</script>
+        <script>let toggleOpenOnPrint = 'true';</script>
+        <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+        <script src="../../_static/translations.js?v=beaddf03"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="系统调试" href="../0_debugging/0_debugging_index_cn.html" />
+    <link rel="prev" title="问题与帮助" href="0_question_help_index_cn.html" />
+   
+  
+  <script type="text/javascript" src="../../_static/js/selector.js"></script>
+
+  <style>
+    .wy-nav-content {max-width: 1000px;} /* 设置最大宽度 */
+  </style>
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Ameba IoT Docs
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../rst_rtos/0_ameba_product/0_ameba_product_center_index_cn.html">产品中心</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rst_rtos/0_ameba_sdk/0_ameba_sdks_index_cn.html">Ameba SDK</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_release_packages/0_release_packages_index_cn.html">0.0 释放包</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_gcc_build_environment/0_gcc_build_index_cn.html">0.1 GCC 编译环境</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_sdk_architecture/0_sdk_architecture_index_cn.html">0.2 SDK 架构</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rst_rtos/0_tools/0_tools_index_cn.html">0.7 工具</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="0_question_help_index_cn.html">0.A 问题与帮助</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">调整 Linux 布局</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">如何缩减固件的大小</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#rootfs">如何缩减 ROOTFS 固件的大小</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#kernel">如何缩减 KERNEL 固件的大小</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">制定新的布局</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">如何调整 DTS 中布局的大小</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#uboot-defconfig">如何调整 Uboot defconfig</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#config-mtdparts-default">CONFIG_MTDPARTS_DEFAULT</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#ubi">编译时如何调整 UBI 的大小</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#userdata-ubi-c">userdata ubi -c</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rootfs-ubi-c">rootfs ubi -c</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">如何调整 ImageTool 的布局</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#oem">添加 OEM 分区</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#ameba-image-oem-bb">新文件 ameba-image-oem.bb</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dts-mtd">在 DTS 中挂载 MTD 块</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id5">自动加载 OEM 分区</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id6">编译</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id7">调试</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#uboot">在 Uboot 阶段无法加载内核</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#can-not-find-oem-image">找不到 OEM 固件</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id9">下载固件</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id10">功能验证</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id11">启动正常</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id12">恢复系统</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../0_debugging/0_debugging_index_cn.html">0.B 系统调试</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_boot_process/0_boot_index_cn.html">1.1 启动流程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_ota/0_ota_index_cn.html">1.2 固件在线升级（OTA）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_otpc/0_otpc_index_cn.html">1.3 OTP 存储器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_flash/0_flash_index_cn.html">1.4 闪存</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_gpio/0_gpio_index_cn.html">1.7 通用输入输出端口</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_power_save/0_ps_index_cn.html">1.8 电源管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_secure_boot/0_secure_boot_index_nda_cn.html">3.6 安全启动</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../7_usb_boot/0_usb_boot_index_cn.html">3.7 USB 启动</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_crypto_engine/0_crypto_engine_index_cn.html">3.8 加密引擎</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../4_multimedia/0_multimedia_index_cn.html">4.3 多媒体</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../7_usb/0_usb_index_cn.html">7.1 USB 主机与设备</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../7_sdio/0_sdioh_index_cn.html">7.2 SDIO 主机</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_dmac/0_dmac_index_cn.html">8.1 DMA 控制器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_rtc/0_rtc_index_cn.html">8.2 实时时钟（RTC）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_thermal/0_thermal_index_cn.html">8.3 热计量器（Thermel）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_adc/0_adc_index_cn.html">8.4 模数转换器（ADC）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_cap_touch/0_cap_touch_index_cn.html">8.5 电容触摸（Cap-touch）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_ir/0_ir_index_cn.html">8.6 红外收发器（IR）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_ledc/0_ledc_index_cn.html">8.7 LED 灯控制器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_i2c/0_i2c_index_cn.html">8.8 集成电路间通信（I2C）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_uart/0_uart_index_cn.html">8.9 通用异步收发传输器（UART）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_lcdc/0_lcdc_index_cn.html">8.A 液晶显示控制器（LCDC）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_spi/0_spi_index_cn.html">8.B 串行外设接口（SPI）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_spic/0_spic_index_cn.html">8.C SPI 闪存控制器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_timer/0_timer_index_cn.html">8.D 计时器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_wdg/0_wdg_index_cn.html">8.E 看门狗</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../9_bluetooth/0_bluetooth_index_cn.html">9.1 蓝牙</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Ameba IoT Docs</a>
+      </nav>
+
+      <div class="wy-nav-content">
+
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="0_question_help_index_cn.html">问题与帮助</a></li>
+      <li class="breadcrumb-item active">调整 Linux 布局</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="linux">
+<span id="help"></span><h1>调整 Linux 布局<a class="headerlink" href="#linux" title="Link to this heading"></a></h1>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>本章的内容适用于 NAND flash。</p>
+</div>
+<section id="id1">
+<h2>如何缩减固件的大小<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<p>在某些情况下，用户可能需要减小固件大小。以下是关于如何缩小固件大小的说明。</p>
+<section id="rootfs">
+<span id="how-to-reduce-size-of-rootfs-image"></span><h3>如何缩减 ROOTFS 固件的大小<a class="headerlink" href="#rootfs" title="Link to this heading"></a></h3>
+<p>可以删除这些目录中不需要的插件。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">sdk</span><span class="o">&gt;/</span><span class="n">sources</span><span class="o">/</span><span class="n">yocto</span><span class="o">/</span><span class="n">meta</span><span class="o">-</span><span class="n">realtek</span><span class="o">/</span><span class="n">meta</span><span class="o">-</span><span class="n">sdk</span><span class="o">/</span><span class="n">recipes</span><span class="o">-</span><span class="n">core</span><span class="o">/</span><span class="n">images</span><span class="o">/</span><span class="n">ameba</span><span class="o">-</span><span class="n">image</span><span class="o">-</span><span class="n">core</span><span class="o">.</span><span class="n">bb</span>
+<span class="o">&lt;</span><span class="n">sdk</span><span class="o">&gt;/</span><span class="n">sources</span><span class="o">/</span><span class="n">yocto</span><span class="o">/</span><span class="n">meta</span><span class="o">-</span><span class="n">realtek</span><span class="o">/</span><span class="n">meta</span><span class="o">-</span><span class="n">realtek</span><span class="o">-</span><span class="n">bsp</span><span class="o">/</span><span class="n">recipes</span><span class="o">-</span><span class="n">core</span><span class="o">/</span><span class="n">packagegroups</span><span class="o">/</span><span class="n">packagegroup</span><span class="o">-</span><span class="n">rtk</span><span class="o">-</span><span class="n">commands</span><span class="o">.</span><span class="n">bb</span>
+<span class="o">&lt;</span><span class="n">sdk</span><span class="o">&gt;/</span><span class="n">sources</span><span class="o">/</span><span class="n">yocto</span><span class="o">/</span><span class="n">meta</span><span class="o">-</span><span class="n">realtek</span><span class="o">/</span><span class="n">meta</span><span class="o">-</span><span class="n">realtek</span><span class="o">-</span><span class="n">bsp</span><span class="o">/</span><span class="n">recipes</span><span class="o">-</span><span class="n">core</span><span class="o">/</span><span class="n">packagegroups</span><span class="o">/</span><span class="n">packagegroup</span><span class="o">-</span><span class="n">rtk</span><span class="o">-</span><span class="n">network</span><span class="o">.</span><span class="n">bb</span>
+</pre></div>
+</div>
+<p>再次编译，生成一个新的 rootfs.img，你会发现它的大小比之前更小。</p>
+</section>
+<section id="kernel">
+<span id="how-to-reduce-size-of-kernel-image"></span><h3>如何缩减 KERNEL 固件的大小<a class="headerlink" href="#kernel" title="Link to this heading"></a></h3>
+<section id="menuconfig">
+<h4>Menuconfig<a class="headerlink" href="#menuconfig" title="Link to this heading"></a></h4>
+<ol class="arabic">
+<li><p>在编译新的固件之前，执行 <em>mclean</em> 来清理之前的固件。</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">mclean</span>
+</pre></div>
+</div>
+</li>
+<li><p>执行 <em>mkernel menuconfig</em> 来修改配置参数。</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">mkernel</span><span class="w"> </span><span class="n">menuconfig</span>
+</pre></div>
+</div>
+</li>
+<li><p>执行下面的命令来保存新的参数。</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">bitbake</span><span class="w"> </span><span class="n">virtual</span><span class="o">/</span><span class="n">kernel</span><span class="w"> </span><span class="o">-</span><span class="n">c</span><span class="w"> </span><span class="n">savedefconfig</span>
+</pre></div>
+</div>
+</li>
+<li><p>执行 <em>m</em> 或 <em>bitbake</em> 来最后编译新的固件。</p></li>
+</ol>
+</section>
+</section>
+<section id="id2">
+<h3>制定新的布局<a class="headerlink" href="#id2" title="Link to this heading"></a></h3>
+<p>在章节 <a class="reference internal" href="#how-to-reduce-size-of-rootfs-image"><span class="std std-ref">如何缩减 ROOTFS 固件的大小</span></a> 和 <a class="reference internal" href="#how-to-reduce-size-of-kernel-image"><span class="std std-ref">如何缩减 KERNEL 固件的大小</span></a> 的步骤之后，分区大小的示例如下。其中，遵循的 OEM 是预期的一个额外分区（下同）。</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/formulate_new_layout.png"><img alt="../../_images/formulate_new_layout.png" src="../../_images/formulate_new_layout.png" style="width: 747.6px; height: 200.4px;" /></a>
+</figure>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<ul class="simple">
+<li><p>恢复内核是 initramfs，具有固定大小，固件大小为 4.484M，因此内核分区至少为 5M。</p></li>
+<li><p>NAND 闪存分区的基本单位是块（其大小为 128KB），因此布局的划分应为块的整数倍。</p></li>
+<li><p>不建议减少 km4_boot_all.bin、km0_km4_app.bin、boot.img 和 vbmeta.img 的大小，因为它们本身就较小，只占用很少的块，减少它们的成本相对较高。</p></li>
+<li><p>vbmeta.img 和 dtb.img 的总大小小于一个块。然而，如果只为它们分配一个块，由于 NAND 中可能存在坏块，如果为它们分配的块是坏的，那这些固件就无法再被写入。因此，为了系统的鲁棒性，建议为它们至少分配两个块。</p></li>
+</ul>
+</div>
+<section id="dts">
+<span id="offset-and-size-of-each-layout-in-dfs"></span><h4>DTS 中每个布局的偏移量和大小<a class="headerlink" href="#dts" title="Link to this heading"></a></h4>
+<p>例如，对于 generic 128M 机器，DTS 中每个布局的偏移量和大小如下所示。</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/offset_size_layout_in_dts.png"><img alt="../../_images/offset_size_layout_in_dts.png" src="../../_images/offset_size_layout_in_dts.png" style="width: 354.9px; height: 193.89999999999998px;" /></a>
+</figure>
+<p>其中，A 表示 dtb 和内核的 A 部分，B 表示 dtb 和内核的 B 部分。十六进制值是基于 FLASH 基地址的偏移量。</p>
+</section>
+<section id="imagetool">
+<span id="offset-and-size-of-each-layout-in-imagetool"></span><h4>ImageTool 中每个布局的偏移量和大小<a class="headerlink" href="#imagetool" title="Link to this heading"></a></h4>
+<p>例如，对于 generic 128M 机器，ImageTool 中每个布局的偏移量和大小如下所示。其中所有十六进制值均通过 <a class="reference internal" href="#offset-and-size-of-each-layout-in-dfs"><span class="std std-ref">DTS 中每个布局的偏移量和大小</span></a> 章节中的偏移量计算得出。</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/offset_size_layout_imagetool.png"><img alt="../../_images/offset_size_layout_imagetool.png" src="../../_images/offset_size_layout_imagetool.png" style="width: 394.79999999999995px; height: 193.2px;" /></a>
+</figure>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>必须确保最后的结束地址等于 0x10000000。</p>
+</div>
+</section>
+</section>
+</section>
+<section id="id3">
+<h2>如何调整 DTS 中布局的大小<a class="headerlink" href="#id3" title="Link to this heading"></a></h2>
+<p>对于内核 5.4.x，DTS 文件的目录是 <code class="docutils literal notranslate"><span class="pre">&lt;sdk&gt;/sources/kernel/linux-5.4/arch/arm/boot/dts</span></code> ，对于内核 6.6.x，目录是 <code class="docutils literal notranslate"><span class="pre">&lt;sdk&gt;/kernel/linux-6.6/arch/arm/boot/dts/realtek/ameba</span></code> 。</p>
+<p>用户可以根据 <a class="reference internal" href="#offset-and-size-of-each-layout-in-dfs"><span class="std std-ref">DTS 中每个布局的偏移量和大小</span></a> 章节中的偏移量和大小，配置分区 reg 的值。</p>
+<p>下图显示了调整 DTS 中布局前后的对比示例。</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/before_adjust_layout_dts.png"><img alt="../../_images/before_adjust_layout_dts.png" src="../../_images/before_adjust_layout_dts.png" style="width: 278.1px; height: 527.4px;" /></a>
+</figure>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/after_adjust_layout_dts.png"><img alt="../../_images/after_adjust_layout_dts.png" src="../../_images/after_adjust_layout_dts.png" style="width: 247.5px; height: 568.8000000000001px;" /></a>
+</figure>
+</section>
+<section id="uboot-defconfig">
+<span id="how-to-adjust-uboot-defconfig"></span><h2>如何调整 Uboot defconfig<a class="headerlink" href="#uboot-defconfig" title="Link to this heading"></a></h2>
+<p>defconfig 文件的路径是：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">sdk</span><span class="o">&gt;/</span><span class="n">sources</span><span class="o">/</span><span class="n">boot</span><span class="o">/</span><span class="n">uboot</span><span class="o">/</span><span class="n">configs</span>
+</pre></div>
+</div>
+<section id="config-mtdparts-default">
+<h3>CONFIG_MTDPARTS_DEFAULT<a class="headerlink" href="#config-mtdparts-default" title="Link to this heading"></a></h3>
+<p><strong>修改前</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">CONFIG_MTDPARTS_DEFAULT</span><span class="o">=</span><span class="s">&quot;mtdparts=spi-nand0:0x20000@0x20000(cert-bin),0x40000@0x620000(misc),0x40000@0x6A0000(vbmeta),0x40000@0x6E0000(r-vbmeta),0x60000@0x780000(r-dtb),0xA00000@0x11E0000(r-uImage),0x60000@0x720000(dtb),0xA00000@0x7E0000(uImage)&quot;</span>
+</pre></div>
+</div>
+<p><strong>修改后</strong></p>
+<p>根据 <a class="reference internal" href="#offset-and-size-of-each-layout-in-dfs"><span class="std std-ref">DTS 中每个布局的偏移量和大小</span></a> 章节中的偏移量和大小， <em>CONFIG_MTDPARTS_DEFAULT</em> 应该为：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">CONFIG_MTDPARTS_DEFAULT</span><span class="o">=</span><span class="s">&quot;mtdparts=spi-nand0:0x20000@0x20000(cert-bin),0x40000@0x620000(misc),0x40000@0x6A0000(vbmeta),0x40000@0x6E0000(r-vbmeta),0x40000@0x760000(r-dtb),0x500000@0XCA0000(r-uImage),0x40000@0x720000(dtb),0x500000@0x7A0000(uImage)&quot;</span>
+</pre></div>
+</div>
+<section id="image-ddr">
+<h4>IMAGE 加载到 DDR 配置<a class="headerlink" href="#image-ddr" title="Link to this heading"></a></h4>
+<p>NAND 允许有 2% 的坏块，因此此处加载固件的大小应略小于 <a class="reference internal" href="#offset-and-size-of-each-layout-in-dfs"><span class="std std-ref">DTS 中每个布局的偏移量和大小</span></a> 章节中计算的大小。</p>
+<dl class="field-list simple">
+<dt class="field-odd">IMG_FLASH_SIZE<span class="colon">:</span></dt>
+<dd class="field-odd"><p>从闪存传输到 DDR 的内核固件的大小。</p>
+</dd>
+<dt class="field-even">FDT_FLASH_SIZE<span class="colon">:</span></dt>
+<dd class="field-even"><p>从闪存传输到 DDR 的 dtb 固件的大小。分配给 dtb 固件的空间已经是最大值（64KB），因此 FDT_FLASH_SIZE 将不再调整。</p>
+</dd>
+<dt class="field-odd">RECOVERY_IMG_FLASH_SIZE<span class="colon">:</span></dt>
+<dd class="field-odd"><p>从闪存传输到 DDR 的恢复内核固件的大小。</p>
+</dd>
+<dt class="field-even">RECOVERY_FDT_FLASH_SIZE<span class="colon">:</span></dt>
+<dd class="field-even"><p>从闪存传输到 DDR 的恢复 dtb 固件的大小。</p>
+</dd>
+<dt class="field-odd">SYS_TEXT_BASE<span class="colon">:</span></dt>
+<dd class="field-odd"><p>固件从闪存传输到 DDR 后的 DDR 起始地址（不调整）。</p>
+</dd>
+<dt class="field-even">KERNEL_ADDR<span class="colon">:</span></dt>
+<dd class="field-even"><p>传输到 DDR 的内核固件的起始地址（不调整）。</p>
+</dd>
+<dt class="field-odd">FDT_ADDR<span class="colon">:</span></dt>
+<dd class="field-odd"><p>传输到 DDR 的 dtb 固件的起始地址。分配给 dtb 固件的空间已经是最大值（64KB），因此 FDT_ADDR 将不再调整。</p>
+</dd>
+</dl>
+<p>修改前后的对比如下所示。</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/before_modification.png"><img alt="../../_images/before_modification.png" src="../../_images/before_modification.png" style="width: 299.7px; height: 137.70000000000002px;" /></a>
+</figure>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/after_modification.png"><img alt="../../_images/after_modification.png" src="../../_images/after_modification.png" style="width: 303.3px; height: 136.8px;" /></a>
+</figure>
+<p>内核和 dtb 在 DDR 中的位置本来就很小，因此不需要额外修改。恢复 initramfs 的大小需要为 0x500000 保留一个坏块，因此调整为 0x4E0000。</p>
+</section>
+</section>
+</section>
+<section id="ubi">
+<h2>编译时如何调整 UBI 的大小<a class="headerlink" href="#ubi" title="Link to this heading"></a></h2>
+<section id="userdata-ubi-c">
+<h3>userdata ubi -c<a class="headerlink" href="#userdata-ubi-c" title="Link to this heading"></a></h3>
+<p>其位于 <code class="docutils literal notranslate"><span class="pre">&lt;sdk&gt;/source/yocto/meta-sdk/recipes-core/images/ameba-image-userdata.bb</span></code> 。</p>
+<p>在修改前，内容如下：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">MKUBIFS_ARGS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;-m 2048 -e 126976 -c 297 --jrn-size=380928&quot;</span>
+</pre></div>
+</div>
+<p>然后你将其大小调整为 56.75M，首先向下取整为 56M，然后按照以下公式计算：</p>
+<div class="math notranslate nohighlight">
+\[56 * 8 – 44 = 404\]</div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">MKUBIFS_ARGS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;-m 2048 -e 126976 -c 404 --jrn-size=380928&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="rootfs-ubi-c">
+<h3>rootfs ubi -c<a class="headerlink" href="#rootfs-ubi-c" title="Link to this heading"></a></h3>
+<p>其位于 <code class="docutils literal notranslate"><span class="pre">&lt;sdk&gt;/source/yocto/meta-realtek-bsp/conf/machine/rtl8730elh-va7.conf</span></code> 。</p>
+<p>在修改前，内容如下：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">MKUBIFS_ARGS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;-F -m 2048 -e 126976 -c 436 -j 380928&quot;</span>
+</pre></div>
+</div>
+<p>然后你将其大小调整为 20.19M，首先向下取整为 20M，然后按照以下公式计算：</p>
+<div class="math notranslate nohighlight">
+\[20 * 8 - 44 = 116\]</div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">MKUBIFS_ARGS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;-F -m 2048 -e 126976 -c 116 -j 380928&quot;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id4">
+<h2>如何调整 ImageTool 的布局<a class="headerlink" href="#id4" title="Link to this heading"></a></h2>
+<p>修改之前，默认的起始地址和结束地址在 ImageTool 中显示如下。</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/address_before_modification.png"><img alt="../../_images/address_before_modification.png" src="../../_images/address_before_modification.png" style="width: 688.0px; height: 149.6px;" /></a>
+</figure>
+<p>你可以根据 <a class="reference internal" href="#offset-and-size-of-each-layout-in-imagetool"><span class="std std-ref">ImageTool 中每个布局的偏移量和大小</span></a> 章节调整起始地址或结束地址。</p>
+<p>修改后，新的起始地址与结束地址可能如下所示。</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/address_after_modification.png"><img alt="../../_images/address_after_modification.png" src="../../_images/address_after_modification.png" style="width: 597.8px; height: 242.2px;" /></a>
+</figure>
+</section>
+<section id="oem">
+<h2>添加 OEM 分区<a class="headerlink" href="#oem" title="Link to this heading"></a></h2>
+<section id="ameba-image-oem-bb">
+<h3>新文件 ameba-image-oem.bb<a class="headerlink" href="#ameba-image-oem-bb" title="Link to this heading"></a></h3>
+<p>用户可以在路径 <code class="docutils literal notranslate"><span class="pre">&lt;sdk&gt;/sources/yocto/meta-realtek/meta-sdk/recipes-core/images</span></code> 中添加新文件 ameba-image-oem.bb，其内容如下：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp"># Copyright 2023 Realtek.</span>
+<span class="cp"># Released under the MIT license (see COPYING.MIT for the terms)</span>
+<span class="n">SUMMARY</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;This is the oem image.&quot;</span>
+<span class="n">IMAGE_FSTYPES</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;ubi&quot;</span>
+<span class="n">MKUBIFS_ARGS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;-m 2048 -e 126976 -c 260 --jrn-size=380928&quot;</span>
+<span class="n">UBINIZE_ARGS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;-m 2048 -p 131072&quot;</span>
+<span class="n">UBI_IMGTYPE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;ubifs&quot;</span>
+<span class="n">IMAGE_NAME_SUFFIX</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;.oem&quot;</span>
+<span class="n">IMAGE_INSTALL</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;&quot;</span>
+<span class="n">IMAGE_LINGUAS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;&quot;</span>
+<span class="n">PACKAGE_INSTALL</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;&quot;</span>
+<span class="n">inherit</span><span class="w"> </span><span class="n">image</span>
+</pre></div>
+</div>
+<p>这里的 260 是按照如下公式所计算得到：</p>
+<div class="math notranslate nohighlight">
+\[38 * 8 - 44\]</div>
+<p>用户可以使用 bitbake 命令来编译这个 ameba-image-oem。</p>
+</section>
+<section id="dts-mtd">
+<h3>在 DTS 中挂载 MTD 块<a class="headerlink" href="#dts-mtd" title="Link to this heading"></a></h3>
+<p>对于 generic 128M 机器，用户可以修改文件 <code class="docutils literal notranslate"><span class="pre">rtl8730e-spi-nand-128m.dtsi</span></code> 以挂载特定的 MTD 块。</p>
+<p>这里，我们在 dts 文件中添加一个 MTD block 10。</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// Add ubi.mtd=10 at end of this line.</span>
+<span class="n">bootargs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;console=ttyS0,1500000 earlycon psci=enable ubi.mtd=8 ubi.block=0,0 root=/dev/ubiblock0_0 rootfstype=squashfs,ubifs ubi.mtd=9 ubifs ubi.mtd=10&quot;</span><span class="p">;</span>
+</pre></div>
+</div>
+</section>
+<section id="id5">
+<h3>自动加载 OEM 分区<a class="headerlink" href="#id5" title="Link to this heading"></a></h3>
+<p>用户可以在脚本文件 <code class="docutils literal notranslate"><span class="pre">&lt;sdk&gt;/sources/yocto/meta-realtek/meta-realtek-bsp/recipes-core/initscripts/initscripts-1.0/overlay.sh</span></code> 中添加步骤，使 OEM 分区自动挂载。</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">pivot_root</span><span class="w"> </span><span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">merged</span><span class="w"> </span><span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">merged</span><span class="o">/</span><span class="n">rom</span>
+<span class="cp">#Add the procedure here.</span>
+<span class="n">mkdir</span><span class="w"> </span><span class="o">-</span><span class="n">p</span><span class="w"> </span><span class="o">/</span><span class="n">oem</span>
+<span class="n">mount</span><span class="w"> </span><span class="o">-</span><span class="n">t</span><span class="w"> </span><span class="n">ubifs</span><span class="w"> </span><span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">ubi2_0</span><span class="w"> </span><span class="o">/</span><span class="n">oem</span>
+<span class="k">if</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="o">!</span><span class="w"> </span><span class="o">-</span><span class="n">e</span><span class="w"> </span><span class="o">/</span><span class="n">run</span><span class="o">/</span><span class="n">udev</span><span class="w"> </span><span class="p">]</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="n">then</span>
+<span class="n">mkdir</span><span class="w"> </span><span class="o">-</span><span class="n">p</span><span class="w"> </span><span class="o">/</span><span class="n">run</span><span class="o">/</span><span class="n">udev</span>
+<span class="n">fi</span>
+</pre></div>
+</div>
+<p>另一种方法是，用户可以通过修改 rcS 文件来实现自动挂载： <code class="docutils literal notranslate"><span class="pre">&lt;sdk&gt;/sources/yocto/meta-realtek/meta-sdk/recipes-rtk/rtk-rc-local/rtk-rc-local/rcS</span></code> 。用户可以选择其中任意一种方式。</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">cat</span><span class="w"> </span><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">motd</span>
+<span class="cp">#Add the procedure here.</span>
+<span class="n">mkdir</span><span class="w"> </span><span class="o">-</span><span class="n">p</span><span class="w"> </span><span class="o">/</span><span class="n">oem</span>
+<span class="n">mount</span><span class="w"> </span><span class="o">-</span><span class="n">t</span><span class="w"> </span><span class="n">ubifs</span><span class="w"> </span><span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">ubi2_0</span><span class="w"> </span><span class="o">/</span><span class="n">oem</span>
+<span class="cp"># Set country to Worldwide</span>
+<span class="cp">#iw reg set 00</span>
+</pre></div>
+</div>
+<p>单独编译 OEM。</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">bitbake</span><span class="w"> </span><span class="n">ameba</span><span class="o">-</span><span class="n">image</span><span class="o">-</span><span class="n">oem</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id6">
+<h2>编译<a class="headerlink" href="#id6" title="Link to this heading"></a></h2>
+<p>在编译新的固件之前，用户需执行 <em>mclean</em> 来清理旧的固件。</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">mclean</span>
+</pre></div>
+</div>
+<p>执行 <em>m</em> 或者 <em>bitbake</em> 来最后编译新的固件。</p>
+</section>
+<section id="id7">
+<h2>调试<a class="headerlink" href="#id7" title="Link to this heading"></a></h2>
+<section id="uboot">
+<h3>在 Uboot 阶段无法加载内核<a class="headerlink" href="#uboot" title="Link to this heading"></a></h3>
+<p>在 uboot 加载内核时可能会出现问题，如下图所示。用户可以执行 <em>env print</em> 或者 <em>printenv</em> ，然后可以看到环境变量与预期不同。</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/load_kernel_at_uboot.png"><img alt="../../_images/load_kernel_at_uboot.png" src="../../_images/load_kernel_at_uboot.png" style="width: 744.6px; height: 414.59999999999997px;" /></a>
+</figure>
+<p>对于此问题，建议用户检查以下信息：</p>
+<ol class="arabic">
+<li><p>参考 <a class="reference internal" href="#how-to-adjust-uboot-defconfig"><span class="std std-ref">如何调整 Uboot defconfig</span></a> 章节，确保被修改的内容符合预期。</p></li>
+<li><p>首先清理之前旧的固件。</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">bitbake</span><span class="w"> </span><span class="n">atf</span><span class="o">-</span><span class="n">ameba</span><span class="w"> </span><span class="o">-</span><span class="n">c</span><span class="w"> </span><span class="n">cleanall</span>
+<span class="n">bitbake</span><span class="w"> </span><span class="n">u</span><span class="o">-</span><span class="n">boot</span><span class="o">-</span><span class="n">ameba</span><span class="w"> </span><span class="o">-</span><span class="n">c</span><span class="w"> </span><span class="n">cleanall</span>
+</pre></div>
+</div>
+</li>
+<li><p>重新编译，确保修改的内容在新的固件里。</p></li>
+</ol>
+</section>
+<section id="can-not-find-oem-image">
+<span id="id8"></span><h3>找不到 OEM 固件<a class="headerlink" href="#can-not-find-oem-image" title="Link to this heading"></a></h3>
+<p>在编译其，用户可以先手动编译 OEM 固件。</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">bitbake</span><span class="w"> </span><span class="n">ameba</span><span class="o">-</span><span class="n">image</span><span class="o">-</span><span class="n">oem</span>
+</pre></div>
+</div>
+<p>下面的步骤描述了如何把它添加到命令 <em>m</em> 中。</p>
+<ol class="arabic">
+<li><p>编辑脚本文件 <code class="docutils literal notranslate"><span class="pre">&lt;sdk&gt;/sources/yocto/meta-realtek/tools/envsetup.sh</span></code> 。把 oem 的部分添加到这个文件中，如下所示。</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/add_part_oem.png"><img alt="../../_images/add_part_oem.png" src="../../_images/add_part_oem.png" style="width: 457.8px; height: 521.4px;" /></a>
+</figure>
+</li>
+<li><p>执行这条命令把脚本文件复制到根目录。</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span><span class="w"> </span><span class="o">&lt;</span><span class="n">sdk</span><span class="o">&gt;</span>
+<span class="n">cp</span><span class="w"> </span><span class="n">sources</span><span class="o">/</span><span class="n">yocto</span><span class="o">/</span><span class="n">meta</span><span class="o">-</span><span class="n">realtek</span><span class="o">/</span><span class="n">tools</span><span class="o">/</span><span class="n">envsetup</span><span class="p">.</span><span class="n">sh</span><span class="p">.</span>
+</pre></div>
+</div>
+</li>
+<li><p>执行命令 <em>m</em> 来编译。你会发现 oem.img 这个固件生成成功。</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/build_with_command_m.png"><img alt="../../_images/build_with_command_m.png" src="../../_images/build_with_command_m.png" style="width: 520.1999999999999px; height: 271.2px;" /></a>
+</figure>
+</li>
+</ol>
+</section>
+<section id="id9">
+<h3>下载固件<a class="headerlink" href="#id9" title="Link to this heading"></a></h3>
+<p>用户可以按照下面所示手动修改布局：</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/download_images1.png"><img alt="../../_images/download_images1.png" src="../../_images/download_images1.png" style="width: 824.4px; height: 200.4px;" /></a>
+</figure>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/download_images2.png"><img alt="../../_images/download_images2.png" src="../../_images/download_images2.png" style="width: 811.1999999999999px; height: 27.599999999999998px;" /></a>
+</figure>
+<p>或者，用户可以给 Image-Tool 载入 <code class="docutils literal notranslate"><span class="pre">AmebaSmart_Linux_NAND_128MB_Anker.rdev</span></code> 。</p>
+<p>如果 OEM 是手动独自编译的，用户可以改为下载 <code class="docutils literal notranslate"><span class="pre">meba-image-oem-rtl8730elh-va7-20240906032841.oem.ubi</span></code> 。如果用户已经如 envsetup.sh （<a class="reference internal" href="#can-not-find-oem-image"><span class="std std-ref">找不到 OEM 固件</span></a>）所述将这个文件重命名为 oem.img，请下载这个 oem.img。</p>
+</section>
+</section>
+<section id="id10">
+<h2>功能验证<a class="headerlink" href="#id10" title="Link to this heading"></a></h2>
+<section id="id11">
+<h3>启动正常<a class="headerlink" href="#id11" title="Link to this heading"></a></h3>
+<p>在启动过程中，用户可以看到如下所示的信息：</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/booting_information.png"><img alt="../../_images/booting_information.png" src="../../_images/booting_information.png" style="width: 481.59999999999997px; height: 139.29999999999998px;" /></a>
+</figure>
+<p>用户可以看到这些信息与期望的布局是一样的。</p>
+<p>并且，如果 OEM 固件被加载，用户可以看到如下所示的更多信息：</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/information_after_loaded_oem_image1.png"><img alt="../../_images/information_after_loaded_oem_image1.png" src="../../_images/information_after_loaded_oem_image1.png" style="width: 614.5999999999999px; height: 464.79999999999995px;" /></a>
+</figure>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/information_after_loaded_oem_image2.png"><img alt="../../_images/information_after_loaded_oem_image2.png" src="../../_images/information_after_loaded_oem_image2.png" style="width: 350.7px; height: 51.8px;" /></a>
+</figure>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/information_after_loaded_oem_image3.png"><img alt="../../_images/information_after_loaded_oem_image3.png" src="../../_images/information_after_loaded_oem_image3.png" style="width: 535.5px; height: 226.79999999999998px;" /></a>
+</figure>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/information_after_loaded_oem_image4.png"><img alt="../../_images/information_after_loaded_oem_image4.png" src="../../_images/information_after_loaded_oem_image4.png" style="width: 452.9px; height: 163.1px;" /></a>
+</figure>
+</section>
+<section id="id12">
+<h3>恢复系统<a class="headerlink" href="#id12" title="Link to this heading"></a></h3>
+<p>recovery 的 dts 文件如下所示：</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/dts_file_for_recovery.png"><img alt="../../_images/dts_file_for_recovery.png" src="../../_images/dts_file_for_recovery.png" style="width: 516.6px; height: 566.4px;" /></a>
+</figure>
+<p>如果您需要修改这个 dts 文件，可以按照以下方式调整 reg 值：</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/adjust_reg_values.png"><img alt="../../_images/adjust_reg_values.png" src="../../_images/adjust_reg_values.png" style="width: 261.0px; height: 278.1px;" /></a>
+</figure>
+<p>如果用户使用 USB 进行恢复，应该将 udev-extraconf 添加到 <code class="docutils literal notranslate"><span class="pre">ameba-image-core.bb</span></code> 中以支持 USB。</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/deals_with_recovery_usb.png"><img alt="../../_images/deals_with_recovery_usb.png" src="../../_images/deals_with_recovery_usb.png" style="width: 439.8px; height: 355.2px;" /></a>
+</figure>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="0_question_help_index_cn.html" class="btn btn-neutral float-left" title="问题与帮助" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="../0_debugging/0_debugging_index_cn.html" class="btn btn-neutral float-right" title="系统调试" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2025, Realsil。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+ 
+
+
+
+</body>
+</html>

@@ -1,0 +1,563 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Architecture &mdash; Ameba IoT Docs  文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom_cn.css?v=0d22fac7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/tabs.css?v=a5c4661c" />
+      <link rel="stylesheet" type="text/css" href="../../_static/_static/custom_cn.css" />
+
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=7d86a446"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+        <script>let toggleHintShow = 'Click to show';</script>
+        <script>let toggleHintHide = 'Click to hide';</script>
+        <script>let toggleOpenOnPrint = 'true';</script>
+        <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+        <script src="../../_static/translations.js?v=beaddf03"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="Secure Boot" href="../3_nda_secure_boot/0_secure_boot_index_nda_cn.html" />
+    <link rel="prev" title="Power Management" href="0_ps_index_cn.html" />
+   
+  
+  <script type="text/javascript" src="../../_static/js/selector.js"></script>
+
+  <style>
+    .wy-nav-content {max-width: 1000px;} /* 设置最大宽度 */
+  </style>
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Ameba IoT Docs
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../rst_rtos/0_ameba_product/0_ameba_product_center_index_cn.html">产品中心</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rst_rtos/0_ameba_sdk/0_ameba_sdks_index_cn.html">Ameba SDK</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_release_packages/0_release_packages_index_cn.html">0.0 释放包</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_gcc_build_environment/0_gcc_build_index_cn.html">0.1 GCC 编译环境</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_sdk_architecture/0_sdk_architecture_index_cn.html">0.2 SDK 架构</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rst_rtos/0_tools/0_tools_index_cn.html">0.7 工具</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_question_help/0_question_help_index_cn.html">0.A 问题与帮助</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_debugging/0_debugging_index_cn.html">0.B 系统调试</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_boot_process/0_boot_index_cn.html">1.1 启动流程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_ota/0_ota_index_cn.html">1.2 固件在线升级（OTA）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_otpc/0_otpc_index_cn.html">1.3 OTP 存储器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_flash/0_flash_index_cn.html">1.4 闪存</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_gpio/0_gpio_index_cn.html">1.7 通用输入输出端口</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="0_ps_index_cn.html">1.8 电源管理</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Architecture</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#linux-system-sleep-framework">Linux System Sleep Framework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sleep-mode">Sleep Mode</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#usage">Usage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#wakeup-source-configuration">Wakeup Source Configuration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#introduction">Introduction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#general-configuration">General Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#special-configuration">Special Configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#user-space-development">User Space Development</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#unconditional-sleep">Unconditional Sleep</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#wakeup-count">Wakeup Count</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#autosleep-and-wakelock">Autosleep and Wakelock</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#kernel-apis">Kernel APIs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#application-development-on-km0">Application Development on KM0</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_secure_boot/0_secure_boot_index_nda_cn.html">3.6 安全启动</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../7_usb_boot/0_usb_boot_index_cn.html">3.7 USB 启动</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_crypto_engine/0_crypto_engine_index_cn.html">3.8 加密引擎</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../4_multimedia/0_multimedia_index_cn.html">4.3 多媒体</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../7_usb/0_usb_index_cn.html">7.1 USB 主机与设备</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../7_sdio/0_sdioh_index_cn.html">7.2 SDIO 主机</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_dmac/0_dmac_index_cn.html">8.1 DMA 控制器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_rtc/0_rtc_index_cn.html">8.2 实时时钟（RTC）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_thermal/0_thermal_index_cn.html">8.3 热计量器（Thermel）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_adc/0_adc_index_cn.html">8.4 模数转换器（ADC）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_cap_touch/0_cap_touch_index_cn.html">8.5 电容触摸（Cap-touch）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_ir/0_ir_index_cn.html">8.6 红外收发器（IR）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_ledc/0_ledc_index_cn.html">8.7 LED 灯控制器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_i2c/0_i2c_index_cn.html">8.8 集成电路间通信（I2C）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_uart/0_uart_index_cn.html">8.9 通用异步收发传输器（UART）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_lcdc/0_lcdc_index_cn.html">8.A 液晶显示控制器（LCDC）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_spi/0_spi_index_cn.html">8.B 串行外设接口（SPI）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_spic/0_spic_index_cn.html">8.C SPI 闪存控制器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_timer/0_timer_index_cn.html">8.D 计时器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_wdg/0_wdg_index_cn.html">8.E 看门狗</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../9_bluetooth/0_bluetooth_index_cn.html">9.1 蓝牙</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Ameba IoT Docs</a>
+      </nav>
+
+      <div class="wy-nav-content">
+
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="0_ps_index_cn.html">Power Management</a></li>
+      <li class="breadcrumb-item active">Architecture</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="architecture">
+<span id="power-management"></span><h1>Architecture<a class="headerlink" href="#architecture" title="Link to this heading"></a></h1>
+<section id="linux-system-sleep-framework">
+<h2>Linux System Sleep Framework<a class="headerlink" href="#linux-system-sleep-framework" title="Link to this heading"></a></h2>
+<p>In order to reduce system power consumption, Linux provides a comprehensive power management framework. The power management system is a relatively extensive subsystem that covers aspects such as power supply, clocks, frequencies, voltages, and system sleep. Among these, system sleep acts as a crucial role in the overall power consumption of the system and is the primary focus of this chapter.</p>
+<p>The architecture of the Linux system sleep framework is illustrated in following figure.</p>
+<figure class="align-center" id="id1">
+<a class="reference internal image-reference" href="../../_images/sleep_framework.svg"><img alt="../../_images/sleep_framework.svg" height="431" src="../../_images/sleep_framework.svg" width="534" /></a>
+<figcaption>
+<p><span class="caption-text">Linux system sleep framework</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p>The user space can access the PM (Power Management) core through the sysfs layer to control entry into and exit from system sleep. The PM core also provides Kernel APIs for the Kernel space. The suspend core is the main component of the PM core. Since system sleep involves various aspects of the system, the suspend core may invoke other sub-frameworks, such as the interrupt subsystem. The PM core ultimately relies on architecture dependent drivers related to system sleep, including the drivers for the power management controller (PMC) and peripheral devices. The PMC requires the involvement of asymmetric multi-processors.</p>
+<p>This chip is an asymmetric multi-processors architecture, which includes CA32, KM4, and KM0. These cores can collaborate with each other to achieve lower power consumption. Inter-core communication is achieved through IPC (Inter-Process Communication). The PMC coordinates the involvement of multiple-cores in control.</p>
+<figure class="align-center" id="id2">
+<a class="reference internal image-reference" href="../../_images/multi_processors_arch.svg"><img alt="../../_images/multi_processors_arch.svg" height="184" src="../../_images/multi_processors_arch.svg" width="487" /></a>
+<figcaption>
+<p><span class="caption-text">Multi-processors architecture</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p>Another advantage of using an asymmetric multi-processors architecture is that simple functions can be developed on the small core, allowing for low power consumption while providing the required functionality for users.</p>
+</section>
+<section id="sleep-mode">
+<h2>Sleep Mode<a class="headerlink" href="#sleep-mode" title="Link to this heading"></a></h2>
+<p>Because of the multi-processors architecture, system power consumption can be very low. At the same time, it provides more options for sleep states. Currently, it supports the following sleep modes.</p>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Sleep mode</p></th>
+<th class="head"><p>Label</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Active</p></td>
+<td><p>_</p></td>
+<td><ul class="simple">
+<li><p>All processors are in the active state and automatically enter the tickless idle state (WFI) when there is no task processing.</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>Standby</p></td>
+<td><p>mem</p></td>
+<td><ul class="simple">
+<li><p>KM0 and KM4 are in the active state and automatically enter the tickless idle state (WFI) when there is no task processing.</p></li>
+<li><p>All tasks of CA32 stop running, core0 enters WFI state, and core1 shuts down.</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>CG</p></td>
+<td><p>cg</p></td>
+<td><ul class="simple">
+<li><p>All processors are in the clock-gating state.</p></li>
+<li><p>DRAM enters a low-power state.</p></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Users can control sleep modes through the sysfs interfaces. The “Label” indicates the value to be written to the relevant sysfs node when entering a specific sleep mode.</p>
+<p>Standby mode affects only CA32 itself and does not impact the states of KM0 and KM4. CG (clock gating) mode has a deeper sleep level and consumes much lower power than standby mode. CG mode affects all cores and DRAM states. When controlling CA32 to enter CG mode, CA32 will notify KM0 and KM4 through IPC to also enter CG mode. If KM4 and CA32 are in CG mode, DRAM will also enter low-power state. DRAM low power state means, if DRAM is DDR memory, it will enter self-refresh mode, which means it will maintain all memory but can’t not be accessed. That state needs much lower power.</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<ul class="simple">
+<li><p>PG (power gating) mode is in development. It will consume lower power than CG mode.</p></li>
+<li><p>Power consumption: PG &lt; CG &lt; standby.</p></li>
+<li><p>Time consumed during sleep/wakeup: PG &gt; CG &gt; standby.</p></li>
+</ul>
+</div>
+</section>
+</section>
+<section id="usage">
+<h1>Usage<a class="headerlink" href="#usage" title="Link to this heading"></a></h1>
+<section id="wakeup-source-configuration">
+<h2>Wakeup Source Configuration<a class="headerlink" href="#wakeup-source-configuration" title="Link to this heading"></a></h2>
+<section id="introduction">
+<h3>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h3>
+<p>The peripherals listed below can be configured as wakeup sources now, and these peripherals’ interrupts can wake up the system.</p>
+<p>The mapping between peripherals and wakeup sources is listed in the following table.</p>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Peripheral</p></th>
+<th class="head"><p>Wakeup source</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>GPIOA</p></td>
+<td><p>WAKE_SRC_GPIOA</p></td>
+</tr>
+<tr class="row-odd"><td><p>GPIOB</p></td>
+<td><p>WAKE_SRC_GPIOB</p></td>
+</tr>
+<tr class="row-even"><td><p>GPIOC</p></td>
+<td><p>WAKE_SRC_GPIOC</p></td>
+</tr>
+<tr class="row-odd"><td><p>TIMER1</p></td>
+<td><p>WAKE_SRC_Timer1</p></td>
+</tr>
+<tr class="row-even"><td><p>TIMER2</p></td>
+<td><p>WAKE_SRC_Timer2</p></td>
+</tr>
+<tr class="row-odd"><td><p>TIMER3</p></td>
+<td><p>WAKE_SRC_Timer3</p></td>
+</tr>
+<tr class="row-even"><td><p>TIMER4</p></td>
+<td><p>WAKE_SRC_Timer4</p></td>
+</tr>
+<tr class="row-odd"><td><p>TIMER5</p></td>
+<td><p>WAKE_SRC_Timer5</p></td>
+</tr>
+<tr class="row-even"><td><p>TIMER7</p></td>
+<td><p>WAKE_SRC_Timer7</p></td>
+</tr>
+<tr class="row-odd"><td><p>RTC</p></td>
+<td><p>WAKE_SRC_RTC</p></td>
+</tr>
+<tr class="row-even"><td><p>ADC</p></td>
+<td><p>WAKE_SRC_ADC</p></td>
+</tr>
+<tr class="row-odd"><td><p>CAPTOUCH</p></td>
+<td><p>WAKE_SRC_CTOUCH</p></td>
+</tr>
+<tr class="row-even"><td><p>UART0</p></td>
+<td><p>WAKE_SRC_UART0</p></td>
+</tr>
+<tr class="row-odd"><td><p>UART1</p></td>
+<td><p>WAKE_SRC_UART1</p></td>
+</tr>
+<tr class="row-even"><td><p>UART2</p></td>
+<td><p>WAKE_SRC_UART2</p></td>
+</tr>
+<tr class="row-odd"><td><p>LOGUART</p></td>
+<td><p>WAKE_SRC_UART_LOG</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>For LOGUART, it is normal for logs to be garbled during sleep and wakeup.</p>
+</div>
+</section>
+<section id="general-configuration">
+<h3>General Configuration<a class="headerlink" href="#general-configuration" title="Link to this heading"></a></h3>
+<p>Follow the steps below to configure a wakeup source, taking ADC as an example:</p>
+<ol class="arabic">
+<li><p>Modify the structure <code class="xref py py-class docutils literal notranslate"><span class="pre">sleep_wevent_config</span></code> for sleep settings in the configuration file <code class="file docutils literal notranslate"><span class="pre">firmware/component/usrcfg/rtl8730e/ameba_sleepcfg.c</span></code>.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/*wakeup attribute can be set to WAKEUP_NULL/WAKEUP_LP/WAKEUP_NP/WAKEUP_AP*/</span>
+<span class="n">WakeEvent_TypeDef</span><span class="w"> </span><span class="n">sleep_wevent_config</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="c1">// Module                               wakeup</span>
+<span class="w">   </span><span class="p">{</span><span class="n">WAKE_SRC_nFIQOUT1_OR_nIRQOUT1</span><span class="p">,</span><span class="w">      </span><span class="n">WAKEUP_NULL</span><span class="p">},</span>
+<span class="w">   </span><span class="p">{</span><span class="n">WAKE_SRC_nFIQOUT0_OR_nIRQOUT0</span><span class="p">,</span><span class="w">      </span><span class="n">WAKEUP_NULL</span><span class="p">},</span>
+<span class="w">   </span><span class="p">{</span><span class="n">WAKE_SRC_BT_WAKE_HOST</span><span class="p">,</span><span class="w">              </span><span class="n">WAKEUP_NULL</span><span class="p">},</span>
+<span class="w">   </span><span class="p">{</span><span class="n">WAKE_SRC_AON_WAKEPIN</span><span class="p">,</span><span class="w">               </span><span class="n">WAKEUP_LP</span><span class="p">},</span>
+<span class="w">   </span><span class="p">{</span><span class="n">WAKE_SRC_WDG4</span><span class="p">,</span><span class="w">                      </span><span class="n">WAKEUP_NULL</span><span class="p">},</span>
+<span class="w">   </span><span class="p">{</span><span class="n">WAKE_SRC_WDG3</span><span class="p">,</span><span class="w">                      </span><span class="n">WAKEUP_NULL</span><span class="p">},</span>
+<span class="w">   </span><span class="p">{</span><span class="n">WAKE_SRC_WDG2</span><span class="p">,</span><span class="w">                      </span><span class="n">WAKEUP_NULL</span><span class="p">},</span>
+<span class="w">   </span><span class="p">{</span><span class="n">WAKE_SRC_WDG1</span><span class="p">,</span><span class="w">                      </span><span class="n">WAKEUP_NULL</span><span class="p">},</span>
+<span class="w">   </span><span class="p">{</span><span class="n">WAKE_SRC_UART2</span><span class="p">,</span><span class="w">                     </span><span class="n">WAKEUP_NULL</span><span class="p">},</span>
+<span class="w">   </span><span class="p">{</span><span class="n">WAKE_SRC_UART1</span><span class="p">,</span><span class="w">                     </span><span class="n">WAKEUP_NULL</span><span class="p">},</span>
+<span class="w">   </span><span class="p">{</span><span class="n">WAKE_SRC_UART0</span><span class="p">,</span><span class="w">                     </span><span class="n">WAKEUP_NULL</span><span class="p">},</span>
+<span class="w">   </span><span class="p">{</span><span class="n">WAKE_SRC_SPI1</span><span class="p">,</span><span class="w">                      </span><span class="n">WAKEUP_NULL</span><span class="p">},</span>
+<span class="w">   </span><span class="p">{</span><span class="n">WAKE_SRC_SPI0</span><span class="p">,</span><span class="w">                      </span><span class="n">WAKEUP_NULL</span><span class="p">},</span>
+<span class="w">   </span><span class="p">{</span><span class="n">WAKE_SRC_USB_OTG</span><span class="p">,</span><span class="w">                   </span><span class="n">WAKEUP_NULL</span><span class="p">},</span>
+<span class="w">   </span><span class="p">{</span><span class="n">WAKE_SRC_IPC_AP</span><span class="p">,</span><span class="w">                    </span><span class="n">WAKEUP_AP</span><span class="p">},</span>
+<span class="w">   </span><span class="p">{</span><span class="n">WAKE_SRC_IPC_NP</span><span class="p">,</span><span class="w">                    </span><span class="n">WAKEUP_NP</span><span class="p">},</span>
+<span class="w">   </span><span class="p">{</span><span class="n">WAKE_SRC_VADBT_OR_VADPC</span><span class="p">,</span><span class="w">            </span><span class="n">WAKEUP_NULL</span><span class="p">},</span>
+<span class="w">   </span><span class="p">{</span><span class="n">WAKE_SRC_PWR_DOWN</span><span class="p">,</span><span class="w">                  </span><span class="n">WAKEUP_LP</span><span class="p">},</span>
+<span class="w">   </span><span class="p">{</span><span class="n">WAKE_SRC_BOR</span><span class="p">,</span><span class="w">                       </span><span class="n">WAKEUP_NULL</span><span class="p">},</span>
+<span class="w">   </span><span class="p">{</span><span class="n">WAKE_SRC_ADC_COMP</span><span class="p">,</span><span class="w">                  </span><span class="n">WAKEUP_NULL</span><span class="p">},</span>
+<span class="w">   </span><span class="p">{</span><span class="n">WAKE_SRC_ADC</span><span class="p">,</span><span class="w">                       </span><span class="n">WAKEUP_NULL</span><span class="p">},</span>
+<span class="w">   </span><span class="p">{</span><span class="n">WAKE_SRC_CTOUCH</span><span class="p">,</span><span class="w">                    </span><span class="n">WAKEUP_NULL</span><span class="p">},</span>
+<span class="w">   </span><span class="p">{</span><span class="n">WAKE_SRC_RTC</span><span class="p">,</span><span class="w">                       </span><span class="n">WAKEUP_NULL</span><span class="p">},</span>
+<span class="w">   </span><span class="p">{</span><span class="n">WAKE_SRC_GPIOC</span><span class="p">,</span><span class="w">                     </span><span class="n">WAKEUP_NULL</span><span class="p">},</span>
+<span class="w">   </span><span class="p">{</span><span class="n">WAKE_SRC_GPIOB</span><span class="p">,</span><span class="w">                     </span><span class="n">WAKEUP_NULL</span><span class="p">},</span>
+<span class="w">   </span><span class="p">{</span><span class="n">WAKE_SRC_GPIOA</span><span class="p">,</span><span class="w">                     </span><span class="n">WAKEUP_NULL</span><span class="p">},</span>
+<span class="w">   </span><span class="p">{</span><span class="n">WAKE_SRC_UART_LOG</span><span class="p">,</span><span class="w">                  </span><span class="n">WAKEUP_NULL</span><span class="p">},</span>
+<span class="w">   </span><span class="p">{</span><span class="n">WAKE_SRC_Timer7</span><span class="p">,</span><span class="w">                    </span><span class="n">WAKEUP_NULL</span><span class="p">},</span>
+<span class="w">   </span><span class="p">{</span><span class="n">WAKE_SRC_Timer6</span><span class="p">,</span><span class="w">                    </span><span class="n">WAKEUP_NP</span><span class="p">},</span>
+<span class="w">   </span><span class="p">{</span><span class="n">WAKE_SRC_Timer5</span><span class="p">,</span><span class="w">                    </span><span class="n">WAKEUP_NULL</span><span class="p">},</span>
+<span class="w">   </span><span class="p">{</span><span class="n">WAKE_SRC_Timer4</span><span class="p">,</span><span class="w">                    </span><span class="n">WAKEUP_NULL</span><span class="p">},</span>
+<span class="w">   </span><span class="p">{</span><span class="n">WAKE_SRC_Timer3</span><span class="p">,</span><span class="w">                    </span><span class="n">WAKEUP_NULL</span><span class="p">},</span>
+<span class="w">   </span><span class="p">{</span><span class="n">WAKE_SRC_Timer2</span><span class="p">,</span><span class="w">                    </span><span class="n">WAKEUP_NULL</span><span class="p">},</span>
+<span class="w">   </span><span class="p">{</span><span class="n">WAKE_SRC_Timer1</span><span class="p">,</span><span class="w">                    </span><span class="n">WAKEUP_NULL</span><span class="p">},</span>
+<span class="w">   </span><span class="p">{</span><span class="n">WAKE_SRC_Timer0</span><span class="p">,</span><span class="w">                    </span><span class="n">WAKEUP_NULL</span><span class="p">},</span>
+<span class="w">   </span><span class="p">{</span><span class="n">WAKE_SRC_WDG0</span><span class="p">,</span><span class="w">                      </span><span class="n">WAKEUP_NULL</span><span class="p">},</span>
+<span class="w">   </span><span class="p">{</span><span class="n">WAKE_SRC_AP_WAKE</span><span class="p">,</span><span class="w">                   </span><span class="n">WAKEUP_NULL</span><span class="p">},</span>
+<span class="w">   </span><span class="p">{</span><span class="n">WAKE_SRC_NP_WAKE</span><span class="p">,</span><span class="w">                   </span><span class="n">WAKEUP_NULL</span><span class="p">},</span>
+<span class="w">   </span><span class="p">{</span><span class="n">WAKE_SRC_AON_TIM</span><span class="p">,</span><span class="w">                   </span><span class="n">WAKEUP_NULL</span><span class="p">},</span>
+<span class="w">   </span><span class="p">{</span><span class="n">WAKE_SRC_WIFI_FTSR_MAILBOX</span><span class="p">,</span><span class="w">         </span><span class="n">WAKEUP_LP</span><span class="p">},</span>
+<span class="w">   </span><span class="p">{</span><span class="n">WAKE_SRC_WIFI_FISR_FESR</span><span class="p">,</span><span class="w">            </span><span class="n">WAKEUP_LP</span><span class="p">},</span>
+<span class="w">   </span><span class="p">{</span><span class="mh">0xFFFFFFFF</span><span class="p">,</span><span class="w">                         </span><span class="n">WAKEUP_NULL</span><span class="p">},</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</li>
+<li><p>Set <code class="docutils literal notranslate"><span class="pre">WAKE_SRC_ADC</span></code> to <code class="docutils literal notranslate"><span class="pre">WAKEUP_AP</span></code> to tell the system to consider ADC interrupt as a wakeup event.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="n">WAKE_SRC_ADC</span><span class="p">,</span><span class="w">    </span><span class="n">WAKEUP_AP</span><span class="p">},</span>
+</pre></div>
+</div>
+<p>When ADC interrupt occurs, it will wake the system.</p>
+</li>
+<li><p>Recompile and download the firmware to apply the new settings.</p></li>
+</ol>
+<p>Once the firmware with the updated sleep configuration is programmed into the device and the system enters sleep mode, if there is an ADC interrupt (e.g., due to some predefined conditions according to users’ needs), it will trigger the system to wake up from sleep.</p>
+</section>
+<section id="special-configuration">
+<h3>Special Configuration<a class="headerlink" href="#special-configuration" title="Link to this heading"></a></h3>
+<p>Some peripherals have an additional configuration in addition to the general configuration.</p>
+<section id="osc4m">
+<h4>OSC4M<a class="headerlink" href="#osc4m" title="Link to this heading"></a></h4>
+<p>ADC, CAPTOUCH, UART, LOGUART need OSC4M to drive itself when in sleep mode. Users should configure <code class="docutils literal notranslate"><span class="pre">keep_OSC4M_on</span></code> to TRUE in the structure <code class="xref py py-class docutils literal notranslate"><span class="pre">ps_config</span></code> in <code class="file docutils literal notranslate"><span class="pre">firmware/component/usrcfg/rtl8730e/ameba_sleepcfg.c</span></code> to enable OSC4M.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">PSCFG_TypeDef</span><span class="w"> </span><span class="n">ps_config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="p">.</span><span class="n">km0_tickles_debug</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TRUE</span><span class="p">,</span><span class="w"> </span><span class="cm">/* if open Wi-Fi FW, should close it, or beacon will lost in WOWLAN */</span>
+<span class="w">   </span><span class="p">.</span><span class="n">km0_pg_enable</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FALSE</span><span class="p">,</span>
+<span class="w">   </span><span class="p">.</span><span class="n">km0_pll_off</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TRUE</span><span class="p">,</span>
+<span class="w">   </span><span class="p">.</span><span class="n">km0_audio_vad_on</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FALSE</span><span class="p">,</span>
+<span class="cp">#if defined(CONFIG_CLINTWOOD ) &amp;&amp; CONFIG_CLINTWOOD</span>
+<span class="w">   </span><span class="p">.</span><span class="n">km0_config_psram</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FALSE</span><span class="p">,</span><span class="w"> </span><span class="cm">/* if device enters sleep mode or not, false for keep active */</span>
+<span class="w">   </span><span class="p">.</span><span class="n">km0_sleep_withM4</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FALSE</span><span class="p">,</span>
+<span class="cp">#else</span>
+<span class="w">   </span><span class="p">.</span><span class="n">km0_config_psram</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TRUE</span><span class="p">,</span><span class="w"> </span><span class="cm">/* if device enters sleep mode or not, false for keep active */</span>
+<span class="w">   </span><span class="p">.</span><span class="n">km0_sleep_withM4</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TRUE</span><span class="p">,</span>
+<span class="cp">#endif</span>
+<span class="w">   </span><span class="p">.</span><span class="n">keep_OSC4M_on</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TRUE</span><span class="p">,</span>
+<span class="w">   </span><span class="p">.</span><span class="n">xtal_mode_in_sleep</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">XTAL_OFF</span><span class="p">,</span>
+<span class="w">   </span><span class="p">.</span><span class="n">swr_mode_in_sleep</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SWR_PFM</span><span class="p">,</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="user-space-development">
+<h2>User Space Development<a class="headerlink" href="#user-space-development" title="Link to this heading"></a></h2>
+<p>Users can configure sleep mode through sysfs. The commonly used files related to sleep in sysfs are listed in following table.</p>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>File</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>/sys/power/state</p></td>
+<td><p>Enter sleep mode at a certain level unconditionally</p></td>
+</tr>
+<tr class="row-odd"><td><p>/sys/power/wakeup_count</p></td>
+<td><p>Synchronization mechanism for wakeup events in user space and kernel space</p></td>
+</tr>
+<tr class="row-even"><td><p>/sys/power/autosleep</p></td>
+<td><p>Opportunistic sleep, automatically enter a certain level of sleep mode when there is no wakelock</p></td>
+</tr>
+<tr class="row-odd"><td><p>/sys/power/wake_lock</p></td>
+<td><p>Writing a value to this file will add a wakelock, and the presence of a wakelock will prevent autosleep</p></td>
+</tr>
+<tr class="row-even"><td><p>/sys/power/wake_unlock</p></td>
+<td><p>Writing a value to this file will clear a wakelock</p></td>
+</tr>
+</tbody>
+</table>
+<section id="unconditional-sleep">
+<h3>Unconditional Sleep<a class="headerlink" href="#unconditional-sleep" title="Link to this heading"></a></h3>
+<p>To enter sleep mode unconditionally, use the following command:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="nb">echo</span><span class="w"> </span>label<span class="w"> </span>&gt;<span class="w"> </span>/sys/power/state
+</pre></div>
+</div>
+<p>The value of label can be <code class="docutils literal notranslate"><span class="pre">mem</span></code> or <code class="docutils literal notranslate"><span class="pre">cg</span></code>, representing Standby mode and CG mode respectively.</p>
+</section>
+<section id="wakeup-count">
+<h3>Wakeup Count<a class="headerlink" href="#wakeup-count" title="Link to this heading"></a></h3>
+<p>Sometimes the system should not enter sleep mode unconditionally because a wakeup event may occur at this time; otherwise, the wakeup event may lose. Therefore, Linux provides Wakeup Count, a synchronization mechanism between user space and kernel space for sleep and wake events.</p>
+<p>Its typical usage process is as follows:</p>
+<ol class="arabic simple">
+<li><p>Read the value of <code class="docutils literal notranslate"><span class="pre">wakeup_count</span></code></p></li>
+<li><p>If the read is successful, write the read value back to <code class="docutils literal notranslate"><span class="pre">wakeup_count</span></code>; otherwise, continue reading</p></li>
+<li><p>If the write is successful, it indicates that the kernel allows sleep; otherwise, repeat the above process</p></li>
+<li><p>Enter sleep mode</p></li>
+</ol>
+<p>Refer to <code class="docutils literal notranslate"><span class="pre">&lt;test&gt;/pm_wakeup_count</span></code> for more information.</p>
+</section>
+<section id="autosleep-and-wakelock">
+<h3>Autosleep and Wakelock<a class="headerlink" href="#autosleep-and-wakelock" title="Link to this heading"></a></h3>
+<p>Autosleep, also known as opportunistic sleep, means being ready to enter sleep mode at any time. The wakelock can prevent the system from entering sleep mode. There can be multiple wakelocks, and currently the kernel limits the number of wakelocks to 100.</p>
+<ol class="arabic">
+<li><p>Write the required value to <code class="file docutils literal notranslate"><span class="pre">/sys/power/wake_lock</span></code> will create a wakelock:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="nb">echo</span><span class="w"> </span>wakelock1<span class="w"> </span>&gt;<span class="w"> </span>/sys/power/wake_lock
+</pre></div>
+</div>
+</li>
+<li><p>Write the required value to <code class="file docutils literal notranslate"><span class="pre">/sys/power/wake_unlock</span></code> will release the wakelock:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="nb">echo</span><span class="w"> </span>wakelock1<span class="w"> </span>&gt;<span class="w"> </span>/sys/power/wake_unlock
+</pre></div>
+</div>
+</li>
+<li><p>Check all wakelocks:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>cat<span class="w"> </span>/sys/power/wake_lock
+</pre></div>
+</div>
+</li>
+<li><p>Enable autosleep, and when <code class="file docutils literal notranslate"><span class="pre">/sys/power/wake_lock</span></code> is empty, the system will enter sleep mode automatically:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="nb">echo</span><span class="w"> </span>label<span class="w"> </span>&gt;<span class="w"> </span>/sys/power/autosleep
+</pre></div>
+</div>
+<p>The value of label can be <code class="docutils literal notranslate"><span class="pre">mem</span></code> and <code class="docutils literal notranslate"><span class="pre">cg</span></code> like unconditional sleep (<code class="file docutils literal notranslate"><span class="pre">/sys/power/state</span></code>).</p>
+</li>
+<li><p>Disable autosleep:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="nb">echo</span><span class="w"> </span>off<span class="w"> </span>&gt;<span class="w"> </span>/sys/power/autosleep
+</pre></div>
+</div>
+</li>
+</ol>
+<p>Refer to <code class="docutils literal notranslate"><span class="pre">&lt;test&gt;/pm_wakelock</span></code> for more information.</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>The wakelock can only prevent autosleep (<code class="file docutils literal notranslate"><span class="pre">/sys/power/autosleep</span></code>), not unconditional sleep (<code class="file docutils literal notranslate"><span class="pre">/sys/power/state</span></code>).</p>
+</div>
+</section>
+</section>
+<section id="kernel-apis">
+<h2>Kernel APIs<a class="headerlink" href="#kernel-apis" title="Link to this heading"></a></h2>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Interface</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>pm_stay_awake</p></td>
+<td><p>Notify the kernel that it is processing wakeup events, preventing the kernel from entering sleep mode</p></td>
+</tr>
+<tr class="row-odd"><td><p>pm_relax</p></td>
+<td><p>Wakeup event processing completed</p></td>
+</tr>
+<tr class="row-even"><td><p>pm_wakeup_event</p></td>
+<td><p>Notify the kernel that the wakeup event will be processed within the specified time</p></td>
+</tr>
+</tbody>
+</table>
+<p>Paired use of <code class="docutils literal notranslate"><span class="pre">pm_stay_awake</span></code> and <code class="docutils literal notranslate"><span class="pre">pm_relax</span></code> in the kernel can control whether to enter sleep mode or not.</p>
+</section>
+<section id="application-development-on-km0">
+<h2>Application Development on KM0<a class="headerlink" href="#application-development-on-km0" title="Link to this heading"></a></h2>
+<p>Due to the high power consumption of CA32 and DRAM, users can develop some simple applications on KM0, allowing CA32 and DRAM to enter low-power mode, which can achieve good power-saving effects.</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>KM0 runs the FreeRTOS operating system.</p>
+</div>
+<p>By default, when both CA32 and KM4 are in CG mode, KM0 will also automatically enter CG mode. Similar to Linux, KM0 also provides a wakelock mechanism to restrict KM0 from entering sleep mode. Therefore, users can set a wakelock on KM0 and then enter CG on the Linux side, so that CA32, KM4, and DRAM will enter low-power mode, while KM0 and SRAM can continue to run.</p>
+<p>KM0 has predefined some wakelocks located in <code class="file docutils literal notranslate"><span class="pre">firmware/source/component/soc/amebasmart/misc/ameba_pmu.h</span></code>. Users can also add new wakelocks.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="k">enum</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="n">PMU_OS</span><span class="w">             </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">   </span><span class="n">PMU_WLAN_DEVICE</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">   </span><span class="n">PMU_KM4_RUN</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+<span class="w">   </span><span class="n">PMU_AP_RUN</span><span class="w">         </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span>
+<span class="w">   </span><span class="n">PMU_BT_DEVICE</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span>
+<span class="w">   </span><span class="n">PMU_VAD_DEVICE</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span>
+<span class="w">   </span><span class="n">PMU_DEV_USER_BASE</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span><span class="w"> </span><span class="cm">/*number 6 ~ 31 is reserved for customer use*/</span>
+<span class="w">   </span><span class="n">PMU_MAX</span><span class="p">,</span>
+<span class="p">}</span><span class="w"> </span><span class="n">PMU_DEVICE</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>If users want to use UART0 to transmit data on KM0 and do not want KM0 to enter sleep mode, the following code should be added to the application to acquire the wakelock.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">pmu_acquire_wakelock</span><span class="p">(</span><span class="n">PMU_UART0_DEVICE</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>The method to release the wakelock is</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">pmu_release_wakelock</span><span class="p">(</span><span class="n">PMU_UART0_DEVICE</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>If all wakelocks are released, KM0 will enter sleep mode.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="0_ps_index_cn.html" class="btn btn-neutral float-left" title="Power Management" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="../3_nda_secure_boot/0_secure_boot_index_nda_cn.html" class="btn btn-neutral float-right" title="Secure Boot" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2025, Realsil。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+ 
+
+
+
+</body>
+</html>
