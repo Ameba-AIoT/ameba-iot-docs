@@ -255,7 +255,7 @@ Also, a shared SRAM is used to transmit information to each other. The block dia
 The inter-processor communication (IPC) hardware is designed to make these CPUs communicate with each other.
 Also, a KM0 shared SRAM is used to transmit information to each other. The block diagram is shown below.</p>
 <figure class="align-center" id="id8">
-<a class="reference internal image-reference" href="../../_images/ipc_block_diagram.svg"><img alt="../../_images/ipc_block_diagram.svg" height="97" src="../../_images/ipc_block_diagram.svg" width="368" /></a>
+<a class="reference internal image-reference" href="../../_images/ipc_block_diagram_smart.svg"><img alt="../../_images/ipc_block_diagram_smart.svg" height="194" src="../../_images/ipc_block_diagram_smart.svg" width="368" /></a>
 <figcaption>
 <p><span class="caption-text">IPC block diagram</span><a class="headerlink" href="#id8" title="Link to this image"></a></p>
 </figcaption>
@@ -263,7 +263,7 @@ Also, a KM0 shared SRAM is used to transmit information to each other. The block
 <p>There are 6 directions for 3 cores to communicate with each other: KM0 ←→ NP, NP ←→ AP, KM0 ←→ AP. There are 8 channels for each direction. All the channels are processed independently. That means one core can send different information to another core through different channels at any time, the channels will not affect each other.</p>
 <p>Each channel has one transmit side and one receive side, the transmit side and the receive side of the same channel is a pair. For example, KM0 sends an IPC to NP through channel 7, the transmit side is KM0 channel 7, and receive side is NP channel 7, and information is sent from KM0 channel 7 to NP channel 7.</p>
 <figure class="align-center" id="id9">
-<a class="reference internal image-reference" href="../../_images/ipc_schematic_diagram.svg"><img alt="../../_images/ipc_schematic_diagram.svg" height="127" src="../../_images/ipc_schematic_diagram.svg" width="484" /></a>
+<a class="reference internal image-reference" href="../../_images/ipc_schematic_diagram_smart.svg"><img alt="../../_images/ipc_schematic_diagram_smart.svg" height="284" src="../../_images/ipc_schematic_diagram_smart.svg" width="729" /></a>
 <figcaption>
 <p><span class="caption-text">IPC schematic diagram</span><a class="headerlink" href="#id9" title="Link to this image"></a></p>
 </figcaption>
@@ -275,16 +275,8 @@ Also, a KM0 shared SRAM is used to transmit information to each other. The block
 <div class="sphinx-tabs docutils container">
 <div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-1-1-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-1-1-0" name="1-0" role="tab" tabindex="0">RTL8721Dx</button><button aria-controls="panel-1-1-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-1-1-1" name="1-1" role="tab" tabindex="-1">RTL8720E</button><button aria-controls="panel-1-1-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-1-1-2" name="1-2" role="tab" tabindex="-1">RTL8726E</button><button aria-controls="panel-1-1-3" aria-selected="false" class="sphinx-tabs-tab" id="tab-1-1-3" name="1-3" role="tab" tabindex="-1">RTL8730E</button></div><div aria-labelledby="tab-1-1-0" class="sphinx-tabs-panel" id="panel-1-1-0" name="1-0" role="tabpanel" tabindex="0"><p>For example, KM0 sends an IPC to KM4 through channel 8.</p>
 <ol class="arabic">
-<li><p>Register the receiver IRQ handler function of the selected channel in receiver IPC.</p>
-<p>In this case, add a new IPC_INIT_TABLE in the KM4 for channel 8 of KM0 to KM4. Rx IRQ handler, Rx IRQ data, Tx IRQ handler, Tx IRQ data, IPC direction and IPC channel should be set and defined. If message exchange is needed, you should specify the message type: data or point.</p>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="n">IPC_TABLE_DATA_SECTION</span>
-<span class="linenos">2</span><span class="n">Const</span><span class="w"> </span><span class="n">IPC_INIT_TABLE</span><span class="w"> </span><span class="n">ipc_channel8_table</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
-<span class="linenos">3</span><span class="p">{</span><span class="n">IPC_USER_DATA</span><span class="p">,</span><span class="w"> </span><span class="n">IPC_CHANNEL8_ipc_int</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">VOID</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="n">IPC_TXHandler</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">VOID</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nb">NULL</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="n">IPC_KM0_TO_KM4</span><span class="p">,</span><span class="w"> </span><span class="n">IPC_N2A_Channel8</span><span class="p">},</span>
-<span class="linenos">4</span><span class="p">};</span>
-</pre></div>
-</div>
-</li>
-<li><p>Uncomment the corresponding channel in <code class="docutils literal notranslate"><span class="pre">ameba_ipccfg.h</span></code> and add some description as shown below. This macro is used in step <a class="reference internal" href="#ipc-usage-procedure-step-5"><span class="std std-ref">5</span></a>.</p>
+<li><p>Select IPC channel.</p>
+<p>Uncomment the corresponding channel in <code class="docutils literal notranslate"><span class="pre">ameba_ipccfg.h</span></code> and add some description as shown below.</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="cm">/** @defgroup IPC_KM0_Tx_Channel</span>
 <span class="linenos"> 2</span><span class="cm">* @{</span>
 <span class="linenos"> 3</span><span class="cm">*/</span>
@@ -311,13 +303,55 @@ Also, a KM0 shared SRAM is used to transmit information to each other. The block
 </pre></div>
 </div>
 </li>
-<li><p>Register the transmit IRQ handler function of the selected channel in transmit IPC and uncomment the corresponding channel. This step is <code class="docutils literal notranslate"><span class="pre">optional</span></code> , because this step is for register Tx interrupt, which is for transmit IPC to know that the receiver IPC has received this IPC. In this case, add a new IPC_INIT_TABLE in the KM0 for channel 8 of KM0 to KM4.</p></li>
-</ol>
-<ol class="arabic simple" id="ipc-usage-procedure-step-4" start="4">
-<li><p>SDK will enable the IPC receiver interrupt of KM4 and transmit interrupt of KM0 (if configured in step3) according to <code class="docutils literal notranslate"><span class="pre">IPC_INIT_TABLE</span></code> , and register the corresponding IRQ handler and data for the channel.</p></li>
-</ol>
-<ol class="arabic" id="ipc-usage-procedure-step-5" start="5">
-<li><p>When KM0 sends an IPC request to KM4 through channel 8, it should call <code class="docutils literal notranslate"><span class="pre">ipc_send_message()</span></code> and specify the channel number and message. If no message is needed, just input NULL for the third parameter of <code class="docutils literal notranslate"><span class="pre">ipc_send_message</span> <span class="pre">()</span></code> .</p>
+<li><p>Register IRQ handler function of the selected channel.</p>
+<p>Add struct <code class="docutils literal notranslate"><span class="pre">IPC_INIT_TABLE</span></code> into your code and put this struct in IPC table section by add <code class="docutils literal notranslate"><span class="pre">IPC_TABLE_DATA_SECTION</span></code>. This struct specifies the direction, channel, mode and IRQ function of IPC as below.</p>
+<dl class="field-list">
+<dt class="field-odd">&lt;USER_MSG_TYPE&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>This parameter can be</p>
+<div class="line-block">
+<div class="line"><strong>IPC_USER_DATA</strong>: The contents of this IPC is data.</div>
+<div class="line"><strong>IPC_USER_POINT</strong>: The contents of this IPC is pointer which points to address of actual data.</div>
+</div>
+</dd>
+<dt class="field-even">&lt;RxFunc&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>The callback function that CPU executes after receiving IPC.</p>
+</dd>
+<dt class="field-odd">&lt;RxIrqData&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The parameters that are passed into the rx callback function.</p>
+</dd>
+<dt class="field-even">&lt;TxFunc&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>The callback function that CPU executes after sending IPC.</p>
+</dd>
+<dt class="field-odd">&lt;TxIrqData&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The parameters that are passed into the tx callback function</p>
+</dd>
+<dt class="field-even">&lt;IPC_Direction&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>This parameter can be</p>
+<div class="line-block">
+<div class="line"><strong>IPC_KM4_TO_KM0</strong>: IPC is sent from KM4 to KM0.</div>
+<div class="line"><strong>IPC_KM0_TO_KM4</strong>: IPC is sent from KM0 to KM4.</div>
+</div>
+</dd>
+<dt class="field-odd">&lt;IPC_N2A_Channel8&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>IPC channel used, this macro is selected in the previous step.</p>
+</dd>
+</dl>
+<p>The SDK will automatically enable the IPC interrupt and register the corresponding IRQ handler and data for the channel. In this example, KM4 will enter <code class="docutils literal notranslate"><span class="pre">IRQ_function_channel8_int</span></code> after KM0 sends IPC through channel 8.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">IRQ_function_channel8_int</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="cm">/* Add your code here*/</span>
+<span class="p">}</span>
+
+<span class="n">IPC_TABLE_DATA_SECTION</span>
+<span class="n">Const</span><span class="w"> </span><span class="n">IPC_INIT_TABLE</span><span class="w"> </span><span class="n">ipc_channel8_table</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="p">{</span><span class="n">IPC_USER_DATA</span><span class="p">,</span><span class="w"> </span><span class="n">IRQ_function_channel8_int</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">VOID</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="n">IPC_TXHandler</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">VOID</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nb">NULL</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="n">IPC_KM0_TO_KM4</span><span class="p">,</span><span class="w"> </span><span class="n">IPC_N2A_Channel8</span><span class="p">},</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>Register the transmit IRQ handler function of the selected channel in transmit IPC and uncomment the corresponding channel. This step is <code class="docutils literal notranslate"><span class="pre">optional</span></code> , because this step is for register Tx interrupt, which is for transmit IPC to know that the receiver IPC has received this IPC. We suggest registering this processing function as the <code class="docutils literal notranslate"><span class="pre">IPC_TXHandler</span></code> API in ameba_ipc_api. c. In this function, if config_kernel is used, the tx sema of channelx will be released to enable the next transfer in a timely manner and avoid task blocking. In this case, add a new IPC_INIT_TABLE in the KM0 for channel 8 of KM0 to KM4.</p>
+</li>
+<li><p>Send IPC request.</p>
+<p>When KM0 sends an IPC request to KM4 through channel 8, it should call <code class="docutils literal notranslate"><span class="pre">ipc_send_message()</span></code> and specify the channel number and message. If no message is needed, just input NULL for the third parameter of <code class="docutils literal notranslate"><span class="pre">ipc_send_message</span> <span class="pre">()</span></code> .</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="n">IPC_MSG_STRUCT</span><span class="w"> </span><span class="n">ipc_msg_temp</span><span class="p">;</span>
 <span class="linenos">2</span><span class="c1">// init ipc_msg</span>
 <span class="linenos">3</span><span class="n">ipc_msg_temp</span><span class="p">.</span><span class="n">msg_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">IPC_USER_POINT</span><span class="p">;</span>
@@ -329,12 +363,12 @@ Also, a KM0 shared SRAM is used to transmit information to each other. The block
 </pre></div>
 </div>
 </li>
-<li><p>After receiving IPC from KM0 channel8, KM4 will enter IPC interrupt handler and the corresponding receive IRQ handler will be executed, call <code class="docutils literal notranslate"><span class="pre">ipc_get_message()</span></code> to get the message if needed.</p>
+<li><p>Get IPC message if needed.</p>
+<p>After receiving IPC from KM0 channel8, KM4 will enter IPC interrupt handler and the corresponding receive IRQ handler will be executed, call <code class="docutils literal notranslate"><span class="pre">ipc_get_message()</span></code> to get the message if needed.</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">PIPC_MSG_STRUCT</span><span class="w"> </span><span class="n">ipc_msg_temp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">PIPC_MSG_STRUCT</span><span class="p">)</span><span class="n">ipc_get_message</span><span class="p">(</span><span class="n">IPC_KM0_TO_KM4</span><span class="p">,</span><span class="w"> </span><span class="n">IPC_N2A_Channel8</span><span class="p">);</span>
 </pre></div>
 </div>
 </li>
-<li><p>If you have configured in step3, after KM4 receives the IPC, KM0 also enters IPC interrupt handler and executes the corresponding transmit IRQ handler.</p></li>
 </ol>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -652,25 +686,28 @@ Also, a KM0 shared SRAM is used to transmit information to each other. The block
 </div>
 </div></blockquote>
 </li>
-<li><p><code class="docutils literal notranslate"><span class="pre">IPC_MSG_STRUCT</span></code> is no need to cache invalidation any more after <code class="docutils literal notranslate"><span class="pre">ipc_get_message()</span></code>.</p>
+<li><p><code class="docutils literal notranslate"><span class="pre">IPC_MSG_STRUCT</span></code> is no need to cache invalidation any more after <code class="docutils literal notranslate"><span class="pre">ipc_get_message()</span></code>.</p></li>
+<li><p>Forcing <code class="docutils literal notranslate"><span class="pre">IPC_MSG_STRUCT</span></code> type conversion has risks. Suggest do like this:</p>
 <blockquote>
-<div><figure class="align-center">
-<a class="reference internal image-reference" href="../../_images/ipc_suggested_usage_fig1.png"><img alt="../../_images/ipc_suggested_usage_fig1.png" src="../../_images/ipc_suggested_usage_fig1.png" style="width: 437.5px; height: 63.5px;" /></a>
-</figure>
-</div></blockquote>
-</li>
-<li><p>Forcing <code class="docutils literal notranslate"><span class="pre">IPC_MSG_STRUCT</span></code> type conversion has risks.</p>
-<blockquote>
-<div><figure class="align-center">
-<a class="reference internal image-reference" href="../../_images/ipc_suggested_usage_fig2.png"><img alt="../../_images/ipc_suggested_usage_fig2.png" src="../../_images/ipc_suggested_usage_fig2.png" style="width: 628.5px; height: 221.0px;" /></a>
-</figure>
+<div><div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="n">PIPC_MSG_STRUCT</span><span class="w"> </span><span class="n">p_ipc_recv_msg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ipc_get_message</span><span class="p">(</span><span class="n">IPC_KM0_TO_KM4</span><span class="p">,</span><span class="w"> </span><span class="n">IPC_N2A_Channel8</span><span class="p">);</span>
+<span class="linenos">2</span><span class="w">          </span><span class="n">p_ipc_msg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">coex_ipc_host_req_msg</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">p_ipc_recv_msg</span><span class="o">-&gt;</span><span class="n">msg</span><span class="p">;</span>
+</pre></div>
+</div>
 </div></blockquote>
 </li>
 <li><p>Using <code class="docutils literal notranslate"><span class="pre">ipc_get_message()</span></code> in task also has risks.</p>
 <blockquote>
-<div><figure class="align-center">
-<a class="reference internal image-reference" href="../../_images/ipc_suggested_usage_fig3.png"><img alt="../../_images/ipc_suggested_usage_fig3.png" src="../../_images/ipc_suggested_usage_fig3.png" style="width: 536.0px; height: 266.5px;" /></a>
-</figure>
+<div><div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="kt">void</span><span class="w"> </span><span class="nf">ipc_dev_api_task</span><span class="p">(</span><span class="kt">void</span><span class="p">){</span>
+<span class="linenos">2</span>
+<span class="linenos">3</span><span class="w">   </span><span class="k">while</span><span class="p">(</span><span class="mi">1</span><span class="p">){</span>
+<span class="linenos">4</span><span class="w">      </span><span class="c1">//...</span>
+<span class="linenos">5</span><span class="w">      </span><span class="n">PIPC_MSG_STRUCT</span><span class="w"> </span><span class="n">p_ipc_recv_msg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ipc_get_message</span><span class="p">(</span><span class="n">IPC_KM0_TO_KM4</span><span class="p">,</span><span class="w"> </span><span class="n">IPC_N2A_Channel8</span><span class="p">);</span>
+<span class="linenos">6</span><span class="w">                </span><span class="n">p_ipc_msg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">coex_ipc_host_req_msg</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">p_ipc_recv_msg</span><span class="o">-&gt;</span><span class="n">msg</span><span class="p">;</span>
+<span class="linenos">7</span><span class="w">       </span><span class="c1">//...</span>
+<span class="linenos">8</span><span class="w">   </span><span class="p">};</span>
+<span class="linenos">9</span><span class="p">};</span>
+</pre></div>
+</div>
 </div></blockquote>
 </li>
 <li><p>If <code class="docutils literal notranslate"><span class="pre">ipc_get_message()</span></code> needs to be used in <code class="docutils literal notranslate"><span class="pre">task</span></code> , do as follows:</p>
@@ -700,30 +737,34 @@ Also, a KM0 shared SRAM is used to transmit information to each other. The block
 </pre></div>
 </div>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">IPC_TABLE_DATA_SECTION</span>
-<span class="k">const</span><span class="w"> </span><span class="n">IPC_INIT_TABLE</span><span class="w"> </span><span class="n">ipc_channel8_table</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
-<span class="w">      </span><span class="p">{</span><span class="n">IPC_USER_DATA</span><span class="p">,</span><span class="w"> </span><span class="n">IPC_CHANNEL8_ipc_int</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">VOID</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="n">IPC_TXHandler</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">VOID</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="n">IPC_LP_TO_NP</span><span class="p">,</span><span class="w"> </span><span class="n">IPC_L2N_Channel8</span><span class="p">},</span>
+<span class="k">const</span><span class="w"> </span><span class="n">IPC_INIT_TABLE</span><span class="w"> </span><span class="n">ipc_channel7_table</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="p">{</span><span class="n">IPC_USER_DATA</span><span class="p">,</span><span class="w"> </span><span class="n">IPC_CHANNEL8_ipc_int</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">VOID</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="n">IPC_TXHandler</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">VOID</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="n">IPC_LP_TO_NP</span><span class="p">,</span><span class="w"> </span><span class="n">IPC_L2N_Channel7</span><span class="p">},</span>
 <span class="p">};</span>
 </pre></div>
 </div>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">IPC_MSG_STRUCT</span></code> is no need to cache invalidation any more after <code class="docutils literal notranslate"><span class="pre">ipc_get_message()</span></code>.</p></li>
-</ul>
-<figure class="align-center">
-<a class="reference internal image-reference" href="../../_images/not_do_cache_invalid_smart.png"><img alt="../../_images/not_do_cache_invalid_smart.png" src="../../_images/not_do_cache_invalid_smart.png" style="width: 437.5px; height: 63.5px;" /></a>
-</figure>
-<ul class="simple">
 <li><p>Forcing <code class="docutils literal notranslate"><span class="pre">IPC_MSG_STRUCT</span></code> type conversion has risks.</p></li>
 </ul>
-<figure class="align-center">
-<a class="reference internal image-reference" href="../../_images/not_do_conver_smart.png"><img alt="../../_images/not_do_conver_smart.png" src="../../_images/not_do_conver_smart.png" style="width: 628.5px; height: 221.0px;" /></a>
-</figure>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="n">PIPC_MSG_STRUCT</span><span class="w"> </span><span class="n">p_ipc_recv_msg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ipc_get_message</span><span class="p">(</span><span class="n">IPC_LP_TO_NP</span><span class="p">,</span><span class="w"> </span><span class="n">IPC_N2A_Channel7</span><span class="p">);</span>
+<span class="linenos">2</span><span class="w">          </span><span class="n">p_ipc_msg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">coex_ipc_host_req_msg</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">p_ipc_recv_msg</span><span class="o">-&gt;</span><span class="n">msg</span><span class="p">;</span>
+</pre></div>
+</div>
 <ul class="simple">
 <li><p>Using <code class="docutils literal notranslate"><span class="pre">ipc_get_message()</span></code> in task also has risks.</p></li>
 </ul>
-<figure class="align-center">
-<a class="reference internal image-reference" href="../../_images/not_use_in_task_smart.png"><img alt="../../_images/not_use_in_task_smart.png" src="../../_images/not_use_in_task_smart.png" style="width: 536.0px; height: 266.5px;" /></a>
-</figure>
-<ul class="simple">
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="kt">void</span><span class="w"> </span><span class="nf">ipc_dev_api_task</span><span class="p">(</span><span class="kt">void</span><span class="p">){</span>
+<span class="linenos">2</span>
+<span class="linenos">3</span><span class="w">   </span><span class="k">while</span><span class="p">(</span><span class="mi">1</span><span class="p">){</span>
+<span class="linenos">4</span><span class="w">      </span><span class="c1">//...</span>
+<span class="linenos">5</span><span class="w">      </span><span class="n">PIPC_MSG_STRUCT</span><span class="w"> </span><span class="n">p_ipc_recv_msg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ipc_get_message</span><span class="p">(</span><span class="n">IPC_KM0_TO_KM4</span><span class="p">,</span><span class="w"> </span><span class="n">IPC_N2A_Channel8</span><span class="p">);</span>
+<span class="linenos">6</span><span class="w">                </span><span class="n">p_ipc_msg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">coex_ipc_host_req_msg</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">p_ipc_recv_msg</span><span class="o">-&gt;</span><span class="n">msg</span><span class="p">;</span>
+<span class="linenos">7</span><span class="w">       </span><span class="c1">//...</span>
+<span class="linenos">8</span><span class="w">   </span><span class="p">};</span>
+<span class="linenos">9</span><span class="p">};</span>
+</pre></div>
+</div>
+<ul>
 <li><p>If <code class="docutils literal notranslate"><span class="pre">ipc_get_message()</span></code> needs to be used in <code class="docutils literal notranslate"><span class="pre">task</span></code> , do as follows:</p>
 <ol class="loweralpha simple">
 <li><p>Task takes the semaphore.</p></li>
@@ -731,9 +772,9 @@ Also, a KM0 shared SRAM is used to transmit information to each other. The block
 <li><p>Copy the message to another memory after getting message in the same Rx user interrupt handle.</p></li>
 <li><p>Give semaphore.</p></li>
 </ol>
+<p>Then task can use the message.</p>
 </li>
 </ul>
-<p>Then task can use the message.</p>
 </div></div>
 </section>
 </section>
@@ -745,20 +786,17 @@ For example, if IRQFunc1 and IRQFunc2 are both registered in KM4 for KM0 to KM4 
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>14:23:03.905 [MODULE_IPC-LEVEL_ERROR]: Channel Conflict for CPU 1 Channel1 ! Ignore If CPU Has Reset
 </pre></div>
 </div>
-<figure class="align-center">
-<a class="reference internal image-reference" href="../../_images/ipc_troubleshooting.png"><img alt="../../_images/ipc_troubleshooting.png" src="../../_images/ipc_troubleshooting.png" style="width: 857.6px; height: 616.8000000000001px;" /></a>
-</figure>
 </div><div aria-labelledby="tab-3-3-1" class="sphinx-tabs-panel" hidden="true" id="panel-3-3-1" name="3-1" role="tabpanel" tabindex="0"><blockquote>
 <div><p>If <code class="docutils literal notranslate"><span class="pre">Channel</span> <span class="pre">Conflict</span> <span class="pre">for</span> <span class="pre">Channel</span> <span class="pre">xx!</span></code> log shows up, it means two IRQ functions are registered in the same channel.
 For example, if IRQFunc1 and IRQFunc2 are both registered in KM4 for KR4 to KM4 channel 1, the log will show up as below.</p>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="mi">14</span><span class="o">:</span><span class="mi">23</span><span class="o">:</span><span class="mf">03.905</span><span class="w"> </span><span class="p">[</span><span class="n">MODULE_IPC</span><span class="o">-</span><span class="n">LEVEL_ERROR</span><span class="p">]</span><span class="o">:</span><span class="w"> </span><span class="n">Channel</span><span class="w"> </span><span class="n">Conflict</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">Channel</span><span class="w"> </span><span class="mi">25</span><span class="o">!</span>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="mi">14</span><span class="o">:</span><span class="mi">23</span><span class="o">:</span><span class="mf">03.905</span><span class="w"> </span><span class="p">[</span><span class="n">MODULE_IPC</span><span class="o">-</span><span class="n">LEVEL_ERROR</span><span class="p">]</span><span class="o">:</span><span class="w"> </span><span class="n">Channel</span><span class="w"> </span><span class="n">Conflict</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">CPU</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">Channel1</span><span class="w"> </span><span class="o">!</span><span class="w"> </span><span class="n">Ignore</span><span class="w"> </span><span class="n">If</span><span class="w"> </span><span class="n">CPU</span><span class="w"> </span><span class="n">Has</span><span class="w"> </span><span class="n">Reset</span>
 </pre></div>
 </div>
 </div></blockquote>
 </div><div aria-labelledby="tab-3-3-2" class="sphinx-tabs-panel" hidden="true" id="panel-3-3-2" name="3-2" role="tabpanel" tabindex="0"><blockquote>
 <div><p>If <code class="docutils literal notranslate"><span class="pre">Channel</span> <span class="pre">Conflict</span> <span class="pre">for</span> <span class="pre">Channel</span> <span class="pre">xx!</span></code> log shows up, it means two IRQ functions are registered in the same channel.
 For example, if IRQFunc1 and IRQFunc2 are both registered in KM4 for KR4 to KM4 channel 1, the log will show up as below.</p>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="mi">14</span><span class="o">:</span><span class="mi">23</span><span class="o">:</span><span class="mf">03.905</span><span class="w"> </span><span class="p">[</span><span class="n">MODULE_IPC</span><span class="o">-</span><span class="n">LEVEL_ERROR</span><span class="p">]</span><span class="o">:</span><span class="w"> </span><span class="n">Channel</span><span class="w"> </span><span class="n">Conflict</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">Channel</span><span class="w"> </span><span class="mi">25</span><span class="o">!</span>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="mi">14</span><span class="o">:</span><span class="mi">23</span><span class="o">:</span><span class="mf">03.905</span><span class="w"> </span><span class="p">[</span><span class="n">MODULE_IPC</span><span class="o">-</span><span class="n">LEVEL_ERROR</span><span class="p">]</span><span class="o">:</span><span class="w"> </span><span class="n">Channel</span><span class="w"> </span><span class="n">Conflict</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">CPU</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">Channel1</span><span class="w"> </span><span class="o">!</span><span class="w"> </span><span class="n">Ignore</span><span class="w"> </span><span class="n">If</span><span class="w"> </span><span class="n">CPU</span><span class="w"> </span><span class="n">Has</span><span class="w"> </span><span class="n">Reset</span>
 </pre></div>
 </div>
 </div></blockquote>
