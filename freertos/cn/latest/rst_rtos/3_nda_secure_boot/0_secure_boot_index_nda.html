@@ -165,7 +165,7 @@ and goes into an endless loop.</p>
 <p>Users do not need to implement the secure boot code themselves, which is already contained in the SDK.</p>
 <p>To generate the Public Key and signature of bootloader, we provide an image operation script named <code class="docutils literal notranslate"><span class="pre">axf2bin.py</span></code>. With the script, users can generate and append signature-related information to images. Refer to the following sections for operation details.</p>
 <div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-0-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-0-0-0" name="0-0" role="tab" tabindex="0">RTL8721Dx</button><button aria-controls="panel-0-0-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-1" name="0-1" role="tab" tabindex="-1">RTL8726E</button><button aria-controls="panel-0-0-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-2" name="0-2" role="tab" tabindex="-1">RTL8730E</button></div><div aria-labelledby="tab-0-0-0" class="sphinx-tabs-panel" id="panel-0-0-0" name="0-0" role="tabpanel" tabindex="0"><p>The principle of secure boot is illustrated in below. With the <code class="docutils literal notranslate"><span class="pre">axf2bin.py</span></code>, the public key, signature, image hash and other fields are generated in the manifest.</p>
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-0-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-0-0-0" name="0-0" role="tab" tabindex="0">RTL8721Dx</button><button aria-controls="panel-0-0-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-1" name="0-1" role="tab" tabindex="-1">RTL8720E</button><button aria-controls="panel-0-0-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-2" name="0-2" role="tab" tabindex="-1">RTL8726E</button><button aria-controls="panel-0-0-3" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-3" name="0-3" role="tab" tabindex="-1">RTL8730E</button></div><div aria-labelledby="tab-0-0-0" class="sphinx-tabs-panel" id="panel-0-0-0" name="0-0" role="tabpanel" tabindex="0"><p>The principle of secure boot is illustrated in below. With the <code class="docutils literal notranslate"><span class="pre">axf2bin.py</span></code>, the public key, signature, image hash and other fields are generated in the manifest.</p>
 <figure class="align-center" id="id1">
 <a class="reference internal image-reference" href="../../_images/secure_boot_diagram.svg"><img alt="../../_images/secure_boot_diagram.svg" height="315" src="../../_images/secure_boot_diagram.svg" width="585" /></a>
 <figcaption>
@@ -201,7 +201,32 @@ and goes into an endless loop.</p>
 <li><p>KR4 &amp; KM4 application image, including:</p></li>
 <li><p>NSPE image (KR4 &amp; KM4 non-secure image)</p></li>
 <li><p>SPE image (KM4 secure image, if exists)</p></li>
-<li><p>DSP image (if exists)</p></li>
+</ul>
+<p>The images validation process is as follows:</p>
+<ol class="arabic simple">
+<li><p>KM4 Boot ROM validates KM4 bootloader.</p></li>
+<li><p>KM4 bootloader validates the key certificate.</p></li>
+<li><p>KM4 bootloader validates the KR4 &amp; KM4 application images.</p></li>
+</ol>
+<p>The KM4 bootloader and key certificate are signed against RoT (Root of Trust) key. The RoTPK hash is stored in OTP.</p>
+<p>The key pairs of signing KR4 &amp; KM4 application image should be different from the RoT key pairs. Users can choose one key or different keys to sign the images.</p>
+<p>The key certificate contains the public key hash of other images. So KM4 bootloader verifies the certificate firstly to get the public key hash of the images of the following stage. Then it verifies the following stage images against the public key hash from the key certificate.</p>
+<p>Refer to the <strong>Security</strong> chapter of User Manual for more signing and validation details.</p>
+</div><div aria-labelledby="tab-0-0-2" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-2" name="0-2" role="tabpanel" tabindex="0"><p>The principle of secure boot is illustrated in below. With the <code class="docutils literal notranslate"><span class="pre">axf2bin.py</span></code>, the public key, signature, image hash and other fields are generated in the manifest.</p>
+<figure class="align-center" id="id3">
+<a class="reference internal image-reference" href="../../_images/secure_boot_diagram_lite.svg"><img alt="../../_images/secure_boot_diagram_lite.svg" height="315" src="../../_images/secure_boot_diagram_lite.svg" width="570" /></a>
+<figcaption>
+<p><span class="caption-text">Secure boot diagram</span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p>The manifest (4KB) is located at the beginning of the image. Each of the following images has a manifest:</p>
+<ul class="simple">
+<li><p>KM4 bootloader</p></li>
+<li><p>Key certificate</p></li>
+<li><p>KR4 &amp; KM4 application image, including:</p></li>
+<li><p>NSPE image (KR4 &amp; KM4 non-secure image)</p></li>
+<li><p>SPE image (KM4 secure image, if exists)</p></li>
+<li><p>DSP image</p></li>
 </ul>
 <p>The images validation process is as follows:</p>
 <ol class="arabic simple">
@@ -213,11 +238,11 @@ and goes into an endless loop.</p>
 <p>The key pairs of signing KR4 &amp; KM4 application image and DSP image should be different from the RoT key pairs. Users can choose one key or different keys to sign the images.</p>
 <p>The key certificate contains the public key hash of other images. So KM4 bootloader verifies the certificate firstly to get the public key hash of the images of the following stage. Then it verifies the following stage images against the public key hash from the key certificate.</p>
 <p>Refer to the <strong>Security</strong> chapter of User Manual for more signing and validation details.</p>
-</div><div aria-labelledby="tab-0-0-2" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-2" name="0-2" role="tabpanel" tabindex="0"><p>The principle of secure boot is illustrated in below. With the <code class="docutils literal notranslate"><span class="pre">axf2bin.py</span></code>, the public key, signature, image hash and other fields are generated in the manifest.</p>
-<figure class="align-center" id="id3">
+</div><div aria-labelledby="tab-0-0-3" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-3" name="0-3" role="tabpanel" tabindex="0"><p>The principle of secure boot is illustrated in below. With the <code class="docutils literal notranslate"><span class="pre">axf2bin.py</span></code>, the public key, signature, image hash and other fields are generated in the manifest.</p>
+<figure class="align-center" id="id4">
 <a class="reference internal image-reference" href="../../_images/secure_boot_diagram_smart.svg"><img alt="../../_images/secure_boot_diagram_smart.svg" height="315" src="../../_images/secure_boot_diagram_smart.svg" width="570" /></a>
 <figcaption>
-<p><span class="caption-text">Secure boot diagram</span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
+<p><span class="caption-text">Secure boot diagram</span><a class="headerlink" href="#id4" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <p>The manifest (4KB) is located at the beginning of the image. Each of the following images has a manifest:</p>
@@ -238,10 +263,10 @@ and goes into an endless loop.</p>
 <p>Refer to the <strong>Security</strong> chapter of User Manual (UM0600) for more signing and validation details.</p>
 <p><strong>Manifest</strong></p>
 <p>Each signed image has a manifest, which contains the information of the image, such as hash, etc. The manifest structure is summarized as below.</p>
-<figure class="align-center" id="id4">
+<figure class="align-center" id="id5">
 <a class="reference internal image-reference" href="../../_images/manifest_structure_smart.svg"><img alt="../../_images/manifest_structure_smart.svg" height="352" src="../../_images/manifest_structure_smart.svg" width="933" /></a>
 <figcaption>
-<p><span class="caption-text">Manifest structure</span><a class="headerlink" href="#id4" title="Link to this image"></a></p>
+<p><span class="caption-text">Manifest structure</span><a class="headerlink" href="#id5" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <table class="docutils align-default" style="width: 100%">
@@ -351,10 +376,10 @@ and goes into an endless loop.</p>
 </div>
 <p><strong>Key Certificate</strong></p>
 <p>The key certificate maintains records for images.</p>
-<figure class="align-center" id="id5">
+<figure class="align-center" id="id6">
 <a class="reference internal image-reference" href="../../_images/key_certificate_structure_smart.svg"><img alt="../../_images/key_certificate_structure_smart.svg" height="535" src="../../_images/key_certificate_structure_smart.svg" width="1015" /></a>
 <figcaption>
-<p><span class="caption-text">Key certificate structure</span><a class="headerlink" href="#id5" title="Link to this image"></a></p>
+<p><span class="caption-text">Key certificate structure</span><a class="headerlink" href="#id6" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <table class="docutils align-default" style="width: 100%">
@@ -443,8 +468,8 @@ and goes into an endless loop.</p>
 </tr>
 </tbody>
 </table>
-<table class="docutils align-default" id="id6" style="width: 100%">
-<caption><span class="caption-text">Certificate entry fields</span><a class="headerlink" href="#id6" title="Link to this table"></a></caption>
+<table class="docutils align-default" id="id7" style="width: 100%">
+<caption><span class="caption-text">Certificate entry fields</span><a class="headerlink" href="#id7" title="Link to this table"></a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p>Field</p></th>
 <th class="head"><p>Size (bytes)</p></th>
