@@ -1,0 +1,1043 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DSP 编译环境 &mdash; Ameba IoT Docs  文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom_cn.css?v=0d22fac7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/tabs.css?v=a5c4661c" />
+      <link rel="stylesheet" type="text/css" href="../../_static/_static/custom_cn.css" />
+
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=7d86a446"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+        <script>let toggleHintShow = 'Click to show';</script>
+        <script>let toggleHintHide = 'Click to hide';</script>
+        <script>let toggleOpenOnPrint = 'true';</script>
+        <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+        <script src="../../_static/translations.js?v=beaddf03"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="DSP 配置" href="dsp_configuration_cn.html" />
+    <link rel="prev" title="数字信号处理（DSP）" href="0_dsp_index_cn.html" />
+   
+  
+  <script type="text/javascript" src="../../_static/js/selector.js"></script>
+
+  <style>
+    .wy-nav-content {max-width: 1000px;} /* 设置最大宽度 */
+  </style>
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Ameba IoT Docs
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../0_ameba_product/0_ameba_product_center_index_cn.html">产品中心</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_ameba_sdk/0_ameba_sdks_index_cn.html">Ameba SDK</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_ameba_solutions/0_ameba_solutions_index_cn.html">解决方案</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_gcc_build_environment/0_gcc_build_index_cn.html">0.1 GCC 编译环境</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_gdb_debug/0_gdb_debug_index_cn.html">0.2 GDB调试</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_gcc_build_library/0_gcc_build_library_index_cn.html">0.3 GCC 库的生成和使用</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_sdk_example/0_sdk_example_index_cn.html">0.4 SDK 示例</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_memory_layout/0_layout_index_cn.html">0.5 Flash 和 RAM 布局</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_user_config/0_usrcfg_index_cn.html">0.6 开发者配置</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_tools/0_tools_index_cn.html">0.7 工具</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_at_command/0_at_command_index_cn.html">0.8 AT 命令</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_file_system/0_vfs_index_cn.html">0.9 虚拟文件系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_ftl/0_ftl_index_cn.html">0.A Flash 转换层</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_mpu_cache/0_mpu_cache_index_cn.html">1.0 内存保护单元和缓存</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_boot_process/0_boot_index_cn.html">1.1 启动过程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_ota/0_ota_index_cn.html">1.2 固件在线升级(OTA)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_otpc/0_otpc_index.html">1.3 OTP存储器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_chipen/0_chipen_index_cn.html">1.4 CHIP_EN</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_ipc/0_ipc_index_cn.html">1.5 核间通信</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_pinmux/0_pinmux_index_cn.html">1.6 PINMUX</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_gpio/0_gpio_index_cn.html">1.7 GPIO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_power_save/0_ps_index_cn.html">1.9 低功耗开发</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_whc_wifi_bridge/0_wifi_bridge_index_cn.html">2.1 WHC Bridge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_whc_fullmac/0_fullmac_index_cn.html">2.2 WHC FullMAC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_wifi_tunnel/0_wifi_tunnel_index_cn.html">2.3 Wi-Fi R-Mesh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_wifi_csi/0_wifi_csi_index_cn.html">2.5 Wi-Fi CSI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_wifi_adaptivity_test/0_wifi_adaptivity_index.html">2.6 Wi-Fi Adaptivity 测试指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_security/0_security_index_cn.html">3.1 安全与加密</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_trng/0_trng_index_cn.html">3.2 真随机数发生器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_huk_derivation/0_huk_derivation_index_nda.html">3.3 HUK Derivation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_rdp/0_rdp_index_nda.html">3.4 RDP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_rsip/0_rsip_index_nda.html">3.5 RSIP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_secure_boot/0_secure_boot_index_nda.html">3.6 Secure Boot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_swd_protection/0_swd_protection_index_nda.html">3.7 SWD Protection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_tfm/0_tfm_index_nda.html">3.8 Trusted Firmware-M (TF-M)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_crypto_engine/0_crypto_engine_index_cn.html">3.9 对称硬件加密引擎</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_ecdsa_engine/0_ecdsa_index_cn.html">3.a ECDSA 硬件加密引擎</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_eddsa_engine/0_eddsa_index_cn.html">3.b EDDSA 硬件加密引擎</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_rsa_engine/0_rsa_index_cn.html">3.c RSA 硬件加密引擎</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../4_ai/0_ai_index_cn.html">4.1 人工智能</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../4_ai_voice/0_ai_voice_index_cn.html">4.2 语音识别</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../4_multimedia/0_multimedia_index_cn.html">4.3 多媒体</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="0_dsp_index_cn.html">4.4 DSP 使用指南</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="0_dsp_index_cn.html#supported-ics">Supported ICs</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">DSP 编译环境</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">准备工作</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id3">安装工具链</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#compiling-project-and-downloading-image">Compiling Project and Downloading Image</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#adding-folder-or-files-into-project">Adding Folder or Files into Project</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#setting-the-project">Setting the Project</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#debugging-dsp-program">Debugging DSP Program</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dsp-iss-simulation">DSP ISS Simulation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="dsp_configuration_cn.html">DSP 配置</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../6_mass_production/0_mp_index_cn.html">6.1 量产指导</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../6_mp_image/0_mp_image_index_cn.html">6.2 MP 固件</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../6_mptools/0_mptools_index_cn.html">6.3 产测工具</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../7_usb/0_usb_index_cn.html">7.1 USB 主机与从机</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_dmac/0_dmac_index_cn.html">8.1 DMA 控制器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_psram/0_psram_index_cn.html">8.2 PSRAM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_thermal/0_thermal_index_cn.html">8.3 温度测量</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_adc/0_adc_index_cn.html">8.4 模数转换器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_ir/0_ir_index_cn.html">8.5 红外收发器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_ledc/0_ledc_index_cn.html">8.6 LED控制器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_cap_touch/0_cap_touch_index_cn.html">8.7 Cap-Touch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_key_scan/0_key_scan_index_cn.html">8.8 Key-Scan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_rtc_io/0_rtc_io_index_cn.html">8.9 RTC-IO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_lcdc/0_lcdc_index_cn.html">8.A LCD控制器</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Ameba IoT Docs</a>
+      </nav>
+
+      <div class="wy-nav-content">
+
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="0_dsp_index_cn.html">数字信号处理（DSP）</a></li>
+      <li class="breadcrumb-item active">DSP 编译环境</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="dsp">
+<span id="build-environment-for-dsp"></span><h1>DSP 编译环境<a class="headerlink" href="#dsp" title="Link to this heading"></a></h1>
+<section id="id1">
+<h2>准备工作<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<p>为了开发 HiFi5 DSP，首先需要下载 <a class="reference internal" href="#dsp-software-packages"><span class="std std-ref">软件包</span></a> 和准备 <a class="reference internal" href="#xtensa-xplorer-license"><span class="std std-ref">Xtensa Xplorer 许可证</span></a>.</p>
+<section id="dsp-software-packages">
+<span id="id2"></span><h3>软件包<a class="headerlink" href="#dsp-software-packages" title="Link to this heading"></a></h3>
+<p>根据使用操作系统的不同，下载对应的软件包。</p>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head" colspan="2"><p>Packages</p></th>
+<th class="head"><p>Comment</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td rowspan="2"><p>Xtensa Xplorer</p>
+<p>installer</p>
+</td>
+<td><p>Linux</p></td>
+<td><ul class="simple">
+<li><p>Xplorer-9.0.18-linux-x64-installer.bin</p></li>
+<li><p>XtensaTools_RI_2021_8_patch734507_linux.tgz</p></li>
+</ul>
+</td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>Windows</p></td>
+<td><p>Xplorer-9.0.18-windows-installer.exe</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><p>HiFi5 DSP</p>
+<p>configurations</p>
+</td>
+<td><p>Linux</p></td>
+<td><ul class="simple">
+<li><p>HIFI5_PROD_1123_asic_UPG_linux_redist.tgz</p></li>
+<li><p>HIFI5_PROD_1123_asic_wUPG_linux_redist.tgz</p></li>
+</ul>
+</td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>Windows</p></td>
+<td><ul class="simple">
+<li><p>HIFI5_PROD_1123_asic_UPG_win32_redist.tgz</p></li>
+<li><p>HIFI5_PROD_1123_asic_wUPG_win32_redist.tgz</p></li>
+</ul>
+</td>
+<td><div class="line-block">
+<div class="line">Get them from Realtek released</div>
+<div class="line">DSP SDK (<code class="docutils literal notranslate"><span class="pre">configurations</span></code> folder)</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="xtensa-xplorer">
+<span id="xtensa-xplorer-license"></span><h3>Xtensa Xplorer 许可证<a class="headerlink" href="#xtensa-xplorer" title="Link to this heading"></a></h3>
+<p>除了上文提到的软件包以外，Xtensa Xplorer 许可证也是必不可少的。</p>
+<p>联系 &lt;<a class="reference external" href="mailto:claire_wang&#37;&#52;&#48;realsil&#46;com&#46;cn">claire_wang<span>&#64;</span>realsil<span>&#46;</span>com<span>&#46;</span>cn</a>&gt; 可申请一份临时许可证。</p>
+<p>发邮件申请许可证时，必须提供以下信息：</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/apply_for_license_email_cn.png"><img alt="../../_images/apply_for_license_email_cn.png" src="../../_images/apply_for_license_email_cn.png" style="width: 569.0px; height: 260.0px;" /></a>
+</figure>
+<div class="admonition- admonition">
+<p class="admonition-title">必需信息</p>
+<ul class="simple">
+<li><p><strong>MAC地址</strong></p></li>
+<li><p><strong>工作单位</strong></p></li>
+<li><p><strong>学校/学院</strong> (仅学生)</p></li>
+</ul>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<ul class="simple">
+<li><p>一人只能申请一份许可证。</p></li>
+<li><p>临时许可证的有效期是3个月。</p></li>
+</ul>
+</div>
+</section>
+</section>
+<section id="id3">
+<h2>安装工具链<a class="headerlink" href="#id3" title="Link to this heading"></a></h2>
+<p>Install the Xplorer, a GUI based IDE tool provided by Cadence to build DSP applications.</p>
+<section id="windows">
+<h3>Windows<a class="headerlink" href="#windows" title="Link to this heading"></a></h3>
+<section id="installing-xtensa-xplorer">
+<h4>Installing Xtensa Xplorer<a class="headerlink" href="#installing-xtensa-xplorer" title="Link to this heading"></a></h4>
+<p>Double-click the installer and follow the prompts to install it. The installer used in this guide is Xploere-9.0.18-windows-installer.</p>
+<p>After the installation is complete, opening Xplorer GUI will usually remind you to update the software.
+Be sure to update the software, because the new patch will fix some toolchain problems.
+These problems can cause compiler crashes. If you encounter a situation where the compiler crash when compiling a certain piece of code, update the toolchain and try again.</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>Remember the path when installing the IDE. The path we use is <code class="docutils literal notranslate"><span class="pre">C:\usr</span></code>.</p>
+</div>
+</section>
+<section id="installing-hifi5-prod-1123-asic-build-configuration">
+<h4>Installing HIFI5_PROD_1123_asic Build Configuration<a class="headerlink" href="#installing-hifi5-prod-1123-asic-build-configuration" title="Link to this heading"></a></h4>
+<p><strong>Build Configuration</strong> is a term that describes all parameters and necessary builds for the Tensilica processor implementation you are developing with.
+It is mandatory to install a specific build configuration before starting development on DSP. We will use the default SDK named “dsp” in the following sections.
+Contact Realtek’s FAE if you haven’t got it.</p>
+<ol class="arabic">
+<li><p>Double-click <span class="guilabel">RUN Xplorer 9.0.18</span> on the desktop (or from the start menu).</p></li>
+<li><p>Click <span class="guilabel">Browse</span> to set the workspace to <code class="docutils literal notranslate"><span class="pre">&lt;dsp_sdk&gt;\project</span></code>.</p>
+<div class="admonition caution">
+<p class="admonition-title">小心</p>
+<p>The workspace can’t be set freely.</p>
+</div>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/set_workspace_in_xtensa_xplorer_launcher.png"><img alt="../../_images/set_workspace_in_xtensa_xplorer_launcher.png" src="../../_images/set_workspace_in_xtensa_xplorer_launcher.png" style="width: 606.6px; height: 270.90000000000003px;" /></a>
+</figure>
+</li>
+<li><p>Click <span class="guilabel">Launch</span> to enter the main window of Xplorer.</p>
+<p>The build configuration can be installed into the IDE using the <strong>System Overview</strong> panel which is in the lower left corner by default.</p>
+</li>
+<li><p>If this panel is not visible, it can be toggled using menu <span class="menuselection">Window &gt; Show View &gt; System Overview</span>. Right click on <span class="guilabel">Configuration</span> and select <span class="guilabel">New Configuration</span>.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/new_configuration_in_system_overview.png"><img alt="../../_images/new_configuration_in_system_overview.png" src="../../_images/new_configuration_in_system_overview.png" style="width: 393.3px; height: 117.9px;" /></a>
+</figure>
+</li>
+<li><p>Select the fourth item in the new pop-up window, then click <span class="guilabel">Next</span>.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/fourth_item_in_the_new_xtensa_configuration.png"><img alt="../../_images/fourth_item_in_the_new_xtensa_configuration.png" src="../../_images/fourth_item_in_the_new_xtensa_configuration.png" style="width: 676.8000000000001px; height: 572.4px;" /></a>
+</figure>
+</li>
+<li><p>Click <span class="guilabel">Browse</span> to find the corresponding configuration file (by default under <code class="docutils literal notranslate"><span class="pre">dsp\</span></code>), then click <span class="guilabel">Add Build</span>, and finally click <span class="guilabel">Finish</span>. <code class="file docutils literal notranslate"><span class="pre">HIFI5_PROD_1123_asic_UPG_win32_redist.tgz</span></code> is for CALL0 ABI, and <code class="file docutils literal notranslate"><span class="pre">HIFI5_PROD_1123_asic_wUPG_win32_redist.tgz</span></code> is for window ABI. Take CALL0 ABI configuration as an example:</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/install_xtensa_build.png"><img alt="../../_images/install_xtensa_build.png" src="../../_images/install_xtensa_build.png" style="width: 781.2px; height: 591.3000000000001px;" /></a>
+</figure>
+</li>
+</ol>
+<p>If the entry in the red box below appears in <strong>System Overview</strong>, the configuration has been successfully installed.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/hifis_prod_1123_asic_upg_in_system_overview.png"><img alt="../../_images/hifis_prod_1123_asic_upg_in_system_overview.png" src="../../_images/hifis_prod_1123_asic_upg_in_system_overview.png" style="width: 726.3000000000001px; height: 259.2px;" /></a>
+</figure>
+<p>Then, you can use the same procedure to install another window ABI configuration.
+We recommend to add the bin directory of Xtensa tool to the system path, otherwise some helpful scripts may not find the executable.</p>
+<p>For Windows, the bin directory is <code class="docutils literal notranslate"><span class="pre">C:\usr\xtensa\XtDevTools\install\tools\RI-2021.8-win32\XtensaTools\bin</span></code>.</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>The python script version for post-processing is recommended to be <strong>python3.8</strong>. You may encounter problems if using <strong>python3.11</strong>.</p>
+</div>
+</section>
+<section id="installing-xtensa-on-chip-debugger-daemon">
+<h4>Installing Xtensa on Chip Debugger Daemon<a class="headerlink" href="#installing-xtensa-on-chip-debugger-daemon" title="Link to this heading"></a></h4>
+<p>The Xtensa on Chip Debugger Daemon (xt-ocd) is a powerful GDB-based debugging tool.
+It is not installed by default with the Xplorer IDE. A self-extracting executable installer is included with the Xplorer.
+The following is a brief installation method of xt-ocd. For more xt-ocd installation guide, refer to <code class="file docutils literal notranslate"><span class="pre">xtensa_debug_guide.pdf</span></code>.</p>
+<ul>
+<li><p>Windows: If Xplorer’s installation path is <code class="docutils literal notranslate"><span class="pre">C:\usr\xtensa\XtDevTools\downloads\RI-2021.8\tools\xt-ocd-14.08-windows64-installer</span></code>, due to differences in installation paths and software versions, the paths and installer’s name may be different.</p></li>
+<li><p>Linux: Assuming Xplorer is installed under <code class="docutils literal notranslate"><span class="pre">/opt/xtensa</span></code>:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span><span class="w"> </span><span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">xtensa</span><span class="o">/</span><span class="n">XtDevTools</span><span class="o">/</span><span class="n">downloads</span><span class="o">/</span><span class="n">RI</span><span class="mf">-2021.8</span><span class="o">/</span><span class="n">tools</span><span class="o">/</span>
+<span class="n">sudo</span><span class="w"> </span><span class="p">.</span><span class="o">/</span><span class="n">xt</span><span class="o">-</span><span class="n">ocd</span><span class="mf">-14.08</span><span class="o">-</span><span class="n">linux64</span><span class="o">-</span><span class="n">installer</span>
+</pre></div>
+</div>
+<p>xt-ocd will be installed in this path by default:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">Tensilica</span><span class="o">/</span><span class="n">xocd</span><span class="mf">-14.08</span>
+</pre></div>
+</div>
+<p>The j-link driver needs to be installed additionally. Note that the J-link driver version should not be too new, tested V6.20 and V6.44 can meet the requirements. The j-link driver will be installed in the path <code class="docutils literal notranslate"><span class="pre">/opt/SEGGER/</span></code> by default. After the installation is complete, you need to execute:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">ln</span><span class="w"> </span><span class="o">-</span><span class="n">s</span><span class="w"> </span><span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">SEGGER</span><span class="o">/</span><span class="n">JLink_V644i</span><span class="o">/</span><span class="n">libjlinkarm</span><span class="p">.</span><span class="n">so</span><span class="mf">.6</span><span class="w"> </span><span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">Tensilica</span><span class="o">/</span><span class="n">xocd</span><span class="mf">-14.08</span><span class="o">/</span><span class="n">modules</span><span class="o">/</span><span class="n">libjlinkarm</span><span class="p">.</span><span class="n">so</span><span class="mf">.6</span>
+</pre></div>
+</div>
+<p>If the libncursesw.so.5 file cannot be found on your system:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span><span class="w"> </span><span class="n">ln</span><span class="w"> </span><span class="o">-</span><span class="n">s</span><span class="w"> </span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">x86_64</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">gnu</span><span class="o">/</span><span class="n">libncursesw</span><span class="p">.</span><span class="n">so</span><span class="mf">.6</span><span class="w"> </span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">x86_64</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">gnu</span><span class="o">/</span><span class="n">libncursesw</span><span class="p">.</span><span class="n">so</span><span class="mf">.5</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p>When you debug in Xplorer, if the error is as follows:</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/cannot_find_ocd_daemons.png"><img alt="../../_images/cannot_find_ocd_daemons.png" src="../../_images/cannot_find_ocd_daemons.png" style="width: 445.5px; height: 149.4px;" /></a>
+</figure>
+<p>You need to add a line after <em># [XOCDInstallations]</em> in file <code class="file docutils literal notranslate"><span class="pre">/opt/xtensa/Xplorer-9.0.18/utils/xocdm9.0.18.3000/xocdm.ini</span></code>:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="mf">14.08</span><span class="o">=/</span><span class="n">opt</span><span class="o">/</span><span class="n">Tensilica</span><span class="o">/</span><span class="n">xocd</span><span class="mf">-14.08</span>
+</pre></div>
+</div>
+</section>
+<section id="installing-a-license">
+<h4>Installing a License<a class="headerlink" href="#installing-a-license" title="Link to this heading"></a></h4>
+<p>There are various ways to install a license, here we describe how to install a license in Xplorer when licenses are managed on a server.</p>
+<ol class="arabic">
+<li><p>Click <span class="guilabel">Help</span> in the upper part of Xplorer, and choose <span class="guilabel">Xplorer License Keys</span>.</p></li>
+<li><p>Click <span class="guilabel">Install Software Keys</span>.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/xplorer_license_keys.png"><img alt="../../_images/xplorer_license_keys.png" src="../../_images/xplorer_license_keys.png" style="width: 518.4px; height: 308.7px;" /></a>
+</figure>
+</li>
+<li><p>Fill in the blank with the server’s port and IP address, select <cite>Point to the selected license file in its current location</cite>, and click <span class="guilabel">Finish</span>.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/install_xplorer_and_xtensa_tools_license_keys.png"><img alt="../../_images/install_xplorer_and_xtensa_tools_license_keys.png" src="../../_images/install_xplorer_and_xtensa_tools_license_keys.png" style="width: 537.3000000000001px; height: 274.5px;" /></a>
+</figure>
+</li>
+</ol>
+</section>
+</section>
+<section id="linux-server">
+<h3>Linux Server<a class="headerlink" href="#linux-server" title="Link to this heading"></a></h3>
+<p>This section describes how to install <code class="docutils literal notranslate"><span class="pre">Xplorer-9.0.18</span></code> on the Linux server and compile the Xplorer project using headless mode (from command line) on the server.
+The headless mode only occupies the license for a short period of time during compilation, which alleviate insufficient licenses problem.
+In the following installation process, we recommend using the <code class="docutils literal notranslate"><span class="pre">sudo</span></code> command instead of the root account.</p>
+<section id="installing-dependent-packages">
+<h4>Installing Dependent Packages<a class="headerlink" href="#installing-dependent-packages" title="Link to this heading"></a></h4>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span><span class="w"> </span><span class="n">apt</span><span class="o">-</span><span class="n">get</span><span class="w"> </span><span class="n">install</span><span class="w"> </span><span class="n">libxi6</span><span class="w"> </span><span class="n">libxtst6</span><span class="w"> </span><span class="n">libxrender1</span>
+</pre></div>
+</div>
+<p>If you install Xplorer in a Linux server (such as Ubuntu Server 20.04 LTS) but display Xplorer GUI on local PC (X11 forward), we recommend to install GTK support package:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span><span class="w"> </span><span class="n">apt</span><span class="o">-</span><span class="n">get</span><span class="w"> </span><span class="n">install</span><span class="w"> </span><span class="n">libgtk</span><span class="mi">-3</span><span class="o">-</span><span class="n">dev</span>
+</pre></div>
+</div>
+</section>
+<section id="id4">
+<h4>Installing Xtensa Xplorer<a class="headerlink" href="#id4" title="Link to this heading"></a></h4>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">chmod</span><span class="w"> </span><span class="o">+</span><span class="n">x</span><span class="w"> </span><span class="n">Xplorer</span><span class="mf">-9.0.18</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">x64</span><span class="o">-</span><span class="n">installer</span><span class="p">.</span><span class="n">bin</span>
+<span class="n">sudo</span><span class="w"> </span><span class="p">.</span><span class="o">/</span><span class="n">Xplorer</span><span class="mf">-9.0.18</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">x64</span><span class="o">-</span><span class="n">installer</span><span class="p">.</span><span class="n">bin</span>
+</pre></div>
+</div>
+<p>The default installation path is <code class="docutils literal notranslate"><span class="pre">/opt/xtensa</span></code>. Other components can select all <span class="guilabel">yes</span>.</p>
+<p>After the installation is complete, opening Xplorer GUI will usually remind you to update the software.
+Be sure to update the software, because the new patch will fix some toolchain problems. These problems can cause compiler crashes.
+If you encounter a situation where the compiler crash when compiling a certain piece of code, update the toolchain and try again.</p>
+<p>If Xplorer GUI cannot be opened through X11, you can manually download and install the patch.
+The patch we provide (<code class="file docutils literal notranslate"><span class="pre">XtensaTools_RI_2021_8_patch734507_linux.tgz</span></code>) is not necessarily the latest, so it is recommended that users consult Cadence or download the latest patch for XtensaTools_RI_2021_8 through XPG. First copy the patch package to the xtensa tool path (for example: <code class="docutils literal notranslate"><span class="pre">/opt/xtensa/XtDevTools/install/tools/</span></code>), then decompress the patch and overwrite the original RI-2021.8-linux folder.</p>
+</section>
+<section id="adding-a-license">
+<h4>Adding a License<a class="headerlink" href="#adding-a-license" title="Link to this heading"></a></h4>
+<p>To set Xtensa license, add the environment variable <cite>LM_LICENSE_FILE</cite> or <cite>XTENSAD_LICENSE_FILE</cite> to the full path of the license file for a node-locked license or &lt;port&gt;&#64;&lt;server&gt; for a floating license (where <cite>&lt;port&gt;</cite> is the port number noted in Prepare the Floating License File, and <cite>&lt;server&gt;</cite> is the name of the license server). Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">export</span> <span class="n">LM_LICENSE_FILE</span><span class="o">=&lt;</span><span class="n">port</span><span class="o">&gt;@&lt;</span><span class="n">address</span><span class="o">&gt;</span>
+<span class="n">source</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">profile</span>
+</pre></div>
+</div>
+</section>
+<section id="installing-hifi5-configuration">
+<h4>Installing HiFi5 Configuration<a class="headerlink" href="#installing-hifi5-configuration" title="Link to this heading"></a></h4>
+<ol class="arabic">
+<li><p>Decompress the configuration (for window ABI) to the corresponding directory:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span><span class="w"> </span><span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">xtensa</span><span class="o">/</span><span class="n">XtDevTools</span><span class="o">/</span><span class="n">install</span><span class="o">/</span><span class="n">builds</span><span class="o">/</span>
+<span class="n">sudo</span><span class="w"> </span><span class="n">tar</span><span class="w"> </span><span class="o">-</span><span class="n">zxvf</span><span class="w"> </span><span class="n">HIFI5_PROD_1123_asic_wUPG_linux_redist</span><span class="p">.</span><span class="n">tgz</span>
+<span class="n">sudo</span><span class="w"> </span><span class="n">tar</span><span class="w"> </span><span class="o">-</span><span class="n">zxvf</span><span class="w"> </span><span class="n">HIFI5_PROD_1123_asic_UPG_linux_redist</span><span class="p">.</span><span class="n">tgz</span>
+</pre></div>
+</div>
+<p>The example directory structure after decompression:</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/directory_structure_after_decompression.jpeg"><img alt="../../_images/directory_structure_after_decompression.jpeg" src="../../_images/directory_structure_after_decompression.jpeg" style="width: 461.7px; height: 68.4px;" /></a>
+</figure>
+</li>
+<li><p>Install configuration (for window ABI):</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span><span class="w"> </span><span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">xtensa</span><span class="o">/</span><span class="n">XtDevTools</span><span class="o">/</span><span class="n">install</span><span class="o">/</span><span class="n">builds</span><span class="o">/</span><span class="n">RI</span><span class="mf">-2021.8</span><span class="o">-</span><span class="n">linux</span><span class="o">/</span><span class="n">HIFI5_PROD_1123_asic_wUPG</span>
+<span class="n">sudo</span><span class="w"> </span><span class="p">.</span><span class="o">/</span><span class="n">install</span>
+</pre></div>
+</div>
+</li>
+<li><p>Input Xtensa Tools Path (change according to the actual installation path):</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">xtensa</span><span class="o">/</span><span class="n">XtDevTools</span><span class="o">/</span><span class="n">install</span><span class="o">/</span><span class="n">tools</span><span class="o">/</span><span class="n">RI</span><span class="mf">-2021.8</span><span class="o">-</span><span class="n">linux</span><span class="o">/</span><span class="n">XtensaTools</span>
+<span class="n">What</span><span class="w"> </span><span class="n">registry</span><span class="w"> </span><span class="n">would</span><span class="w"> </span><span class="n">you</span><span class="w"> </span><span class="n">like</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">use</span><span class="o">?</span><span class="w"> </span><span class="p">[</span><span class="n">keep</span><span class="w"> </span><span class="k">default</span><span class="p">]</span>
+<span class="n">Do</span><span class="w"> </span><span class="n">you</span><span class="w"> </span><span class="n">want</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">make</span><span class="w"> </span><span class="s">&quot;HIFI5_PROD_1123_asic_UPG&quot;</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="k">default</span><span class="w"> </span><span class="n">Xtensa</span><span class="w"> </span><span class="n">core</span><span class="o">?</span><span class="w"> </span><span class="p">[</span><span class="n">y</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="n">keep</span><span class="w"> </span><span class="k">default</span><span class="p">]</span>
+</pre></div>
+</div>
+</li>
+<li><p>Use the same installation procedure to install the CALL0 ABI configuration package <code class="file docutils literal notranslate"><span class="pre">HIFI5_PROD_1123_asic_UPG_linux_redist.tgz</span></code>.</p></li>
+</ol>
+</section>
+<section id="coping-configuration-registration-file">
+<h4>Coping Configuration Registration File<a class="headerlink" href="#coping-configuration-registration-file" title="Link to this heading"></a></h4>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span><span class="w"> </span><span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">xtensa</span><span class="o">/</span><span class="n">XtDevTools</span><span class="o">/</span><span class="n">install</span><span class="o">/</span><span class="n">tools</span><span class="o">/</span><span class="n">RI</span><span class="mf">-2021.8</span><span class="o">-</span><span class="n">linux</span><span class="o">/</span><span class="n">XtensaTools</span><span class="o">/</span><span class="n">config</span>
+<span class="n">sudo</span><span class="w"> </span><span class="n">cp</span><span class="w"> </span><span class="n">HIFI5_PROD_1123_asic_UPG</span><span class="o">-</span><span class="n">params</span><span class="w"> </span><span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">xtensa</span><span class="o">/</span><span class="n">XtDevTools</span><span class="o">/</span><span class="n">XtensaRegistry</span><span class="o">/</span><span class="n">RI</span><span class="mf">-2021.8</span><span class="o">-</span><span class="n">linux</span><span class="o">/</span>
+<span class="n">sudo</span><span class="w"> </span><span class="n">cp</span><span class="w"> </span><span class="n">HIFI5_PROD_1123_asic_wUPG</span><span class="o">-</span><span class="n">params</span><span class="w"> </span><span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">xtensa</span><span class="o">/</span><span class="n">XtDevTools</span><span class="o">/</span><span class="n">XtensaRegistry</span><span class="o">/</span><span class="n">RI</span><span class="mf">-2021.8</span><span class="o">-</span><span class="n">linux</span><span class="o">/</span>
+</pre></div>
+</div>
+<p>We recommend to add the bin directory of Xtensa tool to the system PATH. Otherwise some helpful scripts may not find the executable.</p>
+<p>For Linux, the default bin directory is <code class="docutils literal notranslate"><span class="pre">/opt/xtensa/XtDevTools/install/tools/RI-2021.8-linux/XtensaTools/bin/</span></code>.</p>
+</section>
+<section id="compiling-with-cmd">
+<h4>Compiling with CMD<a class="headerlink" href="#compiling-with-cmd" title="Link to this heading"></a></h4>
+<p>You can use <code class="file docutils literal notranslate"><span class="pre">auto_build.sh</span></code> to compile the project:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span><span class="w"> </span><span class="o">&lt;</span><span class="n">dsp_sdk</span><span class="o">&gt;/</span><span class="n">project</span><span class="o">/</span><span class="n">auto_build</span>
+<span class="p">.</span><span class="o">/</span><span class="n">auto_build</span><span class="p">.</span><span class="n">sh</span>
+</pre></div>
+</div>
+<p>Xplorer will copy project_dsp to a new workspace <em>auto_ws</em> then build the project.
+The generated <code class="file docutils literal notranslate"><span class="pre">dsp_all.bin</span></code> and <code class="file docutils literal notranslate"><span class="pre">dsp.bin</span></code> are saved in default <code class="docutils literal notranslate"><span class="pre">&lt;SDK&gt;/dsp/project/image</span></code> directory.
+Therefore, some intermediate compilation files will remain in the <em>auto_ws</em> directory.
+Refer to <code class="docutils literal notranslate"><span class="pre">&lt;SDK&gt;/dsp/project/auto_build/readme.txt</span></code> for the use of <code class="file docutils literal notranslate"><span class="pre">auto_build.sh</span></code>.</p>
+</section>
+<section id="troubleshooting">
+<h4>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>The python script version for post-processing is recommended to be <strong>python3.8</strong>. You may encounter problems if you use <strong>python3.11</strong>. If you do not want to change the default Python version of the system, refer to the note in Section <em>Build a Program</em> to change the post-processing command (right click on <span class="guilabel">project_dsp</span>, then select <span class="menuselection">Properties &gt; builder &gt; internal &gt; Post-build Step</span>). Specify the <strong>python3.8</strong> in the post-build command.</p></li>
+<li><p>If you have other versions of Xplorer installed on your system and put there bin directory in your system PATH, when you directly use xt-clang and xt-ar (e.g. using with Cmake, Makefile or python) to compile or link your code rather than Xplorer, the registry value problems may be encountered during the link process: <em>Either the current Xtensa configuration is not properly installed or you are using Xtensa Tools from a different location than you specified when installing the configuration.</em></p></li>
+<li><p>If Xplorer can compile the SDK normally but with your method the above problems occur, the problem is generally caused by the bin directory of other versions of the Xtensa tools included in the system path. Check the settings of PATH, such as the profile file. Then re-open a new terminal. Sometimes, the temporary settings in the session also cause PATH problems.</p></li>
+</ul>
+<p>There are some problems that need attention:</p>
+<ul class="simple">
+<li><p>Current <code class="file docutils literal notranslate"><span class="pre">dsp_batch.xml</span></code> default import and compile project_dsp project. If you need to change the compiled project, target or configuration, change the <code class="file docutils literal notranslate"><span class="pre">dsp_batch.xml</span></code> file, or use Xplorer batch build to generate xml file. (refer to Xplorer help: <span class="menuselection">Xtensa Xplorer &gt; Tasks &gt; Building your Project &gt; Building multiple projects</span>, using batch build)</p></li>
+<li><p>The default Xplorer IDE is <code class="file docutils literal notranslate"><span class="pre">/opt/xtensa/Xplorer-9.0.18/xplorer</span></code>, set <code class="file docutils literal notranslate"><span class="pre">auto_build.sh</span></code> according to the actual installation location and Xplorer version.</p></li>
+<li><p>Currently, Xplorer on the server side creates a new workspace (<code class="docutils literal notranslate"><span class="pre">&lt;sdk</span> <span class="pre">root&gt;/dsp/auto_ws</span></code>) and imports the project into the new workspace for compilation. The script will automatically empty and re-import projects, otherwise the project modification on the local Xplorer cannot be synchronized.</p></li>
+<li><p>Since auto build clears <cite>auto_ws</cite> workspace every time, so it is fully compiled every time.</p></li>
+</ul>
+<p>We recommend to modify project with Xplorer GUI. However, if there is no GUI but the project must be modified, we provide a temporary solution: directly edit <code class="file docutils literal notranslate"><span class="pre">&lt;dsp</span> <span class="pre">sdk&gt;/project/project_dsp/.project</span></code> file.</p>
+<ol class="arabic simple">
+<li><p>Add a new virtual folder:</p></li>
+</ol>
+<blockquote>
+<div><div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">link</span><span class="o">&gt;</span>
+<span class="w">  </span><span class="o">&lt;</span><span class="n">name</span><span class="o">&gt;</span><span class="n">TestFolder</span><span class="o">&lt;/</span><span class="n">name</span><span class="o">&gt;</span>
+<span class="w">  </span><span class="o">&lt;</span><span class="n">type</span><span class="o">&gt;</span><span class="mi">2</span><span class="o">&lt;/</span><span class="n">type</span><span class="o">&gt;</span>
+<span class="w">  </span><span class="o">&lt;</span><span class="n">locationURI</span><span class="o">&gt;</span><span class="n">virtual</span><span class="o">:/</span><span class="n">virtual</span><span class="o">&lt;/</span><span class="n">locationURI</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">link</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</div></blockquote>
+<ol class="arabic simple" start="2">
+<li><p>Add a file to the virtual folder:</p></li>
+</ol>
+<blockquote>
+<div><div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">link</span><span class="o">&gt;</span>
+<span class="w">  </span><span class="o">&lt;</span><span class="n">name</span><span class="o">&gt;</span><span class="n">TestFolder</span><span class="o">/</span><span class="n">test_file</span><span class="p">.</span><span class="n">c</span><span class="o">&lt;/</span><span class="n">name</span><span class="o">&gt;</span>
+<span class="w">  </span><span class="o">&lt;</span><span class="n">type</span><span class="o">&gt;</span><span class="mi">1</span><span class="o">&lt;/</span><span class="n">type</span><span class="o">&gt;</span>
+<span class="w">  </span><span class="o">&lt;</span><span class="n">locationURI</span><span class="o">&gt;</span><span class="n">PARENT</span><span class="mi">-2</span><span class="o">-</span><span class="n">PROJECT_LOC</span><span class="o">/</span><span class="n">testfolder</span><span class="o">/</span><span class="n">test_file</span><span class="p">.</span><span class="n">c</span><span class="o">&lt;/</span><span class="n">locationURI</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">link</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</div></blockquote>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>Modify project configuration (e.g. modify compilation options, add and delete files, etc.), a GUI Xplorer IDE is required.
+On linux server, the Xplorer GUI window can be displayed on the local terminal using the X11 protocol.
+The method is as follows: Check the contents of <code class="file docutils literal notranslate"><span class="pre">/etc/ssh/sshd_config</span></code>. In this file flag <code class="docutils literal notranslate"><span class="pre">X11Forwarding</span></code> should be set to <strong>yes</strong>. Then:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">sudo</span><span class="w"> </span><span class="n">apt</span><span class="o">-</span><span class="n">get</span><span class="w"> </span><span class="n">install</span><span class="w"> </span><span class="n">dbus</span><span class="o">-</span><span class="n">x11</span>
+<span class="o">&gt;&gt;</span><span class="w"> </span><span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">xtensa</span><span class="o">/</span><span class="n">Xplorer</span><span class="mf">-9.0.18</span><span class="o">/</span><span class="n">xplorer</span>
+</pre></div>
+</div>
+<p>Xplorer’s GUI window will pop up on the local computer. Set the workspace as <code class="docutils literal notranslate"><span class="pre">&lt;dsp</span> <span class="pre">sdk&gt;/project</span></code>.</p>
+</div>
+</section>
+</section>
+</section>
+<section id="compiling-project-and-downloading-image">
+<h2>Compiling Project and Downloading Image<a class="headerlink" href="#compiling-project-and-downloading-image" title="Link to this heading"></a></h2>
+<p>The way of using project_dsp on Windows or Linux GUI Xplorer are very similar to each other. Here, we use the building process on Windows as an example.</p>
+<section id="building-project-with-cmd-linux">
+<h3>Building Project with CMD (Linux)<a class="headerlink" href="#building-project-with-cmd-linux" title="Link to this heading"></a></h3>
+<p>On a Linux server, you can run <code class="file docutils literal notranslate"><span class="pre">auto_build.sh</span></code> to compile the default project.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span><span class="w"> </span><span class="n">project</span><span class="o">/</span><span class="n">auto_build</span><span class="o">/</span>
+<span class="n">chmod</span><span class="w"> </span><span class="o">+</span><span class="n">x</span><span class="w"> </span><span class="n">auto_build</span><span class="p">.</span><span class="n">sh</span>
+<span class="p">.</span><span class="o">/</span><span class="n">auto_build</span><span class="p">.</span><span class="n">sh</span>
+</pre></div>
+</div>
+<p>Image path: <code class="docutils literal notranslate"><span class="pre">project/image/dsp_all.bin</span></code></p>
+<p>The configuration file for the automatic compilation script is <code class="file docutils literal notranslate"><span class="pre">project/auto_build/dsp_batch.xml</span></code>.
+In this script, you can modify the project configuration (<strong>HIFI5_PROD_1123_asic_wUPG</strong> or <strong>HIFI5_PROD_1123_asic_UPG</strong>).</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>Add the Xtensa Tools directory to your system PATH. In our case, it is <code class="docutils literal notranslate"><span class="pre">/opt/xtensa/XtDevTools/install/tools/RI-2021.8-linux/XtensaTools/bin</span></code>.</p>
+</div>
+</section>
+<section id="building-project-with-xplorer-gui">
+<h3>Building Project with Xplorer GUI<a class="headerlink" href="#building-project-with-xplorer-gui" title="Link to this heading"></a></h3>
+<section id="importing-project-to-workspace">
+<h4>Importing Project to Workspace<a class="headerlink" href="#importing-project-to-workspace" title="Link to this heading"></a></h4>
+<ol class="arabic">
+<li><p>Click <span class="guilabel">Browse</span> to set the workspace to <code class="docutils literal notranslate"><span class="pre">&lt;dsp_sdk&gt;\project</span></code>.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/set_workspace_in_xtensa_xplorer_launcher.png"><img alt="../../_images/set_workspace_in_xtensa_xplorer_launcher.png" src="../../_images/set_workspace_in_xtensa_xplorer_launcher.png" style="width: 606.6px; height: 270.90000000000003px;" /></a>
+</figure>
+<p>You will find a <strong>HelloWorld</strong> project added to the Project Explorer automatically after going over all steps in the previous chapters.
+Now let’s add project_dsp included in the SDK into the workspace.</p>
+</li>
+<li><p>Click <span class="menuselection">File &gt; Import</span>, then click <span class="menuselection">General &gt; Existing Projects into Workspace &gt; Next</span></p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/import_existing_projects_into_workspace.svg"><img alt="../../_images/import_existing_projects_into_workspace.svg" height="472" src="../../_images/import_existing_projects_into_workspace.svg" width="784" /></a>
+</figure>
+</li>
+<li><p>Set contents in the read box as above, and click <span class="guilabel">Finish</span>.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/set_contents_in_the_read_box.png"><img alt="../../_images/set_contents_in_the_read_box.png" src="../../_images/set_contents_in_the_read_box.png" style="width: 458.1px; height: 632.7px;" /></a>
+</figure>
+</li>
+</ol>
+</section>
+<section id="building-project">
+<h4>Building Project<a class="headerlink" href="#building-project" title="Link to this heading"></a></h4>
+<p>In the upper part of Xtensa Xplorer, set <em>P</em> to <code class="docutils literal notranslate"><span class="pre">project_dsp</span></code>, <em>C</em> to <code class="docutils literal notranslate"><span class="pre">HIFI5_PROD_1123_asic_UPG</span></code> (or <code class="docutils literal notranslate"><span class="pre">HIFI5_PROD_1123_asic_wUPG</span></code>), <em>T</em> to <code class="docutils literal notranslate"><span class="pre">Release</span></code>, then click <span class="guilabel">Build Active</span>.
+The generated image will be placed under <code class="docutils literal notranslate"><span class="pre">project\image</span></code>, the name of the image is <code class="file docutils literal notranslate"><span class="pre">dsp_all.bin</span></code>.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/build_active_to_generate_image.png"><img alt="../../_images/build_active_to_generate_image.png" src="../../_images/build_active_to_generate_image.png" style="width: 917.6px; height: 71.2px;" /></a>
+</figure>
+<p>Here are some useful scripts:</p>
+<ul class="simple">
+<li><p>By default, when generating DSP firmware, the corresponding disassembly will not be generated. If disassembly is required to debug the code you need to enable it in the post processing script <code class="file docutils literal notranslate"><span class="pre">&lt;dsp_sdk&gt;/project/img_utility/code_analyze.py</span></code>: set <em>ENABLE_Disassembler</em> to 1. Generating disassembly may slow down the compile process, so only enable disassembly when necessary. The generated ASM file is <code class="file docutils literal notranslate"><span class="pre">&lt;dsp_sdk&gt;/project/image/project_dsp.asm</span></code>.</p></li>
+<li><p>To check function or data location, you can view the map file generated by the connector:</p>
+<ul>
+<li><p>For Xplorer-GUI: <code class="file docutils literal notranslate"><span class="pre">&lt;dsp_sdk&gt;/proiect/proiect_dsp/bin/HIFI5_PROD_1123_asic_UPG/Release/proiect_dsp.map</span></code></p></li>
+<li><p>For Linux command line: <code class="file docutils literal notranslate"><span class="pre">&lt;dsp_sdk&gt;/auto_ws/proiect/dsp/bin/HIFI5_PROD_1123_asic_UPG/UPG/Release/project_dsp.map</span></code></p></li>
+</ul>
+</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<ul class="simple">
+<li><p>Add the Xtensa Tools directory to your system PATH. In our case, it is <code class="docutils literal notranslate"><span class="pre">C:\usr\xtensa\XtDevTools\install\tools\RI-2021.8-win32\XtensaTools\bin</span></code>.</p></li>
+<li><p>Make sure you have permissions to the files in the image and img_utility folder.</p></li>
+<li><p>Install python and add its path to environment variable to make sure that post-processing works well. Any version newer than 3.8.0 should be fine. And we use <em>python</em> as the command, you may have to change the command if your command is <em>python3</em> or <em>python3.8</em>.</p></li>
+</ul>
+</div>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/post_build_step_in_properties_for_project_dsp.png"><img alt="../../_images/post_build_step_in_properties_for_project_dsp.png" src="../../_images/post_build_step_in_properties_for_project_dsp.png" style="width: 635.4px; height: 424.8px;" /></a>
+</figure>
+</section>
+</section>
+<section id="enabling-dsp-in-km4-core">
+<h3>Enabling DSP in KM4 Core<a class="headerlink" href="#enabling-dsp-in-km4-core" title="Link to this heading"></a></h3>
+<p>By default, the DSP is not enabled. It requires KM4 core to power it on.</p>
+<p>Enable DSP core in SDK menuconfig:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span><span class="w"> </span><span class="p">{</span><span class="n">SDK</span><span class="p">}</span><span class="o">/</span><span class="n">amebalite_gcc_project</span>
+<span class="n">make</span><span class="w"> </span><span class="n">menuconfig</span>
+</pre></div>
+</div>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/config_dsp_enable_in_menuconfig.png"><img alt="../../_images/config_dsp_enable_in_menuconfig.png" src="../../_images/config_dsp_enable_in_menuconfig.png" style="width: 484.2px; height: 334.2px;" /></a>
+</figure>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/enable_dsp_in_menuconfig.png"><img alt="../../_images/enable_dsp_in_menuconfig.png" src="../../_images/enable_dsp_in_menuconfig.png" style="width: 483.59999999999997px; height: 335.4px;" /></a>
+</figure>
+</section>
+<section id="downloading-bin-files">
+<h3>Downloading Bin Files<a class="headerlink" href="#downloading-bin-files" title="Link to this heading"></a></h3>
+<p>Currently, we support two Flash partitions for downloading DSP image via Realtek ImageTool:</p>
+<ol class="arabic">
+<li><p>Download the DSP firmware and MCU application firmware separately.</p>
+<p>This method is convenient for development.
+The image names are shown in the following figure, and the image address refer to the <em>DSP IMG</em> Physical address in Flash Layout table.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/download_the_dsp_and_MCU_application_separately.png"><img alt="../../_images/download_the_dsp_and_MCU_application_separately.png" src="../../_images/download_the_dsp_and_MCU_application_separately.png" style="width: 748.8000000000001px; height: 677.7px;" /></a>
+</figure>
+</li>
+<li><p>Combine DSP firmware and MCU application firmware into one firmware then download together.</p>
+<p>This method is convenient for OTA upgrade. For details, refer to the of OTA section.</p>
+</li>
+<li><p>Reset the board after download process is over.</p>
+<p>You should see <em>Hello DSP World</em> from a UART tool.</p>
+</li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>The <em>Hello DSP World</em> message may mixed with messages printed out by KM4/KR4. You can print more messages from DSP to see it clear.</p>
+</div>
+</section>
+<section id="id5">
+<h3>Troubleshooting<a class="headerlink" href="#id5" title="Link to this heading"></a></h3>
+<p><strong>Problem</strong>: <em>python</em> is not recognized as an internal or external command.</p>
+<p><strong>Solution</strong>: Maybe <em>python</em> as an environment variable, if this is the case, add <em>python</em> as an environment variable.</p>
+<p>Maybe the path where python.exe (Windows) or python.bin (Linux) is not added to your environment variable. In this case, add the path as an environment variable should solve the problem.</p>
+<p>And we find another problem rarely occurs in our experiment: on some pc, we have to <em>python3.8</em> to run python in command (Windows) or terminal (Linux). Typing <em>python</em> will report the same error. Maybe <em>python.exe</em> or <em>python.bin</em> is renamed as <em>python3.8</em>. You can create short cut named <em>python</em> pointing to <em>python3.8.exe</em> on Windows, or create a soft link on Linux. Suppose python3.8.bin is installed under <code class="docutils literal notranslate"><span class="pre">usr/bin</span></code>, type <em>sudo ln -s python3.8 python</em> on Linux.</p>
+</section>
+</section>
+<section id="adding-folder-or-files-into-project">
+<h2>Adding Folder or Files into Project<a class="headerlink" href="#adding-folder-or-files-into-project" title="Link to this heading"></a></h2>
+<p>We use virtual folder to manage project files. When using virtual folder, you delete files from your project, but the one on your disk remains intact. And it won’t copy files to your project folder. Suppose our application files <code class="file docutils literal notranslate"><span class="pre">test1.c</span></code> and <code class="file docutils literal notranslate"><span class="pre">test2.c</span></code> are placed in a folder named <em>application</em>, we add these files to our current project.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/add_files_to_current_project.svg"><img alt="../../_images/add_files_to_current_project.svg" height="143" src="../../_images/add_files_to_current_project.svg" width="651" /></a>
+</figure>
+<ol class="arabic">
+<li><p>Create a virtual folder named <em>application</em>. Right click on <span class="guilabel">project_dsp</span>, then select <span class="menuselection">New &gt; Folder</span>.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/new_folder_application.png"><img alt="../../_images/new_folder_application.png" src="../../_images/new_folder_application.png" style="width: 539.1px; height: 361.8px;" /></a>
+</figure>
+</li>
+<li><p>Fill the <em>Folder name</em> with <code class="docutils literal notranslate"><span class="pre">application</span></code>, choose <em>Folder is not located in the file system</em>, and then click <span class="guilabel">Finish</span>.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/folder_not_located_in_file_system.png"><img alt="../../_images/folder_not_located_in_file_system.png" src="../../_images/folder_not_located_in_file_system.png" style="width: 396.0px; height: 582.3000000000001px;" /></a>
+</figure>
+</li>
+<li><p>Right click on <em>application</em>, and choose <span class="guilabel">Import</span>.</p></li>
+<li><p>Click <span class="menuselection">General &gt; File System &gt; Next</span>.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/import_resources_from_local_files.svg"><img alt="../../_images/import_resources_from_local_files.svg" height="363" src="../../_images/import_resources_from_local_files.svg" width="742" /></a>
+</figure>
+</li>
+<li><p>In place 1, browse to the address of your folder. In place 2, choose the files you want to include. Click <span class="guilabel">Advanced</span> and tick the place 3.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/import_resources_from_local_files_details.png"><img alt="../../_images/import_resources_from_local_files_details.png" src="../../_images/import_resources_from_local_files_details.png" style="width: 491.4px; height: 547.4px;" /></a>
+</figure>
+</li>
+</ol>
+<div class="admonition caution">
+<p class="admonition-title">小心</p>
+<p>When adding project files, be sure to use relative paths. As shown in the figure above, click <code class="docutils literal notranslate"><span class="pre">Create</span> <span class="pre">link</span> <span class="pre">locations</span> <span class="pre">relative</span> <span class="pre">to:</span></code> and set it to <code class="docutils literal notranslate"><span class="pre">PROJECT_LOC</span></code>.</p>
+</div>
+</section>
+<section id="setting-the-project">
+<h2>Setting the Project<a class="headerlink" href="#setting-the-project" title="Link to this heading"></a></h2>
+<section id="optimizing-dsp-code-considerations">
+<h3>Optimizing DSP Code Considerations<a class="headerlink" href="#optimizing-dsp-code-considerations" title="Link to this heading"></a></h3>
+<p>Co-processor, O3 and SIMD compilation options can greatly improve the utilization of DSP hardware resources. But these options are not available for all codes. With -O3 option, the compiler may significantly adjust the order of execution.
+This option is generally safe, but there is a small chance of problems. Some RTOS source files and other ISR handlers cannot use co-processor and SIMD vector options, such as <em>-LNO:simd</em> and <em>-mcoproc</em>.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/optimizing_dsp_code_considerations.png"><img alt="../../_images/optimizing_dsp_code_considerations.png" src="../../_images/optimizing_dsp_code_considerations.png" style="width: 868.0px; height: 634.4000000000001px;" /></a>
+</figure>
+</section>
+<section id="reducing-dsp-image-size">
+<h3>Reducing DSP Image Size<a class="headerlink" href="#reducing-dsp-image-size" title="Link to this heading"></a></h3>
+<p>Sometimes our code would define some functions and functions that are temporarily unused. Although we do not use these functions, they often waste our ROM and RAM space. In order to solve this problem, we recommend some compile and link parameters:</p>
+<ol class="arabic">
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">-ffunction-sections</span></code> and <code class="docutils literal notranslate"><span class="pre">-Os</span></code> option to compiler:</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/create_separate_function_sections.png"><img alt="../../_images/create_separate_function_sections.png" src="../../_images/create_separate_function_sections.png" style="width: 300.6px; height: 27.900000000000002px;" /></a>
+</figure>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/optimization_for_size.png"><img alt="../../_images/optimization_for_size.png" src="../../_images/optimization_for_size.png" style="width: 309.6px; height: 29.7px;" /></a>
+</figure>
+</li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">-Wl,-gc-sections</span></code> linker option:</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/additional_compiler_options_for_linker.png"><img alt="../../_images/additional_compiler_options_for_linker.png" src="../../_images/additional_compiler_options_for_linker.png" style="width: 785.6px; height: 554.4px;" /></a>
+</figure>
+<p>This approach may encounter the following warnings (which can be ignored):</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="nl">ld</span><span class="p">:</span><span class="w"> </span><span class="n">warning</span><span class="o">:</span><span class="w"> </span><span class="n">The</span><span class="w"> </span><span class="n">min</span><span class="o">-</span><span class="n">sizing</span><span class="w"> </span><span class="n">binary</span><span class="w"> </span><span class="n">cannot</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">generated</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="o">-</span><span class="n">gc</span><span class="o">-</span><span class="n">sections</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">specified</span><span class="p">.</span>
+</pre></div>
+</div>
+</li>
+<li><p>In this case, the contents of the <em>.command</em> and <em>.ipc_table</em> sections cannot be loaded into the image because they are not explicitly called. In the link script <code class="file docutils literal notranslate"><span class="pre">RTK_LSPldscriptself32xtensa.x</span></code>, add <em>KEEP</em> attribute to these two segments.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="p">.</span><span class="n">ipc_table</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">ALIGN</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="n">_ipc_table_start</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ABSOLUTE</span><span class="p">(.);</span>
+<span class="n">KEEP</span><span class="p">(</span><span class="o">*</span><span class="p">(.</span><span class="n">ipc_table</span><span class="p">))</span>
+<span class="p">.</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ALIGN</span><span class="w"> </span><span class="p">(</span><span class="mi">4</span><span class="p">);</span>
+<span class="n">_ipc_table_end</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ABSOLUTE</span><span class="p">(.);</span>
+<span class="p">}</span><span class="w"> </span><span class="o">&gt;</span><span class="n">psram0_seg</span><span class="w"> </span><span class="o">:</span><span class="n">psram0_phdr</span>
+<span class="p">.</span><span class="n">command</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">ALIGN</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="n">_command_start</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ABSOLUTE</span><span class="p">(.);</span>
+<span class="n">KEEP</span><span class="p">(</span><span class="o">*</span><span class="p">(.</span><span class="n">command</span><span class="p">))</span>
+<span class="p">.</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ALIGN</span><span class="w"> </span><span class="p">(</span><span class="mi">4</span><span class="p">);</span>
+<span class="n">_command_end</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ABSOLUTE</span><span class="p">(.);</span>
+<span class="p">}</span><span class="w"> </span><span class="o">&gt;</span><span class="n">psram0_seg</span><span class="w"> </span><span class="o">:</span><span class="n">psram0_phdr</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>This linker script is overwritten after each modification of the LSP. The script needs to be reworked.</p>
+</div>
+</li>
+</ol>
+</section>
+<section id="library-order">
+<h3>Library Order<a class="headerlink" href="#library-order" title="Link to this heading"></a></h3>
+<p>When linking static libraries, if there are dependencies between multiple static libraries, there will be link order problems between the dependent static libraries. This needs to be paid attention to when using a static library, otherwise a link error that <em>the symbol cannot be found</em> will be reported.</p>
+<p>For example, <code class="file docutils literal notranslate"><span class="pre">liborder2.a</span></code> depends on <code class="file docutils literal notranslate"><span class="pre">liborder1.a</span></code>, and the final executable test depends on <code class="file docutils literal notranslate"><span class="pre">liborder2.a</span></code>, the link options should be <code class="docutils literal notranslate"><span class="pre">-lliborder2.a</span> <span class="pre">-lliborder1.a</span></code>, otherwise it will report that some symbols in <code class="file docutils literal notranslate"><span class="pre">liborder1.a</span></code> are undefined.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/library_order_in_build_properties.png"><img alt="../../_images/library_order_in_build_properties.png" src="../../_images/library_order_in_build_properties.png" style="width: 756.6999999999999px; height: 600.5999999999999px;" /></a>
+</figure>
+</section>
+</section>
+<section id="debugging-dsp-program">
+<span id="id6"></span><h2>Debugging DSP Program<a class="headerlink" href="#debugging-dsp-program" title="Link to this heading"></a></h2>
+<p>Make sure you have read section 1.2.3 before moving on. At this moment xt-ocd supports J-Link probe over Serial Wire Debug (SWD) for this DSP. You need to first install the J-Link driver. The version we use here is V6.44. Any newer version should be ok, but we haven’t tested on them.</p>
+<section id="connecting-dsp-to-j-link">
+<h3>Connecting DSP to J-Link<a class="headerlink" href="#connecting-dsp-to-j-link" title="Link to this heading"></a></h3>
+<p>Suppose Xtensa OCD Daemon is installed under the path: <code class="docutils literal notranslate"><span class="pre">C:\Program</span> <span class="pre">Files</span> <span class="pre">(x86)\Tensilica\Xtensa</span> <span class="pre">OCD</span> <span class="pre">Daemon</span> <span class="pre">14.08</span></code>.</p>
+<p>Replace your <code class="file docutils literal notranslate"><span class="pre">topology.xml</span></code> under the path <code class="docutils literal notranslate"><span class="pre">C:\Program</span> <span class="pre">Files</span> <span class="pre">(x86)\Tensilica\Xtensa</span> <span class="pre">OCD</span> <span class="pre">Daemon</span> <span class="pre">14.08</span></code> (for Linux, the file path is <code class="file docutils literal notranslate"><span class="pre">/opt/Tensilica/xocd-14.08/topology.xml</span></code>) with the flowing code, then Change the usbser value according to your own J-Link S/N.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">configuration</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">controller</span> <span class="nb">id</span><span class="o">=</span><span class="s1">&#39;Controller0&#39;</span> <span class="n">module</span><span class="o">=</span><span class="s1">&#39;jlink&#39;</span> <span class="n">usbser</span><span class="o">=</span><span class="s1">&#39;XXXXXX&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;swd&#39;</span> <span class="n">speed</span><span class="o">=</span><span class="s1">&#39;4000000&#39;</span> <span class="n">locking</span><span class="o">=</span><span class="s1">&#39;1&#39;</span><span class="o">/&gt;</span>
+<span class="o">&lt;</span><span class="n">driver</span> <span class="nb">id</span><span class="o">=</span><span class="s1">&#39;XtensaDriver0&#39;</span> <span class="n">dap</span><span class="o">=</span><span class="s1">&#39;1&#39;</span> <span class="n">xdm</span><span class="o">-</span><span class="n">offset</span><span class="o">=</span><span class="s1">&#39;0x80000000&#39;</span> <span class="n">module</span><span class="o">=</span><span class="s1">&#39;xtensa&#39;</span> <span class="n">step</span><span class="o">-</span><span class="n">intr</span><span class="o">=</span><span class="s1">&#39;mask,stepover,setps&#39;</span> <span class="o">/&gt;</span>
+<span class="o">&lt;</span><span class="n">chain</span> <span class="n">controller</span><span class="o">=</span><span class="s1">&#39;Controller0&#39;</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">tap</span> <span class="nb">id</span><span class="o">=</span><span class="s1">&#39;TAP0&#39;</span> <span class="n">irwidth</span><span class="o">=</span><span class="s1">&#39;5&#39;</span> <span class="o">/&gt;</span>
+<span class="o">&lt;/</span><span class="n">chain</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">system</span> <span class="n">module</span><span class="o">=</span><span class="s1">&#39;jtag&#39;</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">component</span> <span class="nb">id</span><span class="o">=</span><span class="s1">&#39;Component0&#39;</span> <span class="n">tap</span><span class="o">=</span><span class="s1">&#39;TAP0&#39;</span> <span class="n">config</span><span class="o">=</span><span class="s1">&#39;trax&#39;</span> <span class="o">/&gt;</span>
+<span class="o">&lt;/</span><span class="n">system</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">device</span> <span class="nb">id</span><span class="o">=</span><span class="s1">&#39;Xtensa0&#39;</span> <span class="n">component</span><span class="o">=</span><span class="s1">&#39;Component0&#39;</span> <span class="n">driver</span><span class="o">=</span><span class="s1">&#39;XtensaDriver0&#39;</span> <span class="n">ap</span><span class="o">-</span><span class="n">sel</span><span class="o">=</span><span class="s1">&#39;3&#39;</span><span class="o">/&gt;</span>
+<span class="o">&lt;</span><span class="n">application</span> <span class="nb">id</span><span class="o">=</span><span class="s1">&#39;GDBStub&#39;</span> <span class="n">module</span><span class="o">=</span><span class="s1">&#39;gdbstub&#39;</span> <span class="n">port</span><span class="o">=</span><span class="s1">&#39;20000&#39;</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">target</span> <span class="n">device</span><span class="o">=</span><span class="s1">&#39;Xtensa0&#39;</span> <span class="o">/&gt;</span>
+<span class="o">&lt;/</span><span class="n">application</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">configuration</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>Make sure that the bypass-fastmem are consistent with the above example. You can find usbser in your J-Link commander:</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/usbser_in_jlink_commander.png"><img alt="../../_images/usbser_in_jlink_commander.png" src="../../_images/usbser_in_jlink_commander.png" style="width: 545.6px; height: 193.60000000000002px;" /></a>
+</figure>
+</section>
+<section id="using-xplorer-gui-to-debug-the-program">
+<h3>Using Xplorer GUI to Debug the Program<a class="headerlink" href="#using-xplorer-gui-to-debug-the-program" title="Link to this heading"></a></h3>
+<p>When using Xplorer to debug DSP core, we recommend to erase full flash first then ONLY download KM4/KR4 image.
+DSP image will directly load into PSRAM by J-link when starting debug.</p>
+<ol class="arabic">
+<li><p>Press <span class="guilabel">Debug Configurations…</span></p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/press_debug_configurations.png"><img alt="../../_images/press_debug_configurations.png" src="../../_images/press_debug_configurations.png" style="width: 518.4px; height: 111.2px;" /></a>
+</figure>
+</li>
+<li><p>Select <span class="guilabel">Xtensa On Chip Debug</span>, then create a new debug configuration.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/xtensa_on_chip_debug_in_debug_configuration.png"><img alt="../../_images/xtensa_on_chip_debug_in_debug_configuration.png" src="../../_images/xtensa_on_chip_debug_in_debug_configuration.png" style="width: 840.0px; height: 556.8px;" /></a>
+</figure>
+</li>
+<li><p>Check <span class="guilabel">Use XOCD Manager</span> option, then click on <span class="guilabel">Connect</span> button. Refresh <em>OCD Version</em>, then select <span class="guilabel">14.08</span> version. Topology File should choose <code class="file docutils literal notranslate"><span class="pre">C:Program</span> <span class="pre">Files</span> <span class="pre">(x86)TensilicaXtensa</span> <span class="pre">OCD</span> <span class="pre">Daemon</span> <span class="pre">14.08topology.xml</span></code> which we edited in the last section. <em>Connection Type</em> is SWD.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/set_download_binary_to_always.png"><img alt="../../_images/set_download_binary_to_always.png" src="../../_images/set_download_binary_to_always.png" style="width: 832.0px; height: 532.8000000000001px;" /></a>
+</figure>
+</li>
+<li><p>Select <span class="guilabel">core0</span>, then set <em>Download binary</em> to <span class="guilabel">Always</span>. Then Press <span class="guilabel">Apply</span> and <span class="guilabel">Debug</span>. By default, DSP core will stop at the first line of main function.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/use_bounded_memory_to_check_memory.png"><img alt="../../_images/use_bounded_memory_to_check_memory.png" src="../../_images/use_bounded_memory_to_check_memory.png" style="width: 783.9px; height: 433.8px;" /></a>
+</figure>
+</li>
+</ol>
+<p>If you need to check memory value, we recommend to use the <em>Bounded Memory</em> and manually refresh the memory table when memory value change.</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<ul>
+<li><p>If the flowing <strong>GDB Error</strong> happens, reset MCU or repower the MCU board.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/dbg_error_load_failed.png"><img alt="../../_images/dbg_error_load_failed.png" src="../../_images/dbg_error_load_failed.png" style="width: 415.20000000000005px; height: 178.4px;" /></a>
+</figure>
+</li>
+<li><p>In the Linux environment, the operation steps are the same.</p></li>
+</ul>
+</div>
+</section>
+<section id="using-xt-gdb-to-debug-the-program">
+<h3>Using xt-gdb to Debug the Program<a class="headerlink" href="#using-xt-gdb-to-debug-the-program" title="Link to this heading"></a></h3>
+<ol class="arabic">
+<li><p>Open a command prompt window, and change the directory to <code class="docutils literal notranslate"><span class="pre">C:\Program</span> <span class="pre">Files</span> <span class="pre">(x86)\Tensilica\Xtensa</span> <span class="pre">OCD</span> <span class="pre">Daemon</span> <span class="pre">14.08</span></code></p></li>
+<li><p>Run <code class="file docutils literal notranslate"><span class="pre">xt-ocd</span> <span class="pre">-c</span> <span class="pre">topology.xml</span></code></p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/run_xml_file_use_command_prompt_window.png"><img alt="../../_images/run_xml_file_use_command_prompt_window.png" src="../../_images/run_xml_file_use_command_prompt_window.png" style="width: 624.0px; height: 330.40000000000003px;" /></a>
+</figure>
+</li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>Some warning messages are expected and can be ignored. If you receive an error initializing the XDM driver, you may need to initialize and start the DSP core before debugging. Under <code class="docutils literal notranslate"><span class="pre">&lt;dsp_sdk&gt;\project</span> <span class="pre">(or</span> <span class="pre">auto_ws)\project_dsp\bin\HIFI5_PROD_1123_asic_UPG\Release</span></code>, there is a <code class="file docutils literal notranslate"><span class="pre">project_dsp</span></code> file.</p>
+</div>
+<ol class="arabic">
+<li><p>Copy it to <code class="docutils literal notranslate"><span class="pre">C:\usr\xtensa\XtDevTools\install\tools\RI-2021.8</span> <span class="pre">-win32\XtensaTools\bin</span></code> folder.</p></li>
+<li><p>Open a Command Prompt window, and change the directory to <code class="docutils literal notranslate"><span class="pre">C:\usr\xtensa\XtDevTools\install\tools\RI-2021.8-win32\XtensaTools\bin</span></code>. CMD for CALL0 configuration as follows:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">xt</span><span class="o">-</span><span class="n">gdb</span><span class="w"> </span><span class="o">--</span><span class="n">xtensa</span><span class="o">-</span><span class="n">core</span><span class="o">=</span><span class="n">HIFI5_PROD_1123_asic_UPG</span><span class="w"> </span><span class="n">project_dsp</span>
+<span class="n">target</span><span class="w"> </span><span class="n">remote</span><span class="w"> </span><span class="n">localhost</span><span class="o">:</span><span class="mi">20000</span>
+<span class="n">reset</span>
+<span class="n">load</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<p>Now, you can start debug as you like. Here are some debug tips:</p>
+<ul>
+<li><p>If the debug port cannot be connected all the time, it may be because the SWD port is closed (SWD port is used as normal GPIO). Enter the command <code class="docutils literal notranslate"><span class="pre">DW</span> <span class="pre">4100C9F4</span></code> to check SWD enable register via Realtek Tracetool. If the output log is <code class="docutils literal notranslate"><span class="pre">4100C9F4:</span> <span class="pre">00000008</span></code>, it means the SWD port is closed. Open it with command <code class="docutils literal notranslate"><span class="pre">EW</span> <span class="pre">4100C9F4</span> <span class="pre">9</span></code>.</p></li>
+<li><p>By default, KM4/KR4 will stop when you start debugging DSP. If you need to debug DSP with KM4/KR4 at running status, you have to change a register value in KM4 bootloader: <code class="file docutils literal notranslate"><span class="pre">component/soc/amebalite/bootloader/bootloader_km4.c</span></code>). Add the code in the red box at the corresponding position in <code class="xref py py-func docutils literal notranslate"><span class="pre">BOOT_Image1()</span></code> function:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">HAL_WRITE32</span><span class="p">(</span><span class="mh">0xE0042400</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+</pre></div>
+</div>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/boot_image1_func_in_code.png"><img alt="../../_images/boot_image1_func_in_code.png" src="../../_images/boot_image1_func_in_code.png" style="width: 718.1999999999999px; height: 188.4px;" /></a>
+</figure>
+</li>
+<li><p>By default, when compiling DSP project, the corresponding disassembly will not be generated. If disassembly is required, you need to enable it in the post-processing script (<code class="file docutils literal notranslate"><span class="pre">&lt;dsp_sdk&gt;project/img_utility/code_analyze.py</span></code>): Set ENABLE_Disassembler to 1. The generated ASM file is <code class="file docutils literal notranslate"><span class="pre">&lt;dsp_sdk&gt;projectimageproject_dsp.asm</span></code>.</p></li>
+<li><p>For Linux, the debug steps are the same. Pay attention to the path of the executable file. We recommend adding these to PATH:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">Tensilica</span><span class="o">/</span><span class="n">xocd</span><span class="mf">-14.08</span>
+<span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">xtensa</span><span class="o">/</span><span class="n">XtDevTools</span><span class="o">/</span><span class="n">install</span><span class="o">/</span><span class="n">tools</span><span class="o">/</span><span class="n">RI</span><span class="mf">-2021.8</span><span class="o">-</span><span class="n">linux</span><span class="o">/</span><span class="n">XtensaTools</span><span class="o">/</span><span class="n">bin</span>
+</pre></div>
+</div>
+<p>If you use the <code class="file docutils literal notranslate"><span class="pre">auto_build.sh</span></code> to build the project rather than Xplorer, you can file the project_dsp elf file in:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">dsp_sdk</span><span class="o">&gt;/</span><span class="n">auto_ws</span><span class="o">/</span><span class="n">project_dsp</span><span class="o">/</span><span class="n">bin</span><span class="o">/&lt;</span><span class="n">configuration_name</span><span class="o">&gt;/</span><span class="n">Release</span>
+</pre></div>
+</div>
+</li>
+<li><p>For more debug guide, refer to <em>xtensa_debug_guide.pdf and gnu_gdb_ug.pdf</em>.</p></li>
+</ul>
+</section>
+</section>
+<section id="dsp-iss-simulation">
+<h2>DSP ISS Simulation<a class="headerlink" href="#dsp-iss-simulation" title="Link to this heading"></a></h2>
+<p>Using the Instruction Set Simulator (ISS) for program analysis (profile) can help developers quickly locate performance bottlenecks in the performance tuning phase, thus optimizing the algorithm architecture.</p>
+<p>Special reminder:</p>
+<ul class="simple">
+<li><p>IPC communication is not supported, only single DSP simulation is available</p></li>
+<li><p>The pure Computing Power of ISS simulation is basically as same as the real chip (for example, the data/code is in the cache). The memory characteristics of Cache and DTCM are obtained from the configuration to ensure ISS accuracy. However, since the system memory only supports parameters of PSRAM or SRAM, the ISS system memory model can only be configured as PSRAM or SRAM. Differences in memory models can introduce performance errors. According to different program characteristics, the simulation error is generally within 10%, and the maximum is about 20%.</p></li>
+<li><p>Because most Xplorer licenses only support cycle accuracy simulation, when perform large project simulation, the simulation process will be relatively long. (You can firstly run a quick simulation to verify whether the simulation process is correct or not)</p></li>
+</ul>
+<p>It is recommended to use GUI interface for simulation. If Xplorer is installed on a Linux server, you can open the X11 remote GUI of the server for use. The simulation parameters of SRAM and PSRAM are as follows: (By default, code/data are in PSRAM)</p>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p>SRAM read</p></th>
+<th class="head"><p>SRAM write</p></th>
+<th class="head"><p>PSRAM read</p></th>
+<th class="head"><p>PSRAM write</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Memory Waitstates (cycles)</p></td>
+<td><p>16</p></td>
+<td><p>2</p></td>
+<td><p>28</p></td>
+<td><p>28</p></td>
+</tr>
+<tr class="row-odd"><td><p>Repeat Block Waitstates (cycles)</p></td>
+<td><p>2</p></td>
+<td><p>2</p></td>
+<td><p>8</p></td>
+<td><p>8</p></td>
+</tr>
+</tbody>
+</table>
+<section id="compiling-project">
+<h3>Compiling Project<a class="headerlink" href="#compiling-project" title="Link to this heading"></a></h3>
+<ol class="arabic">
+<li><p>Modify the content of the LSP specs file (<code class="docutils literal notranslate"><span class="pre">&lt;dsp</span> <span class="pre">sdk&gt;\project\RTK_LSP\RI-2021.8\HIFI5_PROD_1123_asic_UPG\RTK_LSP\specs</span></code>)</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="o">*</span><span class="n">startfile</span><span class="o">:</span>
+<span class="n">crt1</span><span class="o">-</span><span class="n">sim</span><span class="o">%</span><span class="n">O</span><span class="o">%</span><span class="n">s</span><span class="w"> </span><span class="n">crti</span><span class="o">%</span><span class="n">O</span><span class="o">%</span><span class="n">s</span><span class="w"> </span><span class="n">crtbegin</span><span class="o">%</span><span class="n">O</span><span class="o">%</span><span class="n">s</span><span class="w"> </span><span class="n">_sharedvectors</span><span class="o">%</span><span class="n">O</span><span class="o">%</span><span class="n">s</span><span class="w"> </span><span class="n">_vectors</span><span class="o">%</span><span class="n">O</span><span class="o">%</span><span class="n">s</span>
+<span class="o">*</span><span class="n">endfile</span><span class="o">:</span>
+<span class="n">crtend</span><span class="o">%</span><span class="n">O</span><span class="o">%</span><span class="n">s</span><span class="w"> </span><span class="n">crtn</span><span class="o">%</span><span class="n">O</span><span class="o">%</span><span class="n">s</span>
+<span class="o">*</span><span class="n">lib</span><span class="o">:</span>
+<span class="o">-</span><span class="n">lc</span><span class="w"> </span><span class="o">-</span><span class="n">lsim</span><span class="w"> </span><span class="o">-</span><span class="n">lc</span><span class="w"> </span><span class="o">-</span><span class="n">lhandler</span><span class="o">-</span><span class="n">reset</span><span class="w"> </span><span class="o">-</span><span class="n">lhandlers</span><span class="o">-</span><span class="n">sim</span><span class="w"> </span><span class="o">-</span><span class="n">lhal</span><span class="w"> </span><span class="o">-</span><span class="n">lc</span>
+</pre></div>
+</div>
+</li>
+<li><p>Edit the code and add the <code class="xref py py-func docutils literal notranslate"><span class="pre">exit()</span></code> simulation exit function, for example:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;xtensa/sim.h&gt;</span>
+<span class="p">...</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">main</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="p">...</span>
+<span class="c1">// xt_iss_client_command(&quot;isa_profile&quot;, &quot;enable&quot;);</span>
+<span class="c1">// xt_profile_enable();  // &quot;Start with counting off&quot; Option</span>
+<span class="n">app_example</span><span class="p">();</span>
+<span class="c1">// xt_profile_disable();</span>
+<span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="p">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><p>Recompile the project:</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/recompile_project_in_xtensa_xplorer.png"><img alt="../../_images/recompile_project_in_xtensa_xplorer.png" src="../../_images/recompile_project_in_xtensa_xplorer.png" style="width: 1026.9px; height: 99.9px;" /></a>
+</figure>
+</li>
+</ol>
+</section>
+<section id="simulation-configuration-and-start">
+<h3>Simulation Configuration and Start<a class="headerlink" href="#simulation-configuration-and-start" title="Link to this heading"></a></h3>
+<ol class="arabic">
+<li><p>Press <span class="menuselection">Debug &gt; Profile Configuration</span> on the toolbar:</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/profile_configuration_in_debug.png"><img alt="../../_images/profile_configuration_in_debug.png" src="../../_images/profile_configuration_in_debug.png" style="width: 275.2px; height: 124.80000000000001px;" /></a>
+</figure>
+</li>
+<li><p>Rename the simulation task name according to your needs, and check the required functions in the <em>Profiling Mode Options</em> column.</p>
+<p>Among them, <em>Enable ISA profiling</em> needs to be checked. <em>Start with counting off</em> with the prompt function can control the start and end position of the program segment that needs to count profile information, otherwise it will count all the codes from power on to <code class="xref py py-func docutils literal notranslate"><span class="pre">exit()</span></code>.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/create_manage_and_run_configurations.png"><img alt="../../_images/create_manage_and_run_configurations.png" src="../../_images/create_manage_and_run_configurations.png" style="width: 935.2px; height: 567.2px;" /></a>
+</figure>
+</li>
+<li><p>Click <span class="guilabel">Apply</span> and <span class="guilabel">Profile</span> to start the simulation.</p>
+<p>Note that the <span class="guilabel">Start with counting off</span> option prompt window in the picture below is wrong (without the final “s”).</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/wrong_start_with_counting_off_option_prompt_window.png"><img alt="../../_images/wrong_start_with_counting_off_option_prompt_window.png" src="../../_images/wrong_start_with_counting_off_option_prompt_window.png" style="width: 422.09999999999997px; height: 324.09999999999997px;" /></a>
+</figure>
+</li>
+</ol>
+<p>It should be:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">xt_iss_client_command</span><span class="p">(</span><span class="s">&quot;all&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;enable&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You can also click the setting in the figure below to start simulation. Note that you cannot directly click the <span class="guilabel">profile</span> button in the toolbar, otherwise there is no memory delay model by default.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/click_setting_to_start_simulation.png"><img alt="../../_images/click_setting_to_start_simulation.png" src="../../_images/click_setting_to_start_simulation.png" style="width: 996.8000000000001px; height: 106.4px;" /></a>
+</figure>
+<p>There are various statistical results in the tab bar of the simulation window:</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/statistical_results_in_simulation_window.png"><img alt="../../_images/statistical_results_in_simulation_window.png" src="../../_images/statistical_results_in_simulation_window.png" style="width: 631.4px; height: 28.7px;" /></a>
+</figure>
+</section>
+<section id="cmd-simulation">
+<h3>CMD Simulation<a class="headerlink" href="#cmd-simulation" title="Link to this heading"></a></h3>
+<p>After the simulation is completed, you can click Console below to view the Xplorer simulation instructions, such as:</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/xplorer_simulation_instructions_in_console.png"><img alt="../../_images/xplorer_simulation_instructions_in_console.png" src="../../_images/xplorer_simulation_instructions_in_console.png" style="width: 838.0px; height: 424.5px;" /></a>
+</figure>
+<p>Save this command, for example:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">xtensa</span><span class="o">/</span><span class="n">XtDevTools</span><span class="o">/</span><span class="n">install</span><span class="o">/</span><span class="n">tools</span><span class="o">/</span><span class="n">RI</span><span class="mf">-2021.8</span><span class="o">-</span><span class="n">linux</span><span class="o">/</span><span class="n">XtensaTools</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">xt</span><span class="o">-</span><span class="n">run</span><span class="w"> </span><span class="o">--</span><span class="n">xtensa</span><span class="o">-</span><span class="n">core</span><span class="o">=</span><span class="n">HIFI5_PROD_1123_asic_UPG</span><span class="w"> </span><span class="o">--</span><span class="n">xtensa</span><span class="o">-</span><span class="n">system</span><span class="o">=/</span><span class="n">opt</span><span class="o">/</span><span class="n">xtensa</span><span class="o">/</span><span class="n">XtDevTools</span><span class="o">/</span><span class="n">install</span><span class="o">/</span><span class="n">builds</span><span class="o">/</span><span class="n">RI</span><span class="mf">-2021.8</span><span class="o">-</span><span class="n">linux</span><span class="o">/</span><span class="n">HIFI5_PROD_1123_asic_UPG</span><span class="o">/</span><span class="n">config</span><span class="w"> </span><span class="o">--</span><span class="n">xtensa</span><span class="o">-</span><span class="n">params</span><span class="o">=</span><span class="w"> </span><span class="o">--</span><span class="n">console</span><span class="w"> </span><span class="o">--</span><span class="n">mem_model</span><span class="w"> </span><span class="o">--</span><span class="n">wbsize</span><span class="o">=</span><span class="mi">32</span><span class="w"> </span><span class="o">--</span><span class="n">mlatency</span><span class="o">=</span><span class="mi">28</span><span class="w"> </span><span class="o">--</span><span class="n">blockrepeat</span><span class="o">=</span><span class="mi">8</span><span class="w"> </span><span class="o">--</span><span class="n">write_delay</span><span class="o">=</span><span class="mi">28</span><span class="w"> </span><span class="o">--</span><span class="n">write_repeat</span><span class="o">=</span><span class="mi">8</span><span class="w"> </span><span class="o">--</span><span class="n">summary</span><span class="w"> </span><span class="o">--</span><span class="n">client</span><span class="o">=&lt;</span><span class="n">dsp</span><span class="w"> </span><span class="n">sdk</span><span class="o">&gt;/</span><span class="n">project</span><span class="o">/</span><span class="n">project_dsp</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">HIFI5_PROD_1123_asic_UPG</span><span class="o">/</span><span class="n">Release</span><span class="o">/</span><span class="n">_gen_d</span><span class="o">/</span><span class="n">profile</span><span class="o">/--</span><span class="n">psram_</span><span class="o">--</span><span class="n">_project_dsp_</span><span class="o">-</span><span class="n">_HIFI5_PROD_1123_asic_UPG_</span><span class="o">-</span><span class="n">_Release</span><span class="o">/</span><span class="n">p_10</span><span class="o">/</span><span class="n">iss</span><span class="p">.</span><span class="n">clientcmds</span><span class="w"> </span><span class="o">--</span><span class="n">vector</span><span class="o">=</span><span class="mi">1</span><span class="w"> </span><span class="o">--</span><span class="n">alt_reset_vec</span><span class="o">=</span><span class="mh">0x60301000</span><span class="w"> </span><span class="o">&lt;</span><span class="n">dsp</span><span class="w"> </span><span class="n">sdk</span><span class="o">&gt;/</span><span class="n">project</span><span class="o">/</span><span class="n">project_dsp</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">HIFI5_PROD_1123_asic_UPG</span><span class="o">/</span><span class="n">Release</span><span class="o">/</span><span class="n">project_dsp</span>
+</pre></div>
+</div>
+<p>You can use the above command for simulation. But it should be adjusted according to the actual project configuration and path. Note that if you use the <code class="file docutils literal notranslate"><span class="pre">auto_build.sh</span></code> script to compile the project_dsp on linux, you need to modify the xt-run command according to the actual situation. For example, <code class="file docutils literal notranslate"><span class="pre">auto_build.sh</span></code> will copy the project to the <code class="docutils literal notranslate"><span class="pre">&lt;dsp</span> <span class="pre">sdk&gt;/auto_ws</span></code> directory and then compile it. The last parameter in CMD (<code class="docutils literal notranslate"><span class="pre">/home/miles_wang/dsp_sdks/20230216_ISS_SIM/dsp/project/project_dsp/bin/HIFI5_PROD_1123_asic_UPG/Release/project_dsp</span></code>) needs to be modified accordingly.</p>
+</section>
+<section id="profile-with-rtos-considerations">
+<h3>Profile with RTOS Considerations<a class="headerlink" href="#profile-with-rtos-considerations" title="Link to this heading"></a></h3>
+<p>At present, the profile method provided by Xplorer is not perfect for handling exceptions and interrupts function calls. Generally, algorithm tuning can also be independent of the RTOS system. Therefore, Cadence does not recommend profiling in RTOS system.</p>
+<p>If users have special requirements: profile must be performed in the RTOS system, we have the following suggestions:</p>
+<ul class="simple">
+<li><p>Prevents context switches and servicing of ISRs during profiling.</p></li>
+<li><p>Before entering the profiling statistics section, complete a <em>lazy</em> switch. Because the task switching of RTOS does not change the co-processor register. A co-processor register exception will only be generated when the task uses these DSP registers.</p></li>
+</ul>
+<p>Examples are as follows:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">profiling_task</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">start</span><span class="p">,</span><span class="w"> </span><span class="n">end</span><span class="p">;</span>
+<span class="n">vTaskEnterCritical</span><span class="p">();</span>
+<span class="n">co_processor_func</span><span class="p">(</span><span class="n">test_array</span><span class="p">);</span><span class="w"> </span><span class="c1">// this function uses DSP co-processor registers  start = xthal_get_ccount();</span>
+<span class="n">xt_iss_client_command</span><span class="p">(</span><span class="s">&quot;isa_profile&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;enable&quot;</span><span class="p">);</span>
+<span class="n">xt_profile_enable</span><span class="p">();</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">1000</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="n">co_processor_func</span><span class="w"> </span><span class="p">(</span><span class="n">test_array</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="n">xt_profile_disable</span><span class="w"> </span><span class="p">();</span>
+<span class="n">end</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">xthal_get_ccount</span><span class="p">();</span>
+<span class="n">vTaskExitCritical</span><span class="p">();</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d cycles</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">end</span><span class="o">-</span><span class="n">start</span><span class="p">);</span><span class="w">  </span><span class="c1">// output: 314313 cycles</span>
+<span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The result of profiling is as expected:</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/expected_result_of_profiling.png"><img alt="../../_images/expected_result_of_profiling.png" src="../../_images/expected_result_of_profiling.png" style="width: 585.1999999999999px; height: 268.79999999999995px;" /></a>
+</figure>
+<p>If we cancel the first call of <code class="xref py py-func docutils literal notranslate"><span class="pre">co_processor_func()</span></code>, you will find that some exception handlers have appeared. Xplorer will have problems with the statistics of these handles:</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/cancel_the_first_call_of_co_processor_func.png"><img alt="../../_images/cancel_the_first_call_of_co_processor_func.png" src="../../_images/cancel_the_first_call_of_co_processor_func.png" style="width: 657.3px; height: 504.7px;" /></a>
+</figure>
+<p><em>Profile (Cycles)</em> table is correct, but in the <em>Call-Graph</em> table statistical error occurred.</p>
+</section>
+<section id="reference-document">
+<h3>Reference Document<a class="headerlink" href="#reference-document" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>For the specific ISS simulation method, refer to the Xtensa document (<em>inst_set_sim_ug.pdf</em>) in the Xplorer installation directory.</p></li>
+<li><p>For the profiling result analysis, refer to <em>gnu_profiler_ug.pdf</em>.</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="0_dsp_index_cn.html" class="btn btn-neutral float-left" title="数字信号处理（DSP）" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="dsp_configuration_cn.html" class="btn btn-neutral float-right" title="DSP 配置" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2025, Realsil。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+ 
+
+
+
+</body>
+</html>

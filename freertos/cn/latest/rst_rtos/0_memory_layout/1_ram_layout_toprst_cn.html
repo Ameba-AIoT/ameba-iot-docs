@@ -1,0 +1,1137 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RAM 布局与配置 &mdash; Ameba IoT Docs  文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom_cn.css?v=0d22fac7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/tabs.css?v=a5c4661c" />
+      <link rel="stylesheet" type="text/css" href="../../_static/_static/custom_cn.css" />
+
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=7d86a446"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+        <script src="../../_static/tabs.js?v=3030b3cb"></script>
+        <script>let toggleHintShow = 'Click to show';</script>
+        <script>let toggleHintHide = 'Click to hide';</script>
+        <script>let toggleOpenOnPrint = 'true';</script>
+        <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+        <script src="../../_static/translations.js?v=beaddf03"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="User Configuration" href="../0_user_config/0_usrcfg_index_cn.html" />
+    <link rel="prev" title="Flash布局与配置" href="1_flash_layout_toprst_cn.html" />
+   
+  
+  <script type="text/javascript" src="../../_static/js/selector.js"></script>
+
+  <style>
+    .wy-nav-content {max-width: 1000px;} /* 设置最大宽度 */
+  </style>
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Ameba IoT Docs
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../0_ameba_product/0_ameba_product_center_index_cn.html">产品中心</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_ameba_sdk/0_ameba_sdks_index_cn.html">Ameba SDK</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_ameba_solutions/0_ameba_solutions_index_cn.html">解决方案</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_gcc_build_environment/0_gcc_build_index_cn.html">0.1 GCC 编译环境</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_gdb_debug/0_gdb_debug_index_cn.html">0.2 GDB调试</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_gcc_build_library/0_gcc_build_library_index_cn.html">0.3 GCC 库的生成和使用</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_sdk_example/0_sdk_example_index_cn.html">0.4 SDK 示例</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="0_layout_index_cn.html">0.5 Flash 和 RAM 布局</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="1_flash_layout_toprst_cn.html">Flash布局与配置</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">RAM 布局与配置</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">RAM 内存布局</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sram0-40kb">SRAM0 内存布局 (前40KB)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ram-psram">RAM 与 PSRAM 混合布局</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bootloader">修改Bootloader大小</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bd-ram-bd-psram">修改 BD_RAM 和 BD_PSRAM 配置</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#heap">调整堆内存(Heap)大小</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../0_user_config/0_usrcfg_index_cn.html">0.6 开发者配置</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_tools/0_tools_index_cn.html">0.7 工具</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_at_command/0_at_command_index_cn.html">0.8 AT 命令</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_file_system/0_vfs_index_cn.html">0.9 虚拟文件系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_ftl/0_ftl_index_cn.html">0.A Flash 转换层</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_mpu_cache/0_mpu_cache_index_cn.html">1.0 内存保护单元和缓存</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_boot_process/0_boot_index_cn.html">1.1 启动过程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_ota/0_ota_index_cn.html">1.2 固件在线升级(OTA)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_otpc/0_otpc_index.html">1.3 OTP存储器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_chipen/0_chipen_index_cn.html">1.4 CHIP_EN</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_ipc/0_ipc_index_cn.html">1.5 核间通信</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_pinmux/0_pinmux_index_cn.html">1.6 PINMUX</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_gpio/0_gpio_index_cn.html">1.7 GPIO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_power_save/0_ps_index_cn.html">1.9 低功耗开发</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_whc_wifi_bridge/0_wifi_bridge_index_cn.html">2.1 WHC Bridge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_whc_fullmac/0_fullmac_index_cn.html">2.2 WHC FullMAC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_wifi_tunnel/0_wifi_tunnel_index_cn.html">2.3 Wi-Fi R-Mesh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_wifi_csi/0_wifi_csi_index_cn.html">2.5 Wi-Fi CSI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_wifi_adaptivity_test/0_wifi_adaptivity_index.html">2.6 Wi-Fi Adaptivity 测试指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_security/0_security_index_cn.html">3.1 安全与加密</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_trng/0_trng_index_cn.html">3.2 真随机数发生器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_huk_derivation/0_huk_derivation_index_nda.html">3.3 HUK Derivation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_rdp/0_rdp_index_nda.html">3.4 RDP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_rsip/0_rsip_index_nda.html">3.5 RSIP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_secure_boot/0_secure_boot_index_nda.html">3.6 Secure Boot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_swd_protection/0_swd_protection_index_nda.html">3.7 SWD Protection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_tfm/0_tfm_index_nda.html">3.8 Trusted Firmware-M (TF-M)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_crypto_engine/0_crypto_engine_index_cn.html">3.9 对称硬件加密引擎</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_ecdsa_engine/0_ecdsa_index_cn.html">3.a ECDSA 硬件加密引擎</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_eddsa_engine/0_eddsa_index_cn.html">3.b EDDSA 硬件加密引擎</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_rsa_engine/0_rsa_index_cn.html">3.c RSA 硬件加密引擎</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../4_ai/0_ai_index_cn.html">4.1 人工智能</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../4_ai_voice/0_ai_voice_index_cn.html">4.2 语音识别</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../4_multimedia/0_multimedia_index_cn.html">4.3 多媒体</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../4_dsp/0_dsp_index_cn.html">4.4 DSP 使用指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../6_mass_production/0_mp_index_cn.html">6.1 量产指导</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../6_mp_image/0_mp_image_index_cn.html">6.2 MP 固件</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../6_mptools/0_mptools_index_cn.html">6.3 产测工具</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../7_usb/0_usb_index_cn.html">7.1 USB 主机与从机</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_dmac/0_dmac_index_cn.html">8.1 DMA 控制器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_psram/0_psram_index_cn.html">8.2 PSRAM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_thermal/0_thermal_index_cn.html">8.3 温度测量</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_adc/0_adc_index_cn.html">8.4 模数转换器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_ir/0_ir_index_cn.html">8.5 红外收发器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_ledc/0_ledc_index_cn.html">8.6 LED控制器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_cap_touch/0_cap_touch_index_cn.html">8.7 Cap-Touch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_key_scan/0_key_scan_index_cn.html">8.8 Key-Scan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_rtc_io/0_rtc_io_index_cn.html">8.9 RTC-IO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_lcdc/0_lcdc_index_cn.html">8.A LCD控制器</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Ameba IoT Docs</a>
+      </nav>
+
+      <div class="wy-nav-content">
+
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="0_layout_index_cn.html">Flash 和 RAM 布局</a></li>
+      <li class="breadcrumb-item active">RAM 布局与配置</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <span class="target" id="ram-layout"></span><!-- 下拉菜单 -->
+<div style="margin: 20px 0; text-align: left;">
+    <div style="display: flex; align-items: center; gap: 10px;">
+        <span style="font-size: 14px;">IC: </span>
+        <select class="tab-selector" style="height: 22px; padding: 2px 8px; font-size: 13px;">
+            <option value="RTL8721Dx">RTL8721Dx</option>
+            <option value="RTL8720E">RTL8720E</option>
+            <option value="RTL8726E">RTL8726E</option>
+            <option value="RTL8730E">RTL8730E</option>
+        </select>
+    </div>
+</div>
+
+<!-- 修复后的 JavaScript -->
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const selector = document.querySelector('.tab-selector');
+
+    selector.addEventListener('change', function() {
+        const targetTab = this.value;
+        const tabs = document.querySelectorAll('.sphinx-tabs-tab');
+        let found = false;
+
+        tabs.forEach(tab => {
+            const tabText = tab.textContent.trim();
+            if (tabText === targetTab) {
+                tab.click();
+                window.dispatchEvent(new Event('resize')); // 触发插件更新
+                found = true;
+            }
+        });
+
+        if (!found) {
+            console.error("未找到选项卡:", targetTab);
+        }
+    });
+});
+</script><section id="ram">
+<h1>RAM 布局与配置<a class="headerlink" href="#ram" title="Link to this heading"></a></h1>
+<section id="id1">
+<h2>简介<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<p>本章介绍默认内存布局及其修改方法。</p>
+</section>
+<section id="id2">
+<h2>RAM 内存布局<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-0-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-0-0-0" name="0-0" role="tab" tabindex="0">RTL8721Dx</button><button aria-controls="panel-0-0-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-1" name="0-1" role="tab" tabindex="-1">RTL8726E</button><button aria-controls="panel-0-0-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-2" name="0-2" role="tab" tabindex="-1">RTL8720E</button></div><div aria-labelledby="tab-0-0-0" class="sphinx-tabs-panel" id="panel-0-0-0" name="0-0" role="tabpanel" tabindex="0"><p>芯片集成了内部SRAM和可扩展的PSRAM，其容量如下：</p>
+<ul class="simple">
+<li><p><strong>内部SRAM:</strong> 512KB</p></li>
+<li><p><strong>可扩展的PSRAM:</strong> 根据不同型号，容量包括 0MB、4MB、8MB 和 16MB 等。</p></li>
+</ul>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/ram_layout_dplus.svg"><img alt="../../_images/ram_layout_dplus.svg" height="153" src="../../_images/ram_layout_dplus.svg" width="471" /></a>
+</figure>
+</div><div aria-labelledby="tab-0-0-1" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-1" name="0-1" role="tabpanel" tabindex="0"><p>芯片集成了内部SRAM和可扩展的PSRAM，其容量如下：</p>
+<ul class="simple">
+<li><p><strong>内部SRAM:</strong> 512KB</p></li>
+<li><p><strong>可扩展的PSRAM:</strong> 根据不同型号，容量包括 0MB、4MB、8MB 和 16MB 等。</p></li>
+</ul>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/ram_layout_other_lite.svg"><img alt="../../_images/ram_layout_other_lite.svg" height="202" src="../../_images/ram_layout_other_lite.svg" width="539" /></a>
+</figure>
+</div><div aria-labelledby="tab-0-0-2" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-2" name="0-2" role="tabpanel" tabindex="0"><p>芯片集成了内部SRAM和可扩展的PSRAM，其容量如下：</p>
+<ul class="simple">
+<li><p><strong>内部SRAM:</strong> 768KB</p></li>
+<li><p><strong>可扩展的PSRAM:</strong> 根据不同型号，容量包括 0MB、4MB 等。</p></li>
+</ul>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/ram_layout_8720_lite.svg"><img alt="../../_images/ram_layout_8720_lite.svg" height="292" src="../../_images/ram_layout_8720_lite.svg" width="539" /></a>
+</figure>
+</div></div>
+</section>
+<section id="sram0-40kb">
+<h2>SRAM0 内存布局 (前40KB)<a class="headerlink" href="#sram0-40kb" title="Link to this heading"></a></h2>
+<p>SRAM的前40KB被预留用于存储ROM变量、BOOT代码以及安全处理等功能，这部分内存空间用户无法使用。</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-1-1-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-1-1-0" name="1-0" role="tab" tabindex="0">RTL8721Dx</button><button aria-controls="panel-1-1-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-1-1-1" name="1-1" role="tab" tabindex="-1">RTL8726E</button><button aria-controls="panel-1-1-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-1-1-2" name="1-2" role="tab" tabindex="-1">RTL8720E</button></div><div aria-labelledby="tab-1-1-0" class="sphinx-tabs-panel" id="panel-1-1-0" name="1-0" role="tabpanel" tabindex="0"><figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/sram0_layout_dplus.svg"><img alt="../../_images/sram0_layout_dplus.svg" height="191" src="../../_images/sram0_layout_dplus.svg" width="631" /></a>
+</figure>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Items</p></th>
+<th class="head"><p>Start address</p></th>
+<th class="head"><p>Size</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Mandatory</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>KM0_ROM_BSS_RAM</p></td>
+<td><p>0x2000_0000</p></td>
+<td><p>4KB</p></td>
+<td><p>KM0 ROM BSS</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>KM0_MSP_RAM</p></td>
+<td><p>0x2000_1000</p></td>
+<td><p>4KB</p></td>
+<td><p>KM0 Main Stack Pointer</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>KM0_STDLIB_HEAP_NS</p></td>
+<td><p>0x2000_2000</p></td>
+<td><p>4KB</p></td>
+<td><p>KM0 ROM STDLIB heap</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>KM4_MSP_NS</p></td>
+<td><p>0x2000_3000</p></td>
+<td><p>4KB</p></td>
+<td><p>KM4 non-secure Main Stack Pointer</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>KM4_ROM_BSS_COMMON</p></td>
+<td><p>0x2000_4000</p></td>
+<td><p>3.25KB</p></td>
+<td><p>KM4 ROM secure and non-secure common BSS</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>KM0_BOOT_RAM</p></td>
+<td><p>0x2000_4D00</p></td>
+<td><p>64B</p></td>
+<td><p>KM0 IMG2 entry</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>KM0_IPC_RAM</p></td>
+<td><p>0x2000_4E00</p></td>
+<td><p>512B</p></td>
+<td><p>Exchange messages between cores</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>KM4_ROM_BSS_NS</p></td>
+<td><p>0x2000_5000</p></td>
+<td><p>4KB</p></td>
+<td><p>KM4 ROM non-secure common BSS</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>KM4_STDLIB_HEAP_NS</p></td>
+<td><p>0x2000_6000</p></td>
+<td><p>4KB</p></td>
+<td><p>KM4 ROM non-secure STDLIB heap</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>KM4_ROM_BSS_S</p></td>
+<td><p>0x3000_7000</p></td>
+<td><p>4KB</p></td>
+<td><p>KM4 ROM secure-only BSS</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>KM0_RTOS_STATIC_0_NS</p></td>
+<td><p>0x2000_8000</p></td>
+<td><p>4KB</p></td>
+<td><p>KM0 RTOS static pool position</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>KM4_MSP_S</p></td>
+<td><p>0x3000_9000</p></td>
+<td><p>4KB</p></td>
+<td><p>KM4 secure Main Stack Pointer</p></td>
+<td><p>√</p></td>
+</tr>
+</tbody>
+</table>
+</div><div aria-labelledby="tab-1-1-1" class="sphinx-tabs-panel" hidden="true" id="panel-1-1-1" name="1-1" role="tabpanel" tabindex="0"><figure class="align-center" id="id3">
+<a class="reference internal image-reference" href="../../_images/sram0_layout_lite.svg"><img alt="../../_images/sram0_layout_lite.svg" height="184" src="../../_images/sram0_layout_lite.svg" width="645" /></a>
+<figcaption>
+<p><span class="caption-text">SRAM0 (first 40KB) layout</span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p>Start address</p></th>
+<th class="head"><p>Size</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Mandatory</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>KR4_ROM_BSS_RAM</p></td>
+<td><p>0x2000_0000</p></td>
+<td><p>4KB</p></td>
+<td><p>KR4 ROM BSS</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>KR4_MSP_RAM</p></td>
+<td><p>0x2000_1000</p></td>
+<td><p>4KB</p></td>
+<td><p>KR4 Main Stack Pointer</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>KR4_STDLIB_HEAP_NS</p></td>
+<td><p>0x2000_2000</p></td>
+<td><p>4KB</p></td>
+<td><p>KR4 ROM STDLIB heap</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>KM4_MSP_NS</p></td>
+<td><p>0x2000_3000</p></td>
+<td><p>4KB</p></td>
+<td><p>KM4 non-secure Main Stack Pointer</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>KM4_ROM_BSS_COMMON</p></td>
+<td><p>0x2000_4000</p></td>
+<td><p>2.25KB</p></td>
+<td><p>KM4 ROM secure and non-secure common BSS</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>KR4_IPC_RAM</p></td>
+<td><p>0x2000_4900</p></td>
+<td><p>768B</p></td>
+<td><p>Exchange messages between cores</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>KR4_BOOT_ENTRY_BACKUP</p></td>
+<td><p>0x2000_4C00</p></td>
+<td><p>64B</p></td>
+<td><p>Backup KR4 IMG2 entry when SRAM1 is not used by KR4</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>KM4_ROM_BSS_NS</p></td>
+<td><p>0x2000_5000</p></td>
+<td><p>1.25KB</p></td>
+<td><p>KM4 ROM non-secure common BSS</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>KR4_RAM_ONLY</p></td>
+<td><p>0x2000_4C20</p></td>
+<td><p>1KB</p></td>
+<td><p>Used by power save flow when KR4 is NP</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>KM4_RAM_ONLY</p></td>
+<td><p>0x2000_4E00</p></td>
+<td><p>1KB</p></td>
+<td><p>Used by power save flow when KM4 is NP</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>KM4_TIMER_IDLE_TASK_STACK</p></td>
+<td><p>0x2000_6000</p></td>
+<td><p>4KB</p></td>
+<td><p>KM4 TIMER and IDLE task stack</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>KM4_ROM_BSS_S</p></td>
+<td><p>0x3000_7000</p></td>
+<td><p>4KB</p></td>
+<td><p>KM4 ROM secure-only BSS</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>KM4_MSP_S</p></td>
+<td><p>0x3000_8000</p></td>
+<td><p>8KB</p></td>
+<td><p>KM4 secure Main Stack Pointer</p></td>
+<td><p>√</p></td>
+</tr>
+</tbody>
+</table>
+</div><div aria-labelledby="tab-1-1-2" class="sphinx-tabs-panel" hidden="true" id="panel-1-1-2" name="1-2" role="tabpanel" tabindex="0"><figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/sram0_layout_lite.svg"><img alt="../../_images/sram0_layout_lite.svg" height="184" src="../../_images/sram0_layout_lite.svg" width="645" /></a>
+</figure>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p>Start address</p></th>
+<th class="head"><p>Size</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Mandatory</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>KR4_ROM_BSS_RAM</p></td>
+<td><p>0x2000_0000</p></td>
+<td><p>4KB</p></td>
+<td><p>KR4 ROM BSS</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>KR4_MSP_RAM</p></td>
+<td><p>0x2000_1000</p></td>
+<td><p>4KB</p></td>
+<td><p>KR4 Main Stack Pointer</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>KR4_STDLIB_HEAP_NS</p></td>
+<td><p>0x2000_2000</p></td>
+<td><p>4KB</p></td>
+<td><p>KR4 ROM STDLIB heap</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>KM4_MSP_NS</p></td>
+<td><p>0x2000_3000</p></td>
+<td><p>4KB</p></td>
+<td><p>KM4 non-secure Main Stack Pointer</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>KM4_ROM_BSS_COMMON</p></td>
+<td><p>0x2000_4000</p></td>
+<td><p>2.25KB</p></td>
+<td><p>KM4 ROM secure and non-secure common BSS</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>KR4_IPC_RAM</p></td>
+<td><p>0x2000_4900</p></td>
+<td><p>768B</p></td>
+<td><p>Exchange messages between cores</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>KR4_BOOT_ENTRY_BACKUP</p></td>
+<td><p>0x2000_4C00</p></td>
+<td><p>64B</p></td>
+<td><p>Backup KR4 IMG2 entry when SRAM1 is not used by KR4</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>KM4_ROM_BSS_NS</p></td>
+<td><p>0x2000_5000</p></td>
+<td><p>1.25KB</p></td>
+<td><p>KM4 ROM non-secure common BSS</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>KR4_RAM_ONLY</p></td>
+<td><p>0x2000_4C20</p></td>
+<td><p>1KB</p></td>
+<td><p>Used by power save flow when KR4 is NP</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>KM4_RAM_ONLY</p></td>
+<td><p>0x2000_4E00</p></td>
+<td><p>1KB</p></td>
+<td><p>Used by power save flow when KM4 is NP</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>KM4_TIMER_IDLE_TASK_STACK</p></td>
+<td><p>0x2000_6000</p></td>
+<td><p>4KB</p></td>
+<td><p>KM4 TIMER and IDLE task stack</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>KM4_ROM_BSS_S</p></td>
+<td><p>0x3000_7000</p></td>
+<td><p>4KB</p></td>
+<td><p>KM4 ROM secure-only BSS</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>KM4_MSP_S</p></td>
+<td><p>0x3000_8000</p></td>
+<td><p>8KB</p></td>
+<td><p>KM4 secure Main Stack Pointer</p></td>
+<td><p>√</p></td>
+</tr>
+</tbody>
+</table>
+</div></div>
+</section>
+<section id="ram-psram">
+<h2>RAM 与 PSRAM 混合布局<a class="headerlink" href="#ram-psram" title="Link to this heading"></a></h2>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-2-2-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-2-2-0" name="2-0" role="tab" tabindex="0">RTL8721Dx</button><button aria-controls="panel-2-2-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-2-2-1" name="2-1" role="tab" tabindex="-1">RTL8726E</button><button aria-controls="panel-2-2-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-2-2-2" name="2-2" role="tab" tabindex="-1">RTL8720E</button></div><div aria-labelledby="tab-2-2-0" class="sphinx-tabs-panel" id="panel-2-2-0" name="2-0" role="tabpanel" tabindex="0"><p><strong>RAM布局（带PSRAM）</strong></p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/ram_layout_with_psram2_dplus.svg"><img alt="../../_images/ram_layout_with_psram2_dplus.svg" height="383" src="../../_images/ram_layout_with_psram2_dplus.svg" width="567" /></a>
+</figure>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p>Start address</p></th>
+<th class="head"><p>Size (KB)</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Mandatory</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>SRAM0</p></td>
+<td><p>0x2000_0000</p></td>
+<td><p>40</p></td>
+<td><p>For ROM BSS, MSP, …</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>KM4 Bootloader</p></td>
+<td><p>0x3000_A000</p></td>
+<td><p>24</p></td>
+<td><p>KM4 secure bootloader, including code and data</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>KM4 BD RAM</p></td>
+<td><p>0x2001_0000</p></td>
+<td><p>352</p></td>
+<td><p>KM4 BDRAM data, BSS and heap</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>KM0 BD RAM</p></td>
+<td><p>0x2004_0000</p></td>
+<td><p>96</p></td>
+<td><p>KM0 BDRAM data, BSS and heap</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>KM4 PSRAM</p></td>
+<td><p>0x6000_0000</p></td>
+<td><p>3220</p></td>
+<td><p>KM4 PSRAM code, can be empty</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>KM0 PSRAM</p></td>
+<td><p>0x6032_5000</p></td>
+<td><p>876</p></td>
+<td><p>KM0 PSRAM code, can be empty</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>KM4 HEAP EXT</p></td>
+<td><p>0x6FFF_FFFF</p></td>
+<td><p>0</p></td>
+<td><p>If KM4 heap is not enough, it can be used to extend the heap size</p></td>
+<td><p>x</p></td>
+</tr>
+<tr class="row-odd"><td><p>KM0 HEAP EXT</p></td>
+<td><p>0x6FFF_FFFF</p></td>
+<td><p>0</p></td>
+<td><p>If KM0 heap is not enough, it can be used to extend the heap size</p></td>
+<td><p>x</p></td>
+</tr>
+</tbody>
+</table>
+</div><div aria-labelledby="tab-2-2-1" class="sphinx-tabs-panel" hidden="true" id="panel-2-2-1" name="2-1" role="tabpanel" tabindex="0"><p><strong>RAM布局（带PSRAM）</strong></p>
+<figure class="align-center" id="id4">
+<a class="reference internal image-reference" href="../../_images/ram_psram_layout_8726_lite.svg"><img alt="../../_images/ram_psram_layout_8726_lite.svg" height="511" src="../../_images/ram_psram_layout_8726_lite.svg" width="691" /></a>
+<figcaption>
+<p><span class="caption-text">RAM &amp; PSRAM layout</span><a class="headerlink" href="#id4" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p>Start address</p></th>
+<th class="head"><p>Size</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Mandatory</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>SRAM0</p></td>
+<td><p>0x2000_0000</p></td>
+<td><p>40KB</p></td>
+<td><p>For ROM BSS, MSP and so on</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>KM4 BOOTLOADER</p></td>
+<td><p>0x2000_A000</p></td>
+<td><p>24KB</p></td>
+<td><p>For Bootloader</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>KM4 IMG3</p></td>
+<td><p>0x6000_0000</p></td>
+<td><p>64KB</p></td>
+<td><p>KM4 IMG3, can be merged into KM4 PSRAM if IMG3 is not needed</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>KM4 PSRAM</p></td>
+<td><p>0x6001_0000</p></td>
+<td><p>1472KB</p></td>
+<td><p>KM4 code, data, BSS and heap</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>KR4 PSRAM</p></td>
+<td><p>0x6018_0000</p></td>
+<td><p>1536KB</p></td>
+<td><p>KR4 code, data, BSS and heap</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>DSP PSRAM</p></td>
+<td><p>0x6030_0000</p></td>
+<td><p>5120KB</p></td>
+<td><p>DSP PSRAM</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>KM4 HEAP EXT</p></td>
+<td><p>0x6FFF_FFFF</p></td>
+<td><p>0</p></td>
+<td><p>If KM4 Heap is not enough, it can be used to extend the heap size</p></td>
+<td><p>x</p></td>
+</tr>
+<tr class="row-odd"><td><p>KR4 HEAP EXT</p></td>
+<td><p>0x6FFF_FFFF</p></td>
+<td><p>0</p></td>
+<td><p>If KR4 Heap is not enough, it can be used to extend the heap size</p></td>
+<td><p>x</p></td>
+</tr>
+</tbody>
+</table>
+</div><div aria-labelledby="tab-2-2-2" class="sphinx-tabs-panel" hidden="true" id="panel-2-2-2" name="2-2" role="tabpanel" tabindex="0"><p><strong>RAM布局（带PSRAM）</strong></p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/ram_layout_with_psram_8720_lite.svg"><img alt="../../_images/ram_layout_with_psram_8720_lite.svg" height="510" src="../../_images/ram_layout_with_psram_8720_lite.svg" width="847" /></a>
+</figure>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p>Start address</p></th>
+<th class="head"><p>Size</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Mandatory</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>SRAM0</p></td>
+<td><p>0x2000_0000</p></td>
+<td><p>40KB</p></td>
+<td><p>For ROM BSS, MSP …</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>KM4 BOOTLOADER</p></td>
+<td><p>0x2000_A000</p></td>
+<td><p>24KB</p></td>
+<td><p>For Bootloader</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>KM4 BD RAM</p></td>
+<td><p>0x2001_0000</p></td>
+<td><p>352KB</p></td>
+<td><p>KM4 BDRAM data, BSS and heap</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>KR4 BD RAM</p></td>
+<td><p>0x2006_8000</p></td>
+<td><p>96KB</p></td>
+<td><p>KR4 BDRAM data, BSS and heap</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>KM4 IMG3</p></td>
+<td><p>0x6000_0000</p></td>
+<td><p>64KB</p></td>
+<td><p>KM4 IMG3, can be merged into KM4 PSRAM if IMG3 is not needed</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>KM4 PSRAM</p></td>
+<td><p>0x6001_0000</p></td>
+<td><p>1472KB</p></td>
+<td><p>KM4 code</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>KR4 PSRAM</p></td>
+<td><p>0x6018_0000</p></td>
+<td><p>1536KB</p></td>
+<td><p>KR4 code</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>KM4 HEAP EXT</p></td>
+<td><p>0x6FFF_FFFF</p></td>
+<td><p>0</p></td>
+<td><p>If KM4 Heap is not enough, it can be used to extend the heap size</p></td>
+<td><p>x</p></td>
+</tr>
+<tr class="row-even"><td><p>KR4 HEAP EXT</p></td>
+<td><p>0x6FFF_FFFF</p></td>
+<td><p>0</p></td>
+<td><p>If KR4 Heap is not enough, it can be used to extend the heap size</p></td>
+<td><p>x</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>RAM布局（不带PSRAM）</strong></p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/ram_layout_without_psram_8720_lite.svg"><img alt="../../_images/ram_layout_without_psram_8720_lite.svg" height="403" src="../../_images/ram_layout_without_psram_8720_lite.svg" width="534" /></a>
+</figure>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p>Start address</p></th>
+<th class="head"><p>Size</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Mandatory</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>SRAM0</p></td>
+<td><p>0x2000_0000</p></td>
+<td><p>40KB</p></td>
+<td><p>For ROM BSS, MSP …</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>KM4 BOOTLOADER</p></td>
+<td><p>0x2000_A000</p></td>
+<td><p>24KB</p></td>
+<td><p>For Bootloader</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>KM4 IMG3</p></td>
+<td><p>0x2001_0000</p></td>
+<td><p>64KB</p></td>
+<td><p>KM4 IMG3, can be used by users if IMG3 is not needed</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>KM4 BD RAM</p></td>
+<td><p>0x2002_0000</p></td>
+<td><p>288KB</p></td>
+<td><p>KM4 BDRAM data, BSS and heap</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>KR4 BD RAM</p></td>
+<td><p>0x2006_8000</p></td>
+<td><p>96KB</p></td>
+<td><p>KR4 BDRAM data, BSS and heap</p></td>
+<td><p>√</p></td>
+</tr>
+</tbody>
+</table>
+</div></div>
+</section>
+<section id="bootloader">
+<h2>修改Bootloader大小<a class="headerlink" href="#bootloader" title="Link to this heading"></a></h2>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-3-3-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-3-3-0" name="3-0" role="tab" tabindex="0">RTL8721Dx</button><button aria-controls="panel-3-3-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-3-3-1" name="3-1" role="tab" tabindex="-1">RTL8720E</button><button aria-controls="panel-3-3-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-3-3-2" name="3-2" role="tab" tabindex="-1">RTL8726E</button></div><div aria-labelledby="tab-3-3-0" class="sphinx-tabs-panel" id="panel-3-3-0" name="3-0" role="tabpanel" tabindex="0"><p><strong>Bootloader 容量调整</strong></p>
+<p>如需扩大 <cite>KM4_BOOT_RAM_S</cite> ，需确保调整后的尺寸为 4KB 对齐（MPC 保护以 4KB 为单位）。</p>
+<p>修改步骤如下：</p>
+<ol class="arabic">
+<li><p>在 menuconfig 中配置 <span class="guilabel">CONFIG Link Option</span> 选项：</p>
+<ul class="simple">
+<li><p>选择 SRAM 存储时，<cite>KM4_BOOTLOADER_RAM_S</cite> 为 24KB</p></li>
+<li><p>选择 Flash 存储时，<cite>KM4_BOOTLOADER_RAM_S</cite> 为 4KB</p></li>
+</ul>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/modify_bootloader_size_step1_dplus.png"><img alt="../../_images/modify_bootloader_size_step1_dplus.png" src="../../_images/modify_bootloader_size_step1_dplus.png" style="width: 409.5px; height: 62.1px;" /></a>
+</figure>
+</li>
+<li><p>修改链接脚本参数（路径：<code class="docutils literal notranslate"><span class="pre">{SDK}\amebaxxx_gcc_project\amebaxxx_layout.ld</span></code>）：</p>
+<ul class="simple">
+<li><p>调整 <cite>KM4_IMG1_SIZE</cite> 参数值以修改 <cite>KM4_BOOTLOADER_RAM_S</cite></p></li>
+</ul>
+</li>
+<li><p>重新编译工程生成新版Bootloader</p></li>
+<li><p>若Bootloader过大，需同步修改 <code class="docutils literal notranslate"><span class="pre">km4_boot_all.bin</span></code> 结束地址并烧录：</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/modify_bootloader_size_step4_dplus.png"><img alt="../../_images/modify_bootloader_size_step4_dplus.png" src="../../_images/modify_bootloader_size_step4_dplus.png" style="width: 819.45px; height: 171.45000000000002px;" /></a>
+</figure>
+</li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>新Bootloader版本号需高于当前版本才能被 boot ROM 加载</p>
+</div>
+</div><div aria-labelledby="tab-3-3-1" class="sphinx-tabs-panel" hidden="true" id="panel-3-3-1" name="3-1" role="tabpanel" tabindex="0"><p><strong>Bootloader 容量调整</strong></p>
+<p>如需扩大 <cite>KM4_BOOT_RAM_S</cite> ，需确保调整后的尺寸为 4KB 对齐（MPC 保护以 4KB 为单位）。</p>
+<p>修改步骤如下：</p>
+<ol class="arabic">
+<li><p>在 menuconfig 中配置 <span class="guilabel">CONFIG Link Option</span> 选项：</p>
+<ul class="simple">
+<li><p>选择 SRAM 存储时，<cite>KM4_BOOTLOADER_RAM_S</cite> 为 24KB</p></li>
+<li><p>选择 Flash 存储时，<cite>KM4_BOOTLOADER_RAM_S</cite> 为 4KB</p></li>
+</ul>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/modify_bootloader_size_step1_lite.png"><img alt="../../_images/modify_bootloader_size_step1_lite.png" src="../../_images/modify_bootloader_size_step1_lite.png" style="width: 549.9px; height: 36.9px;" /></a>
+</figure>
+</li>
+<li><p>修改链接脚本参数（路径：<code class="docutils literal notranslate"><span class="pre">{SDK}\amebaxxx_gcc_project\amebaxxx_layout.ld</span></code>）：</p>
+<ul class="simple">
+<li><p>调整 <cite>KM4_IMG1_SIZE</cite> 参数值以修改 <cite>KM4_BOOTLOADER_RAM_S</cite></p></li>
+</ul>
+</li>
+<li><p>重新编译工程生成新版Bootloader</p></li>
+<li><p>若Bootloader过大，需同步修改 <code class="docutils literal notranslate"><span class="pre">km4_boot_all.bin</span></code> 结束地址并烧录：</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/modify_bootloader_size_step4_lite.png"><img alt="../../_images/modify_bootloader_size_step4_lite.png" src="../../_images/modify_bootloader_size_step4_lite.png" style="width: 421.2px; height: 103.95px;" /></a>
+</figure>
+</li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>新Bootloader版本号需高于当前版本才能被 boot ROM 加载</p>
+</div>
+</div><div aria-labelledby="tab-3-3-2" class="sphinx-tabs-panel" hidden="true" id="panel-3-3-2" name="3-2" role="tabpanel" tabindex="0"><p><strong>Bootloader 容量调整</strong></p>
+<p>如需扩大 <cite>KM4_BOOT_RAM_S</cite> ，需确保调整后的尺寸为 4KB 对齐（MPC 保护以 4KB 为单位）。</p>
+<p>修改步骤如下：</p>
+<ol class="arabic">
+<li><p>在 menuconfig 中配置 <span class="guilabel">CONFIG Link Option</span> 选项：</p>
+<ul class="simple">
+<li><p>选择 SRAM 存储时，<cite>KM4_BOOTLOADER_RAM_S</cite> 为 24KB</p></li>
+<li><p>选择 Flash 存储时，<cite>KM4_BOOTLOADER_RAM_S</cite> 为 4KB</p></li>
+</ul>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/modify_bootloader_size_step1_lite.png"><img alt="../../_images/modify_bootloader_size_step1_lite.png" src="../../_images/modify_bootloader_size_step1_lite.png" style="width: 549.9px; height: 36.9px;" /></a>
+</figure>
+</li>
+<li><p>修改链接脚本参数（路径：<code class="docutils literal notranslate"><span class="pre">{SDK}\amebaxxx_gcc_project\amebaxxx_layout.ld</span></code>）：</p>
+<ul class="simple">
+<li><p>调整 <cite>KM4_IMG1_SIZE</cite> 参数值以修改 <cite>KM4_BOOTLOADER_RAM_S</cite></p></li>
+</ul>
+</li>
+<li><p>重新编译工程生成新版Bootloader</p></li>
+<li><p>若Bootloader过大，需同步修改 <code class="docutils literal notranslate"><span class="pre">km4_boot_all.bin</span></code> 结束地址并烧录：</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/modify_bootloader_size_step4_lite.png"><img alt="../../_images/modify_bootloader_size_step4_lite.png" src="../../_images/modify_bootloader_size_step4_lite.png" style="width: 421.2px; height: 103.95px;" /></a>
+</figure>
+</li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>新Bootloader版本号需高于当前版本才能被 boot ROM 加载</p>
+</div>
+</div></div>
+</section>
+<section id="bd-ram-bd-psram">
+<h2>修改 BD_RAM 和 BD_PSRAM 配置<a class="headerlink" href="#bd-ram-bd-psram" title="Link to this heading"></a></h2>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-4-4-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-4-4-0" name="4-0" role="tab" tabindex="0">RTL8721Dx</button><button aria-controls="panel-4-4-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-4-4-1" name="4-1" role="tab" tabindex="-1">RTL8720E</button><button aria-controls="panel-4-4-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-4-4-2" name="4-2" role="tab" tabindex="-1">RTL8726E</button></div><div aria-labelledby="tab-4-4-0" class="sphinx-tabs-panel" id="panel-4-4-0" name="4-0" role="tabpanel" tabindex="0"><p><strong>BD_RAM 配置</strong></p>
+<ol class="arabic">
+<li><p>在 <code class="docutils literal notranslate"><span class="pre">{SDK}\amebadplus_gcc_project\amebaDplus_layout.ld</span></code> 文件中修改 <cite>RAM_KM0_IMG2_SIZE</cite> 参数值，调整 <cite>KM4_BD_RAM</cite> 结束地址：</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/modify_sd_ram_step1_dplus.png"><img alt="../../_images/modify_sd_ram_step1_dplus.png" src="../../_images/modify_sd_ram_step1_dplus.png" style="width: 359.1px; height: 24.3px;" /></a>
+</figure>
+</li>
+<li><p>按照 <strong>APP OTA1</strong> 章节说明重新编译并烧录 Bootloader 和 IMG2 OTA2 固件</p></li>
+</ol>
+<p><strong>BD_PSRAM 配置</strong></p>
+<ol class="arabic">
+<li><p>首先在menuconfig中修改IMG2的运行位置（选择任意包含PSRAM的配置项）</p></li>
+<li><p>在 <code class="docutils literal notranslate"><span class="pre">{SDK}\amebadplus_gcc_project\amebaDplus_layout.ld</span></code> 文件中修改 <cite>PSRAM_KM4_IMG2_SIZE</cite> 参数值，调整 <cite>KM4_BD_PSRAM</cite> 结束地址：</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/modify_sd_ram_step2_dplus.png"><img alt="../../_images/modify_sd_ram_step2_dplus.png" src="../../_images/modify_sd_ram_step2_dplus.png" style="width: 689.5px; height: 60.9px;" /></a>
+</figure>
+</li>
+</ol>
+</div><div aria-labelledby="tab-4-4-1" class="sphinx-tabs-panel" hidden="true" id="panel-4-4-1" name="4-1" role="tabpanel" tabindex="0"><p><strong>BD_RAM 配置</strong></p>
+<ol class="arabic">
+<li><p>在 menuconfig 中配置 IMG2 运行位置（选择任意包含 SRAM 的选项）：</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/modify_bd_ram_step1_lite.png"><img alt="BD_RAM menuconfig 配置" src="../../_images/modify_bd_ram_step1_lite.png" style="width: 527.4px; height: 38.7px;" /></a>
+</figure>
+</li>
+<li><p>修改链接脚本参数（路径：<code class="docutils literal notranslate"><span class="pre">{SDK}\amebalite_gcc_project\amebalite_layout.ld</span></code>）：</p>
+<ul class="simple">
+<li><p>调整 <code class="docutils literal notranslate"><span class="pre">RAM_KM4_IMG2_SIZE</span></code> 或 <code class="docutils literal notranslate"><span class="pre">RAM_KR4_IMG2_SIZE</span></code></p></li>
+<li><p>修改 <cite>KM4_BD_RAM</cite> 结束地址</p></li>
+</ul>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* IMG2 Size*/</span>
+<span class="cp">#if defined(CONFIG_AP_CORE_KM4)</span>
+<span class="hll"><span class="w">  </span><span class="cp">#define RAM_KR4_IMG2_SIZE         KBYTES(96)</span>
+</span><span class="w">  </span><span class="cp">#define KM4_IMG2_RAM_START        (KM4_RAM_TZ_SECURE_START + RAM_KM4_IMG3_SIZE)</span>
+<span class="w">  </span><span class="cp">#define KR4_IMG2_RAM_START        (SRAM_END - RAM_KR4_IMG2_SIZE)</span>
+<span class="w">  </span><span class="cp">#define RAM_KM4_IMG2_SIZE         (KR4_IMG2_RAM_START - KM4_IMG2_RAM_START)</span>
+<span class="cp">#else</span>
+<span class="hll"><span class="w">  </span><span class="cp">#define RAM_KM4_IMG2_SIZE         KBYTES(96)</span>
+</span><span class="w">  </span><span class="cp">#define KM4_IMG2_RAM_START        (KM4_RAM_TZ_SECURE_START + RAM_KM4_IMG3_SIZE)</span>
+<span class="w">  </span><span class="cp">#define KR4_IMG2_RAM_START        (KM4_IMG2_RAM_START + RAM_KM4_IMG2_SIZE)</span>
+<span class="w">  </span><span class="cp">#define RAM_KR4_IMG2_SIZE         (SRAM_END - KR4_IMG2_RAM_START)</span>
+<span class="cp">#endif</span>
+</pre></div>
+</div>
+</li>
+<li><p>根据 <strong>APP OTA1</strong> 章节指引重新编译并烧录 Bootloader 和 IMG2 OTA2 固件</p></li>
+</ol>
+<p><strong>BD_PSRAM 配置</strong></p>
+<ol class="arabic">
+<li><p>在 menuconfig 中配置 IMG2 运行位置（选择任意包含 PSRAM 的选项）</p></li>
+<li><p>修改链接脚本参数（路径：<code class="docutils literal notranslate"><span class="pre">{SDK}\amebalite_gcc_project\amebalite_layout.ld</span></code>）：</p>
+<ul class="simple">
+<li><p>调整 <cite>PSRAM_KM4_IMG2_SIZE</cite></p></li>
+<li><p>修改 <cite>KM4_BD_PSRAM</cite> 结束地址</p></li>
+</ul>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="hll"><span class="cp">#define PSRAM_KM4_IMG2_SIZE       (KBYTES(1536) - (PSRAM_TZ_NSC_SIZE + PSRAM_TZ_ENTRY_SIZE + PSRAM_KM4_IMG3_SIZE))</span>
+</span><span class="cp">#define KM4_IMG2_PSRAM_START      (KM4_PSRAM_TZ_SECURE_START + PSRAM_KM4_IMG3_SIZE)</span>
+<span class="cp">#define KR4_IMG2_PSRAM_START      (KM4_IMG2_PSRAM_START + PSRAM_KM4_IMG2_SIZE)</span>
+<span class="cp">#define PSRAM_KR4_IMG2_SIZE       (PSRAM_DSP_START - KR4_IMG2_PSRAM_START)</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</div><div aria-labelledby="tab-4-4-2" class="sphinx-tabs-panel" hidden="true" id="panel-4-4-2" name="4-2" role="tabpanel" tabindex="0"><p><strong>BD_RAM 配置</strong></p>
+<ol class="arabic">
+<li><p>在 menuconfig 中配置 IMG2 运行位置（选择任意包含 SRAM 的选项）：</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/modify_bd_ram_step1_lite.png"><img alt="BD_RAM menuconfig 配置" src="../../_images/modify_bd_ram_step1_lite.png" style="width: 527.4px; height: 38.7px;" /></a>
+</figure>
+</li>
+<li><p>修改链接脚本参数（路径：<code class="docutils literal notranslate"><span class="pre">{SDK}\amebalite_gcc_project\amebalite_layout.ld</span></code>）：</p>
+<ul class="simple">
+<li><p>调整 <code class="docutils literal notranslate"><span class="pre">RAM_KM4_IMG2_SIZE</span></code> 或 <code class="docutils literal notranslate"><span class="pre">RAM_KR4_IMG2_SIZE</span></code></p></li>
+<li><p>修改 <cite>KM4_BD_RAM</cite> 结束地址</p></li>
+</ul>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* IMG2 Size*/</span>
+<span class="cp">#if defined(CONFIG_AP_CORE_KM4)</span>
+<span class="hll"><span class="w">  </span><span class="cp">#define RAM_KR4_IMG2_SIZE         KBYTES(96)</span>
+</span><span class="w">  </span><span class="cp">#define KM4_IMG2_RAM_START        (KM4_RAM_TZ_SECURE_START + RAM_KM4_IMG3_SIZE)</span>
+<span class="w">  </span><span class="cp">#define KR4_IMG2_RAM_START        (SRAM_END - RAM_KR4_IMG2_SIZE)</span>
+<span class="w">  </span><span class="cp">#define RAM_KM4_IMG2_SIZE         (KR4_IMG2_RAM_START - KM4_IMG2_RAM_START)</span>
+<span class="cp">#else</span>
+<span class="hll"><span class="w">  </span><span class="cp">#define RAM_KM4_IMG2_SIZE         KBYTES(96)</span>
+</span><span class="w">  </span><span class="cp">#define KM4_IMG2_RAM_START        (KM4_RAM_TZ_SECURE_START + RAM_KM4_IMG3_SIZE)</span>
+<span class="w">  </span><span class="cp">#define KR4_IMG2_RAM_START        (KM4_IMG2_RAM_START + RAM_KM4_IMG2_SIZE)</span>
+<span class="w">  </span><span class="cp">#define RAM_KR4_IMG2_SIZE         (SRAM_END - KR4_IMG2_RAM_START)</span>
+<span class="cp">#endif</span>
+</pre></div>
+</div>
+</li>
+<li><p>根据 <strong>APP OTA1</strong> 章节指引重新编译并烧录 Bootloader 和 IMG2 OTA2 固件</p></li>
+</ol>
+<p><strong>BD_PSRAM 配置</strong></p>
+<ol class="arabic">
+<li><p>在 menuconfig 中配置 IMG2 运行位置（选择任意包含 PSRAM 的选项）</p></li>
+<li><p>修改链接脚本参数（路径：<code class="docutils literal notranslate"><span class="pre">{SDK}\amebalite_gcc_project\amebalite_layout.ld</span></code>）：</p>
+<ul class="simple">
+<li><p>调整 <cite>PSRAM_KM4_IMG2_SIZE</cite></p></li>
+<li><p>修改 <cite>KM4_BD_PSRAM</cite> 结束地址</p></li>
+</ul>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="hll"><span class="cp">#define PSRAM_KM4_IMG2_SIZE       (KBYTES(1536) - (PSRAM_TZ_NSC_SIZE + PSRAM_TZ_ENTRY_SIZE + PSRAM_KM4_IMG3_SIZE))</span>
+</span><span class="cp">#define KM4_IMG2_PSRAM_START      (KM4_PSRAM_TZ_SECURE_START + PSRAM_KM4_IMG3_SIZE)</span>
+<span class="cp">#define KR4_IMG2_PSRAM_START      (KM4_IMG2_PSRAM_START + PSRAM_KM4_IMG2_SIZE)</span>
+<span class="cp">#define PSRAM_KR4_IMG2_SIZE       (PSRAM_DSP_START - KR4_IMG2_PSRAM_START)</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</div></div>
+</section>
+<section id="heap">
+<h2>调整堆内存(Heap)大小<a class="headerlink" href="#heap" title="Link to this heading"></a></h2>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-5-5-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-5-5-0" name="5-0" role="tab" tabindex="0">RTL8721Dx</button><button aria-controls="panel-5-5-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-5-5-1" name="5-1" role="tab" tabindex="-1">RTL8720E</button><button aria-controls="panel-5-5-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-5-5-2" name="5-2" role="tab" tabindex="-1">RTL8726E</button></div><p>系统堆内存由多区块组成，通过 <code class="docutils literal notranslate"><span class="pre">component\os\freertos\freertos_heap5_config.c</span></code> 中的 <code class="docutils literal notranslate"><span class="pre">os_heap_init()</span></code> 函数初始化。</p>
+<div aria-labelledby="tab-5-5-0" class="sphinx-tabs-panel" id="panel-5-5-0" name="5-0" role="tabpanel" tabindex="0"><p><strong>默认PSRAM扩展配置</strong></p>
+<ul class="simple">
+<li><p><cite>PSRAM_HEAP1_START</cite> 为无效地址</p></li>
+<li><p><cite>PSRAM_HEAP1_SIZE</cite> 为 0</p></li>
+</ul>
+<div class="literal-block-wrapper docutils container" id="id5">
+<div class="code-block-caption"><span class="caption-text">初始堆内存定义</span><a class="headerlink" href="#id5" title="Link to this code"></a></div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">KM4_PSRAM_HEAP_EXT</span><span class="w"> </span><span class="p">(</span><span class="n">rwx</span><span class="p">)</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">ORIGIN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x6FFFFFFF</span><span class="p">,</span><span class="w"> </span><span class="n">LENGTH</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x6FFFFFFF</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mh">0x6FFFFFFF</span><span class="w">  </span><span class="cm">/* KM4 PSRAM 扩展堆 */</span>
+<span class="n">KM0_PSRAM_HEAP_EXT</span><span class="w"> </span><span class="p">(</span><span class="n">rwx</span><span class="p">)</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">ORIGIN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x6FFFFFFF</span><span class="p">,</span><span class="w"> </span><span class="n">LENGTH</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x6FFFFFFF</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mh">0x6FFFFFFF</span><span class="w">  </span><span class="cm">/* KM0 PSRAM 扩展堆 */</span>
+</pre></div>
+</div>
+</div>
+<p><strong>KM4 堆扩展</strong></p>
+<p>当 KM4 堆内存不足时，按以下步骤扩展：</p>
+<ol class="arabic">
+<li><p>在链接脚本 <code class="docutils literal notranslate"><span class="pre">amebaDplus_layout.ld</span></code> 中定义未使用的 PSRAM 区域：</p>
+<ul class="simple">
+<li><p>设置有效的 <cite>Heap Start</cite> 起始地址</p></li>
+<li><p>配置 <cite>Heap Size</cite> 值</p></li>
+</ul>
+</li>
+<li><p>使用系统接口添加堆内存区块：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">bool</span><span class="w"> </span><span class="nf">os_heap_add</span><span class="p">(</span><span class="n">u8</span><span class="w"> </span><span class="o">*</span><span class="n">start_addr</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">heap_size</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+<li><p>重新编译并烧录固件使配置生效</p></li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>链接脚本(<code class="docutils literal notranslate"><span class="pre">amebaDplus_layout.ld</span></code>)中定义的符号需在 <code class="docutils literal notranslate"><span class="pre">ameba_boot.h</span></code> 中声明后方可使用</p>
+</div>
+<p><strong>KM0 堆扩展</strong></p>
+<p>当 KM0 堆内存不足时，修改 <code class="docutils literal notranslate"><span class="pre">KM0_PSRAM_HEAP_EXT</span></code> 参数配置即可</p>
+</div><div aria-labelledby="tab-5-5-1" class="sphinx-tabs-panel" hidden="true" id="panel-5-5-1" name="5-1" role="tabpanel" tabindex="0"><p><strong>默认PSRAM扩展配置</strong></p>
+<ul class="simple">
+<li><p><cite>PSRAM_HEAP1_START</cite> 为无效地址</p></li>
+<li><p><cite>PSRAM_HEAP1_SIZE</cite> 容量为 0</p></li>
+</ul>
+<div class="literal-block-wrapper docutils container" id="id6">
+<div class="code-block-caption"><span class="caption-text">初始堆内存定义</span><a class="headerlink" href="#id6" title="Link to this code"></a></div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">KM4_PSRAM_HEAP_EXT</span><span class="w"> </span><span class="p">(</span><span class="n">rwx</span><span class="p">)</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">ORIGIN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x6FFFFFFF</span><span class="p">,</span><span class="w"> </span><span class="n">LENGTH</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x6FFFFFFF</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mh">0x6FFFFFFF</span><span class="w">  </span><span class="cm">/* KM4 PSRAM 扩展堆 */</span>
+<span class="n">KR4_PSRAM_HEAP_EXT</span><span class="w"> </span><span class="p">(</span><span class="n">rwx</span><span class="p">)</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">ORIGIN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x6FFFFFFF</span><span class="p">,</span><span class="w"> </span><span class="n">LENGTH</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x6FFFFFFF</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mh">0x6FFFFFFF</span><span class="w">  </span><span class="cm">/* KR4 PSRAM 扩展堆 */</span>
+</pre></div>
+</div>
+</div>
+<p><strong>KM4 堆扩展步骤</strong></p>
+<p>当 KM4 堆内存不足时，按以下流程扩展：</p>
+<ol class="arabic">
+<li><p>在链接脚本 <code class="file docutils literal notranslate"><span class="pre">amebalite_layout.ld</span></code> 中定义未使用的 PSRAM 区域：</p>
+<ul class="simple">
+<li><p>设置有效的 <cite>Heap Start</cite> 起始地址</p></li>
+<li><p>配置 <cite>Heap Size</cite> 值</p></li>
+</ul>
+</li>
+<li><p>调用系统接口添加堆内存区块：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">bool</span><span class="w"> </span><span class="nf">os_heap_add</span><span class="p">(</span><span class="n">u8</span><span class="w"> </span><span class="o">*</span><span class="n">start_addr</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">heap_size</span><span class="p">);</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>地址必须指向有效的 PSRAM 空间</p>
+</div>
+</li>
+<li><p>重新编译工程并烧录新固件激活扩展堆</p></li>
+</ol>
+<p><strong>通用注意事项</strong></p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<ul class="simple">
+<li><p>链接脚本 (<code class="file docutils literal notranslate"><span class="pre">amebalite_layout.ld</span></code>) 中定义的符号需在 <code class="file docutils literal notranslate"><span class="pre">ameba_boot.h</span></code> 中声明</p></li>
+<li><p>KR4 堆内存扩展方法与此流程相同</p></li>
+</ul>
+</div>
+</div><div aria-labelledby="tab-5-5-2" class="sphinx-tabs-panel" hidden="true" id="panel-5-5-2" name="5-2" role="tabpanel" tabindex="0"><p><strong>默认PSRAM扩展配置</strong></p>
+<ul class="simple">
+<li><p><cite>PSRAM_HEAP1_START</cite> 为无效地址</p></li>
+<li><p><cite>PSRAM_HEAP1_SIZE</cite> 容量为 0</p></li>
+</ul>
+<div class="literal-block-wrapper docutils container" id="id7">
+<div class="code-block-caption"><span class="caption-text">初始堆内存定义</span><a class="headerlink" href="#id7" title="Link to this code"></a></div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">KM4_PSRAM_HEAP_EXT</span><span class="w"> </span><span class="p">(</span><span class="n">rwx</span><span class="p">)</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">ORIGIN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x6FFFFFFF</span><span class="p">,</span><span class="w"> </span><span class="n">LENGTH</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x6FFFFFFF</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mh">0x6FFFFFFF</span><span class="w">  </span><span class="cm">/* KM4 PSRAM 扩展堆 */</span>
+<span class="n">KR4_PSRAM_HEAP_EXT</span><span class="w"> </span><span class="p">(</span><span class="n">rwx</span><span class="p">)</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">ORIGIN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x6FFFFFFF</span><span class="p">,</span><span class="w"> </span><span class="n">LENGTH</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x6FFFFFFF</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mh">0x6FFFFFFF</span><span class="w">  </span><span class="cm">/* KR4 PSRAM 扩展堆 */</span>
+</pre></div>
+</div>
+</div>
+<p><strong>KM4 堆扩展步骤</strong></p>
+<p>当 KM4 堆内存不足时，按以下流程扩展：</p>
+<ol class="arabic">
+<li><p>在链接脚本 <code class="file docutils literal notranslate"><span class="pre">amebalite_layout.ld</span></code> 中定义未使用的 PSRAM 区域：</p>
+<ul class="simple">
+<li><p>设置有效的 <cite>Heap Start</cite> 起始地址</p></li>
+<li><p>配置 <cite>Heap Size</cite> 值</p></li>
+</ul>
+</li>
+<li><p>调用系统接口添加堆内存区块：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">bool</span><span class="w"> </span><span class="nf">os_heap_add</span><span class="p">(</span><span class="n">u8</span><span class="w"> </span><span class="o">*</span><span class="n">start_addr</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">heap_size</span><span class="p">);</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>地址必须指向有效的 PSRAM 空间</p>
+</div>
+</li>
+<li><p>重新编译工程并烧录新固件激活扩展堆</p></li>
+</ol>
+<p><strong>通用注意事项</strong></p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<ul class="simple">
+<li><p>链接脚本 (<code class="file docutils literal notranslate"><span class="pre">amebalite_layout.ld</span></code>) 中定义的符号需在 <code class="file docutils literal notranslate"><span class="pre">ameba_boot.h</span></code> 中声明</p></li>
+<li><p>KR4 堆内存扩展方法与此流程相同</p></li>
+</ul>
+</div>
+</div></div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="1_flash_layout_toprst_cn.html" class="btn btn-neutral float-left" title="Flash布局与配置" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="../0_user_config/0_usrcfg_index_cn.html" class="btn btn-neutral float-right" title="User Configuration" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2025, Realsil。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+ 
+
+
+
+</body>
+</html>
