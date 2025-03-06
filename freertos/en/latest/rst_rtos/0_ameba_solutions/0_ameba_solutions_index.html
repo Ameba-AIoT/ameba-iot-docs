@@ -270,6 +270,61 @@
   </script>
  
 
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const authContent = document.querySelector('.wy-nav-content .document');
+    if (!authContent) return;
+
+    authContent.style.display = 'none'; // 初始隐藏内容
+
+    // 从上下文中获取允许的用户列表
+    const allowedUsers = ["admin", "user1"];
+
+    // 用户名密码映射
+    const authUsers = {"admin": "admin123", "user1": "user123", "user2": "user234"};
+
+    Swal.fire({
+        title: '访问授权',
+        html: `
+            <input id="username" 
+                   class="swal2-input" 
+                   placeholder="用户名">
+            <input id="password" 
+                   class="swal2-input" 
+                   type="password" 
+                   placeholder="密码">
+        `,
+        showCancelButton: true,
+        confirmButtonText: '确认',
+        cancelButtonText: '取消',
+        allowOutsideClick: false,
+        customClass: {
+            popup: 'auth-popup',
+            actions: 'auth-actions'
+        },
+        preConfirm: () => {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            return { username, password };
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const { username, password } = result.value;
+            if (authUsers[username] === password && allowedUsers.includes(username)) {
+                authContent.style.display = 'block';
+            } else {
+                window.location.href = '/index.html';
+            }
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+            authContent.innerHTML = '';
+            authContent.style.backgroundColor = '#f8f9fa';
+        } else {
+            window.location.href = '/index.html';
+        }
+    });
+});
+</script>
+
 
 
 </body>
