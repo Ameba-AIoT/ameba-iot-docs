@@ -1,0 +1,1015 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HTTP AT Commands &mdash; Ameba IoT Docs  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=b0e775ca" />
+      <link rel="stylesheet" type="text/css" href="../../_static/tabs.css?v=a5c4661c" />
+      <link rel="stylesheet" type="text/css" href="../../_static/_static/custom.css" />
+
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>let toggleHintShow = 'Click to show';</script>
+        <script>let toggleHintHide = 'Click to hide';</script>
+        <script>let toggleOpenOnPrint = 'true';</script>
+        <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="WebSocket AT Commands" href="at_command_websocket.html" />
+    <link rel="prev" title="MQTT AT Commands" href="at_command_mqtt.html" />
+   
+  
+  <script type="text/javascript" src="../../_static/js/selector.js"></script>
+
+  <style>
+    .wy-nav-content {max-width: 1000px;} /* 设置最大宽度 */
+  </style>
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Ameba IoT Docs
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../0_ameba_product/0_ameba_product_center_index.html">Products Center</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_ameba_sdk/0_ameba_sdks_index.html">Ameba SDK</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_ameba_solutions/0_ameba_solutions_index.html">Ameba Solutions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_gcc_build_environment/0_gcc_build_index.html">0.1 GCC Build Environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_gdb_debug/0_gdb_debug_index.html">0.2 GDB Debug</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_gcc_build_library/0_gcc_build_library_index.html">0.3 GCC Build Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_sdk_example/0_sdk_example_index.html">0.4 SDK Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_memory_layout/0_layout_index.html">0.5 Flash &amp; RAM Layout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_user_config/0_usrcfg_index.html">0.6 User Config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_tools/0_tools_index.html">0.7 Tools</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="0_at_command_index.html">0.8 AT Command</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="at_command_introduction.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="at_command_common.html">Common AT Commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="at_command_wifi.html">Wi-Fi AT Commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="at_command_mqtt.html">MQTT AT Commands</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">HTTP AT Commands</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#at-httpheader">AT+HTTPHEADER</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#command">Command</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#response">Response</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#parameter">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#error-number">Error Number</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#at-httpconf">AT+HTTPCONF</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id2">Description</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id3">Command</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id4">Response</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id5">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id6">Error Number</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id7">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#at-httpquery">AT+HTTPQUERY</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id8">Description</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id9">Command</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id10">Response</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id11">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id12">Error Number</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id13">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#at-httpget">AT+HTTPGET</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id14">Description</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id15">Command</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id16">Response</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id17">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id18">Error Number</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id19">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#at-httppost">AT+HTTPPOST</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id20">Description</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id21">Command</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id22">Response</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id23">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id24">Error Number</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id25">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#at-httpput">AT+HTTPPUT</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id26">Description</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id27">Command</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id28">Response</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id29">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id30">Error Number</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id31">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#at-httpdel">AT+HTTPDEL</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id32">Description</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id33">Command</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id34">Response</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id35">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id36">Error Number</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id37">Example</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="at_command_websocket.html">WebSocket AT Commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="at_command_tcp_ip.html">Socket AT Commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="at_command_bluetooth.html">Bluetooth AT Commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="at_command_file_system.html">File System AT Commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="at_command_use_spi.html">How to Use AT Command with SPI</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../0_file_system/0_vfs_index.html">0.9 Virtual File System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_mpu_cache/0_mpu_cache_index.html">1.0 MPU and Cache</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_boot_process/0_boot_index.html">1.1 BOOT Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_ota/0_ota_index.html">1.2 OTA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_otpc/0_otpc_index.html">1.3 OTPC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_chipen/0_chipen_index.html">1.4 CHIPEN</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_ipc/0_ipc_index.html">1.5 Inter Processor Communication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_pinmux/0_pinmux_index.html">1.6 PINMUX</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_gpio/0_gpio_index.html">1.7 GPIO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_power_save/0_ps_index.html">1.9 Power Save</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_whc_wifi_bridge/0_wifi_bridge_index.html">2.1 WHC Bridge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_whc_fullmac/0_fullmac_index.html">2.2 WHC FullMAC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_wifi_tunnel/0_wifi_tunnel_index.html">2.3 Wi-Fi R-Mesh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_wifi_csi/0_wifi_csi_index.html">2.5 Wi-Fi CSI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_wifi_adaptivity_test/0_wifi_adaptivity_index.html">2.6 Wi-Fi Adaptivity Test</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_security/0_security_index.html">3.1 Security &amp; Encryption</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_trng/0_trng_index.html">3.2 True Random Number Generator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_huk_derivation/0_huk_derivation_index_nda.html">3.3 HUK Derivation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_rdp/0_rdp_index_nda.html">3.4 RDP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_rsip/0_rsip_index_nda.html">3.5 RSIP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_secure_boot/0_secure_boot_index_nda.html">3.6 Secure Boot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_swd_protection/0_swd_protection_index_nda.html">3.7 SWD Protection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_tfm/0_tfm_index_nda.html">3.8 Trusted Firmware-M (TF-M)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_crypto_engine/0_crypto_engine_index.html">3.9 Crypto Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_ecdsa_engine/0_ecdsa_index.html">3.a ECDSA Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_eddsa_engine/0_eddsa_index.html">3.b EDDSA Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_rsa_engine/0_rsa_index.html">3.c RSA Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../4_ai/0_ai_index.html">4.1 AI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../4_ai_voice/0_ai_voice_index.html">4.2 AIVoice</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../4_multimedia/0_multimedia_index.html">4.3 Multimedia</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../4_dsp/0_dsp_index.html">4.4 DSP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../6_mass_production/0_mp_index.html">6.1 Mass Production</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../6_mp_image/0_mp_image_index.html">6.2 MP Image</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../6_mptools/0_mptools_index.html">6.3 MP Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../7_usb/0_usb_index.html">7.1 USB Host &amp; Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_dmac/0_dmac_index.html">8.1 DMA Controllor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_psram/0_psram_index.html">8.2 PSRAM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_thermal/0_thermal_index.html">8.3 Thermal Meter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_adc/0_adc_index.html">8.4 ADC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_ir/0_ir_index.html">8.5 IR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_ledc/0_ledc_index.html">8.6 LEDC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_cap_touch/0_cap_touch_index.html">8.7 Cap-Touch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_key_scan/0_key_scan_index.html">8.8 Key-Scan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_rtc_io/0_rtc_io_index.html">8.9 RTC-IO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_lcdc/0_lcdc_index.html">8.A LCDC</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Ameba IoT Docs</a>
+      </nav>
+
+      <div class="wy-nav-content">
+
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="0_at_command_index.html">AT Command</a></li>
+      <li class="breadcrumb-item active">HTTP AT Commands</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="http-at-commands">
+<span id="id1"></span><h1>HTTP AT Commands<a class="headerlink" href="#http-at-commands" title="Link to this heading"></a></h1>
+<p>The HTTP AT commands supports all the AT commands mentioned on this page. The HTTP AT commands is disabled by default.
+You can enable HTTP AT commands by the following steps:</p>
+<blockquote>
+<div><ul>
+<li><p>Navigate to your target project and open configuration menu.</p>
+<blockquote>
+<div></div></blockquote>
+</li>
+<li><p>Select <span class="menuselection">CONFIG AT CMD -&gt; ATCMD Mode -&gt; MCU Control</span></p></li>
+<li><p>Select <span class="menuselection">CONFIG AT CMD -&gt; Enable HTTP</span></p></li>
+<li><p>Save and Exit.</p></li>
+</ul>
+</div></blockquote>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">TT</span> <span class="pre">mode</span></code> is only supported for MCU control mode. If you need use <code class="docutils literal notranslate"><span class="pre">TT</span> <span class="pre">mode</span></code> for AT commands, you need enable MCU control mode.
+The details of <code class="docutils literal notranslate"><span class="pre">TT</span> <span class="pre">mode</span></code> refer to <a class="reference internal" href="at_command_introduction.html#transparent-transmission"><span class="std std-ref">Transparent Transmission</span></a>.</p>
+</div>
+<section id="at-httpheader">
+<span id="http-at-httpheader"></span><h2>AT+HTTPHEADER<a class="headerlink" href="#at-httpheader" title="Link to this heading"></a></h2>
+<section id="description">
+<h3>Description<a class="headerlink" href="#description" title="Link to this heading"></a></h3>
+<p>Set HTTP request header. If you need to set HTTP request header used by GET/POST/PUT/… method, excuete it. It will take effect globally and permanently until a restart or reset. Once set, all HTTP method commands will carry these request headers. This command can set only one HTTP request header at a time, but you can set multiple times to support multiple different HTTP request headers. Currently, a maximum of 10 entries can be set.</p>
+</section>
+<section id="command">
+<h3>Command<a class="headerlink" href="#command" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">HTTPHEADER</span><span class="o">=&lt;</span><span class="n">req_header_len</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</section>
+<section id="response">
+<h3>Response<a class="headerlink" href="#response" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span> <span class="o">&gt;&gt;&gt;</span>
+<span class="o">&lt;</span><span class="n">req_header</span><span class="o">&gt;</span>
+<span class="n">OK</span>
+</pre></div>
+</div>
+<p>The symbol <code class="docutils literal notranslate"><span class="pre">&gt;&gt;&gt;</span></code> indicates that AT service is ready for receiving serial data, and you can enter the HTTP request header string (in the format of <code class="docutils literal notranslate"><span class="pre">key:</span> <span class="pre">value</span></code>) now.
+When the string length determined by the parameter <code class="docutils literal notranslate"><span class="pre">&lt;req_header_len&gt;</span></code> is reached, it returns OK.</p>
+<p>Or</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ERROR</span><span class="p">:</span><span class="o">&lt;</span><span class="n">error_no</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</section>
+<section id="parameter">
+<h3>Parameter<a class="headerlink" href="#parameter" title="Link to this heading"></a></h3>
+<dl class="field-list simple">
+<dt class="field-odd">&lt;req_header_len&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The length of input characters for single HTTP request header.</p>
+<ul class="simple">
+<li><p>0: Clear all HTTP request headers that have been set.</p></li>
+<li><p>Other: Set a new HTTP request header.</p></li>
+</ul>
+</dd>
+<dt class="field-even">&lt;req_header&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>The actual HTTP request header string (in the format of <code class="docutils literal notranslate"><span class="pre">key:</span> <span class="pre">value</span></code>)</p>
+</dd>
+</dl>
+</section>
+<section id="error-number">
+<h3>Error Number<a class="headerlink" href="#error-number" title="Link to this heading"></a></h3>
+<dl class="field-list simple">
+<dt class="field-odd">1<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Error parameters.</p>
+</dd>
+<dt class="field-even">2<span class="colon">:</span></dt>
+<dd class="field-even"><p>Malloc error.</p>
+</dd>
+<dt class="field-odd">3<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Get data failed in TT mode.</p>
+</dd>
+</dl>
+</section>
+<section id="example">
+<h3>Example<a class="headerlink" href="#example" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="n">Set</span> <span class="n">a</span> <span class="n">new</span> <span class="n">request</span> <span class="n">header</span>
+<span class="n">AT</span><span class="o">+</span><span class="n">HTTPHEADER</span><span class="o">=</span><span class="mi">17</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="n">Connection</span><span class="p">:</span> <span class="n">close</span>
+<span class="n">OK</span>
+
+<span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="n">Clear</span> <span class="nb">all</span> <span class="n">request</span> <span class="n">header</span>
+<span class="n">AT</span><span class="o">+</span><span class="n">HTTPHEADER</span><span class="o">=</span><span class="mi">0</span>
+<span class="n">OK</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="at-httpconf">
+<span id="http-at-httpconf"></span><h2>AT+HTTPCONF<a class="headerlink" href="#at-httpconf" title="Link to this heading"></a></h2>
+<section id="id2">
+<h3>Description<a class="headerlink" href="#id2" title="Link to this heading"></a></h3>
+<p>Set HTTP configuration. Setting by this command are global. Once set, it is effective permanently. If you need to use default HTTP timeout and port (80 for HTTP, 443 for HTTPS), enter</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">HTTPCONF</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span><span class="mi">0</span>
+</pre></div>
+</div>
+</section>
+<section id="id3">
+<h3>Command<a class="headerlink" href="#id3" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">HTTPCONF</span><span class="o">=&lt;</span><span class="n">timeout</span><span class="o">&gt;</span><span class="p">[,</span><span class="o">&lt;</span><span class="n">port</span><span class="o">&gt;</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<section id="id4">
+<h3>Response<a class="headerlink" href="#id4" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">OK</span>
+</pre></div>
+</div>
+<p>Or</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ERROR</span><span class="p">:</span><span class="o">&lt;</span><span class="n">error_no</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</section>
+<section id="id5">
+<h3>Parameter<a class="headerlink" href="#id5" title="Link to this heading"></a></h3>
+<dl class="field-list simple">
+<dt class="field-odd">&lt;timeout&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>HTTP receive/send timeout.</p>
+<ul class="simple">
+<li><p>Unit: second. Default: 10.</p></li>
+</ul>
+</dd>
+<dt class="field-even">&lt;port&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>HTTP server port.</p>
+<ul class="simple">
+<li><p>Default: 80 for HTTP, 443 for HTTPS. Range: [1,65535].</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="id6">
+<h3>Error Number<a class="headerlink" href="#id6" title="Link to this heading"></a></h3>
+<dl class="field-list simple">
+<dt class="field-odd">1<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Error parameters.</p>
+</dd>
+</dl>
+</section>
+<section id="id7">
+<h3>Example<a class="headerlink" href="#id7" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="n">Set</span> <span class="n">the</span> <span class="n">timeout</span> <span class="n">to</span> <span class="mi">1</span><span class="n">s</span> <span class="ow">and</span> <span class="n">the</span> <span class="n">port</span> <span class="n">to</span> <span class="mi">12345</span><span class="p">:</span>
+<span class="n">AT</span><span class="o">+</span><span class="n">HTTPCONF</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="mi">12345</span>
+<span class="n">OK</span>
+
+<span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="n">Set</span> <span class="n">the</span> <span class="n">timeout</span> <span class="ow">and</span> <span class="n">the</span> <span class="n">port</span> <span class="n">to</span> <span class="n">default</span><span class="p">:</span>
+<span class="n">AT</span><span class="o">+</span><span class="n">HTTPCONF</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span><span class="mi">0</span>
+<span class="n">OK</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="at-httpquery">
+<span id="http-at-httpquery"></span><h2>AT+HTTPQUERY<a class="headerlink" href="#at-httpquery" title="Link to this heading"></a></h2>
+<section id="id8">
+<h3>Description<a class="headerlink" href="#id8" title="Link to this heading"></a></h3>
+<p>Query HTTP global configuration, including HTTP timeout, HTTP server port and HTTP request header string.</p>
+</section>
+<section id="id9">
+<h3>Command<a class="headerlink" href="#id9" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">HTTPQUERY</span>
+</pre></div>
+</div>
+</section>
+<section id="id10">
+<h3>Response<a class="headerlink" href="#id10" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Global</span> <span class="n">HTTP</span> <span class="n">configuration</span><span class="p">:</span>
+<span class="n">http_timeout</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">http_timeout</span><span class="o">&gt;</span>
+<span class="n">http_server_port</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">http_server_port</span><span class="o">&gt;</span> <span class="p">[</span> <span class="n">OR</span> <span class="n">http_server_port</span><span class="p">:</span> <span class="mi">80</span> <span class="k">for</span> <span class="n">HTTP</span><span class="p">,</span> <span class="mi">443</span> <span class="k">for</span> <span class="n">HTTPS</span><span class="p">]</span>
+<span class="n">http_req_header_cnt</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">http_req_header_cnt</span><span class="o">&gt;</span>
+<span class="p">[</span><span class="n">http_req_header</span> <span class="nb">list</span><span class="p">:]</span>
+
+<span class="n">OK</span>
+</pre></div>
+</div>
+<p>Or</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ERROR</span><span class="p">:</span><span class="o">&lt;</span><span class="n">error_no</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</section>
+<section id="id11">
+<h3>Parameter<a class="headerlink" href="#id11" title="Link to this heading"></a></h3>
+<p>No parameters.</p>
+</section>
+<section id="id12">
+<h3>Error Number<a class="headerlink" href="#id12" title="Link to this heading"></a></h3>
+<dl class="field-list simple">
+<dt class="field-odd">1<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Error parameters.</p>
+</dd>
+</dl>
+</section>
+<section id="id13">
+<h3>Example<a class="headerlink" href="#id13" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="n">Default</span> <span class="n">configuration</span> <span class="n">query</span>
+<span class="n">AT</span><span class="o">+</span><span class="n">HTTPQUERY</span>
+<span class="n">Global</span> <span class="n">HTTP</span> <span class="n">configuration</span><span class="p">:</span>
+<span class="n">http_timeout</span><span class="p">:</span> <span class="mi">10</span>
+<span class="n">http_server_port</span><span class="p">:</span> <span class="mi">80</span> <span class="k">for</span> <span class="n">HTTP</span><span class="p">,</span> <span class="mi">443</span> <span class="k">for</span> <span class="n">HTTPS</span>
+<span class="n">http_req_header_cnt</span><span class="p">:</span> <span class="mi">0</span>
+
+<span class="n">OK</span>
+
+<span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="n">User</span> <span class="n">configuration</span> <span class="n">query</span>
+<span class="n">AT</span><span class="o">+</span><span class="n">HTTPHEADER</span><span class="o">=</span><span class="mi">17</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="n">Connection</span><span class="p">:</span> <span class="n">close</span>
+<span class="n">OK</span>
+<span class="n">AT</span><span class="o">+</span><span class="n">HTTPCONF</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="mi">12345</span>
+<span class="n">OK</span>
+<span class="n">AT</span><span class="o">+</span><span class="n">HTTPQUERY</span>
+<span class="n">Global</span> <span class="n">HTTP</span> <span class="n">configuration</span><span class="p">:</span>
+<span class="n">http_timeout</span><span class="p">:</span> <span class="mi">1</span>
+<span class="n">http_server_port</span><span class="p">:</span> <span class="mi">12345</span>
+<span class="n">http_req_header_cnt</span><span class="p">:</span> <span class="mi">1</span>
+<span class="n">http_req_header</span> <span class="nb">list</span><span class="p">:</span>
+<span class="n">Connection</span><span class="p">:</span> <span class="n">close</span>
+
+<span class="n">OK</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You need to connect to the AP with internet access capability before using the following HTTP method AT commands.</p>
+</div>
+</section>
+</section>
+<section id="at-httpget">
+<span id="http-at-httget"></span><h2>AT+HTTPGET<a class="headerlink" href="#at-httpget" title="Link to this heading"></a></h2>
+<section id="id14">
+<h3>Description<a class="headerlink" href="#id14" title="Link to this heading"></a></h3>
+<p>Get HTTP resource.</p>
+</section>
+<section id="id15">
+<h3>Command<a class="headerlink" href="#id15" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">HTTPGET</span><span class="o">=&lt;</span><span class="n">host</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">path</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">conn_type</span><span class="o">&gt;</span><span class="p">[,</span><span class="o">&lt;</span><span class="n">certificate_index</span><span class="o">&gt;</span><span class="p">][,</span><span class="o">&lt;</span><span class="n">req_header_cnt</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">req_header</span><span class="o">&gt;...&lt;</span><span class="n">req_header</span><span class="o">&gt;</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<section id="id16">
+<h3>Response<a class="headerlink" href="#id16" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+</span><span class="n">HTTPGET</span><span class="p">:</span> <span class="n">HEADER</span> <span class="n">LEN</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">header_len</span><span class="o">&gt;</span>
+<span class="o">+</span><span class="n">HTTPGET</span><span class="p">:</span> <span class="n">HEADER</span> <span class="n">DUMP</span> <span class="n">START</span>
+<span class="o">&lt;</span><span class="n">header_string</span><span class="o">&gt;</span>
+<span class="o">+</span><span class="n">HTTPGET</span><span class="p">:</span> <span class="n">HEADER</span> <span class="n">DUMP</span> <span class="n">END</span>
+<span class="o">+</span><span class="n">HTTPGET</span><span class="p">:</span> <span class="n">BODY</span> <span class="n">DUMP</span> <span class="n">START</span>
+<span class="o">&lt;</span><span class="n">body</span><span class="o">&gt;</span>
+<span class="o">+</span><span class="n">HTTPGET</span><span class="p">:</span> <span class="n">BODY</span> <span class="n">DUMP</span> <span class="n">END</span>
+<span class="o">+</span><span class="n">HTTPGET</span><span class="p">:</span> <span class="n">BODY</span> <span class="n">LEN</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">body_len</span><span class="o">&gt;</span>
+
+<span class="n">OK</span>
+</pre></div>
+</div>
+<p>Or</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ERROR</span><span class="p">:</span><span class="o">&lt;</span><span class="n">error_no</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</section>
+<section id="id17">
+<h3>Parameter<a class="headerlink" href="#id17" title="Link to this heading"></a></h3>
+<dl class="field-list simple">
+<dt class="field-odd">&lt;host&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Domain name or IP address.</p>
+</dd>
+<dt class="field-even">&lt;path&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>HTTP path. Default: / (if user did not enter &lt;path&gt;)</p>
+</dd>
+<dt class="field-odd">&lt;conn_type&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>HTTP connection type.</p>
+<ul class="simple">
+<li><p>1: HTTP over TCP.</p></li>
+<li><p>2: HTTP over TLS (no certificate verify).</p></li>
+<li><p>3: HTTP over TLS (verify server certificate).</p></li>
+<li><p>4: HTTP over TLS (provide client certificate).</p></li>
+<li><p>5: HTTP over TLS (verify server certificate and provide client certificate).</p></li>
+</ul>
+</dd>
+<dt class="field-even">&lt;certificate_index&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>Certificate index. Default 0.</p>
+</dd>
+<dt class="field-odd">&lt;req_header_cnt&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The total number of &lt;req_header&gt;.</p>
+</dd>
+<dt class="field-even">&lt;req_header&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>The actual request header. You can send more than one request header to the server.</p>
+<ul class="simple">
+<li><p>Ex: Connection: close,User-Agent: Ameba_Dplus, …</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="id18">
+<h3>Error Number<a class="headerlink" href="#id18" title="Link to this heading"></a></h3>
+<dl class="field-list simple">
+<dt class="field-odd">1<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Parameters error.</p>
+</dd>
+<dt class="field-even">2<span class="colon">:</span></dt>
+<dd class="field-even"><p>Malloc error.</p>
+</dd>
+<dt class="field-odd">3<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Read CA/certificate/PK failed.</p>
+</dd>
+<dt class="field-even">4<span class="colon">:</span></dt>
+<dd class="field-even"><p>Send HTTP GET header failed.</p>
+</dd>
+<dt class="field-odd">5<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Read HTTP response failed.</p>
+</dd>
+</dl>
+</section>
+<section id="id19">
+<h3>Example<a class="headerlink" href="#id19" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">HTTPGET</span><span class="o">=</span><span class="n">httpbin</span><span class="o">.</span><span class="n">org</span><span class="p">,</span><span class="o">/</span><span class="n">get</span><span class="p">,</span><span class="mi">1</span>
+
+<span class="o">+</span><span class="n">HTTPGET</span><span class="p">:</span> <span class="n">HEADER</span> <span class="n">LEN</span> <span class="o">=</span> <span class="mi">230</span>
+<span class="o">+</span><span class="n">HTTPGET</span><span class="p">:</span> <span class="n">HEADER</span> <span class="n">DUMP</span> <span class="n">START</span>
+<span class="n">HTTP</span><span class="o">/</span><span class="mf">1.1</span> <span class="mi">200</span> <span class="n">OK</span>
+<span class="n">Date</span><span class="p">:</span> <span class="n">Mon</span><span class="p">,</span> <span class="mi">06</span> <span class="n">Jan</span> <span class="mi">2025</span> <span class="mi">07</span><span class="p">:</span><span class="mi">53</span><span class="p">:</span><span class="mi">34</span> <span class="n">GMT</span>
+<span class="n">Content</span><span class="o">-</span><span class="n">Type</span><span class="p">:</span> <span class="n">application</span><span class="o">/</span><span class="n">json</span>
+<span class="n">Content</span><span class="o">-</span><span class="n">Length</span><span class="p">:</span> <span class="mi">196</span>
+<span class="n">Connection</span><span class="p">:</span> <span class="n">keep</span><span class="o">-</span><span class="n">alive</span>
+<span class="n">Server</span><span class="p">:</span> <span class="n">gunicorn</span><span class="o">/</span><span class="mf">19.9.0</span>
+<span class="n">Access</span><span class="o">-</span><span class="n">Control</span><span class="o">-</span><span class="n">Allow</span><span class="o">-</span><span class="n">Origin</span><span class="p">:</span> <span class="o">*</span>
+<span class="n">Access</span><span class="o">-</span><span class="n">Control</span><span class="o">-</span><span class="n">Allow</span><span class="o">-</span><span class="n">Credentials</span><span class="p">:</span> <span class="n">true</span>
+
+<span class="o">+</span><span class="n">HTTPGET</span><span class="p">:</span> <span class="n">HEADER</span> <span class="n">DUMP</span> <span class="n">END</span>
+<span class="o">+</span><span class="n">HTTPGET</span><span class="p">:</span> <span class="n">BODY</span> <span class="n">DUMP</span> <span class="n">START</span>
+<span class="p">{</span>
+<span class="s2">&quot;args&quot;</span><span class="p">:</span> <span class="p">{},</span>
+<span class="s2">&quot;headers&quot;</span><span class="p">:</span> <span class="p">{</span>
+   <span class="s2">&quot;Host&quot;</span><span class="p">:</span> <span class="s2">&quot;httpbin.org&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;X-Amzn-Trace-Id&quot;</span><span class="p">:</span> <span class="s2">&quot;Root=1-677b8bfe-6faa4a9d7264e26b46397567&quot;</span>
+<span class="p">},</span>
+<span class="s2">&quot;origin&quot;</span><span class="p">:</span> <span class="s2">&quot;98.98.48.11&quot;</span><span class="p">,</span>
+<span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;http://httpbin.org/get&quot;</span>
+<span class="p">}</span>
+<span class="o">+</span><span class="n">HTTPGET</span><span class="p">:</span> <span class="n">BODY</span> <span class="n">DUMP</span> <span class="n">END</span>
+<span class="o">+</span><span class="n">HTTPGET</span><span class="p">:</span> <span class="n">BODY</span> <span class="n">LEN</span> <span class="o">=</span> <span class="mi">196</span>
+
+<span class="n">OK</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="at-httppost">
+<span id="http-at-httppost"></span><h2>AT+HTTPPOST<a class="headerlink" href="#at-httppost" title="Link to this heading"></a></h2>
+<section id="id20">
+<h3>Description<a class="headerlink" href="#id20" title="Link to this heading"></a></h3>
+<p>Post HTTP data of specified length.</p>
+</section>
+<section id="id21">
+<h3>Command<a class="headerlink" href="#id21" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">HTTPPOST</span><span class="o">=&lt;</span><span class="n">host</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">path</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">conn_type</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">body_size</span><span class="o">&gt;</span><span class="p">[,</span><span class="o">&lt;</span><span class="n">certificate_index</span><span class="o">&gt;</span><span class="p">][,</span><span class="o">&lt;</span><span class="n">req_header_cnt</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">req_header</span><span class="o">&gt;...&lt;</span><span class="n">req_header</span><span class="o">&gt;</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<section id="id22">
+<h3>Response<a class="headerlink" href="#id22" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="o">&gt;</span> <span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>The symbol <code class="docutils literal notranslate"><span class="pre">&gt;&gt;&gt;</span></code> indicates that AT service is ready for receiving serial data, and you can enter the data now.
+When the requirement of message length determined by the parameter <code class="docutils literal notranslate"><span class="pre">&lt;body_size&gt;</span></code> is met, the transmission starts.
+If the transmission is successful, it returns:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+</span><span class="n">HTTPPOST</span><span class="p">:</span> <span class="n">HEADER</span> <span class="n">LEN</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">header_len</span><span class="o">&gt;</span>
+<span class="o">+</span><span class="n">HTTPPOST</span><span class="p">:</span> <span class="n">HEADER</span> <span class="n">DUMP</span> <span class="n">START</span>
+<span class="o">&lt;</span><span class="n">header_string</span><span class="o">&gt;</span>
+<span class="o">+</span><span class="n">HTTPPOST</span><span class="p">:</span> <span class="n">HEADER</span> <span class="n">DUMP</span> <span class="n">END</span>
+<span class="o">+</span><span class="n">HTTPPOST</span><span class="p">:</span> <span class="n">BODY</span> <span class="n">DUMP</span> <span class="n">START</span>
+<span class="o">&lt;</span><span class="n">body</span><span class="o">&gt;</span>
+<span class="o">+</span><span class="n">HTTPPOST</span><span class="p">:</span> <span class="n">BODY</span> <span class="n">DUMP</span> <span class="n">END</span>
+<span class="o">+</span><span class="n">HTTPPOST</span><span class="p">:</span> <span class="n">BODY</span> <span class="n">LEN</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">body_len</span><span class="o">&gt;</span>
+
+<span class="n">OK</span>
+</pre></div>
+</div>
+<p>Or</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ERROR</span><span class="p">:</span><span class="o">&lt;</span><span class="n">error_no</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</section>
+<section id="id23">
+<h3>Parameter<a class="headerlink" href="#id23" title="Link to this heading"></a></h3>
+<dl class="field-list simple">
+<dt class="field-odd">&lt;host&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Domain name or IP address.</p>
+</dd>
+<dt class="field-even">&lt;path&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>HTTP path. Default: / (if user did not enter &lt;path&gt;)</p>
+</dd>
+<dt class="field-odd">&lt;conn_type&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>HTTP connection type.</p>
+<ul class="simple">
+<li><p>1: HTTP over TCP.</p></li>
+<li><p>2: HTTP over TLS (no certificate verify).</p></li>
+<li><p>3: HTTP over TLS (verify server certificate).</p></li>
+<li><p>4: HTTP over TLS (provide client certificate).</p></li>
+<li><p>5: HTTP over TLS (verify server certificate and provide client certificate).</p></li>
+</ul>
+</dd>
+<dt class="field-even">&lt;body_size&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>The HTTP data length to POST.</p>
+</dd>
+<dt class="field-odd">&lt;certificate_index&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Certificate index. Default 0.</p>
+</dd>
+<dt class="field-even">&lt;req_header_cnt&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>The total number of &lt;req_header&gt;.</p>
+</dd>
+<dt class="field-odd">&lt;req_header&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The actual request header. You can send more than one request header to the server.</p>
+<ul class="simple">
+<li><p>Ex: Connection: close,User-Agent: Ameba_Dplus, …</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="id24">
+<h3>Error Number<a class="headerlink" href="#id24" title="Link to this heading"></a></h3>
+<dl class="field-list simple">
+<dt class="field-odd">1<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Parameters error.</p>
+</dd>
+<dt class="field-even">2<span class="colon">:</span></dt>
+<dd class="field-even"><p>Malloc error.</p>
+</dd>
+<dt class="field-odd">3<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Read CA/Certificate/PK failed.</p>
+</dd>
+<dt class="field-even">4<span class="colon">:</span></dt>
+<dd class="field-even"><p>Send HTTP POST header failed.</p>
+</dd>
+<dt class="field-odd">5<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Get data failed in TT mode.</p>
+</dd>
+<dt class="field-even">6<span class="colon">:</span></dt>
+<dd class="field-even"><p>Send HTTP POST body data failed.</p>
+</dd>
+<dt class="field-odd">7<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Read HTTP response failed.</p>
+</dd>
+</dl>
+</section>
+<section id="id25">
+<h3>Example<a class="headerlink" href="#id25" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">HTTPPOST</span><span class="o">=</span><span class="n">httpbin</span><span class="o">.</span><span class="n">org</span><span class="p">,</span><span class="o">/</span><span class="n">post</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">35</span><span class="p">,,</span><span class="mi">2</span><span class="p">,</span><span class="n">Connection</span><span class="p">:</span> <span class="n">close</span><span class="p">,</span><span class="n">User</span><span class="o">-</span><span class="n">Agent</span><span class="p">:</span> <span class="n">Ameba_Dplus</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="n">param1</span><span class="o">=</span><span class="n">test_data1</span><span class="o">&amp;</span><span class="n">param2</span><span class="o">=</span><span class="n">test_data2</span>
+
+<span class="o">+</span><span class="n">HTTPPOST</span><span class="p">:</span> <span class="n">HEADER</span> <span class="n">LEN</span> <span class="o">=</span> <span class="mi">225</span>
+<span class="o">+</span><span class="n">HTTPPOST</span><span class="p">:</span> <span class="n">HEADER</span> <span class="n">DUMP</span> <span class="n">START</span>
+<span class="n">HTTP</span><span class="o">/</span><span class="mf">1.1</span> <span class="mi">200</span> <span class="n">OK</span>
+<span class="n">Date</span><span class="p">:</span> <span class="n">Mon</span><span class="p">,</span> <span class="mi">06</span> <span class="n">Jan</span> <span class="mi">2025</span> <span class="mi">07</span><span class="p">:</span><span class="mi">49</span><span class="p">:</span><span class="mi">09</span> <span class="n">GMT</span>
+<span class="n">Content</span><span class="o">-</span><span class="n">Type</span><span class="p">:</span> <span class="n">application</span><span class="o">/</span><span class="n">json</span>
+<span class="n">Content</span><span class="o">-</span><span class="n">Length</span><span class="p">:</span> <span class="mi">359</span>
+<span class="n">Connection</span><span class="p">:</span> <span class="n">close</span>
+<span class="n">Server</span><span class="p">:</span> <span class="n">gunicorn</span><span class="o">/</span><span class="mf">19.9.0</span>
+<span class="n">Access</span><span class="o">-</span><span class="n">Control</span><span class="o">-</span><span class="n">Allow</span><span class="o">-</span><span class="n">Origin</span><span class="p">:</span> <span class="o">*</span>
+<span class="n">Access</span><span class="o">-</span><span class="n">Control</span><span class="o">-</span><span class="n">Allow</span><span class="o">-</span><span class="n">Credentials</span><span class="p">:</span> <span class="n">true</span>
+
+<span class="o">+</span><span class="n">HTTPPOST</span><span class="p">:</span> <span class="n">HEADER</span> <span class="n">DUMP</span> <span class="n">END</span>
+<span class="o">+</span><span class="n">HTTPPOST</span><span class="p">:</span> <span class="n">BODY</span> <span class="n">DUMP</span> <span class="n">START</span>
+<span class="p">{</span>
+<span class="s2">&quot;args&quot;</span><span class="p">:</span> <span class="p">{},</span>
+<span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="s2">&quot;param1=test_data1&amp;param2=test_data2&quot;</span><span class="p">,</span>
+<span class="s2">&quot;files&quot;</span><span class="p">:</span> <span class="p">{},</span>
+<span class="s2">&quot;form&quot;</span><span class="p">:</span> <span class="p">{},</span>
+<span class="s2">&quot;headers&quot;</span><span class="p">:</span> <span class="p">{</span>
+   <span class="s2">&quot;Content-Length&quot;</span><span class="p">:</span> <span class="s2">&quot;35&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;Host&quot;</span><span class="p">:</span> <span class="s2">&quot;httpbin.org&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;User-Agent&quot;</span><span class="p">:</span> <span class="s2">&quot;Ameba_Dplus&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;X-Amzn-Trace-Id&quot;</span><span class="p">:</span> <span class="s2">&quot;Root=1-677b8af2-73ea1c6e376e5d1e672893b5&quot;</span>
+<span class="p">},</span>
+<span class="s2">&quot;json&quot;</span><span class="p">:</span> <span class="n">null</span><span class="p">,</span>
+<span class="s2">&quot;origin&quot;</span><span class="p">:</span> <span class="s2">&quot;98.98.48.11&quot;</span><span class="p">,</span>
+<span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://httpbin.org/post&quot;</span>
+<span class="p">}</span>
+<span class="o">+</span><span class="n">HTTPPOST</span><span class="p">:</span> <span class="n">BODY</span> <span class="n">DUMP</span> <span class="n">END</span>
+<span class="o">+</span><span class="n">HTTPPOST</span><span class="p">:</span> <span class="n">BODY</span> <span class="n">LEN</span> <span class="o">=</span> <span class="mi">359</span>
+
+<span class="n">OK</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="at-httpput">
+<span id="http-at-httpput"></span><h2>AT+HTTPPUT<a class="headerlink" href="#at-httpput" title="Link to this heading"></a></h2>
+<section id="id26">
+<h3>Description<a class="headerlink" href="#id26" title="Link to this heading"></a></h3>
+<p>Put HTTP data of specified length.</p>
+</section>
+<section id="id27">
+<h3>Command<a class="headerlink" href="#id27" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">HTTPPUT</span><span class="o">=&lt;</span><span class="n">host</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">path</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">conn_type</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">body_size</span><span class="o">&gt;</span><span class="p">[,</span><span class="o">&lt;</span><span class="n">certificate_index</span><span class="o">&gt;</span><span class="p">][,</span><span class="o">&lt;</span><span class="n">req_header_cnt</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">req_header</span><span class="o">&gt;...&lt;</span><span class="n">req_header</span><span class="o">&gt;</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<section id="id28">
+<h3>Response<a class="headerlink" href="#id28" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="o">&gt;</span> <span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>The symbol <code class="docutils literal notranslate"><span class="pre">&gt;&gt;&gt;</span></code> indicates that AT service is ready for receiving serial data, and you can enter the data now.
+When the requirement of message length determined by the parameter <code class="docutils literal notranslate"><span class="pre">&lt;body_size&gt;</span></code> is met, the transmission starts.
+If the transmission is successful, it returns:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+</span><span class="n">HTTPPUT</span><span class="p">:</span> <span class="n">HEADER</span> <span class="n">LEN</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">header_len</span><span class="o">&gt;</span>
+<span class="o">+</span><span class="n">HTTPPUT</span><span class="p">:</span> <span class="n">HEADER</span> <span class="n">DUMP</span> <span class="n">START</span>
+<span class="o">&lt;</span><span class="n">header_string</span><span class="o">&gt;</span>
+<span class="o">+</span><span class="n">HTTPPUT</span><span class="p">:</span> <span class="n">HEADER</span> <span class="n">DUMP</span> <span class="n">END</span>
+<span class="o">+</span><span class="n">HTTPPUT</span><span class="p">:</span> <span class="n">BODY</span> <span class="n">DUMP</span> <span class="n">START</span>
+<span class="o">&lt;</span><span class="n">body</span><span class="o">&gt;</span>
+<span class="o">+</span><span class="n">HTTPPUT</span><span class="p">:</span> <span class="n">BODY</span> <span class="n">DUMP</span> <span class="n">END</span>
+<span class="o">+</span><span class="n">HTTPPUT</span><span class="p">:</span> <span class="n">BODY</span> <span class="n">LEN</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">body_len</span><span class="o">&gt;</span>
+
+<span class="n">OK</span>
+</pre></div>
+</div>
+<p>Or</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ERROR</span><span class="p">:</span><span class="o">&lt;</span><span class="n">error_no</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</section>
+<section id="id29">
+<h3>Parameter<a class="headerlink" href="#id29" title="Link to this heading"></a></h3>
+<dl class="field-list simple">
+<dt class="field-odd">&lt;host&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Domain name or IP address.</p>
+</dd>
+<dt class="field-even">&lt;path&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>HTTP path. Default: / (if user did not enter &lt;path&gt;)</p>
+</dd>
+<dt class="field-odd">&lt;conn_type&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>HTTP connection type.</p>
+<ul class="simple">
+<li><p>1: HTTP over TCP.</p></li>
+<li><p>2: HTTP over TLS (no certificate verify).</p></li>
+<li><p>3: HTTP over TLS (verify server certificate).</p></li>
+<li><p>4: HTTP over TLS (provide client certificate).</p></li>
+<li><p>5: HTTP over TLS (verify server certificate and provide client certificate).</p></li>
+</ul>
+</dd>
+<dt class="field-even">&lt;body_size&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>The HTTP data length to PUT.</p>
+</dd>
+<dt class="field-odd">&lt;certificate_index&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Certificate index. Default 0.</p>
+</dd>
+<dt class="field-even">&lt;req_header_cnt&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>The total number of &lt;req_header&gt;.</p>
+</dd>
+<dt class="field-odd">&lt;req_header&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The actual request header. You can send more than one request header to the server.</p>
+</dd>
+</dl>
+</section>
+<section id="id30">
+<h3>Error Number<a class="headerlink" href="#id30" title="Link to this heading"></a></h3>
+<dl class="field-list simple">
+<dt class="field-odd">1<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Parameters error.</p>
+</dd>
+<dt class="field-even">2<span class="colon">:</span></dt>
+<dd class="field-even"><p>Malloc error.</p>
+</dd>
+<dt class="field-odd">3<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Read CA/Certificate/PK failed.</p>
+</dd>
+<dt class="field-even">4<span class="colon">:</span></dt>
+<dd class="field-even"><p>Send HTTP PUT header failed.</p>
+</dd>
+<dt class="field-odd">5<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Get data failed in TT mode.</p>
+</dd>
+<dt class="field-even">6<span class="colon">:</span></dt>
+<dd class="field-even"><p>Send HTTP PUT body data failed.</p>
+</dd>
+<dt class="field-odd">7<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Read HTTP response failed.</p>
+</dd>
+</dl>
+</section>
+<section id="id31">
+<h3>Example<a class="headerlink" href="#id31" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">HTTPPUT</span><span class="o">=</span><span class="n">httpbin</span><span class="o">.</span><span class="n">org</span><span class="p">,</span><span class="o">/</span><span class="n">put</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">35</span><span class="p">,,</span><span class="mi">2</span><span class="p">,</span><span class="n">Connection</span><span class="p">:</span> <span class="n">close</span><span class="p">,</span><span class="n">User</span><span class="o">-</span><span class="n">Agent</span><span class="p">:</span> <span class="n">Ameba_Dplus</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="n">param1</span><span class="o">=</span><span class="n">test_data1</span><span class="o">&amp;</span><span class="n">param2</span><span class="o">=</span><span class="n">test_data2</span>
+
+<span class="o">+</span><span class="n">HTTPPUT</span><span class="p">:</span> <span class="n">HEADER</span> <span class="n">LEN</span> <span class="o">=</span> <span class="mi">225</span>
+<span class="o">+</span><span class="n">HTTPPUT</span><span class="p">:</span> <span class="n">HEADER</span> <span class="n">DUMP</span> <span class="n">START</span>
+<span class="n">HTTP</span><span class="o">/</span><span class="mf">1.1</span> <span class="mi">200</span> <span class="n">OK</span>
+<span class="n">Date</span><span class="p">:</span> <span class="n">Mon</span><span class="p">,</span> <span class="mi">06</span> <span class="n">Jan</span> <span class="mi">2025</span> <span class="mi">07</span><span class="p">:</span><span class="mi">50</span><span class="p">:</span><span class="mi">05</span> <span class="n">GMT</span>
+<span class="n">Content</span><span class="o">-</span><span class="n">Type</span><span class="p">:</span> <span class="n">application</span><span class="o">/</span><span class="n">json</span>
+<span class="n">Content</span><span class="o">-</span><span class="n">Length</span><span class="p">:</span> <span class="mi">358</span>
+<span class="n">Connection</span><span class="p">:</span> <span class="n">close</span>
+<span class="n">Server</span><span class="p">:</span> <span class="n">gunicorn</span><span class="o">/</span><span class="mf">19.9.0</span>
+<span class="n">Access</span><span class="o">-</span><span class="n">Control</span><span class="o">-</span><span class="n">Allow</span><span class="o">-</span><span class="n">Origin</span><span class="p">:</span> <span class="o">*</span>
+<span class="n">Access</span><span class="o">-</span><span class="n">Control</span><span class="o">-</span><span class="n">Allow</span><span class="o">-</span><span class="n">Credentials</span><span class="p">:</span> <span class="n">true</span>
+
+<span class="o">+</span><span class="n">HTTPPUT</span><span class="p">:</span> <span class="n">HEADER</span> <span class="n">DUMP</span> <span class="n">END</span>
+<span class="o">+</span><span class="n">HTTPPUT</span><span class="p">:</span> <span class="n">BODY</span> <span class="n">DUMP</span> <span class="n">START</span>
+<span class="p">{</span>
+<span class="s2">&quot;args&quot;</span><span class="p">:</span> <span class="p">{},</span>
+<span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="s2">&quot;param1=test_data1&amp;param2=test_data2&quot;</span><span class="p">,</span>
+<span class="s2">&quot;files&quot;</span><span class="p">:</span> <span class="p">{},</span>
+<span class="s2">&quot;form&quot;</span><span class="p">:</span> <span class="p">{},</span>
+<span class="s2">&quot;headers&quot;</span><span class="p">:</span> <span class="p">{</span>
+   <span class="s2">&quot;Content-Length&quot;</span><span class="p">:</span> <span class="s2">&quot;35&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;Host&quot;</span><span class="p">:</span> <span class="s2">&quot;httpbin.org&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;User-Agent&quot;</span><span class="p">:</span> <span class="s2">&quot;Ameba_Dplus&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;X-Amzn-Trace-Id&quot;</span><span class="p">:</span> <span class="s2">&quot;Root=1-677b8b2a-30de8616008ca27e176ccda2&quot;</span>
+<span class="p">},</span>
+<span class="s2">&quot;json&quot;</span><span class="p">:</span> <span class="n">null</span><span class="p">,</span>
+<span class="s2">&quot;origin&quot;</span><span class="p">:</span> <span class="s2">&quot;98.98.48.11&quot;</span><span class="p">,</span>
+<span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://httpbin.org/put&quot;</span>
+<span class="p">}</span>
+<span class="o">+</span><span class="n">HTTPPUT</span><span class="p">:</span> <span class="n">BODY</span> <span class="n">DUMP</span> <span class="n">END</span>
+<span class="o">+</span><span class="n">HTTPPUT</span><span class="p">:</span> <span class="n">BODY</span> <span class="n">LEN</span> <span class="o">=</span> <span class="mi">358</span>
+
+<span class="n">OK</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="at-httpdel">
+<span id="http-at-httpdel"></span><h2>AT+HTTPDEL<a class="headerlink" href="#at-httpdel" title="Link to this heading"></a></h2>
+<section id="id32">
+<h3>Description<a class="headerlink" href="#id32" title="Link to this heading"></a></h3>
+<p>Delete the specified HTTP resource.</p>
+</section>
+<section id="id33">
+<h3>Command<a class="headerlink" href="#id33" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">HTTPDEL</span><span class="o">=&lt;</span><span class="n">host</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">path</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">conn_type</span><span class="o">&gt;</span><span class="p">[,</span><span class="o">&lt;</span><span class="n">certificate_index</span><span class="o">&gt;</span><span class="p">][,</span><span class="o">&lt;</span><span class="n">req_header_cnt</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">req_header</span><span class="o">&gt;...&lt;</span><span class="n">req_header</span><span class="o">&gt;</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<section id="id34">
+<h3>Response<a class="headerlink" href="#id34" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+</span><span class="n">HTTPDEL</span><span class="p">:</span> <span class="n">HEADER</span> <span class="n">LEN</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">header_len</span><span class="o">&gt;</span>
+<span class="o">+</span><span class="n">HTTPDEL</span><span class="p">:</span> <span class="n">HEADER</span> <span class="n">DUMP</span> <span class="n">START</span>
+<span class="o">&lt;</span><span class="n">header_string</span><span class="o">&gt;</span>
+<span class="o">+</span><span class="n">HTTPDEL</span><span class="p">:</span> <span class="n">HEADER</span> <span class="n">DUMP</span> <span class="n">END</span>
+<span class="o">+</span><span class="n">HTTPDEL</span><span class="p">:</span> <span class="n">BODY</span> <span class="n">DUMP</span> <span class="n">START</span>
+<span class="o">&lt;</span><span class="n">body</span><span class="o">&gt;</span>
+<span class="o">+</span><span class="n">HTTPDEL</span><span class="p">:</span> <span class="n">BODY</span> <span class="n">DUMP</span> <span class="n">END</span>
+<span class="o">+</span><span class="n">HTTPDEL</span><span class="p">:</span> <span class="n">BODY</span> <span class="n">LEN</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">body_len</span><span class="o">&gt;</span>
+
+<span class="n">OK</span>
+</pre></div>
+</div>
+<p>Or</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ERROR</span><span class="p">:</span><span class="o">&lt;</span><span class="n">error_no</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</section>
+<section id="id35">
+<h3>Parameter<a class="headerlink" href="#id35" title="Link to this heading"></a></h3>
+<dl class="field-list simple">
+<dt class="field-odd">&lt;host&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Domain name or IP address.</p>
+</dd>
+<dt class="field-even">&lt;path&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>HTTP path. Default: / (if user did not enter &lt;path&gt;)</p>
+</dd>
+<dt class="field-odd">&lt;conn_type&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>HTTP connection type.</p>
+<ul class="simple">
+<li><p>1: HTTP over TCP.</p></li>
+<li><p>2: HTTP over TLS (no certificate verify).</p></li>
+<li><p>3: HTTP over TLS (verify server certificate).</p></li>
+<li><p>4: HTTP over TLS (provide client certificate).</p></li>
+<li><p>5: HTTP over TLS (verify server certificate and provide client certificate).</p></li>
+</ul>
+</dd>
+<dt class="field-even">&lt;certificate_index&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>Certificate index. Default 0.</p>
+</dd>
+<dt class="field-odd">&lt;req_header_cnt&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The total number of &lt;req_header&gt;.</p>
+</dd>
+<dt class="field-even">&lt;req_header&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>The actual request header. You can send more than one request header to the server.</p>
+<ul class="simple">
+<li><p>Ex: Connection: close,User-Agent: Ameba_Dplus, …</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="id36">
+<h3>Error Number<a class="headerlink" href="#id36" title="Link to this heading"></a></h3>
+<dl class="field-list simple">
+<dt class="field-odd">1<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Parameters error.</p>
+</dd>
+<dt class="field-even">2<span class="colon">:</span></dt>
+<dd class="field-even"><p>Malloc error.</p>
+</dd>
+<dt class="field-odd">3<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Read CA/certificate/PK failed.</p>
+</dd>
+<dt class="field-even">4<span class="colon">:</span></dt>
+<dd class="field-even"><p>Send HTTP DELETE header failed.</p>
+</dd>
+<dt class="field-odd">5<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Read HTTP response failed.</p>
+</dd>
+</dl>
+</section>
+<section id="id37">
+<h3>Example<a class="headerlink" href="#id37" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">HTTPDEL</span><span class="o">=</span><span class="n">httpbin</span><span class="o">.</span><span class="n">org</span><span class="p">,</span><span class="o">/</span><span class="n">delete</span><span class="p">,</span><span class="mi">2</span>
+
+<span class="o">+</span><span class="n">HTTPDEL</span><span class="p">:</span> <span class="n">HEADER</span> <span class="n">LEN</span> <span class="o">=</span> <span class="mi">230</span>
+<span class="o">+</span><span class="n">HTTPDEL</span><span class="p">:</span> <span class="n">HEADER</span> <span class="n">DUMP</span> <span class="n">START</span>
+<span class="n">HTTP</span><span class="o">/</span><span class="mf">1.1</span> <span class="mi">200</span> <span class="n">OK</span>
+<span class="n">Date</span><span class="p">:</span> <span class="n">Mon</span><span class="p">,</span> <span class="mi">06</span> <span class="n">Jan</span> <span class="mi">2025</span> <span class="mi">07</span><span class="p">:</span><span class="mi">51</span><span class="p">:</span><span class="mi">15</span> <span class="n">GMT</span>
+<span class="n">Content</span><span class="o">-</span><span class="n">Type</span><span class="p">:</span> <span class="n">application</span><span class="o">/</span><span class="n">json</span>
+<span class="n">Content</span><span class="o">-</span><span class="n">Length</span><span class="p">:</span> <span class="mi">263</span>
+<span class="n">Connection</span><span class="p">:</span> <span class="n">keep</span><span class="o">-</span><span class="n">alive</span>
+<span class="n">Server</span><span class="p">:</span> <span class="n">gunicorn</span><span class="o">/</span><span class="mf">19.9.0</span>
+<span class="n">Access</span><span class="o">-</span><span class="n">Control</span><span class="o">-</span><span class="n">Allow</span><span class="o">-</span><span class="n">Origin</span><span class="p">:</span> <span class="o">*</span>
+<span class="n">Access</span><span class="o">-</span><span class="n">Control</span><span class="o">-</span><span class="n">Allow</span><span class="o">-</span><span class="n">Credentials</span><span class="p">:</span> <span class="n">true</span>
+
+<span class="o">+</span><span class="n">HTTPDEL</span><span class="p">:</span> <span class="n">HEADER</span> <span class="n">DUMP</span> <span class="n">END</span>
+<span class="o">+</span><span class="n">HTTPDEL</span><span class="p">:</span> <span class="n">BODY</span> <span class="n">DUMP</span> <span class="n">START</span>
+<span class="p">{</span>
+<span class="s2">&quot;args&quot;</span><span class="p">:</span> <span class="p">{},</span>
+<span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+<span class="s2">&quot;files&quot;</span><span class="p">:</span> <span class="p">{},</span>
+<span class="s2">&quot;form&quot;</span><span class="p">:</span> <span class="p">{},</span>
+<span class="s2">&quot;headers&quot;</span><span class="p">:</span> <span class="p">{</span>
+   <span class="s2">&quot;Host&quot;</span><span class="p">:</span> <span class="s2">&quot;httpbin.org&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;X-Amzn-Trace-Id&quot;</span><span class="p">:</span> <span class="s2">&quot;Root=1-677b8b73-43851d66543b1a534698c987&quot;</span>
+<span class="p">},</span>
+<span class="s2">&quot;json&quot;</span><span class="p">:</span> <span class="n">null</span><span class="p">,</span>
+<span class="s2">&quot;origin&quot;</span><span class="p">:</span> <span class="s2">&quot;98.98.48.11&quot;</span><span class="p">,</span>
+<span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://httpbin.org/delete&quot;</span>
+<span class="p">}</span>
+<span class="o">+</span><span class="n">HTTPDEL</span><span class="p">:</span> <span class="n">BODY</span> <span class="n">DUMP</span> <span class="n">END</span>
+<span class="o">+</span><span class="n">HTTPDEL</span><span class="p">:</span> <span class="n">BODY</span> <span class="n">LEN</span> <span class="o">=</span> <span class="mi">263</span>
+
+<span class="n">OK</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="at_command_mqtt.html" class="btn btn-neutral float-left" title="MQTT AT Commands" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="at_command_websocket.html" class="btn btn-neutral float-right" title="WebSocket AT Commands" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Realsil.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+ 
+
+
+
+</body>
+</html>

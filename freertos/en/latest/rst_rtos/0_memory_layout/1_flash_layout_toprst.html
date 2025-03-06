@@ -1,0 +1,777 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Flash Layout &mdash; Ameba IoT Docs  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=b0e775ca" />
+      <link rel="stylesheet" type="text/css" href="../../_static/tabs.css?v=a5c4661c" />
+      <link rel="stylesheet" type="text/css" href="../../_static/_static/custom.css" />
+
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="../../_static/tabs.js?v=3030b3cb"></script>
+        <script>let toggleHintShow = 'Click to show';</script>
+        <script>let toggleHintHide = 'Click to hide';</script>
+        <script>let toggleOpenOnPrint = 'true';</script>
+        <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="RAM Layout Configuration Guide" href="1_ram_layout_toprst.html" />
+    <link rel="prev" title="Flash and Memory Layout" href="0_layout_index.html" />
+   
+  
+  <script type="text/javascript" src="../../_static/js/selector.js"></script>
+
+  <style>
+    .wy-nav-content {max-width: 1000px;} /* 设置最大宽度 */
+  </style>
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Ameba IoT Docs
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../0_ameba_product/0_ameba_product_center_index.html">Products Center</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_ameba_sdk/0_ameba_sdks_index.html">Ameba SDK</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_ameba_solutions/0_ameba_solutions_index.html">Ameba Solutions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_gcc_build_environment/0_gcc_build_index.html">0.1 GCC Build Environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_gdb_debug/0_gdb_debug_index.html">0.2 GDB Debug</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_gcc_build_library/0_gcc_build_library_index.html">0.3 GCC Build Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_sdk_example/0_sdk_example_index.html">0.4 SDK Example</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="0_layout_index.html">0.5 Flash &amp; RAM Layout</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Flash Layout</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#introduction">Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#memory-management-unit-mmu">Memory Management Unit (MMU)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#flash-layout-modification-guide">Flash Layout Modification Guide</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#modifying-bootloader-ota2">Modifying Bootloader OTA2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modifying-application-partitions">Modifying Application Partitions</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#flash-protection-mechanism">Flash Protection Mechanism</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="1_ram_layout_toprst.html">RAM Layout Configuration Guide</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../0_user_config/0_usrcfg_index.html">0.6 User Config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_tools/0_tools_index.html">0.7 Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_at_command/0_at_command_index.html">0.8 AT Command</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_file_system/0_vfs_index.html">0.9 Virtual File System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_mpu_cache/0_mpu_cache_index.html">1.0 MPU and Cache</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_boot_process/0_boot_index.html">1.1 BOOT Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_ota/0_ota_index.html">1.2 OTA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_otpc/0_otpc_index.html">1.3 OTPC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_chipen/0_chipen_index.html">1.4 CHIPEN</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_ipc/0_ipc_index.html">1.5 Inter Processor Communication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_pinmux/0_pinmux_index.html">1.6 PINMUX</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_gpio/0_gpio_index.html">1.7 GPIO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_power_save/0_ps_index.html">1.9 Power Save</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_whc_wifi_bridge/0_wifi_bridge_index.html">2.1 WHC Bridge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_whc_fullmac/0_fullmac_index.html">2.2 WHC FullMAC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_wifi_tunnel/0_wifi_tunnel_index.html">2.3 Wi-Fi R-Mesh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_wifi_csi/0_wifi_csi_index.html">2.5 Wi-Fi CSI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_wifi_adaptivity_test/0_wifi_adaptivity_index.html">2.6 Wi-Fi Adaptivity Test</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_security/0_security_index.html">3.1 Security &amp; Encryption</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_trng/0_trng_index.html">3.2 True Random Number Generator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_huk_derivation/0_huk_derivation_index_nda.html">3.3 HUK Derivation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_rdp/0_rdp_index_nda.html">3.4 RDP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_rsip/0_rsip_index_nda.html">3.5 RSIP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_secure_boot/0_secure_boot_index_nda.html">3.6 Secure Boot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_swd_protection/0_swd_protection_index_nda.html">3.7 SWD Protection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_tfm/0_tfm_index_nda.html">3.8 Trusted Firmware-M (TF-M)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_crypto_engine/0_crypto_engine_index.html">3.9 Crypto Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_ecdsa_engine/0_ecdsa_index.html">3.a ECDSA Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_eddsa_engine/0_eddsa_index.html">3.b EDDSA Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_rsa_engine/0_rsa_index.html">3.c RSA Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../4_ai/0_ai_index.html">4.1 AI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../4_ai_voice/0_ai_voice_index.html">4.2 AIVoice</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../4_multimedia/0_multimedia_index.html">4.3 Multimedia</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../4_dsp/0_dsp_index.html">4.4 DSP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../6_mass_production/0_mp_index.html">6.1 Mass Production</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../6_mp_image/0_mp_image_index.html">6.2 MP Image</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../6_mptools/0_mptools_index.html">6.3 MP Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../7_usb/0_usb_index.html">7.1 USB Host &amp; Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_dmac/0_dmac_index.html">8.1 DMA Controllor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_psram/0_psram_index.html">8.2 PSRAM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_thermal/0_thermal_index.html">8.3 Thermal Meter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_adc/0_adc_index.html">8.4 ADC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_ir/0_ir_index.html">8.5 IR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_ledc/0_ledc_index.html">8.6 LEDC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_cap_touch/0_cap_touch_index.html">8.7 Cap-Touch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_key_scan/0_key_scan_index.html">8.8 Key-Scan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_rtc_io/0_rtc_io_index.html">8.9 RTC-IO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_lcdc/0_lcdc_index.html">8.A LCDC</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Ameba IoT Docs</a>
+      </nav>
+
+      <div class="wy-nav-content">
+
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="0_layout_index.html">Flash and Memory Layout</a></li>
+      <li class="breadcrumb-item active">Flash Layout</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <span class="target" id="flash-layout"></span><!-- 下拉菜单 -->
+<div style="margin: 20px 0; text-align: left;">
+    <div style="display: flex; align-items: center; gap: 10px;">
+        <span style="font-size: 14px;">IC: </span>
+        <select class="tab-selector" style="height: 22px; padding: 2px 8px; font-size: 13px;">
+            <option value="RTL8721Dx">RTL8721Dx</option>
+            <option value="RTL8720E">RTL8720E</option>
+            <option value="RTL8726E">RTL8726E</option>
+            <option value="RTL8730E">RTL8730E</option>
+        </select>
+    </div>
+</div>
+
+<!-- 修复后的 JavaScript -->
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const selector = document.querySelector('.tab-selector');
+
+    selector.addEventListener('change', function() {
+        const targetTab = this.value;
+        const tabs = document.querySelectorAll('.sphinx-tabs-tab');
+        let found = false;
+
+        tabs.forEach(tab => {
+            const tabText = tab.textContent.trim();
+            if (tabText === targetTab) {
+                tab.click();
+                window.dispatchEvent(new Event('resize')); // 触发插件更新
+                found = true;
+            }
+        });
+
+        if (!found) {
+            console.error("未找到选项卡:", targetTab);
+        }
+    });
+});
+</script><section id="id1">
+<h1>Flash Layout<a class="headerlink" href="#id1" title="Link to this heading"></a></h1>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
+<p>This chapter describes the default Flash memory layout and customization methods.</p>
+<p>The SDK adopts the default Flash layout shown below (using an 8MB Flash chip as an example). The boot manifest start address is fixed at 0x0800_0000, while other regions support flexible address configuration.</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-0-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-0-0-0" name="0-0" role="tab" tabindex="0">RTL8721Dx</button><button aria-controls="panel-0-0-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-1" name="0-1" role="tab" tabindex="-1">RTL8726E</button><button aria-controls="panel-0-0-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-2" name="0-2" role="tab" tabindex="-1">RTL8720E</button></div><div aria-labelledby="tab-0-0-0" class="sphinx-tabs-panel" id="panel-0-0-0" name="0-0" role="tabpanel" tabindex="0"><figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/flash_layout_dplus.svg"><img alt="../../_images/flash_layout_dplus.svg" height="466" src="../../_images/flash_layout_dplus.svg" width="820" /></a>
+</figure>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p>Physical address</p></th>
+<th class="head"><p>Size (KB)</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Mandatory</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>KM4 Bootloader manifest</p></td>
+<td><p>0x0800_0000</p></td>
+<td><p>4</p></td>
+<td><p>KM4 bootloader manifest</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>KM4 Bootloader</p></td>
+<td><p>0x0800_1000</p></td>
+<td><p>76</p></td>
+<td><p>KM4 bootloader (code/data), containing KM4 bootloader IMG, mapped to the virtual address 0x0F80_0000.</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>Key Certificate</p></td>
+<td><p>0x0801_4000</p></td>
+<td><p>4</p></td>
+<td><p>Public key hash information for other images.</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>IMG2 manifest</p></td>
+<td><p>0x0801_5000</p></td>
+<td><p>4</p></td>
+<td><p>KM0 &amp; KM4 Application &amp; KM4 IMG3 manifest</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>KM0 &amp; KM4 Application</p></td>
+<td><p>0x0801_6000</p></td>
+<td><p>1912</p></td>
+<td><p>Combines KM0 image, KM4 image2 and KM4 image3 (if exists)</p>
+<ul class="simple">
+<li><p>KM0_IMG: KM0 image (code/data), mapped to the virtual address 0x0C00_0000.</p></li>
+<li><p>KM4_IMG2: KM4 non-secure image (code/data), mapped to the virtual address 0x0E00_0000.</p></li>
+<li><p>KM4_IMG3<sup>[1]</sup>: secure image (code/data)</p></li>
+</ul>
+</td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>KM4 Bootloader manifest OTA2</p></td>
+<td><p>0x0820_0000</p></td>
+<td><p>4</p></td>
+<td><p>KM4 bootloader manifest</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>KM4 Bootloader OTA2</p></td>
+<td><p>0x0820_1000</p></td>
+<td><p>76</p></td>
+<td><p>KM4 bootloader (code/data), containing KM4 bootloader IMG, mapped to the virtual address 0x0F80_0000.</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>Key Certificate OTA2</p></td>
+<td><p>0x0821_4000</p></td>
+<td><p>4</p></td>
+<td><p>Public key hash information for other images.</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>IMG2 manifest OTA2</p></td>
+<td><p>0x0821_5000</p></td>
+<td><p>4</p></td>
+<td><p>KM0 &amp; KM4 Application &amp; KM4 IMG3 manifest</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>KM0 &amp; KM4 Application OTA2</p></td>
+<td><p>0x0821_6000</p></td>
+<td><p>1912</p></td>
+<td><p>Combines KM0 image, KM4 image2 and KM4 image3 (if exists)</p>
+<ul class="simple">
+<li><p>KM0_IMG: KM0 image (code/data), mapped to the virtual address 0x0C00_0000.</p></li>
+<li><p>KM4_IMG2: KM4 non-secure image (code/data), mapped to the virtual address 0x0E00_0000.</p></li>
+<li><p>KM4_IMG3<sup>[1]</sup>: secure image (code/data)</p></li>
+</ul>
+</td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>FTL</p></td>
+<td><p>0x0870_0000</p></td>
+<td><p>12</p></td>
+<td><p>For Bluetooth</p></td>
+<td><p>×</p></td>
+</tr>
+<tr class="row-odd"><td><p>VFS</p></td>
+<td><p>0x0870_3000</p></td>
+<td><p>128</p></td>
+<td><p>For file system</p></td>
+<td><p>×</p></td>
+</tr>
+</tbody>
+</table>
+</div><div aria-labelledby="tab-0-0-1" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-1" name="0-1" role="tabpanel" tabindex="0"><figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/flash_layout_lite.svg"><img alt="../../_images/flash_layout_lite.svg" height="476" src="../../_images/flash_layout_lite.svg" width="854" /></a>
+</figure>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p>Physical address</p></th>
+<th class="head"><p>Size</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Mandatory</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>KM4 Bootloader manifest</p></td>
+<td><p>0x0800_0000</p></td>
+<td><p>4KB</p></td>
+<td><p>KM4 bootloader manifest</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>KM4 Bootloader</p></td>
+<td><p>0x0800_1000</p></td>
+<td><p>76KB</p></td>
+<td><p>KM4 bootloader (code/data), containing KM4 bootloader IMG, mapped to the virtual address 0x0F80_0000.</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>Key Certificate</p></td>
+<td><p>0x0801_4000</p></td>
+<td><p>4KB</p></td>
+<td><p>Public key hash information for other images.</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>IMG2 manifest</p></td>
+<td><p>0x0801_5000</p></td>
+<td><p>4KB</p></td>
+<td><p>KR4 &amp; KM4 Application manifest</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>KR4 &amp; KM4 Application</p></td>
+<td><p>0x0801_6000</p></td>
+<td><p>1912KB</p></td>
+<td><p>Combines KR4 image, KM4 image2 and KM4 image3 (if exists)</p>
+<ul class="simple">
+<li><p>KR4_IMG: KR4 image (code/data), mapped to the virtual address 0x0C00_0000.</p></li>
+<li><p>KM4_IMG2: KM4 non-secure image (code/data), mapped to the virtual address 0x0E00_0000.</p></li>
+<li><p>KM4_IMG3: secure image (code/data)</p></li>
+</ul>
+</td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>KM4 Bootloader manifest OTA2</p></td>
+<td><p>0x0820_0000</p></td>
+<td><p>4KB</p></td>
+<td><p>KM4 bootloader manifest</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>KM4 Bootloader OTA2</p></td>
+<td><p>0x0820_1000</p></td>
+<td><p>76KB</p></td>
+<td><p>KM4 bootloader (code/data), containing KM4 bootloader image, mapped to virtual address 0x0F80_0000.</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>Key Certificate OTA2</p></td>
+<td><p>0x0821_4000</p></td>
+<td><p>4KB</p></td>
+<td><p>Public key hash information for other images.</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>IMG2 manifest OTA2</p></td>
+<td><p>0x0821_5000</p></td>
+<td><p>4KB</p></td>
+<td><p>KR4 &amp; KM4 Application manifest</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>KR4 &amp; KM4 Application OTA2</p></td>
+<td><p>0x0821_6000</p></td>
+<td><p>1912KB</p></td>
+<td><p>Combines KR4 image, KM4 image2 and KM4 image3 (if exists)</p>
+<ul class="simple">
+<li><p>KR4_IMG: KR4 image (code/data), mapped to the virtual address 0x0C00_0000.</p></li>
+<li><p>KM4_IMG2: KM4 non-secure image (code/data), mapped to the virtual address 0x0E00_0000.</p></li>
+<li><p>KM4_IMG3: secure image (code/data)</p></li>
+</ul>
+</td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>DSP_IMG <sup>[2]</sup>:</p></td>
+<td><p>0x0840_0000</p></td>
+<td><p>3072KB</p></td>
+<td><p>DSP image (code/data), mapped to the virtual address 0x0D00_0000.</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>FTL</p></td>
+<td><p>0x0870_0000</p></td>
+<td><p>12KB</p></td>
+<td><p>For Bluetooth</p></td>
+<td><p>×</p></td>
+</tr>
+<tr class="row-even"><td><p>VFS</p></td>
+<td><p>0x0870_3000</p></td>
+<td><p>128KB</p></td>
+<td><p>For file system</p></td>
+<td><p>×</p></td>
+</tr>
+</tbody>
+</table>
+</div><div aria-labelledby="tab-0-0-2" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-2" name="0-2" role="tabpanel" tabindex="0"><figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/flash_layout_lite_nodsp.svg"><img alt="../../_images/flash_layout_lite_nodsp.svg" height="442" src="../../_images/flash_layout_lite_nodsp.svg" width="854" /></a>
+</figure>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p>Physical address</p></th>
+<th class="head"><p>Size</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Mandatory</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>KM4 Bootloader manifest</p></td>
+<td><p>0x0800_0000</p></td>
+<td><p>4KB</p></td>
+<td><p>KM4 bootloader manifest</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>KM4 Bootloader</p></td>
+<td><p>0x0800_1000</p></td>
+<td><p>76KB</p></td>
+<td><p>KM4 bootloader (code/data), containing KM4 bootloader IMG, mapped to the virtual address 0x0F80_0000.</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>Key Certificate</p></td>
+<td><p>0x0801_4000</p></td>
+<td><p>4KB</p></td>
+<td><p>Public key hash information for other images.</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>IMG2 manifest</p></td>
+<td><p>0x0801_5000</p></td>
+<td><p>4KB</p></td>
+<td><p>KR4 &amp; KM4 Application manifest</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>KR4 &amp; KM4 Application</p></td>
+<td><p>0x0801_6000</p></td>
+<td><p>1912KB</p></td>
+<td><p>Combines KR4 image, KM4 image2 and KM4 image3 (if exists)</p>
+<ul class="simple">
+<li><p>KR4_IMG: KR4 image (code/data), mapped to the virtual address 0x0C00_0000.</p></li>
+<li><p>KM4_IMG2: KM4 non-secure image (code/data), mapped to the virtual address 0x0E00_0000.</p></li>
+<li><p>KM4_IMG3: secure image (code/data)</p></li>
+</ul>
+</td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>KM4 Bootloader manifest OTA2</p></td>
+<td><p>0x0820_0000</p></td>
+<td><p>4KB</p></td>
+<td><p>KM4 bootloader manifest</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>KM4 Bootloader OTA2</p></td>
+<td><p>0x0820_1000</p></td>
+<td><p>76KB</p></td>
+<td><p>KM4 bootloader (code/data), containing KM4 bootloader image, mapped to virtual address 0x0F80_0000.</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>Key Certificate OTA2</p></td>
+<td><p>0x0821_4000</p></td>
+<td><p>4KB</p></td>
+<td><p>Public key hash information for other images.</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>IMG2 manifest OTA2</p></td>
+<td><p>0x0821_5000</p></td>
+<td><p>4KB</p></td>
+<td><p>KR4 &amp; KM4 Application manifest</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>KR4 &amp; KM4 Application OTA2</p></td>
+<td><p>0x0821_6000</p></td>
+<td><p>1912KB</p></td>
+<td><p>Combines KR4 image, KM4 image2 and KM4 image3 (if exists)</p>
+<ul class="simple">
+<li><p>KR4_IMG: KR4 image (code/data), mapped to the virtual address 0x0C00_0000.</p></li>
+<li><p>KM4_IMG2: KM4 non-secure image (code/data), mapped to the virtual address 0x0E00_0000.</p></li>
+<li><p>KM4_IMG3: secure image (code/data)</p></li>
+</ul>
+</td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>Reserved</p></td>
+<td><p>0x0840_0000</p></td>
+<td><p>3072KB</p></td>
+<td></td>
+<td><p>×</p></td>
+</tr>
+<tr class="row-odd"><td><p>FTL</p></td>
+<td><p>0x0870_0000</p></td>
+<td><p>12KB</p></td>
+<td><p>For Bluetooth</p></td>
+<td><p>×</p></td>
+</tr>
+<tr class="row-even"><td><p>VFS</p></td>
+<td><p>0x0870_3000</p></td>
+<td><p>128KB</p></td>
+<td><p>For file system</p></td>
+<td><p>×</p></td>
+</tr>
+</tbody>
+</table>
+</div></div>
+</section>
+<section id="memory-management-unit-mmu">
+<h2>Memory Management Unit (MMU)<a class="headerlink" href="#memory-management-unit-mmu" title="Link to this heading"></a></h2>
+<p>To enable image flexibility and RSIP encryption requirements (fixed IV address needed for image encryption, see RSIP documentation), the SDK enables Flash MMU by default. The default MMU layout is:</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-1-1-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-1-1-0" name="1-0" role="tab" tabindex="0">RTL8721Dx</button><button aria-controls="panel-1-1-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-1-1-1" name="1-1" role="tab" tabindex="-1">RTL8726E</button><button aria-controls="panel-1-1-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-1-1-2" name="1-2" role="tab" tabindex="-1">RTL8720E</button></div><div aria-labelledby="tab-1-1-0" class="sphinx-tabs-panel" id="panel-1-1-0" name="1-0" role="tabpanel" tabindex="0"><figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/flash_mmu_layout_dplus.svg"><img alt="../../_images/flash_mmu_layout_dplus.svg" height="256" src="../../_images/flash_mmu_layout_dplus.svg" width="640" /></a>
+</figure>
+</div><div aria-labelledby="tab-1-1-1" class="sphinx-tabs-panel" hidden="true" id="panel-1-1-1" name="1-1" role="tabpanel" tabindex="0"><figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/flash_mmu_layout_lite.svg"><img alt="../../_images/flash_mmu_layout_lite.svg" height="334" src="../../_images/flash_mmu_layout_lite.svg" width="644" /></a>
+</figure>
+</div><div aria-labelledby="tab-1-1-2" class="sphinx-tabs-panel" hidden="true" id="panel-1-1-2" name="1-2" role="tabpanel" tabindex="0"><figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/flash_mmu_layout_lite_nodsp.svg"><img alt="../../_images/flash_mmu_layout_lite_nodsp.svg" height="334" src="../../_images/flash_mmu_layout_lite_nodsp.svg" width="644" /></a>
+</figure>
+</div></div>
+</section>
+<section id="flash-layout-modification-guide">
+<span id="how-to-modify-flash-layout"></span><h2>Flash Layout Modification Guide<a class="headerlink" href="#flash-layout-modification-guide" title="Link to this heading"></a></h2>
+<p>Modifiable flash regions include:</p>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Partition Name</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Bootloader OTA2 Partition</p></td>
+<td><p>IMG_BOOT_OTA2</p></td>
+</tr>
+<tr class="row-odd"><td><p>Application Partitions</p></td>
+<td><ul class="simple">
+<li><p>APP OTA1: IMG_APP_OTA1</p></li>
+<li><p>APP OTA2: IMG_APP_OTA2</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>DSP Firmware Partition</p></td>
+<td><p>IMG_DSP (if present)</p></td>
+</tr>
+<tr class="row-odd"><td><p>FTL/VFS Partition</p></td>
+<td><p>FTL/VFS1</p></td>
+</tr>
+</tbody>
+</table>
+<p>Modify corresponding entries in <code class="docutils literal notranslate"><span class="pre">{SDK}\component\soc\amebaxxx\usrcfg\ameba_flashcfg.c</span></code>:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">FlashLayoutInfo_TypeDef</span><span class="w"> </span><span class="n">Flash_Layout</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="cm">/*Region_Type,   [StartAddr,   EndAddr]      */</span>
+<span class="w">   </span><span class="p">{</span><span class="n">IMG_BOOT</span><span class="p">,</span><span class="w">      </span><span class="mh">0x08000000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x08013FFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Boot Manifest(4K) + KM4 Bootloader(76K)</span>
+<span class="w">   </span><span class="c1">//Users should modify below according to their own memory</span>
+<span class="hll"><span class="w">   </span><span class="p">{</span><span class="n">IMG_APP_OTA1</span><span class="p">,</span><span class="w">  </span><span class="mh">0x08014000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x081F3FFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Certificate(4K) + Manifest(4K) + KR4 &amp; KM4 Application OTA1 + Manifest(4K) + RDP IMG OTA1</span>
+</span>
+<span class="hll"><span class="w">   </span><span class="p">{</span><span class="n">IMG_BOOT_OTA2</span><span class="p">,</span><span class="w"> </span><span class="mh">0x08200000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x08213FFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Boot Manifest(4K) + KM4 Bootloader(76K) OTA</span>
+</span><span class="hll"><span class="w">   </span><span class="p">{</span><span class="n">IMG_APP_OTA2</span><span class="p">,</span><span class="w">  </span><span class="mh">0x08214000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x083DCFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Certificate(4K) + Manifest(4K) + KR4 &amp; KM4 Application OTA2 + Manifest(4K) + RDP IMG OTA2</span>
+</span><span class="hll"><span class="w">   </span><span class="p">{</span><span class="n">FTL</span><span class="p">,</span><span class="w">           </span><span class="mh">0x083DD000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x083DFFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//FTL for BT(&gt;=12K), The start offset of flash pages allocated to FTL physical map</span>
+</span><span class="hll"><span class="w">   </span><span class="p">{</span><span class="n">VFS1</span><span class="p">,</span><span class="w">          </span><span class="mh">0x083E0000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x083FFFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//VFS region 1 (128K)</span>
+</span><span class="hll"><span class="w">   </span><span class="p">{</span><span class="n">IMG_DSP</span><span class="p">,</span><span class="w">       </span><span class="mh">0x08400000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x086FFFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//Manifest(4K) + DSP firmware, only one DSP region in layout</span>
+</span><span class="w">   </span><span class="p">{</span><span class="n">VFS2</span><span class="p">,</span><span class="w">          </span><span class="mh">0xFFFFFFFF</span><span class="p">,</span><span class="w"> </span><span class="mh">0xFFFFFFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//VFS region 2</span>
+<span class="w">   </span><span class="p">{</span><span class="n">USER</span><span class="p">,</span><span class="w">          </span><span class="mh">0xFFFFFFFF</span><span class="p">,</span><span class="w"> </span><span class="mh">0xFFFFFFFF</span><span class="p">},</span><span class="w"> </span><span class="c1">//reserve for user</span>
+
+<span class="w">   </span><span class="cm">/* End */</span>
+<span class="w">   </span><span class="p">{</span><span class="mh">0xFF</span><span class="p">,</span><span class="w">          </span><span class="mh">0xFFFFFFFF</span><span class="p">,</span><span class="w"> </span><span class="mh">0xFFFFFFFF</span><span class="p">},</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This code is an example. Actual IC implementations may not include all configuration lines. Refer to the IC-specific <cite>Flash_Layout</cite> for details.</p>
+</div>
+<section id="modifying-bootloader-ota2">
+<h3>Modifying Bootloader OTA2<a class="headerlink" href="#modifying-bootloader-ota2" title="Link to this heading"></a></h3>
+<p>The OTA2 partition requires 4KB alignment (disabled by default). To enable:</p>
+<ol class="arabic simple">
+<li><p>Right-shift OTA2 start address by 12 bits and program into OTP 0x36C~0x36D</p></li>
+<li><p>Modify  <cite>IMG_BOOT_OTA2</cite>  address in <code class="docutils literal notranslate"><span class="pre">{SDK}\component\soc\amebaxxx\usrcfg\ameba_flashcfg.c</span></code></p></li>
+<li><p>After OTA programming, Boot ROM selects OTA1/OTA2 based on version numbers</p></li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>If the anti-rollback function is enabled to ensure that the bootloader version can only be incremented and cannot be rolled back, the bootloader version needs to be changed before compilation.</p></li>
+<li><p>The <cite>IMG_VER_xxxxx</cite> field in the {SDK}amebaxxx_gcc_projectmanifest.json file needs to be modified if you want to use it.</p></li>
+</ul>
+</div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="s">&quot;MANIFEST_VER&quot;</span><span class="o">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+
+<span class="s">&quot;boot&quot;</span><span class="o">:</span>
+<span class="p">{</span>
+<span class="w">   </span><span class="s">&quot;IMG_ID&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;0&quot;</span><span class="p">,</span>
+<span class="hll"><span class="w">   </span><span class="s">&quot;IMG_VER_MAJOR&quot;</span><span class="o">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+</span><span class="hll"><span class="w">   </span><span class="s">&quot;IMG_VER_MINOR&quot;</span><span class="o">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+</span>
+<span class="w">   </span><span class="s">&quot;SEC_EPOCH&quot;</span><span class="o">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+
+<span class="w">   </span><span class="s">&quot;HASH_ALG&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;sha256&quot;</span><span class="p">,</span>
+
+<span class="w">   </span><span class="s">&quot;RSIP_IV&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;0102030405060708&quot;</span><span class="p">,</span>
+<span class="p">},</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The bootloader OTA1 is permanently located at 0x0800_0000 and cannot be altered.</p>
+</div>
+</section>
+<section id="modifying-application-partitions">
+<h3>Modifying Application Partitions<a class="headerlink" href="#modifying-application-partitions" title="Link to this heading"></a></h3>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-2-2-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-2-2-0" name="2-0" role="tab" tabindex="0">RTL8721Dx</button><button aria-controls="panel-2-2-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-2-2-1" name="2-1" role="tab" tabindex="-1">RTL8720E</button><button aria-controls="panel-2-2-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-2-2-2" name="2-2" role="tab" tabindex="-1">RTL8726E</button></div><div aria-labelledby="tab-2-2-0" class="sphinx-tabs-panel" id="panel-2-2-0" name="2-0" role="tabpanel" tabindex="0"><p><strong>APP OTA1</strong></p>
+<ol class="arabic">
+<li><p>Modify the address of <em>IMG_APP_OTA1</em> in <code class="docutils literal notranslate"><span class="pre">{SDK}\component\soc\amebaxxx\usrcfg\ameba_flashcfg.c</span></code>.</p></li>
+<li><p>Re-build the project to generate the bootloader and APP OTA1.</p></li>
+<li><p>Modify the address of <code class="docutils literal notranslate"><span class="pre">km0_km4_app.bin</span></code> through ImageTool, and download the new bootloader and APP OTA1.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/app_ota1_step3_dplus.png"><img alt="../../_images/app_ota1_step3_dplus.png" src="../../_images/app_ota1_step3_dplus.png" style="width: 679.0px; height: 222.5px;" /></a>
+</figure>
+</li>
+</ol>
+<p>After that, the bootloader will load the image from the new location of APP OTA1 if the version of APP OTA1 is bigger.</p>
+<p><strong>APP OTA2</strong></p>
+<ol class="arabic simple">
+<li><p>Modify the address of <em>IMG_APP_OTA2</em> in <code class="docutils literal notranslate"><span class="pre">{SDK}\component\soc\amebaxxx\usrcfg\ameba_flashcfg.c</span></code>.</p></li>
+<li><p>Re-build and download the new bootloader and APP OTA2 as described in Section <strong>APP OTA1</strong>.</p></li>
+</ol>
+<p>After burning the APP OTA2 into Flash through OTA, bootloader will load the image from the new location of APP OTA2 if the version of APP OTA2 is bigger.</p>
+</div><div aria-labelledby="tab-2-2-1" class="sphinx-tabs-panel" hidden="true" id="panel-2-2-1" name="2-1" role="tabpanel" tabindex="0"><p><strong>APP OTA1</strong></p>
+<ol class="arabic">
+<li><p>Modify the address of <em>IMG_APP_OTA1</em> in <code class="docutils literal notranslate"><span class="pre">{SDK}\component\soc\amebaxxx\usrcfg\ameba_flashcfg.c</span></code>.</p></li>
+<li><p>Re-build the project to generate the bootloader and APP OTA1.</p></li>
+<li><p>Modify the address of <code class="docutils literal notranslate"><span class="pre">kr4_km4_app.bin</span></code> through ImageTool, and download the new bootloader and APP OTA1.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/app_ota1_step3_lite.png"><img alt="../../_images/app_ota1_step3_lite.png" src="../../_images/app_ota1_step3_lite.png" style="width: 444.5px; height: 133.0px;" /></a>
+</figure>
+<p>The bootloader will load the image from the new APP OTA1 location <strong>only if</strong> the version of APP OTA1 is higher.</p>
+</li>
+</ol>
+<p><strong>APP OTA2</strong></p>
+<ol class="arabic simple">
+<li><p>Modify the address of <em>IMG_APP_OTA2</em> in <code class="docutils literal notranslate"><span class="pre">{SDK}\component\soc\amebaxxx\usrcfg\ameba_flashcfg.c</span></code>.</p></li>
+<li><p>Re-build and download the new bootloader and APP OTA2 as described in Section <strong>APP OTA1</strong>.</p></li>
+</ol>
+<p>After burning APP OTA2 via OTA, the bootloader will load the image from the new APP OTA2 location <strong>only if</strong> its version is higher.</p>
+</div><div aria-labelledby="tab-2-2-2" class="sphinx-tabs-panel" hidden="true" id="panel-2-2-2" name="2-2" role="tabpanel" tabindex="0"><p><strong>APP OTA1</strong></p>
+<ol class="arabic">
+<li><p>Modify the address of <em>IMG_APP_OTA1</em> in <code class="docutils literal notranslate"><span class="pre">{SDK}\component\soc\amebaxxx\usrcfg\ameba_flashcfg.c</span></code>.</p></li>
+<li><p>Re-build the project to generate the bootloader and APP OTA1.</p></li>
+<li><p>Modify the address of <code class="docutils literal notranslate"><span class="pre">kr4_km4_app.bin</span></code> through ImageTool, and download the new bootloader and APP OTA1.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/app_ota1_step3_lite.png"><img alt="../../_images/app_ota1_step3_lite.png" src="../../_images/app_ota1_step3_lite.png" style="width: 444.5px; height: 133.0px;" /></a>
+</figure>
+<p>The bootloader will load the image from the new APP OTA1 location <strong>only if</strong> the version of APP OTA1 is higher.</p>
+</li>
+</ol>
+<p><strong>APP OTA2</strong></p>
+<ol class="arabic simple">
+<li><p>Modify the address of <em>IMG_APP_OTA2</em> in <code class="docutils literal notranslate"><span class="pre">{SDK}\component\soc\amebaxxx\usrcfg\ameba_flashcfg.c</span></code>.</p></li>
+<li><p>Re-build and download the new bootloader and APP OTA2 as described in Section <strong>APP OTA1</strong>.</p></li>
+</ol>
+<p>After burning APP OTA2 via OTA, the bootloader will load the image from the new APP OTA2 location <strong>only if</strong> its version is higher.</p>
+<p><strong>Modifying DSP IMG Location</strong></p>
+<p>Refer to <strong>APP OTA1</strong> to modify the location of DSP IMG.</p>
+</div></div>
+</section>
+</section>
+<section id="flash-protection-mechanism">
+<span id="flash-protect-enable"></span><h2>Flash Protection Mechanism<a class="headerlink" href="#flash-protection-mechanism" title="Link to this heading"></a></h2>
+<p>Before loading APP images, the bootloader checks the Flash status register:</p>
+<ul class="simple">
+<li><p>If bitwise AND result with  <cite>status_mask</cite>  in  <cite>Flash_AVL</cite>  (path: <code class="docutils literal notranslate"><span class="pre">{SDK}\component\soc\amebaxxx\usrcfg\ameba_flashcfg.c</span></code>) sets only QE bit, retain current status</p></li>
+<li><p>Otherwise write the result to the status register</p></li>
+</ul>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm">* @brif Flash_AVL maintains the flash IC supported by SDK.</span>
+<span class="cm">*     If users want to adpot new flash, add item in the following AVL.</span>
+<span class="cm">*     Note that, if new flash can be classfied as one of the Realtek-defined categories according to Classification SPEC,</span>
+<span class="cm">*     filling in the defined class index is necessary. Otherwise, FlashClassUser can be used to indicate new class.</span>
+<span class="cm">*     If (Status Register of flash &amp; status_mask in Flash_AVL) != (1 &lt;&lt; QE Bit), set (1 &lt;&lt; QE Bit) to Status Register of flash</span>
+<span class="cm">*/</span>
+<span class="k">const</span><span class="w"> </span><span class="n">FlashInfo_TypeDef</span><span class="w"> </span><span class="n">Flash_AVL</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="cm">/*flash_id,                flash_id_mask,  flash_class,            status_mask,    FlashInitHandler */</span>
+
+<span class="w">   </span><span class="cm">/* case1: Realtek defined class, any modification is not allowed */</span>
+<span class="w">   </span><span class="p">{</span><span class="mh">0xEF</span><span class="p">,</span><span class="w">                     </span><span class="mh">0x000000FF</span><span class="p">,</span><span class="w">             </span><span class="n">FlashClass1</span><span class="p">,</span><span class="w">            </span><span class="mh">0x000043FC</span><span class="p">,</span><span class="w">             </span><span class="nb">NULL</span><span class="p">},</span><span class="w">  </span><span class="cm">/* Winbond: MANUFACTURER_ID_WINBOND */</span>
+<span class="w">   </span><span class="p">{</span><span class="mh">0xA1</span><span class="p">,</span><span class="w">                     </span><span class="mh">0x000000FF</span><span class="p">,</span><span class="w">             </span><span class="n">FlashClass1</span><span class="p">,</span><span class="w">            </span><span class="mh">0x0000FFFC</span><span class="p">,</span><span class="w">             </span><span class="nb">NULL</span><span class="p">},</span><span class="w">  </span><span class="cm">/* Fudan Micro: MANUFACTURER_ID_FM */</span>
+<span class="w">   </span><span class="p">{</span><span class="mh">0x0B</span><span class="p">,</span><span class="w">                     </span><span class="mh">0x000000FF</span><span class="p">,</span><span class="w">             </span><span class="n">FlashClass1</span><span class="p">,</span><span class="w">            </span><span class="mh">0x000043FC</span><span class="p">,</span><span class="w">             </span><span class="nb">NULL</span><span class="p">},</span><span class="w">  </span><span class="cm">/* XTX */</span>
+<span class="w">   </span><span class="p">{</span><span class="mh">0x0E</span><span class="p">,</span><span class="w">                     </span><span class="mh">0x000000FF</span><span class="p">,</span><span class="w">             </span><span class="n">FlashClass1</span><span class="p">,</span><span class="w">            </span><span class="mh">0x000043FC</span><span class="p">,</span><span class="w">             </span><span class="nb">NULL</span><span class="p">},</span><span class="w">  </span><span class="cm">/* XTX(FT) */</span>
+<span class="w">   </span><span class="p">{</span><span class="mh">0xC8</span><span class="p">,</span><span class="w">                     </span><span class="mh">0x000000FF</span><span class="p">,</span><span class="w">             </span><span class="n">FlashClass2</span><span class="p">,</span><span class="w">            </span><span class="mh">0x000043FC</span><span class="p">,</span><span class="w">             </span><span class="nb">NULL</span><span class="p">},</span><span class="w">  </span><span class="cm">/* GD normal: MANUFACTURER_ID_GD */</span>
+<span class="w">   </span><span class="p">{</span><span class="mh">0x28C2</span><span class="p">,</span><span class="w">           </span><span class="mh">0x0000FFFF</span><span class="p">,</span><span class="w">             </span><span class="n">FlashClass6</span><span class="p">,</span><span class="w">            </span><span class="mh">0x000200FC</span><span class="p">,</span><span class="w">             </span><span class="nb">NULL</span><span class="p">},</span><span class="w">  </span><span class="cm">/* MXIC wide-range VCC: MANUFACTURER_ID_MXIC */</span>
+<span class="w">   </span><span class="p">{</span><span class="mh">0xC2</span><span class="p">,</span><span class="w">                     </span><span class="mh">0x000000FF</span><span class="p">,</span><span class="w">             </span><span class="n">FlashClass3</span><span class="p">,</span><span class="w">            </span><span class="mh">0x000000FC</span><span class="p">,</span><span class="w">             </span><span class="nb">NULL</span><span class="p">},</span><span class="w">  </span><span class="cm">/* MXIC normal: MANUFACTURER_ID_BOHONG */</span>
+<span class="w">   </span><span class="p">{</span><span class="mh">0x68</span><span class="p">,</span><span class="w">                     </span><span class="mh">0x000000FF</span><span class="p">,</span><span class="w">             </span><span class="n">FlashClass3</span><span class="p">,</span><span class="w">            </span><span class="mh">0x000000FC</span><span class="p">,</span><span class="w">             </span><span class="nb">NULL</span><span class="p">},</span><span class="w">  </span><span class="cm">/* Hua Hong */</span>
+<span class="w">   </span><span class="p">{</span><span class="mh">0x51</span><span class="p">,</span><span class="w">                     </span><span class="mh">0x000000FF</span><span class="p">,</span><span class="w">             </span><span class="n">FlashClass3</span><span class="p">,</span><span class="w">            </span><span class="mh">0x000000FC</span><span class="p">,</span><span class="w">             </span><span class="nb">NULL</span><span class="p">},</span><span class="w">  </span><span class="cm">/* GD MD serial */</span>
+<span class="w">   </span><span class="p">{</span><span class="mh">0x1C</span><span class="p">,</span><span class="w">                     </span><span class="mh">0x000000FF</span><span class="p">,</span><span class="w">             </span><span class="n">FlashClass4</span><span class="p">,</span><span class="w">            </span><span class="mh">0x000000FC</span><span class="p">,</span><span class="w">             </span><span class="nb">NULL</span><span class="p">},</span><span class="w">  </span><span class="cm">/* ESMT: MANUFACTURER_ID_EON */</span>
+<span class="w">   </span><span class="p">{</span><span class="mh">0x20</span><span class="p">,</span><span class="w">                     </span><span class="mh">0x000000FF</span><span class="p">,</span><span class="w">             </span><span class="n">FlashClass1</span><span class="p">,</span><span class="w">            </span><span class="mh">0x000043FC</span><span class="p">,</span><span class="w">             </span><span class="nb">NULL</span><span class="p">},</span><span class="w">  </span><span class="cm">/* XMC: MANUFACTURER_ID_WINBOND */</span>
+<span class="w">   </span><span class="p">{</span><span class="mh">0x85</span><span class="p">,</span><span class="w">                     </span><span class="mh">0x000000FF</span><span class="p">,</span><span class="w">             </span><span class="n">FlashClass1</span><span class="p">,</span><span class="w">            </span><span class="mh">0x000043FC</span><span class="p">,</span><span class="w">             </span><span class="nb">NULL</span><span class="p">},</span><span class="w">  </span><span class="cm">/* Puya: 85-20-16 */</span>
+<span class="w">   </span><span class="p">{</span><span class="mh">0x5E</span><span class="p">,</span><span class="w">                     </span><span class="mh">0x000000FF</span><span class="p">,</span><span class="w">             </span><span class="n">FlashClass1</span><span class="p">,</span><span class="w">            </span><span class="mh">0x000043FC</span><span class="p">,</span><span class="w">             </span><span class="nb">NULL</span><span class="p">},</span><span class="w">  </span><span class="cm">/* Zbit: 5E-50-16 */</span>
+<span class="w">   </span><span class="c1">//{0x20,                   0x000000FF,             FlashClass5,            0x000000FC,             NULL},  /* Micron: MANUFACTURER_ID_MICRON */</span>
+
+<span class="w">   </span><span class="cm">/* case2: new flash, ID is not included in case1 list, but specification is compatible with FlashClass1~FlashClass6 */</span>
+<span class="w">   </span><span class="c1">//{0xXX,                   0x0000XXXX,             FlashClassX,            0x0000XXXX,             NULL},</span>
+
+<span class="w">   </span><span class="cm">/* case3: new flash, ID is not included in case1 list, and specification is not compatible with FlashClass1~FlashClass6 */</span>
+<span class="w">   </span><span class="p">{</span><span class="mh">0x00</span><span class="p">,</span><span class="w">                     </span><span class="mh">0x000000FF</span><span class="p">,</span><span class="w">             </span><span class="n">FlashClassUser</span><span class="p">,</span><span class="w">         </span><span class="mh">0xFFFFFFFF</span><span class="p">,</span><span class="w">             </span><span class="o">&amp;</span><span class="n">flash_init_userdef</span><span class="p">},</span>
+
+<span class="w">   </span><span class="cm">/* End */</span>
+<span class="w">   </span><span class="p">{</span><span class="mh">0xFF</span><span class="p">,</span><span class="w">                     </span><span class="mh">0xFFFFFFFF</span><span class="p">,</span><span class="w">             </span><span class="n">FlashClassNone</span><span class="p">,</span><span class="w">         </span><span class="mh">0xFFFFFFFF</span><span class="p">,</span><span class="w">             </span><span class="nb">NULL</span><span class="p">},</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>Default QE setting disables all block protection. To preserve protection, clear corresponding bits in  <cite>status_mask</cite>  (e.g., set Winbond’s mask to 0x000043C0)</p></li>
+<li><p>When using LittleFS, recommend placing FTL partition in the last 64KB region with block protection</p></li>
+<li><p>Disable protection during OTA updates and re-enable afterward</p></li>
+<li><p>For Flashes that cannot protect only the last block, enable protection for the first half region</p></li>
+</ul>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="0_layout_index.html" class="btn btn-neutral float-left" title="Flash and Memory Layout" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="1_ram_layout_toprst.html" class="btn btn-neutral float-right" title="RAM Layout Configuration Guide" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Realsil.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+ 
+
+
+
+</body>
+</html>
