@@ -1,0 +1,464 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Overview &mdash; Ameba IoT Docs  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=7d84cf84" />
+      <link rel="stylesheet" type="text/css" href="../../_static/tabs.css?v=a5c4661c" />
+      <link rel="stylesheet" type="text/css" href="../../_static/_static/custom.css" />
+
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>let toggleHintShow = 'Click to show';</script>
+        <script>let toggleHintHide = 'Click to hide';</script>
+        <script>let toggleOpenOnPrint = 'true';</script>
+        <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="One-time Programmable Controller (OTPC)" href="../1_otpc/0_otpc_index.html" />
+    <link rel="prev" title="OTA Firmware Update" href="0_ota_index.html" />
+   
+  
+  <script type="text/javascript" src="../../_static/js/selector.js"></script>
+
+  <style>
+    .wy-nav-content {max-width: 1000px;} /* 设置最大宽度 */
+  </style>
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Ameba IoT Docs
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../rst_rtos/0_ameba_product/0_ameba_product_center_index.html">Products Center</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rst_rtos/0_ameba_sdk/0_ameba_sdks_index.html">Ameba SDK</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_release_packages/0_release_packages_index.html">0.0 Release Packages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_gcc_build_environment/0_gcc_build_index.html">0.1 Build Environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_sdk_architecture/0_sdk_architecture_index.html">0.2 SDK Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rst_rtos/0_tools/0_tools_index.html">0.7 Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_question_help/0_question_help_index.html">0.A Questions and Help</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_debugging/0_debugging_index.html">0.B System Debugging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_boot_process/0_boot_index.html">1.1 BOOT Process</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="0_ota_index.html">1.2 OTA</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#architecture">Architecture</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#partition-layout">Partition Layout</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#enable-slot-b-boot">Enable Slot B Boot</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#bcb-and-bootloader">BCB and Bootloader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#main-system">Main System</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#recovery-system">Recovery System</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#recovery-install-package-flow">Recovery Install Package Flow</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#recovery-factory-reset">Recovery Factory Reset</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#recovery-system-a-b-update">Recovery System A/B Update</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#build-recovery-system">Build Recovery System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#flash-recovery-image">Flash Recovery Image</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#setup-ota-environment-in-usb">Setup OTA Environment in USB</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../1_otpc/0_otpc_index.html">1.3 OTPC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_flash/0_flash_index.html">1.4 Flash</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_gpio/0_gpio_index.html">1.7 GPIO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_power_save/0_ps_index.html">1.8 Power Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_secure_boot/0_secure_boot_index_nda.html">3.6 Secure Boot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../7_usb_boot/0_usb_boot_index.html">3.7 USB Boot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_crypto_engine/0_crypto_engine_index.html">3.8 Crypto Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../4_multimedia/0_multimedia_index.html">4.3 Multimedia</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../7_usb/0_usb_index.html">7.1 USB Host &amp; Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../7_sdio/0_sdioh_index.html">7.2 SDIO Host</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_dmac/0_dmac_index.html">8.1 DMA Controllor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_rtc/0_rtc_index.html">8.2 RTC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_thermal/0_thermal_index.html">8.3 Thermal Meter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_adc/0_adc_index.html">8.4 ADC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_cap_touch/0_cap_touch_index.html">8.5 Cap-Touch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_ir/0_ir_index.html">8.6 IR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_ledc/0_ledc_index.html">8.7 LEDC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_i2c/0_i2c_index.html">8.8 I2C</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_uart/0_uart_index.html">8.9 UART</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_lcdc/0_lcdc_index.html">8.A LCDC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_spi/0_spi_index.html">8.B SPI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_spic/0_spic_index.html">8.C SPI Flash Controller</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_timer/0_timer_index.html">8.D Timer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_wdg/0_wdg_index.html">8.E Watchdog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../9_bluetooth/0_bluetooth_index.html">9.1 Bluetooth</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Ameba IoT Docs</a>
+      </nav>
+
+      <div class="wy-nav-content">
+
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="0_ota_index.html">OTA Firmware Update</a></li>
+      <li class="breadcrumb-item active">Overview</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="overview">
+<span id="ota-firmware-update"></span><h1>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h1>
+<p>The over-the-air (OTA) programming provides a methodology for updating device firmware from various sources (e.g., via USB disk or TCP/IP network). Currently, we provides a solution to implement OTA firmware upgrade from USB disk. Users can refer to the USB upgrade solution to easily implement their own OTA solutions.</p>
+</section>
+<section id="architecture">
+<h1>Architecture<a class="headerlink" href="#architecture" title="Link to this heading"></a></h1>
+<p>The OTA firmware upgrade is achieved by the following system modules:</p>
+<p><strong>Main System</strong></p>
+<p>The main system is the normal Linux system running user’s application. Normally it’s responsible for a new OTA package detected from a remote server or USB disk and downloading the OTA packages to a local storage. After detecting and verifying the OTA package, the main system will set the upgrade information in BCB (Bootloader Message Control Block) and reboot the system to notify the bootloader to boot up the system to a recovery system.</p>
+<p><strong>Recovery System</strong></p>
+<p>The recovery system is a minimum Linux system. It’s responsible for upgrading firmware according to specific OTA packages indicated by main system, it will upgrade OTA packages to the device. After upgrading, the recovery system will clear the information in BCB (Bootloader message Control Block) and reboot the system to notify bootloader to boot up to a new main system.</p>
+<p><strong>Bootloader and BCB</strong></p>
+<p>The BCB is the bootloader message control block, which is a structure shared by main system and recovery system, and a bridge between main system and recovery system. It can store the information whether to enter main system or not, and when upgrading OTA according to a specific path, OTA packages path will be set in BCB too. When system boots, bootloader will read the content of BCB, and determine to enter main system or recovery system.</p>
+<p>The relationship among the three modules is shown below.</p>
+<figure class="align-center" id="id1">
+<a class="reference internal image-reference" href="../../_images/whole_relationship.svg"><img alt="../../_images/whole_relationship.svg" height="136" src="../../_images/whole_relationship.svg" width="378" /></a>
+<figcaption>
+<p><span class="caption-text">Whole system relationship</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<section id="partition-layout">
+<h2>Partition Layout<a class="headerlink" href="#partition-layout" title="Link to this heading"></a></h2>
+<p>The partition layout is listed in the figure shown below</p>
+<figure class="align-center" id="id2">
+<a class="reference internal image-reference" href="../../_images/partition_layout.svg"><img alt="../../_images/partition_layout.svg" height="137" src="../../_images/partition_layout.svg" width="1032" /></a>
+<figcaption>
+<p><span class="caption-text">Partition layout</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p>All the images except rootfs and userdata image have A/B partitions.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Linux</span> <span class="pre">dtb</span> <span class="pre">image</span> <span class="pre">B</span></code> is the partition for recovery dtb image.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Linux</span> <span class="pre">kernel</span> <span class="pre">image</span> <span class="pre">B</span></code> is the partition for recovery kernel image.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Linux</span> <span class="pre">vbmeta</span> <span class="pre">image</span> <span class="pre">B</span></code> is the partition for secure recovery vbmeta image.</p></li>
+</ul>
+<p>The images below can be updated via OTA. Currently only km4_boot_all, km0_km4_app and boot support A/B slot update.</p>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Image name</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Support A/B update?</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>km4_boot_all</p></td>
+<td><p>Boot firmware</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>km0_km4_app</p></td>
+<td><p>Wi-Fi/BT firmware</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-even"><td><p>boot</p></td>
+<td><p>Linux boot image</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>vbmeta</p></td>
+<td><p>Linux vbmeta image</p></td>
+<td><p>x</p></td>
+</tr>
+<tr class="row-even"><td><p>dtb</p></td>
+<td><p>Linux device tree blob image</p></td>
+<td><p>x</p></td>
+</tr>
+<tr class="row-odd"><td><p>kernel</p></td>
+<td><p>Linux kernel image</p></td>
+<td><p>x</p></td>
+</tr>
+<tr class="row-even"><td><p>rootfs</p></td>
+<td><p>Linux rootfs image</p></td>
+<td><p>x</p></td>
+</tr>
+<tr class="row-odd"><td><p>userdata</p></td>
+<td><p>Linux user data image</p></td>
+<td><p>x</p></td>
+</tr>
+</tbody>
+</table>
+<section id="enable-slot-b-boot">
+<h3>Enable Slot B Boot<a class="headerlink" href="#enable-slot-b-boot" title="Link to this heading"></a></h3>
+<p>If user needs to enable boot from slot B. It needs to write bootloader slot B address into OTP which sets slot B address to 0x08300000. When boards boots up, executes the following command to OTP.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#  efuse wraw 36C 2 0083</span>
+</pre></div>
+</div>
+<p>When both slot A and slot B are all flashed, system will check to determine which slot to boot from. The general principle is to compare version number of both slots to check which slot has a bigger version.</p>
+</section>
+</section>
+<section id="bcb-and-bootloader">
+<h2>BCB and Bootloader<a class="headerlink" href="#bcb-and-bootloader" title="Link to this heading"></a></h2>
+<p>The main structure of BCB is structure bootloader_message.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">//Bootloader Message (2KB)</span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">bootloader_message</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="kt">char</span><span class="w"> </span><span class="n">cmd</span><span class="p">[</span><span class="mi">32</span><span class="p">];</span>
+<span class="w">   </span><span class="kt">char</span><span class="w"> </span><span class="n">status</span><span class="p">[</span><span class="mi">32</span><span class="p">];</span>
+<span class="w">   </span><span class="kt">char</span><span class="w"> </span><span class="n">recovery</span><span class="p">[</span><span class="mi">768</span><span class="p">];</span>
+<span class="w">   </span><span class="kt">char</span><span class="w"> </span><span class="n">stage</span><span class="p">[</span><span class="mi">32</span><span class="p">];</span>
+<span class="w">   </span><span class="kt">char</span><span class="w"> </span><span class="n">reserved</span><span class="p">[</span><span class="mi">1184</span><span class="p">];</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>Only <code class="docutils literal notranslate"><span class="pre">cmd</span></code> and <code class="docutils literal notranslate"><span class="pre">recovery</span></code> members are used.</p>
+<ul class="simple">
+<li><p>The member <code class="docutils literal notranslate"><span class="pre">cmd</span></code> indicates whether the board enters recovery system or main system. If it is set to <code class="docutils literal notranslate"><span class="pre">boot-recovery</span></code>, the board will enter recovery system when boots. Otherwise, the board will enter main system. The member will be reset when exiting recovery system.</p></li>
+<li><p>The member <code class="docutils literal notranslate"><span class="pre">recovery</span></code> stores the OTA path, the member will be set in main system when there is a new OTA package available.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">status</span></code> is used to store the recovery status later, and reserved is planned to use for store recovery log.</p></li>
+</ul>
+<p>OTA from USB solution, only <code class="docutils literal notranslate"><span class="pre">cmd</span></code> of BCB is used to indicate bootloader to enter main system or recovery system. Other members of BCB are not used.</p>
+</section>
+<section id="main-system">
+<h2>Main System<a class="headerlink" href="#main-system" title="Link to this heading"></a></h2>
+<p>The flow of main system is shown in the figure below. An OTA solution from USB disk is provided for reference, this solution realizes OTA update from USB disk detection to GUI. GUI can receive OTA version callback when new OTA version is available in USB disk, GUI can determine whether to update this OTA version or not. If no GUI exist, main system will set BCB and reboot to enter recovery system automatically if new OTA version is detected in USB disk.</p>
+<figure class="align-center" id="id3">
+<a class="reference internal image-reference" href="../../_images/main_ota_flow.svg"><img alt="../../_images/main_ota_flow.svg" height="205" src="../../_images/main_ota_flow.svg" width="341" /></a>
+<figcaption>
+<p><span class="caption-text">Main system OTA flow</span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p>The OTA flow of main system is shown in the figure below. The OTA reference implementation in main system includes a recovery daemon:</p>
+<p>Recovery daemon: It will detect whether any U-disk is connected with the board. If yes, it will try to read the OTA package from U-disck, if the OTA package exists, it will setup BCB and reboot board to notify bootloader to enter recovery system.</p>
+<figure class="align-center" id="id4">
+<a class="reference internal image-reference" href="../../_images/main_ota_arch.svg"><img alt="../../_images/main_ota_arch.svg" height="121" src="../../_images/main_ota_arch.svg" width="133" /></a>
+<figcaption>
+<p><span class="caption-text">Main system OTA Architecture</span><a class="headerlink" href="#id4" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p>The flow of USB OTA solution is shown in the figure below. Storage service will detect USB hot plug, then notify OTA service. OTA service will check whether OTA package is available in specific directory. If OTA package is available, OTA service will notify OTA GUI if OTA GUI exists, and then set up BCB via recovery service APIs (OTA service will call recovery service APIs directly if no OTA GUI exists). When BCB is set successfully, recovery service will reboot the board to enter recovery system.</p>
+<figure class="align-center" id="id5">
+<a class="reference internal image-reference" href="../../_images/usb_ota_flow.svg"><img alt="../../_images/usb_ota_flow.svg" height="352" src="../../_images/usb_ota_flow.svg" width="455" /></a>
+<figcaption>
+<p><span class="caption-text">USB OTA flow</span><a class="headerlink" href="#id5" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="recovery-system">
+<h2>Recovery System<a class="headerlink" href="#recovery-system" title="Link to this heading"></a></h2>
+<p>The flow of recovery is shown in the figure below. In USB OTA solution, recovery will get USB hot plug callback from kernel, detect OTA package in specific directory in USB disk, currently the OTA directory is <code class="docutils literal notranslate"><span class="pre">ota</span></code> folder under USB root directory (this will be introduced in later section). If <code class="docutils literal notranslate"><span class="pre">ota</span></code> folder exists and OTA package is detected under <code class="docutils literal notranslate"><span class="pre">ota</span></code> folder, recovery will update this OTA package first. If no USB is plugged to the board, recovery will get the OTA package path from BCB, then upgrade from the package path. After upgrade, recovery will clear BCB, and reboot to main system.</p>
+<figure class="align-center" id="id6">
+<a class="reference internal image-reference" href="../../_images/recovery_flow.svg"><img alt="../../_images/recovery_flow.svg" height="322" src="../../_images/recovery_flow.svg" width="193" /></a>
+<figcaption>
+<p><span class="caption-text">Recovery flow</span><a class="headerlink" href="#id6" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<section id="recovery-install-package-flow">
+<h3>Recovery Install Package Flow<a class="headerlink" href="#recovery-install-package-flow" title="Link to this heading"></a></h3>
+<p>In USB OTA solution, when main system detects USB plugged, it will set up BCB and reboot to recovery system. The recovery system will load the partition table, get USB path from kernel, parse configure file (<code class="file docutils literal notranslate"><span class="pre">flash_image.cfg</span></code>, configure file will be introduced in later section) and upgrade according to configure file from USB. The upgrade flow of recovery is listed in the figure below.</p>
+<figure class="align-center" id="id7">
+<a class="reference internal image-reference" href="../../_images/package_installation_flow.svg"><img alt="../../_images/package_installation_flow.svg" height="427" src="../../_images/package_installation_flow.svg" width="607" /></a>
+<figcaption>
+<p><span class="caption-text">Package installation flow</span><a class="headerlink" href="#id7" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="recovery-factory-reset">
+<h3>Recovery Factory Reset<a class="headerlink" href="#recovery-factory-reset" title="Link to this heading"></a></h3>
+<p>Recovery also provides factory reset function, factory reset is only to reset userdata partition.</p>
+<p>When main system calls the corresponding API to factory reset, board will enter to recovery system, the flow of factory reset can refer to figure below.</p>
+<p>In NAND flash, rootfs and userdata adopt UBI file system while in NOR flash rootfs uses squashfs, userdata uses jffs2, so wipe out userdata is deferent in NAND and NOR flash.</p>
+<figure class="align-center" id="id8">
+<a class="reference internal image-reference" href="../../_images/recovery_factory_reset.svg"><img alt="../../_images/recovery_factory_reset.svg" height="456" src="../../_images/recovery_factory_reset.svg" width="555" /></a>
+<figcaption>
+<p><span class="caption-text">Recovery factory reset</span><a class="headerlink" href="#id8" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="recovery-system-a-b-update">
+<h3>Recovery System A/B Update<a class="headerlink" href="#recovery-system-a-b-update" title="Link to this heading"></a></h3>
+<p>In order to prevent system crashes, A/B slot update applies in boot firmware image, Wi-Fi/BT image and Linux boot image.</p>
+<p>The information of A/B partitions is described in upper memory layout.</p>
+<p>When board enters recovery system, if the three images above need to be upgraded, recovery system will get current slot info from Linux driver and then updates OTA packages to another slot.</p>
+</section>
+</section>
+</section>
+<section id="build-recovery-system">
+<h1>Build Recovery System<a class="headerlink" href="#build-recovery-system" title="Link to this heading"></a></h1>
+<p>Recovery system kernel configuration is defined in <code class="docutils literal notranslate"><span class="pre">&lt;sdk&gt;/sources/yocto/meta-realtek/meta-realtek-bsp/recipes-kernel/linux-ameba_5.4.bb</span></code>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>KBUILD_DEFCONFIG:rtl8730elh-recovery?= &quot;rtl8730elh_recovery_defconfig&quot;
+</pre></div>
+</div>
+<p>Recovery system has its own dtb and kernel images. Recovery images can be generated independently by the following commands:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">source</span> <span class="n">envsetup</span><span class="o">.</span><span class="n">sh</span> <span class="o">-</span><span class="n">m</span> <span class="n">rtl8730elh</span><span class="o">-</span><span class="n">recovery</span> <span class="o">-</span><span class="n">d</span> <span class="n">poky</span> <span class="o">-</span><span class="n">b</span> <span class="o">&lt;</span><span class="n">recovery</span> <span class="n">out</span><span class="o">&gt;</span>
+<span class="n">mrecovery</span>
+</pre></div>
+</div>
+<p>Recovery images including dtb and kernel images will be generated under <code class="docutils literal notranslate"><span class="pre">&lt;recovery</span> <span class="pre">out&gt;/tmp/deploy/images/rtl8730elh-recovery</span></code> folder.</p>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Image name</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="file docutils literal notranslate"><span class="pre">rtl8730elh-va7-recovery.dtb/rtl8730elh-va8-recovery.dtb</span></code></p></td>
+<td><p>Recovery device tree blob image</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="file docutils literal notranslate"><span class="pre">uImage-initramfs-rtl8730elh-recovery.bin</span></code></p></td>
+<td><p>Recovery linux kernel and rootfs image</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="flash-recovery-image">
+<h1>Flash Recovery Image<a class="headerlink" href="#flash-recovery-image" title="Link to this heading"></a></h1>
+<p>This section shows how to flash recovery images to board individually.</p>
+<ol class="arabic simple">
+<li><p>The board needs to enter normal flash mode, then open the ImageTool, and load the layout including recovery in ImageTool under <code class="docutils literal notranslate"><span class="pre">tools/image_tool</span></code> which is shown in the figure below.</p></li>
+<li><p>Load <code class="file docutils literal notranslate"><span class="pre">XXXX_Linux_NAND_128MB.rdev</span></code> or <code class="file docutils literal notranslate"><span class="pre">XXXX_Linux_NAND_256MB.rdev</span></code> for NAND flash, <code class="file docutils literal notranslate"><span class="pre">XXXX_Linux_NOR_32MB.rdev</span></code> for NOR flash.</p></li>
+</ol>
+<p>Flash recovery images is shown in the figure below.</p>
+<figure class="align-center" id="id9">
+<a class="reference internal image-reference" href="../../_images/flash_recovery_image.png"><img alt="../../_images/flash_recovery_image.png" src="../../_images/flash_recovery_image.png" style="width: 1272.0px; height: 820.0px;" /></a>
+<figcaption>
+<p><span class="caption-text">Flash recovery image</span><a class="headerlink" href="#id9" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Recovery images need to update unless recovery images have been updated, otherwise flash once is OK.</p>
+</div>
+</section>
+<section id="setup-ota-environment-in-usb">
+<h1>Setup OTA Environment in USB<a class="headerlink" href="#setup-ota-environment-in-usb" title="Link to this heading"></a></h1>
+<p>For USB OTA upgrade, current SDK OTA supports images and compressed gz file in USB. No matter images or gz file, it will be put under <code class="docutils literal notranslate"><span class="pre">ota</span></code> folder in USB root directory.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In Yocto project, dtb images (such as <code class="file docutils literal notranslate"><span class="pre">rtl8730elh-va8-generic.dtb</span></code> / <code class="file docutils literal notranslate"><span class="pre">rtl8730elh-va8-full.dtb</span></code>) should rename to <code class="file docutils literal notranslate"><span class="pre">dtb.img</span></code> for OTA.</p>
+</div>
+<p>For gz package, its name must be <code class="file docutils literal notranslate"><span class="pre">updater.tar.gz</span></code>, and need to generate when all the images compile successful, such as: tar -czvf updater.tar.gz, boot.img, dtb.img, kernel.img, rootfs.img, userdata.img, flash_image.cfg, <code class="file docutils literal notranslate"><span class="pre">flash_image.cfg</span></code> is the configure file and mandatory for OTA update, it will be described in later sections.</p>
+<p>Setup USB OTA environment in Windows:</p>
+<ol class="arabic simple">
+<li><p>Create an ota folder in USB root directory</p></li>
+<li><p>Put the images need to flash and the configure file (<code class="file docutils literal notranslate"><span class="pre">flash_image.cfg</span></code>) to OTA directory. For example, if user wants to update Linux boot image, Linux kernel image, Linux dtb image, Linux roofs image, put <code class="file docutils literal notranslate"><span class="pre">boot.img</span></code>, <code class="file docutils literal notranslate"><span class="pre">dtb.img</span></code>, <code class="file docutils literal notranslate"><span class="pre">kernel.img</span></code>, <code class="file docutils literal notranslate"><span class="pre">rootfs.img</span></code> and <code class="file docutils literal notranslate"><span class="pre">flash_image.cfg</span></code> under USB <code class="docutils literal notranslate"><span class="pre">ota</span></code> folder.</p></li>
+<li><p>Modify the <code class="file docutils literal notranslate"><span class="pre">flash_image.cfg</span></code> file to flash the images you need. Developers only need to modify the <code class="docutils literal notranslate"><span class="pre">flash_type</span></code> section to enable/disable flashing the corresponding image, flash the image if the <code class="docutils literal notranslate"><span class="pre">flash_type</span></code> is set to 1, don’t flash the image is the section is set to 0. In the picture below, <code class="file docutils literal notranslate"><span class="pre">boot.img</span></code> / <code class="file docutils literal notranslate"><span class="pre">dtb.img</span></code> / <code class="file docutils literal notranslate"><span class="pre">kernel.img</span></code> / <code class="file docutils literal notranslate"><span class="pre">rootfs.img</span></code> will be flashed to board. The others will not be flashed.</p></li>
+</ol>
+<p>An example is shown below:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+   <span class="s2">&quot;skip_md5_check&quot;</span> <span class="p">:</span> <span class="s2">&quot;1&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;images&quot;</span> <span class="p">:</span> <span class="p">[{</span>
+         <span class="s2">&quot;name&quot;</span> <span class="p">:</span> <span class="s2">&quot;KM4 boot&quot;</span><span class="p">,</span>
+         <span class="s2">&quot;path&quot;</span> <span class="p">:</span> <span class="s2">&quot;km4_boot_all.bin&quot;</span><span class="p">,</span>
+         <span class="s2">&quot;flash_type&quot;</span> <span class="p">:</span> <span class="mi">0</span>
+      <span class="p">},</span> <span class="p">{</span>
+         <span class="s2">&quot;name&quot;</span> <span class="p">:</span> <span class="s2">&quot;KM4 image2&quot;</span><span class="p">,</span>
+         <span class="s2">&quot;path&quot;</span> <span class="p">:</span> <span class="s2">&quot;km0_km4_app.bin&quot;</span><span class="p">,</span>
+         <span class="s2">&quot;flash_type&quot;</span> <span class="p">:</span> <span class="mi">0</span>
+      <span class="p">},</span> <span class="p">{</span>
+         <span class="s2">&quot;name&quot;</span> <span class="p">:</span> <span class="s2">&quot;AP boot image&quot;</span><span class="p">,</span>
+         <span class="s2">&quot;path&quot;</span> <span class="p">:</span> <span class="s2">&quot;boot.img&quot;</span><span class="p">,</span>
+         <span class="s2">&quot;flash_type&quot;</span> <span class="p">:</span> <span class="mi">1</span>
+      <span class="p">},</span> <span class="p">{</span>
+         <span class="s2">&quot;name&quot;</span> <span class="p">:</span> <span class="s2">&quot;AP vbmeta&quot;</span><span class="p">,</span>
+         <span class="s2">&quot;path&quot;</span> <span class="p">:</span> <span class="s2">&quot;vbmeta.img&quot;</span><span class="p">,</span>
+         <span class="s2">&quot;flash_type&quot;</span> <span class="p">:</span> <span class="mi">0</span>
+      <span class="p">},</span> <span class="p">{</span>
+         <span class="s2">&quot;name&quot;</span> <span class="p">:</span> <span class="s2">&quot;Device tree blob&quot;</span><span class="p">,</span>
+         <span class="s2">&quot;path&quot;</span> <span class="p">:</span> <span class="s2">&quot;dtb.img&quot;</span><span class="p">,</span>
+         <span class="s2">&quot;flash_type&quot;</span> <span class="p">:</span> <span class="mi">1</span>
+      <span class="p">},</span> <span class="p">{</span>
+         <span class="s2">&quot;name&quot;</span> <span class="p">:</span> <span class="s2">&quot;Kernel image&quot;</span><span class="p">,</span>
+         <span class="s2">&quot;path&quot;</span> <span class="p">:</span> <span class="s2">&quot;kernel.img&quot;</span><span class="p">,</span>
+         <span class="s2">&quot;flash_type&quot;</span> <span class="p">:</span> <span class="mi">1</span>
+      <span class="p">},</span> <span class="p">{</span>
+         <span class="s2">&quot;name&quot;</span> <span class="p">:</span> <span class="s2">&quot;Squashfs filesystem&quot;</span><span class="p">,</span>
+         <span class="s2">&quot;path&quot;</span> <span class="p">:</span> <span class="s2">&quot;rootfs.img&quot;</span><span class="p">,</span>
+         <span class="s2">&quot;flash_type&quot;</span> <span class="p">:</span> <span class="mi">1</span>
+      <span class="p">},</span> <span class="p">{</span>
+         <span class="s2">&quot;name&quot;</span> <span class="p">:</span> <span class="s2">&quot;ubi/jffs2 filesystem&quot;</span><span class="p">,</span>
+         <span class="s2">&quot;path&quot;</span> <span class="p">:</span> <span class="s2">&quot;userdata.img&quot;</span><span class="p">,</span>
+         <span class="s2">&quot;flash_type&quot;</span> <span class="p">:</span> <span class="mi">0</span>
+      <span class="p">}</span>
+   <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="0_ota_index.html" class="btn btn-neutral float-left" title="OTA Firmware Update" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../1_otpc/0_otpc_index.html" class="btn btn-neutral float-right" title="One-time Programmable Controller (OTPC)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Realsil.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+ 
+
+
+
+</body>
+</html>

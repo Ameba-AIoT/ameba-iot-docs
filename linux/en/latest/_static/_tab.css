@@ -1,0 +1,93 @@
+/*如果如下都放开则全部文件都生效，我们只希望部分文件生效，搜索关键词“缩小tab的横向距离” 查看使用的文件 */
+.sphinx-tabs .sphinx-tabs-tab {
+    margin-right: 5px !important;
+    padding: 2px 2px; /* 从这里到末尾 mark掉，则只会支持include shrink_tab_distance 的文件*/
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* 添加过渡动画 */
+.sphinx-tabs-tab {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* 支持深色模式 */
+@media (prefers-color-scheme: dark) {
+    .sphinx-tabs-tab {
+        background-color: #2d2d2d;
+        border-color: #444;
+    }
+    .sphinx-tabs-tab[aria-selected="true"] {
+        background-color: #0a58ca !important;
+    }
+}
+
+.. raw:: html
+
+    <style>
+    /* 定义默认 Tab 样式 */
+    .sphinx-tabs-tab {
+        margin-right: 5px;
+        padding: 2px 12px;
+        border: 1px solid #ddd;
+        border-radius: 5px 5px 0 0;
+        cursor: pointer;
+        background-color: #f8f9fa;
+        color: #333;
+        transition: all 0.3s ease;  /* 添加过渡动画 */
+    }
+
+    /* 激活状态样式 */
+    .sphinx-tabs-tab[aria-selected="true"] {
+        background-color: #007bff !important;
+        color: white !important;
+        border-color: #007bff;
+    }
+
+    /* 悬停效果 */
+    .sphinx-tabs-tab:hover:not([aria-selected="true"]) {
+        background-color: #e9ecef;
+        border-color: #dee2e6;
+    }
+    </style>
+
+/* 活动选项卡的样式 */
+/*
+.sphinx-tabs .sphinx-tabs-tab[aria-selected="true"] {
+    background-color: #007bff;
+    color: white;
+}*/
+
+/* 强制显示按钮 */
+.tab-button {
+    display: inline-block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* 自定义下拉菜单样式 */
+.tab-selector {
+    height: 22px !important;      /* 控制高度 */
+    padding: 2px 8px !important; /* 内边距 */
+    font-size: 13px !important;  /* 字体大小 */
+    line-height: 1.2 !important; /* 行高 */
+    border: 1px solid #0a5ae3;
+    border-radius: 3px;
+    background-color: rgba(191, 154, 154, 0.009);
+    cursor: pointer;
+}
+
+.tab-selector:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+}
+
+@media (max-width: 480px) { /* 确保在小屏幕上名称和菜单换行显示：*/
+    .tab-selector-container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
