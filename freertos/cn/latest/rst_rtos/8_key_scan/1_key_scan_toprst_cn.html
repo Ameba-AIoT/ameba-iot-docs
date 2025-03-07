@@ -326,14 +326,20 @@
 <section id="active">
 <h2>Active模式<a class="headerlink" href="#active" title="Link to this heading"></a></h2>
 <p>在Active模式下，Key-Scan 电路始终保持通电。</p>
-<p>当 Key-Scan 扫描第 <em>x</em> 列（ <em>x</em> 为任意列）时，会将第 <em>x</em> 列设为输出低电平，其他列设为高阻态。然后扫描所有行来判断哪些按键被按下或松开，完成一次列扫描。</p>
-<p>Key-Scan 按顺序扫描各列，并逐列循环扫描。</p>
+<ul class="simple">
+<li><p><strong>列扫描</strong>：当Key-Scan扫描第 x 列（x 表示任意一列）时，将第 x 列设置为低电平，同时将所有其他列置于高阻态（Hi-Z）。</p></li>
+<li><p><strong>行检测</strong>：设置列后，Key-Scan扫描所有行以检测哪些键被按下或释放，完成一次列扫描。</p></li>
+<li><p><strong>顺序扫描</strong>：Key-Scan按顺序扫描所有列，并周期性地逐列进行扫描。</p></li>
+</ul>
 </section>
 <section id="sleep">
 <h2>Sleep模式<a class="headerlink" href="#sleep" title="Link to this heading"></a></h2>
-<p>在实际应用场景中，Key-Scan 一直保持活动状态会消耗大量电能。为节省功耗并优化应用，Key-Scan 通常工作在睡眠模式。</p>
-<p>在睡眠模式下，CPU 进入低功耗状态，但当有按键按下时，会唤醒 CPU，随后 Key-Scan 开始扫描以确定哪些按键被按下。</p>
-<p>按键按下期间，Key-Scan 持续扫描；按键松开且无其他事件发生时，CPU 再次进入睡眠状态。</p>
+<p>在实际应用中，Key-Scan保持在Active模式会非常耗电。为了节省功耗并优化性能，Key-Scan通常运行在Sleep模式。</p>
+<ul class="simple">
+<li><p><strong>低功耗状态</strong>：在Sleep模式下，CPU 进入低功耗状态以减少能耗。</p></li>
+<li><p><strong>唤醒机制</strong>：当有键被按下时，CPU 被唤醒，Key-Scan开始扫描以确定哪些键被按下。Key-Scan会在按键保持按下状态时持续扫描。</p></li>
+<li><p><strong>返回休眠状态</strong>：当所有键被释放且没有其他事件发生时，CPU 重新进入休眠状态。</p></li>
+</ul>
 </section>
 </section>
 <section id="id6">
