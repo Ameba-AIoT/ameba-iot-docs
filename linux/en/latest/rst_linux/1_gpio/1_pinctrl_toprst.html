@@ -10,9 +10,10 @@
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
-      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=950f7cdb" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=afd5f0a6" />
+      <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
       <link rel="stylesheet" type="text/css" href="../../_static/tabs.css?v=a5c4661c" />
-      <link rel="stylesheet" type="text/css" href="../../_static/_static/custom.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=afd5f0a6" />
 
   
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
@@ -39,9 +40,8 @@
     <link rel="next" title="Power Management" href="../1_power_save/0_ps_index.html" />
     <link rel="prev" title="General Purpose Input/Output (GPIO)" href="1_gpio_toprst.html" />
    
-
-  
-  <script type="text/javascript" src="../../_static/js/selector.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <script type="text/javascript" src="../../_static/js/selector.js"></script> /* 左侧左上角选择版本、语种等 */
 
   <style>
     .wy-nav-content { max-width: 1000px; }
@@ -59,6 +59,13 @@
     .auth-denied h3 {
         margin-bottom: 10px;
         color: #dc3545;
+    }
+
+    
+    .protected-link::after {
+        content: " 🔒"; /* 使用 Unicode 锁图标 */
+        font-size: 1rem;
+        color: red;
     }
   </style>
 
@@ -180,10 +187,13 @@
 <li><p>Configuration of pins, pads, fingers, etc., such as software-controlled biasing specific pins, such as pull-up/down, open drain, load capacitance.</p></li>
 </ul>
 <p>The pinctrl software architecture is shown below.</p>
-<figure class="align-center">
+<figure class="align-center" id="id2">
 <a class="reference internal image-reference" href="../../_images/pinctrl_software_arch.svg"><img alt="../../_images/pinctrl_software_arch.svg" height="463" src="../../_images/pinctrl_software_arch.svg" width="511" /></a>
+<figcaption>
+<p><span class="caption-text">pinctrl software architecture</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
+</figcaption>
 </figure>
-<p>Refer to <a class="reference external" href="https://www.kernel.org/doc/html/v5.4/driver-api/pinctl.html?highlight=pinctrl">pinctrl driver v5.4</a> or <a class="reference external" href="https://www.kernel.org/doc/html/v6.6/driver-api/pin-control.html">pinctrl driver v6.6</a> for more details of Linux pinctrl system.</p>
+<p>Refer to <a class="reference external" href="https://www.kernel.org/doc/html/v5.4/driver-api/pinctl.html?highlight=pinctrl">https://www.kernel.org/doc/html/v5.4/driver-api/pinctl.html?highlight=pinctrl</a> for more details of Linux pinctrl system.</p>
 </section>
 <section id="implementation">
 <h3>Implementation<a class="headerlink" href="#implementation" title="Link to this heading"></a></h3>
@@ -227,7 +237,8 @@
 <section id="pinctrl-driver-dts-configuration">
 <h4>pinctrl Driver DTS Configuration<a class="headerlink" href="#pinctrl-driver-dts-configuration" title="Link to this heading"></a></h4>
 <p>The parent part of pinctrl is listed in the following table.</p>
-<table class="docutils align-default" style="width: 100%">
+<table class="docutils align-default" id="pinctrl-node-dts-configurations" style="width: 100%">
+<caption><span class="caption-text">pinctrl node DTS configurations</span><a class="headerlink" href="#pinctrl-node-dts-configurations" title="Link to this table"></a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p>Property</p></th>
 <th class="head"><p>Description</p></th>
@@ -305,7 +316,8 @@
 <li><p>[hardware_driver_id] can be found in <code class="docutils literal notranslate"><span class="pre">&lt;sdk&gt;/sources/kernel/&lt;linux&gt;/include/dt-bindings/realtek/pinctrl/realtek-ameba-pinfunc.h</span></code>. Each [hardware_driver_id] in <code class="docutils literal notranslate"><span class="pre">realtek-ameba-pinfunc.h</span></code> means a mapping to its hardware function. Example: when adding I2C pinmux, just use I2C macro here.</p></li>
 </ul>
 <p>Other description of properties is listed in the following table.</p>
-<table class="docutils align-default" style="width: 100%">
+<table class="docutils align-default" id="id3" style="width: 100%">
+<caption><span class="caption-text">pinctrl child-node DTS configurations</span><a class="headerlink" href="#id3" title="Link to this table"></a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p>Property</p></th>
 <th class="head"><p>Description</p></th>
@@ -358,7 +370,7 @@
 <h4>pinctrl Quote<a class="headerlink" href="#pinctrl-quote" title="Link to this heading"></a></h4>
 <p>The pinmux for drivers is board specific. When configuring pinmux for a specified driver. The steps are as follows:</p>
 <ol class="arabic">
-<li><p>Find the board specified DTS in directory <em>&lt;dts&gt;</em> by the board name. Example: for 256M nand common board, the DTS is <code class="docutils literal notranslate"><span class="pre">rtl8730elh-va8-xxx.dts</span></code>.</p></li>
+<li><p>Find the board specified DTS in directory: &lt;dts&gt; by the board name. Example: for 256M nand common board, the DTS is <code class="docutils literal notranslate"><span class="pre">rtl8730elh-va8-xxx.dts</span></code>.</p></li>
 <li><p>Find the entire name of this driver [driver_name], such as i2c0.</p></li>
 <li><p>Add the pinctrl quote:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&amp;</span><span class="p">[</span><span class="n">driver_name</span><span class="p">]{</span>
@@ -385,8 +397,11 @@
 <section id="build-configuration">
 <h3>Build Configuration<a class="headerlink" href="#build-configuration" title="Link to this heading"></a></h3>
 <p>Select <span class="menuselection">Device Drivers &gt; Drivers for Realtek &gt; pinctrl driver</span>:</p>
-<figure class="align-center">
+<figure class="align-center" id="id4">
 <a class="reference internal image-reference" href="../../_images/pinctrl_driver.png"><img alt="../../_images/pinctrl_driver.png" src="../../_images/pinctrl_driver.png" style="width: 329.6px; height: 409.6px;" /></a>
+<figcaption>
+<p><span class="caption-text">pinctrl driver</span><a class="headerlink" href="#id4" title="Link to this image"></a></p>
+</figcaption>
 </figure>
 </section>
 </section>
@@ -474,7 +489,7 @@
 </div>
 </li>
 </ol>
-<p>Refer to <a class="reference external" href="https://www.kernel.org/doc/html/v5.4/driver-api/pinctl.html">pinctrl driver api v5.4</a> or <a class="reference external" href="https://www.kernel.org/doc/html/v6.6/driver-api/pin-control.html">pinctrl driver api v6.6</a> for more details.</p>
+<p>Refer to <a class="reference external" href="https://www.kernel.org/doc/html/v5.4/driver-api/pinctl.html">https://www.kernel.org/doc/html/v5.4/driver-api/pinctl.html</a> for more details.</p>
 </section>
 </section>
 </section>
