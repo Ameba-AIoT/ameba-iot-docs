@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>General Purpose Input/Output (GPIO) &mdash; Ameba IoT Docs  文档</title>
+  <title>通用输入输出口 (GPIO) &mdash; Ameba IoT Docs  文档</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
@@ -36,8 +36,8 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="索引" href="../../genindex.html" />
     <link rel="search" title="搜索" href="../../search.html" />
-    <link rel="next" title="Pin Controller (Pinctrl)" href="1_pinctrl_toprst_cn.html" />
-    <link rel="prev" title="GPIO and Pinctrl" href="0_gpio_index_cn.html" />
+    <link rel="next" title="Pin 控制器 (Pinctrl)" href="1_pinctrl_toprst_cn.html" />
+    <link rel="prev" title="GPIO 与 Pinctrl" href="0_gpio_index_cn.html" />
    
 
   
@@ -86,7 +86,7 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../rst_rtos/0_ameba_product/0_ameba_product_center_index_cn.html">产品中心</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../rst_rtos/0_ameba_sdk/0_ameba_sdks_index_cn.html">Ameba SDK</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../0_release_packages/0_release_packages_index_cn.html">0.0 释放包</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_release_packages/0_release_packages_index_cn.html">0.0 发布包</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../0_gcc_build_environment/0_gcc_build_index_cn.html">0.1 GCC 编译环境</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../0_sdk_architecture/0_sdk_architecture_index_cn.html">0.2 SDK 架构</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../rst_rtos/0_tools/0_tools_index_cn.html">0.7 工具</a></li>
@@ -97,32 +97,32 @@
 <li class="toctree-l1"><a class="reference internal" href="../1_otpc/0_otpc_index_cn.html">1.3 OTP 存储器</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../1_flash/0_flash_index_cn.html">1.4 闪存</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="0_gpio_index_cn.html">1.7 通用输入输出端口</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">General Purpose Input/Output (GPIO)</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#introduction">Introduction</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#architecture">Architecture</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#implementation">Implementation</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">通用输入输出口 (GPIO)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id2">介绍</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id3">架构</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id4">实现</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#configuration">Configuration</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#dts-configuration">DTS Configuration</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#build-configuration">Build Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">配置</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id6">设备树配置</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id7">编译配置</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#apis-for-user-space">APIs for User Space</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#apis">用户空间接口（APIs）</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#sysfs">sysfs</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#char-device">Char Device</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id12">字符设备</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#uio">UIO</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#apis-for-kernel-space">APIs for Kernel Space</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id18">内核空间接口（APIs）</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#legacy-apis">Legacy APIs</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#descriptor-based-apis">Descriptor-based APIs</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id7">Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id19">基于描述符的 APIs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id20">用途</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="1_pinctrl_toprst_cn.html">Pin Controller (Pinctrl)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1_pinctrl_toprst_cn.html">Pin 控制器 (Pinctrl)</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../1_power_save/0_ps_index_cn.html">1.8 电源管理</a></li>
@@ -164,8 +164,8 @@
           <div role="navigation" aria-label="页面导航">
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="0_gpio_index_cn.html">GPIO and Pinctrl</a></li>
-      <li class="breadcrumb-item active">General Purpose Input/Output (GPIO)</li>
+          <li class="breadcrumb-item"><a href="0_gpio_index_cn.html">GPIO 与 Pinctrl</a></li>
+      <li class="breadcrumb-item active">通用输入输出口 (GPIO)</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -174,52 +174,49 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="general-purpose-input-output-gpio">
-<span id="gpio"></span><h1>General Purpose Input/Output (GPIO)<a class="headerlink" href="#general-purpose-input-output-gpio" title="Link to this heading"></a></h1>
-<section id="introduction">
-<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
-<section id="architecture">
-<h3>Architecture<a class="headerlink" href="#architecture" title="Link to this heading"></a></h3>
-<p>GPIO driver follows Linux’s GPIO subsystem. GPIO lib provides GPIO interface to user space. The GPIO software architecture is illustrated in the following figure.</p>
-<figure class="align-center" id="id8">
+  <section id="gpio">
+<span id="id1"></span><h1>通用输入输出口 (GPIO)<a class="headerlink" href="#gpio" title="Link to this heading"></a></h1>
+<section id="id2">
+<h2>介绍<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+<section id="id3">
+<h3>架构<a class="headerlink" href="#id3" title="Link to this heading"></a></h3>
+<p>GPIO 驱动程序遵循 Linux 的 GPIO 子系统。GPIO 库为用户空间提供 GPIO 接口。GPIO 软件架构在下图中展示。</p>
+<figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/gpio_software_arch.svg"><img alt="../../_images/gpio_software_arch.svg" height="328" src="../../_images/gpio_software_arch.svg" width="385" /></a>
-<figcaption>
-<p><span class="caption-text">GPIO software architecture</span><a class="headerlink" href="#id8" title="Link to this image"></a></p>
-</figcaption>
 </figure>
-<p>For details of Linux GPIO system, refer to <a class="reference external" href="https://www.kernel.org/doc/html/v5.4/driver-api/gpio/index.html?highlight=gpio">https://www.kernel.org/doc/html/v5.4/driver-api/gpio/index.html?highlight=gpio</a>.</p>
+<p>获取更多有关 Linux GPIO 系统的细节，请参考 <a class="reference external" href="https://www.kernel.org/doc/html/v5.4/driver-api/gpio/index.html?highlight=gpio">GPIO drvier v5.4</a> 或者 <a class="reference external" href="https://www.kernel.org/doc/html/v6.6/driver-api/gpio/index.html?highlight=gpio">GPIO drvier v6.6</a> 。</p>
 </section>
-<section id="implementation">
-<h3>Implementation<a class="headerlink" href="#implementation" title="Link to this heading"></a></h3>
-<p>GPIO driver is implemented as following files:</p>
+<section id="id4">
+<h3>实现<a class="headerlink" href="#id4" title="Link to this heading"></a></h3>
+<p>GPIO 驱动程序实现于以下文件中：</p>
 <table class="docutils align-default" style="width: 100%">
 <thead>
-<tr class="row-odd"><th class="head"><p>Driver location</p></th>
-<th class="head"><p>Introduction</p></th>
+<tr class="row-odd"><th class="head"><p>驱动位置</p></th>
+<th class="head"><p>介绍</p></th>
 </tr>
 </thead>
 <tbody>
 <tr class="row-even"><td><p>&lt;linux&gt;/drivers/rtkdrivers/gpio/Kconfig</p></td>
-<td><p>GPIO driver Kconfig</p></td>
+<td><p>GPIO 驱动程序 Kconfig</p></td>
 </tr>
 <tr class="row-odd"><td><p>&lt;linux&gt;/drivers/rtkdrivers/gpio/Makefile</p></td>
-<td><p>GPIO driver Makefile</p></td>
+<td><p>GPIO 驱动程序 Makefile</p></td>
 </tr>
 <tr class="row-even"><td><p>&lt;linux&gt;/drivers/rtkdrivers/gpio/realtek-gpio.c</p></td>
-<td><p>GPIO functions.</p></td>
+<td><p>GPIO 函数</p></td>
 </tr>
 <tr class="row-odd"><td><p>&lt;linux&gt;/drivers/rtkdrivers/gpio/realtek-gpio.h</p></td>
-<td><p>GPIO related function declaration, macro definition, structure definition and the other header files quoted</p></td>
+<td><p>GPIO 相关的函数声明、宏定义、结构定义以及引用的其他头文件</p></td>
 </tr>
 </tbody>
 </table>
 </section>
 </section>
-<section id="configuration">
-<h2>Configuration<a class="headerlink" href="#configuration" title="Link to this heading"></a></h2>
-<section id="dts-configuration">
-<h3>DTS Configuration<a class="headerlink" href="#dts-configuration" title="Link to this heading"></a></h3>
-<p>GPIO DTS node:</p>
+<section id="id5">
+<h2>配置<a class="headerlink" href="#id5" title="Link to this heading"></a></h2>
+<section id="id6">
+<h3>设备树配置<a class="headerlink" href="#id6" title="Link to this heading"></a></h3>
+<p>GPIO 设备树节点：</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gpioa</span><span class="p">:</span> <span class="n">gpio</span><span class="o">@</span><span class="mi">4200</span><span class="n">D000</span> <span class="p">{</span>
    <span class="n">compatible</span> <span class="o">=</span> <span class="s2">&quot;realtek,ameba-gpio&quot;</span><span class="p">;</span>
    <span class="n">gpio</span><span class="o">-</span><span class="n">controller</span><span class="p">;</span>
@@ -255,23 +252,23 @@
 <span class="p">};</span>
 </pre></div>
 </div>
-<p>The DTS Configurations of GPIO are listed in the following table.</p>
+<p>GPIO 的设备树配置在下表中列出：</p>
 <table class="docutils align-default" style="width: 100%">
 <thead>
-<tr class="row-odd"><th class="head"><p>Property</p></th>
-<th class="head"><p>Description</p></th>
-<th class="head"><p>Default</p></th>
-<th class="head"><p>Configurable?</p></th>
+<tr class="row-odd"><th class="head"><p>属性</p></th>
+<th class="head"><p>描述</p></th>
+<th class="head"><p>默认值</p></th>
+<th class="head"><p>可配置？</p></th>
 </tr>
 </thead>
 <tbody>
 <tr class="row-even"><td><p>compatible</p></td>
-<td><p>The description of GPIO driver.</p></td>
+<td><p>GPIO 驱动程序的描述。</p></td>
 <td><p>realtek,ameba-gpio</p></td>
-<td><p>No</p></td>
+<td><p>否</p></td>
 </tr>
 <tr class="row-odd"><td><p>reg</p></td>
-<td><p>The hardware address and size for GPIO device.</p>
+<td><p>GPIO 设备的硬件地址和大小。</p>
 <ul class="simple">
 <li><p>GPIOA: &lt;0x4200D000 0x400&gt;</p></li>
 <li><p>GPIOB: &lt;0x4200D400 0x400&gt;</p></li>
@@ -279,10 +276,10 @@
 </ul>
 </td>
 <td></td>
-<td><p>No</p></td>
+<td><p>否</p></td>
 </tr>
 <tr class="row-even"><td><p>interrupts</p></td>
-<td><p>The GIC number of GPIO device.</p>
+<td><p>GPIO 设备的 GIC 数量</p>
 <ul class="simple">
 <li><p>GPIOA: &lt;GIC_SPI 9 IRQ_TYPE_LEVEL_HIGH&gt;</p></li>
 <li><p>GPIOB: &lt;GIC_SPI 10 IRQ_TYPE_LEVEL_HIGH&gt;</p></li>
@@ -290,122 +287,115 @@
 </ul>
 </td>
 <td></td>
-<td><p>No</p></td>
+<td><p>否</p></td>
 </tr>
 <tr class="row-odd"><td><p>gpio-controller</p></td>
-<td><p>Indicates device node is a GPIO controller.</p></td>
+<td><p>指示设备节点是一个 GPIO 控制器。</p></td>
 <td></td>
-<td><p>No</p></td>
+<td><p>否</p></td>
 </tr>
 <tr class="row-even"><td><p>#gpio-cells</p></td>
-<td><p>Indicates how many cells are needed to specifically describe a GPIO.</p></td>
+<td><p>指示具体描述一个 GPIO 所需的单元数量。</p></td>
 <td><p>2</p></td>
-<td><p>No</p></td>
+<td><p>否</p></td>
 </tr>
 <tr class="row-odd"><td><p>interrupt-controller</p></td>
-<td><p>Indicates device node is an interrupt controller.</p></td>
+<td><p>指示设备节点是一个中断控制器。</p></td>
 <td></td>
-<td><p>No</p></td>
+<td><p>否</p></td>
 </tr>
 <tr class="row-even"><td><p>#interrupt-cells</p></td>
-<td><p>Indicates how many cells are needed to specifically describe a GPIO interrupt.</p></td>
+<td><p>指示具体描述一个 GPIO 中断所需的单元数量。</p></td>
 <td><p>2</p></td>
-<td><p>No</p></td>
+<td><p>否</p></td>
 </tr>
 <tr class="row-odd"><td><p>realtek,gpio-bank</p></td>
-<td><p>GPIO port index:</p>
+<td><p>GPIO 端口索引</p>
 <p>0: portA
 1: portB
 2: portC</p>
 </td>
 <td></td>
-<td><p>No</p></td>
+<td><p>否</p></td>
 </tr>
 <tr class="row-even"><td><p>clocks</p></td>
-<td><p>The clock of GPIO device.</p></td>
+<td><p>GPIO 驱动程序的时钟。</p></td>
 <td></td>
-<td><p>No</p></td>
+<td><p>否</p></td>
 </tr>
 </tbody>
 </table>
 </section>
-<section id="build-configuration">
-<h3>Build Configuration<a class="headerlink" href="#build-configuration" title="Link to this heading"></a></h3>
-<p>Select <span class="menuselection">Device Drivers -&gt; Drivers for Realtek -&gt; GPIO driver</span>:</p>
-<figure class="align-center" id="id9">
+<section id="id7">
+<h3>编译配置<a class="headerlink" href="#id7" title="Link to this heading"></a></h3>
+<p>选择 <span class="menuselection">Device Drivers -&gt; Drivers for Realtek -&gt; GPIO driver</span>:</p>
+<figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/gpio_driver.png"><img alt="../../_images/gpio_driver.png" src="../../_images/gpio_driver.png" style="width: 413.0px; height: 516.0px;" /></a>
-<figcaption>
-<p><span class="caption-text">GPIO driver</span><a class="headerlink" href="#id9" title="Link to this image"></a></p>
-</figcaption>
 </figure>
 </section>
 </section>
-<section id="apis-for-user-space">
-<h2>APIs for User Space<a class="headerlink" href="#apis-for-user-space" title="Link to this heading"></a></h2>
+<section id="apis">
+<h2>用户空间接口（APIs）<a class="headerlink" href="#apis" title="Link to this heading"></a></h2>
 <section id="sysfs">
 <h3>sysfs<a class="headerlink" href="#sysfs" title="Link to this heading"></a></h3>
-<p>Platforms which use the <code class="docutils literal notranslate"><span class="pre">gpiolib</span></code> implementors framework may choose to configure a sysfs user interface to GPIOs.</p>
-<section id="id1">
-<h4>Build Configuration<a class="headerlink" href="#id1" title="Link to this heading"></a></h4>
-<p>Select <span class="menuselection">Device Drivers -&gt; GPIO Support -&gt; /sys/class/gpio/… (sysfs interface)</span>:</p>
-<figure class="align-center" id="id10">
+<p>使用 <code class="docutils literal notranslate"><span class="pre">gpiolib</span></code> 实现者框架的平台可以选择为 GPIO 配置一个 sysfs 用户接口。</p>
+<section id="id8">
+<h4>编译配置<a class="headerlink" href="#id8" title="Link to this heading"></a></h4>
+<p>选择 <span class="menuselection">Device Drivers -&gt; GPIO Support -&gt; /sys/class/gpio/… (sysfs interface)</span>:</p>
+<figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/sysfs_interface.png"><img alt="../../_images/sysfs_interface.png" src="../../_images/sysfs_interface.png" style="width: 865.8px; height: 231.0px;" /></a>
-<figcaption>
-<p><span class="caption-text">sysfs interface</span><a class="headerlink" href="#id10" title="Link to this image"></a></p>
-</figcaption>
 </figure>
 </section>
-<section id="sysfs-node">
-<h4>sysfs Node<a class="headerlink" href="#sysfs-node" title="Link to this heading"></a></h4>
+<section id="id9">
+<h4>sysfs 节点<a class="headerlink" href="#id9" title="Link to this heading"></a></h4>
 <table class="docutils align-default" style="width: 100%">
 <thead>
-<tr class="row-odd"><th class="head"><p>Node</p></th>
-<th class="head"><p>Introduction</p></th>
-<th class="head"><p>Value</p></th>
+<tr class="row-odd"><th class="head"><p>节点</p></th>
+<th class="head"><p>介绍</p></th>
+<th class="head"><p>取值</p></th>
 </tr>
 </thead>
 <tbody>
 <tr class="row-even"><td><p>/sys/class/gpio/export</p></td>
-<td><p>Open GPIO</p></td>
-<td><p>GPIO pin number</p></td>
+<td><p>打开 GPIO</p></td>
+<td><p>GPIO pin 编号</p></td>
 </tr>
 <tr class="row-odd"><td><p>/sys/class/gpio/unexport</p></td>
-<td><p>Close GPIO</p></td>
-<td><p>GPIO pin number</p></td>
+<td><p>关闭 GPIO</p></td>
+<td><p>GPIO pin 编号</p></td>
 </tr>
 <tr class="row-even"><td><p>/sys/class/gpio/gpioX/direction</p></td>
-<td><p>GPIO direction</p></td>
-<td><p>in/out</p></td>
+<td><p>GPIO 方向</p></td>
+<td><p>入/出</p></td>
 </tr>
 <tr class="row-odd"><td><p>/sys/class/gpio/gpioX/value</p></td>
-<td><p>GPIO value</p></td>
+<td><p>GPIO 取值</p></td>
 <td><p>0/1</p></td>
 </tr>
 <tr class="row-even"><td><p>/sys/class/gpio/gpioX/active_low</p></td>
-<td><p>GPIO low level is active</p></td>
+<td><p>GPIO 低电平激活</p></td>
 <td><p>0/1</p></td>
 </tr>
 <tr class="row-odd"><td><p>/sys/class/gpio/gpioX/edge</p></td>
-<td><p>GPIO pin edge trigger type</p></td>
-<td><p>none/rising/falling/both</p></td>
+<td><p>GPIO pin 脚边缘触发类型</p></td>
+<td><p>无/上升沿/下降沿/皆可</p></td>
 </tr>
 </tbody>
 </table>
 <div class="admonition note">
 <p class="admonition-title">备注</p>
 <ul class="simple">
-<li><p>X is GPIO number.</p></li>
-<li><p>The attribute files listed above under the gpioX path are all readable and writeable.</p></li>
+<li><p>X 表示 GPIO 编号。</p></li>
+<li><p>上述 gpioX 路径下列出的属性文件都是可读写的。</p></li>
 </ul>
 </div>
 </section>
-<section id="usage">
-<h4>Usage<a class="headerlink" href="#usage" title="Link to this heading"></a></h4>
-<p>When operating a pin, the first step is to determine its number.
-This chip supports three independent GPIO IP: Port A (0~31), Port B (0~31), and Port C (0~7).
-BSP GPIO driver numbers all pins uniformly starting from 0 to 71. i.e. GPIOA-0 pin number is 0, and GPIOC-7 pin number is 71.</p>
-<p>Alternatively, you can get the starting value of this group’s GPIO number through the base file in gpiochipX,
-and then the base plus the offset of the pin within the group is this GPIO pin number.</p>
+<section id="id10">
+<h4>用途<a class="headerlink" href="#id10" title="Link to this heading"></a></h4>
+<p>操作引脚时，第一步是确定其编号。
+该芯片支持三个独立的GPIO IP：Port A（0~31）、Port B（0~31）和Port C（0~7）。
+BSP GPIO驱动程序为所有引脚统一编号，从0到71。例如，GPIOA-0的引脚编号是0，GPIOC-7的引脚编号是71。</p>
+<p>或者，你可以通过gpiochipX中的base文件获取该组GPIO编号的起始值，然后用这个起始值加上组内引脚的偏移量，就得到该GPIO引脚的编号。</p>
 <table class="docutils align-default" style="width: 100%">
 <thead>
 <tr class="row-odd"><th class="head"><p>gpiochipX</p></th>
@@ -435,118 +425,118 @@ and then the base plus the offset of the pin within the group is this GPIO pin n
 <div class="admonition note">
 <p class="admonition-title">备注</p>
 <ul class="simple">
-<li><p>Base: starting number of pin.</p></li>
-<li><p>Ngpio: how many pins of this port.</p></li>
-<li><p>X = base + offset, for example, GPIOB-8 pin number X = 32 + 8 = 40.</p></li>
+<li><p>Base: pin 脚的起始编号。</p></li>
+<li><p>Ngpio: 这个端口有多少 pin 脚。</p></li>
+<li><p>X = base + offset，例如，GPIOB-8 的引脚编号 X = 32 + 8 = 40。</p></li>
 </ul>
 </div>
 <section id="shell">
 <h5>Shell<a class="headerlink" href="#shell" title="Link to this heading"></a></h5>
 <table class="docutils align-default" style="width: 100%">
 <thead>
-<tr class="row-odd"><th class="head"><p>Command</p></th>
-<th class="head"><p>Introduction</p></th>
+<tr class="row-odd"><th class="head"><p>命令</p></th>
+<th class="head"><p>介绍</p></th>
 </tr>
 </thead>
 <tbody>
 <tr class="row-even"><td><p>echo X &gt; /sys/class/gpio/export</p></td>
-<td><p>Open GPIO</p></td>
+<td><p>打开 GPIO</p></td>
 </tr>
 <tr class="row-odd"><td><p>echo X &gt; /sys/class/gpio/unexport</p></td>
-<td><p>Close GPIO</p></td>
+<td><p>关闭 GPIO</p></td>
 </tr>
 <tr class="row-even"><td><p>echo out &gt; /sys/class/gpio/gpioX/direction</p></td>
-<td><p>Set GPIO direction as output</p></td>
+<td><p>设置 GPIO 的方向为出</p></td>
 </tr>
 <tr class="row-odd"><td><p>echo in &gt; /sys/class/gpio/gpioX/direction</p></td>
-<td><p>Set GPIO direction as input</p></td>
+<td><p>设置 GPIO 的方向为入</p></td>
 </tr>
 <tr class="row-even"><td><p>echo 1 &gt; /sys/class/gpio/gpioX/value</p></td>
-<td><p>Set GPIO value to 1</p></td>
+<td><p>把 GPIO 的值设置为 1</p></td>
 </tr>
 <tr class="row-odd"><td><p>echo 0 &gt; /sys/class/gpio/gpioX/value</p></td>
-<td><p>Set GPIO value to 0</p></td>
+<td><p>把 GPIO 的值设置为 0</p></td>
 </tr>
 <tr class="row-even"><td><p>echo 1 &gt; /sys/class/gpio/gpioX/active_low</p></td>
-<td><p>Set GPIO low level active</p></td>
+<td><p>设置 GPIO 为低电平激活</p></td>
 </tr>
 <tr class="row-odd"><td><p>echo 0 &gt; /sys/class/gpio/gpioX/active_low</p></td>
-<td><p>Set GPIO high level active (default)</p></td>
+<td><p>设置 GPIO 为高电平激活 （默认）</p></td>
 </tr>
 <tr class="row-even"><td><p>echo none &gt; /sys/class/gpio/gpioX/edge</p></td>
-<td><p>Set GPIO to non-interrupt pin</p></td>
+<td><p>将 GPIO 设置为非中断引脚</p></td>
 </tr>
 <tr class="row-odd"><td><p>echo rising &gt; /sys/class/gpio/gpioX/edge</p></td>
-<td><p>Set GPIO pin as rising edge trigger</p></td>
+<td><p>将 GPIO 引脚设置为上升沿触发</p></td>
 </tr>
 <tr class="row-even"><td><p>echo falling &gt; /sys/class/gpio/gpioX/edge</p></td>
-<td><p>Set GPIO pin as falling edge trigger</p></td>
+<td><p>将 GPIO 引脚设置为下降沿触发</p></td>
 </tr>
 <tr class="row-odd"><td><p>echo both &gt; /sys/class/gpio/gpioX/edge</p></td>
-<td><p>Set GPIO pin as both edge trigger</p></td>
+<td><p>将 GPIO 引脚设置为上升、下降沿触发</p></td>
 </tr>
 <tr class="row-even"><td><p>cat /sys/class/gpio/gpioX/direction</p></td>
-<td><p>Get GPIO direction</p></td>
+<td><p>获取 GPIO 的方向</p></td>
 </tr>
 <tr class="row-odd"><td><p>cat /sys/class/gpio/gpioX/value</p></td>
-<td><p>Get GPIO value</p></td>
+<td><p>获取 GPIO 的取值</p></td>
 </tr>
 <tr class="row-even"><td><p>cat /sys/class/gpio/gpioX/edge</p></td>
-<td><p>Get GPIO edge</p></td>
+<td><p>获取 GPIO 的边缘触发类型</p></td>
 </tr>
 <tr class="row-odd"><td><p>cat /sys/class/gpio/gpioX/active_low</p></td>
-<td><p>Get GPIO active low setting</p></td>
+<td><p>获取 GPIO 低电平有效设置</p></td>
 </tr>
 </tbody>
 </table>
 <ol class="arabic">
-<li><p>Output test</p>
+<li><p>输出测试</p>
 <ol class="loweralpha">
-<li><p>Export one GPIO pin to user space.</p>
+<li><p>将一个 GPIO 引脚导出到用户空间。</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">echo</span> <span class="n">X</span> <span class="o">&gt;</span> <span class="o">/</span><span class="n">sys</span><span class="o">/</span><span class="n">class</span><span class="o">/</span><span class="n">gpio</span><span class="o">/</span><span class="n">export</span>
 </pre></div>
 </div>
 </li>
-<li><p>Set GPIO direction as output.</p>
+<li><p>将 GPIO 方向设置为输出。</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">echo</span> <span class="n">out</span> <span class="o">&gt;</span> <span class="o">/</span><span class="n">sys</span><span class="o">/</span><span class="n">class</span><span class="o">/</span><span class="n">gpio</span><span class="o">/</span><span class="n">gpioX</span><span class="o">/</span><span class="n">direction</span>
 </pre></div>
 </div>
 </li>
-<li><p>Set GPIO logic value to 1.</p>
+<li><p>将 GPIO 逻辑值设置为 1。</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">echo</span> <span class="mi">1</span> <span class="o">&gt;</span> <span class="o">/</span><span class="n">sys</span><span class="o">/</span><span class="n">class</span><span class="o">/</span><span class="n">gpio</span><span class="o">/</span><span class="n">gpioX</span><span class="o">/</span><span class="n">value</span>
 </pre></div>
 </div>
 </li>
-<li><p>Set GPIO logic value to 0.</p>
+<li><p>将 GPIO 逻辑值设置为 0。</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">echo</span> <span class="mi">0</span> <span class="o">&gt;</span> <span class="o">/</span><span class="n">sys</span><span class="o">/</span><span class="n">class</span><span class="o">/</span><span class="n">gpio</span><span class="o">/</span><span class="n">gpioX</span><span class="o">/</span><span class="n">value</span>
 </pre></div>
 </div>
 </li>
-<li><p>Unexport the GPIO pin.</p>
+<li><p>取消导出 GPIO 引脚。</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">echo</span> <span class="n">X</span> <span class="o">&gt;</span> <span class="o">/</span><span class="n">sys</span><span class="o">/</span><span class="n">class</span><span class="o">/</span><span class="n">gpio</span><span class="o">/</span><span class="n">unexport</span>
 </pre></div>
 </div>
 </li>
 </ol>
 </li>
-<li><p>Input test</p>
+<li><p>输入测试</p>
 <ol class="loweralpha">
-<li><p>Export one GPIO pin to user space.</p>
+<li><p>导出一个 GPIO 引脚到用户空间。</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">echo</span> <span class="n">X</span> <span class="o">&gt;</span> <span class="o">/</span><span class="n">sys</span><span class="o">/</span><span class="n">class</span><span class="o">/</span><span class="n">gpio</span><span class="o">/</span><span class="n">export</span>
 </pre></div>
 </div>
 </li>
-<li><p>Set GPIO direction as input.</p>
+<li><p>将 GPIO 方向设置为输入。</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">echo</span> <span class="ow">in</span> <span class="o">&gt;</span> <span class="o">/</span><span class="n">sys</span><span class="o">/</span><span class="n">class</span><span class="o">/</span><span class="n">gpio</span><span class="o">/</span><span class="n">gpioX</span><span class="o">/</span><span class="n">direction</span>
 </pre></div>
 </div>
 </li>
-<li><p>Get GPIO logic value.</p>
+<li><p>获取 GPIO 的逻辑值。</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cat</span> <span class="o">/</span><span class="n">sys</span><span class="o">/</span><span class="n">class</span><span class="o">/</span><span class="n">gpio</span><span class="o">/</span><span class="n">gpioX</span><span class="o">/</span><span class="n">value</span>
 </pre></div>
 </div>
 </li>
-<li><p>Unexport the GPIO pin.</p>
+<li><p>取消导出 GPIO 引脚。</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">echo</span> <span class="n">X</span> <span class="o">&gt;</span> <span class="o">/</span><span class="n">sys</span><span class="o">/</span><span class="n">class</span><span class="o">/</span><span class="n">gpio</span><span class="o">/</span><span class="n">unexport</span>
 </pre></div>
 </div>
@@ -555,41 +545,41 @@ and then the base plus the offset of the pin within the group is this GPIO pin n
 </li>
 </ol>
 </section>
-<section id="application">
-<h5>Application<a class="headerlink" href="#application" title="Link to this heading"></a></h5>
-<p>Write the test code according to the method of reading and writing files above.</p>
+<section id="id11">
+<h5>应用<a class="headerlink" href="#id11" title="Link to this heading"></a></h5>
+<p>根据上面的读写文件方法编写测试代码。</p>
 <ol class="arabic">
-<li><p>Output test</p>
+<li><p>输出测试</p>
 <ol class="loweralpha">
-<li><p>Export one GPIO pin to user space.</p>
+<li><p>导出一个 GPIO 引脚到用户空间。</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">export_fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">open</span><span class="p">(</span><span class="s">&quot;/sys/class/gpio/export&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">O_WRONLY</span><span class="p">);</span>
 <span class="n">write</span><span class="p">(</span><span class="n">export_fd</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;X&quot;</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="s">&quot;X&quot;</span><span class="p">));</span>
 <span class="n">close</span><span class="p">(</span><span class="n">export_fd</span><span class="p">);</span>
 </pre></div>
 </div>
 </li>
-<li><p>Set GPIO direction as output.</p>
+<li><p>将 GPIO 方向设置为输出。</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">direction_fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">open</span><span class="p">(</span><span class="s">&quot;/sys/class/gpio/gpioX/direction&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">O_WRONLY</span><span class="p">);</span>
 <span class="n">write</span><span class="p">(</span><span class="n">direction_fd</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;out&quot;</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="s">&quot;out&quot;</span><span class="p">));</span>
 <span class="n">close</span><span class="p">(</span><span class="n">direction_fd</span><span class="p">);</span>
 </pre></div>
 </div>
 </li>
-<li><p>Set GPIO logic value to 1.</p>
+<li><p>将 GPIO 逻辑值设置为 1。</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">gpiovalue_fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">open</span><span class="p">(</span><span class="s">&quot;/sys/class/gpio/gpioX/value&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">O_WRONLY</span><span class="p">);</span>
 <span class="n">write</span><span class="p">(</span><span class="n">gpiovalue_fd</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;1&quot;</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="s">&quot;1&quot;</span><span class="p">));</span>
 <span class="n">close</span><span class="p">(</span><span class="n">gpiovalue_fd</span><span class="p">);</span>
 </pre></div>
 </div>
 </li>
-<li><p>Set GPIO logic value to 0.</p>
+<li><p>将 GPIO 逻辑值设置为 0。</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">gpiovalue_fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">open</span><span class="p">(</span><span class="s">&quot;/sys/class/gpio/gpioX/value&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">O_WRONLY</span><span class="p">);</span>
 <span class="n">write</span><span class="p">(</span><span class="n">gpiovalue_fd</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;0&quot;</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="s">&quot;0&quot;</span><span class="p">));</span>
 <span class="n">close</span><span class="p">(</span><span class="n">gpiovalue_fd</span><span class="p">);</span>
 </pre></div>
 </div>
 </li>
-<li><p>Unexport the GPIO pin.</p>
+<li><p>取消导出 GPIO 引脚。</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">unexport_fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">open</span><span class="p">(</span><span class="s">&quot;/sys/class/gpio/unexport&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">O_WRONLY</span><span class="p">);</span>
 <span class="n">write</span><span class="p">(</span><span class="n">unexport_fd</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;X&quot;</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="s">&quot;X&quot;</span><span class="p">));</span>
 <span class="n">close</span><span class="p">(</span><span class="n">unexport_fd</span><span class="p">);</span>
@@ -598,23 +588,23 @@ and then the base plus the offset of the pin within the group is this GPIO pin n
 </li>
 </ol>
 </li>
-<li><p>Input test</p>
+<li><p>输入测试</p>
 <ol class="loweralpha">
-<li><p>Export one GPIO pin to user space.</p>
+<li><p>将一个 GPIO 引脚导出到用户空间。</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">export_fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">open</span><span class="p">(</span><span class="s">&quot;/sys/class/gpio/export&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">O_WRONLY</span><span class="p">);</span>
 <span class="n">write</span><span class="p">(</span><span class="n">export_fd</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;X&quot;</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="s">&quot;X&quot;</span><span class="p">));</span>
 <span class="n">close</span><span class="p">(</span><span class="n">export_fd</span><span class="p">);</span>
 </pre></div>
 </div>
 </li>
-<li><p>Set GPIO direction as input.</p>
+<li><p>将 GPIO 方向设置为输入。</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">direction_fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">open</span><span class="p">(</span><span class="s">&quot;/sys/class/gpio/gpioX/direction&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">O_WRONLY</span><span class="p">);</span>
 <span class="n">write</span><span class="p">(</span><span class="n">direction_fd</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;in&quot;</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="s">&quot;in&quot;</span><span class="p">));</span>
 <span class="n">close</span><span class="p">(</span><span class="n">direction_fd</span><span class="p">);</span>
 </pre></div>
 </div>
 </li>
-<li><p>Get GPIO logic value.</p>
+<li><p>获取 GPIO 的逻辑值。</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">char</span><span class="w"> </span><span class="n">value</span><span class="p">;</span>
 <span class="kt">int</span><span class="w"> </span><span class="n">gpiovalue_fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">open</span><span class="p">(</span><span class="s">&quot;/sys/class/gpio/gpioX/value&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">O_RDONLY</span><span class="p">);</span>
 <span class="n">read</span><span class="p">(</span><span class="n">gpiovalue_fd</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">value</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
@@ -622,7 +612,7 @@ and then the base plus the offset of the pin within the group is this GPIO pin n
 </pre></div>
 </div>
 </li>
-<li><p>Unexport the GPIO pin.</p>
+<li><p>取消导出 GPIO 引脚。</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">unexport_fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">open</span><span class="p">(</span><span class="s">&quot;/sys/class/gpio/unexport&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">O_WRONLY</span><span class="p">);</span>
 <span class="n">write</span><span class="p">(</span><span class="n">unexport_fd</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;X&quot;</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="s">&quot;X&quot;</span><span class="p">));</span>
 <span class="n">close</span><span class="p">(</span><span class="n">unexport_fd</span><span class="p">);</span>
@@ -631,30 +621,30 @@ and then the base plus the offset of the pin within the group is this GPIO pin n
 </li>
 </ol>
 </li>
-<li><p>Interrupt test</p>
+<li><p>中断测试</p>
 <ol class="loweralpha">
-<li><p>Export one GPIO pin to user space.</p>
+<li><p>将一个 GPIO 引脚导出到用户空间。</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">export_fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">open</span><span class="p">(</span><span class="s">&quot;/sys/class/gpio/export&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">O_WRONLY</span><span class="p">);</span>
 <span class="n">write</span><span class="p">(</span><span class="n">export_fd</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;X&quot;</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="s">&quot;X&quot;</span><span class="p">));</span>
 <span class="n">close</span><span class="p">(</span><span class="n">export_fd</span><span class="p">);</span>
 </pre></div>
 </div>
 </li>
-<li><p>Set GPIO direction as input.</p>
+<li><p>将 GPIO 方向设置为输入。</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">direction_fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">open</span><span class="p">(</span><span class="s">&quot;/sys/class/gpio/gpioX/direction&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">O_WRONLY</span><span class="p">);</span>
 <span class="n">write</span><span class="p">(</span><span class="n">direction_fd</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;in&quot;</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="s">&quot;in&quot;</span><span class="p">));</span>
 <span class="n">close</span><span class="p">(</span><span class="n">direction_fd</span><span class="p">);</span>
 </pre></div>
 </div>
 </li>
-<li><p>Set GPIO trigger type. Trigger type can be set to one of the following values: <code class="docutils literal notranslate"><span class="pre">rising</span></code>, <code class="docutils literal notranslate"><span class="pre">falling</span></code>, <code class="docutils literal notranslate"><span class="pre">both</span></code>.</p>
+<li><p>设置 GPIO 触发类型。触发类型可以设置为以下值之一： <code class="docutils literal notranslate"><span class="pre">rising</span></code> ， <code class="docutils literal notranslate"><span class="pre">falling</span></code> ， <code class="docutils literal notranslate"><span class="pre">both</span></code> 。</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">edge_fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">open</span><span class="p">(</span><span class="s">&quot;/sys/class/gpio/gpioX/edge&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">O_WRONLY</span><span class="p">);</span>
 <span class="n">write</span><span class="p">(</span><span class="n">edge_fd</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;rising&quot;</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="s">&quot;rising&quot;</span><span class="p">));</span>
 <span class="n">close</span><span class="p">(</span><span class="n">edge_fd</span><span class="p">);</span>
 </pre></div>
 </div>
 </li>
-<li><p>Poll GPIO value wait for interrupt happen, and read GPIO value when interrupt happens.</p>
+<li><p>轮询 GPIO 值以等待中断发生，并在中断发生时读取 GPIO 值。</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">char</span><span class="w"> </span><span class="n">val</span><span class="p">;</span>
 <span class="k">struct</span><span class="w"> </span><span class="nc">pollfd</span><span class="w"> </span><span class="n">pfd</span><span class="p">;</span>
 <span class="n">pfd</span><span class="p">.</span><span class="n">events</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">POLLPRI</span><span class="p">;</span>
@@ -666,7 +656,7 @@ and then the base plus the offset of the pin within the group is this GPIO pin n
 </pre></div>
 </div>
 </li>
-<li><p>Unexport the GPIO pin.</p>
+<li><p>取消导出 GPIO 引脚。</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">unexport_fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">open</span><span class="p">(</span><span class="s">&quot;/sys/class/gpio/unexport&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">O_WRONLY</span><span class="p">);</span>
 <span class="n">write</span><span class="p">(</span><span class="n">unexport_fd</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;X&quot;</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="s">&quot;X&quot;</span><span class="p">));</span>
 <span class="n">close</span><span class="p">(</span><span class="n">unexport_fd</span><span class="p">);</span>
@@ -679,10 +669,10 @@ and then the base plus the offset of the pin within the group is this GPIO pin n
 </section>
 </section>
 </section>
-<section id="char-device">
-<h3>Char Device<a class="headerlink" href="#char-device" title="Link to this heading"></a></h3>
-<p>The GPIO can be used as a char device, and the GPIO controller char device is <code class="docutils literal notranslate"><span class="pre">/dev/gpiochipX</span></code>.
-Ioctl operation could get gpiochip info and test specific GPIO pin.</p>
+<section id="id12">
+<h3>字符设备<a class="headerlink" href="#id12" title="Link to this heading"></a></h3>
+<p>GPIO 可以用作字符设备，GPIO 控制器字符设备为 <code class="docutils literal notranslate"><span class="pre">/dev/gpiochipX</span></code> 。
+可以通过 ioctl 操作获取 gpiochip 信息并测试特定的 GPIO 引脚。</p>
 <div class="admonition note">
 <p class="admonition-title">备注</p>
 <ul class="simple">
@@ -691,69 +681,69 @@ Ioctl operation could get gpiochip info and test specific GPIO pin.</p>
 <li><p>/dev/gpiochip2     GPIOC</p></li>
 </ul>
 </div>
-<section id="ioctl-command">
-<h4>IOCTL Command<a class="headerlink" href="#ioctl-command" title="Link to this heading"></a></h4>
-<p>IOCTL command defined in <code class="docutils literal notranslate"><span class="pre">linux/gpio.h</span></code>, so user main application must include <code class="docutils literal notranslate"><span class="pre">linux/gpio.h</span></code>.</p>
+<section id="ioctl">
+<h4>IOCTL 命令<a class="headerlink" href="#ioctl" title="Link to this heading"></a></h4>
+<p>IOCTL 命令的定义在 <code class="docutils literal notranslate"><span class="pre">linux/gpio.h</span></code> 中，因此用户主应用程序必须包含 <code class="docutils literal notranslate"><span class="pre">linux/gpio.h</span></code> 。</p>
 <table class="docutils align-default" style="width: 100%">
 <thead>
-<tr class="row-odd"><th class="head"><p>IOCTL Command</p></th>
-<th class="head"><p>Description</p></th>
+<tr class="row-odd"><th class="head"><p>IOCTL 命令</p></th>
+<th class="head"><p>描述</p></th>
 </tr>
 </thead>
 <tbody>
 <tr class="row-even"><td><p>GPIO_GET_CHIPINFO_IOCTL</p></td>
-<td><p>Get gpiochip information, including name label and how many GPIO lines of this gpiochip.</p></td>
+<td><p>获取 gpiochip 信息，包括名称标签以及该 gpiochip 的 GPIO 线路数量。</p></td>
 </tr>
 <tr class="row-odd"><td><p>GPIO_GET_LINEINFO_IOCTL</p></td>
-<td><p>Get GPIO line information, including specific pin information. Such as name and flags.</p></td>
+<td><p>获取 GPIO 线路信息，包括特定引脚信息，例如名称和标志。</p></td>
 </tr>
 <tr class="row-even"><td><p>GPIO_GET_LINEHANDLE_IOCTL</p></td>
-<td><p>Get control of specific line, and then perform read and write operation on file descriptor.</p></td>
+<td><p>获取特定线路的控制权，然后对文件描述符执行读写操作。</p></td>
 </tr>
 <tr class="row-odd"><td><p>GPIO_GET_LINEEVENT_IOCTL</p></td>
-<td><p>Get event control of specific line, when an interrupt happens, read operation could get interrupt trigger timestamp.</p></td>
+<td><p>获取特定线路的事件控制权，当中断发生时，读取操作可以获得中断触发的时间戳。</p></td>
 </tr>
 </tbody>
 </table>
 </section>
-<section id="id2">
-<h4>Usage<a class="headerlink" href="#id2" title="Link to this heading"></a></h4>
+<section id="id13">
+<h4>用途<a class="headerlink" href="#id13" title="Link to this heading"></a></h4>
 <ol class="arabic">
-<li><p>Get GPIO info test</p>
+<li><p>获取 GPIO 测试信息</p>
 <ol class="loweralpha">
-<li><p>Open GPIO char device.</p>
+<li><p>打开 GPIO 字符设备。</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">open</span><span class="p">(</span><span class="s">&quot;/dev/gpiochp0&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">O_WRONLY</span><span class="p">);</span>
 </pre></div>
 </div>
 </li>
-<li><p>Get GPIO chip information.</p>
+<li><p>获取 GPIO 芯片信息。</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">gpiochip_info</span><span class="w"> </span><span class="n">info</span><span class="p">;</span>
 <span class="n">ioctl</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span><span class="w"> </span><span class="n">GPIO_GET_CHIPINFO_IOCTL</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">info</span><span class="p">);</span><span class="c1">//get GPIOA information</span>
 </pre></div>
 </div>
 </li>
-<li><p>Get GPIO line information.</p>
+<li><p>获取 GPIO 线路信息。</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">gpioline_info</span><span class="w"> </span><span class="n">line_info</span><span class="p">;</span>
 <span class="n">line_info</span><span class="p">.</span><span class="n">line_offset</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">X</span><span class="p">;</span><span class="c1">//get GPIOA pin X information</span>
 <span class="n">ioctl</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span><span class="w"> </span><span class="n">GPIO_GET_LINEINFO_IOCTL</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">line_info</span><span class="p">);</span>
 </pre></div>
 </div>
 </li>
-<li><p>Close GPIO char device.</p>
+<li><p>关闭 GPIO 字符设备。</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">close</span><span class="p">(</span><span class="n">fd</span><span class="p">);</span>
 </pre></div>
 </div>
 </li>
 </ol>
 </li>
-<li><p>Output test</p>
+<li><p>输出测试</p>
 <ol class="loweralpha">
-<li><p>Open GPIO char device.</p>
+<li><p>打开 GPIO 字符设备。</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">open</span><span class="p">(</span><span class="s">&quot;/dev/gpiochp0&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">O_WRONLY</span><span class="p">);</span>
 </pre></div>
 </div>
 </li>
-<li><p>Get specific GPIO line handle.</p>
+<li><p>获取特定 GPIO 线路句柄。</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">gpiohandle_request</span><span class="w"> </span><span class="n">rq</span><span class="p">;</span>
 <span class="n">rq</span><span class="p">.</span><span class="n">lineoffsets</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">offset</span><span class="p">;</span><span class="c1">//offset in this gpio chip</span>
 <span class="n">rq</span><span class="p">.</span><span class="n">flags</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GPIOHANDLE_REQUEST_OUTPUT</span><span class="p">;</span>
@@ -763,28 +753,28 @@ Ioctl operation could get gpiochip info and test specific GPIO pin.</p>
 </pre></div>
 </div>
 </li>
-<li><p>Set GPIO pin value.</p>
+<li><p>设置 GPIO pin 脚取值。</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">gpiohandle_data</span><span class="w"> </span><span class="n">data</span><span class="p">;</span>
 <span class="n">data</span><span class="p">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">value</span><span class="p">;</span>
 <span class="n">ioctl</span><span class="p">(</span><span class="n">rq</span><span class="p">.</span><span class="n">fd</span><span class="p">,</span><span class="w"> </span><span class="n">GPIOHANDLE_SET_LINE_VALUES_IOCTL</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">data</span><span class="p">);</span>
 </pre></div>
 </div>
 </li>
-<li><p>Close GPIO char device.</p>
+<li><p>关闭 GPIO 字符设备。</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">close</span><span class="p">(</span><span class="n">rq</span><span class="p">.</span><span class="n">fd</span><span class="p">);</span>
 </pre></div>
 </div>
 </li>
 </ol>
 </li>
-<li><p>Input test</p>
+<li><p>输入测试</p>
 <ol class="loweralpha">
-<li><p>Open GPIO char device.</p>
+<li><p>打开 GPIO 字符设备。</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">open</span><span class="p">(</span><span class="s">&quot;/dev/gpiochp0&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">O_WRONLY</span><span class="p">);</span>
 </pre></div>
 </div>
 </li>
-<li><p>Get specific GPIO line handle.</p>
+<li><p>获取特定 GPIO 线路句柄。</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">gpiohandle_request</span><span class="w"> </span><span class="n">rq</span><span class="p">;</span>
 <span class="n">rq</span><span class="p">.</span><span class="n">lineoffsets</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">offset</span><span class="p">;</span>
 <span class="n">rq</span><span class="p">.</span><span class="n">flags</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GPIOHANDLE_REQUEST_OUTPUT</span><span class="p">;</span>
@@ -794,28 +784,28 @@ Ioctl operation could get gpiochip info and test specific GPIO pin.</p>
 </pre></div>
 </div>
 </li>
-<li><p>Get GPIO pin value.</p>
+<li><p>获取 GPIO pin 脚取值。</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">gpiohandle_data</span><span class="w"> </span><span class="n">data</span><span class="p">;</span>
 <span class="n">ioctl</span><span class="p">(</span><span class="n">rq</span><span class="p">.</span><span class="n">fd</span><span class="p">,</span><span class="w"> </span><span class="n">GPIOHANDLE_GET_LINE_VALUES_IOCTL</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">data</span><span class="p">);</span>
 <span class="n">printf</span><span class="p">(</span><span class="s">&quot;Read value:%d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="n">data</span><span class="p">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
 </pre></div>
 </div>
 </li>
-<li><p>Close GPIO char device.</p>
+<li><p>关闭 GPIO 字符设备。</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">close</span><span class="p">(</span><span class="n">rq</span><span class="p">.</span><span class="n">fd</span><span class="p">);</span>
 </pre></div>
 </div>
 </li>
 </ol>
 </li>
-<li><p>Interrupt test</p>
+<li><p>中断测试</p>
 <ol class="loweralpha">
-<li><p>Open GPIO char device.</p>
+<li><p>打开 GPIO 字符设备。</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">open</span><span class="p">(</span><span class="s">&quot;/dev/gpiochp0&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">O_WRONLY</span><span class="p">);</span>
 </pre></div>
 </div>
 </li>
-<li><p>Get specific GPIO line event handle. Trigger type can be set to one of the following values: <cite>GPIOEVENT_EVENT_RISING_EDGE</cite>, <cite>GPIOEVENT_EVENT_FALLING_EDGE</cite>, (<cite>GPIOEVENT_EVENT_FALLING_EDGE|GPIOEVENT_EVENT_RISING_EDGE</cite>).</p>
+<li><p>获取特定 GPIO 线路事件句柄。触发类型可以设置为以下值之一：<cite>GPIOEVENT_EVENT_RISING_EDGE</cite>，<cite>GPIOEVENT_EVENT_FALLING_EDGE</cite>，（<cite>GPIOEVENT_EVENT_FALLING_EDGE|GPIOEVENT_EVENT_RISING_EDGE</cite>）。</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">gpioevent_request</span><span class="w"> </span><span class="n">event_req</span><span class="p">;</span>
 <span class="n">event_req</span><span class="p">.</span><span class="n">lineoffset</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">offset</span><span class="p">;</span>
 <span class="n">event_req</span><span class="p">.</span><span class="n">handleflags</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">GPIOHANDLE_REQUEST_INPUT</span><span class="p">;</span><span class="c1">//must set</span>
@@ -825,7 +815,7 @@ Ioctl operation could get gpiochip info and test specific GPIO pin.</p>
 </pre></div>
 </div>
 </li>
-<li><p>Poll GPIO value wait for an interrupt to happen, and get interrupt trigger timestamp.</p>
+<li><p>轮询 GPIO 值以等待中断发生，并获取中断触发时间戳。</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">gpioevent_data</span><span class="w"> </span><span class="n">event_data</span><span class="p">;</span>
 <span class="k">struct</span><span class="w"> </span><span class="nc">pollfd</span><span class="w"> </span><span class="n">pfd</span><span class="p">;</span>
 <span class="n">pfd</span><span class="p">.</span><span class="n">fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">event_req</span><span class="p">.</span><span class="n">fd</span><span class="p">;</span>
@@ -838,7 +828,7 @@ Ioctl operation could get gpiochip info and test specific GPIO pin.</p>
 </pre></div>
 </div>
 </li>
-<li><p>Close GPIO char device.</p>
+<li><p>关闭 GPIO 字符设备。</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">close</span><span class="p">(</span><span class="n">event_req</span><span class="p">.</span><span class="n">fd</span><span class="p">);</span>
 </pre></div>
 </div>
@@ -850,17 +840,17 @@ Ioctl operation could get gpiochip info and test specific GPIO pin.</p>
 </section>
 <section id="uio">
 <h3>UIO<a class="headerlink" href="#uio" title="Link to this heading"></a></h3>
-<p>Each UIO device is accessed through a device file and several sysfs attribute files.
-The device file will be called <code class="docutils literal notranslate"><span class="pre">/dev/uio0</span></code> for the first device, and <code class="docutils literal notranslate"><span class="pre">/dev/uio1</span></code>, <code class="docutils literal notranslate"><span class="pre">/dev/uio2</span></code> and so on for subsequent devices.
-Interrupts are handled by reading from <code class="docutils literal notranslate"><span class="pre">/dev/uioX</span></code>. A blocking <code class="xref py py-func docutils literal notranslate"><span class="pre">read()</span></code> from <code class="docutils literal notranslate"><span class="pre">/dev/uioX</span></code> will return as soon as an interrupt occurs.
-You can also use <code class="xref py py-func docutils literal notranslate"><span class="pre">poll()</span></code> on <code class="docutils literal notranslate"><span class="pre">/dev/uioX</span></code> to wait for an interrupt. The integer value read from <code class="docutils literal notranslate"><span class="pre">/dev/uioX</span></code> represents the total interrupt count.
-You can use this number to figure out if you missed some interrupts.</p>
-<p>Details of Linux UIO system, refer to <a class="reference external" href="https://www.kernel.org/doc/html/v5.4/driver-api/uio-howto.html">https://www.kernel.org/doc/html/v5.4/driver-api/uio-howto.html</a>.</p>
-<section id="id3">
-<h4>Configuration<a class="headerlink" href="#id3" title="Link to this heading"></a></h4>
-<section id="id4">
-<h5>DTS Configuration<a class="headerlink" href="#id4" title="Link to this heading"></a></h5>
-<p>GPIO DTS UIO node:</p>
+<p>每个 UIO 设备通过一个设备文件和多个 sysfs 属性文件进行访问。
+第一个设备的设备文件将被称为 <code class="docutils literal notranslate"><span class="pre">/dev/uio0</span></code>，随后的设备将依次命名为 <code class="docutils literal notranslate"><span class="pre">/dev/uio1</span></code>、<code class="docutils literal notranslate"><span class="pre">/dev/uio2</span></code>，等等。
+中断通过读取 <code class="docutils literal notranslate"><span class="pre">/dev/uioX</span></code> 来处理。当中断发生时，从 <code class="docutils literal notranslate"><span class="pre">/dev/uioX</span></code> 进行的阻塞 <code class="xref py py-func docutils literal notranslate"><span class="pre">read()</span></code> 会立即返回。
+你也可以对 <code class="docutils literal notranslate"><span class="pre">/dev/uioX</span></code> 使用 <code class="xref py py-func docutils literal notranslate"><span class="pre">poll()</span></code> 来等待中断。从 <code class="docutils literal notranslate"><span class="pre">/dev/uioX</span></code> 读取的整数值表示总的中断计数。
+你可以使用这个数字来判断是否错过了一些中断。</p>
+<p>更多有关 Linux UIO 系统的细节，请参考 <a class="reference external" href="https://www.kernel.org/doc/html/v5.4/driver-api/uio-howto.html">uio driver v5.4</a> 或者 <a class="reference external" href="https://www.kernel.org/doc/html/v6.6/driver-api/uio-howto.html">uio driver v6.6</a>。</p>
+<section id="id14">
+<h4>配置<a class="headerlink" href="#id14" title="Link to this heading"></a></h4>
+<section id="id15">
+<h5>设备树配置<a class="headerlink" href="#id15" title="Link to this heading"></a></h5>
+<p>GPIO 设备树 UIO 节点：</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">gpio</span><span class="o">-</span><span class="n">uio</span><span class="o">-</span><span class="n">test</span><span class="w"> </span><span class="p">{</span>
 <span class="w">   </span><span class="n">compatible</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;generic-uio&quot;</span><span class="p">;</span>
 <span class="w">   </span><span class="n">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;okay&quot;</span><span class="p">;</span>
@@ -869,60 +859,56 @@ You can use this number to figure out if you missed some interrupts.</p>
 <span class="p">};</span>
 </pre></div>
 </div>
-<table class="docutils align-default" id="id11" style="width: 100%">
-<caption><span class="caption-text">GPIO UIO configurations</span><a class="headerlink" href="#id11" title="Link to this table"></a></caption>
+<table class="docutils align-default" style="width: 100%">
 <thead>
-<tr class="row-odd"><th class="head"><p>Property</p></th>
-<th class="head"><p>Description</p></th>
-<th class="head"><p>Configurable</p></th>
+<tr class="row-odd"><th class="head"><p>属性</p></th>
+<th class="head"><p>描述</p></th>
+<th class="head"><p>可配置</p></th>
 </tr>
 </thead>
 <tbody>
 <tr class="row-even"><td><p>compatible</p></td>
-<td><p>The description of UIO driver. Default: “generic-uio”.</p></td>
-<td><p>No</p></td>
+<td><p>UIO驱动程序的描述。默认值：“generic-uio”。</p></td>
+<td><p>否</p></td>
 </tr>
 <tr class="row-odd"><td><p>interrupt-parent</p></td>
-<td><p>GPIOA group</p></td>
-<td><p>Yes</p></td>
+<td><p>GPIOA 组</p></td>
+<td><p>是</p></td>
 </tr>
 <tr class="row-even"><td><p>interrupts</p></td>
-<td><p>This GPIO hardware interrupt number is 15, corresponding to the GPIOA pin 15.</p>
-<p>Trigger type: <cite>IRQ_TYPE_EDGE_BOTH</cite></p>
+<td><p>该 GPIO 硬件中断号是 15，对应于 GPIOA 的引脚 15。</p>
+<p>触发类型 <cite>IRQ_TYPE_EDGE_BOTH</cite></p>
 </td>
-<td><p>Yes</p></td>
+<td><p>是</p></td>
 </tr>
 </tbody>
 </table>
-<p>At the same time, add <code class="docutils literal notranslate"><span class="pre">uio_pdrv_genirq.of_id=generic-uio</span></code> to the bootargs property in the chosen node.</p>
+<p>与此同时，在选择的节点的 bootargs 属性中添加 <code class="docutils literal notranslate"><span class="pre">uio_pdrv_genirq.of_id=generic-uio</span></code> 。</p>
 </section>
-<section id="id5">
-<h5>Build Configuration<a class="headerlink" href="#id5" title="Link to this heading"></a></h5>
-<p>Select <span class="menuselection">Device Drivers -&gt; Userspace I/O drivers</span>:</p>
-<figure class="align-center" id="id12">
+<section id="id16">
+<h5>编译配置<a class="headerlink" href="#id16" title="Link to this heading"></a></h5>
+<p>选择 <span class="menuselection">Device Drivers -&gt; Userspace I/O drivers</span>:</p>
+<figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/uio_driver.png"><img alt="../../_images/uio_driver.png" src="../../_images/uio_driver.png" style="width: 696.0px; height: 190.0px;" /></a>
-<figcaption>
-<p><span class="caption-text">UIO driver</span><a class="headerlink" href="#id12" title="Link to this image"></a></p>
-</figcaption>
 </figure>
 </section>
 </section>
-<section id="id6">
-<h4>Usage<a class="headerlink" href="#id6" title="Link to this heading"></a></h4>
-<p>Interrupt test:</p>
+<section id="id17">
+<h4>用途<a class="headerlink" href="#id17" title="Link to this heading"></a></h4>
+<p>中断测试</p>
 <ol class="arabic">
-<li><p>Open GPIO UIO device.</p>
+<li><p>打开 GPIO UIO 设备。</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">int</span> <span class="n">uio_fd</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;/dev/uio0&quot;</span><span class="p">,</span> <span class="n">O_RDWR</span><span class="p">);</span>
 </pre></div>
 </div>
 </li>
-<li><p>Write 1 to unmask the interrupt, must be set every time.</p>
+<li><p>写入 1 以取消屏蔽中断，每次都必须设置。</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">uint32_t</span> <span class="n">uio_int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
 <span class="n">write</span><span class="p">(</span><span class="n">uio_fd</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">uio_int</span><span class="p">,</span> <span class="n">sizeof</span><span class="p">(</span><span class="n">uio_int</span><span class="p">));</span>
 </pre></div>
 </div>
 </li>
-<li><p>Poll GPIO UIO device and wait for the interrupt happen, could read interrupt count value.</p>
+<li><p>轮询 GPIO UIO 设备并等待中断发生，可以读取中断计数值。</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">struct</span> <span class="n">pollfd</span> <span class="n">pfd</span><span class="p">;</span>
 <span class="nb">int</span> <span class="n">uio_int</span><span class="p">;</span>
 <span class="n">pfd</span><span class="o">.</span><span class="n">events</span> <span class="o">=</span> <span class="n">POLLIN</span><span class="p">;</span>
@@ -934,7 +920,7 @@ You can use this number to figure out if you missed some interrupts.</p>
 </pre></div>
 </div>
 </li>
-<li><p>Close GPIO UIO device.</p>
+<li><p>关闭 GPIO UIO 设备。</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">close</span><span class="p">(</span><span class="n">uio_fd</span><span class="p">);</span>
 </pre></div>
 </div>
@@ -943,189 +929,189 @@ You can use this number to figure out if you missed some interrupts.</p>
 </section>
 </section>
 </section>
-<section id="apis-for-kernel-space">
-<h2>APIs for Kernel Space<a class="headerlink" href="#apis-for-kernel-space" title="Link to this heading"></a></h2>
+<section id="id18">
+<h2>内核空间接口（APIs）<a class="headerlink" href="#id18" title="Link to this heading"></a></h2>
 <section id="legacy-apis">
 <h3>Legacy APIs<a class="headerlink" href="#legacy-apis" title="Link to this heading"></a></h3>
 <table class="docutils align-default" style="width: 100%">
 <thead>
 <tr class="row-odd"><th class="head"><p>API</p></th>
-<th class="head"><p>Description</p></th>
+<th class="head"><p>描述</p></th>
 </tr>
 </thead>
 <tbody>
 <tr class="row-even"><td><p>gpio_request</p></td>
-<td><p>Request a GPIO</p></td>
+<td><p>请求一个  GPIO</p></td>
 </tr>
 <tr class="row-odd"><td><p>gpio_direction_output</p></td>
-<td><p>Set the GPIO direction to output</p></td>
+<td><p>设置 GPIO 方向为输出</p></td>
 </tr>
 <tr class="row-even"><td><p>gpio_direction_input</p></td>
-<td><p>Set the GPIO direction to input</p></td>
+<td><p>设置 GPIO 方向为输入</p></td>
 </tr>
 <tr class="row-odd"><td><p>gpio_set_value</p></td>
-<td><p>Set the GPIO value (GPIO is in output direction)</p></td>
+<td><p>设置 GPIO 值（GPIO 处于输出方向）</p></td>
 </tr>
 <tr class="row-even"><td><p>gpio_get_value</p></td>
-<td><p>Get the GPIO value</p></td>
+<td><p>获取 GPIO 值</p></td>
 </tr>
 <tr class="row-odd"><td><p>gpio_free</p></td>
-<td><p>Free a GPIO</p></td>
+<td><p>释放 GPIO</p></td>
 </tr>
 <tr class="row-even"><td><p>gpio_export</p></td>
-<td><p>Export a GPIO through sysfs</p></td>
+<td><p>通过 sysfs 导出一个 GPIO</p></td>
 </tr>
 <tr class="row-odd"><td><p>gpio_unexport</p></td>
-<td><p>Reverse effect of <code class="xref py py-func docutils literal notranslate"><span class="pre">gpio_export()</span></code></p></td>
+<td><p>撤回 <code class="xref py py-func docutils literal notranslate"><span class="pre">gpio_export()</span></code> 的效果</p></td>
 </tr>
 <tr class="row-even"><td><p>of_get_named_gpio_flags</p></td>
-<td><p>Get a GPIO number and flags for GPIO API</p></td>
+<td><p>获取用于 GPIO API 的 GPIO 编号和标志</p></td>
 </tr>
 <tr class="row-odd"><td><p>gpiochip_add_data</p></td>
-<td><p>Register a gpiochip.</p></td>
+<td><p>注册一个 gpiochip</p></td>
 </tr>
 <tr class="row-even"><td><p>gpiochip_remove</p></td>
-<td><p>Unregister a gpiochip.</p></td>
+<td><p>注销一个 gpiochip</p></td>
 </tr>
 <tr class="row-odd"><td><p>gpio_set_debounce</p></td>
-<td><p>Set GPIO debounce function</p></td>
+<td><p>设置 GPIO 去抖动功能</p></td>
 </tr>
 <tr class="row-even"><td><p>gpio_to_irq</p></td>
-<td><p>Get GPIO pin virtual IRQ</p></td>
+<td><p>获取 GPIO 引脚虚拟中断请求（IRQ）</p></td>
 </tr>
 </tbody>
 </table>
-<p>Refer to <cite>&lt;linux&gt;/Documentation/driver-api/gpio/legacy.rst</cite> for more details.</p>
+<p>参考 <cite>&lt;linux&gt;/Documentation/driver-api/gpio/legacy.rst</cite> 获取更多细节。</p>
 </section>
-<section id="descriptor-based-apis">
-<h3>Descriptor-based APIs<a class="headerlink" href="#descriptor-based-apis" title="Link to this heading"></a></h3>
+<section id="id19">
+<h3>基于描述符的 APIs<a class="headerlink" href="#id19" title="Link to this heading"></a></h3>
 <table class="docutils align-default" style="width: 100%">
 <thead>
 <tr class="row-odd"><th class="head"><p>API</p></th>
-<th class="head"><p>Description</p></th>
+<th class="head"><p>描述</p></th>
 </tr>
 </thead>
 <tbody>
 <tr class="row-even"><td><p>gpiod_get</p></td>
-<td><p>Obtain a GPIO for a given GPIO function</p></td>
+<td><p>为给定的 GPIO 功能获取一个 GPIO</p></td>
 </tr>
 <tr class="row-odd"><td><p>gpiod_put</p></td>
-<td><p>Dispose of a GPIO descriptor.</p></td>
+<td><p>释放 GPIO 描述符</p></td>
 </tr>
 <tr class="row-even"><td><p>gpiod_direction_output</p></td>
-<td><p>Set the GPIO direction to output.</p></td>
+<td><p>设置 GPIO 方向为输出</p></td>
 </tr>
 <tr class="row-odd"><td><p>gpiod_direction_input</p></td>
-<td><p>Set the GPIO direction to input.</p></td>
+<td><p>设置 GPIO 方向为输入</p></td>
 </tr>
 <tr class="row-even"><td><p>gpiod_set_value</p></td>
-<td><p>Assign a gpio’s value. (contexts that cannot sleep)</p></td>
+<td><p>分配 gpio 的值。（其上下文不能休眠）</p></td>
 </tr>
 <tr class="row-odd"><td><p>gpiod_get_value</p></td>
-<td><p>Get the GPIO value. (contexts that cannot sleep)</p></td>
+<td><p>获取 gpio 的值。（其上下文不能休眠）</p></td>
 </tr>
 <tr class="row-even"><td><p>gpiod_set_debounce</p></td>
-<td><p>Set GPIO debounce function</p></td>
+<td><p>设置 GPIO 去抖动功能</p></td>
 </tr>
 </tbody>
 </table>
-<p>Refer to <cite>&lt;linux&gt;/Documentation/driver-api/gpio/consumer.rst</cite> for more details.</p>
+<p>参考 <cite>&lt;linux&gt;/Documentation/driver-api/gpio/consumer.rst</cite> 获取更多细节。</p>
 </section>
-<section id="id7">
-<h3>Usage<a class="headerlink" href="#id7" title="Link to this heading"></a></h3>
+<section id="id20">
+<h3>用途<a class="headerlink" href="#id20" title="Link to this heading"></a></h3>
 <ol class="arabic">
-<li><p>Output test</p>
+<li><p>输出测试</p>
 <ol class="loweralpha">
-<li><p>Get GPIO pin index.</p>
+<li><p>获取 GPIO pin 脚索引。</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">gpio_index</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">of_get_named_gpio_flags</span><span class="p">(</span><span class="n">np</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;test-gpios&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">flags</span><span class="p">);</span>
 </pre></div>
 </div>
 </li>
-<li><p>Request a GPIO.</p>
+<li><p>请求一个 GPIO。</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">gpio_request</span><span class="p">(</span><span class="n">gpio_index</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span>
 </pre></div>
 </div>
 </li>
-<li><p>Set GPIO direction to output. The initial value is 0.</p>
+<li><p>设置 GPIO 方向为输出，初始化数值为 0。</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">gpio_direction_output</span><span class="p">(</span><span class="n">gpio_index</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
 </pre></div>
 </div>
 </li>
-<li><p>Write a logic value 1 to the specified pin of output port.</p>
+<li><p>将逻辑值 1 写入输出端口的指定引脚。</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">gpio_set_value</span><span class="p">(</span><span class="n">gpio_index</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
 </pre></div>
 </div>
 </li>
-<li><p>Get the logic value from specified pin of output port, and check the value.</p>
+<li><p>从输出端口的指定引脚获取逻辑值，并检查该值。</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">gpio_get_value</span><span class="p">(</span><span class="n">gpio_index</span><span class="p">);</span>
 </pre></div>
 </div>
 </li>
-<li><p>Free the GPIO pin.</p>
+<li><p>释放 GPIO pin 脚。</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">gpio_free</span><span class="p">(</span><span class="n">gpio_index</span><span class="p">);</span>
 </pre></div>
 </div>
 </li>
 </ol>
 </li>
-<li><p>Input test</p>
+<li><p>输入测试</p>
 <ol class="loweralpha">
-<li><p>Get GPIO pin index.</p>
+<li><p>获取 GPIO pin 脚索引。</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">gpio_index</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">of_get_named_gpio_flags</span><span class="p">(</span><span class="n">np</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;test-gpios&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">flags</span><span class="p">);</span>
 </pre></div>
 </div>
 </li>
-<li><p>Request a GPIO.</p>
+<li><p>请求一个 GPIO。</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">gpio_request</span><span class="p">(</span><span class="n">gpio_index</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span>
 </pre></div>
 </div>
 </li>
-<li><p>Set GPIO direction to input.</p>
+<li><p>设置 GPIO 方向为输入。</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">gpio_direction_input</span><span class="p">(</span><span class="n">gpio_index</span><span class="p">);</span>
 </pre></div>
 </div>
 </li>
-<li><p>External pull the GPIO pin high or low.</p></li>
-<li><p>Get the logic value from specified pin of input port, and check the value.</p>
+<li><p>将 GPIO 引脚外部上拉至高电平或下拉至低电平。</p></li>
+<li><p>从输入端口的指定引脚获取逻辑值，并检查该值。</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">gpio_get_value</span><span class="p">(</span><span class="n">gpio_index</span><span class="p">);</span>
 </pre></div>
 </div>
 </li>
-<li><p>Free the GPIO pin.</p>
+<li><p>释放 GPIO pin 脚。</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">gpio_free</span><span class="p">(</span><span class="n">gpio_index</span><span class="p">);</span>
 </pre></div>
 </div>
 </li>
 </ol>
 </li>
-<li><p>Interrupt test</p>
+<li><p>中断测试</p>
 <ol class="loweralpha">
-<li><p>Get GPIO pin index.</p>
+<li><p>获取 GPIO pin 脚索引。</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">gpio_index</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">of_get_named_gpio_flags</span><span class="p">(</span><span class="n">np</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;test-gpios&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">flags</span><span class="p">);</span>
 </pre></div>
 </div>
 </li>
-<li><p>Initialize a completion variable.</p>
+<li><p>初始化一个完成变量。</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">reinit_completion</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">completion</span><span class="w"> </span><span class="o">*</span><span class="n">x</span><span class="p">);</span>
 </pre></div>
 </div>
 </li>
-<li><p>Request a GPIO.</p>
+<li><p>请求一个 GPIO。</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">gpio_request</span><span class="p">(</span><span class="n">gpio_index</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span>
 </pre></div>
 </div>
 </li>
-<li><p>Get GPIO virq.</p>
+<li><p>获取 GPIO 虚拟中断号。</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">virq</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">gpio_to_irq</span><span class="p">(</span><span class="n">gpio_index</span><span class="p">);</span>
 </pre></div>
 </div>
 </li>
-<li><p>Request a trigger type. Trigger type can be set to one of the following values: <cite>IRQF_TRIGGER_RISING</cite>, <cite>IRQF_TRIGGER_FALLING</cite>, <cite>IRQF_TRIGGER_HIGH</cite>, <cite>IRQF_TRIGGER_LOW</cite>, (<cite>IRQF_TRIGGER_FALLING | IRQF_TRIGGER_RISING</cite>).</p>
+<li><p>请求触发类型。触发类型可以设置为以下值之一： <cite>IRQF_TRIGGER_RISING</cite>， <cite>IRQF_TRIGGER_FALLING</cite>， <cite>IRQF_TRIGGER_HIGH</cite>， <cite>IRQF_TRIGGER_LOW</cite>， （<cite>IRQF_TRIGGER_FALLING | IRQF_TRIGGER_RISING</cite>）。</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">request_irq</span><span class="p">(</span><span class="n">virq</span><span class="p">,</span><span class="w"> </span><span class="n">rtk_gpio_irq_handler</span><span class="p">,</span><span class="w"> </span><span class="n">trigger_type</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;gpio_irq&quot;</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span>
 </pre></div>
 </div>
 </li>
-<li><p>GPIO can be configured to either include or exclude a debounce capability by setting <code class="docutils literal notranslate"><span class="pre">rtk,db_enable</span> <span class="pre">=</span> <span class="pre">&quot;okay&quot;</span></code> and config debouce time.</p>
+<li><p>GPIO 可以通过设置 <code class="docutils literal notranslate"><span class="pre">rtk,db_enable</span> <span class="pre">=</span> <span class="pre">&quot;okay&quot;</span></code> 来配置是否包含去抖功能，并设置去抖时间。</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">gpio_set_debounce</span><span class="p">(</span><span class="n">gpio_index</span><span class="p">,</span><span class="n">db_div_cnt</span><span class="p">);</span>
 </pre></div>
 </div>
@@ -1135,26 +1121,26 @@ You can use this number to figure out if you missed some interrupts.</p>
 </ol>
 <div class="admonition note">
 <p class="admonition-title">备注</p>
-<p>virq is the virtual IRQ number, you can use <code class="xref py py-func docutils literal notranslate"><span class="pre">gpio_to_irq(gpio_index)()</span></code> to get the specified pin’s virq.</p>
+<p>virq 是虚拟中断号，你可以使用 <code class="xref py py-func docutils literal notranslate"><span class="pre">gpio_to_irq(gpio_index)()</span></code> 来获取指定引脚的 virq。</p>
 <ol class="loweralpha">
-<li><p>External trigger, and wait for completion of the task.</p>
+<li><p>外部触发，并等待任务完成。</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">wait_for_completion_timeout</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">completion</span><span class="w"> </span><span class="o">*</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">timeout</span><span class="p">);</span>
 </pre></div>
 </div>
 </li>
-<li><p>Free the IRQ.</p>
+<li><p>释放 IRQ。</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">free_irq</span><span class="p">(</span><span class="n">virq</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span>
 </pre></div>
 </div>
 </li>
-<li><p>Free the GPIO pin.</p>
+<li><p>释放 GPIO pin 脚。</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">gpio_free</span><span class="p">(</span><span class="n">gpio_index</span><span class="p">);</span>
 </pre></div>
 </div>
 </li>
 </ol>
 </div>
-<p>For more details, GPIO demo for kernel space is located at <code class="docutils literal notranslate"><span class="pre">&lt;test&gt;/gpio</span></code>. Refer to <code class="docutils literal notranslate"><span class="pre">readme.txt</span></code> in this directory.</p>
+<p>有关更多详细信息，内核空间的 GPIO 示例位于 <code class="docutils literal notranslate"><span class="pre">&lt;test&gt;/gpio</span></code> 。请参考该目录下的 <code class="docutils literal notranslate"><span class="pre">readme.txt</span></code> 。</p>
 </section>
 </section>
 </section>
@@ -1163,8 +1149,8 @@ You can use this number to figure out if you missed some interrupts.</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
-        <a href="0_gpio_index_cn.html" class="btn btn-neutral float-left" title="GPIO and Pinctrl" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
-        <a href="1_pinctrl_toprst_cn.html" class="btn btn-neutral float-right" title="Pin Controller (Pinctrl)" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="0_gpio_index_cn.html" class="btn btn-neutral float-left" title="GPIO 与 Pinctrl" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="1_pinctrl_toprst_cn.html" class="btn btn-neutral float-right" title="Pin 控制器 (Pinctrl)" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
