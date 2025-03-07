@@ -181,20 +181,14 @@
 <p><strong>Bootloader and BCB</strong></p>
 <p>The BCB is the bootloader message control block, which is a structure shared by main system and recovery system, and a bridge between main system and recovery system. It can store the information whether to enter main system or not, and when upgrading OTA according to a specific path, OTA packages path will be set in BCB too. When system boots, bootloader will read the content of BCB, and determine to enter main system or recovery system.</p>
 <p>The relationship among the three modules is shown below.</p>
-<figure class="align-center" id="id1">
+<figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/whole_relationship.svg"><img alt="../../_images/whole_relationship.svg" height="136" src="../../_images/whole_relationship.svg" width="378" /></a>
-<figcaption>
-<p><span class="caption-text">Whole system relationship</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
-</figcaption>
 </figure>
 <section id="partition-layout">
 <h2>Partition Layout<a class="headerlink" href="#partition-layout" title="Link to this heading"></a></h2>
 <p>The partition layout is listed in the figure shown below</p>
-<figure class="align-center" id="id2">
+<figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/partition_layout.svg"><img alt="../../_images/partition_layout.svg" height="137" src="../../_images/partition_layout.svg" width="1032" /></a>
-<figcaption>
-<p><span class="caption-text">Partition layout</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
-</figcaption>
 </figure>
 <p>All the images except rootfs and userdata image have A/B partitions.</p>
 <ul class="simple">
@@ -267,56 +261,41 @@
 <span class="p">};</span>
 </pre></div>
 </div>
-<p>Only <code class="docutils literal notranslate"><span class="pre">cmd</span></code> and <code class="docutils literal notranslate"><span class="pre">recovery</span></code> members are used.</p>
+<p>Only <em>cmd</em> and <em>recovery</em> members are used.</p>
 <ul class="simple">
-<li><p>The member <code class="docutils literal notranslate"><span class="pre">cmd</span></code> indicates whether the board enters recovery system or main system. If it is set to <code class="docutils literal notranslate"><span class="pre">boot-recovery</span></code>, the board will enter recovery system when boots. Otherwise, the board will enter main system. The member will be reset when exiting recovery system.</p></li>
-<li><p>The member <code class="docutils literal notranslate"><span class="pre">recovery</span></code> stores the OTA path, the member will be set in main system when there is a new OTA package available.</p></li>
-<li><p>The <code class="docutils literal notranslate"><span class="pre">status</span></code> is used to store the recovery status later, and reserved is planned to use for store recovery log.</p></li>
+<li><p>The member <em>cmd</em> indicates whether the board enters recovery system or main system. If it is set to <em>boot-recovery</em>, the board will enter recovery system when boots. Otherwise, the board will enter main system. The member will be reset when exiting recovery system.</p></li>
+<li><p>The member <em>recovery</em> stores the OTA path, the member will be set in main system when there is a new OTA package available.</p></li>
+<li><p>The <em>status</em> is used to store the recovery status later, and reserved is planned to use for store recovery log.</p></li>
 </ul>
-<p>OTA from USB solution, only <code class="docutils literal notranslate"><span class="pre">cmd</span></code> of BCB is used to indicate bootloader to enter main system or recovery system. Other members of BCB are not used.</p>
+<p>OTA from USB solution, only <em>cmd</em> of BCB is used to indicate bootloader to enter main system or recovery system. Other members of BCB are not used.</p>
 </section>
 <section id="main-system">
 <h2>Main System<a class="headerlink" href="#main-system" title="Link to this heading"></a></h2>
 <p>The flow of main system is shown in the figure below. An OTA solution from USB disk is provided for reference, this solution realizes OTA update from USB disk detection to GUI. GUI can receive OTA version callback when new OTA version is available in USB disk, GUI can determine whether to update this OTA version or not. If no GUI exist, main system will set BCB and reboot to enter recovery system automatically if new OTA version is detected in USB disk.</p>
-<figure class="align-center" id="id3">
+<figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/main_ota_flow.svg"><img alt="../../_images/main_ota_flow.svg" height="205" src="../../_images/main_ota_flow.svg" width="341" /></a>
-<figcaption>
-<p><span class="caption-text">Main system OTA flow</span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
-</figcaption>
 </figure>
 <p>The OTA flow of main system is shown in the figure below. The OTA reference implementation in main system includes a recovery daemon:</p>
 <p>Recovery daemon: It will detect whether any U-disk is connected with the board. If yes, it will try to read the OTA package from U-disck, if the OTA package exists, it will setup BCB and reboot board to notify bootloader to enter recovery system.</p>
-<figure class="align-center" id="id4">
+<figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/main_ota_arch.svg"><img alt="../../_images/main_ota_arch.svg" height="121" src="../../_images/main_ota_arch.svg" width="133" /></a>
-<figcaption>
-<p><span class="caption-text">Main system OTA Architecture</span><a class="headerlink" href="#id4" title="Link to this image"></a></p>
-</figcaption>
 </figure>
 <p>The flow of USB OTA solution is shown in the figure below. Storage service will detect USB hot plug, then notify OTA service. OTA service will check whether OTA package is available in specific directory. If OTA package is available, OTA service will notify OTA GUI if OTA GUI exists, and then set up BCB via recovery service APIs (OTA service will call recovery service APIs directly if no OTA GUI exists). When BCB is set successfully, recovery service will reboot the board to enter recovery system.</p>
-<figure class="align-center" id="id5">
+<figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/usb_ota_flow.svg"><img alt="../../_images/usb_ota_flow.svg" height="352" src="../../_images/usb_ota_flow.svg" width="455" /></a>
-<figcaption>
-<p><span class="caption-text">USB OTA flow</span><a class="headerlink" href="#id5" title="Link to this image"></a></p>
-</figcaption>
 </figure>
 </section>
 <section id="recovery-system">
 <h2>Recovery System<a class="headerlink" href="#recovery-system" title="Link to this heading"></a></h2>
 <p>The flow of recovery is shown in the figure below. In USB OTA solution, recovery will get USB hot plug callback from kernel, detect OTA package in specific directory in USB disk, currently the OTA directory is <code class="docutils literal notranslate"><span class="pre">ota</span></code> folder under USB root directory (this will be introduced in later section). If <code class="docutils literal notranslate"><span class="pre">ota</span></code> folder exists and OTA package is detected under <code class="docutils literal notranslate"><span class="pre">ota</span></code> folder, recovery will update this OTA package first. If no USB is plugged to the board, recovery will get the OTA package path from BCB, then upgrade from the package path. After upgrade, recovery will clear BCB, and reboot to main system.</p>
-<figure class="align-center" id="id6">
+<figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/recovery_flow.svg"><img alt="../../_images/recovery_flow.svg" height="322" src="../../_images/recovery_flow.svg" width="193" /></a>
-<figcaption>
-<p><span class="caption-text">Recovery flow</span><a class="headerlink" href="#id6" title="Link to this image"></a></p>
-</figcaption>
 </figure>
 <section id="recovery-install-package-flow">
 <h3>Recovery Install Package Flow<a class="headerlink" href="#recovery-install-package-flow" title="Link to this heading"></a></h3>
 <p>In USB OTA solution, when main system detects USB plugged, it will set up BCB and reboot to recovery system. The recovery system will load the partition table, get USB path from kernel, parse configure file (<code class="file docutils literal notranslate"><span class="pre">flash_image.cfg</span></code>, configure file will be introduced in later section) and upgrade according to configure file from USB. The upgrade flow of recovery is listed in the figure below.</p>
-<figure class="align-center" id="id7">
+<figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/package_installation_flow.svg"><img alt="../../_images/package_installation_flow.svg" height="427" src="../../_images/package_installation_flow.svg" width="607" /></a>
-<figcaption>
-<p><span class="caption-text">Package installation flow</span><a class="headerlink" href="#id7" title="Link to this image"></a></p>
-</figcaption>
 </figure>
 </section>
 <section id="recovery-factory-reset">
@@ -324,11 +303,8 @@
 <p>Recovery also provides factory reset function, factory reset is only to reset userdata partition.</p>
 <p>When main system calls the corresponding API to factory reset, board will enter to recovery system, the flow of factory reset can refer to figure below.</p>
 <p>In NAND flash, rootfs and userdata adopt UBI file system while in NOR flash rootfs uses squashfs, userdata uses jffs2, so wipe out userdata is deferent in NAND and NOR flash.</p>
-<figure class="align-center" id="id8">
+<figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/recovery_factory_reset.svg"><img alt="../../_images/recovery_factory_reset.svg" height="456" src="../../_images/recovery_factory_reset.svg" width="555" /></a>
-<figcaption>
-<p><span class="caption-text">Recovery factory reset</span><a class="headerlink" href="#id8" title="Link to this image"></a></p>
-</figcaption>
 </figure>
 </section>
 <section id="recovery-system-a-b-update">
@@ -341,7 +317,7 @@
 </section>
 <section id="build-recovery-system">
 <h1>Build Recovery System<a class="headerlink" href="#build-recovery-system" title="Link to this heading"></a></h1>
-<p>Recovery system kernel configuration is defined in <code class="docutils literal notranslate"><span class="pre">&lt;sdk&gt;/sources/yocto/meta-realtek/meta-realtek-bsp/recipes-kernel/linux-ameba_5.4.bb</span></code>.</p>
+<p>Recovery system kernel configuration is defined at <code class="docutils literal notranslate"><span class="pre">linux-ameba_5.4.bb</span></code> for kernel-5.4, and <code class="docutils literal notranslate"><span class="pre">linux-ameba_6.6.bb</span></code> for kernel-6.6, in directory <code class="docutils literal notranslate"><span class="pre">&lt;sdk&gt;/sources/yocto/meta-realtek/meta-realtek-bsp/recipes-kernel/linux</span></code>.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>KBUILD_DEFCONFIG:rtl8730elh-recovery?= &quot;rtl8730elh_recovery_defconfig&quot;
 </pre></div>
 </div>
@@ -375,11 +351,8 @@
 <li><p>Load <code class="file docutils literal notranslate"><span class="pre">XXXX_Linux_NAND_128MB.rdev</span></code> or <code class="file docutils literal notranslate"><span class="pre">XXXX_Linux_NAND_256MB.rdev</span></code> for NAND flash, <code class="file docutils literal notranslate"><span class="pre">XXXX_Linux_NOR_32MB.rdev</span></code> for NOR flash.</p></li>
 </ol>
 <p>Flash recovery images is shown in the figure below.</p>
-<figure class="align-center" id="id9">
+<figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/flash_recovery_image.png"><img alt="../../_images/flash_recovery_image.png" src="../../_images/flash_recovery_image.png" style="width: 1272.0px; height: 820.0px;" /></a>
-<figcaption>
-<p><span class="caption-text">Flash recovery image</span><a class="headerlink" href="#id9" title="Link to this image"></a></p>
-</figcaption>
 </figure>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -393,7 +366,7 @@
 <p class="admonition-title">Note</p>
 <p>In Yocto project, dtb images (such as <code class="file docutils literal notranslate"><span class="pre">rtl8730elh-va8-generic.dtb</span></code> / <code class="file docutils literal notranslate"><span class="pre">rtl8730elh-va8-full.dtb</span></code>) should rename to <code class="file docutils literal notranslate"><span class="pre">dtb.img</span></code> for OTA.</p>
 </div>
-<p>For gz package, its name must be <code class="file docutils literal notranslate"><span class="pre">updater.tar.gz</span></code>, and need to generate when all the images compile successful, such as: tar -czvf updater.tar.gz, boot.img, dtb.img, kernel.img, rootfs.img, userdata.img, flash_image.cfg, <code class="file docutils literal notranslate"><span class="pre">flash_image.cfg</span></code> is the configure file and mandatory for OTA update, it will be described in later sections.</p>
+<p>For gz package, its name must be <code class="file docutils literal notranslate"><span class="pre">updater.tar.gz</span></code>, and need to generate when all the images compile successful, such as: <em>tar -czvf updater.tar.gz boot.img dtb.img kernel.img rootfs.img userdata.img flash_image.cfg</em>, <code class="file docutils literal notranslate"><span class="pre">flash_image.cfg</span></code> is the configure file and mandatory for OTA update, it will be described in later sections.</p>
 <p>Setup USB OTA environment in Windows:</p>
 <ol class="arabic simple">
 <li><p>Create an ota folder in USB root directory</p></li>

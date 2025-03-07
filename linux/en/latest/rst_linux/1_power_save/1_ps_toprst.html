@@ -176,19 +176,13 @@
 <h2>Linux System Sleep Framework<a class="headerlink" href="#linux-system-sleep-framework" title="Link to this heading"></a></h2>
 <p>In order to reduce system power consumption, Linux provides a comprehensive power management framework. The power management system is a relatively extensive subsystem that covers aspects such as power supply, clocks, frequencies, voltages, and system sleep. Among these, system sleep acts as a crucial role in the overall power consumption of the system and is the primary focus of this chapter.</p>
 <p>The architecture of the Linux system sleep framework is illustrated in following figure.</p>
-<figure class="align-center" id="id1">
+<figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/sleep_framework.svg"><img alt="../../_images/sleep_framework.svg" height="431" src="../../_images/sleep_framework.svg" width="534" /></a>
-<figcaption>
-<p><span class="caption-text">Linux system sleep framework</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
-</figcaption>
 </figure>
 <p>The user space can access the PM (Power Management) core through the sysfs layer to control entry into and exit from system sleep. The PM core also provides Kernel APIs for the Kernel space. The suspend core is the main component of the PM core. Since system sleep involves various aspects of the system, the suspend core may invoke other sub-frameworks, such as the interrupt subsystem. The PM core ultimately relies on architecture dependent drivers related to system sleep, including the drivers for the power management controller (PMC) and peripheral devices. The PMC requires the involvement of asymmetric multi-processors.</p>
 <p>This chip is an asymmetric multi-processors architecture, which includes CA32, KM4, and KM0. These cores can collaborate with each other to achieve lower power consumption. Inter-core communication is achieved through IPC (Inter-Process Communication). The PMC coordinates the involvement of multiple-cores in control.</p>
-<figure class="align-center" id="id2">
+<figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/multi_processors_arch.svg"><img alt="../../_images/multi_processors_arch.svg" height="184" src="../../_images/multi_processors_arch.svg" width="487" /></a>
-<figcaption>
-<p><span class="caption-text">Multi-processors architecture</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
-</figcaption>
 </figure>
 <p>Another advantage of using an asymmetric multi-processors architecture is that simple functions can be developed on the small core, allowing for low power consumption while providing the required functionality for users.</p>
 </section>
@@ -314,7 +308,7 @@
 <h3>General Configuration<a class="headerlink" href="#general-configuration" title="Link to this heading"></a></h3>
 <p>Follow the steps below to configure a wakeup source, taking ADC as an example:</p>
 <ol class="arabic">
-<li><p>Modify the structure <code class="xref py py-class docutils literal notranslate"><span class="pre">sleep_wevent_config</span></code> for sleep settings in the configuration file <code class="file docutils literal notranslate"><span class="pre">firmware/component/usrcfg/rtl8730e/ameba_sleepcfg.c</span></code>.</p>
+<li><p>Modify the structure <code class="xref py py-class docutils literal notranslate"><span class="pre">sleep_wevent_config</span></code> for sleep settings in the configuration file <code class="file docutils literal notranslate"><span class="pre">firmware/component/soc/amebasmart/usrcfg/ameba_sleepcfg.c</span></code>.</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/*wakeup attribute can be set to WAKEUP_NULL/WAKEUP_LP/WAKEUP_NP/WAKEUP_AP*/</span>
 <span class="n">WakeEvent_TypeDef</span><span class="w"> </span><span class="n">sleep_wevent_config</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
 <span class="c1">// Module                               wakeup</span>
@@ -379,7 +373,7 @@
 <p>Some peripherals have an additional configuration in addition to the general configuration.</p>
 <section id="osc4m">
 <h4>OSC4M<a class="headerlink" href="#osc4m" title="Link to this heading"></a></h4>
-<p>ADC, CAPTOUCH, UART, LOGUART need OSC4M to drive itself when in sleep mode. Users should configure <code class="docutils literal notranslate"><span class="pre">keep_OSC4M_on</span></code> to TRUE in the structure <code class="xref py py-class docutils literal notranslate"><span class="pre">ps_config</span></code> in <code class="file docutils literal notranslate"><span class="pre">firmware/component/usrcfg/rtl8730e/ameba_sleepcfg.c</span></code> to enable OSC4M.</p>
+<p>ADC, CAPTOUCH, UART, LOGUART need OSC4M to drive itself when in sleep mode. Users should configure <code class="docutils literal notranslate"><span class="pre">keep_OSC4M_on</span></code> to TRUE in the structure <code class="xref py py-class docutils literal notranslate"><span class="pre">ps_config</span></code> in <code class="file docutils literal notranslate"><span class="pre">firmware/component/soc/amebasmart/usrcfg/ameba_sleepcfg.c</span></code> to enable OSC4M.</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">PSCFG_TypeDef</span><span class="w"> </span><span class="n">ps_config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
 <span class="w">   </span><span class="p">.</span><span class="n">km0_tickles_debug</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TRUE</span><span class="p">,</span><span class="w"> </span><span class="cm">/* if open Wi-Fi FW, should close it, or beacon will lost in WOWLAN */</span>
 <span class="w">   </span><span class="p">.</span><span class="n">km0_pg_enable</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FALSE</span><span class="p">,</span>

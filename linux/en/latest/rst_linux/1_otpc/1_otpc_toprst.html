@@ -100,7 +100,10 @@
 <li class="toctree-l3"><a class="reference internal" href="#implementation">Implementation</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#configuration">Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#configuration">Configuration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#build-configuration">Build Configuration</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#apis">APIs</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#apis-for-user-space">APIs for User Space</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#apis-for-kernel-space">APIs for Kernel Space</a></li>
@@ -164,11 +167,8 @@
 <section id="architecture">
 <h2>Architecture<a class="headerlink" href="#architecture" title="Link to this heading"></a></h2>
 <p>The OTP driver follows Linux NVMEM framework, controls the firmware OTP controller, and performs the write and read of OTP. The OTP software architecture is illustrated in figure below.</p>
-<figure class="align-center" id="id1">
+<figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/otp_software_arch.svg"><img alt="../../_images/otp_software_arch.svg" height="342" src="../../_images/otp_software_arch.svg" width="406" /></a>
-<figcaption>
-<p><span class="caption-text">OTP software architecture</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
-</figcaption>
 </figure>
 <p>The OTP driver provides the following two ways to control the hardware OTP device:</p>
 <ul class="simple">
@@ -201,13 +201,13 @@
 </section>
 <section id="configuration">
 <h1>Configuration<a class="headerlink" href="#configuration" title="Link to this heading"></a></h1>
-<p>Build Configuration: Select Device Drivers &gt; Drivers for Realtek &gt; NVMEM OTP driver.</p>
-<figure class="align-center" id="id2">
+<section id="build-configuration">
+<h2>Build Configuration<a class="headerlink" href="#build-configuration" title="Link to this heading"></a></h2>
+<p>Select <span class="menuselection">Device Drivers &gt; Drivers for Realtek &gt; NVMEM OTP driver</span>.</p>
+<figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/otp_driver.png"><img alt="../../_images/otp_driver.png" src="../../_images/otp_driver.png" style="width: 1302.3px; height: 596.7px;" /></a>
-<figcaption>
-<p><span class="caption-text">OTP driver</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
-</figcaption>
 </figure>
+</section>
 </section>
 <section id="apis">
 <h1>APIs<a class="headerlink" href="#apis" title="Link to this heading"></a></h1>
@@ -238,21 +238,15 @@
 </ul>
 <p>Refer to <code class="file docutils literal notranslate"><span class="pre">sources/development/cmds/efuse/efuse.c</span></code> for more details.</p>
 <p>If you want to disable APIs for user space, disable sysfs interface in kernel config as below:</p>
-<figure class="align-center" id="id3">
+<figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/sysfs_interface1.png"><img alt="../../_images/sysfs_interface1.png" src="../../_images/sysfs_interface1.png" style="width: 1298.7px; height: 183.6px;" /></a>
-<figcaption>
-<p><span class="caption-text">Sysfs interface</span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
-</figcaption>
 </figure>
 </section>
 <section id="apis-for-kernel-space">
 <h2>APIs for Kernel Space<a class="headerlink" href="#apis-for-kernel-space" title="Link to this heading"></a></h2>
 <p>For kernel space, NVMEM provides cell mechanism for other drivers to read or write the OTP, such as:</p>
-<figure class="align-center" id="id4">
+<figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/nvmem_cell_example.png"><img alt="../../_images/nvmem_cell_example.png" src="../../_images/nvmem_cell_example.png" style="width: 400.5px; height: 420.3px;" /></a>
-<figcaption>
-<p><span class="caption-text">Nvmem-cell example</span><a class="headerlink" href="#id4" title="Link to this image"></a></p>
-</figcaption>
 </figure>
 <p>Drivers can use NVMEM cell functions to get or set the corresponding OTP values.</p>
 </section>
