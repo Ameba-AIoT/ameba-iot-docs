@@ -222,6 +222,46 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    // ▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼ 新增多语言支持 ▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼
+    const lang = 'en'.substring(0,2); // 获取当前语言配置
+    const i18n = {
+        zh: {
+            title: '访问授权',
+            username: '用户名',
+            password: '密码',
+            confirm: '确认',
+            cancel: '取消',
+            usernameError: '用户名错误',
+            userNotExist: '该用户不存在',
+            passwordError: '密码错误',
+            wrongPassword: '请输入正确的密码',
+            accessDenied: '无访问权限',
+            noPermission: '您无权查看此内容',
+            expiredTitle: '访问已过期',
+            expiredMsg: '您的权限已失效<br>有效期：%s 至 %s',
+            deniedTitle: '⚠️ 无访问权限',
+            contact: '请联系 claire_wang@realsil.com.cn 获取权限'
+        },
+        en: {
+            title: 'Access Required',
+            username: 'Username',
+            password: 'Password',
+            confirm: 'Confirm',
+            cancel: 'Cancel',
+            usernameError: 'Invalid Username',
+            userNotExist: 'User does not exist',
+            passwordError: 'Wrong Password',
+            wrongPassword: 'Please enter correct password',
+            accessDenied: 'Access Denied',
+            noPermission: 'You have no permission to view this content',
+            expiredTitle: 'Authorization Expired',
+            expiredMsg: 'Your access has expired<br>Valid period: %s to %s',
+            deniedTitle: '⚠️ Access Denied',
+            contact: 'Please contact claire_wang@realsil.com.cn for access'
+        }
+    };
+    // ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲ 新增结束 ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
+
     const authContent = document.querySelector('.wy-nav-content');
     if (!authContent) return;
 
@@ -249,16 +289,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (!isAuthenticated) {
         Swal.fire({
-            title: '访问授权',
+            title: i18n[lang].title, // 多语言标题
             html: `
-                <input id="username" class="swal2-input" placeholder="用户名">
-                <input id="password" class="swal2-input" type="password" placeholder="密码">
+                <input id="username" class="swal2-input" placeholder="${i18n[lang].username}">
+                <input id="password" class="swal2-input" type="password" placeholder="${i18n[lang].password}">
             `,
             showCancelButton: true,
-            confirmButtonText: '确认',
-            cancelButtonText: '取消',
+            confirmButtonText: i18n[lang].confirm, // 多语言确认按钮
+            cancelButtonText: i18n[lang].cancel,   // 多语言取消按钮
             allowOutsideClick: false,
-            // ▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼ 新增回车支持 ▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼
+            // ▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼ 回车支持保留 ▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼
             didOpen: () => {
                 const handleEnter = (e) => {
                     if (e.key === 'Enter' || e.keyCode === 13) {
@@ -269,7 +309,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 document.getElementById('username').addEventListener('keydown', handleEnter);
                 document.getElementById('password').addEventListener('keydown', handleEnter);
             },
-            // ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲ 新增结束 ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
+            // ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲ 保留结束 ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
             preConfirm: () => {
                 const username = document.getElementById('username').value.trim();
                 const password = document.getElementById('password').value.trim();
@@ -283,8 +323,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (!authUsers.hasOwnProperty(username)) {
                     Swal.fire({
                         icon: 'error',
-                        title: '用户名错误',
-                        text: '该用户不存在'
+                        title: i18n[lang].usernameError,
+                        text: i18n[lang].userNotExist
                     });
                     clearContentWithDeniedMessage(authContent);
                     return;
@@ -294,8 +334,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (authUsers[username] !== password) {
                     Swal.fire({
                         icon: 'error',
-                        title: '密码错误',
-                        text: '请输入正确的密码'
+                        title: i18n[lang].passwordError,
+                        text: i18n[lang].wrongPassword
                     });
                     clearContentWithDeniedMessage(authContent);
                     return;
@@ -306,8 +346,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (!userConfig) {
                     Swal.fire({
                         icon: 'error',
-                        title: '无访问权限',
-                        text: '您无权查看此内容'
+                        title: i18n[lang].accessDenied,
+                        text: i18n[lang].noPermission
                     });
                     clearContentWithDeniedMessage(authContent);
                     return;
@@ -319,12 +359,18 @@ document.addEventListener('DOMContentLoaded', function() {
                 const currentDate = new Date();
 
                 if (currentDate > endDate) {
-                    const startStr = startDate.toLocaleDateString('zh-CN');
-                    const endStr = endDate.toLocaleDateString('zh-CN');
+                    // ▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼ 多语言日期格式 ▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼
+                    const dateOptions = lang === 'zh' ? 
+                        { year: 'numeric', month: '2-digit', day: '2-digit' } : 
+                        { year: 'numeric', month: 'short', day: 'numeric' };
+                    const startStr = startDate.toLocaleDateString(lang === 'zh' ? 'zh-CN' : 'en-US', dateOptions);
+                    const endStr = endDate.toLocaleDateString(lang === 'zh' ? 'zh-CN' : 'en-US', dateOptions);
+                    // ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲ 修改结束 ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
+
                     Swal.fire({
                         icon: 'error',
-                        title: '访问已过期',
-                        html: `您的权限已失效<br>有效期：${startStr} 至 ${endStr}`
+                        title: i18n[lang].expiredTitle,
+                        html: i18n[lang].expiredMsg.replace('%s', startStr).replace('%s', endStr)
                     });
                     clearContentWithDeniedMessage(authContent);
                     return;
@@ -351,8 +397,8 @@ document.addEventListener('DOMContentLoaded', function() {
     function clearContentWithDeniedMessage(authContent) {
         authContent.innerHTML = `
             <div class="auth-denied">
-                <h3>⚠️ 无访问权限</h3>
-                <p>请联系 claire_wang@realsil.com.cn 获取权限</p>
+                <h3>${i18n[lang].deniedTitle}</h3>
+                <p>${i18n[lang].contact}</p>
             </div>
         `;
         authContent.style.display = 'block';
