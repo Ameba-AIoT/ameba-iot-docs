@@ -146,8 +146,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../8_key_scan/0_key_scan_index.html">8.8 Key-Scan</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../8_rtc_io/0_rtc_io_index.html">8.9 RTC-IO</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../8_lcdc/0_lcdc_index.html">8.A LCDC</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../9_tbd1/0_tbd1_index.html">9.1 TBD1</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../9_tbd2/0_tbd2_index.html">9.2 TBD2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../9_tbd1/0_tbd1_index.html">9.1 TBD1 🔒</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../9_tbd2/0_tbd2_index.html">9.2 TBD2 🔒</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api_docs/0_api_index.html">API Reference</a></li>
 </ul>
 
@@ -258,6 +258,18 @@ document.addEventListener('DOMContentLoaded', function() {
             confirmButtonText: '确认',
             cancelButtonText: '取消',
             allowOutsideClick: false,
+            // ▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼ 新增回车支持 ▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼
+            didOpen: () => {
+                const handleEnter = (e) => {
+                    if (e.key === 'Enter' || e.keyCode === 13) {
+                        Swal.clickConfirm();
+                        e.preventDefault();
+                    }
+                };
+                document.getElementById('username').addEventListener('keydown', handleEnter);
+                document.getElementById('password').addEventListener('keydown', handleEnter);
+            },
+            // ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲ 新增结束 ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
             preConfirm: () => {
                 const username = document.getElementById('username').value.trim();
                 const password = document.getElementById('password').value.trim();
