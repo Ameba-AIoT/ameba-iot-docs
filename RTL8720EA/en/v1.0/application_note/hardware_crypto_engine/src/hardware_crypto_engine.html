@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Introduction &mdash; RTL8720EA Docs  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=13237357" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/tabs.css?v=a5c4661c" />
+
+  
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../../_static/toggleprompt.js?v=d7ede5d2"></script>
+        <script>let toggleHintShow = 'Click to show';</script>
+        <script>let toggleHintHide = 'Click to hide';</script>
+        <script>let toggleOpenOnPrint = 'true';</script>
+        <script src="../../../_static/togglebutton.js?v=4a39c7ea"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="One-time Programmable Controller (OTPC)" href="../../otpc/src/index.html" />
+    <link rel="prev" title="Hardware Crypto Engine" href="index.html" />  
+     
+  <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script type="text/javascript" src="../../../_static/js/selector.js"></script>
+<style>
+      .wy-nav-content {
+      max-width: 1000px; /* 设置最大宽度 */
+      }
+</style>
+
+
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            RTL8720EA Docs
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../product_overview/src/index.html">Product Overview</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Application Note</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../gcc_build_environment/src/index.html">Build Environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../sdk_architecture/src/index.html">SDK Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gcc_makefile/src/index.html">GCC Makefile</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../sdk_example/src/index.html">SDK Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../flash_memory_layout/index.html">Flash and Memory Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../mpu_cache/src/index.html">MPU and Cache</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../file_system/src/index.html">Virtual File System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../mp_image/src/index.html">MP Image</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ota/src/index.html">OTA Firmware Update</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chipen/src/index.html">CHIP Enable</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../boot_process/src/index.html">Boot Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../user_config/src/index.html">User Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../hardware_ecdsa/src/index.html">ECDSA Engine</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Hardware Crypto Engine</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Introduction</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#otp-keys-for-crypto">OTP Keys for Crypto</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#crypto-key-order">Crypto Key Order</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#crypto-key-flash-procedure">Crypto Key Flash Procedure</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#usage">Usage</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#starting-hardware-crypto-engine">Starting Hardware Crypto Engine</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#using-auto-loading-otp-key-from-otp">Using Auto-Loading OTP KEY from OTP</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#starting-crypto-engine-calculation">Starting Crypto Engine Calculation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#demo-code-path">Demo Code Path</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../otpc/src/index.html">One-time Programmable Controller (OTPC)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../power_save/src/index.html">Power Saving</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ipc/src/index.html">Inter-Processor Communication (IPC)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dmac/src/index.html">Direct Memory Access Controller (DMAC)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../psram/src/index.html">Pseudo-Static Random Access Memory (PSRAM)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pad/src/index.html">Pad Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pinmux/src/index.html">Pin Multiplexing Instructions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gpio/gpio/src/index.html">General Purpose Input/Output (GPIO)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gpio/pinctrl/src/pinctrl.html">Pin Controller (Pinctrl)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ledc/src/index.html">Light Emitting Diode Controller (LEDC)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../trng/src/index.html">True Random Number Generator (TRNG)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../adc/src/index.html">Analog-to-Digital Converter (ADC)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cap_touch/src/index.html">Cap-Touch Controller (CTC)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../thermal/src/index.html">Thermal Senor</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../ameba/en/fullmac/src/index.html">FullMAC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../ameba/en/wifi/index.html">Wi-Fi Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../ameba/en/wifi_tunnel/src/index.html">Wi-Fi R-Mesh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../ameba/en/wifi_bridge/src/index.html">Wi-Fi Bridge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../ameba/en/wifi_csi/src/index.html">Wi-Fi CSI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../ameba/en/dsp/index.html">DSP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../ameba/en/usb/usb_otg/src/index.html">USB Host &amp; Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../ameba/en/audio/src/index.html">Audio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../ameba/en/multimedia/src/index.html">Multimedia</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../ameba/en/gui/src/index.html">GUI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../ameba/en/ai/index.html">AI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../ameba/en/ai_voice/src/index.html">AIVoice</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../ameba/en/low_power/src/index.html">Low Power Solution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../ameba/en/security_encryption/src/index.html">Security &amp; Encryption</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../ameba/en/at_command/src/index.html">AT Command</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../ameba/en/software_tools/index.html">Software Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../ameba/en/mp_tools/src/index.html">MP Tools</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">RTL8720EA Docs</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Application Note</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Hardware Crypto Engine</a></li>
+      <li class="breadcrumb-item active">Introduction</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="introduction">
+<span id="hardware-crypto-engine"></span><h1>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h1>
+<p>The Hardware Crypto Engine (also called IPsec) accelerates applications that need cryptographic functions, such as authentication, encryption and decryption. Hardware crypto engine executing these functions cannot only reduce software overhead but also save CPU and memory resources, and the processing of it is more secure and faster than software. The key pair can be passed in by software or automatically loaded from OTP by hardware without software access the key.</p>
+<section id="otp-keys-for-crypto">
+<h2>OTP Keys for Crypto<a class="headerlink" href="#otp-keys-for-crypto" title="Link to this heading"></a></h2>
+<p>Crypto engine loads the secret key in two ways: one is that the user passes the secret key into the engine (software accessible key), another way is that Crypto automatically loads keys from OTP (software inaccessible key).</p>
+<p>OTP physical map can store six keys for Crypto to use as secret keys, which can only be accessed by Crypto engine and will not be tampered with or read by attackers. The premise is that the secret key needs to be programmed into OTP physical map.</p>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>OTP KEY name</p></th>
+<th class="head"><p>Address</p></th>
+<th class="head"><p>Size</p></th>
+<th class="head"><p>Default</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>S_IPSEC_Key1 (RDP)</p></td>
+<td><p>Logic Map 0x200</p></td>
+<td><p>32bytes</p></td>
+<td><p>Each Byte 0xFF</p></td>
+<td rowspan="2"><p>Secure crypto engine will auto-load this key for HAMC or AES function</p>
+<p>when OTPKey_init function is enabled.</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p>S_IPSEC_Key2</p>
+<p>(Secure boot HMAC)</p>
+</td>
+<td><p>Logic Map 0x220</p></td>
+<td><p>32bytes</p></td>
+<td><p>Each Byte 0xFF</p></td>
+</tr>
+<tr class="row-even"><td><p>NS_IPSEC_Key1</p></td>
+<td><p>Logic Map 0x240</p></td>
+<td><p>32bytes</p></td>
+<td><p>Each Byte 0xFF</p></td>
+<td rowspan="2"><p>Non-secure crypto engine will auto-load this key for HAMC function</p>
+<p>when OTPKey_init function is enabled.</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p>NS_IPSEC_Key2</p></td>
+<td><p>Logic Map 0x260</p></td>
+<td><p>32bytes</p></td>
+<td><p>Each Byte 0xFF</p></td>
+</tr>
+<tr class="row-even"><td><p>RSIP_AES_key1</p></td>
+<td><p>Logic Map 0x2c0</p></td>
+<td><p>32bytes</p></td>
+<td><p>Each Byte 0xFF</p></td>
+<td rowspan="2"><p>Non-secure AES engine and secure AES engine will auto-load this key</p>
+<p>for AES function when OTPKey_init function is enabled.</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p>RSIP_AES_key2</p></td>
+<td><p>Logic Map 0x2e0</p></td>
+<td><p>32bytes</p></td>
+<td><p>Each Byte 0xFF</p></td>
+</tr>
+<tr class="row-even"><td><p>S_IPSEC_Key1 Read</p>
+<p>Protection</p>
+</td>
+<td><p>Physical Map 0x365[3]</p></td>
+<td><p>1 bit</p></td>
+<td><p>1</p></td>
+<td><p>0: Enable read protection for S_IPSEC_Key1 to prevent from being</p>
+<p>read out.</p>
+<p>1: Disable read protection for S_IPSEC_Key1.</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p>S_IPSEC_Key1 Write</p>
+<p>Protection</p>
+</td>
+<td><p>Physical Map 0x365[4]</p></td>
+<td><p>1 bit</p></td>
+<td><p>1</p></td>
+<td><p>0: Enable write protection for S_IPSEC_Key1 to prevent from being</p>
+<p>programmed to all 0 by hacker.</p>
+<p>1: Disable write protection for S_IPSEC_Key1.</p>
+</td>
+</tr>
+<tr class="row-even"><td><p>S_IPSEC_Key2 Read</p>
+<p>Protection</p>
+</td>
+<td><p>Physical Map 0x365[5]</p></td>
+<td><p>1 bit</p></td>
+<td><p>1</p></td>
+<td><p>0: Enable read protection for S_IPSEC_Key2 to prevent from being</p>
+<p>read out.</p>
+<p>1: Disable read protection for S_IPSEC_Key2.</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p>S_IPSEC_Key2 Write</p>
+<p>Protection</p>
+</td>
+<td><p>Physical Map 0x365[6]</p></td>
+<td><p>1 bit</p></td>
+<td><p>1</p></td>
+<td><p>0: Enable write protection for S_IPSEC_Key2 to prevent from being</p>
+<p>programmed to all 0 by hacker.</p>
+<p>1: Disable write protection for S_IPSEC_Key2.</p>
+</td>
+</tr>
+<tr class="row-even"><td><p>NS_IPSEC_Key1</p>
+<p>Read Protection</p>
+</td>
+<td><p>Physical Map 0x365[7]</p></td>
+<td><p>1 bit</p></td>
+<td><p>1</p></td>
+<td><p>0: Enable read protection for NS_IPSEC_Key1 to prevent from being</p>
+<p>read out.</p>
+<p>1: Disable read protection for NS_SHA_Key1.</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p>NS_IPSEC_Key1</p>
+<p>Write Protection</p>
+</td>
+<td><p>Physical Map 0x366[0]</p></td>
+<td><p>1 bit</p></td>
+<td><p>1</p></td>
+<td><p>0: Enable write protection for NS_IPSEC_Key1 to prevent from being</p>
+<p>programmed to all 0 by hacker.</p>
+<p>1: Disable write protection for NS_IPSEC_Key1.</p>
+</td>
+</tr>
+<tr class="row-even"><td><p>NS_IPSEC_Key2</p>
+<p>Read Protection</p>
+</td>
+<td><p>Physical Map 0x366[1]</p></td>
+<td><p>1 bit</p></td>
+<td><p>1</p></td>
+<td><p>0: Enable read protection for NS_IPSEC_Key2 to prevent from being</p>
+<p>read out.</p>
+<p>1: Disable read protection for NS_IPSEC_Key2.</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p>NS_IPSEC_Key2</p>
+<p>Write Protection</p>
+</td>
+<td><p>Physical Map 0x366[2]</p></td>
+<td><p>1 bit</p></td>
+<td><p>1</p></td>
+<td><p>0: Enable write protection for NS_IPSEC_Key2 to prevent from being</p>
+<p>programmed to all 0 by hacker.</p>
+<p>1: Disable write protection for NS_IPSEC_Key2.</p>
+</td>
+</tr>
+<tr class="row-even"><td><p>RSIP_AES_Key1</p>
+<p>Read Protection</p>
+</td>
+<td><p>Physical Map 0x366[7]</p></td>
+<td><p>1 bit</p></td>
+<td><p>1</p></td>
+<td><p>0: Enable read protection for RSIP_AES_Key1 to prevent from being</p>
+<p>read out.</p>
+<p>1: Disable read protection for RSIP_AES_Key1.</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p>RSIP_AES_Key1</p>
+<p>Write Protection</p>
+</td>
+<td><p>Physical Map 0x367[0]</p></td>
+<td><p>1 bit</p></td>
+<td><p>1</p></td>
+<td><p>0: Enable write protection for RSIP_AES_Key1 to prevent from being</p>
+<p>programmed to all 0 by hacker.</p>
+<p>1: Disable write protection for RSIP_AES_Key1.</p>
+</td>
+</tr>
+<tr class="row-even"><td><p>RSIP_AES_Key2</p>
+<p>Read Protection</p>
+</td>
+<td><p>Physical Map 0x367[1]</p></td>
+<td><p>1 bit</p></td>
+<td><p>1</p></td>
+<td><p>0: Enable read protection for RSIP_AES_Key2 to prevent from being</p>
+<p>read out.</p>
+<p>1: Disable read protection for RSIP_AES_Key2.</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p>RSIP_AES_Key2</p>
+<p>Write Protection</p>
+</td>
+<td><p>Physical Map 0x367[2]</p></td>
+<td><p>1 bit</p></td>
+<td><p>1</p></td>
+<td><p>0: Enable write protection for RSIP_AES_Key2 to prevent from being</p>
+<p>programmed to all 0 by hacker.</p>
+<p>1: Disable write protection for RSIP_AES_Key2.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For the two secure keys of IPsec, if the system enables RDP, SDK will use <code class="docutils literal notranslate"><span class="pre">S_IPSEC_Key1</span></code> for secure data protection by default. And if sboot uses HMAC as hash algorithm, it will use <code class="docutils literal notranslate"><span class="pre">S_IPSEC_Key2</span></code>. Users need to reasonably allocate the use of keys according to the above contents. For more information, refer to <span class="xref std std-ref">Secure Boot</span> and <span class="xref std std-ref">Read Protection</span>.</p>
+</div>
+</section>
+<section id="crypto-key-order">
+<h2>Crypto Key Order<a class="headerlink" href="#crypto-key-order" title="Link to this heading"></a></h2>
+<p>The key order for Crypto Engine is the same with mbedtls, it use little endian mode. For example, if the key is:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="mh">0x0123456789abcdef0123456789abcdef00112233445566778899aabbccddeeff</span>
+</pre></div>
+</div>
+<p>When the key is put in an array and pass to HW engine using our API or mbedtls API, the array should like:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">u8</span><span class="w"> </span><span class="n">key1</span><span class="p">[</span><span class="mi">32</span><span class="p">]</span><span class="o">=</span><span class="p">{</span>
+<span class="mh">0xff</span><span class="p">,</span><span class="w"> </span><span class="mh">0xee</span><span class="p">,</span><span class="w"> </span><span class="mh">0xdd</span><span class="p">,</span><span class="w"> </span><span class="mh">0xcc</span><span class="p">,</span><span class="w"> </span><span class="mh">0xbb</span><span class="p">,</span><span class="w"> </span><span class="mh">0xaa</span><span class="p">,</span><span class="w"> </span><span class="mh">0x99</span><span class="p">,</span><span class="w"> </span><span class="mh">0x88</span><span class="p">,</span><span class="w"> </span><span class="mh">0x77</span><span class="p">,</span><span class="w"> </span><span class="mh">0x66</span><span class="p">,</span><span class="w"> </span><span class="mh">0x55</span><span class="p">,</span><span class="w"> </span><span class="mh">0x44</span><span class="p">,</span><span class="w"> </span><span class="mh">0x33</span><span class="p">,</span><span class="w"> </span><span class="mh">0x22</span><span class="p">,</span><span class="w"> </span><span class="mh">0x11</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span>
+<span class="mh">0xef</span><span class="p">,</span><span class="w"> </span><span class="mh">0xcd</span><span class="p">,</span><span class="w"> </span><span class="mh">0xab</span><span class="p">,</span><span class="w"> </span><span class="mh">0x89</span><span class="p">,</span><span class="w"> </span><span class="mh">0x67</span><span class="p">,</span><span class="w"> </span><span class="mh">0x45</span><span class="p">,</span><span class="w"> </span><span class="mh">0x23</span><span class="p">,</span><span class="w"> </span><span class="mh">0x01</span><span class="p">,</span><span class="w"> </span><span class="mh">0xef</span><span class="p">,</span><span class="w"> </span><span class="mh">0xcd</span><span class="p">,</span><span class="w"> </span><span class="mh">0xab</span><span class="p">,</span><span class="w"> </span><span class="mh">0x89</span><span class="p">,</span><span class="w"> </span><span class="mh">0x67</span><span class="p">,</span><span class="w"> </span><span class="mh">0x45</span><span class="p">,</span><span class="w"> </span><span class="mh">0x23</span><span class="p">,</span><span class="w"> </span><span class="mh">0x01</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>When program the key into OTP, you should use the following commands. Take <code class="docutils literal notranslate"><span class="pre">NS_SHA_key2</span></code> as an example:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Efuse</span><span class="w"> </span><span class="n">wraw</span><span class="w"> </span><span class="mh">0x260</span><span class="w"> </span><span class="mi">20</span><span class="w"> </span><span class="n">ffeeddccbbaa99887766554433221100efcdab8967452301efcdab8967452301</span>
+</pre></div>
+</div>
+<p>The contents in OTP is:</p>
+<table class="docutils align-default" style="width: 100%">
+<tbody>
+<tr class="row-odd"><td><p>0x260</p></td>
+<td><p>ff</p></td>
+<td><p>ee</p></td>
+<td><p>dd</p></td>
+<td><p>cc</p></td>
+<td><p>bb</p></td>
+<td><p>aa</p></td>
+<td><p>99</p></td>
+<td><p>88</p></td>
+<td><p>77</p></td>
+<td><p>66</p></td>
+<td><p>55</p></td>
+<td><p>44</p></td>
+<td><p>33</p></td>
+<td><p>22</p></td>
+<td><p>11</p></td>
+<td><p>00</p></td>
+</tr>
+<tr class="row-even"><td><p>0x270</p></td>
+<td><p>ef</p></td>
+<td><p>cd</p></td>
+<td><p>ab</p></td>
+<td><p>89</p></td>
+<td><p>67</p></td>
+<td><p>45</p></td>
+<td><p>23</p></td>
+<td><p>01</p></td>
+<td><p>ef</p></td>
+<td><p>cd</p></td>
+<td><p>ab</p></td>
+<td><p>89</p></td>
+<td><p>67</p></td>
+<td><p>45</p></td>
+<td><p>23</p></td>
+<td><p>01</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="crypto-key-flash-procedure">
+<h2>Crypto Key Flash Procedure<a class="headerlink" href="#crypto-key-flash-procedure" title="Link to this heading"></a></h2>
+<p>The process of programming OTP physical map is as follows:</p>
+<ol class="arabic">
+<li><p>Generate key.</p></li>
+<li><p>Write into OTP physical map by command <code class="docutils literal notranslate"><span class="pre">Efuse</span> <span class="pre">wraw</span> <span class="pre">&lt;addr&gt;</span> <span class="pre">&lt;length&gt;</span> <span class="pre">&lt;content&gt;</span></code></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Efuse</span><span class="w"> </span><span class="n">wraw</span><span class="w"> </span><span class="mh">0x260</span><span class="w"> </span><span class="mi">20</span><span class="w"> </span><span class="mo">01234567</span><span class="mi">89</span><span class="n">abcdef0123456789abcdef00112233445566778899aabbccddeeff</span>
+</pre></div>
+</div>
+</li>
+<li><p>Use the following command read OTP key back to check if it is written correctly. If not match, re-write it.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Efuse</span><span class="w"> </span><span class="n">rraw</span>
+</pre></div>
+</div>
+</li>
+<li><p>Enable Key Read Protection and Write Protection to prevent key exposure and tampering after the written IPsec Key is confirmed.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Efuse</span><span class="w"> </span><span class="n">wraw</span><span class="w"> </span><span class="mh">0x366</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">F9</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>After read protection and write protection are programmed, the key can never be read out again. So you need to maintain the key pair carefully.</p>
+</div>
+</section>
+</section>
+<section id="usage">
+<h1>Usage<a class="headerlink" href="#usage" title="Link to this heading"></a></h1>
+<section id="starting-hardware-crypto-engine">
+<h2>Starting Hardware Crypto Engine<a class="headerlink" href="#starting-hardware-crypto-engine" title="Link to this heading"></a></h2>
+<p>The engine should be initialized before using it, the initialization APIs should be called before any calculation. The power of the engine will be turn off when the system enter low power status, so the settings will be rested. We suggest a new round initialization during resume.</p>
+</section>
+<section id="using-auto-loading-otp-key-from-otp">
+<h2>Using Auto-Loading OTP KEY from OTP<a class="headerlink" href="#using-auto-loading-otp-key-from-otp" title="Link to this heading"></a></h2>
+<ol class="arabic">
+<li><p>Initialize AES OTP key function:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">CRYPTO_OTPKey_Init</span><span class="p">(</span><span class="n">keynum</span><span class="p">,</span><span class="w"> </span><span class="n">ENABLE</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+<li><p>Initialize HMAC OTP key function:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">CRYPTO_OTPKey_SHA_Init</span><span class="p">(</span><span class="n">keynum</span><span class="p">,</span><span class="w"> </span><span class="n">ENABLE</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="starting-crypto-engine-calculation">
+<h2>Starting Crypto Engine Calculation<a class="headerlink" href="#starting-crypto-engine-calculation" title="Link to this heading"></a></h2>
+<p>Choose a hash or cipher algorithm, and call the following APIs to calculate the hash digest or cipher text.</p>
+<section id="hash-algorithm">
+<h3>Hash Algorithm<a class="headerlink" href="#hash-algorithm" title="Link to this heading"></a></h3>
+<p>If a hash algorithm is selected, and the message length doesn’t exceed 245745 bytes (15 * (214 -1)), Hash APIs (<code class="xref py py-func docutils literal notranslate"><span class="pre">rtl_crypto_xxx()</span></code>) can be used to calculate the digest.</p>
+<p>If the message length exceeds 245745 bytes (15 * (214 -1)) or we want to divide this message into many particular size blocks to process them, we could use Sequential Hash Mechanism to verify the hash function.</p>
+<p>Sequential hash breaks a whole long message into several piece of message payload, then calculate the payload in sequence, until the last message payload.</p>
+<p>When use sequential hash, you can follow the steps below:</p>
+<ol class="arabic simple">
+<li><p>Initialize sequential hash: use hash APIs (<code class="xref py py-func docutils literal notranslate"><span class="pre">rtl_crypto_xxx_init()</span></code>) to initialize.</p></li>
+<li><p>Handle each piece of message payload: call hash APIs (<code class="xref py py-func docutils literal notranslate"><span class="pre">rtl_crypto_xxx_update()</span></code>) once when one piece message payload.</p></li>
+<li><p>Handle the last piece of message payload: call hash APIs (<code class="xref py py-func docutils literal notranslate"><span class="pre">rtl_crypto_xxx_final()</span></code>) once when one piece message payload.</p></li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul>
+<li><p>Considering that the crypto engine moves data through DMA and bypasses the D-Cache, if the destination array is placed in stack and the start address is not 32-byte aligned, the cache line would be dirty during function call in some cases. To avoid reading wrong digest back, users should choose one of the following methods:</p>
+<blockquote>
+<div><ul>
+<li><p>The digest array is a global variable.</p></li>
+<li><p>Or the start address of digest array should be 32-byte aligned if it’s a local variable.</p></li>
+<li><p>Or call the following line to restore data from memory before reading digest when calculation is finished if it’s a local variable.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">DCache_Invalidate</span><span class="p">(((</span><span class="n">u32</span><span class="p">)</span><span class="n">digest</span><span class="o">&amp;</span><span class="n">CACHE_LINE_ADDR_MSK</span><span class="p">),(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">digest</span><span class="p">)</span><span class="o">+</span><span class="n">CACHE_LINE_SIZE</span><span class="p">));</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>After HP power gating, IPsec needs to initialize again to work normally.</p></li>
+<li><p>To prevent errors caused by multi-core access to crypto simultaneously, a lock is added before CRYPTO_OTPKey_Init, and the lock is released after crypto calculation.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/*take sema to obtain the right to crypto engine*/</span>
+<span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">IPC_SEMTake</span><span class="p">(</span><span class="n">IPC_SEM_CRYPTO</span><span class="p">,</span><span class="w"> </span><span class="n">timeout</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">_TRUE</span><span class="p">);</span>
+
+<span class="n">CRYPTO_OTPKey_SHA_Init</span><span class="p">(</span><span class="n">keynum</span><span class="p">,</span><span class="w"> </span><span class="n">status</span><span class="p">);</span>
+<span class="n">rtl_crypto_hmac_sha2_update</span><span class="p">(</span><span class="n">u8</span><span class="w"> </span><span class="o">*</span><span class="n">message</span><span class="p">,</span><span class="w"> </span><span class="n">IN</span><span class="w"> </span><span class="n">u32</span><span class="w"> </span><span class="n">msglen</span><span class="p">,</span><span class="w"> </span><span class="n">hw_sha_context</span><span class="w"> </span><span class="o">*</span><span class="n">ctx</span><span class="p">);</span>
+<span class="p">...</span>
+<span class="n">rtl_crypto_hmac_sha2_final</span><span class="p">(</span><span class="n">u8</span><span class="w"> </span><span class="o">*</span><span class="n">pDigest</span><span class="p">,</span><span class="w"> </span><span class="n">hw_sha_context</span><span class="w"> </span><span class="o">*</span><span class="n">ctx</span><span class="p">);</span>
+
+<span class="cm">/*free sema to release the right to crypto engine*/</span>
+<span class="n">IPC_SEMFree</span><span class="p">(</span><span class="n">IPC_SEM_CRYPTO</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+</section>
+<section id="cipher-algorithm">
+<h3>Cipher Algorithm<a class="headerlink" href="#cipher-algorithm" title="Link to this heading"></a></h3>
+<p>Steps to encrypt or decrypt message are as following:</p>
+<ol class="arabic">
+<li><p>Initialize</p>
+<p>Call Cipher APIs (<code class="xref py py-func docutils literal notranslate"><span class="pre">rtl_crypto_aes_xxx_init()</span></code>) to initialize.</p>
+</li>
+<li><p>Encrypt or decrypt the message</p>
+<ul class="simple">
+<li><p>Call Cipher APIs (<code class="xref py py-func docutils literal notranslate"><span class="pre">rtl_crypto_aes_xxx_encrypt()</span></code>) to encrypt source message.</p></li>
+<li><p>Call Cipher APIs (<code class="xref py py-func docutils literal notranslate"><span class="pre">rtl_crypto_aes_xxx_decrypt()</span></code>) to decrypt source message.</p></li>
+</ul>
+</li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul>
+<li><p>To prevent errors caused by multi-core access to crypto simultaneously, a lock is added before <code class="xref py py-func docutils literal notranslate"><span class="pre">CRYPTO_OTPKey_Init()</span></code>, and the lock is released after <code class="xref py py-func docutils literal notranslate"><span class="pre">rtl_crypto_aes_xxx_encrypt()</span></code> or <code class="xref py py-func docutils literal notranslate"><span class="pre">rtl_crypto_aes_xxx_decrypt()</span></code>.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/*take sema to obtain the right to crypto engine*/</span>
+<span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">IPC_SEMTake</span><span class="p">(</span><span class="n">IPC_SEM_CRYPTO</span><span class="p">,</span><span class="w"> </span><span class="n">timeout</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">_TRUE</span><span class="p">);</span>
+<span class="n">CRYPTO_OTPKey_Init</span><span class="p">(</span><span class="n">keynum</span><span class="p">,</span><span class="w"> </span><span class="n">status</span><span class="p">);</span>
+<span class="n">rtl_crypto_aes_xxx_encrypt</span><span class="p">(</span><span class="n">message</span><span class="p">,</span><span class="w"> </span><span class="n">msglen</span><span class="p">,</span><span class="w"> </span><span class="n">pIv</span><span class="p">,</span><span class="w"> </span><span class="n">ivlen</span><span class="p">,</span><span class="w"> </span><span class="n">pResult</span><span class="p">);</span>
+
+<span class="cm">/*free sema to release the right to crypto engine*/</span>
+<span class="n">IPC_SEMFree</span><span class="p">(</span><span class="n">IPC_SEM_CRYPTO</span><span class="p">);</span>
+
+<span class="cm">/*take sema to obtain the right to crypto engine*/</span>
+<span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">IPC_SEMTake</span><span class="p">(</span><span class="n">IPC_SEM_CRYPTO</span><span class="p">,</span><span class="w"> </span><span class="n">timeout</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">_TRUE</span><span class="p">);</span>
+<span class="n">CRYPTO_OTPKey_Init</span><span class="p">(</span><span class="n">keynum</span><span class="p">,</span><span class="w"> </span><span class="n">status</span><span class="p">);</span>
+<span class="n">rtl_crypto_aes_xxx_decrypt</span><span class="p">(</span><span class="n">message</span><span class="p">,</span><span class="w"> </span><span class="n">msglen</span><span class="p">,</span><span class="w"> </span><span class="n">pIv</span><span class="p">,</span><span class="w"> </span><span class="n">ivlen</span><span class="p">,</span><span class="w"> </span><span class="n">pResult</span><span class="p">);</span>
+
+<span class="cm">/*free sema to release the right to crypto engine*/</span>
+<span class="n">IPC_SEMFree</span><span class="p">(</span><span class="n">IPC_SEM_CRYPTO</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+</section>
+</section>
+</section>
+<section id="demo-code-path">
+<h1>Demo Code Path<a class="headerlink" href="#demo-code-path" title="Link to this heading"></a></h1>
+<p>The demo code of hardware crypto engine locates in <code class="docutils literal notranslate"><span class="pre">{SDK}/component/example/peripheral/raw/Crypto</span></code>.</p>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Hardware Crypto Engine" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../../otpc/src/index.html" class="btn btn-neutral float-right" title="One-time Programmable Controller (OTPC)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Realsil.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
