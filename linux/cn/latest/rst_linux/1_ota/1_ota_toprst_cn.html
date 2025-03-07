@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Overview &mdash; Ameba IoT Docs  文档</title>
+  <title>概览 &mdash; Ameba IoT Docs  文档</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
@@ -37,8 +37,8 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="索引" href="../../genindex.html" />
     <link rel="search" title="搜索" href="../../search.html" />
-    <link rel="next" title="One-time Programmable Controller (OTPC)" href="../1_otpc/0_otpc_index_cn.html" />
-    <link rel="prev" title="OTA Firmware Update" href="0_ota_index_cn.html" />
+    <link rel="next" title="一次性可编程控制器 （OTPC）" href="../1_otpc/0_otpc_index_cn.html" />
+    <link rel="prev" title="OTA 固件升级" href="0_ota_index_cn.html" />
    
 
   
@@ -95,25 +95,25 @@
 <li class="toctree-l1"><a class="reference internal" href="../0_debugging/0_debugging_index_cn.html">0.B 系统调试</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../1_boot_process/0_boot_index_cn.html">1.1 启动流程</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="0_ota_index_cn.html">1.2 固件在线升级（OTA）</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Overview</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#architecture">Architecture</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#partition-layout">Partition Layout</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#enable-slot-b-boot">Enable Slot B Boot</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">概览</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">架构</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id3">分区布局</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#b">启用B槽位启动</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#bcb-and-bootloader">BCB and Bootloader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#main-system">Main System</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#recovery-system">Recovery System</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#recovery-install-package-flow">Recovery Install Package Flow</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#recovery-factory-reset">Recovery Factory Reset</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#recovery-system-a-b-update">Recovery System A/B Update</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bcbbootloader">BCB与Bootloader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">主系统</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">恢复系统</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id6">恢复安装包流程</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id7">恢复出厂设置</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#a-b">恢复系统 A/B 更新</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#build-recovery-system">Build Recovery System</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#flash-recovery-image">Flash Recovery Image</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#setup-ota-environment-in-usb">Setup OTA Environment in USB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id8">编译恢复系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id9">烧录恢复固件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#usbota">在USB上设置OTA环境</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../1_otpc/0_otpc_index_cn.html">1.3 OTP 存储器</a></li>
@@ -158,8 +158,8 @@
           <div role="navigation" aria-label="页面导航">
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="0_ota_index_cn.html">OTA Firmware Update</a></li>
-      <li class="breadcrumb-item active">Overview</li>
+          <li class="breadcrumb-item"><a href="0_ota_index_cn.html">OTA 固件升级</a></li>
+      <li class="breadcrumb-item active">概览</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -168,96 +168,90 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="overview">
-<span id="ota-firmware-update"></span><h1>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h1>
-<p>The over-the-air (OTA) programming provides a methodology for updating device firmware from various sources (e.g., via USB disk or TCP/IP network). Currently, we provides a solution to implement OTA firmware upgrade from USB disk. Users can refer to the USB upgrade solution to easily implement their own OTA solutions.</p>
+  <section id="ota-firmware-update">
+<span id="id1"></span><h1>概览<a class="headerlink" href="#ota-firmware-update" title="Link to this heading"></a></h1>
+<p>在线下载（OTA）编程提供了一种从各种来源（例如，通过USB磁盘或TCP/IP网络）更新设备firmware的方法。目前，我们提供了一种通过USB磁盘实现OTA firmware升级的解决方案。用户可以参考USB升级解决方案，轻松实现自己的OTA解决方案。</p>
 </section>
-<section id="architecture">
-<h1>Architecture<a class="headerlink" href="#architecture" title="Link to this heading"></a></h1>
-<p>The OTA firmware upgrade is achieved by the following system modules:</p>
-<p><strong>Main System</strong></p>
-<p>The main system is the normal Linux system running user’s application. Normally it’s responsible for a new OTA package detected from a remote server or USB disk and downloading the OTA packages to a local storage. After detecting and verifying the OTA package, the main system will set the upgrade information in BCB (Bootloader Message Control Block) and reboot the system to notify the bootloader to boot up the system to a recovery system.</p>
-<p><strong>Recovery System</strong></p>
-<p>The recovery system is a minimum Linux system. It’s responsible for upgrading firmware according to specific OTA packages indicated by main system, it will upgrade OTA packages to the device. After upgrading, the recovery system will clear the information in BCB (Bootloader message Control Block) and reboot the system to notify bootloader to boot up to a new main system.</p>
-<p><strong>Bootloader and BCB</strong></p>
-<p>The BCB is the bootloader message control block, which is a structure shared by main system and recovery system, and a bridge between main system and recovery system. It can store the information whether to enter main system or not, and when upgrading OTA according to a specific path, OTA packages path will be set in BCB too. When system boots, bootloader will read the content of BCB, and determine to enter main system or recovery system.</p>
-<p>The relationship among the three modules is shown below.</p>
-<figure class="align-center" id="id1">
+<section id="id2">
+<h1>架构<a class="headerlink" href="#id2" title="Link to this heading"></a></h1>
+<p>OTA firmware升级通过以下系统模块实现：</p>
+<p><strong>主系统</strong></p>
+<p>主系统是运行用户应用程序的普通Linux系统。通常，它负责检测来自远程服务器或USB磁盘的新OTA包，并将OTA包下载到本地存储。在检测到并验证OTA包之后，主系统会在BCB（bootloader消息控制块）中设置升级信息，并重新启动系统，以通知bootloader将系统启动到恢复系统。</p>
+<p><strong>恢复系统</strong></p>
+<p>恢复系统是一个最小化的Linux系统。它负责根据主系统指定的特定OTA包来升级firmware，将OTA包升级到设备。升级完成后，恢复系统会清除BCB（bootloader消息控制块）中的信息，并重新启动系统，以通知bootloader启动到新的主系统。</p>
+<p><strong>引导加载程序（bootloader）和BCB</strong></p>
+<p>BCB是bootloader消息控制块，是主系统和恢复系统共享的结构，也是主系统和恢复系统之间的桥梁。它可以存储是否进入主系统的信息，并在根据特定路径进行OTA升级时，将OTA包的路径也设置在BCB中。系统启动时，bootloader会读取BCB的内容，进而决定进入主系统还是恢复系统。</p>
+<p>三个模块之间的关系如下图所示。</p>
+<figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/whole_relationship.svg"><img alt="../../_images/whole_relationship.svg" height="136" src="../../_images/whole_relationship.svg" width="378" /></a>
-<figcaption>
-<p><span class="caption-text">Whole system relationship</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
-</figcaption>
 </figure>
-<section id="partition-layout">
-<h2>Partition Layout<a class="headerlink" href="#partition-layout" title="Link to this heading"></a></h2>
-<p>The partition layout is listed in the figure shown below</p>
-<figure class="align-center" id="id2">
+<section id="id3">
+<h2>分区布局<a class="headerlink" href="#id3" title="Link to this heading"></a></h2>
+<p>分区布局如下图所列。</p>
+<figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/partition_layout.svg"><img alt="../../_images/partition_layout.svg" height="137" src="../../_images/partition_layout.svg" width="1032" /></a>
-<figcaption>
-<p><span class="caption-text">Partition layout</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
-</figcaption>
 </figure>
-<p>All the images except rootfs and userdata image have A/B partitions.</p>
+<p>除rootfs和userdata固件外，所有固件都有A/B分区。</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">Linux</span> <span class="pre">dtb</span> <span class="pre">image</span> <span class="pre">B</span></code> is the partition for recovery dtb image.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">Linux</span> <span class="pre">kernel</span> <span class="pre">image</span> <span class="pre">B</span></code> is the partition for recovery kernel image.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">Linux</span> <span class="pre">vbmeta</span> <span class="pre">image</span> <span class="pre">B</span></code> is the partition for secure recovery vbmeta image.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Linux</span> <span class="pre">dtb</span> <span class="pre">image</span> <span class="pre">B</span></code> 是用于恢复设备树固件的分区。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Linux</span> <span class="pre">kernel</span> <span class="pre">image</span> <span class="pre">B</span></code> 是用于恢复内核固件的分区。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Linux</span> <span class="pre">vbmeta</span> <span class="pre">image</span> <span class="pre">B</span></code> 是用于安全恢复vbmeta固件的分区。</p></li>
 </ul>
-<p>The images below can be updated via OTA. Currently only km4_boot_all, km0_km4_app and boot support A/B slot update.</p>
+<p>下面的固件可以通过OTA更新。目前只有km4_boot_all、km0_km4_app和boot支持A/B槽位更新。</p>
 <table class="docutils align-default" style="width: 100%">
 <thead>
-<tr class="row-odd"><th class="head"><p>Image name</p></th>
-<th class="head"><p>Description</p></th>
-<th class="head"><p>Support A/B update?</p></th>
+<tr class="row-odd"><th class="head"><p>固件名</p></th>
+<th class="head"><p>描述</p></th>
+<th class="head"><p>支持 A/B 更新？</p></th>
 </tr>
 </thead>
 <tbody>
 <tr class="row-even"><td><p>km4_boot_all</p></td>
-<td><p>Boot firmware</p></td>
+<td><p>启动 firmware</p></td>
 <td><p>√</p></td>
 </tr>
 <tr class="row-odd"><td><p>km0_km4_app</p></td>
-<td><p>Wi-Fi/BT firmware</p></td>
+<td><p>Wi-Fi/蓝牙 firmware</p></td>
 <td><p>√</p></td>
 </tr>
 <tr class="row-even"><td><p>boot</p></td>
-<td><p>Linux boot image</p></td>
+<td><p>Linux 启动固件</p></td>
 <td><p>√</p></td>
 </tr>
 <tr class="row-odd"><td><p>vbmeta</p></td>
-<td><p>Linux vbmeta image</p></td>
+<td><p>Linux vbmeta 固件</p></td>
 <td><p>x</p></td>
 </tr>
 <tr class="row-even"><td><p>dtb</p></td>
-<td><p>Linux device tree blob image</p></td>
+<td><p>Linux 设备树固件</p></td>
 <td><p>x</p></td>
 </tr>
 <tr class="row-odd"><td><p>kernel</p></td>
-<td><p>Linux kernel image</p></td>
+<td><p>Linux 内核固件</p></td>
 <td><p>x</p></td>
 </tr>
 <tr class="row-even"><td><p>rootfs</p></td>
-<td><p>Linux rootfs image</p></td>
+<td><p>Linux 根文件系统固件</p></td>
 <td><p>x</p></td>
 </tr>
 <tr class="row-odd"><td><p>userdata</p></td>
-<td><p>Linux user data image</p></td>
+<td><p>Linux 用户数据固件</p></td>
 <td><p>x</p></td>
 </tr>
 </tbody>
 </table>
-<section id="enable-slot-b-boot">
-<h3>Enable Slot B Boot<a class="headerlink" href="#enable-slot-b-boot" title="Link to this heading"></a></h3>
-<p>If user needs to enable boot from slot B. It needs to write bootloader slot B address into OTP which sets slot B address to 0x08300000. When boards boots up, executes the following command to OTP.</p>
+<section id="b">
+<h3>启用B槽位启动<a class="headerlink" href="#b" title="Link to this heading"></a></h3>
+<p>如果用户需要启用从槽位B启动，则需要将bootloader槽位B地址写入OTP，将槽位B地址设置为0x08300000。板子启动时，执行以下命令到OTP。</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#  efuse wraw 36C 2 0083</span>
 </pre></div>
 </div>
-<p>When both slot A and slot B are all flashed, system will check to determine which slot to boot from. The general principle is to compare version number of both slots to check which slot has a bigger version.</p>
+<p>当槽位A和槽位B都被刷写时，系统会检测以确定从哪个槽位启动。一般原则是比较两个槽位的版本号，以检查哪个槽位的版本更高。</p>
 </section>
 </section>
-<section id="bcb-and-bootloader">
-<h2>BCB and Bootloader<a class="headerlink" href="#bcb-and-bootloader" title="Link to this heading"></a></h2>
-<p>The main structure of BCB is structure bootloader_message.</p>
+<section id="bcbbootloader">
+<h2>BCB与Bootloader<a class="headerlink" href="#bcbbootloader" title="Link to this heading"></a></h2>
+<p>BCB的主要结构是结构体bootloader_message。</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">//Bootloader Message (2KB)</span>
 <span class="k">struct</span><span class="w"> </span><span class="nc">bootloader_message</span><span class="w"> </span><span class="p">{</span>
 <span class="w">   </span><span class="kt">char</span><span class="w"> </span><span class="n">cmd</span><span class="p">[</span><span class="mi">32</span><span class="p">];</span>
@@ -268,140 +262,119 @@
 <span class="p">};</span>
 </pre></div>
 </div>
-<p>Only <code class="docutils literal notranslate"><span class="pre">cmd</span></code> and <code class="docutils literal notranslate"><span class="pre">recovery</span></code> members are used.</p>
+<p>其中只有 <em>cmd</em> 与 <em>recovery</em> 成员被使用到。</p>
 <ul class="simple">
-<li><p>The member <code class="docutils literal notranslate"><span class="pre">cmd</span></code> indicates whether the board enters recovery system or main system. If it is set to <code class="docutils literal notranslate"><span class="pre">boot-recovery</span></code>, the board will enter recovery system when boots. Otherwise, the board will enter main system. The member will be reset when exiting recovery system.</p></li>
-<li><p>The member <code class="docutils literal notranslate"><span class="pre">recovery</span></code> stores the OTA path, the member will be set in main system when there is a new OTA package available.</p></li>
-<li><p>The <code class="docutils literal notranslate"><span class="pre">status</span></code> is used to store the recovery status later, and reserved is planned to use for store recovery log.</p></li>
+<li><p>成员 <em>cmd</em> 指示板子是进入恢复系统还是主系统。如果设置为 <em>boot-recovery</em> ，则板子启动时将进入恢复系统。否则，板子将进入主系统。退出恢复系统时，该成员将被重置。</p></li>
+<li><p>成员 <em>recovery</em> 用于存储OTA路径，当有新的OTA包可用时，该成员将在主系统中被设置。</p></li>
+<li><p>成员 <em>status</em> 用于存储后续的恢复状态，而 <em>reserved</em> 计划用于存储恢复日志。</p></li>
 </ul>
-<p>OTA from USB solution, only <code class="docutils literal notranslate"><span class="pre">cmd</span></code> of BCB is used to indicate bootloader to enter main system or recovery system. Other members of BCB are not used.</p>
+<p>通过USB进行OTA更新的方案中，仅使用BCB的 <em>cmd</em> 来指示bootloader进入主系统或恢复系统。BCB的其他成员未被使用。</p>
 </section>
-<section id="main-system">
-<h2>Main System<a class="headerlink" href="#main-system" title="Link to this heading"></a></h2>
-<p>The flow of main system is shown in the figure below. An OTA solution from USB disk is provided for reference, this solution realizes OTA update from USB disk detection to GUI. GUI can receive OTA version callback when new OTA version is available in USB disk, GUI can determine whether to update this OTA version or not. If no GUI exist, main system will set BCB and reboot to enter recovery system automatically if new OTA version is detected in USB disk.</p>
-<figure class="align-center" id="id3">
+<section id="id4">
+<h2>主系统<a class="headerlink" href="#id4" title="Link to this heading"></a></h2>
+<p>主系统的流程如下面的图所示。提供了一种从U盘进行OTA更新的解决方案作为参考，该方案实现了从检测到U盘开始到图形用户界面的OTA更新。当U盘中有新的OTA版本时，GUI可以接收到OTA版本的回调，GUI可以决定是否更新此OTA版本。如果没有图形用户界面存在，当检测到U盘中有新的OTA版本时，主系统将设置BCB并重启以自动进入恢复系统。</p>
+<figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/main_ota_flow.svg"><img alt="../../_images/main_ota_flow.svg" height="205" src="../../_images/main_ota_flow.svg" width="341" /></a>
-<figcaption>
-<p><span class="caption-text">Main system OTA flow</span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
-</figcaption>
 </figure>
-<p>The OTA flow of main system is shown in the figure below. The OTA reference implementation in main system includes a recovery daemon:</p>
-<p>Recovery daemon: It will detect whether any U-disk is connected with the board. If yes, it will try to read the OTA package from U-disck, if the OTA package exists, it will setup BCB and reboot board to notify bootloader to enter recovery system.</p>
-<figure class="align-center" id="id4">
+<p>主系统的OTA流程如下面的图所示。主系统中的OTA参考实现包含一个恢复守护进程：</p>
+<p>恢复守护进程：它将检测是否有U盘连接到板子。如果是，它将尝试从U盘读取OTA包，如果OTA包存在，它将设置BCB并重启板子，以通知bootloader进入恢复系统。</p>
+<figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/main_ota_arch.svg"><img alt="../../_images/main_ota_arch.svg" height="121" src="../../_images/main_ota_arch.svg" width="133" /></a>
-<figcaption>
-<p><span class="caption-text">Main system OTA Architecture</span><a class="headerlink" href="#id4" title="Link to this image"></a></p>
-</figcaption>
 </figure>
-<p>The flow of USB OTA solution is shown in the figure below. Storage service will detect USB hot plug, then notify OTA service. OTA service will check whether OTA package is available in specific directory. If OTA package is available, OTA service will notify OTA GUI if OTA GUI exists, and then set up BCB via recovery service APIs (OTA service will call recovery service APIs directly if no OTA GUI exists). When BCB is set successfully, recovery service will reboot the board to enter recovery system.</p>
-<figure class="align-center" id="id5">
+<p>USB OTA解决方案的流程如下面的图所示。存储服务将检测USB热插拔，并通知OTA服务。OTA服务会检查特定目录中是否有可用的OTA包。如果有可用的OTA包，OTA服务会通知OTA GUI（如果OTA GUI存在），然后通过恢复服务API设置BCB（如果不存在OTA GUI，OTA服务将直接调用恢复服务API）。当BCB设置成功后，恢复服务将重启板子以进入恢复系统。</p>
+<figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/usb_ota_flow.svg"><img alt="../../_images/usb_ota_flow.svg" height="352" src="../../_images/usb_ota_flow.svg" width="455" /></a>
-<figcaption>
-<p><span class="caption-text">USB OTA flow</span><a class="headerlink" href="#id5" title="Link to this image"></a></p>
-</figcaption>
 </figure>
 </section>
-<section id="recovery-system">
-<h2>Recovery System<a class="headerlink" href="#recovery-system" title="Link to this heading"></a></h2>
-<p>The flow of recovery is shown in the figure below. In USB OTA solution, recovery will get USB hot plug callback from kernel, detect OTA package in specific directory in USB disk, currently the OTA directory is <code class="docutils literal notranslate"><span class="pre">ota</span></code> folder under USB root directory (this will be introduced in later section). If <code class="docutils literal notranslate"><span class="pre">ota</span></code> folder exists and OTA package is detected under <code class="docutils literal notranslate"><span class="pre">ota</span></code> folder, recovery will update this OTA package first. If no USB is plugged to the board, recovery will get the OTA package path from BCB, then upgrade from the package path. After upgrade, recovery will clear BCB, and reboot to main system.</p>
-<figure class="align-center" id="id6">
+<section id="id5">
+<h2>恢复系统<a class="headerlink" href="#id5" title="Link to this heading"></a></h2>
+<p>恢复流程如下面的图所示。在USB OTA解决方案中，恢复过程将从内核获取USB热插拔回调，并在USB盘的特定目录中检测OTA包，目前OTA目录是USB根目录下的 <code class="docutils literal notranslate"><span class="pre">ota</span></code> 文件夹（将在后续部分介绍）。如果 <code class="docutils literal notranslate"><span class="pre">ota</span></code> 文件夹存在且其中检测到OTA包，恢复过程将优先更新此OTA包。如果没有USB连接到板子上，恢复过程将从BCB获取OTA包路径，然后从该路径进行升级。升级完成后，恢复过程将清除BCB，并重启进入主系统。</p>
+<figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/recovery_flow.svg"><img alt="../../_images/recovery_flow.svg" height="322" src="../../_images/recovery_flow.svg" width="193" /></a>
-<figcaption>
-<p><span class="caption-text">Recovery flow</span><a class="headerlink" href="#id6" title="Link to this image"></a></p>
-</figcaption>
 </figure>
-<section id="recovery-install-package-flow">
-<h3>Recovery Install Package Flow<a class="headerlink" href="#recovery-install-package-flow" title="Link to this heading"></a></h3>
-<p>In USB OTA solution, when main system detects USB plugged, it will set up BCB and reboot to recovery system. The recovery system will load the partition table, get USB path from kernel, parse configure file (<code class="file docutils literal notranslate"><span class="pre">flash_image.cfg</span></code>, configure file will be introduced in later section) and upgrade according to configure file from USB. The upgrade flow of recovery is listed in the figure below.</p>
-<figure class="align-center" id="id7">
+<section id="id6">
+<h3>恢复安装包流程<a class="headerlink" href="#id6" title="Link to this heading"></a></h3>
+<p>在USB OTA解决方案中，当主系统检测到USB插入时，它将设置BCB并重启进入恢复系统。恢复系统将加载分区表，从内核获取USB路径，解析配置文件（<code class="file docutils literal notranslate"><span class="pre">flash_image.cfg</span></code>，配置文件将在后续部分介绍），并根据USB上的配置文件进行升级。恢复的升级流程如下面的图所示。</p>
+<figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/package_installation_flow.svg"><img alt="../../_images/package_installation_flow.svg" height="427" src="../../_images/package_installation_flow.svg" width="607" /></a>
-<figcaption>
-<p><span class="caption-text">Package installation flow</span><a class="headerlink" href="#id7" title="Link to this image"></a></p>
-</figcaption>
 </figure>
 </section>
-<section id="recovery-factory-reset">
-<h3>Recovery Factory Reset<a class="headerlink" href="#recovery-factory-reset" title="Link to this heading"></a></h3>
-<p>Recovery also provides factory reset function, factory reset is only to reset userdata partition.</p>
-<p>When main system calls the corresponding API to factory reset, board will enter to recovery system, the flow of factory reset can refer to figure below.</p>
-<p>In NAND flash, rootfs and userdata adopt UBI file system while in NOR flash rootfs uses squashfs, userdata uses jffs2, so wipe out userdata is deferent in NAND and NOR flash.</p>
-<figure class="align-center" id="id8">
+<section id="id7">
+<h3>恢复出厂设置<a class="headerlink" href="#id7" title="Link to this heading"></a></h3>
+<p>恢复系统还提供了出厂重置功能，出厂重置仅用于重置用户数据分区。</p>
+<p>当主系统调用相应的API进行出厂重置时，板子将进入恢复系统，出厂重置的流程可以参考下面的图示。</p>
+<p>在NAND闪存中，rootfs和userdata采用UBI文件系统，而在NOR闪存中，rootfs使用squashfs，userdata使用jffs2，因此清除userdata在NAND和NOR闪存中有所不同。</p>
+<figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/recovery_factory_reset.svg"><img alt="../../_images/recovery_factory_reset.svg" height="456" src="../../_images/recovery_factory_reset.svg" width="555" /></a>
-<figcaption>
-<p><span class="caption-text">Recovery factory reset</span><a class="headerlink" href="#id8" title="Link to this image"></a></p>
-</figcaption>
 </figure>
 </section>
-<section id="recovery-system-a-b-update">
-<h3>Recovery System A/B Update<a class="headerlink" href="#recovery-system-a-b-update" title="Link to this heading"></a></h3>
-<p>In order to prevent system crashes, A/B slot update applies in boot firmware image, Wi-Fi/BT image and Linux boot image.</p>
-<p>The information of A/B partitions is described in upper memory layout.</p>
-<p>When board enters recovery system, if the three images above need to be upgraded, recovery system will get current slot info from Linux driver and then updates OTA packages to another slot.</p>
+<section id="a-b">
+<h3>恢复系统 A/B 更新<a class="headerlink" href="#a-b" title="Link to this heading"></a></h3>
+<p>为了防止系统崩溃，A/B槽位更新用于引导firmware固件、Wi-Fi/蓝牙固件和Linux引导固件。</p>
+<p>A/B 分区的信息在上层内存布局中有所描述。</p>
+<p>当板子进入恢复系统时，如果上述三个固件需要升级，恢复系统会从 Linux 驱动获取当前槽位信息，然后将 OTA 包更新到另一个槽位。</p>
 </section>
 </section>
 </section>
-<section id="build-recovery-system">
-<h1>Build Recovery System<a class="headerlink" href="#build-recovery-system" title="Link to this heading"></a></h1>
-<p>Recovery system kernel configuration is defined in <code class="docutils literal notranslate"><span class="pre">&lt;sdk&gt;/sources/yocto/meta-realtek/meta-realtek-bsp/recipes-kernel/linux-ameba_5.4.bb</span></code>.</p>
+<section id="id8">
+<h1>编译恢复系统<a class="headerlink" href="#id8" title="Link to this heading"></a></h1>
+<p>恢复系统内核配置在 <code class="docutils literal notranslate"><span class="pre">&lt;sdk&gt;/sources/yocto/meta-realtek/meta-realtek-bsp/recipes-kernel/linux</span></code> 目录中定义，kernel-5.4 对应的是 <code class="docutils literal notranslate"><span class="pre">linux-ameba_5.4.bb</span></code> ，而 kernel-6.6 对应的是 <code class="docutils literal notranslate"><span class="pre">linux-ameba_6.6.bb</span></code> 。</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>KBUILD_DEFCONFIG:rtl8730elh-recovery?= &quot;rtl8730elh_recovery_defconfig&quot;
 </pre></div>
 </div>
-<p>Recovery system has its own dtb and kernel images. Recovery images can be generated independently by the following commands:</p>
+<p>恢复系统具有自己的设备树和内核固件。可以通过以下命令独立生成恢复固件：</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">source</span> <span class="n">envsetup</span><span class="o">.</span><span class="n">sh</span> <span class="o">-</span><span class="n">m</span> <span class="n">rtl8730elh</span><span class="o">-</span><span class="n">recovery</span> <span class="o">-</span><span class="n">d</span> <span class="n">poky</span> <span class="o">-</span><span class="n">b</span> <span class="o">&lt;</span><span class="n">recovery</span> <span class="n">out</span><span class="o">&gt;</span>
 <span class="n">mrecovery</span>
 </pre></div>
 </div>
-<p>Recovery images including dtb and kernel images will be generated under <code class="docutils literal notranslate"><span class="pre">&lt;recovery</span> <span class="pre">out&gt;/tmp/deploy/images/rtl8730elh-recovery</span></code> folder.</p>
+<p>包括设备树和内核固件的恢复固件将在 <code class="docutils literal notranslate"><span class="pre">&lt;recovery</span> <span class="pre">out&gt;/tmp/deploy/images/rtl8730elh-recovery</span></code> 文件夹下生成。</p>
 <table class="docutils align-default" style="width: 100%">
 <thead>
-<tr class="row-odd"><th class="head"><p>Image name</p></th>
-<th class="head"><p>Description</p></th>
+<tr class="row-odd"><th class="head"><p>固件名</p></th>
+<th class="head"><p>描述</p></th>
 </tr>
 </thead>
 <tbody>
 <tr class="row-even"><td><p><code class="file docutils literal notranslate"><span class="pre">rtl8730elh-va7-recovery.dtb/rtl8730elh-va8-recovery.dtb</span></code></p></td>
-<td><p>Recovery device tree blob image</p></td>
+<td><p>恢复设备树 blob 固件</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="file docutils literal notranslate"><span class="pre">uImage-initramfs-rtl8730elh-recovery.bin</span></code></p></td>
-<td><p>Recovery linux kernel and rootfs image</p></td>
+<td><p>恢复 linux 内核与根文件系统固件</p></td>
 </tr>
 </tbody>
 </table>
 </section>
-<section id="flash-recovery-image">
-<h1>Flash Recovery Image<a class="headerlink" href="#flash-recovery-image" title="Link to this heading"></a></h1>
-<p>This section shows how to flash recovery images to board individually.</p>
+<section id="id9">
+<h1>烧录恢复固件<a class="headerlink" href="#id9" title="Link to this heading"></a></h1>
+<p>本节介绍如何单独将恢复固件烧录到开发板上。</p>
 <ol class="arabic simple">
-<li><p>The board needs to enter normal flash mode, then open the ImageTool, and load the layout including recovery in ImageTool under <code class="docutils literal notranslate"><span class="pre">tools/image_tool</span></code> which is shown in the figure below.</p></li>
-<li><p>Load <code class="file docutils literal notranslate"><span class="pre">XXXX_Linux_NAND_128MB.rdev</span></code> or <code class="file docutils literal notranslate"><span class="pre">XXXX_Linux_NAND_256MB.rdev</span></code> for NAND flash, <code class="file docutils literal notranslate"><span class="pre">XXXX_Linux_NOR_32MB.rdev</span></code> for NOR flash.</p></li>
+<li><p>开发板需要进入正常的烧录模式，然后打开 ImageTool，并在 <code class="docutils literal notranslate"><span class="pre">tools/image_tool</span></code> 下加载包含恢复信息的布局，如下图所示。</p></li>
+<li><p>对NAND闪存，载入 <code class="file docutils literal notranslate"><span class="pre">XXXX_Linux_NAND_128MB.rdev</span></code> 或者 <code class="file docutils literal notranslate"><span class="pre">XXXX_Linux_NAND_256MB.rdev</span></code> ，对NOR闪存，载入 <code class="file docutils literal notranslate"><span class="pre">XXXX_Linux_NOR_32MB.rdev</span></code> 。</p></li>
 </ol>
-<p>Flash recovery images is shown in the figure below.</p>
-<figure class="align-center" id="id9">
+<p>烧录恢复固件的步骤如下图所示。</p>
+<figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/flash_recovery_image.png"><img alt="../../_images/flash_recovery_image.png" src="../../_images/flash_recovery_image.png" style="width: 1272.0px; height: 820.0px;" /></a>
-<figcaption>
-<p><span class="caption-text">Flash recovery image</span><a class="headerlink" href="#id9" title="Link to this image"></a></p>
-</figcaption>
 </figure>
 <div class="admonition note">
 <p class="admonition-title">备注</p>
-<p>Recovery images need to update unless recovery images have been updated, otherwise flash once is OK.</p>
+<p>恢复固件需要更新，除非已经更新过恢复固件，否则只需烧录一次即可。</p>
 </div>
 </section>
-<section id="setup-ota-environment-in-usb">
-<h1>Setup OTA Environment in USB<a class="headerlink" href="#setup-ota-environment-in-usb" title="Link to this heading"></a></h1>
-<p>For USB OTA upgrade, current SDK OTA supports images and compressed gz file in USB. No matter images or gz file, it will be put under <code class="docutils literal notranslate"><span class="pre">ota</span></code> folder in USB root directory.</p>
+<section id="usbota">
+<h1>在USB上设置OTA环境<a class="headerlink" href="#usbota" title="Link to this heading"></a></h1>
+<p>对于 USB OTA 升级，当前的 SDK OTA 支持 USB 中的固件文件和压缩的 gz 文件。无论是固件文件还是 gz 文件，都应该放在 USB 根目录下的 <code class="docutils literal notranslate"><span class="pre">ota</span></code> 文件夹中。</p>
 <div class="admonition note">
 <p class="admonition-title">备注</p>
-<p>In Yocto project, dtb images (such as <code class="file docutils literal notranslate"><span class="pre">rtl8730elh-va8-generic.dtb</span></code> / <code class="file docutils literal notranslate"><span class="pre">rtl8730elh-va8-full.dtb</span></code>) should rename to <code class="file docutils literal notranslate"><span class="pre">dtb.img</span></code> for OTA.</p>
+<p>在 Yocto 项目中，设备树固件（例如：<code class="file docutils literal notranslate"><span class="pre">rtl8730elh-va8-generic.dtb`</span></code> / <code class="file docutils literal notranslate"><span class="pre">rtl8730elh-va8-full.dtb</span></code>）应重命名为 <code class="file docutils literal notranslate"><span class="pre">dtb.img</span></code> 以用于 OTA。</p>
 </div>
-<p>For gz package, its name must be <code class="file docutils literal notranslate"><span class="pre">updater.tar.gz</span></code>, and need to generate when all the images compile successful, such as: tar -czvf updater.tar.gz, boot.img, dtb.img, kernel.img, rootfs.img, userdata.img, flash_image.cfg, <code class="file docutils literal notranslate"><span class="pre">flash_image.cfg</span></code> is the configure file and mandatory for OTA update, it will be described in later sections.</p>
-<p>Setup USB OTA environment in Windows:</p>
+<p>对于 gz 压缩包，其名称必须为 <code class="file docutils literal notranslate"><span class="pre">updater.tar.gz</span></code>，并且需要在所有固件编译成功后生成，例如：<em>tar -czvf updater.tar.gz boot.img dtb.img kernel.img rootfs.img userdata.img flash_image.cfg</em>。文件 <code class="file docutils literal notranslate"><span class="pre">flash_image.cfg</span></code> 是配置文件，是进行 OTA 更新所必需的，具体内容将在后面的章节中描述。</p>
+<p>在 Windows 上设置 USB OTA 环境：</p>
 <ol class="arabic simple">
-<li><p>Create an ota folder in USB root directory</p></li>
-<li><p>Put the images need to flash and the configure file (<code class="file docutils literal notranslate"><span class="pre">flash_image.cfg</span></code>) to OTA directory. For example, if user wants to update Linux boot image, Linux kernel image, Linux dtb image, Linux roofs image, put <code class="file docutils literal notranslate"><span class="pre">boot.img</span></code>, <code class="file docutils literal notranslate"><span class="pre">dtb.img</span></code>, <code class="file docutils literal notranslate"><span class="pre">kernel.img</span></code>, <code class="file docutils literal notranslate"><span class="pre">rootfs.img</span></code> and <code class="file docutils literal notranslate"><span class="pre">flash_image.cfg</span></code> under USB <code class="docutils literal notranslate"><span class="pre">ota</span></code> folder.</p></li>
-<li><p>Modify the <code class="file docutils literal notranslate"><span class="pre">flash_image.cfg</span></code> file to flash the images you need. Developers only need to modify the <code class="docutils literal notranslate"><span class="pre">flash_type</span></code> section to enable/disable flashing the corresponding image, flash the image if the <code class="docutils literal notranslate"><span class="pre">flash_type</span></code> is set to 1, don’t flash the image is the section is set to 0. In the picture below, <code class="file docutils literal notranslate"><span class="pre">boot.img</span></code> / <code class="file docutils literal notranslate"><span class="pre">dtb.img</span></code> / <code class="file docutils literal notranslate"><span class="pre">kernel.img</span></code> / <code class="file docutils literal notranslate"><span class="pre">rootfs.img</span></code> will be flashed to board. The others will not be flashed.</p></li>
+<li><p>在 USB 根目录中创建一个名为 ota 的文件夹。</p></li>
+<li><p>将需要刷写的固件文件和配置文件（<code class="file docutils literal notranslate"><span class="pre">flash_image.cfg</span></code>）放入 OTA 目录。例如，如果用户想要更新 Linux 引导固件、Linux 内核固件、Linux dtb 固件和 Linux 根文件系统固件，则将 <code class="file docutils literal notranslate"><span class="pre">boot.img</span></code> 、<code class="file docutils literal notranslate"><span class="pre">dtb.img</span></code> 、<code class="file docutils literal notranslate"><span class="pre">kernel.img</span></code> 、<code class="file docutils literal notranslate"><span class="pre">rootfs.img</span></code> 和 <code class="file docutils literal notranslate"><span class="pre">flash_image.cfg</span></code> 放在 USB 的 <code class="docutils literal notranslate"><span class="pre">ota</span></code> 文件夹中。</p></li>
+<li><p>修改 <code class="file docutils literal notranslate"><span class="pre">flash_image.cfg</span></code> 文件以刷写所需的固件。开发者只需修改 <code class="docutils literal notranslate"><span class="pre">flash_type</span></code> 部分来启用或禁用对应固件的刷写。如果 <code class="docutils literal notranslate"><span class="pre">flash_type</span></code> 设置为 1，则刷写该固件；如果设置为 0，则不刷写。在下图中，<code class="file docutils literal notranslate"><span class="pre">boot.img</span></code> 、<code class="file docutils literal notranslate"><span class="pre">dtb.img</span></code> 、<code class="file docutils literal notranslate"><span class="pre">kernel.img</span></code> 、<code class="file docutils literal notranslate"><span class="pre">rootfs.img</span></code> 将会被刷写到板子上，其他的则不会被刷写。</p></li>
 </ol>
-<p>An example is shown below:</p>
+<p>下面所列为一个示例：</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
    <span class="s2">&quot;skip_md5_check&quot;</span> <span class="p">:</span> <span class="s2">&quot;1&quot;</span><span class="p">,</span>
    <span class="s2">&quot;images&quot;</span> <span class="p">:</span> <span class="p">[{</span>
@@ -447,8 +420,8 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
-        <a href="0_ota_index_cn.html" class="btn btn-neutral float-left" title="OTA Firmware Update" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
-        <a href="../1_otpc/0_otpc_index_cn.html" class="btn btn-neutral float-right" title="One-time Programmable Controller (OTPC)" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="0_ota_index_cn.html" class="btn btn-neutral float-left" title="OTA 固件升级" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="../1_otpc/0_otpc_index_cn.html" class="btn btn-neutral float-right" title="一次性可编程控制器 （OTPC）" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

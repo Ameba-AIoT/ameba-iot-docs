@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Introduction &mdash; Ameba IoT Docs  文档</title>
+  <title>介绍 &mdash; Ameba IoT Docs  文档</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
@@ -38,7 +38,7 @@
     <link rel="index" title="索引" href="../../genindex.html" />
     <link rel="search" title="搜索" href="../../search.html" />
     <link rel="next" title="闪存" href="../1_flash/0_flash_index_cn.html" />
-    <link rel="prev" title="One-time Programmable Controller (OTPC)" href="0_otpc_index_cn.html" />
+    <link rel="prev" title="一次性可编程控制器 （OTPC）" href="0_otpc_index_cn.html" />
    
 
   
@@ -96,15 +96,18 @@
 <li class="toctree-l1"><a class="reference internal" href="../1_boot_process/0_boot_index_cn.html">1.1 启动流程</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../1_ota/0_ota_index_cn.html">1.2 固件在线升级（OTA）</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="0_otpc_index_cn.html">1.3 OTP 存储器</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Introduction</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#architecture">Architecture</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#implementation">Implementation</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">介绍</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id2">架构</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">实现</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#configuration">Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id4">配置</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id5">编译配置</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#apis">APIs</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#apis-for-user-space">APIs for User Space</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#apis-for-kernel-space">APIs for Kernel Space</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id6">用户空间接口（APIs）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id7">内核空间接口（APIs）</a></li>
 </ul>
 </li>
 </ul>
@@ -150,8 +153,8 @@
           <div role="navigation" aria-label="页面导航">
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="0_otpc_index_cn.html">One-time Programmable Controller (OTPC)</a></li>
-      <li class="breadcrumb-item active">Introduction</li>
+          <li class="breadcrumb-item"><a href="0_otpc_index_cn.html">一次性可编程控制器 （OTPC）</a></li>
+      <li class="breadcrumb-item active">介绍</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -160,102 +163,93 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="introduction">
-<span id="otp"></span><h1>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h1>
-<section id="architecture">
-<h2>Architecture<a class="headerlink" href="#architecture" title="Link to this heading"></a></h2>
-<p>The OTP driver follows Linux NVMEM framework, controls the firmware OTP controller, and performs the write and read of OTP. The OTP software architecture is illustrated in figure below.</p>
-<figure class="align-center" id="id1">
+  <section id="otp">
+<span id="id1"></span><h1>介绍<a class="headerlink" href="#otp" title="Link to this heading"></a></h1>
+<section id="id2">
+<h2>架构<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+<p>OTP 驱动程序遵循 Linux NVMEM 框架，控制固件 OTP 控制器，并执行 OTP 的读写操作。OTP 软件架构如下面的图示所示。</p>
+<figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/otp_software_arch.svg"><img alt="../../_images/otp_software_arch.svg" height="342" src="../../_images/otp_software_arch.svg" width="406" /></a>
-<figcaption>
-<p><span class="caption-text">OTP software architecture</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
-</figcaption>
 </figure>
-<p>The OTP driver provides the following two ways to control the hardware OTP device:</p>
+<p>OTP 驱动程序提供以下两种方式来控制硬件 OTP 设备：</p>
 <ul class="simple">
-<li><p>For user space, Linux NVMEM framework provides sysfs device for users to read and write.</p></li>
-<li><p>For kernel space, Linux driver can control OTP device through NVMEM cell functions.</p></li>
+<li><p>对于用户空间，Linux NVMEM 框架通过 sysfs 设备为用户提供读写功能。</p></li>
+<li><p>对于内核空间，Linux 驱动程序可以通过 NVMEM 单元函数控制 OTP 设备。</p></li>
 </ul>
 </section>
-<section id="implementation">
-<h2>Implementation<a class="headerlink" href="#implementation" title="Link to this heading"></a></h2>
-<p>The OTP driver is implemented as following files:</p>
+<section id="id3">
+<h2>实现<a class="headerlink" href="#id3" title="Link to this heading"></a></h2>
+<p>OTP 驱动程序实现在如下文件：</p>
 <table class="docutils align-default" style="width: 100%">
 <thead>
-<tr class="row-odd"><th class="head"><p>Driver location</p></th>
-<th class="head"><p>Introduction</p></th>
+<tr class="row-odd"><th class="head"><p>驱动程序所在位置</p></th>
+<th class="head"><p>介绍</p></th>
 </tr>
 </thead>
 <tbody>
 <tr class="row-even"><td><p><code class="file docutils literal notranslate"><span class="pre">&lt;linux&gt;/drivers/rtkdrivers/otp/Kconfig</span></code></p></td>
-<td><p>OTP driver Kconfig</p></td>
+<td><p>OTP 驱动程序 Kconfig</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="file docutils literal notranslate"><span class="pre">&lt;linux&gt;/drivers/rtkdrivers/otp/Makefile</span></code></p></td>
-<td><p>OTP driver Makefile</p></td>
+<td><p>OTP 驱动程序 Makefile</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="file docutils literal notranslate"><span class="pre">&lt;linux&gt;/drivers/rtkdrivers/otp/rtk-otp.c</span></code></p></td>
-<td><p>OTP driver source code.</p></td>
+<td><p>OTP 驱动程序源代码</p></td>
 </tr>
 </tbody>
 </table>
 </section>
 </section>
-<section id="configuration">
-<h1>Configuration<a class="headerlink" href="#configuration" title="Link to this heading"></a></h1>
-<p>Build Configuration: Select Device Drivers &gt; Drivers for Realtek &gt; NVMEM OTP driver.</p>
-<figure class="align-center" id="id2">
+<section id="id4">
+<h1>配置<a class="headerlink" href="#id4" title="Link to this heading"></a></h1>
+<section id="id5">
+<h2>编译配置<a class="headerlink" href="#id5" title="Link to this heading"></a></h2>
+<p>选择 <span class="menuselection">Device Drivers &gt; Drivers for Realtek &gt; NVMEM OTP driver</span> 。</p>
+<figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/otp_driver.png"><img alt="../../_images/otp_driver.png" src="../../_images/otp_driver.png" style="width: 1302.3px; height: 596.7px;" /></a>
-<figcaption>
-<p><span class="caption-text">OTP driver</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
-</figcaption>
 </figure>
+</section>
 </section>
 <section id="apis">
 <h1>APIs<a class="headerlink" href="#apis" title="Link to this heading"></a></h1>
-<section id="apis-for-user-space">
-<h2>APIs for User Space<a class="headerlink" href="#apis-for-user-space" title="Link to this heading"></a></h2>
-<p>Just as mentioned above, Linux NVMEM framework provides sysfs device for user space to control the OTP device. Currently Realtek’s OTP driver provides two sysfs interfaces (<code class="file docutils literal notranslate"><span class="pre">/sys/bus/nvmem/devices/otp_raw0/nvmem</span></code> and <code class="file docutils literal notranslate"><span class="pre">/sys/bus/nvmem/devices/otp_map0/nvmem</span></code>) for user space to control the OTP device.</p>
+<section id="id6">
+<h2>用户空间接口（APIs）<a class="headerlink" href="#id6" title="Link to this heading"></a></h2>
+<p>正如上文提到的，Linux NVMEM 框架为用户空间提供了 sysfs 设备以控制 OTP 设备。目前，Realtek 的 OTP 驱动程序为用户空间提供了两个 sysfs 接口（<code class="file docutils literal notranslate"><span class="pre">/sys/bus/nvmem/devices/otp_raw0/nvmem</span></code> 和 <code class="file docutils literal notranslate"><span class="pre">/sys/bus/nvmem/devices/otp_map0/nvmem</span></code>）来控制 OTP 设备。</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">otp_raw0</span></code> device controls the physical map.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">otp_map0</span></code> device controls the logical map.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">otp_raw0</span></code> 设备控制物理映射。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">otp_map0</span></code> 设备控制逻辑映射。</p></li>
 </ul>
-<p>The usage of demo is listed below:</p>
+<p>演示的使用方法如下：</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">efuse</span> <span class="n">rraw</span><span class="o">/</span><span class="n">rmap</span> <span class="p">[</span><span class="n">addr</span> <span class="nb">hex</span><span class="p">]</span> <span class="p">[</span><span class="nb">bytes</span><span class="p">]</span>
 <span class="n">efuse</span> <span class="n">wraw</span><span class="o">/</span><span class="n">wmap</span> <span class="p">[</span><span class="n">addr</span> <span class="nb">hex</span><span class="p">]</span> <span class="p">[</span><span class="nb">bytes</span><span class="p">]</span> <span class="p">[</span><span class="n">val</span> <span class="nb">hex</span><span class="p">]</span>
 </pre></div>
 </div>
-<p>For example:</p>
+<p>例如：</p>
 <ul>
-<li><p>Read value from physical address <code class="docutils literal notranslate"><span class="pre">0x07F4</span></code> ~ <code class="docutils literal notranslate"><span class="pre">0x07F8</span></code>:</p>
+<li><p>从物理地址 <code class="docutils literal notranslate"><span class="pre">0x07F4</span></code> 到 <code class="docutils literal notranslate"><span class="pre">0x07F8</span></code> 读取值：</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">efuse</span> <span class="n">rraw</span> <span class="mi">7</span><span class="n">F4</span> <span class="mi">4</span>
 </pre></div>
 </div>
 </li>
-<li><p>Write the new value <code class="docutils literal notranslate"><span class="pre">0x021b1c1d</span></code> to logical address <code class="docutils literal notranslate"><span class="pre">0x01e0</span></code> ~ <code class="docutils literal notranslate"><span class="pre">0x01e4</span></code>:</p>
+<li><p>将新值 0x021b1c1d 写入逻辑地址 <code class="docutils literal notranslate"><span class="pre">0x01e0</span></code> 到 <code class="docutils literal notranslate"><span class="pre">0x01e4</span></code> ：</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">efuse</span> <span class="n">wmap</span> <span class="mf">1e0</span> <span class="mi">4</span> <span class="mi">021</span><span class="n">b1c1d</span>
 </pre></div>
 </div>
 </li>
 </ul>
-<p>Refer to <code class="file docutils literal notranslate"><span class="pre">sources/development/cmds/efuse/efuse.c</span></code> for more details.</p>
-<p>If you want to disable APIs for user space, disable sysfs interface in kernel config as below:</p>
-<figure class="align-center" id="id3">
+<p>参考 <code class="file docutils literal notranslate"><span class="pre">sources/development/cmds/efuse/efuse.c</span></code> 获取更多细节。</p>
+<p>如果您想禁用用户空间的API，请在内核配置中禁用sysfs接口，如下所示：</p>
+<figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/sysfs_interface1.png"><img alt="../../_images/sysfs_interface1.png" src="../../_images/sysfs_interface1.png" style="width: 1298.7px; height: 183.6px;" /></a>
-<figcaption>
-<p><span class="caption-text">Sysfs interface</span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
-</figcaption>
 </figure>
 </section>
-<section id="apis-for-kernel-space">
-<h2>APIs for Kernel Space<a class="headerlink" href="#apis-for-kernel-space" title="Link to this heading"></a></h2>
-<p>For kernel space, NVMEM provides cell mechanism for other drivers to read or write the OTP, such as:</p>
-<figure class="align-center" id="id4">
+<section id="id7">
+<h2>内核空间接口（APIs）<a class="headerlink" href="#id7" title="Link to this heading"></a></h2>
+<p>对于内核空间，NVMEM 提供了cell机制供其他驱动程序读取或写入OTP，例如：</p>
+<figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/nvmem_cell_example.png"><img alt="../../_images/nvmem_cell_example.png" src="../../_images/nvmem_cell_example.png" style="width: 400.5px; height: 420.3px;" /></a>
-<figcaption>
-<p><span class="caption-text">Nvmem-cell example</span><a class="headerlink" href="#id4" title="Link to this image"></a></p>
-</figcaption>
 </figure>
-<p>Drivers can use NVMEM cell functions to get or set the corresponding OTP values.</p>
+<p>驱动程序可以使用 NVMEM cell 函数来获取或设置相应的 OTP 值。</p>
 </section>
 </section>
 
@@ -263,7 +257,7 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
-        <a href="0_otpc_index_cn.html" class="btn btn-neutral float-left" title="One-time Programmable Controller (OTPC)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="0_otpc_index_cn.html" class="btn btn-neutral float-left" title="一次性可编程控制器 （OTPC）" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
         <a href="../1_flash/0_flash_index_cn.html" class="btn btn-neutral float-right" title="闪存" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
