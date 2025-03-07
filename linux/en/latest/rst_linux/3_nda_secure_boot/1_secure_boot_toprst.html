@@ -10,7 +10,7 @@
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
-      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=950f7cdb" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=019169a1" />
       <link rel="stylesheet" type="text/css" href="../../_static/tabs.css?v=a5c4661c" />
       <link rel="stylesheet" type="text/css" href="../../_static/_static/custom.css" />
 
@@ -162,13 +162,21 @@
            <div itemprop="articleBody">
              
   <section id="introduction">
-<span id="secure-boot"></span><h1>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h1>
+<h1>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h1>
 <p>Secure boot aims at firmware protection, which prevents attackers from modifying or replacing firmware maliciously. When the chip is powered on, the secure boot ROM executes to check the validation of the image signature.</p>
 <p>If the signature is valid, authentication will be successful, which means that the firmware is safe and the subsequent operations can be continued. Otherwise, the SoC clears the stack and goes into an endless loop.</p>
 <p>This chapter illustrates the usage of Linux verified boot.</p>
 <section id="secure-boot-from-rom-code">
 <h2>Secure Boot from ROM Code<a class="headerlink" href="#secure-boot-from-rom-code" title="Link to this heading"></a></h2>
 <p>Linux secure boot should be guided to start from ROM code, which verifies the bootloader using Root of Trusted Key (RoT) saved in the OTP. Bootloader shall verify the KM0/KM4 images and <code class="file docutils literal notranslate"><span class="pre">cert.bin</span></code> in firmware. Except for RoT, all the keys are saved in <code class="file docutils literal notranslate"><span class="pre">cert.bin</span></code> (Key Cert).</p>
+<blockquote>
+<div><figure class="align-center" id="id2">
+<a class="reference internal image-reference" href="../../_images/secure_boot_flow.svg"><img alt="../../_images/secure_boot_flow.svg" height="553" src="../../_images/secure_boot_flow.svg" width="1140" /></a>
+<figcaption>
+<p><span class="caption-text">Secure boot flow</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</div></blockquote>
 </section>
 <section id="linux-secure-boot-flow">
 <h2>Linux Secure Boot Flow<a class="headerlink" href="#linux-secure-boot-flow" title="Link to this heading"></a></h2>
