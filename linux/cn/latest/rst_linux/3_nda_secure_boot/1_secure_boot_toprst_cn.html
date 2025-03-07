@@ -10,7 +10,7 @@
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
-      <link rel="stylesheet" type="text/css" href="../../_static/custom_cn.css?v=0d22fac7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom_cn.css?v=fb4ae46c" />
       <link rel="stylesheet" type="text/css" href="../../_static/tabs.css?v=a5c4661c" />
       <link rel="stylesheet" type="text/css" href="../../_static/_static/custom_cn.css" />
 
@@ -26,6 +26,7 @@
         <script src="../../_static/doctools.js?v=9a2dae69"></script>
         <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script>let toggleHintShow = 'Click to show';</script>
         <script>let toggleHintHide = 'Click to hide';</script>
         <script>let toggleOpenOnPrint = 'true';</script>
@@ -162,13 +163,21 @@
            <div itemprop="articleBody">
              
   <section id="introduction">
-<span id="secure-boot"></span><h1>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h1>
+<h1>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h1>
 <p>Secure boot aims at firmware protection, which prevents attackers from modifying or replacing firmware maliciously. When the chip is powered on, the secure boot ROM executes to check the validation of the image signature.</p>
 <p>If the signature is valid, authentication will be successful, which means that the firmware is safe and the subsequent operations can be continued. Otherwise, the SoC clears the stack and goes into an endless loop.</p>
 <p>This chapter illustrates the usage of Linux verified boot.</p>
 <section id="secure-boot-from-rom-code">
 <h2>Secure Boot from ROM Code<a class="headerlink" href="#secure-boot-from-rom-code" title="Link to this heading"></a></h2>
 <p>Linux secure boot should be guided to start from ROM code, which verifies the bootloader using Root of Trusted Key (RoT) saved in the OTP. Bootloader shall verify the KM0/KM4 images and <code class="file docutils literal notranslate"><span class="pre">cert.bin</span></code> in firmware. Except for RoT, all the keys are saved in <code class="file docutils literal notranslate"><span class="pre">cert.bin</span></code> (Key Cert).</p>
+<blockquote>
+<div><figure class="align-center" id="id2">
+<a class="reference internal image-reference" href="../../_images/secure_boot_flow.svg"><img alt="../../_images/secure_boot_flow.svg" height="553" src="../../_images/secure_boot_flow.svg" width="1140" /></a>
+<figcaption>
+<p><span class="caption-text">Secure boot flow</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</div></blockquote>
 </section>
 <section id="linux-secure-boot-flow">
 <h2>Linux Secure Boot Flow<a class="headerlink" href="#linux-secure-boot-flow" title="Link to this heading"></a></h2>
