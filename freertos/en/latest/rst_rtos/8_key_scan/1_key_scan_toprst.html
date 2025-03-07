@@ -324,14 +324,21 @@
 <h1>Low Power<a class="headerlink" href="#low-power" title="Link to this heading"></a></h1>
 <section id="active-mode">
 <h2>Active Mode<a class="headerlink" href="#active-mode" title="Link to this heading"></a></h2>
-<p>In active mode, Key-Scan circuit keeps power on all the time.</p>
-<p>When Key-Scan scans column <em>x</em> (<em>x</em> is any column), it sets column <em>x</em> as an output low and all other columns are in Hi-Z state. Then, it scans all rows to determine which keys are being pressed or released, completing one column scan.</p>
-<p>Key-Scan scans column sequentially , and will ba periodic scan column by column.</p>
+<p>In active mode, the Key-Scan remains powered on continuously.</p>
+<ul class="simple">
+<li><p><strong>Column Scanning</strong>: When the Key-Scan scans column <em>x</em> (where <em>x</em> represents any column), it sets column <em>x</em> to a low output state while placing all other columns in a high-impedance (Hi-Z) state.</p></li>
+<li><p><strong>Row Detection</strong>: After setting the column, the Key-Scan scans all rows to detect which keys are being pressed or released, completing a column scan.</p></li>
+<li><p><strong>Sequential Scanning</strong>: The Key-Scan scans columns sequentially and performs periodic scans column by column.</p></li>
+</ul>
 </section>
 <section id="sleep-mode">
 <h2>Sleep Mode<a class="headerlink" href="#sleep-mode" title="Link to this heading"></a></h2>
-<p>In practical application scenarios, keeping Key-Scan active consumes a significant amount of power. To save power and optimize applications, Key-Scan usually operates in the sleep mode.</p>
-<p>In the sleep mode, the CPU enters a low-power state. However, when a key is pressed, it wakes up the CPU, and then Key-Scan starts scanning to determine which keys are pressed. Key-Scan continues to scan while the keys are pressed. After the keys are released and no other events occur, the CPU enters the sleep state again.</p>
+<p>In practical applications, keeping the Key-Scan in active mode consumes a significant amount of power. To save the power and optimize the performance, the Key-Scan typically operates in sleep mode.</p>
+<ul class="simple">
+<li><p><strong>Low-Power State</strong>: In sleep mode, the CPU enters a low-power state to reduce energy consumption.</p></li>
+<li><p><strong>Wake-Up Mechanism</strong>: When a key is pressed, the CPU is awakened, and the Key-Scan begins scanning to determine which keys are pressed. The Key-Scan continues scanning while the keys remain pressed.</p></li>
+<li><p><strong>Return to Sleep</strong>: After the keys are released and no other events occur, the CPU re-enters the sleep state.</p></li>
+</ul>
 </section>
 </section>
 <section id="stuck-key">
