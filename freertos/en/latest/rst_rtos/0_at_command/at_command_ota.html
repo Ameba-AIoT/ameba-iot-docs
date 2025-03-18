@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AT Commands &mdash; Ameba IoT Docs  documentation</title>
+  <title>OTA AT Commands &mdash; Ameba IoT Docs  documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
@@ -36,8 +36,8 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Overview" href="at_command_introduction.html" />
-    <link rel="prev" title="Captouch Test Tool" href="../0_tools/1_cap_test_tool_toprst.html" />
+    <link rel="next" title="How to Use AT Command with SPI" href="at_command_use_spi.html" />
+    <link rel="prev" title="File System AT Commands" href="at_command_file_system.html" />
      
     
     <script type="text/javascript" src="../../_static/js/selector.js"></script>
@@ -171,7 +171,7 @@ const TOC_TITLE_MAP = {"rst_rtos/0_ameba_product": "Products Center", "rst_rtos/
 console.log("TOC_TITLE_MAP:", TOC_TITLE_MAP);
 
 // 获取当前页面的文档名 (例如 'rst_rtos/3_nda_secure_boot/0_secure_boot_index_nda')
-const CURRENT_DOCNAME = 'rst_rtos/0_at_command/0_at_command_index';
+const CURRENT_DOCNAME = 'rst_rtos/0_at_command/at_command_ota';
 
 // 动态查找顶级分类函数（定义为全局函数）
 window.findTopLevelChapter = function(docname) {
@@ -433,7 +433,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <li class="toctree-l1"><a class="reference internal" href="../0_memory_layout/0_layout_index.html">0.5 Flash &amp; RAM Layout</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../0_user_config/0_usrcfg_index.html">0.6 User Config</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../0_tools/0_tools_index.html">0.7 Tools</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">0.8 AT Commands</a><ul>
+<li class="toctree-l1 current"><a class="reference internal" href="0_at_command_index.html">0.8 AT Commands</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="at_command_introduction.html">Overview</a></li>
 <li class="toctree-l2"><a class="reference internal" href="at_command_image.html">Officially Released Image</a></li>
 <li class="toctree-l2"><a class="reference internal" href="at_command_common.html">Common AT Commands</a></li>
@@ -444,7 +444,28 @@ document.addEventListener('DOMContentLoaded', function() {
 <li class="toctree-l2"><a class="reference internal" href="at_command_socket.html">Socket AT Commands</a></li>
 <li class="toctree-l2"><a class="reference internal" href="at_command_bluetooth.html">Bluetooth AT Commands</a></li>
 <li class="toctree-l2"><a class="reference internal" href="at_command_file_system.html">File System AT Commands</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_ota.html">OTA AT Commands</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">OTA AT Commands</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#at-ota">AT+OTA</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#command">Command</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#response">Response</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#parameters">Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#error-code">Error code</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#at-userota">AT+USEROTA</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id2">Description</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id3">Command</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id4">Response</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id5">Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#error-codes">Error Codes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id6">Example</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id7">Response</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="at_command_use_spi.html">How to Use AT Command with SPI</a></li>
 </ul>
 </li>
@@ -511,10 +532,9 @@ document.addEventListener('DOMContentLoaded', function() {
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">AT Commands</li>
+          <li class="breadcrumb-item"><a href="0_at_command_index.html">AT Commands</a></li>
+      <li class="breadcrumb-item active">OTA AT Commands</li>
       <li class="wy-breadcrumbs-aside">
-              <!-- User defined GitHub URL -->
-              <a href="https://github.com/Ameba-AIoT/ameba-iot-docs" class="fa fa-github"> Edit on GitHub</a>
       </li>
   </ul>
   <hr/>
@@ -522,167 +542,208 @@ document.addEventListener('DOMContentLoaded', function() {
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="at-commands">
-<h1>AT Commands<a class="headerlink" href="#at-commands" title="Link to this heading"></a></h1>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="at_command_introduction.html">Overview</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="at_command_introduction.html#at-commands-modes">AT Commands Modes</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_introduction.html#software-environment-preparation">Software Environment Preparation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_introduction.html#hardware-environment-preparation">Hardware Environment Preparation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_introduction.html#command-description">Command Description</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_introduction.html#at-command-list">AT Command List</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_introduction.html#at-command-version">AT Command Version</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="at_command_image.html">Officially Released Image</a></li>
-<li class="toctree-l1"><a class="reference internal" href="at_command_common.html">Common AT Commands</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="at_command_common.html#at-test">AT+TEST</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_common.html#at-list">AT+LIST</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_common.html#at-otaclear">AT+OTACLEAR</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_common.html#at-otarecover">AT+OTARECOVER</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_common.html#at-cpuload">AT+CPULOAD</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_common.html#at-rst">AT+RST</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_common.html#at-state">AT+STATE</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_common.html#at-gmr">AT+GMR</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_common.html#at-log">AT+LOG</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_common.html#at-rreg">AT+RREG</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_common.html#at-wreg">AT+WREG</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="at_command_wifi.html">Wi-Fi AT Commands</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="at_command_wifi.html#at-wlconn">AT+WLCONN</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_wifi.html#at-wldisconn">AT+WLDISCONN</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_wifi.html#at-wlstaticip">AT+WLSTATICIP</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_wifi.html#at-ping">AT+PING</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_wifi.html#at-iperf">AT+IPERF</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_wifi.html#at-iperf3">AT+IPERF3</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_wifi.html#at-wlscan">AT+WLSCAN</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_wifi.html#at-wlrssi">AT+WLRSSI</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_wifi.html#at-wlstartap">AT+WLSTARTAP</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_wifi.html#at-wlstopap">AT+WLSTOPAP</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_wifi.html#at-wlstate">AT+WLSTATE</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_wifi.html#at-wlreconn">AT+WLRECONN</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_wifi.html#at-wlpromisc">AT+WLPROMISC</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_wifi.html#at-wldbg">AT+WLDBG</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_wifi.html#at-wlwps">AT+WLWPS</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_wifi.html#at-wlps">AT+WLPS</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="at_command_mqtt.html">MQTT AT Commands</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="at_command_mqtt.html#at-mqttcfg">AT+MQTTCFG</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_mqtt.html#at-mqttconn">AT+MQTTCONN</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_mqtt.html#at-mqttdisconn">AT+MQTTDISCONN</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_mqtt.html#at-mqttsub">AT+MQTTSUB</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_mqtt.html#at-mqttunsub">AT+MQTTUNSUB</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_mqtt.html#at-mqttpub">AT+MQTTPUB</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_mqtt.html#at-mqttpubraw">AT+MQTTPUBRAW</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_mqtt.html#at-mqttreset">AT+MQTTRESET</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_mqtt.html#at-mqttquery">AT+MQTTQUERY</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_mqtt.html#at-mqttsubquery">AT+MQTTSUBQUERY</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="at_command_http.html">HTTP AT Commands</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="at_command_http.html#at-httpheader">AT+HTTPHEADER</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_http.html#at-httpconf">AT+HTTPCONF</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_http.html#at-httpquery">AT+HTTPQUERY</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_http.html#at-httpget">AT+HTTPGET</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_http.html#at-httppost">AT+HTTPPOST</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_http.html#at-httpput">AT+HTTPPUT</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_http.html#at-httpdel">AT+HTTPDEL</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="at_command_websocket.html">WebSocket AT Commands</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="at_command_websocket.html#at-wsglcfg">AT+WSGLCFG</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_websocket.html#at-wscfg">AT+WSCFG</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_websocket.html#at-wshead">AT+WSHEAD</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_websocket.html#at-wsheadraw">AT+WSHEADRAW</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_websocket.html#at-wsquery">AT+WSQUERY</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_websocket.html#at-wsopen">AT+WSOPEN</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_websocket.html#at-wssend">AT+WSSEND</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_websocket.html#at-wssendraw">AT+WSSENDRAW</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_websocket.html#at-wsclose">AT+WSCLOSE</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_websocket.html#at-wstxqueuecheck">AT+WSTXQUEUECHECK</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="at_command_socket.html">Socket AT Commands</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="at_command_socket.html#at-sktserver">AT+SKTSERVER</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_socket.html#at-sktclient">AT+SKTCLIENT</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_socket.html#at-sktdel">AT+SKTDEL</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_socket.html#at-skttt">AT+SKTTT</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_socket.html#at-sktsend">AT+SKTSEND</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_socket.html#at-sktread">AT+SKTREAD</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_socket.html#at-sktrecvcfg">AT+SKTRECVCFG</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_socket.html#at-sktstate">AT+SKTSTATE</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="at_command_bluetooth.html">Bluetooth AT Commands</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="at_command_bluetooth.html#at-btdemo-transfer-module">AT+BTDEMO=transfer_module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_bluetooth.html#at-btdemo-transfer-module-get-name">AT+BTDEMO=transfer_module,get_name</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_bluetooth.html#at-btdemo-transfer-module-set-name">AT+BTDEMO= transfer_module,set_name</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_bluetooth.html#at-btdemo-transfer-module-get-uuid">AT+BTDEMO= transfer_module,get_uuid</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_bluetooth.html#at-btdemo-transfer-module-set-uuid">AT+BTDEMO= transfer_module,set_uuid</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_bluetooth.html#at-btdemo-transfer-module-read-val">AT+BTDEMO= transfer_module,read_val</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_bluetooth.html#at-blegap-addr">AT+BLEGAP=addr</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_bluetooth.html#at-blegap-rand-addr">AT+BLEGAP=rand_addr</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_bluetooth.html#at-blegap-mtu-size">AT+BLEGAP=mtu_size</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_bluetooth.html#at-blegap-set-mtu">AT+BLEGAP=set_mtu</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_bluetooth.html#at-blegap-adv">AT+BLEGAP=adv</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_bluetooth.html#at-blegap-get-adv-param">AT+BLEGAP=get_adv_param</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_bluetooth.html#at-blegap-adv-data">AT+BLEGAP=adv_data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_bluetooth.html#at-blegap-scan">AT+BLEGAP=scan</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_bluetooth.html#at-blegap-scan-param">AT+BLEGAP=scan_param</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_bluetooth.html#at-blegap-get-scan-param">AT+BLEGAP=get_scan_param</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_bluetooth.html#at-blegap-scan-rsp">AT+BLEGAP=scan_rsp</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_bluetooth.html#at-blegap-conn">AT+BLEGAP=conn</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_bluetooth.html#at-blegap-disconn">AT+BLEGAP=disconn</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_bluetooth.html#at-blegap-conn-info">AT+BLEGAP=conn_info</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_bluetooth.html#at-blegap-conn-update">AT+BLEGAP=conn_update</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_bluetooth.html#at-blegap-wl-add">AT+BLEGAP=wl_add</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_bluetooth.html#at-blegap-wl-remove">AT+BLEGAP=wl_remove</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_bluetooth.html#at-blegap-wl-clear">AT+BLEGAP=wl_clear</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_bluetooth.html#at-blegap-sec-param">AT+BLEGAP=sec_param</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_bluetooth.html#at-blegap-get-sec-param">AT+BLEGAP=get_sec_param</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_bluetooth.html#at-blegap-sec">AT+BLEGAP=sec</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_bluetooth.html#at-blegap-pair-cfm">AT+BLEGAP=pair_cfm</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_bluetooth.html#at-blegap-auth-key">AT+BLEGAP=auth_key</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_bluetooth.html#at-blegap-auth-keycfm">AT+BLEGAP=auth_keycfm</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_bluetooth.html#at-blegap-auth-oob">AT+BLEGAP=auth_oob</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_bluetooth.html#at-blegap-bond-info">AT+BLEGAP=bond_info</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_bluetooth.html#at-blegap-bond-del">AT+BLEGAP=bond_del</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_bluetooth.html#at-blegap-bond-clear">AT+BLEGAP=bond_clear</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_bluetooth.html#at-blegap-disc">AT+BLEGAP=disc</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_bluetooth.html#at-blegattc-read">AT+BLEGATTC=read</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_bluetooth.html#at-blegattc-write">AT+BLEGATTC=write</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_bluetooth.html#at-blegatts-notify">AT+BLEGATTS=notify</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_bluetooth.html#at-blegatts-indicate">AT+BLEGATTS=indicate</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="at_command_file_system.html">File System AT Commands</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="at_command_file_system.html#at-fs">AT+FS</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="at_command_ota.html">OTA AT Commands</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="at_command_ota.html#at-ota">AT+OTA</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_ota.html#at-userota">AT+USEROTA</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="at_command_use_spi.html">How to Use AT Command with SPI</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="at_command_use_spi.html#introduction">Introduction</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_use_spi.html#default-spi-pins">Default SPI Pins</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_use_spi.html#using-at-command-with-spi">Using AT Command with SPI</a></li>
-</ul>
-</li>
-</ul>
+  <section id="ota-at-commands">
+<span id="id1"></span><h1>OTA AT Commands<a class="headerlink" href="#ota-at-commands" title="Link to this heading"></a></h1>
+<p>The OTA AT commands is disabled by default. You can enable the OTA AT commands by the following steps:</p>
+<blockquote>
+<div><ul>
+<li><p>Navigate to your target project and open configuration menu.</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">amebaxxxx_gcc_project</span>
+<span class="o">./</span><span class="n">menuconfig</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
 </div>
+</div></blockquote>
+</li>
+<li><p>Select <span class="menuselection">CONFIG AT CMD -&gt; Enable OTA</span></p></li>
+</ul>
+</div></blockquote>
+<p>The default ATCMD mode is LOGUART. You can enable MCU control mode by the following selections:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Select <span class="menuselection">CONFIG AT CMD -&gt; ATCMD Mode -&gt; MCU Control</span></p></li>
+<li><p>Save and Exit.</p></li>
+</ul>
+</div></blockquote>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">TT</span> <span class="pre">mode</span></code> is only supported for MCU control mode. If you need use <code class="docutils literal notranslate"><span class="pre">TT</span> <span class="pre">mode</span></code> for AT commands, you need enable MCU control mode.
+The details of <code class="docutils literal notranslate"><span class="pre">TT</span> <span class="pre">mode</span></code> refer to <a class="reference internal" href="at_command_introduction.html#transparent-transmission"><span class="std std-ref">Transparent Transmission</span></a>.</p>
+</div>
+<section id="at-ota">
+<span id="ota-at-ota"></span><h2>AT+OTA<a class="headerlink" href="#at-ota" title="Link to this heading"></a></h2>
+<section id="description">
+<h3>Description<a class="headerlink" href="#description" title="Link to this heading"></a></h3>
+<p>Specify the upgrade type and upgrade to the firmware version specified by RESOURCE</p>
+</section>
+<section id="command">
+<h3>Command<a class="headerlink" href="#command" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">OTA</span><span class="o">=&lt;</span><span class="nb">type</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">host</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">port</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">resource</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</section>
+<section id="response">
+<h3>Response<a class="headerlink" href="#response" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">OK</span>
+</pre></div>
+</div>
+<p>or</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ERROR</span><span class="p">:</span><span class="o">&lt;</span><span class="n">error_no</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</section>
+<section id="parameters">
+<h3>Parameters<a class="headerlink" href="#parameters" title="Link to this heading"></a></h3>
+<dl class="field-list simple">
+<dt class="field-odd">&lt;type&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Upgrade type</p>
+<ul class="simple">
+<li><p>1: OTA based on HTTP</p></li>
+<li><p>2: OTA based on HTTPS</p></li>
+<li><p>3: OTA based on VFS</p></li>
+<li><p>4: OTA based on SDCard</p></li>
+</ul>
+</dd>
+<dt class="field-even">&lt;host&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>Domain name or IP address of the server</p>
+</dd>
+<dt class="field-odd">&lt;port&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Port of the server</p>
+<ul class="simple">
+<li><p>If set to 0, the default port will be used. Default: 8082 (based on HTTP), 443 (based on HTTPS)</p></li>
+</ul>
+</dd>
+<dt class="field-even">&lt;resource&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>Path to the upgrade firmware</p>
+</dd>
+</dl>
+</section>
+<section id="error-code">
+<h3>Error code<a class="headerlink" href="#error-code" title="Link to this heading"></a></h3>
+<dl class="field-list simple">
+<dt class="field-odd">1<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Parameter error</p>
+</dd>
+<dt class="field-even">2<span class="colon">:</span></dt>
+<dd class="field-even"><p>Memory allocation error</p>
+</dd>
+<dt class="field-odd">3<span class="colon">:</span></dt>
+<dd class="field-odd"><p>OTA in progress</p>
+</dd>
+<dt class="field-even">4<span class="colon">:</span></dt>
+<dd class="field-even"><p>OTA initialization error</p>
+</dd>
+<dt class="field-odd">5<span class="colon">:</span></dt>
+<dd class="field-odd"><p>OTA task creation error</p>
+</dd>
+</dl>
+</section>
+<section id="example">
+<h3>Example<a class="headerlink" href="#example" title="Link to this heading"></a></h3>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">OTA</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="mf">192.168.137.1</span><span class="p">,</span><span class="mi">8082</span><span class="p">,</span><span class="n">ota_all</span><span class="o">.</span><span class="n">bin</span>
+<span class="n">OK</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>Upon completion of the upgrade, a successful upgrade will return:</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span>[$]+OTA: UPDATE SUCCESS
+</pre></div>
+</div>
+</div></blockquote>
+<p>If an error occurs during the update process, it will return:</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span>[$]+OTA: UPDATE FAILED
+</pre></div>
+</div>
+</div></blockquote>
+</section>
+</section>
+<section id="at-userota">
+<span id="ota-at-userota"></span><h2>AT+USEROTA<a class="headerlink" href="#at-userota" title="Link to this heading"></a></h2>
+<section id="id2">
+<h3>Description<a class="headerlink" href="#id2" title="Link to this heading"></a></h3>
+<p>User-defined method to upgrade to a specified version of the firmware</p>
+</section>
+<section id="id3">
+<h3>Command<a class="headerlink" href="#id3" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">USEROTA</span><span class="o">=&lt;</span><span class="n">length</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">sysrst</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</section>
+<section id="id4">
+<h3>Response<a class="headerlink" href="#id4" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">OK</span>
+</pre></div>
+</div>
+<p>or</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ERROR</span><span class="p">:</span><span class="o">&lt;</span><span class="n">error_no</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</section>
+<section id="id5">
+<h3>Parameters<a class="headerlink" href="#id5" title="Link to this heading"></a></h3>
+<dl class="field-list simple">
+<dt class="field-odd">&lt;length&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Total length of OTA firmware, i.e., total length of ota_all.bin</p>
+</dd>
+<dt class="field-even">&lt;sysrst&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>Flag indicating whether to restart after the upgrade</p>
+<ul class="simple">
+<li><p>0: Do not reset the system after the upgrade</p></li>
+<li><p>1: Reset the system after the upgrade</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="error-codes">
+<h3>Error Codes<a class="headerlink" href="#error-codes" title="Link to this heading"></a></h3>
+<dl class="field-list simple">
+<dt class="field-odd">1<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Parameter error</p>
+</dd>
+<dt class="field-even">2<span class="colon">:</span></dt>
+<dd class="field-even"><p>Memory allocation error</p>
+</dd>
+<dt class="field-odd">3<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Error occurred during the upgrade process</p>
+</dd>
+<dt class="field-even">4<span class="colon">:</span></dt>
+<dd class="field-even"><p>OTA is in progress</p>
+</dd>
+<dt class="field-odd">5<span class="colon">:</span></dt>
+<dd class="field-odd"><p>OTA initialization error</p>
+</dd>
+</dl>
+</section>
+<section id="id6">
+<h3>Example<a class="headerlink" href="#id6" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">USEROTA</span><span class="o">=</span><span class="mi">1120704</span><span class="p">,</span><span class="mi">0</span>
+</pre></div>
+</div>
+</section>
+<section id="id7">
+<h3>Response<a class="headerlink" href="#id7" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="o">&gt;</span> <span class="o">&gt;</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">&gt;&gt;&gt;</span></code> symbol indicates that the AT module is ready to receive serial data, and data can be input.</p>
+<p>When the length of the input data meets the requirements specified by the parameter length, the transmission ends.
+If the upgrade is successful, it will return:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">OK</span>
+</pre></div>
+</div>
+</section>
+</section>
 </section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="../0_tools/1_cap_test_tool_toprst.html" class="btn btn-neutral float-left" title="Captouch Test Tool" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="at_command_introduction.html" class="btn btn-neutral float-right" title="Overview" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="at_command_file_system.html" class="btn btn-neutral float-left" title="File System AT Commands" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="at_command_use_spi.html" class="btn btn-neutral float-right" title="How to Use AT Command with SPI" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
