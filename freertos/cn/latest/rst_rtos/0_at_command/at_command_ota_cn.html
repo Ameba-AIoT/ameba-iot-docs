@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>通过SPI接口使用AT命令 &mdash; Ameba IoT Docs  文档</title>
+  <title>OTA AT命令集 &mdash; Ameba IoT Docs  文档</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
@@ -37,8 +37,8 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="索引" href="../../genindex.html" />
     <link rel="search" title="搜索" href="../../search.html" />
-    <link rel="next" title="虚拟文件系统" href="../0_file_system/0_vfs_index_cn.html" />
-    <link rel="prev" title="OTA AT命令集" href="at_command_ota_cn.html" />
+    <link rel="next" title="通过SPI接口使用AT命令" href="at_command_use_spi_cn.html" />
+    <link rel="prev" title="文件系统 AT命令集" href="at_command_file_system_cn.html" />
      
     
     <script type="text/javascript" src="../../_static/js/selector.js"></script>
@@ -172,7 +172,7 @@ const TOC_TITLE_MAP = {"rst_rtos/0_ameba_product": "\u4ea7\u54c1\u4e2d\u5fc3", "
 console.log("TOC_TITLE_MAP:", TOC_TITLE_MAP);
 
 // 获取当前页面的文档名 (例如 'rst_rtos/3_nda_secure_boot/0_secure_boot_index_nda')
-const CURRENT_DOCNAME = 'rst_rtos/0_at_command/at_command_use_spi_cn';
+const CURRENT_DOCNAME = 'rst_rtos/0_at_command/at_command_ota_cn';
 
 // 动态查找顶级分类函数（定义为全局函数）
 window.findTopLevelChapter = function(docname) {
@@ -445,17 +445,29 @@ document.addEventListener('DOMContentLoaded', function() {
 <li class="toctree-l2"><a class="reference internal" href="at_command_socket_cn.html">Socket AT命令集</a></li>
 <li class="toctree-l2"><a class="reference internal" href="at_command_bluetooth_cn.html">蓝牙 AT命令集</a></li>
 <li class="toctree-l2"><a class="reference internal" href="at_command_file_system_cn.html">文件系统 AT命令集</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_ota_cn.html">OTA AT命令集</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">通过SPI接口使用AT命令</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#id1">概述</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#spi">默认SPI引脚</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id2">使用方法</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#id3">通信格式</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id4">交互流程</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">OTA AT命令集</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#at-ota">AT+OTA</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">描述</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">命令</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id3">响应</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id4">参数</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id5">错误码</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id6">示例</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#at-userota">AT+USEROTA</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id7">描述</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id8">命令</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id9">响应</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id10">参数</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id11">错误码</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id12">示例</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id13">响应</a></li>
 </ul>
 </li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="at_command_use_spi_cn.html">通过SPI接口使用AT命令</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../0_file_system/0_vfs_index_cn.html">0.9 虚拟文件系统</a></li>
@@ -522,7 +534,7 @@ document.addEventListener('DOMContentLoaded', function() {
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="0_at_command_index_cn.html">AT 命令集</a></li>
-      <li class="breadcrumb-item active">通过SPI接口使用AT命令</li>
+      <li class="breadcrumb-item active">OTA AT命令集</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -531,117 +543,189 @@ document.addEventListener('DOMContentLoaded', function() {
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="spiat">
-<h1>通过SPI接口使用AT命令<a class="headerlink" href="#spiat" title="Link to this heading"></a></h1>
-<section id="id1">
-<h2>概述<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
-<p>当通过SPI接口使用AT命令模块时，MCU设备作为SPI主机，AT命令设备作为SPI从机。双方通过SPI协议和特定通信格式进行AT命令数据交换。</p>
-<p>相较于默认的UART端口，SPI接口在需要高速数据传输场景中具有显著优势。请参考 <a class="reference internal" href="at_command_introduction_cn.html#atcmd-host-control-mode-configuration"><span class="std std-ref">主控控制模式配置</span></a> 启用SPI接口。</p>
-</section>
-<section id="spi">
-<h2>默认SPI引脚<a class="headerlink" href="#spi" title="Link to this heading"></a></h2>
-<p>如果没有手动配置引脚，AT命令模块将使用默认引脚组合，包括SPI MOSI、MISO、CLK、CS及两个同步信号引脚。</p>
-<p>对于不同的芯片型号，默认SPI引脚配置如下：</p>
-<table class="docutils align-default" style="width: 100%">
-<thead>
-<tr class="row-odd"><th class="head"><p>Ameba SoC</p></th>
-<th class="head"><p>SPI MOSI</p></th>
-<th class="head"><p>SPI MISO</p></th>
-<th class="head"><p>SPI CLK</p></th>
-<th class="head"><p>SPI CS</p></th>
-<th class="head"><p>MASTER SYNC</p></th>
-<th class="head"><p>SLAVE SYNC</p></th>
-<th class="head"><p>GND</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>RTL8721Dx/RTL8711Dx</p></td>
-<td><p>PA_27</p></td>
-<td><p>PA_28</p></td>
-<td><p>PA_26</p></td>
-<td><p>PA_12</p></td>
-<td><p>PB_30</p></td>
-<td><p>PB_31</p></td>
-<td><p>GND</p></td>
-</tr>
-<tr class="row-odd"><td><div class="line-block">
-<div class="line">RTL8726EA/RTL8713EC</div>
-<div class="line">RTL8720EA/RTL8710EC</div>
+  <section id="ota-at">
+<span id="ota-at-commands"></span><h1>OTA AT命令集<a class="headerlink" href="#ota-at" title="Link to this heading"></a></h1>
+<p>OTA AT 命令集默认禁用。可通过以下步骤启用 OTA AT 命令集：</p>
+<ol class="arabic">
+<li><p>进入目标工程目录，并打开配置菜单：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">amebaxxxx_gcc_project</span>
+<span class="o">./</span><span class="n">menuconfig</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
 </div>
-</td>
-<td><p>PA_29</p></td>
-<td><p>PA_30</p></td>
-<td><p>PA_28</p></td>
-<td><p>PA_31</p></td>
-<td><p>PB_2</p></td>
-<td><p>PB_3</p></td>
-<td><p>GND</p></td>
-</tr>
-<tr class="row-even"><td><p>RTL8730E</p></td>
-<td><p>PA_13</p></td>
-<td><p>PA_14</p></td>
-<td><p>PA_15</p></td>
-<td><p>PA_16</p></td>
-<td><p>PA_20</p></td>
-<td><p>PA_21</p></td>
-<td><p>GND</p></td>
-</tr>
-</tbody>
-</table>
+</li>
+<li><p>选择 <span class="menuselection">CONFIG AT CMD -&gt; Enable OTA</span></p></li>
+</ol>
+<p>默认的AT命令模式为LOGUART。请通过选择 <span class="menuselection">CONFIG AT CMD -&gt; ATCMD Mode -&gt; MCU Control</span> 启用 MCU 控制模式。</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<ul class="simple">
+<li><p>仅 MCU 控制模式下支持透传。若需使用透传模式，需启用 MCU 控制模式。</p></li>
+<li><p>参考 <a class="reference internal" href="at_command_introduction_cn.html#transparent-transmission"><span class="std std-ref">透传模式</span></a> 了解相关细节。</p></li>
+</ul>
+</div>
+<section id="at-ota">
+<span id="ota-at-ota"></span><h2>AT+OTA<a class="headerlink" href="#at-ota" title="Link to this heading"></a></h2>
+<section id="id1">
+<h3>描述<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
+<p>指定升级类型，升级到 RESOURCE 指定版本的固件</p>
 </section>
 <section id="id2">
-<h2>使用方法<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
-<p>代码示例位于： <code class="docutils literal notranslate"><span class="pre">{SDK}component/example/atcmd_host/spi_master/example_spi_master.c</span></code>，演示了SPI主机与从机如何进行通信的。</p>
-<p>建议在正式开发前运行此代码示例，以验证连接和配置的正确性。此后，参考代码示例将其适配到特定 MCU 平台应用程序中。</p>
-<p>在示例代码中，我们添加了一个 UART 任务来接收 AT命令并打印 AT 响应。整体数据流图如下所示：</p>
-<figure class="align-center">
-<a class="reference internal image-reference" href="../../_images/spi_at_data_flow.svg"><img alt="../../_images/spi_at_data_flow.svg" height="79" src="../../_images/spi_at_data_flow.svg" width="588" /></a>
-</figure>
+<h3>命令<a class="headerlink" href="#id2" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">OTA</span><span class="o">=&lt;</span><span class="nb">type</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">host</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">port</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">resource</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</section>
 <section id="id3">
-<h3>通信格式<a class="headerlink" href="#id3" title="Link to this heading"></a></h3>
-<p>通过SPI AT命令传输数据，需遵循以下格式规范：</p>
-<table class="docutils align-default" style="width: 100%">
-<tbody>
-<tr class="row-odd"><td><p>Magic Number(2 bytes)</p></td>
-<td><p>Data Len(2 bytes)</p></td>
-<td><p>Data(Data Len bytes)</p></td>
-<td><p>Checksum(4 bytes)</p></td>
-</tr>
-</tbody>
-</table>
-<p>参数说明：</p>
+<h3>响应<a class="headerlink" href="#id3" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">OK</span>
+</pre></div>
+</div>
+<p>或</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ERROR</span><span class="p">:</span><span class="o">&lt;</span><span class="n">error_no</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</section>
+<section id="id4">
+<h3>参数<a class="headerlink" href="#id4" title="Link to this heading"></a></h3>
 <dl class="field-list simple">
-<dt class="field-odd">Magic Number<span class="colon">:</span></dt>
-<dd class="field-odd"><p>ASCII码字符 <code class="docutils literal notranslate"><span class="pre">AT</span></code></p>
+<dt class="field-odd">&lt;type&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>升级类型</p>
+<ul class="simple">
+<li><p>1: 基于 HTTP 的 OTA</p></li>
+<li><p>2: 基于 HTTPS 的 OTA</p></li>
+<li><p>3: 基于 VFS 的 OTA</p></li>
+<li><p>4: 基于 SDCard 的 OTA</p></li>
+</ul>
 </dd>
-<dt class="field-even">Data Len<span class="colon">:</span></dt>
-<dd class="field-even"><p>数据长度，以字节为单位</p>
+<dt class="field-even">&lt;host&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>服务器端的域名或者IP地址</p>
 </dd>
-<dt class="field-odd">Checksum<span class="colon">:</span></dt>
-<dd class="field-odd"><p>全帧数据CRC32校验值</p>
+<dt class="field-odd">&lt;port&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>服务器端的端口</p>
+<ul class="simple">
+<li><p>如果设置为0，将使用默认端口。默认为：8082（基于HTTP），443（基于HTTPS）</p></li>
+</ul>
+</dd>
+<dt class="field-even">&lt;resource&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>升级固件的路径</p>
 </dd>
 </dl>
 </section>
-<section id="id4">
-<h3>交互流程<a class="headerlink" href="#id4" title="Link to this heading"></a></h3>
-<p>SPI AT命令交互主要包含两个过程：</p>
-<p><strong>主机发送AT命令：</strong></p>
-<figure class="align-center">
-<a class="reference internal image-reference" href="../../_images/spi_master_send_at_command_to_slave.svg"><img alt="../../_images/spi_master_send_at_command_to_slave.svg" height="231" src="../../_images/spi_master_send_at_command_to_slave.svg" width="397" /></a>
-</figure>
-<ol class="arabic simple">
-<li><p>主机拉低 <code class="docutils literal notranslate"><span class="pre">MASTER</span> <span class="pre">SYNC</span></code> 引脚向从机发起数据传输请求</p></li>
-<li><p>从机通过GPIO中断接收到主机的请求，准备就绪后拉高 <code class="docutils literal notranslate"><span class="pre">SLAVE</span> <span class="pre">SYNC</span></code> 引脚通知主机可以传输数据</p></li>
-<li><p>主机启动SPI数据传输，传输完成后，双方复位同步引脚</p></li>
-</ol>
-<p><strong>从机返回AT响应：</strong></p>
-<figure class="align-center">
-<a class="reference internal image-reference" href="../../_images/spi_slave_send_response_to_master.svg"><img alt="../../_images/spi_slave_send_response_to_master.svg" height="207" src="../../_images/spi_slave_send_response_to_master.svg" width="397" /></a>
-</figure>
-<ol class="arabic simple">
-<li><p>从机通过拉高 <code class="docutils literal notranslate"><span class="pre">SLAVE</span> <span class="pre">SYNC</span></code> 引脚通知主机已准备好发送AT命令响应数据</p></li>
-<li><p>主机启动SPI数据接收，传输完成后，从机复位同步引脚</p></li>
-</ol>
+<section id="id5">
+<h3>错误码<a class="headerlink" href="#id5" title="Link to this heading"></a></h3>
+<dl class="field-list simple">
+<dt class="field-odd">1<span class="colon">:</span></dt>
+<dd class="field-odd"><p>参数错误</p>
+</dd>
+<dt class="field-even">2<span class="colon">:</span></dt>
+<dd class="field-even"><p>内存分配错误</p>
+</dd>
+<dt class="field-odd">3<span class="colon">:</span></dt>
+<dd class="field-odd"><p>OTA正在进行中</p>
+</dd>
+<dt class="field-even">4<span class="colon">:</span></dt>
+<dd class="field-even"><p>OTA初始化错误</p>
+</dd>
+<dt class="field-odd">5<span class="colon">:</span></dt>
+<dd class="field-odd"><p>OTA任务创建错误</p>
+</dd>
+</dl>
+</section>
+<section id="id6">
+<h3>示例<a class="headerlink" href="#id6" title="Link to this heading"></a></h3>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">OTA</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="mf">192.168.137.1</span><span class="p">,</span><span class="mi">8082</span><span class="p">,</span><span class="n">ota_all</span><span class="o">.</span><span class="n">bin</span>
+<span class="n">OK</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>升级完成时，升级成功将返回：</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span>[$]+OTA: UPDATE SUCCESS
+</pre></div>
+</div>
+</div></blockquote>
+<p>如果升级过程中发生错误，将返回：</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span>[$]+OTA: UPDATE FAILED
+</pre></div>
+</div>
+</div></blockquote>
+</section>
+</section>
+<section id="at-userota">
+<span id="ota-at-userota"></span><h2>AT+USEROTA<a class="headerlink" href="#at-userota" title="Link to this heading"></a></h2>
+<section id="id7">
+<h3>描述<a class="headerlink" href="#id7" title="Link to this heading"></a></h3>
+<p>用户自定义方式升级到指定版本的固件</p>
+</section>
+<section id="id8">
+<h3>命令<a class="headerlink" href="#id8" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">USEROTA</span><span class="o">=&lt;</span><span class="n">length</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">sysrst</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</section>
+<section id="id9">
+<h3>响应<a class="headerlink" href="#id9" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">OK</span>
+</pre></div>
+</div>
+<p>或</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ERROR</span><span class="p">:</span><span class="o">&lt;</span><span class="n">error_no</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</section>
+<section id="id10">
+<h3>参数<a class="headerlink" href="#id10" title="Link to this heading"></a></h3>
+<dl class="field-list simple">
+<dt class="field-odd">&lt;length&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>OTA固件总长度，即ota_all.bin的总长度</p>
+</dd>
+<dt class="field-even">&lt;sysrst&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>升级完成后是否重启的标志</p>
+<ul class="simple">
+<li><p>0: 升级完成后不重启</p></li>
+<li><p>1: 升级完成后重启</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="id11">
+<h3>错误码<a class="headerlink" href="#id11" title="Link to this heading"></a></h3>
+<dl class="field-list simple">
+<dt class="field-odd">1<span class="colon">:</span></dt>
+<dd class="field-odd"><p>参数错误</p>
+</dd>
+<dt class="field-even">2<span class="colon">:</span></dt>
+<dd class="field-even"><p>内存分配错误</p>
+</dd>
+<dt class="field-odd">3<span class="colon">:</span></dt>
+<dd class="field-odd"><p>升级过程中发生错误</p>
+</dd>
+<dt class="field-even">4<span class="colon">:</span></dt>
+<dd class="field-even"><p>OTA正在进行中</p>
+</dd>
+<dt class="field-odd">5<span class="colon">:</span></dt>
+<dd class="field-odd"><p>OTA初始化错误</p>
+</dd>
+</dl>
+</section>
+<section id="id12">
+<h3>示例<a class="headerlink" href="#id12" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">USEROTA</span><span class="o">=</span><span class="mi">1120704</span><span class="p">,</span><span class="mi">0</span>
+</pre></div>
+</div>
+</section>
+<section id="id13">
+<h3>响应<a class="headerlink" href="#id13" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="o">&gt;</span> <span class="o">&gt;</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">&gt;&gt;&gt;</span></code> 符号表示AT模块已准备好接收串行数据，可以输入数据。</p>
+<p>当输入的数据长度满足参数 length指定的要求时，传输结束。如果升级成功，将返回：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">OK</span>
+</pre></div>
+</div>
 </section>
 </section>
 </section>
@@ -650,8 +734,8 @@ document.addEventListener('DOMContentLoaded', function() {
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
-        <a href="at_command_ota_cn.html" class="btn btn-neutral float-left" title="OTA AT命令集" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
-        <a href="../0_file_system/0_vfs_index_cn.html" class="btn btn-neutral float-right" title="虚拟文件系统" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="at_command_file_system_cn.html" class="btn btn-neutral float-left" title="文件系统 AT命令集" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="at_command_use_spi_cn.html" class="btn btn-neutral float-right" title="通过SPI接口使用AT命令" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

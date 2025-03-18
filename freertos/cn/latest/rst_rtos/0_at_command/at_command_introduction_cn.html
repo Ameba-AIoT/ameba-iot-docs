@@ -10,9 +10,9 @@
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
-      <link rel="stylesheet" type="text/css" href="../../_static/custom_cn.css?v=0d22fac7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=5f2c7a6f" />
       <link rel="stylesheet" type="text/css" href="../../_static/tabs.css?v=a5c4661c" />
-      <link rel="stylesheet" type="text/css" href="../../_static/_static/custom_cn.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/_static/custom.css" />
 
   
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
@@ -26,6 +26,7 @@
         <script src="../../_static/doctools.js?v=9a2dae69"></script>
         <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script src="../../_static/tabs.js?v=3030b3cb"></script>
         <script>let toggleHintShow = 'Click to show';</script>
         <script>let toggleHintHide = 'Click to hide';</script>
@@ -37,15 +38,370 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="索引" href="../../genindex.html" />
     <link rel="search" title="搜索" href="../../search.html" />
-    <link rel="next" title="通用AT命令集" href="at_command_common_cn.html" />
+    <link rel="next" title="官方发布的固件" href="at_command_image_cn.html" />
     <link rel="prev" title="AT 命令集" href="0_at_command_index_cn.html" />
-   
-  
-  <script type="text/javascript" src="../../_static/js/selector.js"></script>
+     
+    
+    <script type="text/javascript" src="../../_static/js/selector.js"></script>
+    
+<script>
+// ▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼ 多语言配置 ▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼
+const lang = 'zh';  // 使用 Python 字符串切片
+const i18n = {
+    zh: {
+        title: '访问授权',
+        username: '用户名',
+        password: '密码',
+        confirm: '确认',
+        cancel: '取消',
+        usernameError: '用户名错误',
+        userNotExist: '该用户不存在',
+        passwordError: '密码错误',
+        wrongPassword: '请输入正确的密码',
+        accessDenied: '无访问权限',
+        noPermission: '您无权查看此内容',
+        expiredTitle: '访问已过期',
+        expiredMsg: '您的权限已失效<br>有效期：%s 至 %s',
+        deniedTitle: '⚠️ 无访问权限',
+        contact: '请联系 claire_wang@realsil.com.cn 获取权限'
+    },
+    en: {
+        title: 'Access Required',
+        username: 'Username',
+        password: 'Password',
+        confirm: 'Confirm',
+        cancel: 'Cancel',
+        usernameError: 'Invalid Username',
+        userNotExist: 'User does not exist',
+        passwordError: 'Wrong Password',
+        wrongPassword: 'Please enter correct password',
+        accessDenied: 'Access Denied',
+        noPermission: 'You have no permission to view this content',
+        expiredTitle: 'Authorization Expired',
+        expiredMsg: 'Your access has expired<br>Valid period: %s to %s',
+        deniedTitle: '⚠️ Access Denied',
+        contact: 'Please contact claire_wang@realsil.com.cn for access'
+    }
+};
+// ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲ 多语言配置结束 ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
+</script>
 
-  <style>
-    .wy-nav-content {max-width: 1000px;} /* 设置最大宽度 */
-  </style>
+    <!-- 样式模板 -->
+    
+
+<style>
+    .wy-nav-content {
+        max-width: 1000px;
+         
+    }
+    
+    .auth-denied {
+        padding: 20px;
+        background: #f8f9fa;
+        border-radius: 4px;
+        border: 1px solid #dee2e6;
+        text-align: center;
+        color: #721c24;
+        margin-top: 20px;
+    }
+    .auth-denied h3 {
+        margin-bottom: 10px;
+        color: #dc3545;
+    }
+    
+    #report-button {
+        position: fixed;
+        top: 10px;
+        left: 1120px;
+        padding: 10px 20px;
+        background-color: #ff00a2;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        z-index: 1000;
+    }
+    #report-button:hover {
+        background-color: #0056b3;
+    }
+    
+    .feedback-dialog {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        z-index: 1001;
+        width: 600px;
+    }
+    .feedback-dialog textarea {
+        width: 100%;
+        height: 150px;
+        margin-top: 10px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        resize: vertical;
+    }
+    .feedback-dialog button {
+        margin-top: 10px;
+        padding: 8px 16px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    .feedback-dialog button:hover {
+        background-color: #0056b3;
+    }
+
+    
+    
+</style>
+
+    <!-- 注入 TOC 映射和当前页面信息 -->
+    
+
+<!-- TOC 映射和当前文档信息 -->
+<script>
+// 将 Python 字典转换为 JS 对象
+const TOC_TITLE_MAP = {"rst_rtos/0_ameba_product": "\u4ea7\u54c1\u4e2d\u5fc3", "rst_rtos/0_ameba_product/0_ameba_product_center_index_cn": "\u4ea7\u54c1\u4e2d\u5fc3", "rst_rtos/0_ameba_sdk": "Ameba SDK", "rst_rtos/0_ameba_sdk/0_ameba_sdks_index_cn": "Ameba SDK", "rst_rtos/0_ameba_solutions": "\u89e3\u51b3\u65b9\u6848", "rst_rtos/0_ameba_solutions/0_ameba_solutions_index_cn": "\u89e3\u51b3\u65b9\u6848", "rst_rtos/0_at_command": "0.8 AT \u547d\u4ee4\u96c6", "rst_rtos/0_at_command/0_at_command_index_cn": "0.8 AT \u547d\u4ee4\u96c6", "rst_rtos/0_file_system": "0.9 \u865a\u62df\u6587\u4ef6\u7cfb\u7edf", "rst_rtos/0_file_system/0_vfs_index_cn": "0.9 \u865a\u62df\u6587\u4ef6\u7cfb\u7edf", "rst_rtos/0_ftl": "0.A Flash \u8f6c\u6362\u5c42", "rst_rtos/0_ftl/0_ftl_index_cn": "0.A Flash \u8f6c\u6362\u5c42", "rst_rtos/0_gcc_build_environment": "0.1 GCC \u7f16\u8bd1\u73af\u5883", "rst_rtos/0_gcc_build_environment/0_gcc_build_index_cn": "0.1 GCC \u7f16\u8bd1\u73af\u5883", "rst_rtos/0_gcc_build_library": "0.3 GCC \u5e93\u7684\u751f\u6210\u548c\u4f7f\u7528", "rst_rtos/0_gcc_build_library/0_gcc_build_library_index_cn": "0.3 GCC \u5e93\u7684\u751f\u6210\u548c\u4f7f\u7528", "rst_rtos/0_gdb_debug": "0.2 GDB\u8c03\u8bd5", "rst_rtos/0_gdb_debug/0_gdb_debug_index_cn": "0.2 GDB\u8c03\u8bd5", "rst_rtos/0_memory_layout": "0.5 Flash \u548c RAM \u5e03\u5c40", "rst_rtos/0_memory_layout/0_layout_index_cn": "0.5 Flash \u548c RAM \u5e03\u5c40", "rst_rtos/0_sdk_example": "0.4 SDK \u793a\u4f8b", "rst_rtos/0_sdk_example/0_sdk_example_index_cn": "0.4 SDK \u793a\u4f8b", "rst_rtos/0_tools": "0.7 \u5de5\u5177", "rst_rtos/0_tools/0_tools_index_cn": "0.7 \u5de5\u5177", "rst_rtos/0_user_config": "0.6 \u5f00\u53d1\u8005\u914d\u7f6e", "rst_rtos/0_user_config/0_usrcfg_index_cn": "0.6 \u5f00\u53d1\u8005\u914d\u7f6e", "rst_rtos/1_boot_process": "1.1 \u542f\u52a8\u8fc7\u7a0b", "rst_rtos/1_boot_process/0_boot_index_cn": "1.1 \u542f\u52a8\u8fc7\u7a0b", "rst_rtos/1_chipen": "1.4 CHIP_EN", "rst_rtos/1_chipen/0_chipen_index_cn": "1.4 CHIP_EN", "rst_rtos/1_gpio": "1.7 GPIO\u548c\u5f15\u811a\u63a7\u5236", "rst_rtos/1_gpio/0_gpio_index_cn": "1.7 GPIO\u548c\u5f15\u811a\u63a7\u5236", "rst_rtos/1_ipc": "1.5 \u6838\u95f4\u901a\u4fe1", "rst_rtos/1_ipc/0_ipc_index_cn": "1.5 \u6838\u95f4\u901a\u4fe1", "rst_rtos/1_mpu_cache": "1.0 \u5185\u5b58\u4fdd\u62a4\u5355\u5143\u548c\u7f13\u5b58", "rst_rtos/1_mpu_cache/0_mpu_cache_index_cn": "1.0 \u5185\u5b58\u4fdd\u62a4\u5355\u5143\u548c\u7f13\u5b58", "rst_rtos/1_ota": "1.2 \u56fa\u4ef6\u5728\u7ebf\u5347\u7ea7(OTA)", "rst_rtos/1_ota/0_ota_index_cn": "1.2 \u56fa\u4ef6\u5728\u7ebf\u5347\u7ea7(OTA)", "rst_rtos/1_otpc": "1.3 OTP\u5b58\u50a8\u5668", "rst_rtos/1_otpc/0_otpc_index": "1.3 OTP\u5b58\u50a8\u5668", "rst_rtos/1_pinmux": "1.6 \u5f15\u811a\u590d\u7528", "rst_rtos/1_pinmux/0_pinmux_index_cn": "1.6 \u5f15\u811a\u590d\u7528", "rst_rtos/1_power_save": "1.9 \u4f4e\u529f\u8017\u5f00\u53d1", "rst_rtos/1_power_save/0_ps_index_cn": "1.9 \u4f4e\u529f\u8017\u5f00\u53d1", "rst_rtos/2_whc_fullmac": "2.2 WHC FullMAC", "rst_rtos/2_whc_fullmac/0_fullmac_index_cn": "2.2 WHC FullMAC", "rst_rtos/2_whc_wifi_bridge": "2.1 WHC Bridge", "rst_rtos/2_whc_wifi_bridge/0_wifi_bridge_index_cn": "2.1 WHC Bridge", "rst_rtos/2_wifi_adaptivity_test": "2.6 Wi-Fi Adaptivity \u6d4b\u8bd5\u6307\u5357", "rst_rtos/2_wifi_adaptivity_test/0_wifi_adaptivity_index": "2.6 Wi-Fi Adaptivity \u6d4b\u8bd5\u6307\u5357", "rst_rtos/2_wifi_csi": "2.5 Wi-Fi CSI", "rst_rtos/2_wifi_csi/0_wifi_csi_index_cn": "2.5 Wi-Fi CSI", "rst_rtos/2_wifi_tunnel": "2.3 Wi-Fi R-Mesh", "rst_rtos/2_wifi_tunnel/0_wifi_tunnel_index_cn": "2.3 Wi-Fi R-Mesh", "rst_rtos/3_crypto_engine": "3.9 \u5bf9\u79f0\u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_crypto_engine/0_crypto_engine_index_cn": "3.9 \u5bf9\u79f0\u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_ecdsa_engine": "3.a ECDSA \u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_ecdsa_engine/0_ecdsa_index_cn": "3.a ECDSA \u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_eddsa_engine": "3.b EDDSA \u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_eddsa_engine/0_eddsa_index_cn": "3.b EDDSA \u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_nda_huk_derivation": "3.3 HUK \u751f\u6210 \ud83d\udd12", "rst_rtos/3_nda_huk_derivation/0_huk_derivation_index_nda": "3.3 HUK \u751f\u6210 \ud83d\udd12", "rst_rtos/3_nda_rdp": "3.4 RDP \ud83d\udd12", "rst_rtos/3_nda_rdp/0_rdp_index_nda": "3.4 RDP \ud83d\udd12", "rst_rtos/3_nda_rsip": "3.5 RSIP \ud83d\udd12", "rst_rtos/3_nda_rsip/0_rsip_index_nda": "3.5 RSIP \ud83d\udd12", "rst_rtos/3_nda_secure_boot": "3.6 Secure Boot \ud83d\udd12", "rst_rtos/3_nda_secure_boot/0_secure_boot_index_nda": "3.6 Secure Boot \ud83d\udd12", "rst_rtos/3_nda_swd_protection": "3.7 SWD Protection \ud83d\udd12", "rst_rtos/3_nda_swd_protection/0_swd_protection_index_nda": "3.7 SWD Protection \ud83d\udd12", "rst_rtos/3_nda_tfm": "3.8 Trusted Firmware-M (TF-M) \ud83d\udd12", "rst_rtos/3_nda_tfm/0_tfm_index_nda": "3.8 Trusted Firmware-M (TF-M) \ud83d\udd12", "rst_rtos/3_rsa_engine": "3.c RSA \u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_rsa_engine/0_rsa_index_cn": "3.c RSA \u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_security": "3.1 \u5b89\u5168\u4e0e\u52a0\u5bc6", "rst_rtos/3_security/0_security_index_cn": "3.1 \u5b89\u5168\u4e0e\u52a0\u5bc6", "rst_rtos/3_trng": "3.2 \u771f\u968f\u673a\u6570\u53d1\u751f\u5668", "rst_rtos/3_trng/0_trng_index_cn": "3.2 \u771f\u968f\u673a\u6570\u53d1\u751f\u5668", "rst_rtos/4_ai": "4.1 \u4eba\u5de5\u667a\u80fd", "rst_rtos/4_ai/0_ai_index_cn": "4.1 \u4eba\u5de5\u667a\u80fd", "rst_rtos/4_ai_voice": "4.2 \u8bed\u97f3\u8bc6\u522b", "rst_rtos/4_ai_voice/0_ai_voice_index_cn": "4.2 \u8bed\u97f3\u8bc6\u522b", "rst_rtos/4_dsp": "4.4 DSP \u4f7f\u7528\u6307\u5357", "rst_rtos/4_dsp/0_dsp_index_cn": "4.4 DSP \u4f7f\u7528\u6307\u5357", "rst_rtos/4_multimedia": "4.3 \u591a\u5a92\u4f53", "rst_rtos/4_multimedia/0_multimedia_index_cn": "4.3 \u591a\u5a92\u4f53", "rst_rtos/6_mass_production": "6.1 \u91cf\u4ea7\u6307\u5bfc", "rst_rtos/6_mass_production/0_mp_index_cn": "6.1 \u91cf\u4ea7\u6307\u5bfc", "rst_rtos/6_mp_image": "6.2 MP \u56fa\u4ef6", "rst_rtos/6_mp_image/0_mp_image_index_cn": "6.2 MP \u56fa\u4ef6", "rst_rtos/6_mptools": "6.3 \u4ea7\u6d4b\u5de5\u5177", "rst_rtos/6_mptools/0_mptools_index_cn": "6.3 \u4ea7\u6d4b\u5de5\u5177", "rst_rtos/7_usb": "7.1 USB \u4e3b\u673a\u4e0e\u4ece\u673a", "rst_rtos/7_usb/0_usb_index_cn": "7.1 USB \u4e3b\u673a\u4e0e\u4ece\u673a", "rst_rtos/8_adc": "8.4 \u6a21\u6570\u8f6c\u6362\u5668", "rst_rtos/8_adc/0_adc_index_cn": "8.4 \u6a21\u6570\u8f6c\u6362\u5668", "rst_rtos/8_cap_touch": "8.7 Cap-Touch", "rst_rtos/8_cap_touch/0_cap_touch_index_cn": "8.7 Cap-Touch", "rst_rtos/8_dmac": "8.1 DMA \u63a7\u5236\u5668", "rst_rtos/8_dmac/0_dmac_index_cn": "8.1 DMA \u63a7\u5236\u5668", "rst_rtos/8_ir": "8.5 \u7ea2\u5916\u6536\u53d1\u5668", "rst_rtos/8_ir/0_ir_index_cn": "8.5 \u7ea2\u5916\u6536\u53d1\u5668", "rst_rtos/8_key_scan": "8.8 Key-Scan", "rst_rtos/8_key_scan/0_key_scan_index_cn": "8.8 Key-Scan", "rst_rtos/8_lcdc": "8.A LCD\u63a7\u5236\u5668", "rst_rtos/8_lcdc/0_lcdc_index_cn": "8.A LCD\u63a7\u5236\u5668", "rst_rtos/8_ledc": "8.6 LED\u63a7\u5236\u5668", "rst_rtos/8_ledc/0_ledc_index_cn": "8.6 LED\u63a7\u5236\u5668", "rst_rtos/8_psram": "8.2 PSRAM", "rst_rtos/8_psram/0_psram_index_cn": "8.2 PSRAM", "rst_rtos/8_rtc_io": "8.9 RTC-IO", "rst_rtos/8_rtc_io/0_rtc_io_index_cn": "8.9 RTC-IO", "rst_rtos/8_thermal": "8.3 \u6e29\u5ea6\u6d4b\u91cf", "rst_rtos/8_thermal/0_thermal_index_cn": "8.3 \u6e29\u5ea6\u6d4b\u91cf"};
+console.log("TOC_TITLE_MAP:", TOC_TITLE_MAP);
+
+// 获取当前页面的文档名 (例如 'rst_rtos/3_nda_secure_boot/0_secure_boot_index_nda')
+const CURRENT_DOCNAME = 'rst_rtos/0_at_command/at_command_introduction_cn';
+
+// 动态查找顶级分类函数（定义为全局函数）
+window.findTopLevelChapter = function(docname) {
+    console.log("Attempting to find top-level chapter for:", docname);
+    let bestMatch = "";
+    let bestTitle = "Unknown Chapter";
+
+    // 按路径长度降序排序以确保最长匹配
+    const sortedPaths = Object.keys(TOC_TITLE_MAP).sort((a, b) => b.length - a.length);
+
+    for (const path of sortedPaths) {
+        console.log("Checking path:", path);
+        if (docname === path || docname.startsWith(path + '/')) { // 子页面
+            bestMatch = path;
+            bestTitle = TOC_TITLE_MAP[path];
+            console.log("Matched path:", path, "with title:", bestTitle);
+            break;
+        }
+    }
+
+    // 如果没有找到任何匹配项，则尝试更短的路径
+    if (bestMatch === "") {
+        const pathSegments = docname.split('/');
+        while (pathSegments.length > 1) { // 至少保留根路径
+            const candidate = pathSegments.join('/');
+            console.log("Checking shorter path:", candidate);
+            if (TOC_TITLE_MAP[candidate]) {
+                bestTitle = TOC_TITLE_MAP[candidate];
+                console.log("Matched shorter path:", candidate, "with title:", bestTitle);
+                break;
+            }
+            pathSegments.pop();
+        }
+    }
+
+    console.log("Final top-level chapter:", bestTitle);
+    return bestTitle;
+}
+
+// 初始化时调用
+document.addEventListener('DOMContentLoaded', function() {
+    const topLevelChapter = findTopLevelChapter(CURRENT_DOCNAME);
+    console.log("Top Level Chapter:", topLevelChapter);
+
+    // 将顶级分类插入到DOM中（根据需要）
+    const chapterElement = document.createElement('div');
+    chapterElement.className = 'top-level-chapter';
+    chapterElement.innerHTML = `<strong>Top Level Chapter: </strong>${topLevelChapter}`;
+    document.body.appendChild(chapterElement);
+});
+</script>
+
+    <!-- 问题回报 -->
+    
+
+<!-- 添加自定义提示框 -->
+<div id="prompt-box" style="
+    display: none;
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.8);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    z-index: 9999;
+    text-align: center;
+    font-size: 14px;
+"></div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const reportButton = document.getElementById('report-button');
+    const feedbackDialog = document.getElementById('feedback-dialog');
+    const feedbackText = document.getElementById('feedback-text');
+    const submitButton = document.getElementById('submit-feedback');
+    const cancelButton = document.getElementById('cancel-feedback');
+    const promptBox = document.getElementById('prompt-box');
+
+    let selectedText = '';
+    let selectedChapters = '';
+    const language = 'zh-CN'; // 获取语言变量
+
+    // 定义标题变量（顶格显示）
+    const userHeader = 'User:';
+    const chaptersHeader = 'Chapters:';
+    const paragraphHeader = 'Paragraph:';
+    const questionHeader = 'Question:';
+
+    // 定义提示消息
+    const saveSuccessMessage = language === 'zh_CN' ? '问题已保存到本地文件 feedback.txt' : 'Issue saved to local file feedback.txt';
+
+    // 检查 findTopLevelChapter 是否已定义
+    if (typeof window.findTopLevelChapter !== 'function') {
+        console.error("findTopLevelChapter 函数未定义，请检查加载顺序！");
+        return;
+    }
+
+    reportButton.addEventListener('click', function() {
+        const selection = window.getSelection();
+        selectedText = selection.toString();
+        if (!selectedText) {
+            alert('Please select the problematic content first');
+            return;
+        }
+
+        // 收集章节信息
+        let chapters = new Set(); // 使用 Set 来避免重复章节
+        if (selection.rangeCount > 0) {
+            const range = selection.getRangeAt(0);
+            let node = range.commonAncestorContainer;
+
+            // 确保从最近的元素节点开始
+            while (node && node.nodeType !== Node.ELEMENT_NODE) {
+                node = node.parentElement;
+            }
+
+            // 使用递归方法遍历DOM树
+            function collectHeadings(node, level = 0) {
+                if (!node) return;
+
+                if (node.tagName && node.tagName.match(/^H[1-6]$/)) {
+                    chapters.add(`${node.textContent.trim()}`);
+                }
+
+                if (node.previousElementSibling) {
+                    collectHeadings(node.previousElementSibling, level);
+                }
+
+                if (node.parentElement && node.parentElement.tagName !== 'BODY') {
+                    collectHeadings(node.parentElement, level + 1);
+                }
+            }
+
+            collectHeadings(node);
+
+            // 如果没有找到任何章节信息，则添加默认提示
+            if (chapters.size === 0) {
+                chapters.add('No chapter information found');
+            }
+        }
+
+        // 获取顶级侧边栏章节
+        const topLevelChapter = window.findTopLevelChapter(CURRENT_DOCNAME); // 调用全局函数
+        chapters.add(`顶级分类：${topLevelChapter}`); // 插入到章节集合中
+
+        // 添加章节标题
+        const chapterHeader = language === 'zh_CN' ? '以下逐级向上追溯：' : 'Trace upwards level by level:';
+        selectedChapters = chapterHeader + '\n' + Array.from(chapters).join('\n');
+
+        feedbackDialog.style.display = 'block';
+        feedbackText.value = '';
+    });
+
+    submitButton.addEventListener('click', function() {
+        const userQuestion = feedbackText.value.trim();
+        if (!userQuestion) {
+            alert('Issue description cannot be empty');
+            return;
+        }
+
+        // 获取用户信息
+        const username = sessionStorage.getItem('username') || '匿名';
+
+        // 统一处理内容缩进
+        const formatContent = text => text.split('\n').map(line => '    ' + line).join('\n');
+
+        // 生成消息内容（标题顶格，内容缩进）
+        const message = `${userHeader}\n` + 
+                        `${formatContent(username)}\n\n` +
+                        `${chaptersHeader}\n` + 
+                        `${formatContent(selectedChapters)}\n\n` +
+                        `${paragraphHeader}\n` + 
+                        `${formatContent(selectedText)}\n\n` +
+                        `${questionHeader}\n` + 
+                        `${formatContent(userQuestion)}`;
+
+        // flask client: 确保使用正确的JSON格式发送
+        const feedbackData = {
+            user: '匿名',
+            chapters: selectedChapters,  // 直接使用换行符
+            paragraph: selectedText,     // 直接使用换行符 
+            question: userQuestion
+        };
+
+        fetch('http://localhost:5000/submit', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json', // 必须明确指定
+            },
+            body: JSON.stringify(feedbackData) // 自动处理转义
+        })
+        .then(response => {
+            console.log('响应状态:', response.status);
+            return response.json();
+        })
+        .then(data => {
+            console.log('响应内容:', data);
+        })
+        .catch(error => {
+            console.error('请求失败:', error);
+        });
+        // flask client: 确保使用正确的JSON格式发送
+
+        // 创建Blob对象并保存到本地文件
+        const blob = new Blob([message], { type: 'text/plain' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = 'feedback.txt';
+        link.click();
+
+        // 显示提示框
+        promptBox.textContent = saveSuccessMessage;
+        promptBox.style.display = 'block';
+        const promptTimeout = setTimeout(() => {
+            promptBox.style.display = 'none';
+        }, 10000);
+
+        // 自动关闭反馈对话框
+        feedbackDialog.style.display = 'none';
+    });
+
+    cancelButton.addEventListener('click', function() {
+        feedbackDialog.style.display = 'none';
+    });
+});
+</script>
 
 </head>
 
@@ -79,39 +435,40 @@
 <li class="toctree-l1"><a class="reference internal" href="../0_memory_layout/0_layout_index_cn.html">0.5 Flash 和 RAM 布局</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../0_user_config/0_usrcfg_index_cn.html">0.6 开发者配置</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../0_tools/0_tools_index_cn.html">0.7 工具</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="0_at_command_index_cn.html">0.8 AT 命令</a><ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="0_at_command_index_cn.html">0.8 AT 命令集</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">概述</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#at">AT指令模式</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id2">硬件连接</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id3">命令描述</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#id4">命令格式</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id5">命令响应</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id6">命令参数</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id7">转义字符</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id8">命令长度</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#at">AT指令的模式</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">软件环境准备</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id3">准备工作</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#atcmd-image-building">AT固件编译</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#atcmd-host-control-mode-configuration">AT配置修改</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#atcmd-host-control-mode-certificate">AT安全证书</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id8">硬件环境准备</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id9">命令描述</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id10">命令格式</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id11">命令响应</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id12">命令参数</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id13">转义字符</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id14">命令长度</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#transparent-transmission">透传模式</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#id10">AT命令列表</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id11">AT命令版本</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id12">编译和下载</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#id13">准备工作</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#ssl">SSL证书</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#atcmd-mcu-control-mode-configuration">配置</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#atcmd-image-building">编译</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id17">下载</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id16">AT命令列表</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id17">AT命令版本</a></li>
 </ul>
 </li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_common_cn.html">通用AT命令集</a></li>
+<li class="toctree-l2"><a class="reference internal" href="at_command_image_cn.html">官方发布的固件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="at_command_common_cn.html">通用 AT命令集</a></li>
 <li class="toctree-l2"><a class="reference internal" href="at_command_wifi_cn.html">Wi-Fi AT命令集</a></li>
 <li class="toctree-l2"><a class="reference internal" href="at_command_mqtt_cn.html">MQTT AT命令集</a></li>
 <li class="toctree-l2"><a class="reference internal" href="at_command_http_cn.html">HTTP AT命令集</a></li>
 <li class="toctree-l2"><a class="reference internal" href="at_command_websocket_cn.html">WebSocket AT命令集</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_tcp_ip_cn.html">TCP/IP AT命令集</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_bluetooth_cn.html">蓝牙AT命令集</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_file_system_cn.html">文件系统AT命令集</a></li>
+<li class="toctree-l2"><a class="reference internal" href="at_command_socket_cn.html">Socket AT命令集</a></li>
+<li class="toctree-l2"><a class="reference internal" href="at_command_bluetooth_cn.html">蓝牙 AT命令集</a></li>
+<li class="toctree-l2"><a class="reference internal" href="at_command_file_system_cn.html">文件系统 AT命令集</a></li>
+<li class="toctree-l2"><a class="reference internal" href="at_command_ota_cn.html">OTA AT命令集</a></li>
 <li class="toctree-l2"><a class="reference internal" href="at_command_use_spi_cn.html">通过SPI接口使用AT命令</a></li>
 </ul>
 </li>
@@ -123,8 +480,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../1_otpc/0_otpc_index.html">1.3 OTP存储器</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../1_chipen/0_chipen_index_cn.html">1.4 CHIP_EN</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../1_ipc/0_ipc_index_cn.html">1.5 核间通信</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../1_pinmux/0_pinmux_index_cn.html">1.6 PINMUX</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../1_gpio/0_gpio_index_cn.html">1.7 GPIO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_pinmux/0_pinmux_index_cn.html">1.6 引脚复用</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_gpio/0_gpio_index_cn.html">1.7 GPIO和引脚控制</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../1_power_save/0_ps_index_cn.html">1.9 低功耗开发</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../2_whc_wifi_bridge/0_wifi_bridge_index_cn.html">2.1 WHC Bridge</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../2_whc_fullmac/0_fullmac_index_cn.html">2.2 WHC FullMAC</a></li>
@@ -133,12 +490,12 @@
 <li class="toctree-l1"><a class="reference internal" href="../2_wifi_adaptivity_test/0_wifi_adaptivity_index.html">2.6 Wi-Fi Adaptivity 测试指南</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../3_security/0_security_index_cn.html">3.1 安全与加密</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../3_trng/0_trng_index_cn.html">3.2 真随机数发生器</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../3_nda_huk_derivation/0_huk_derivation_index_nda.html">3.3 HUK Derivation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../3_nda_rdp/0_rdp_index_nda.html">3.4 RDP</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../3_nda_rsip/0_rsip_index_nda.html">3.5 RSIP</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../3_nda_secure_boot/0_secure_boot_index_nda.html">3.6 Secure Boot</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../3_nda_swd_protection/0_swd_protection_index_nda.html">3.7 SWD Protection</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../3_nda_tfm/0_tfm_index_nda.html">3.8 Trusted Firmware-M (TF-M)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_huk_derivation/0_huk_derivation_index_nda.html">3.3 HUK 生成 🔒</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_rdp/0_rdp_index_nda.html">3.4 RDP 🔒</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_rsip/0_rsip_index_nda.html">3.5 RSIP 🔒</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_secure_boot/0_secure_boot_index_nda.html">3.6 Secure Boot 🔒</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_swd_protection/0_swd_protection_index_nda.html">3.7 SWD Protection 🔒</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_tfm/0_tfm_index_nda.html">3.8 Trusted Firmware-M (TF-M) 🔒</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../3_crypto_engine/0_crypto_engine_index_cn.html">3.9 对称硬件加密引擎</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../3_ecdsa_engine/0_ecdsa_index_cn.html">3.a ECDSA 硬件加密引擎</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../3_eddsa_engine/0_eddsa_index_cn.html">3.b EDDSA 硬件加密引擎</a></li>
@@ -188,130 +545,268 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="at-command">
-<span id="id1"></span><h1>概述<a class="headerlink" href="#at-command" title="Link to this heading"></a></h1>
-<p>本节描述AT指令的作用、使用方法和版本信息。</p>
+  <section id="at-commands">
+<span id="id1"></span><h1>概述<a class="headerlink" href="#at-commands" title="Link to this heading"></a></h1>
+<p>本节描述AT指令的模式,使用场景,使用方法等相关信息。</p>
 <section id="at">
-<h2>AT指令模式<a class="headerlink" href="#at" title="Link to this heading"></a></h2>
-<p>当前支持的AT指令模式分为两种：LOGUART模式与MCU控制模式，分别适合不同的开发场景。</p>
-<p><strong>LOGUART模式</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><p>适用场景：模块功能评估与测试验证</p></li>
-<li><p>典型应用：Wi-Fi/BT射频性能测试</p></li>
+<h2>AT指令的模式<a class="headerlink" href="#at" title="Link to this heading"></a></h2>
+<p>当前支持的AT指令模式分为两种： <strong>手动测试模式</strong> 与 <strong>主控控制模式</strong>，分别适合不同的场景。</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-0-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-0-0-0" name="0-0" role="tab" tabindex="0">手动测试模式</button><button aria-controls="panel-0-0-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-1" name="0-1" role="tab" tabindex="-1">主控控制模式</button></div><div aria-labelledby="tab-0-0-0" class="sphinx-tabs-panel" id="panel-0-0-0" name="0-0" role="tabpanel" tabindex="0"><ul class="simple">
+<li><p>适用场景：单命令调试, 功能评估验证, 快速测试</p></li>
+<li><p>典型应用：开发人员通过串口工具发送AT命令进行wifi的连线和吞吐量测试，蓝牙配对测试等</p></li>
 </ul>
-</div></blockquote>
-<div class="admonition note">
-<p class="admonition-title">备注</p>
-<p>此模式下，AT指令与驱动日志都是通过LOGUART输出的，因此AT指令信息可能会被日志中断，建议在非量产阶段使用。</p>
-</div>
-<p><strong>MCU控制模式</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><p>适用场景：客户产品量产开发</p></li>
-<li><p>应用说明：AT指令通过UART/SPI/SDIO通信接口独立传输和显示，无日志干扰</p></li>
+</div><div aria-labelledby="tab-0-0-1" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-1" name="0-1" role="tabpanel" tabindex="0"><ul class="simple">
+<li><p>适用场景：主控设备可以快速产品化的获得联网通信的能力</p></li>
+<li><p>典型应用：STM32的MCU主控运行应用程序通过SPI进行AT命令的自动发送以及接收解析，可以连接路由器并且进行网络数据的收发，实现网络通信和固件升级等功能</p></li>
 </ul>
-</div></blockquote>
-<table class="docutils align-default" id="id18" style="width: 100%">
-<caption><span class="caption-text">AT命令模式和使用场景</span><a class="headerlink" href="#id18" title="Link to this table"></a></caption>
-<thead>
-<tr class="row-odd"><th class="head"><p>Mode</p></th>
-<th class="head"><p>Connecting method</p></th>
-<th class="head"><p>Status</p></th>
-<th class="head"><p>Scenario</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>LOGUART Mode</p></td>
-<td><p>LOGUART</p></td>
-<td><p>Ready</p></td>
-<td><p>Evaluate/Test/Demo</p></td>
-</tr>
-<tr class="row-odd"><td rowspan="3"><p>MCU Control Mode</p></td>
-<td><p>UART</p></td>
-<td><p>Ready</p></td>
-<td rowspan="3"><p>Product development</p></td>
-</tr>
-<tr class="row-even"><td><p>SPI</p></td>
-<td><p>Ready</p></td>
-</tr>
-<tr class="row-odd"><td><p>SDIO</p></td>
-<td><p>Developing</p></td>
-</tr>
-</tbody>
-</table>
-<p>我们将Ameba模块设置为从机，MCU作为主机。主机可以向从机发送AT命令，并接收相应的AT响应。</p>
-<p>AT命令包括多种类型：如Wi-Fi AT命令、MQTT AT命令、WebSocket AT命令、TCP/IP AT命令和蓝牙AT命令，以支持多样化的通信需求。</p>
+</div></div>
 </section>
 <section id="id2">
-<h2>硬件连接<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
-<p>在进行配置前，需准备以下硬件：</p>
-<p><strong>LOGUART模式</strong></p>
+<h2>软件环境准备<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+<section id="id3">
+<h3>准备工作<a class="headerlink" href="#id3" title="Link to this heading"></a></h3>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-1-1-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-1-1-0" name="1-0" role="tab" tabindex="0">手动测试模式</button><button aria-controls="panel-1-1-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-1-1-1" name="1-1" role="tab" tabindex="-1">主控控制模式</button></div><div aria-labelledby="tab-1-1-0" class="sphinx-tabs-panel" id="panel-1-1-0" name="1-0" role="tabpanel" tabindex="0"><p>强烈建议先学习了解如下章节：</p>
 <ul class="simple">
-<li><p>Ameba板：作为从机模块</p></li>
-<li><p>PC（或其他主机设备） ：用于输入AT指令，观察AT命令的响应</p></li>
-<li><p>LOGUART：连接模块与PC（或其他主机设备），用于下载固件、传输驱动日志和AT命令日志</p></li>
+<li><p><a class="reference internal" href="../0_gcc_build_environment/1_gcc_build_environment_toprst_cn.html#gcc-build-environment"><span class="std std-ref">GCC 编译环境</span></a> (整章)</p></li>
+<li><p><a class="reference internal" href="../0_tools/1_trace_tool_toprst_cn.html#trace-tool"><span class="std std-ref">Trace Tool</span></a></p></li>
 </ul>
-<p>在LOGUART模式下，AT命令的输入和响应显示在同一端口。</p>
-<figure class="align-center" id="id19">
-<a class="reference internal image-reference" href="../../_images/loguart_mode.svg"><img alt="../../_images/loguart_mode.svg" height="110" src="../../_images/loguart_mode.svg" width="622" /></a>
-<figcaption>
-<p><span class="caption-text">LOGUART模式</span><a class="headerlink" href="#id19" title="Link to this image"></a></p>
-</figcaption>
-</figure>
-<p><strong>MCU控制模式</strong></p>
+</div><div aria-labelledby="tab-1-1-1" class="sphinx-tabs-panel" hidden="true" id="panel-1-1-1" name="1-1" role="tabpanel" tabindex="0"><p>直接使用官方发布的AT命令标准固件的，强烈建议先学习了解如下章节：</p>
 <ul class="simple">
-<li><p>Ameba板：作为从机模块</p></li>
-<li><p>树莓派（或其他MCU主机设备）：用于输入AT命令，观察AT命令的响应。</p></li>
-<li><p>LOGUART：将模块连接到树莓派（或其他MCU主机设备），用于下载固件和显示驱动日志</p></li>
-<li><p>SPI/UART/SDIO：将模块连接到树莓派（或其他MCU主机设备），用于传输AT命令和显示AT命令响应</p></li>
+<li><p><a class="reference internal" href="../0_file_system/1_vfs_toprst_cn.html#vfs-on-flash"><span class="std std-ref">Flash中的VFS</span></a></p></li>
+<li><p><a class="reference internal" href="../0_file_system/1_vfs_toprst_cn.html#vfs-bin-file-generation"><span class="std std-ref">VFS二进制文件生成</span></a></p></li>
+<li><p><a class="reference internal" href="../0_tools/1_image_tool_toprst_cn.html#image-tool"><span class="std std-ref">Image Tool</span></a></p></li>
 </ul>
-<p>在MCU控制模式下，AT命令的输入和响应可以与驱动日志分离开来，用户能更直观地查看AT命令的执行结果。</p>
-<figure class="align-center" id="id20">
-<a class="reference internal image-reference" href="../../_images/mcu_control_mode.svg"><img alt="../../_images/mcu_control_mode.svg" height="168" src="../../_images/mcu_control_mode.svg" width="607" /></a>
-<figcaption>
-<p><span class="caption-text">MCU控制模式</span><a class="headerlink" href="#id20" title="Link to this image"></a></p>
-</figcaption>
-</figure>
-<p>在MCU控制模式下，用户需要提前准备 <code class="file docutils literal notranslate"><span class="pre">atcmd_config.json</span></code> 文件（参考 <a class="reference internal" href="#atcmd-mcu-control-mode-configuration"><span class="std std-ref">配置</span></a>）。</p>
-<p>如果未提供VFS AT命令配置文件，将使用UART的默认配置。</p>
-<table class="docutils align-default" id="id21" style="width: 100%">
-<caption><span class="caption-text">默认UART端口和波特率</span><a class="headerlink" href="#id21" title="Link to this table"></a></caption>
+<p>当官方发布的AT固件无法满足需求时，如需要自定义AT命令或者WebSocket服务器功能等，那么就需要开发和编译工程，强烈建议先学习了解如下章节：</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../0_gcc_build_environment/1_gcc_build_environment_toprst_cn.html#gcc-build-environment"><span class="std std-ref">GCC 编译环境</span></a> (整章)</p></li>
+<li><p><a class="reference internal" href="../0_file_system/1_vfs_toprst_cn.html#vfs-on-flash"><span class="std std-ref">Flash中的VFS</span></a></p></li>
+<li><p><a class="reference internal" href="../0_file_system/1_vfs_toprst_cn.html#vfs-bin-file-generation"><span class="std std-ref">VFS二进制文件生成</span></a></p></li>
+</ul>
+</div></div>
+</section>
+<section id="atcmd-image-building">
+<span id="id4"></span><h3>AT固件编译<a class="headerlink" href="#atcmd-image-building" title="Link to this heading"></a></h3>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-2-2-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-2-2-0" name="2-0" role="tab" tabindex="0">手动测试模式</button><button aria-controls="panel-2-2-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-2-2-1" name="2-1" role="tab" tabindex="-1">主控控制模式</button></div><div aria-labelledby="tab-2-2-0" class="sphinx-tabs-panel" id="panel-2-2-0" name="2-0" role="tabpanel" tabindex="0"><p>参考 <a class="reference internal" href="../0_gcc_build_environment/1_gcc_build_environment_toprst_cn.html#configuring-sdk"><span class="std std-ref">配置 SDK (menuconfig)</span></a> 进入 <code class="docutils literal notranslate"><span class="pre">CONFIG</span> <span class="pre">AT</span> <span class="pre">CMD</span></code> 配置，选择 <code class="docutils literal notranslate"><span class="pre">Manual</span> <span class="pre">Test</span> <span class="pre">Mode</span></code> 并且勾选需要使能的相关AT命令功能模块</p>
+<p>参考 <a class="reference internal" href="../0_gcc_build_environment/1_gcc_build_environment_toprst_cn.html#building-code"><span class="std std-ref">编译代码</span></a> 进行固件编译</p>
+</div><div aria-labelledby="tab-2-2-1" class="sphinx-tabs-panel" hidden="true" id="panel-2-2-1" name="2-1" role="tabpanel" tabindex="0"><p>参考 <a class="reference internal" href="../0_gcc_build_environment/1_gcc_build_environment_toprst_cn.html#configuring-sdk"><span class="std std-ref">配置 SDK (menuconfig)</span></a> 进入 <code class="docutils literal notranslate"><span class="pre">CONFIG</span> <span class="pre">AT</span> <span class="pre">CMD</span></code> 配置，选择 <code class="docutils literal notranslate"><span class="pre">Host</span> <span class="pre">Control</span> <span class="pre">Mode</span></code> 并且勾选需要使能的相关AT命令功能模块</p>
+<p>参考 <a class="reference internal" href="../0_gcc_build_environment/1_gcc_build_environment_toprst_cn.html#building-code"><span class="std std-ref">编译代码</span></a> 进行固件编译</p>
+</div></div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>如需使能AT命令中的蓝牙命令功能模块，需要在Menuconfig主页面 <code class="docutils literal notranslate"><span class="pre">CONFIG</span> <span class="pre">BT</span></code> 中打开蓝牙功能。</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>如需更高的wifi吞吐量，需要在Menuconfig主页面 <code class="docutils literal notranslate"><span class="pre">CONFIG</span> <span class="pre">WIFI</span></code> 中打开 <code class="docutils literal notranslate"><span class="pre">Enable</span> <span class="pre">HIGH</span> <span class="pre">TP</span></code> 选项。</p>
+</div>
+</section>
+<section id="atcmd-host-control-mode-configuration">
+<span id="id5"></span><h3>AT配置修改<a class="headerlink" href="#atcmd-host-control-mode-configuration" title="Link to this heading"></a></h3>
+<p>主控控制模式下，可以在不修改更新应用固件的情况下，直接通过配置文件 <code class="file docutils literal notranslate"><span class="pre">atcmd_config.json</span></code> 来修改外设接口以及其对应的管脚等信息。</p>
+<ul>
+<li><p>在SDK中找到 <code class="file docutils literal notranslate"><span class="pre">atcmd_config.json</span></code> 文件，根据需要来修改该文件中的对应栏位</p></li>
+<li><p>将 <code class="file docutils literal notranslate"><span class="pre">atcmd_config.json</span></code> 文件提前预置到LittleFS虚拟文件系统（VFS）的根目录下，并且制作VFS固件（参考 <a class="reference internal" href="#atcmd-config-example"><span class="std std-ref">示例</span></a> ）</p></li>
+<li><p>将VFS固件烧录到Ameba开发板对应的flash的VFS1区域 （参考）</p></li>
+<li><p>重启模组，上电后会在LogUART输出AT命令初始化相关信息</p>
+<blockquote>
+<div><div class="highlight-none notranslate"><div class="highlight"><pre><span></span>[AT-I] ATCMD Host Control Mode : SPI, mosi:PA_27, miso:PA_28, clk:PA_26,cs:PA_12, master_sync_pin:PB_30, slave_sync_pin:PB_31
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>外设接口支持UART/SPI/SDIO, 相关对应的管脚请参考规格书以及硬件资料文档。</p>
+<p>如果未预置 <code class="file docutils literal notranslate"><span class="pre">atcmd_config.json</span></code> 文件，将使用UART的默认配置,默认的波特率和管脚如下：</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-3-3-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-3-3-0" name="3-0" role="tab" tabindex="0">RTL8721Dx</button><button aria-controls="panel-3-3-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-3-3-1" name="3-1" role="tab" tabindex="-1">RTL8720E</button><button aria-controls="panel-3-3-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-3-3-2" name="3-2" role="tab" tabindex="-1">RTL8726E</button><button aria-controls="panel-3-3-3" aria-selected="false" class="sphinx-tabs-tab" id="tab-3-3-3" name="3-3" role="tab" tabindex="-1">RTL8730E</button></div><div aria-labelledby="tab-3-3-0" class="sphinx-tabs-panel" id="panel-3-3-0" name="3-0" role="tabpanel" tabindex="0"><ul class="simple">
+<li><p>波特率：38400</p></li>
+<li><p>UART_TX管脚： PA_26</p></li>
+<li><p>UART_RX管脚： PA_27</p></li>
+</ul>
+</div><div aria-labelledby="tab-3-3-1" class="sphinx-tabs-panel" hidden="true" id="panel-3-3-1" name="3-1" role="tabpanel" tabindex="0"><ul class="simple">
+<li><p>波特率：38400</p></li>
+<li><p>UART_TX管脚： PA_28</p></li>
+<li><p>UART_RX管脚： PA_29</p></li>
+</ul>
+</div><div aria-labelledby="tab-3-3-2" class="sphinx-tabs-panel" hidden="true" id="panel-3-3-2" name="3-2" role="tabpanel" tabindex="0"><ul class="simple">
+<li><p>波特率：38400</p></li>
+<li><p>UART_TX管脚： PA_28</p></li>
+<li><p>UART_RX管脚： PA_29</p></li>
+</ul>
+</div><div aria-labelledby="tab-3-3-3" class="sphinx-tabs-panel" hidden="true" id="panel-3-3-3" name="3-3" role="tabpanel" tabindex="0"><ul class="simple">
+<li><p>波特率：38400</p></li>
+<li><p>UART_TX管脚： PA_3</p></li>
+<li><p>UART_RX管脚： PA_2</p></li>
+</ul>
+</div></div>
+</div>
+</section>
+<section id="atcmd-host-control-mode-certificate">
+<span id="id6"></span><h3>AT安全证书<a class="headerlink" href="#atcmd-host-control-mode-certificate" title="Link to this heading"></a></h3>
+<p>一些AT功能组件可能需要使用安全证书，比如连接Wifi企业级路由器，HTTPS，WebSocket服务器功能等</p>
+<p>安全证书套件分为客户端证书套件和服务器证书套件，均包含CA证书，证书和秘钥，证书的格式是crt，秘钥格式是key</p>
+<p>一个安全证书套件可以根据需要只提供部分文件，比如HTTPS的client单向认证只会使用CA证书进行认证服务器合法性，只需要在文件系统提前预置对应序号的客户端CA证书即可</p>
+<p>安全证书套件存放于LittleFS的虚拟文件系统上的固定路径 <code class="docutils literal notranslate"><span class="pre">/CERT/</span></code> 下， 如何提前预置安全证书请参考</p>
+<p>安全证书套件的序号从数字1开始递增</p>
+<p>AT命令在需要使用安全证书时，会以 <code class="docutils literal notranslate"><span class="pre">&lt;cert_index&gt;</span></code> 的可选参数作为序号从文件系统 <code class="docutils literal notranslate"><span class="pre">/CERT/</span></code> 目录中查找和使用对应的安全证书套件</p>
+<table class="docutils align-default" id="id18" style="width: 100%">
+<caption><span class="caption-text">安全证书套件名字和相关AT命令</span><a class="headerlink" href="#id18" title="Link to this table"></a></caption>
 <thead>
-<tr class="row-odd"><th class="head"><p>Ameba SoC</p></th>
-<th class="head"><p>UART Tx</p></th>
-<th class="head"><p>UART Rx</p></th>
-<th class="head"><p>Default baud rate</p></th>
+<tr class="row-odd"><th class="head"><p>分类</p></th>
+<th class="head"><p>安全证书套件</p></th>
+<th class="head"><p>相关AT命令</p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>RTL8721Dx/RTL8711Dx</p></td>
-<td><p>PA_26</p></td>
-<td><p>PA_27</p></td>
-<td><p>38400</p></td>
-</tr>
-<tr class="row-odd"><td><div class="line-block">
-<div class="line">RTL8726EA/RTL8713EC</div>
-<div class="line">RTL8720EA/RTL8710EC</div>
-</div>
+<tr class="row-even"><td><p>客户端</p></td>
+<td><p>安全证书套件1 文件名：</p>
+<ul class="simple">
+<li><p>client_ca_1.crt</p></li>
+<li><p>client_cert_1.crt</p></li>
+<li><p>client_key_1.key</p></li>
+</ul>
+<p>安全证书套件2 文件名：</p>
+<ul class="simple">
+<li><p>client_ca_2.crt</p></li>
+<li><p>client_cert_2.crt</p></li>
+<li><p>client_key_2.key</p></li>
+</ul>
+<p>…</p>
 </td>
-<td><p>PA_28</p></td>
-<td><p>PA_29</p></td>
-<td><p>38400</p></td>
+<td><ul class="simple">
+<li><p>AT+HTTPGET</p></li>
+<li><p>AT+HTTPPOST</p></li>
+<li><p>AT+HTTPPUT</p></li>
+<li><p>AT+HTTPDEL</p></li>
+<li><p>AT+MQTTUSERCFG</p></li>
+<li><p>AT+SKTCLIENT</p></li>
+<li><p>AT+WSOPEN</p></li>
+</ul>
+</td>
 </tr>
-<tr class="row-even"><td><p>RTL8730E</p></td>
-<td><p>PA_3</p></td>
-<td><p>PA_2</p></td>
-<td><p>38400</p></td>
+<tr class="row-odd"><td><p>服务器</p></td>
+<td><p>安全证书套件1 文件名：</p>
+<ul class="simple">
+<li><p>server_ca_1.crt</p></li>
+<li><p>server_cert_1.crt</p></li>
+<li><p>server_key_1.key</p></li>
+</ul>
+<p>安全证书套件2 文件名：</p>
+<ul class="simple">
+<li><p>server_ca_2.crt</p></li>
+<li><p>server_cert_2.crt</p></li>
+<li><p>server_key_2.key</p></li>
+</ul>
+<p>…</p>
+</td>
+<td><ul class="simple">
+<li><p>AT+SKTSERVE</p></li>
+<li><p>AT+WSSRVSTART</p></li>
+</ul>
+</td>
 </tr>
 </tbody>
 </table>
+<section id="atcmd-config-example">
+<span id="id7"></span><h4>示例<a class="headerlink" href="#atcmd-config-example" title="Link to this heading"></a></h4>
+<p>本节演示如何提前预置 <code class="file docutils literal notranslate"><span class="pre">atcmd_config.json</span></code> 和安全证书文件，以及如何使用：</p>
+<ol class="arabic">
+<li><p>创建 vfs_dir 目录和 CERT 子目录：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mkdir<span class="w"> </span>vfs_dir
+mkdir<span class="w"> </span>vfs_dir/CERT
+</pre></div>
+</div>
+</li>
+<li><p>将 <code class="file docutils literal notranslate"><span class="pre">atcmd_config.json</span></code> 文件复制到 vfs_dir 目录：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cp<span class="w"> </span>atcmd_config.json<span class="w"> </span>vfs_dir/
+</pre></div>
+</div>
+</li>
+<li><p>将安全证书文件复制到 CERT 子目录：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cp<span class="w"> </span>client_ca_1.crt<span class="w"> </span>client_cert_1.crt<span class="w"> </span>client_key_1.key<span class="w"> </span>server_ca_1.crt<span class="w"> </span>vfs_dir/CERT/
+</pre></div>
+</div>
+</li>
+<li><p>使用 <a class="reference external" href="https://github.com/Ameba-AIoT/ameba-rtos/blob/master/tools/image_scripts/vfs.py">vfs.py</a> 生成 LittleFS 文件系统固件（参考：<a class="reference internal" href="../0_file_system/1_vfs_toprst_cn.html#vfs-bin-file-generation"><span class="std std-ref">VFS二进制文件生成</span></a>）：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./vfs.py<span class="w"> </span>-t<span class="w"> </span>LITTLEFS<span class="w"> </span>-dir<span class="w"> </span>vfs_dir<span class="w"> </span>-out<span class="w"> </span>vfs.bin
+</pre></div>
+</div>
+<p>输出示例：</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>vfs.bin has been successfully generated.
+block_size: 4096, block_count: 32, image_size: 131072, source_directory: vfs_dir, output_image: vfs.bin
+</pre></div>
+</div>
+</li>
+<li><p>根据 Flash 布局，将生成的 <code class="docutils literal notranslate"><span class="pre">vfs.bin</span></code> 文件烧录到 AT 模块 Flash 的 VFS1 区域（参考：<a class="reference internal" href="../0_file_system/1_vfs_toprst_cn.html#vfs-on-flash"><span class="std std-ref">Flash中的VFS</span></a>）。</p></li>
+<li><p>烧录boot和app固件（参考：<a class="reference internal" href="../0_tools/1_image_tool_toprst_cn.html#image-tool"><span class="std std-ref">Image Tool</span></a>）。</p></li>
+<li><p>Ameba 开发板上电后，如果在 LOGUART 端口观察到自定义配置的打印输出，则表明配置已生效。例如：</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>[AT-I] ATCMD HOST Control Mode : UART, tx:PA26, rx:PA27, baudrate:115200
+</pre></div>
+</div>
+</li>
+<li><p>使用以下命令输出 1 号客户端安全证书套件和 1 号服务器安全证书套件：</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>AT+CERT=0,1
+AT+CERT=1,1
+</pre></div>
+</div>
+</li>
+</ol>
 </section>
-<section id="id3">
-<h2>命令描述<a class="headerlink" href="#id3" title="Link to this heading"></a></h2>
-<section id="id4">
-<h3>命令格式<a class="headerlink" href="#id4" title="Link to this heading"></a></h3>
-<p>当前支持的AT命令集的格式以两个大写字母 <strong>AT</strong> （Attention的缩写）开头，称为起始字符；后接一个 <strong>+</strong> 号；之后是命令名称。如果有多个参数，则在命令名称后接一个 <strong>=</strong>，再接参数列表。</p>
+</section>
+</section>
+<section id="id8">
+<h2>硬件环境准备<a class="headerlink" href="#id8" title="Link to this heading"></a></h2>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-4-4-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-4-4-0" name="4-0" role="tab" tabindex="0">手动测试模式</button><button aria-controls="panel-4-4-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-4-4-1" name="4-1" role="tab" tabindex="-1">主控控制模式</button></div><div aria-labelledby="tab-4-4-0" class="sphinx-tabs-panel" id="panel-4-4-0" name="4-0" role="tabpanel" tabindex="0"><p><strong>所需材料：</strong></p>
+<ul class="simple">
+<li><p>Ameba开发板</p></li>
+<li><p>电脑： 用于烧录固件， 输入AT指令，观察AT命令的响应</p></li>
+<li><p>Type-C USB连接线</p></li>
+</ul>
+<p><strong>操作步骤：</strong></p>
+<ul class="simple">
+<li><p>用USB连接线连接Ameba开发板的LogUART端口和电脑的USB端口</p></li>
+<li><p>烧录固件</p></li>
+<li><p>用串口工具(如 <a class="reference internal" href="../0_tools/1_trace_tool_toprst_cn.html#trace-tool"><span class="std std-ref">Trace Tool</span></a>)按照1.5M波特率打开对应的串口端口</p></li>
+<li><p>上电或者重启Ameba开发板</p></li>
+<li><p>串口工具看到``ATCMD READY``消息即可开始收发AT命令</p></li>
+</ul>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/manual_test_mode.svg"><img alt="../../_images/manual_test_mode.svg" height="110" src="../../_images/manual_test_mode.svg" width="622" /></a>
+</figure>
+</div><div aria-labelledby="tab-4-4-1" class="sphinx-tabs-panel" hidden="true" id="panel-4-4-1" name="4-1" role="tabpanel" tabindex="0"><p><strong>所需材料：</strong></p>
+<ul class="simple">
+<li><p>Ameba开发板：作为从机设备</p></li>
+<li><p>STM32开发板：作为主控控制设备</p></li>
+<li><p>电脑：用于烧录固件和观察LogUART的驱动日志</p></li>
+<li><p>Type-C USB连接线：连接LogUART</p></li>
+<li><p>杜邦线：连接外设接口，如UART,SPI,SDIO等</p></li>
+</ul>
+<p><strong>操作步骤：</strong></p>
+<ul class="simple">
+<li><p>用USB连接线连接Ameba开发板的LogUART端口和电脑的USB端口</p></li>
+<li><p>根据所选的外设接口用杜邦线连接主控设备和从机设备对应的管脚</p></li>
+<li><p>烧录固件</p></li>
+<li><p>用串口工具(如 <a class="reference internal" href="../0_tools/1_trace_tool_toprst_cn.html#trace-tool"><span class="std std-ref">Trace Tool</span></a>)按照1.5M波特率打开对应的串口端口,用于观察底层驱动日志</p></li>
+<li><p>上电或者重启主控以及从机设备</p></li>
+<li><p>主控收到``ATCMD READY``消息即可开始收发AT命令</p></li>
+</ul>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/host_control_mode.svg"><img alt="../../_images/host_control_mode.svg" height="168" src="../../_images/host_control_mode.svg" width="607" /></a>
+</figure>
+</div></div>
+<p>在主控控制模式下，用户需要提前准备 <code class="file docutils literal notranslate"><span class="pre">atcmd_config.json</span></code> 文件（参考 <a class="reference internal" href="#atcmd-host-control-mode-configuration"><span class="std std-ref">AT配置修改</span></a>）。</p>
+</section>
+<section id="id9">
+<h2>命令描述<a class="headerlink" href="#id9" title="Link to this heading"></a></h2>
+<section id="id10">
+<h3>命令格式<a class="headerlink" href="#id10" title="Link to this heading"></a></h3>
+<p>一条完整的AT命令的格式以两个大写字母 <strong>AT</strong> （Attention的缩写）开头，称为起始字符；后接一个 <strong>+</strong> 号；之后是命令名称。如果有多个参数，则在命令名称后接一个 <strong>=</strong>，再接参数列表，最后是结束符ASCII码 <strong>CR-LF</strong> 。</p>
 <div class="admonition- admonition">
 <p class="admonition-title">示例</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">COMMAND</span><span class="o">=</span><span class="n">parameter1</span><span class="p">,</span><span class="n">parameter2</span>
@@ -322,7 +817,7 @@
 <li><p><strong>AT</strong>：起始字符，表示当前字符串可以被识别为AT命令</p></li>
 <li><p><strong>+</strong>：用于分隔起始字符和后续命令</p></li>
 <li><p><strong>COMMAND</strong>：具体的命令名称，需要立即执行</p></li>
-<li><p>此命令需要两个参数： <em>parameter1</em> 和 <em>parameter2</em></p></li>
+<li><p><strong>参数</strong>： <em>parameter1</em> 和 <em>parameter2</em></p></li>
 </ul>
 </div>
 <p>某些情况下，在AT命令中可以省略某些参数，此时参数之间应输入一个或多个逗号。</p>
@@ -334,24 +829,24 @@
 <p>在这个AT命令中，两个逗号之间存在一个被省略的 <em>parameter2</em>，此时使用默认值。</p>
 </div>
 </section>
-<section id="id5">
-<h3>命令响应<a class="headerlink" href="#id5" title="Link to this heading"></a></h3>
-<p>在接收到AT命令后，从机首先判断其是否为有效命令。如果被视为无效命令（不在AT命令集内），将显示 <code class="docutils literal notranslate"><span class="pre">unknown</span> <span class="pre">command</span> <span class="pre">COMMAND</span></code>。否则，将根据输入的命令及参数执行相应操作。</p>
+<section id="id11">
+<h3>命令响应<a class="headerlink" href="#id11" title="Link to this heading"></a></h3>
 <ul class="simple">
-<li><p>当命令执行成功时，通常会返回命令名称加上 <code class="docutils literal notranslate"><span class="pre">OK</span></code> 标记。</p></li>
-<li><p>当命令执行失败时，通常会返回命令名称加上 <code class="docutils literal notranslate"><span class="pre">ERROR</span></code> 标记，并附加一个错误代码。</p></li>
+<li><p>在接收到AT命令后，从机首先判断其是否为有效命令。如果被视为无效命令（不在AT命令集内），将显示 <code class="docutils literal notranslate"><span class="pre">unknown</span> <span class="pre">command</span> <span class="pre">COMMAND</span></code>。否则，将根据输入的命令及参数执行相应操作。</p></li>
+<li><p>当命令执行成功时，通常会返回 <code class="docutils literal notranslate"><span class="pre">OK</span></code> 。</p></li>
+<li><p>当命令执行失败时，通常会返回 <code class="docutils literal notranslate"><span class="pre">ERROR</span></code> ，并附加一个错误代码。</p></li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">备注</p>
-<p>每个AT命令都有其对应的错误代码编号和意义。</p>
+<p>每个AT命令都有其对应的错误代码编号和意义,具体请参考各AT命令的介绍说明。</p>
 </div>
 </section>
-<section id="id6">
-<h3>命令参数<a class="headerlink" href="#id6" title="Link to this heading"></a></h3>
-<p>当介绍AT命令的参数列表时，遵循以下约定：</p>
+<section id="id12">
+<h3>命令参数<a class="headerlink" href="#id12" title="Link to this heading"></a></h3>
+<p>AT命令的参数列表遵循以下约定：</p>
 <ul class="simple">
-<li><p>尖括号&lt; &gt;表示参数名</p></li>
-<li><p>方括号[ ]表示该参数为可选参数</p></li>
+<li><p>尖括号&lt; &gt;表示 <strong>必选</strong> 参数</p></li>
+<li><p>方括号[ ]表示 <strong>可选</strong> 参数</p></li>
 <li><p>不同的参数之间用逗号分隔</p></li>
 </ul>
 <div class="admonition- admonition">
@@ -362,9 +857,10 @@
 <p>在这个AT命令中，第一个参数 <em>param1</em> 是必须的，第二个参数 <em>param2</em> 和第三个参数 <em>param3</em> 是可选的。</p>
 </div>
 </section>
-<section id="id7">
-<h3>转义字符<a class="headerlink" href="#id7" title="Link to this heading"></a></h3>
-<p>在某些AT命令中，如果确实需要将逗号作为参数的一部分，建议使用转义字符 <code class="docutils literal notranslate"><span class="pre">\</span></code>。反斜杠本身用转义字符表示为 <code class="docutils literal notranslate"><span class="pre">\\</span></code>。</p>
+<section id="id13">
+<h3>转义字符<a class="headerlink" href="#id13" title="Link to this heading"></a></h3>
+<p>在某些AT命令中，如果确实需要将逗号作为参数的一部分，建议使用转义字符 <code class="docutils literal notranslate"><span class="pre">\,</span></code>。反斜杠本身用转义字符表示为 <code class="docutils literal notranslate"><span class="pre">\\</span></code>。
+对于其他不需要使用转义字符的AT命令，逗号通常被视为分隔符，单个反斜杠可作为普通字符使用。</p>
 <div class="admonition- admonition">
 <p class="admonition-title">示例</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">COMMAND</span><span class="o">=</span><span class="n">parameter1</span><span class="p">,</span><span class="n">head</span>\<span class="p">,</span><span class="n">tail</span><span class="p">,</span><span class="n">head</span>\\<span class="n">tail</span>
@@ -372,273 +868,70 @@
 </div>
 <p>在这个AT命令中，总共有三个参数：</p>
 <ul class="simple">
-<li><p>第二个参数 <em>head,tail</em> 是一个包含逗号的字符串。 <em>head,tail</em> 中的逗号不会被视为参数的分隔符，而是字符串的一部分。</p></li>
-<li><p>第三个参数 <em>head\tail</em> 是一个包含反斜杠的字符串。单个反斜杠是非法的，换句话说，在AT命令中，单个反斜杠后面必须跟随一个逗号或另一个反斜杠。</p></li>
+<li><p><strong>第一个参数</strong> <code class="docutils literal notranslate"><span class="pre">parameter1</span></code>。</p></li>
+<li><p><strong>第二个参数</strong> <code class="docutils literal notranslate"><span class="pre">head,tail</span></code> 是一个包含逗号的字符串。其中的逗号被反斜杠转义（ <code class="docutils literal notranslate"><span class="pre">\,</span></code> ），因此不会被解析为参数分隔符，而是字符串的一部分。</p></li>
+<li><p><strong>第三个参数</strong> <code class="docutils literal notranslate"><span class="pre">head\\tail</span></code> 是一个包含反斜杠的字符串。单个反斜杠（如 <code class="docutils literal notranslate"><span class="pre">\</span></code> ）是非法的，必须使用双反斜杠（ <code class="docutils literal notranslate"><span class="pre">\\</span></code> ）表示字面意义上的单个反斜杠。</p></li>
 </ul>
 </div>
-<p>对于其他不需要使用转义字符的AT命令，逗号通常被视为分隔符，单个反斜杠可作为普通字符使用。</p>
-<table class="docutils align-default" id="id23" style="width: 100%">
-<caption><span class="caption-text">使用转义字符的AT命令</span><a class="headerlink" href="#id23" title="Link to this table"></a></caption>
-<thead>
-<tr class="row-odd"><th class="head"><p>AT command</p></th>
-<th class="head"><p>Parameter(s) with escapes character</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>AT+MQTTSUB</p></td>
-<td><p>&lt;topic&gt;</p></td>
-</tr>
-<tr class="row-odd"><td><p>AT+MQTTUNSUB</p></td>
-<td><p>&lt;topic&gt;</p></td>
-</tr>
-<tr class="row-even"><td><p>AT+MQTTPUB</p></td>
-<td><p>&lt;topic&gt;,&lt;msg&gt;</p></td>
-</tr>
-<tr class="row-odd"><td><p>AT+SKTSEND</p></td>
-<td><p>&lt;data&gt;</p></td>
-</tr>
-</tbody>
-</table>
 </section>
-<section id="id8">
-<h3>命令长度<a class="headerlink" href="#id8" title="Link to this heading"></a></h3>
-<p>每个AT命令必须不超过指定的长度限制，否则，多余的部分将被忽略。</p>
-<p>长度限制有两种类型：</p>
+<section id="id14">
+<h3>命令长度<a class="headerlink" href="#id14" title="Link to this heading"></a></h3>
+<p>每个AT命令包含 <strong>AT</strong> 开头和 <strong>CR-LF</strong> 结束符，必须不超过指定的长度限制，否则，多余的部分将被忽略。</p>
 <ul class="simple">
-<li><p>当启用了较长的命令格式时，长度限制为4095字节。</p></li>
-<li><p>当使用较短的命令格式时，长度限制为126字节。</p></li>
+<li><p><strong>手动测试模式</strong> 的长度限制为127字节。</p></li>
+<li><p><strong>主控控制模式</strong> 的长度限制为2000字节。</p></li>
 </ul>
-<p>在使用转义字符的AT命令中，转义字符（如 <code class="docutils literal notranslate"><span class="pre">\</span></code> 或 <code class="docutils literal notranslate"><span class="pre">\\</span></code>）应被视为占用2个字节。</p>
-<p>在编译SDK时，可通过 <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">menuconfig</span></code> 命令来修改AT命令长度限制。如果选择了 <code class="docutils literal notranslate"><span class="pre">Enable</span> <span class="pre">Longer</span> <span class="pre">CMD</span></code>，则命令长度限制将变大（即4095字节）。</p>
+<p>在使用转义字符的AT命令中，转义字符（如 <code class="docutils literal notranslate"><span class="pre">\,</span></code> 或 <code class="docutils literal notranslate"><span class="pre">\\</span></code>）应被视为占用2个字节。</p>
 </section>
 <section id="transparent-transmission">
-<span id="id9"></span><h3>透传模式<a class="headerlink" href="#transparent-transmission" title="Link to this heading"></a></h3>
+<span id="id15"></span><h3>透传模式<a class="headerlink" href="#transparent-transmission" title="Link to this heading"></a></h3>
 <p>在透传传输模式下，通过命令传输的数据长度仅受到可用堆内存大小的限制。传输的数据不受格式检查的约束，也不会因命令结束字符（ <code class="docutils literal notranslate"><span class="pre">\r\n</span></code>）而终止。</p>
-<p>在执行支持透传模式的命令后，AT模块将返回 <code class="docutils literal notranslate"><span class="pre">&gt;&gt;&gt;</span></code> 指示已进入透传模式。此时，MCU需要传输AT命令中指定长度的数据。一旦接收到指定长度的数据，AT模块将自动退出透传模式，并返回AT命令执行的结果。</p>
+<p>在执行支持透传模式的命令后，AT模块将返回 <code class="docutils literal notranslate"><span class="pre">&gt;&gt;&gt;</span></code> 指示已进入透传模式。此时，主控需要传输AT命令中指定长度的数据。一旦接收到指定长度的数据，AT模块将自动退出透传模式，并返回AT命令执行的结果。</p>
 <div class="admonition note">
 <p class="admonition-title">备注</p>
-<p>仅MCU控制模式支持透传模式。</p>
+<p>仅主控控制模式支持透传模式。</p>
 </div>
 </section>
 </section>
-<section id="id10">
-<h2>AT命令列表<a class="headerlink" href="#id10" title="Link to this heading"></a></h2>
+<section id="id16">
+<h2>AT命令列表<a class="headerlink" href="#id16" title="Link to this heading"></a></h2>
 <p>以下是目前支持的AT命令集：</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="at_command_common_cn.html#common-at-commands"><span class="std std-ref">通用AT命令集</span></a></p></li>
+<li><p><a class="reference internal" href="at_command_common_cn.html#common-at-commands"><span class="std std-ref">通用 AT命令集</span></a></p></li>
 <li><p><a class="reference internal" href="at_command_wifi_cn.html#wi-fi-at-commands"><span class="std std-ref">Wi-Fi AT命令集</span></a></p></li>
 <li><p><a class="reference internal" href="at_command_mqtt_cn.html#mqtt-at-commands"><span class="std std-ref">MQTT AT命令集</span></a></p></li>
 <li><p><a class="reference internal" href="at_command_websocket_cn.html#websocket-at-commands"><span class="std std-ref">WebSocket AT命令集</span></a></p></li>
-<li><p><a class="reference internal" href="at_command_tcp_ip_cn.html#tcp-ip-at-commands"><span class="std std-ref">TCP/IP AT命令集</span></a></p></li>
-<li><p><a class="reference internal" href="at_command_bluetooth_cn.html#bluetooth-at-commands"><span class="std std-ref">蓝牙AT命令集</span></a></p></li>
-<li><p><a class="reference internal" href="at_command_file_system_cn.html#file-system-at-commands"><span class="std std-ref">文件系统AT命令集</span></a></p></li>
+<li><p><a class="reference internal" href="at_command_socket_cn.html#socket-at-commands"><span class="std std-ref">Socket AT命令集</span></a></p></li>
+<li><p><a class="reference internal" href="at_command_bluetooth_cn.html#bluetooth-at-commands"><span class="std std-ref">蓝牙 AT命令集</span></a></p></li>
+<li><p><a class="reference internal" href="at_command_file_system_cn.html#file-system-at-commands"><span class="std std-ref">文件系统 AT命令集</span></a></p></li>
+<li><p><a class="reference internal" href="at_command_ota_cn.html#ota-at-commands"><span class="std std-ref">OTA AT命令集</span></a></p></li>
 </ul>
 <p>请参考以上章节获取不同AT命令的详细信息。</p>
 </section>
-<section id="id11">
-<h2>AT命令版本<a class="headerlink" href="#id11" title="Link to this heading"></a></h2>
+<section id="id17">
+<h2>AT命令版本<a class="headerlink" href="#id17" title="Link to this heading"></a></h2>
 <p>用户可以通过执行 <code class="docutils literal notranslate"><span class="pre">AT+GMR</span></code> 命令查询当前固件的AT命令版本信息。</p>
 <p>版本号采用语义化版本系统，其格式如下：</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">major</span><span class="o">&gt;.&lt;</span><span class="n">minor</span><span class="o">&gt;.&lt;</span><span class="n">patch</span><span class="o">&gt;</span>
 </pre></div>
 </div>
 <p>参数说明：</p>
-<dl class="field-list simple">
-<dt class="field-odd">&lt;major&gt;<span class="colon">:</span></dt>
-<dd class="field-odd"><p>主版本号，代表重大更新，通常包括对于新芯片的支持，新功能的引入等</p>
-</dd>
-<dt class="field-even">&lt;minor&gt;<span class="colon">:</span></dt>
-<dd class="field-even"><p>次版本号，代表重要更新，通常包括新命令的添加、bug修复等</p>
-</dd>
-<dt class="field-odd">&lt;patch&gt;<span class="colon">:</span></dt>
-<dd class="field-odd"><p>修订版本号，表示修复了一些问题，但没有新增任何功能</p>
-</dd>
-</dl>
+<p><code class="docutils literal notranslate"><span class="pre">&lt;major&gt;</span></code> : 主版本号，代表重大更新，通常包括对于新芯片的支持、新功能的引入等</p>
+<p><code class="docutils literal notranslate"><span class="pre">&lt;minor&gt;</span></code> : 次版本号，代表重要更新，通常包括新命令的添加、bug修复等</p>
+<p><code class="docutils literal notranslate"><span class="pre">&lt;patch&gt;</span></code> : 修订版本号，表示修复了一些问题，但没有新增任何功能</p>
 <div class="admonition- admonition">
 <p class="admonition-title">示例</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">//</span> <span class="n">send</span> <span class="n">ATCMD</span>
-<span class="n">AT</span><span class="o">+</span><span class="n">GMR</span>
-<span class="o">//</span> <span class="n">receive</span> <span class="n">ATCMD</span> <span class="n">response</span>
-<span class="o">+</span><span class="n">GMR</span><span class="p">:</span>
+<p>命令：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">GMR</span>
+</pre></div>
+</div>
+<p>响应：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+</span><span class="n">GMR</span><span class="p">:</span>
 <span class="n">ATCMD</span> <span class="n">VERSION</span><span class="p">:</span> <span class="n">v2</span><span class="mf">.2.1</span>
 <span class="n">SDK</span> <span class="n">VERSION</span><span class="p">:</span> <span class="n">v3</span><span class="mf">.5</span>
 </pre></div>
 </div>
 </div>
-</section>
-<section id="id12">
-<h2>编译和下载<a class="headerlink" href="#id12" title="Link to this heading"></a></h2>
-<section id="id13">
-<h3>准备工作<a class="headerlink" href="#id13" title="Link to this heading"></a></h3>
-<p>除了从 GitHub 获取SDK发布版本之外，用户也可以自行使用 <code class="docutils literal notranslate"><span class="pre">{sdk}</span></code> 编译固件。</p>
-<p>关于如何编译SDK，请参考 <a class="reference internal" href="../0_gcc_build_environment/1_gcc_build_environment_toprst_cn.html#building-code"><span class="std std-ref">编译代码</span></a>。</p>
-</section>
-<section id="ssl">
-<h3>SSL证书<a class="headerlink" href="#ssl" title="Link to this heading"></a></h3>
-<p>如果在使用 AT 命令时需要 SSL 证书，用户可通过以下两种方式，在执行AT命令之前准备好证书。将预先准备好的证书文件存储在 VFS 二进制文件中。证书名称的格式和相关的 AT 命令如下：</p>
-<ul>
-<li><p>将预先准备好的证书文件按以下名称和格式存储在 VFS 二进制文件中，然后将它们与应用固件一起烧录到 AT 模块中。</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">client</span><span class="o">/</span><span class="n">server</span><span class="o">&gt;&lt;</span><span class="n">ca</span><span class="o">/</span><span class="n">cert</span><span class="o">/</span><span class="n">key</span><span class="o">&gt;&lt;</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="o">/</span><span class="mi">3</span><span class="o">&gt;.</span><span class="n">crt</span>
-</pre></div>
-</div>
-</li>
-<li><p>在 AT 模块运行期间，使用 <code class="docutils literal notranslate"><span class="pre">AT+FS</span></code> 命令将证书写入文件系统。<code class="docutils literal notranslate"><span class="pre">AT+FS</span></code> 命令的具体用法请参考 <a class="reference internal" href="at_command_file_system_cn.html#file-system-at-commands"><span class="std std-ref">文件系统AT命令集</span></a>。</p></li>
-</ul>
-<div class="admonition note">
-<p class="admonition-title">备注</p>
-<p>在创建 VFS 二进制文件时，SSL 证书应放置在 <code class="docutils literal notranslate"><span class="pre">KV</span></code> 目录中。文件系统 AT 命令的操作也在 <code class="docutils literal notranslate"><span class="pre">KV</span></code> 目录中进行。</p>
-</div>
-</section>
-<section id="atcmd-mcu-control-mode-configuration">
-<span id="id14"></span><h3>配置<a class="headerlink" href="#atcmd-mcu-control-mode-configuration" title="Link to this heading"></a></h3>
-<p>对于 MCU 控制模式，配置通过 <code class="file docutils literal notranslate"><span class="pre">atcmd_config.json</span></code> 文件来实现。</p>
-<p>请将 <code class="file docutils literal notranslate"><span class="pre">atcmd_config.json</span></code> 文件转换为 LittleFS二进制文件，并放置在 <code class="docutils literal notranslate"><span class="pre">KV</span></code> 目录中（参考 :ref:示例 &lt;atcmd_config_example&gt;）。</p>
-<p><code class="file docutils literal notranslate"><span class="pre">atcmd_config.json</span></code> 文件的具体格式如下：</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-   <span class="s2">&quot;interface&quot;</span><span class="p">:</span><span class="s2">&quot;spi&quot;</span><span class="p">,</span>
-
-   <span class="s2">&quot;spi&quot;</span><span class="p">:</span>
-   <span class="p">{</span>
-      <span class="s2">&quot;mosi&quot;</span><span class="p">:</span><span class="s2">&quot;PA27&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;miso&quot;</span><span class="p">:</span><span class="s2">&quot;PA28&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;clk&quot;</span><span class="p">:</span><span class="s2">&quot;PA26&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;cs&quot;</span><span class="p">:</span><span class="s2">&quot;PA12&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;master_sync_pin&quot;</span><span class="p">:</span><span class="s2">&quot;PB30&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;slave_sync_pin&quot;</span><span class="p">:</span><span class="s2">&quot;PB31&quot;</span>
-   <span class="p">},</span>
-
-   <span class="s2">&quot;uart&quot;</span><span class="p">:</span>
-   <span class="p">{</span>
-      <span class="s2">&quot;baudrate&quot;</span><span class="p">:</span><span class="mi">115200</span><span class="p">,</span>
-      <span class="s2">&quot;tx&quot;</span><span class="p">:</span><span class="s2">&quot;PB19&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;rx&quot;</span><span class="p">:</span><span class="s2">&quot;PB18&quot;</span>
-   <span class="p">}</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p>用户可以选择通信接口为 UART 或SPI，并修改接口的属性值。UART和SPI模式使用的引脚同样可以定制。</p>
-<p>在 MCU 控制模式下，使用SPI通信接口时，如果希望实现更好的高速传输性能，则需要在 <code class="docutils literal notranslate"><span class="pre">menuconfig</span></code> 中启用 <code class="docutils literal notranslate"><span class="pre">High</span> <span class="pre">TP</span></code> 模式。配置过程如下：</p>
-<figure class="align-center" id="id24">
-<a class="reference internal image-reference" href="../../_images/enable_wifi_high_tp_mode.png"><img alt="../../_images/enable_wifi_high_tp_mode.png" src="../../_images/enable_wifi_high_tp_mode.png" style="width: 316.8px; height: 291.6px;" /></a>
-<figcaption>
-<p><span class="caption-text">启用Wi-Fi <code class="docutils literal notranslate"><span class="pre">High</span> <span class="pre">TP</span></code> 模式</span><a class="headerlink" href="#id24" title="Link to this image"></a></p>
-</figcaption>
-</figure>
-<section id="atcmd-config-example">
-<span id="id15"></span><h4>示例<a class="headerlink" href="#atcmd-config-example" title="Link to this heading"></a></h4>
-<p>本节演示如何准备自定义的 <code class="file docutils literal notranslate"><span class="pre">atcmd_config.json</span></code> 文件并激活它：</p>
-<ol class="arabic">
-<li><p>创建一个新的 <code class="file docutils literal notranslate"><span class="pre">atcmd_config.json</span></code> 文件，并填写以下自定义内容：</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-   <span class="s2">&quot;interface&quot;</span><span class="p">:</span><span class="s2">&quot;uart&quot;</span><span class="p">,</span>
-
-   <span class="s2">&quot;uart&quot;</span><span class="p">:</span>
-   <span class="p">{</span>
-      <span class="s2">&quot;baudrate&quot;</span><span class="p">:</span><span class="mi">115200</span><span class="p">,</span>
-      <span class="s2">&quot;tx&quot;</span><span class="p">:</span><span class="s2">&quot;PA26&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;rx&quot;</span><span class="p">:</span><span class="s2">&quot;PA27&quot;</span>
-   <span class="p">}</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-</li>
-<li><p>创建一个 <code class="docutils literal notranslate"><span class="pre">TEST/KV</span></code> 目录，并将 <code class="file docutils literal notranslate"><span class="pre">atcmd_config.json</span></code> 文件放到 <code class="docutils literal notranslate"><span class="pre">KV</span></code> 目录下。</p></li>
-<li><p>使用 LittleFS 二进制文件创建工具生成一个LittleFS 二进制文件（参考：<a class="reference internal" href="../0_file_system/1_vfs_toprst_cn.html#vfs-bin-file-generation"><span class="std std-ref">VFS二进制文件生成</span></a>）。</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>linux@user:~$./mklittlefs -b 4096 -p 256 -s 131072 -c TEST lfs.bin
-/KV/atcmd_config.json
-</pre></div>
-</div>
-</li>
-<li><p>根据Flash布局，将生成的 <code class="docutils literal notranslate"><span class="pre">lfs.bin</span></code> 文件烧录到AT模块的Flash中的VFS1区域 （参考 <a class="reference internal" href="../0_file_system/1_vfs_toprst_cn.html#vfs-on-flash"><span class="std std-ref">Flash中的VFS</span></a>）。</p></li>
-<li><p>烧录支持MCU控制模式的应用固件（参考 <a class="reference internal" href="#atcmd-image-building"><span class="std std-ref">编译</span></a> ）。</p></li>
-<li><p>AT 模块上电后，如果在 LOGUART 端口上观察到自定义配置的打印输出（如下），表明配置已生效。</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">AT</span><span class="o">-</span><span class="n">I</span><span class="p">]</span> <span class="n">ATCMD</span> <span class="n">MCU</span> <span class="n">Control</span> <span class="n">Mode</span> <span class="p">:</span> <span class="n">UART</span><span class="p">,</span> <span class="n">tx</span><span class="p">:</span><span class="n">PA26</span><span class="p">,</span> <span class="n">rx</span><span class="p">:</span><span class="n">PA27</span><span class="p">,</span> <span class="n">baudrate</span><span class="p">:</span><span class="mi">115200</span>
-</pre></div>
-</div>
-</li>
-</ol>
-</section>
-</section>
-<section id="atcmd-image-building">
-<span id="id16"></span><h3>编译<a class="headerlink" href="#atcmd-image-building" title="Link to this heading"></a></h3>
-<p>在完成上述准备工作后，用户可以在  <code class="docutils literal notranslate"><span class="pre">{sdk}</span></code> 目录下编译固件。具体步骤如下：</p>
-<ol class="arabic">
-<li><p>运行 <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">menuconfig</span></code> 命令，选择 <strong>MCU Control</strong> 或 <strong>LOGUART</strong>。</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>// Your SDK direction
-cd $ {sdk}
-// The chip type you choose, e.g. amebadplus_gcc_project
-cd source/{ameba_name}
-make menuconfig
-// ...
-</pre></div>
-</div>
-<figure class="align-center" id="id25">
-<a class="reference internal image-reference" href="../../_images/choice_mode.png"><img alt="../../_images/choice_mode.png" src="../../_images/choice_mode.png" style="width: 246.6px; height: 241.20000000000002px;" /></a>
-<figcaption>
-<p><span class="caption-text">Choice mode</span><a class="headerlink" href="#id25" title="Link to this image"></a></p>
-</figcaption>
-</figure>
-</li>
-<li><p>运行 <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">all</span></code> 命令重新编译工程。</p></li>
-</ol>
-<p>编译成功后，可以在 <code class="docutils literal notranslate"><span class="pre">{ameba_name}</span></code> 目录下找到固件。</p>
-<p>如果想使用蓝牙AT命令集，先运行 <code class="docutils literal notranslate"><span class="pre">$make</span> <span class="pre">menuconfig</span></code> 命令来启用 <code class="docutils literal notranslate"><span class="pre">BLE</span> <span class="pre">Transfer</span> <span class="pre">Module</span></code>。</p>
-<figure class="align-center" id="id26">
-<a class="reference internal image-reference" href="../../_images/enable_ble_transfer_module.png"><img alt="../../_images/enable_ble_transfer_module.png" src="../../_images/enable_ble_transfer_module.png" style="width: 381.6px; height: 488.7px;" /></a>
-<figcaption>
-<p><span class="caption-text">启用BLE传输模式</span><a class="headerlink" href="#id26" title="Link to this image"></a></p>
-</figcaption>
-</figure>
-</section>
-<section id="id17">
-<h3>下载<a class="headerlink" href="#id17" title="Link to this heading"></a></h3>
-<p>有以下两种方法可以将固件下载到Flash：</p>
-<ul class="simple">
-<li><p>Image Tool：Realtek 提供的软件（推荐使用）</p></li>
-<li><p>GDB Server：主要用于 GDB 调试的用户场景</p></li>
-</ul>
-<p>在本节中，我们介绍第一种方法。</p>
-<p>Image Tool 是 Realtek 为 Ameba 系列 SoC 开发的固件下载工具，可以通过 UART 接口将固件下载到设备的 Flash 中。</p>
-<p>当启动 Image Tool 时，界面显示如下所示：</p>
-<div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-0-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-0-0-0" name="0-0" role="tab" tabindex="0">RTL8721Dx</button><button aria-controls="panel-0-0-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-1" name="0-1" role="tab" tabindex="-1">RTL8720E</button><button aria-controls="panel-0-0-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-2" name="0-2" role="tab" tabindex="-1">RTL8726E</button><button aria-controls="panel-0-0-3" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-3" name="0-3" role="tab" tabindex="-1">RTL8730E</button></div><div aria-labelledby="tab-0-0-0" class="sphinx-tabs-panel" id="panel-0-0-0" name="0-0" role="tabpanel" tabindex="0"><figure class="align-center" id="id27">
-<a class="reference internal image-reference" href="../../_images/image_tool_21Dx.png"><img alt="../../_images/image_tool_21Dx.png" src="../../_images/image_tool_21Dx.png" style="width: 832.8000000000001px; height: 636.8000000000001px;" /></a>
-<figcaption>
-<p><span class="caption-text">Image Tool</span><a class="headerlink" href="#id27" title="Link to this image"></a></p>
-</figcaption>
-</figure>
-</div><div aria-labelledby="tab-0-0-1" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-1" name="0-1" role="tabpanel" tabindex="0"><figure class="align-center" id="id28">
-<a class="reference internal image-reference" href="../../_images/image_tool_26E20E.png"><img alt="../../_images/image_tool_26E20E.png" src="../../_images/image_tool_26E20E.png" style="width: 832.8000000000001px; height: 634.4000000000001px;" /></a>
-<figcaption>
-<p><span class="caption-text">Image Tool</span><a class="headerlink" href="#id28" title="Link to this image"></a></p>
-</figcaption>
-</figure>
-</div><div aria-labelledby="tab-0-0-2" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-2" name="0-2" role="tabpanel" tabindex="0"><figure class="align-center" id="id29">
-<a class="reference internal image-reference" href="../../_images/image_tool_26E20E.png"><img alt="../../_images/image_tool_26E20E.png" src="../../_images/image_tool_26E20E.png" style="width: 832.8000000000001px; height: 634.4000000000001px;" /></a>
-<figcaption>
-<p><span class="caption-text">Image Tool</span><a class="headerlink" href="#id29" title="Link to this image"></a></p>
-</figcaption>
-</figure>
-</div><div aria-labelledby="tab-0-0-3" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-3" name="0-3" role="tabpanel" tabindex="0"><figure class="align-center" id="id30">
-<a class="reference internal image-reference" href="../../_images/image_tool_30E.png"><img alt="../../_images/image_tool_30E.png" src="../../_images/image_tool_30E.png" style="width: 868.8000000000001px; height: 672.0px;" /></a>
-<figcaption>
-<p><span class="caption-text">Image Tool</span><a class="headerlink" href="#id30" title="Link to this image"></a></p>
-</figcaption>
-</figure>
-</div></div>
-<p>设备配置文件提供了固件下载所需的必要设备信息，其命名规则如下：</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">SoC</span> <span class="n">name</span><span class="o">&gt;</span><span class="n">_</span><span class="o">&lt;</span><span class="n">OS</span> <span class="nb">type</span><span class="o">&gt;</span><span class="n">_</span><span class="o">&lt;</span><span class="n">Flash</span> <span class="nb">type</span><span class="o">&gt;</span><span class="p">[</span><span class="n">_</span><span class="o">&lt;</span><span class="n">Extra</span> <span class="n">info</span><span class="o">&gt;</span><span class="p">]</span><span class="o">.</span><span class="n">rdev</span>
-</pre></div>
-</div>
-<p>对于不同的Ameba芯片来说，在下载固件到Flash之前，点击 <span class="menuselection">File &gt; Open</span> 选择对应的 <code class="docutils literal notranslate"><span class="pre">.rdev</span></code> 文件，然后选择对应的固件。</p>
-<p>在下载固件之前，应先使芯片进入下载模式，步骤如下：</p>
-<ol class="arabic simple">
-<li><p>按住 <span class="guilabel">DOWNLOAD</span> 按钮</p></li>
-<li><p>按下 <span class="guilabel">CHIP_EN</span> 按钮</p></li>
-<li><p>同时释放以上两个按钮（此时，芯片进入下载模式）</p></li>
-<li><p>使用USB线将芯片模块连接到PC，并点击Image Tool中的 <span class="guilabel">DOWNLOAD</span> 按钮，开始下载固件</p></li>
-</ol>
-</section>
 </section>
 </section>
 
@@ -647,7 +940,7 @@ make menuconfig
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
         <a href="0_at_command_index_cn.html" class="btn btn-neutral float-left" title="AT 命令集" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
-        <a href="at_command_common_cn.html" class="btn btn-neutral float-right" title="通用AT命令集" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="at_command_image_cn.html" class="btn btn-neutral float-right" title="官方发布的固件" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
@@ -664,6 +957,16 @@ make menuconfig
 </footer>
         </div>
 
+<!-- 渲染按钮和对话框 -->
+<button id="report-button">Report Issue</button>
+<div id="feedback-dialog" class="feedback-dialog" style="display: none;">
+    <p>Please describe your issue:</p>
+    <!-- <textarea id="feedback-text" placeholder="Enter your issue description..."></textarea> -->
+    <textarea id="feedback-text" placeholder="Feature enhancement in progress, please stay tuned..."></textarea>
+    <button id="submit-feedback">Submit</button>
+    <button id="cancel-feedback">Cancel</button>
+</div>
+
       </div>
     </section>
   </div>
@@ -672,8 +975,8 @@ make menuconfig
           SphinxRtdTheme.Navigation.enable(true);
       });
   </script>
- 
-
+     
+    
 
 
 </body>

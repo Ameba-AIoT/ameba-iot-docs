@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>通过SPI接口使用AT命令 &mdash; Ameba IoT Docs  文档</title>
+  <title>官方发布的固件 &mdash; Ameba IoT Docs  文档</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
@@ -27,6 +27,7 @@
         <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="../../_static/tabs.js?v=3030b3cb"></script>
         <script>let toggleHintShow = 'Click to show';</script>
         <script>let toggleHintHide = 'Click to hide';</script>
         <script>let toggleOpenOnPrint = 'true';</script>
@@ -37,8 +38,8 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="索引" href="../../genindex.html" />
     <link rel="search" title="搜索" href="../../search.html" />
-    <link rel="next" title="虚拟文件系统" href="../0_file_system/0_vfs_index_cn.html" />
-    <link rel="prev" title="OTA AT命令集" href="at_command_ota_cn.html" />
+    <link rel="next" title="通用 AT命令集" href="at_command_common_cn.html" />
+    <link rel="prev" title="概述" href="at_command_introduction_cn.html" />
      
     
     <script type="text/javascript" src="../../_static/js/selector.js"></script>
@@ -172,7 +173,7 @@ const TOC_TITLE_MAP = {"rst_rtos/0_ameba_product": "\u4ea7\u54c1\u4e2d\u5fc3", "
 console.log("TOC_TITLE_MAP:", TOC_TITLE_MAP);
 
 // 获取当前页面的文档名 (例如 'rst_rtos/3_nda_secure_boot/0_secure_boot_index_nda')
-const CURRENT_DOCNAME = 'rst_rtos/0_at_command/at_command_use_spi_cn';
+const CURRENT_DOCNAME = 'rst_rtos/0_at_command/at_command_image_cn';
 
 // 动态查找顶级分类函数（定义为全局函数）
 window.findTopLevelChapter = function(docname) {
@@ -436,7 +437,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <li class="toctree-l1"><a class="reference internal" href="../0_tools/0_tools_index_cn.html">0.7 工具</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="0_at_command_index_cn.html">0.8 AT 命令集</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="at_command_introduction_cn.html">概述</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_image_cn.html">官方发布的固件</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">官方发布的固件</a></li>
 <li class="toctree-l2"><a class="reference internal" href="at_command_common_cn.html">通用 AT命令集</a></li>
 <li class="toctree-l2"><a class="reference internal" href="at_command_wifi_cn.html">Wi-Fi AT命令集</a></li>
 <li class="toctree-l2"><a class="reference internal" href="at_command_mqtt_cn.html">MQTT AT命令集</a></li>
@@ -446,16 +447,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <li class="toctree-l2"><a class="reference internal" href="at_command_bluetooth_cn.html">蓝牙 AT命令集</a></li>
 <li class="toctree-l2"><a class="reference internal" href="at_command_file_system_cn.html">文件系统 AT命令集</a></li>
 <li class="toctree-l2"><a class="reference internal" href="at_command_ota_cn.html">OTA AT命令集</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">通过SPI接口使用AT命令</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#id1">概述</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#spi">默认SPI引脚</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id2">使用方法</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#id3">通信格式</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id4">交互流程</a></li>
-</ul>
-</li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="at_command_use_spi_cn.html">通过SPI接口使用AT命令</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../0_file_system/0_vfs_index_cn.html">0.9 虚拟文件系统</a></li>
@@ -522,7 +514,7 @@ document.addEventListener('DOMContentLoaded', function() {
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="0_at_command_index_cn.html">AT 命令集</a></li>
-      <li class="breadcrumb-item active">通过SPI接口使用AT命令</li>
+      <li class="breadcrumb-item active">官方发布的固件</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -531,127 +523,39 @@ document.addEventListener('DOMContentLoaded', function() {
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="spiat">
-<h1>通过SPI接口使用AT命令<a class="headerlink" href="#spiat" title="Link to this heading"></a></h1>
-<section id="id1">
-<h2>概述<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
-<p>当通过SPI接口使用AT命令模块时，MCU设备作为SPI主机，AT命令设备作为SPI从机。双方通过SPI协议和特定通信格式进行AT命令数据交换。</p>
-<p>相较于默认的UART端口，SPI接口在需要高速数据传输场景中具有显著优势。请参考 <a class="reference internal" href="at_command_introduction_cn.html#atcmd-host-control-mode-configuration"><span class="std std-ref">主控控制模式配置</span></a> 启用SPI接口。</p>
-</section>
-<section id="spi">
-<h2>默认SPI引脚<a class="headerlink" href="#spi" title="Link to this heading"></a></h2>
-<p>如果没有手动配置引脚，AT命令模块将使用默认引脚组合，包括SPI MOSI、MISO、CLK、CS及两个同步信号引脚。</p>
-<p>对于不同的芯片型号，默认SPI引脚配置如下：</p>
-<table class="docutils align-default" style="width: 100%">
+  <section id="id1">
+<h1>官方发布的固件<a class="headerlink" href="#id1" title="Link to this heading"></a></h1>
+<p>瑞昱定期会在github发布官方的主控控制模式AT固件，目前有以下AT固件可供选择，推荐下载使用最新版本的AT固件</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-0-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-0-0-0" name="0-0" role="tab" tabindex="0">RTL8721Dx</button><button aria-controls="panel-0-0-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-1" name="0-1" role="tab" tabindex="-1">RTL8720E</button><button aria-controls="panel-0-0-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-2" name="0-2" role="tab" tabindex="-1">RTL8726E</button><button aria-controls="panel-0-0-3" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-3" name="0-3" role="tab" tabindex="-1">RTL8730E</button></div><div aria-labelledby="tab-0-0-0" class="sphinx-tabs-panel" id="panel-0-0-0" name="0-0" role="tabpanel" tabindex="0"><table class="docutils align-default" style="width: 100%">
 <thead>
-<tr class="row-odd"><th class="head"><p>Ameba SoC</p></th>
-<th class="head"><p>SPI MOSI</p></th>
-<th class="head"><p>SPI MISO</p></th>
-<th class="head"><p>SPI CLK</p></th>
-<th class="head"><p>SPI CS</p></th>
-<th class="head"><p>MASTER SYNC</p></th>
-<th class="head"><p>SLAVE SYNC</p></th>
-<th class="head"><p>GND</p></th>
+<tr class="row-odd"><th class="head"><p>版本</p></th>
+<th class="head"><p>链接</p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>RTL8721Dx/RTL8711Dx</p></td>
-<td><p>PA_27</p></td>
-<td><p>PA_28</p></td>
-<td><p>PA_26</p></td>
-<td><p>PA_12</p></td>
-<td><p>PB_30</p></td>
-<td><p>PB_31</p></td>
-<td><p>GND</p></td>
+<tr class="row-even"><td><p>v1.0.0</p></td>
+<td></td>
 </tr>
-<tr class="row-odd"><td><div class="line-block">
-<div class="line">RTL8726EA/RTL8713EC</div>
-<div class="line">RTL8720EA/RTL8710EC</div>
+<tr class="row-odd"><td><p>v2.0.0</p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div><div aria-labelledby="tab-0-0-1" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-1" name="0-1" role="tabpanel" tabindex="0"></div><div aria-labelledby="tab-0-0-2" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-2" name="0-2" role="tabpanel" tabindex="0"></div><div aria-labelledby="tab-0-0-3" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-3" name="0-3" role="tabpanel" tabindex="0"></div></div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>如果要修改外设接口以及对应的管脚，请参考 <a class="reference internal" href="at_command_introduction_cn.html#atcmd-host-control-mode-configuration"><span class="std std-ref">AT配置修改</span></a>
+如果想预烧录证书，请参考 <a class="reference internal" href="at_command_introduction_cn.html#atcmd-host-control-mode-certificate"><span class="std std-ref">AT安全证书</span></a></p>
 </div>
-</td>
-<td><p>PA_29</p></td>
-<td><p>PA_30</p></td>
-<td><p>PA_28</p></td>
-<td><p>PA_31</p></td>
-<td><p>PB_2</p></td>
-<td><p>PB_3</p></td>
-<td><p>GND</p></td>
-</tr>
-<tr class="row-even"><td><p>RTL8730E</p></td>
-<td><p>PA_13</p></td>
-<td><p>PA_14</p></td>
-<td><p>PA_15</p></td>
-<td><p>PA_16</p></td>
-<td><p>PA_20</p></td>
-<td><p>PA_21</p></td>
-<td><p>GND</p></td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="id2">
-<h2>使用方法<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
-<p>代码示例位于： <code class="docutils literal notranslate"><span class="pre">{SDK}component/example/atcmd_host/spi_master/example_spi_master.c</span></code>，演示了SPI主机与从机如何进行通信的。</p>
-<p>建议在正式开发前运行此代码示例，以验证连接和配置的正确性。此后，参考代码示例将其适配到特定 MCU 平台应用程序中。</p>
-<p>在示例代码中，我们添加了一个 UART 任务来接收 AT命令并打印 AT 响应。整体数据流图如下所示：</p>
-<figure class="align-center">
-<a class="reference internal image-reference" href="../../_images/spi_at_data_flow.svg"><img alt="../../_images/spi_at_data_flow.svg" height="79" src="../../_images/spi_at_data_flow.svg" width="588" /></a>
-</figure>
-<section id="id3">
-<h3>通信格式<a class="headerlink" href="#id3" title="Link to this heading"></a></h3>
-<p>通过SPI AT命令传输数据，需遵循以下格式规范：</p>
-<table class="docutils align-default" style="width: 100%">
-<tbody>
-<tr class="row-odd"><td><p>Magic Number(2 bytes)</p></td>
-<td><p>Data Len(2 bytes)</p></td>
-<td><p>Data(Data Len bytes)</p></td>
-<td><p>Checksum(4 bytes)</p></td>
-</tr>
-</tbody>
-</table>
-<p>参数说明：</p>
-<dl class="field-list simple">
-<dt class="field-odd">Magic Number<span class="colon">:</span></dt>
-<dd class="field-odd"><p>ASCII码字符 <code class="docutils literal notranslate"><span class="pre">AT</span></code></p>
-</dd>
-<dt class="field-even">Data Len<span class="colon">:</span></dt>
-<dd class="field-even"><p>数据长度，以字节为单位</p>
-</dd>
-<dt class="field-odd">Checksum<span class="colon">:</span></dt>
-<dd class="field-odd"><p>全帧数据CRC32校验值</p>
-</dd>
-</dl>
-</section>
-<section id="id4">
-<h3>交互流程<a class="headerlink" href="#id4" title="Link to this heading"></a></h3>
-<p>SPI AT命令交互主要包含两个过程：</p>
-<p><strong>主机发送AT命令：</strong></p>
-<figure class="align-center">
-<a class="reference internal image-reference" href="../../_images/spi_master_send_at_command_to_slave.svg"><img alt="../../_images/spi_master_send_at_command_to_slave.svg" height="231" src="../../_images/spi_master_send_at_command_to_slave.svg" width="397" /></a>
-</figure>
-<ol class="arabic simple">
-<li><p>主机拉低 <code class="docutils literal notranslate"><span class="pre">MASTER</span> <span class="pre">SYNC</span></code> 引脚向从机发起数据传输请求</p></li>
-<li><p>从机通过GPIO中断接收到主机的请求，准备就绪后拉高 <code class="docutils literal notranslate"><span class="pre">SLAVE</span> <span class="pre">SYNC</span></code> 引脚通知主机可以传输数据</p></li>
-<li><p>主机启动SPI数据传输，传输完成后，双方复位同步引脚</p></li>
-</ol>
-<p><strong>从机返回AT响应：</strong></p>
-<figure class="align-center">
-<a class="reference internal image-reference" href="../../_images/spi_slave_send_response_to_master.svg"><img alt="../../_images/spi_slave_send_response_to_master.svg" height="207" src="../../_images/spi_slave_send_response_to_master.svg" width="397" /></a>
-</figure>
-<ol class="arabic simple">
-<li><p>从机通过拉高 <code class="docutils literal notranslate"><span class="pre">SLAVE</span> <span class="pre">SYNC</span></code> 引脚通知主机已准备好发送AT命令响应数据</p></li>
-<li><p>主机启动SPI数据接收，传输完成后，从机复位同步引脚</p></li>
-</ol>
-</section>
-</section>
 </section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
-        <a href="at_command_ota_cn.html" class="btn btn-neutral float-left" title="OTA AT命令集" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
-        <a href="../0_file_system/0_vfs_index_cn.html" class="btn btn-neutral float-right" title="虚拟文件系统" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="at_command_introduction_cn.html" class="btn btn-neutral float-left" title="概述" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="at_command_common_cn.html" class="btn btn-neutral float-right" title="通用 AT命令集" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
