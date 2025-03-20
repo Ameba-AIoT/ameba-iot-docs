@@ -1,0 +1,750 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Introduction &mdash; Ameba IoT Docs  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=7d84cf84" />
+      <link rel="stylesheet" type="text/css" href="../../_static/tabs.css?v=a5c4661c" />
+      <link rel="stylesheet" type="text/css" href="../../_static/_static/custom.css" />
+
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>let toggleHintShow = 'Click to show';</script>
+        <script>let toggleHintHide = 'Click to hide';</script>
+        <script>let toggleOpenOnPrint = 'true';</script>
+        <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="SDK Architecture" href="../0_sdk_architecture/0_sdk_architecture_index.html" />
+    <link rel="prev" title="Build Environment" href="0_gcc_build_index.html" />
+   
+  
+  <script type="text/javascript" src="../../_static/js/selector.js"></script>
+
+  <style>
+    .wy-nav-content {max-width: 1000px;} /* 设置最大宽度 */
+  </style>
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Ameba IoT Docs
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../rst_rtos/0_ameba_product/0_ameba_product_center_index.html">Products Center</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rst_rtos/0_ameba_sdk/0_ameba_sdks_index.html">Ameba SDK</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_release_packages/0_release_packages_index.html">0.0 Release Packages</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="0_gcc_build_index.html">0.1 Build Environment</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#host-setup">Host Setup</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#toolchain-setup">Toolchain Setup</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#for-linux">For Linux</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#for-windows">For Windows</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#image-build">Image Build</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#setup-the-environment">Setup the Environment</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#accelerate-building">Accelerate Building</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#build-image">Build Image</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bitbake-options">Bitbake Options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#image-deployment">Image Deployment</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#download-images-to-flash">Download Images to Flash</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#docker-container">Docker Container</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#image">Image</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">Build Image</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#load-image">Load Image</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#container">Container</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#run-container">Run Container</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#execute-existing-container">Execute existing Container</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#build-sdk-at-container">Build SDK at Container</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#use-podman-instead">Use Podman Instead</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../0_sdk_architecture/0_sdk_architecture_index.html">0.2 SDK Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rst_rtos/0_tools/0_tools_index.html">0.7 Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_question_help/0_question_help_index.html">0.A Questions and Help</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_debugging/0_debugging_index.html">0.B System Debugging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_boot_process/0_boot_index.html">1.1 BOOT Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_ota/0_ota_index.html">1.2 OTA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_otpc/0_otpc_index.html">1.3 OTPC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_flash/0_flash_index.html">1.4 Flash</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_gpio/0_gpio_index.html">1.7 GPIO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_power_save/0_ps_index.html">1.8 Power Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_secure_boot/0_secure_boot_index_nda.html">3.6 Secure Boot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../7_usb_boot/0_usb_boot_index.html">3.7 USB Boot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_crypto_engine/0_crypto_engine_index.html">3.8 Crypto Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../4_multimedia/0_multimedia_index.html">4.3 Multimedia</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../7_usb/0_usb_index.html">7.1 USB Host &amp; Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../7_sdio/0_sdioh_index.html">7.2 SDIO Host</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_dmac/0_dmac_index.html">8.1 DMA Controllor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_rtc/0_rtc_index.html">8.2 RTC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_thermal/0_thermal_index.html">8.3 Thermal Meter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_adc/0_adc_index.html">8.4 ADC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_cap_touch/0_cap_touch_index.html">8.5 Cap-Touch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_ir/0_ir_index.html">8.6 IR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_ledc/0_ledc_index.html">8.7 LEDC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_i2c/0_i2c_index.html">8.8 I2C</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_uart/0_uart_index.html">8.9 UART</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_lcdc/0_lcdc_index.html">8.A LCDC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_spi/0_spi_index.html">8.B SPI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_spic/0_spic_index.html">8.C SPI Flash Controller</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_timer/0_timer_index.html">8.D Timer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_wdg/0_wdg_index.html">8.E Watchdog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../9_bluetooth/0_bluetooth_index.html">9.1 Bluetooth</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Ameba IoT Docs</a>
+      </nav>
+
+      <div class="wy-nav-content">
+
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="0_gcc_build_index.html">Build Environment</a></li>
+      <li class="breadcrumb-item active">Introduction</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="introduction">
+<span id="building-environment"></span><h1>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h1>
+<p>This chapter describes how to build an image using an Ameba Yocto Linux SDK. It describes the Realtek Ameba release layer and Ameba-specific usage.</p>
+<p>The Yocto Project is an open-source collaboration focused on embedded Linux OS development. For more information on Yocto Project, refer to the <a class="reference external" href="https://www.yoctoproject.org">Yocto Project</a>.</p>
+<p>Several documents on the Yocto Project home page describe in detail how to use the system. To use the basic Yocto Project without the Realtek Ameba release layer, follow the instructions in the Yocto Project Quick Start can be found at <a class="reference external" href="https://docs.yoctoproject.org/brief-yoctoprojectqs/index.html">Yocto Project Quick Build</a>.</p>
+<p>Files used to build an image are stored in layers. Layers contain different types of customizations and come from different sources. Some of the files in a layer are called recipes. Yocto Project recipes contain the mechanism to retrieve source code, build and package a component.</p>
+<p>The following lists show the layers used in this release.</p>
+<ul class="simple">
+<li><p>Ameba release layer:</p>
+<ul>
+<li><p>meta-realtek</p>
+<ul>
+<li><p>meta-realtek-bsp: Realtek BSP layer</p></li>
+<li><p>meta-sdk: Realtek specific SDK customization</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Yocto Project community layers:</p>
+<ul>
+<li><p>poky</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="host-setup">
+<h1>Host Setup<a class="headerlink" href="#host-setup" title="Link to this heading"></a></h1>
+<p>To build Ameba Yocto Linux SDK, you must use Linux. Building under either MacOS or Windows is not supported currently. You need install essential host packages on your build host. The following commands install the host packages based on an Ubuntu distribution.</p>
+<ul>
+<li><p>Basic Utility - Host packages for SDK build.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$sudo apt install chrpath diffstat liblz4-tool zstd mtd-utils python3 python3-dev python3-pip python3-pyelftools
+$sudo pip install python-mbedtls sslcrypto cryptography pycryptodome ecdsa
+</pre></div>
+</div>
+</li>
+<li><p>Change shell to bash</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$sudo dpkg-reconfigure dash
+</pre></div>
+</div>
+</li>
+</ul>
+<section id="toolchain-setup">
+<h2>Toolchain Setup<a class="headerlink" href="#toolchain-setup" title="Link to this heading"></a></h2>
+<section id="for-linux">
+<h3>For Linux<a class="headerlink" href="#for-linux" title="Link to this heading"></a></h3>
+<p>This section introduces the steps how to export yocto toolchain, when users need to use it to build codes.</p>
+<ol class="arabic">
+<li><p>Choose product <em>rtl8730elh-va7</em> for example.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">source</span> <span class="n">envsetup</span><span class="o">.</span><span class="n">sh</span> <span class="o">-</span><span class="n">m</span> <span class="n">rtl8730elh</span><span class="o">-</span><span class="n">va7</span> <span class="o">-</span><span class="n">d</span> <span class="n">ameba</span><span class="o">-</span><span class="n">generic</span>
+</pre></div>
+</div>
+</li>
+<li><p>Execute the <code class="docutils literal notranslate"><span class="pre">bitbake</span></code> command for <em>meta-toolchain</em>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">bitbake</span> <span class="n">meta</span><span class="o">-</span><span class="n">toolchain</span>
+</pre></div>
+</div>
+</li>
+<li><p>Enter the sdk directory.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">build_rtl8730elh</span><span class="o">-</span><span class="n">va7_ameba</span><span class="o">-</span><span class="n">generic</span><span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">deploy</span><span class="o">/</span><span class="n">sdk</span>
+</pre></div>
+</div>
+</li>
+<li><p>Execute the shell script file of producing toolchain.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">ameba</span><span class="o">-</span><span class="n">generic</span><span class="o">-</span><span class="n">glibc</span><span class="o">-</span><span class="n">x86_64</span><span class="o">-</span><span class="n">meta</span><span class="o">-</span><span class="n">toolchain</span><span class="o">-</span><span class="n">cortexa32hf</span><span class="o">-</span><span class="n">neon</span><span class="o">-</span><span class="n">rtl8730elh</span><span class="o">-</span><span class="n">va7</span><span class="o">-</span><span class="n">toolchain</span><span class="o">-</span><span class="mf">4.0.7</span><span class="o">.</span><span class="n">sh</span> <span class="o">-</span><span class="n">d</span> <span class="o">&lt;</span><span class="n">toolchain</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>Where the <code class="docutils literal notranslate"><span class="pre">&lt;toolchain&gt;</span></code> is your customized directory to store the target toolchain.</p>
+</li>
+<li><p>Select <code class="docutils literal notranslate"><span class="pre">Y</span></code>.</p>
+<p>The toolchain will be produced at the directory <code class="docutils literal notranslate"><span class="pre">&lt;toolchain&gt;</span></code>.</p>
+</li>
+<li><p>Enter the <code class="docutils literal notranslate"><span class="pre">&lt;toolchain&gt;</span></code>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">source</span> <span class="n">environment</span><span class="o">-</span><span class="n">setup</span><span class="o">-</span><span class="n">cortexa32hf</span><span class="o">-</span><span class="n">neon</span><span class="o">-</span><span class="n">rtk</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">gnueabi</span>
+</pre></div>
+</div>
+<p>Then the toolchain is produced.</p>
+</li>
+</ol>
+</section>
+<section id="for-windows">
+<h3>For Windows<a class="headerlink" href="#for-windows" title="Link to this heading"></a></h3>
+<p>This section introduces the steps to prepare the toolchain environment.</p>
+<ol class="arabic simple">
+<li><p>Acquire the zip files of toolchain from Realtek.</p></li>
+</ol>
+<ol class="arabic" id="build-environment-windows-toolchain-step-2" start="2">
+<li><p>Create a new directory <code class="docutils literal notranslate"><span class="pre">rtk-toolchain</span></code> under the path <code class="docutils literal notranslate"><span class="pre">{MSYS2_path}\opt</span></code>.</p>
+<p>Where the <code class="docutils literal notranslate"><span class="pre">{MSYS2_path}</span></code> is your MSYS2 installation path.</p>
+</li>
+<li><p>Unzip <code class="docutils literal notranslate"><span class="pre">asdk-10.3.x-mingw32-newlib-build-xxxx.zip</span></code> and <code class="docutils literal notranslate"><span class="pre">vsdk-10.3.x-mingw32-newlib-build-xxxx.zip</span></code>, and place the toolchain folders (<code class="docutils literal notranslate"><span class="pre">asdk-10.3.x</span></code> and <code class="docutils literal notranslate"><span class="pre">vsdk-10.3.x</span></code>) to the folder <code class="docutils literal notranslate"><span class="pre">rtk-toolchain</span></code> created in step <a class="reference internal" href="#build-environment-windows-toolchain-step-2"><span class="std std-ref">2</span></a>.</p></li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>The unzip folders should stay the same with the step above and do NOT change them, otherwise you need to modify the toolchain directory in makefile to customize the path.</p></li>
+<li><p>If an error of the toolchain, just like the log <em>“Error: No Toolchain in /opt/rtk-toolchain/vsdk-10.3.1/mingw32/newlib”</em> appears when building the project, find out if your toolchain files directory are not the same with the directory in the log. Place the toolchain files correctly and try again.</p></li>
+</ul>
+</div>
+</section>
+</section>
+</section>
+<section id="image-build">
+<h1>Image Build<a class="headerlink" href="#image-build" title="Link to this heading"></a></h1>
+<p>This section provides the detailed information along with the process for building an image.</p>
+<section id="setup-the-environment">
+<h2>Setup the Environment<a class="headerlink" href="#setup-the-environment" title="Link to this heading"></a></h2>
+<p>Ameba Yocto Linux SDK provides a script, <code class="docutils literal notranslate"><span class="pre">envsetup.sh</span></code>, that simplifies the setup for Ameba machines. To use the script, the name of the specific machine to be built for needs to be specified as well as other parameters, such as distribution, build directory etc. The script sets up a directory and the configuration files for the specified machine.</p>
+<p>The syntax for the <code class="docutils literal notranslate"><span class="pre">envsetup.sh</span></code> script is shown below:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$source envsetup.sh [-h] [-m machine] [-d distro] [-b build dir] [-j jobs] [-t tasks]
+</pre></div>
+</div>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Options</p></th>
+<th class="head"><p>Usage</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>-h</p></td>
+<td><p>Display help of the scripts.</p></td>
+</tr>
+<tr class="row-odd"><td><p>-m &lt;machine&gt;</p></td>
+<td><p>Set the target machine to be built.</p></td>
+</tr>
+<tr class="row-even"><td><p>-d &lt;distro&gt;</p></td>
+<td><p>Set the distribution to be built.</p></td>
+</tr>
+<tr class="row-odd"><td><p>-b &lt;build dir&gt;</p></td>
+<td><p>Set the non-default path of project build folder.</p></td>
+</tr>
+<tr class="row-even"><td><p>-j &lt;jobs&gt;</p></td>
+<td><p>Set the number of jobs for make to spawn during the compilation stage.</p></td>
+</tr>
+<tr class="row-odd"><td><p>-t &lt;tasks&gt;</p></td>
+<td><p>Set number of BitBake tasks that can be issued in parallel.</p></td>
+</tr>
+<tr class="row-even"><td><p>-p &lt;download dir&gt;</p></td>
+<td><p>Set the non-default path of DL_DIR.</p></td>
+</tr>
+<tr class="row-odd"><td><p>-c &lt;sstate dir&gt;</p></td>
+<td><p>Set the non-default path of SSTATE_DIR.</p></td>
+</tr>
+</tbody>
+</table>
+<p>After the script runs, the working directory will be created by the script, specified by the <em>-b</em> option or a default name is used if no <em>-b</em> option specified. A conf folder is created containing the files <code class="docutils literal notranslate"><span class="pre">bblayers.conf</span></code> and <code class="docutils literal notranslate"><span class="pre">local.conf</span></code>.</p>
+<ul>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">&lt;builddir&gt;/conf/bblayers.conf</span></code> file contains all the meta layers used in the Ameba Yocto Linux SDK release.</p></li>
+<li><p>The <code class="file docutils literal notranslate"><span class="pre">local.conf</span></code> contains the machine and distro specifications:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>MACHINE ??= &quot;rtl8730elh-va8&quot;
+DISTRO ?= &quot;ameba-generic&quot;
+</pre></div>
+</div>
+</li>
+</ul>
+<p>The <code class="docutils literal notranslate"><span class="pre">MACHINE</span></code> and <code class="docutils literal notranslate"><span class="pre">DISTRO</span></code> configuration can be changed by editing this file, if necessary.</p>
+<p>In the <em>meta-realtek</em> layer, the following Ameba machine and distribution configuration that can be selected. Check either the release notes or the machine and distro directory for the latest additions.</p>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Machine</p></th>
+<th class="head"><p>Target</p></th>
+<th class="head"><p>Configuration path</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>rtl8730eah-va6</p></td>
+<td><p>Machine configuration for RTL8730EAH-VA6 chip.</p></td>
+<td><p>sources/yocto/meta-realtek/meta-realtek-bsp/conf/machine/rtl8730eah-va6.conf</p></td>
+</tr>
+<tr class="row-odd"><td><p>rtl8730elh-va7</p></td>
+<td><p>Machine configuration for RTL8730ELH-VA7 chip.</p></td>
+<td><p>sources/yocto/meta-realtek/meta-realtek-bsp/conf/machine/rtl8730elh-va7.conf</p></td>
+</tr>
+<tr class="row-even"><td><p>rtl8730elh-va8</p></td>
+<td><p>Machine configuration for RTL8730ELH-VA8 chip.</p></td>
+<td><p>sources/yocto/meta-realtek/meta-realtek-bsp/conf/machine/rtl8730elh-va8.conf</p></td>
+</tr>
+<tr class="row-odd"><td><p>rtl8730elh-recovery</p></td>
+<td><p>Machine configuration to build recovery image.</p></td>
+<td><p>sources/yocto/meta-realtek/meta-realtek-bsp/conf/machine/rtl8730elh-recovery.conf</p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Distribution</p></th>
+<th class="head"><p>Target</p></th>
+<th class="head"><p>Configuration path</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>ameba-generic</p></td>
+<td><p>A distribution contains basic functions.</p></td>
+<td><p>sources/yocto/meta-realtek/meta-sdk/conf/distro/ameba-generic.conf</p></td>
+</tr>
+<tr class="row-odd"><td><p>ameba-full</p></td>
+<td><p>A distribution contains full demo functions.</p></td>
+<td><p>sources/yocto/meta-realtek/meta-sdk/conf/distro/ameba-full.conf</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <em>RTL8730EAH-VA6</em> is for NOR flash.</p>
+</div>
+<section id="accelerate-building">
+<h3>Accelerate Building<a class="headerlink" href="#accelerate-building" title="Link to this heading"></a></h3>
+<p>Before building, users can download the compilation acceleration package in advance, which usually includes downloads and sstate-cache. Please contact Realtek to get this package. Assume they have been stored in the path <code class="docutils literal notranslate"><span class="pre">&lt;packages&gt;</span></code> after downloading. After executing <code class="docutils literal notranslate"><span class="pre">envsetup.sh</span></code>, create symbolic links for them in the specified <code class="docutils literal notranslate"><span class="pre">build-&lt;machine&gt;</span></code> directory. This way, amount of download time can be saved during building.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">build</span><span class="o">-&lt;</span><span class="n">machine</span><span class="o">&gt;</span>
+<span class="n">ln</span> <span class="o">-</span><span class="n">s</span> <span class="o">&lt;</span><span class="n">packages</span><span class="o">&gt;/</span><span class="n">downloads</span> <span class="o">.</span>
+<span class="n">ln</span> <span class="o">-</span><span class="n">s</span> <span class="o">&lt;</span><span class="n">packages</span><span class="o">&gt;/</span><span class="n">sstate</span><span class="o">-</span><span class="n">cache</span> <span class="o">.</span>
+</pre></div>
+</div>
+<p>If users have built sdk successfully before, they can also save the packages that were downloaded during the previous building separately, and then create symbolic links pointing to them during the new sdk compilation. Assume that the previous building directory is <code class="docutils literal notranslate"><span class="pre">build-&lt;machine&gt;-1</span></code>, the current building directory is <code class="docutils literal notranslate"><span class="pre">build-&lt;machine&gt;-2</span></code>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">build</span><span class="o">-&lt;</span><span class="n">machine</span><span class="o">&gt;-</span><span class="mi">2</span>
+<span class="n">ln</span> <span class="o">-</span><span class="n">s</span> <span class="n">build</span><span class="o">-&lt;</span><span class="n">machine</span><span class="o">&gt;-</span><span class="mi">1</span><span class="o">/</span><span class="n">downloads</span> <span class="o">.</span>
+<span class="n">ln</span> <span class="o">-</span><span class="n">s</span> <span class="n">build</span><span class="o">-&lt;</span><span class="n">machine</span><span class="o">&gt;-</span><span class="mi">1</span><span class="o">/</span><span class="n">sstate</span><span class="o">-</span><span class="n">cache</span> <span class="o">.</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="build-image">
+<h2>Build Image<a class="headerlink" href="#build-image" title="Link to this heading"></a></h2>
+<p>The SDK provides two ways to build images for Ameba machines: quick command and manual build command.</p>
+<p>Quick command is a convenient command added by script <code class="docutils literal notranslate"><span class="pre">envsetup.sh</span></code>. After source of <code class="docutils literal notranslate"><span class="pre">envsetup.sh</span></code>, the following functions are added to the shell environment.</p>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Command</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>m</p></td>
+<td><p>Build all linux images for Ameba machine, including boot.img, kernel.img, rootfs.img, userdata.img and dtb.</p></td>
+</tr>
+<tr class="row-odd"><td><p>m clean</p></td>
+<td><p>Clean all the build output</p></td>
+</tr>
+<tr class="row-even"><td><p>mfw</p></td>
+<td><p>Build firmware boot and images.</p></td>
+</tr>
+<tr class="row-odd"><td><p>mfw mp</p></td>
+<td><p>Build mp-firmware boot and images.</p></td>
+</tr>
+<tr class="row-even"><td><p>mfw clean</p></td>
+<td><p>Clean output files of firmware</p></td>
+</tr>
+<tr class="row-odd"><td><p>mrecovery</p></td>
+<td><p>Build linux recovery images.</p></td>
+</tr>
+<tr class="row-even"><td><p>mkernel</p></td>
+<td><p>Build kernel images.</p></td>
+</tr>
+</tbody>
+</table>
+<p>To build all images to flash, run the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$source envsetup.sh -m rtl8730elh-va8
+$m
+$mfw
+</pre></div>
+</div>
+<p>The Yocto Project build uses the bitbake command. For example, <code class="docutils literal notranslate"><span class="pre">bitbake</span> <span class="pre">&lt;component&gt;</span></code> builds the named component. Each component build has multiple tasks, such as fetching, configuration, compilation, packaging, and deploying to the target rootfs. The bitbake image build gathers all the components required by the image and build in order of the dependency per task.</p>
+<p>The following command is an example on how to build an image:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$bitbake ameba-image-core
+</pre></div>
+</div>
+<p>In the meta-realtek layer, the following images recipes can be selected to build.</p>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Product name</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>ameba-image-core</p></td>
+<td><p>A core image contains basic functions.</p></td>
+</tr>
+<tr class="row-odd"><td><p>ameba-image-userdata</p></td>
+<td><p>An image that used as user’s data file system.</p></td>
+</tr>
+<tr class="row-even"><td><p>ameba-image-recovery</p></td>
+<td><p>A small image for recovery system.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="bitbake-options">
+<h2>Bitbake Options<a class="headerlink" href="#bitbake-options" title="Link to this heading"></a></h2>
+<p>The bitbake command used to build an image is <code class="docutils literal notranslate"><span class="pre">bitbake</span> <span class="pre">&lt;image</span> <span class="pre">name&gt;</span></code>. Additional parameters can be used for specific activities described below. The Bitbake provides various useful options for developing a single component.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">bitbake</span> <span class="o">&lt;</span><span class="n">parameter</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">component</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>Where <code class="docutils literal notranslate"><span class="pre">&lt;component&gt;</span></code> is a desired build package.</p>
+<p>The following table provides some Bitbake options.</p>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Bitbake parameter</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>-c fetch</p></td>
+<td><p>Fetches if the downloads state is not marked as done.</p></td>
+</tr>
+<tr class="row-odd"><td><p>-c cleanall</p></td>
+<td><p>Cleans the entire component build directory. All the changes in the build directory are lost. The rootfs and state of the component are also cleared. The component is also removed from the download directory.</p></td>
+</tr>
+<tr class="row-even"><td><p>-c deploy</p></td>
+<td><p>Deploys an image or component to the rootfs.</p></td>
+</tr>
+<tr class="row-odd"><td><p>-c compile -f</p></td>
+<td><p>It is not recommended that the source code under the temporary directory is changed directly, but if it is, the Yocto Project might not rebuild it unless this option is used.</p>
+<p>Use this option to force a recompile after the image is deployed.</p>
+</td>
+</tr>
+<tr class="row-even"><td><p>-c menuconfig</p></td>
+<td><p>Execute make menuconfig for specific component if component supports.</p></td>
+</tr>
+<tr class="row-odd"><td><p>-e &lt;component&gt;</p></td>
+<td><p>Show the build environment for the component.</p></td>
+</tr>
+<tr class="row-even"><td><p>-g</p></td>
+<td><p>Lists a dependency tree for an image or component.</p></td>
+</tr>
+<tr class="row-odd"><td><p>-k</p></td>
+<td><p>Continues building components even if a build break occurs.</p></td>
+</tr>
+<tr class="row-even"><td><p>-DDD</p></td>
+<td><p>Turns on debug 3 levels deep. Each D adds another level of debug.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="image-deployment">
+<h2>Image Deployment<a class="headerlink" href="#image-deployment" title="Link to this heading"></a></h2>
+<p>The final images to be programmed are deployed at <code class="docutils literal notranslate"><span class="pre">&lt;build</span> <span class="pre">directory&gt;/tmp/deploy/images</span></code>.</p>
+<p>The image is specific to the machine set in the environment setup. After build successfully, the following Linux images are generated.</p>
+<ul class="simple">
+<li><p>boot.img</p></li>
+<li><p>kernel.img</p></li>
+<li><p>rootfs.img</p></li>
+<li><p>userdata.img</p></li>
+<li><p>linux device tree images</p></li>
+</ul>
+<p>These device tree images have their own names. For example, the name of image for machine <em>rtl8730elh-va7-generic</em> is <code class="docutils literal notranslate"><span class="pre">rtl8730elh-va7-generic.dtb</span></code>.</p>
+<p>The firmware boot image and application images are generated with mfw quick command:</p>
+<ul class="simple">
+<li><p>km4_boot_all.bin</p></li>
+<li><p>km0_km4_app.bin</p></li>
+</ul>
+</section>
+</section>
+<section id="download-images-to-flash">
+<h1>Download Images to Flash<a class="headerlink" href="#download-images-to-flash" title="Link to this heading"></a></h1>
+<p>To download images to Flash:</p>
+<ul class="simple">
+<li><p>Refer to <a class="reference internal" href="../../rst_rtos/0_tools/1_image_tool_toprst.html#image-tool"><span class="std std-ref">Image Tool</span></a> for Ameba Image Tool common operations.</p></li>
+<li><p>Refer to <a class="reference internal" href="../0_sdk_architecture/1_sdk_architecture_toprst.html#sdk-architecutre-flash-layout"><span class="std std-ref">Flash layout</span></a>.</p></li>
+</ul>
+</section>
+<section id="docker-container">
+<h1>Docker Container<a class="headerlink" href="#docker-container" title="Link to this heading"></a></h1>
+<p>Docker is an open-source platform designed to automate the deployment, scaling, and management of applications in containers. Containers are lightweight, portable, and self-sufficient units that include everything needed to run a piece of software, such as code, runtime, libraries, and system tools.</p>
+<ul class="simple">
+<li><p>Docker utilizes containerization to package an application and its dependencies into a single container. This ensures consistent behavior across different environments, such as development, testing, and production.</p></li>
+<li><p>Containers can run virtually anywhere, on a developer’s machine, on physical or virtual machines in a data center, or in the cloud—without alteration.</p></li>
+<li><p>Containers share the host system’s kernel, making them more lightweight than traditional virtual machines, which include an entire operating system per instance.</p></li>
+</ul>
+<section id="image">
+<h2>Image<a class="headerlink" href="#image" title="Link to this heading"></a></h2>
+<section id="id1">
+<h3>Build Image<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
+<p>Before you need to build a new docker image, you should install docker on your computer. The procedure to install docker is refer to <a class="reference external" href="https://www.docker.com">Docker HomePage</a>.</p>
+<p>You can run docker at Windows, Linux, MacOS system, etc. We introduce the procedure on Linux here, the procedure at other operation systems is same as Linux.</p>
+<p>At first, there should be a file named <em>Dockerfile</em> at your work directory.</p>
+<p>The content of Dockerfile is as below for example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set the base system.</span>
+<span class="n">FROM</span> <span class="n">ubuntu</span><span class="p">:</span><span class="mf">20.04</span>
+
+<span class="c1"># Set environment variables.</span>
+<span class="n">ENV</span> <span class="n">DEBIAN_FRONTEND</span><span class="o">=</span><span class="n">noninteractive</span>
+
+<span class="c1"># Update.</span>
+<span class="n">RUN</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">update</span>
+
+<span class="c1"># Install some tools.</span>
+<span class="n">RUN</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="n">sudo</span>
+<span class="n">RUN</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="n">make</span>
+<span class="n">RUN</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="n">make</span><span class="o">-</span><span class="n">guile</span>
+<span class="n">RUN</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="n">build</span><span class="o">-</span><span class="n">essential</span>
+<span class="n">RUN</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="n">gcc</span>
+<span class="n">RUN</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="n">g</span><span class="o">++</span>
+<span class="c1"># Any other tools you need to install …</span>
+<span class="c1"># ……</span>
+
+<span class="c1"># Add toolchain.</span>
+<span class="n">ADD</span> <span class="n">rtk</span><span class="o">-</span><span class="n">toolchain</span><span class="o">.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span> <span class="o">/</span><span class="n">opt</span>
+
+<span class="c1"># Create a normal user named &quot;ameba&quot;, with password &quot;ameba&quot;.</span>
+<span class="n">RUN</span> <span class="n">useradd</span> <span class="o">-</span><span class="n">m</span> <span class="o">-</span><span class="n">s</span> <span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">bash</span> <span class="n">ameba</span> <span class="o">&amp;&amp;</span> <span class="n">echo</span> <span class="s2">&quot;ameba:ameba&quot;</span> <span class="o">|</span> <span class="n">chpasswd</span> <span class="o">&amp;&amp;</span> <span class="n">adduser</span> <span class="n">ameba</span> <span class="n">sudo</span>
+<span class="n">RUN</span> <span class="n">echo</span> <span class="s2">&quot;ameba ALL=(ALL) NOPASSWD: ALL&quot;</span> <span class="o">&gt;&gt;</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">sudoers</span>
+<span class="n">USER</span> <span class="n">ameba</span>
+
+<span class="c1"># Set work directory.</span>
+<span class="n">WORKDIR</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">ameba</span>
+
+<span class="c1"># RUN shell command.</span>
+<span class="n">CMD</span> <span class="p">[</span><span class="s2">&quot;/bin/bash&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Then, you can execute <em>docker build</em> command to build your image.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">docker</span> <span class="n">build</span> <span class="o">-</span><span class="n">t</span> <span class="o">&lt;</span><span class="n">image_name</span><span class="o">&gt;</span><span class="p">:</span><span class="o">&lt;</span><span class="n">image_tag</span><span class="o">&gt;</span> <span class="o">.</span>
+</pre></div>
+</div>
+<p>Where the <em>&lt;image_name&gt;</em> means the name of docker image, <em>&lt;image_tag&gt;</em> is optional, which signs the different revision of docker image, if absent, it is <em>latest</em> as default.</p>
+<p>After building successfully, you can use <em>docker images</em> command to check whether this image is on your host.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">docker</span> <span class="n">images</span>
+</pre></div>
+</div>
+<p>You can add parameter <em>-a</em> to show all the images including hidden mid-layer images.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">docker</span> <span class="n">images</span> <span class="o">-</span><span class="n">a</span>
+</pre></div>
+</div>
+<p>Then all the images including their names, tags, and IDs will be shown.</p>
+<p>You can add new name or tag to an image.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">docker</span> <span class="n">tag</span> <span class="o">&lt;</span><span class="n">image_id</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">new_image_name</span><span class="o">&gt;</span><span class="p">:</span><span class="o">&lt;</span><span class="n">new_image_tag</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</section>
+<section id="load-image">
+<h3>Load Image<a class="headerlink" href="#load-image" title="Link to this heading"></a></h3>
+<p>We provide ready-to-use Docker images for customers. Please contact Realtek to obtain the base image version for compiling the SDK.</p>
+<p>For example, when you got the image named <em>rtk_ameba_sdk_build_v1.1.tar</em>, you can load this on your host with command <em>docker load</em>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">docker</span> <span class="n">load</span> <span class="o">-</span><span class="n">i</span> <span class="n">rtk_ameba_sdk_build_v1</span><span class="mf">.1</span><span class="o">.</span><span class="n">tar</span>
+</pre></div>
+</div>
+<p>Then you can use <em>docker images</em> command to check whether this image is on your host.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">docker</span> <span class="n">images</span>
+</pre></div>
+</div>
+<p>If the image is no longer needed, you can delete it by name and tag.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">docker</span> <span class="n">rmi</span> <span class="o">&lt;</span><span class="n">image_name</span><span class="o">&gt;</span><span class="p">:</span><span class="o">&lt;</span><span class="n">image_tag</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>One <em>&lt;image_id&gt;</em> may correspond to one or more <em>&lt;image_name&gt;:&lt;image_tag&gt;</em>. When you tag one <em>&lt;image_id&gt;</em> with more than one <em>&lt;image_name&gt;:&lt;image_tag&gt;</em>, the command above will not delete this <em>&lt;image_id&gt;</em>, because there is other <em>&lt;image_name&gt;:&lt;image_tag&gt;</em>.</p>
+<p>You can delete docker image by ID, in this case, all the <em>&lt;image_name&gt;:&lt;image_tag&gt;</em> correspond to this <em>&lt;image_id&gt;</em> should be deleted at same time.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">docker</span> <span class="n">rmi</span> <span class="o">&lt;</span><span class="n">image_id</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="container">
+<h2>Container<a class="headerlink" href="#container" title="Link to this heading"></a></h2>
+<p>A Docker container is an instance of a Docker image. It is a executable unit of software that packages up the application along with everything it needs to run consistently in any environment.</p>
+<ul class="simple">
+<li><p>Containers run in isolated environments, utilizing OS-level virtualization to share the host system’s kernel, ensuring minimal overhead compared to traditional virtual machines.</p></li>
+<li><p>By default, containers are stateless and temporary, meaning any changes made during execution are not saved after they stop unless explicitly configured.</p></li>
+</ul>
+<section id="run-container">
+<h3>Run Container<a class="headerlink" href="#run-container" title="Link to this heading"></a></h3>
+<p>After building a new docker image, or loading a ready-to-use docker image, you can run a new container based on this image’s name.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">docker</span> <span class="n">run</span> <span class="o">--</span><span class="n">name</span> <span class="o">&lt;</span><span class="n">container_name</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">it</span> <span class="o">&lt;</span><span class="n">image_name</span><span class="o">&gt;</span><span class="p">:</span><span class="o">&lt;</span><span class="n">image_tag</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>Or, base on this image’s ID.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">docker</span> <span class="n">run</span> <span class="o">--</span><span class="n">name</span> <span class="o">&lt;</span><span class="n">container_name</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">it</span> <span class="o">&lt;</span><span class="n">image_id</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>Where the <em>&lt;container_name&gt;</em> should be different from the names of any existing containers, if absent, the docker will automatically assign a unique name to the container.</p>
+<p>And, if you want to mount your directory on host for this container, you can add parameter <em>-v</em>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">docker</span> <span class="n">run</span> <span class="o">--</span><span class="n">name</span> <span class="o">&lt;</span><span class="n">container_name</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">v</span> <span class="o">&lt;</span><span class="n">host_dir</span><span class="o">&gt;</span><span class="p">:</span><span class="o">&lt;</span><span class="n">container_dir</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">it</span> <span class="o">&lt;</span><span class="n">image_name</span><span class="o">&gt;</span><span class="p">:</span><span class="o">&lt;</span><span class="n">image_tag</span><span class="o">&gt;</span>
+<span class="n">sudo</span> <span class="n">docker</span> <span class="n">run</span> <span class="o">--</span><span class="n">name</span> <span class="o">&lt;</span><span class="n">container_name</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">v</span> <span class="o">&lt;</span><span class="n">host_dir</span><span class="o">&gt;</span><span class="p">:</span><span class="o">&lt;</span><span class="n">container_dir</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">it</span> <span class="o">&lt;</span><span class="n">image_id</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>Where <em>&lt;host_dir&gt;</em> is a directory on your host, which should exist. The <em>&lt;container_dir&gt;</em> is a directory on your container, if it does not exist, the container can create it by only one layer. For example, the directory <code class="docutils literal notranslate"><span class="pre">/home/ameba</span></code> has already existed, if you set the <em>&lt;container_dir&gt;</em> as <code class="docutils literal notranslate"><span class="pre">/home/ameba/my_dir</span></code>, the container will create it, but if you set the <em>&lt;container_dir&gt;</em> as <code class="docutils literal notranslate"><span class="pre">/home/ameba/my_dir/deep_dir</span></code>, the container can not create it successfully.</p>
+<p>After mounting the directory successfully, user can operate this directory at host and container at same time.</p>
+<p>In container, you can run <em>exit</em> to back to your host.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">exit</span>
+</pre></div>
+</div>
+<p>Then you can use <em>docker ps</em> command to check whether this container is running.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">docker</span> <span class="n">ps</span>
+</pre></div>
+</div>
+<p>If you want to see all the containers including all ones running and not running, you can add parameter <em>-a</em>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">docker</span> <span class="n">ps</span> <span class="o">-</span><span class="n">a</span>
+</pre></div>
+</div>
+<p>If this container is no longer needed, you can delete it by <em>&lt;container_name&gt;</em> or <em>&lt;container_id&gt;</em>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">docker</span> <span class="n">rm</span> <span class="o">&lt;</span><span class="n">container_name</span><span class="o">&gt;</span>
+<span class="n">sudo</span> <span class="n">docker</span> <span class="n">rm</span> <span class="o">&lt;</span><span class="n">container_id</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</section>
+<section id="execute-existing-container">
+<h3>Execute existing Container<a class="headerlink" href="#execute-existing-container" title="Link to this heading"></a></h3>
+<p>If you want to execute a container not running, you should start it at first, by container name or ID.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">docker</span> <span class="n">start</span> <span class="o">&lt;</span><span class="n">container_name</span><span class="o">&gt;</span>
+<span class="n">sudo</span> <span class="n">docker</span> <span class="n">start</span> <span class="o">&lt;</span><span class="n">container_id</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>Then, run <em>docker exec</em> command to get into container, by container name or ID.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">docker</span> <span class="n">exec</span> <span class="o">-</span><span class="n">it</span> <span class="o">&lt;</span><span class="n">container_name</span><span class="o">&gt;</span> <span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">bash</span>
+<span class="n">sudo</span> <span class="n">docker</span> <span class="n">exec</span> <span class="o">-</span><span class="n">it</span> <span class="o">&lt;</span><span class="n">container_id</span><span class="o">&gt;</span> <span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">bash</span>
+</pre></div>
+</div>
+<p>After exiting the container, you can stop this container by name or ID.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">docker</span> <span class="n">stop</span> <span class="o">&lt;</span><span class="n">container_name</span><span class="o">&gt;</span>
+<span class="n">sudo</span> <span class="n">docker</span> <span class="n">stop</span> <span class="o">&lt;</span><span class="n">container_id</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>In addition, you can also directly use the following command with parameter <em>-ia</em> to start an existing container:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">docker</span> <span class="n">start</span> <span class="o">-</span><span class="n">ia</span> <span class="o">&lt;</span><span class="n">container_name</span><span class="o">&gt;</span>
+<span class="n">sudo</span> <span class="n">docker</span> <span class="n">start</span> <span class="o">-</span><span class="n">ia</span> <span class="o">&lt;</span><span class="n">container_id</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>Then run <em>exit</em> to exit container directly, the container will be stopped at the same time.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">exit</span>
+</pre></div>
+</div>
+</section>
+<section id="build-sdk-at-container">
+<h3>Build SDK at Container<a class="headerlink" href="#build-sdk-at-container" title="Link to this heading"></a></h3>
+<p>For the images release by Realtek, the environment has been setup already, you can build the sdk directly.</p>
+<p>If you mount the directory of the host on container, you can put the sdk into the directory, then it can be seen at the container at same time, you can build the code directly.</p>
+<p>If you does not mount the directory of the host, you can use <em>docker cp</em> command to copy files or directory between host and container.</p>
+<p>Copy files or directory from host to container.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">docker</span> <span class="n">cp</span> <span class="o">&lt;</span><span class="n">host_directory</span><span class="o">&gt;/&lt;</span><span class="n">files_or_directory</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">container_name</span><span class="o">&gt;</span><span class="p">:</span><span class="o">&lt;</span><span class="n">container_directory</span><span class="o">&gt;</span>
+<span class="n">sudo</span> <span class="n">docker</span> <span class="n">cp</span> <span class="o">&lt;</span><span class="n">host_directory</span><span class="o">&gt;/&lt;</span><span class="n">files_or_directory</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">container_id</span><span class="o">&gt;</span><span class="p">:</span><span class="o">&lt;</span><span class="n">container_directory</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>After you building sdk successfully, you can copy files or directory from container to host.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">docker</span> <span class="n">cp</span> <span class="o">&lt;</span><span class="n">container_name</span><span class="o">&gt;</span><span class="p">:</span><span class="o">&lt;</span><span class="n">container_directory_or_files</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">host_directory</span><span class="o">&gt;</span>
+<span class="n">sudo</span> <span class="n">docker</span> <span class="n">cp</span> <span class="o">&lt;</span><span class="n">container_id</span><span class="o">&gt;</span><span class="p">:</span><span class="o">&lt;</span><span class="n">container_directory_or_files</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">host_directory</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>You can also get the sdk from github at container, which has the same procedure at host.</p>
+</section>
+<section id="use-podman-instead">
+<h3>Use Podman Instead<a class="headerlink" href="#use-podman-instead" title="Link to this heading"></a></h3>
+<p>The podman can also deal with the images and containers as well as docker. Users can get podman from <a class="reference external" href="https://podman.io/get-started">Podman HostPage</a>.</p>
+<p>The command format for Podman and Docker is almost the same, you can simply replace the <em>docker</em> prefix with <em>podman</em> to use it directly. For example, you can use <em>podman build</em> instead of <em>docker build</em>, <em>podman images</em> instead of <em>docker images</em>, <em>podman ps</em> instead of <em>docker ps</em>, etc. All the procedures of dealing with images and containers are same for podman and docker.</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="0_gcc_build_index.html" class="btn btn-neutral float-left" title="Build Environment" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../0_sdk_architecture/0_sdk_architecture_index.html" class="btn btn-neutral float-right" title="SDK Architecture" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Realsil.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+ 
+
+
+
+</body>
+</html>

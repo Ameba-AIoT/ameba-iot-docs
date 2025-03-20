@@ -1,0 +1,565 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Adjust Linux Layout &mdash; Ameba IoT Docs  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=7d84cf84" />
+      <link rel="stylesheet" type="text/css" href="../../_static/tabs.css?v=a5c4661c" />
+      <link rel="stylesheet" type="text/css" href="../../_static/_static/custom.css" />
+
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>let toggleHintShow = 'Click to show';</script>
+        <script>let toggleHintHide = 'Click to hide';</script>
+        <script>let toggleOpenOnPrint = 'true';</script>
+        <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="System Debugging" href="../0_debugging/0_debugging_index.html" />
+    <link rel="prev" title="Questions and Help" href="0_question_help_index.html" />
+   
+  
+  <script type="text/javascript" src="../../_static/js/selector.js"></script>
+
+  <style>
+    .wy-nav-content {max-width: 1000px;} /* 设置最大宽度 */
+  </style>
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Ameba IoT Docs
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../rst_rtos/0_ameba_product/0_ameba_product_center_index.html">Products Center</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rst_rtos/0_ameba_sdk/0_ameba_sdks_index.html">Ameba SDK</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_release_packages/0_release_packages_index.html">0.0 Release Packages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_gcc_build_environment/0_gcc_build_index.html">0.1 Build Environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_sdk_architecture/0_sdk_architecture_index.html">0.2 SDK Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rst_rtos/0_tools/0_tools_index.html">0.7 Tools</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="0_question_help_index.html">0.A Questions and Help</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Adjust Linux Layout</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#how-to-reduce-size-of-images">How to Reduce Size of Images</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#how-to-reduce-size-of-rootfs-image">How to Reduce Size of ROOTFS Image</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#how-to-reduce-size-of-kernel-image">How to Reduce Size of KERNEL Image</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#formulate-new-layout">Formulate New Layout</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#how-to-adjust-size-of-layout-in-dts">How to Adjust Size of Layout in DTS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#how-to-adjust-uboot-defconfig">How to Adjust Uboot Defconfig</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#config-mtdparts-default">CONFIG_MTDPARTS_DEFAULT</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#how-to-adjust-size-of-ubi-when-building">How to Adjust Size of UBI When Building</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#userdata-ubi-c">userdata ubi -c</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rootfs-ubi-c">rootfs ubi -c</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#how-to-adjust-the-layout-in-imagetool">How to Adjust the Layout in ImageTool</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#add-partition-of-oem">Add Partition of OEM</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#new-file-ameba-image-oem-bb">New File ameba-image-oem.bb</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mount-mtd-block-in-dts">Mount MTD Block in DTS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mount-oem-partition-automatically">Mount OEM Partition Automatically</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#build">Build</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#debug">Debug</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#can-not-load-kernel-at-uboot">Can Not Load Kernel at Uboot</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#can-not-find-oem-image">Can Not Find OEM Image</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#download-images">Download Images</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#function-test">Function Test</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#boot-normally">Boot Normally</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#recovery-system">Recovery System</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../0_debugging/0_debugging_index.html">0.B System Debugging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_boot_process/0_boot_index.html">1.1 BOOT Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_ota/0_ota_index.html">1.2 OTA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_otpc/0_otpc_index.html">1.3 OTPC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_flash/0_flash_index.html">1.4 Flash</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_gpio/0_gpio_index.html">1.7 GPIO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_power_save/0_ps_index.html">1.8 Power Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_secure_boot/0_secure_boot_index_nda.html">3.6 Secure Boot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../7_usb_boot/0_usb_boot_index.html">3.7 USB Boot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_crypto_engine/0_crypto_engine_index.html">3.8 Crypto Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../4_multimedia/0_multimedia_index.html">4.3 Multimedia</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../7_usb/0_usb_index.html">7.1 USB Host &amp; Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../7_sdio/0_sdioh_index.html">7.2 SDIO Host</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_dmac/0_dmac_index.html">8.1 DMA Controllor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_rtc/0_rtc_index.html">8.2 RTC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_thermal/0_thermal_index.html">8.3 Thermal Meter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_adc/0_adc_index.html">8.4 ADC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_cap_touch/0_cap_touch_index.html">8.5 Cap-Touch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_ir/0_ir_index.html">8.6 IR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_ledc/0_ledc_index.html">8.7 LEDC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_i2c/0_i2c_index.html">8.8 I2C</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_uart/0_uart_index.html">8.9 UART</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_lcdc/0_lcdc_index.html">8.A LCDC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_spi/0_spi_index.html">8.B SPI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_spic/0_spic_index.html">8.C SPI Flash Controller</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_timer/0_timer_index.html">8.D Timer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_wdg/0_wdg_index.html">8.E Watchdog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../9_bluetooth/0_bluetooth_index.html">9.1 Bluetooth</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Ameba IoT Docs</a>
+      </nav>
+
+      <div class="wy-nav-content">
+
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="0_question_help_index.html">Questions and Help</a></li>
+      <li class="breadcrumb-item active">Adjust Linux Layout</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="adjust-linux-layout">
+<span id="help"></span><h1>Adjust Linux Layout<a class="headerlink" href="#adjust-linux-layout" title="Link to this heading"></a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>All content in this chapter applies to NAND flash.</p>
+</div>
+<section id="how-to-reduce-size-of-images">
+<h2>How to Reduce Size of Images<a class="headerlink" href="#how-to-reduce-size-of-images" title="Link to this heading"></a></h2>
+<p>In some cases, users may need to reduce the image size. The following explains how to make the image size smaller.</p>
+<section id="how-to-reduce-size-of-rootfs-image">
+<span id="id1"></span><h3>How to Reduce Size of ROOTFS Image<a class="headerlink" href="#how-to-reduce-size-of-rootfs-image" title="Link to this heading"></a></h3>
+<p>The plugins which are not needed in these directory can be deleted.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">sdk</span><span class="o">&gt;/</span><span class="n">sources</span><span class="o">/</span><span class="n">yocto</span><span class="o">/</span><span class="n">meta</span><span class="o">-</span><span class="n">realtek</span><span class="o">/</span><span class="n">meta</span><span class="o">-</span><span class="n">sdk</span><span class="o">/</span><span class="n">recipes</span><span class="o">-</span><span class="n">core</span><span class="o">/</span><span class="n">images</span><span class="o">/</span><span class="n">ameba</span><span class="o">-</span><span class="n">image</span><span class="o">-</span><span class="n">core</span><span class="o">.</span><span class="n">bb</span>
+<span class="o">&lt;</span><span class="n">sdk</span><span class="o">&gt;/</span><span class="n">sources</span><span class="o">/</span><span class="n">yocto</span><span class="o">/</span><span class="n">meta</span><span class="o">-</span><span class="n">realtek</span><span class="o">/</span><span class="n">meta</span><span class="o">-</span><span class="n">realtek</span><span class="o">-</span><span class="n">bsp</span><span class="o">/</span><span class="n">recipes</span><span class="o">-</span><span class="n">core</span><span class="o">/</span><span class="n">packagegroups</span><span class="o">/</span><span class="n">packagegroup</span><span class="o">-</span><span class="n">rtk</span><span class="o">-</span><span class="n">commands</span><span class="o">.</span><span class="n">bb</span>
+<span class="o">&lt;</span><span class="n">sdk</span><span class="o">&gt;/</span><span class="n">sources</span><span class="o">/</span><span class="n">yocto</span><span class="o">/</span><span class="n">meta</span><span class="o">-</span><span class="n">realtek</span><span class="o">/</span><span class="n">meta</span><span class="o">-</span><span class="n">realtek</span><span class="o">-</span><span class="n">bsp</span><span class="o">/</span><span class="n">recipes</span><span class="o">-</span><span class="n">core</span><span class="o">/</span><span class="n">packagegroups</span><span class="o">/</span><span class="n">packagegroup</span><span class="o">-</span><span class="n">rtk</span><span class="o">-</span><span class="n">network</span><span class="o">.</span><span class="n">bb</span>
+</pre></div>
+</div>
+<p>Build again, produce a new rootfs.img, you could see that its size is smaller than before.</p>
+</section>
+<section id="how-to-reduce-size-of-kernel-image">
+<span id="id2"></span><h3>How to Reduce Size of KERNEL Image<a class="headerlink" href="#how-to-reduce-size-of-kernel-image" title="Link to this heading"></a></h3>
+<section id="menuconfig">
+<h4>Menuconfig<a class="headerlink" href="#menuconfig" title="Link to this heading"></a></h4>
+<ol class="arabic">
+<li><p>Before building new images, execute <em>mclean</em> to clean the former images.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">mclean</span>
+</pre></div>
+</div>
+</li>
+<li><p>Execute <em>mkernel menuconfig</em> to modify the configure parameters.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">mkernel</span><span class="w"> </span><span class="n">menuconfig</span>
+</pre></div>
+</div>
+</li>
+<li><p>Executed the command below in order to save the new parameters.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">bitbake</span><span class="w"> </span><span class="n">virtual</span><span class="o">/</span><span class="n">kernel</span><span class="w"> </span><span class="o">-</span><span class="n">c</span><span class="w"> </span><span class="n">savedefconfig</span>
+</pre></div>
+</div>
+</li>
+<li><p>Execute <em>m</em> or <em>bitbake</em> to build new ones finally.</p></li>
+</ol>
+</section>
+</section>
+<section id="formulate-new-layout">
+<h3>Formulate New Layout<a class="headerlink" href="#formulate-new-layout" title="Link to this heading"></a></h3>
+<p>After procedure in Section <a class="reference internal" href="#how-to-reduce-size-of-rootfs-image"><span class="std std-ref">How to Reduce Size of ROOTFS Image</span></a> and <a class="reference internal" href="#how-to-reduce-size-of-kernel-image"><span class="std std-ref">How to Reduce Size of KERNEL Image</span></a>, an example of the partitions’ sizes are as below. Where the OEM followed is the additional partition expected for example (the same below).</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/formulate_new_layout.png"><img alt="../../_images/formulate_new_layout.png" src="../../_images/formulate_new_layout.png" style="width: 747.6px; height: 200.4px;" /></a>
+</figure>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>The recovery kernel is initramfs, has a fixed size, the image size is 4.484M, so that the partition of kernel is at least 5M.</p></li>
+<li><p>The basic unit of partition of NAND flash is block (whose size is 128KB), therefore the division of layout should be an integer multiple of block.</p></li>
+<li><p>It is not suggested to reduce the sizes of km4_boot_all.bin, km0_km4_app.bin, boot.img, and vbmeta.img, because that they have small sizes in nature, can occupy few blocks, and the cost of reducing them is relatively high.</p></li>
+<li><p>The size of vbmeta.img plus dtb.img is smaller than one block. However, if they are only allocated with one block, consider that there may be bad blocks in NAND, if the block allocated for them are bad, the images can not be programmed any more. So, for the sake of system robustness, it is suggested to allocate two blocks for them at least.</p></li>
+</ul>
+</div>
+<section id="offset-and-size-of-each-layout-in-dts">
+<span id="offset-and-size-of-each-layout-in-dfs"></span><h4>Offset and Size of Each Layout in DTS<a class="headerlink" href="#offset-and-size-of-each-layout-in-dts" title="Link to this heading"></a></h4>
+<p>For example of machine generic 128M, the offset and size of each layout in DTS is shown as below.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/offset_size_layout_in_dts.png"><img alt="../../_images/offset_size_layout_in_dts.png" src="../../_images/offset_size_layout_in_dts.png" style="width: 354.9px; height: 193.89999999999998px;" /></a>
+</figure>
+<p>Where A means the A part of dtb, kernel, B means the B part of dtb, kernel. And the hexadecimal values are offsets based on FLASH base address.</p>
+</section>
+<section id="offset-and-size-of-each-layout-in-imagetool">
+<span id="id3"></span><h4>Offset and Size of Each Layout in ImageTool<a class="headerlink" href="#offset-and-size-of-each-layout-in-imagetool" title="Link to this heading"></a></h4>
+<p>For example of machine generic 128M, the offset and size of each layout in ImageTool is shown as below. Where all the hexadecimal values are calculated by the offsets in Section <a class="reference internal" href="#offset-and-size-of-each-layout-in-dfs"><span class="std std-ref">Offset and Size of Each Layout in DTS</span></a>.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/offset_size_layout_imagetool.png"><img alt="../../_images/offset_size_layout_imagetool.png" src="../../_images/offset_size_layout_imagetool.png" style="width: 394.79999999999995px; height: 193.2px;" /></a>
+</figure>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>It is ensured that the end address is equal to 0x10000000.</p>
+</div>
+</section>
+</section>
+</section>
+<section id="how-to-adjust-size-of-layout-in-dts">
+<h2>How to Adjust Size of Layout in DTS<a class="headerlink" href="#how-to-adjust-size-of-layout-in-dts" title="Link to this heading"></a></h2>
+<p>The directory of DTS file is <code class="docutils literal notranslate"><span class="pre">&lt;sdk&gt;/sources/kernel/linux-5.4/arch/arm/boot/dts</span></code> for kernel 5.4.x, and <code class="docutils literal notranslate"><span class="pre">&lt;sdk&gt;/kernel/linux-6.6/arch/arm/boot/dts/realtek/ameba</span></code> for kernel 6.6.x.</p>
+<p>User can configure the value of partition reg, according to the offset and size in Section <a class="reference internal" href="#offset-and-size-of-each-layout-in-dfs"><span class="std std-ref">Offset and Size of Each Layout in DTS</span></a>.</p>
+<p>The figure below shows an example of a before-and-after comparison of adjusting the layout in DTS.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/before_adjust_layout_dts.png"><img alt="../../_images/before_adjust_layout_dts.png" src="../../_images/before_adjust_layout_dts.png" style="width: 278.1px; height: 527.4px;" /></a>
+</figure>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/after_adjust_layout_dts.png"><img alt="../../_images/after_adjust_layout_dts.png" src="../../_images/after_adjust_layout_dts.png" style="width: 247.5px; height: 568.8000000000001px;" /></a>
+</figure>
+</section>
+<section id="how-to-adjust-uboot-defconfig">
+<span id="id4"></span><h2>How to Adjust Uboot Defconfig<a class="headerlink" href="#how-to-adjust-uboot-defconfig" title="Link to this heading"></a></h2>
+<p>The directory of file defconfig is:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">sdk</span><span class="o">&gt;/</span><span class="n">sources</span><span class="o">/</span><span class="n">boot</span><span class="o">/</span><span class="n">uboot</span><span class="o">/</span><span class="n">configs</span>
+</pre></div>
+</div>
+<section id="config-mtdparts-default">
+<h3>CONFIG_MTDPARTS_DEFAULT<a class="headerlink" href="#config-mtdparts-default" title="Link to this heading"></a></h3>
+<p><strong>Before Modification</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">CONFIG_MTDPARTS_DEFAULT</span><span class="o">=</span><span class="s">&quot;mtdparts=spi-nand0:0x20000@0x20000(cert-bin),0x40000@0x620000(misc),0x40000@0x6A0000(vbmeta),0x40000@0x6E0000(r-vbmeta),0x60000@0x780000(r-dtb),0xA00000@0x11E0000(r-uImage),0x60000@0x720000(dtb),0xA00000@0x7E0000(uImage)&quot;</span>
+</pre></div>
+</div>
+<p><strong>After Modification</strong></p>
+<p>According to the offset and size in Section <a class="reference internal" href="#offset-and-size-of-each-layout-in-dfs"><span class="std std-ref">Offset and Size of Each Layout in DTS</span></a>, the <em>CONFIG_MTDPARTS_DEFAULT</em> should be:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">CONFIG_MTDPARTS_DEFAULT</span><span class="o">=</span><span class="s">&quot;mtdparts=spi-nand0:0x20000@0x20000(cert-bin),0x40000@0x620000(misc),0x40000@0x6A0000(vbmeta),0x40000@0x6E0000(r-vbmeta),0x40000@0x760000(r-dtb),0x500000@0XCA0000(r-uImage),0x40000@0x720000(dtb),0x500000@0x7A0000(uImage)&quot;</span>
+</pre></div>
+</div>
+<section id="image-load-to-ddr-configure">
+<h4>IMAGE Load to DDR Configure<a class="headerlink" href="#image-load-to-ddr-configure" title="Link to this heading"></a></h4>
+<p>NAND allows a bad block rate of 2%, so that the size of the load image here should be slightly smaller than the value calculated in Section <a class="reference internal" href="#offset-and-size-of-each-layout-in-dfs"><span class="std std-ref">Offset and Size of Each Layout in DTS</span></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">IMG_FLASH_SIZE<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The size of kernel image transferred from flash to DDR.</p>
+</dd>
+<dt class="field-even">FDT_FLASH_SIZE<span class="colon">:</span></dt>
+<dd class="field-even"><p>The size of dtb image transferred from flash to DDR. The space allocated to dtb image has already been the maximum (64KB), so that FDT_FLASH_SIZE will not be adjusted any more.</p>
+</dd>
+<dt class="field-odd">RECOVERY_IMG_FLASH_SIZE<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The size of recovery kernel image transferred from flash to DDR.</p>
+</dd>
+<dt class="field-even">RECOVERY_FDT_FLASH_SIZE<span class="colon">:</span></dt>
+<dd class="field-even"><p>The size of recovery dtb image transferred from flash to DDR.</p>
+</dd>
+<dt class="field-odd">SYS_TEXT_BASE<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The start address of DDR after image transferred from flash to DDR (not adjusted).</p>
+</dd>
+<dt class="field-even">KERNEL_ADDR<span class="colon">:</span></dt>
+<dd class="field-even"><p>The start address of kernel image transferred to DDR (not adjusted).</p>
+</dd>
+<dt class="field-odd">FDT_ADDR<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The start address of dtb image transferred to DDR. The space allocated to dtb image has already been the maximum (64KB), so that FDT_ADDR will not be adjusted any more.</p>
+</dd>
+</dl>
+<p>The comparison before and after modification is shown as below.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/before_modification.png"><img alt="../../_images/before_modification.png" src="../../_images/before_modification.png" style="width: 299.7px; height: 137.70000000000002px;" /></a>
+</figure>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/after_modification.png"><img alt="../../_images/after_modification.png" src="../../_images/after_modification.png" style="width: 303.3px; height: 136.8px;" /></a>
+</figure>
+<p>The positions of kernel and dtb in DDR are originally small, so that no additional modification is required. The size of recovery initramfs needs to reserve a bad block for 0x500000, so it is adjusted to 0x4E0000.</p>
+</section>
+</section>
+</section>
+<section id="how-to-adjust-size-of-ubi-when-building">
+<h2>How to Adjust Size of UBI When Building<a class="headerlink" href="#how-to-adjust-size-of-ubi-when-building" title="Link to this heading"></a></h2>
+<section id="userdata-ubi-c">
+<h3>userdata ubi -c<a class="headerlink" href="#userdata-ubi-c" title="Link to this heading"></a></h3>
+<p>The position is <code class="docutils literal notranslate"><span class="pre">&lt;sdk&gt;/source/yocto/meta-sdk/recipes-core/images/ameba-image-userdata.bb</span></code>.</p>
+<p>Before modification, it is as below:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">MKUBIFS_ARGS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;-m 2048 -e 126976 -c 297 --jrn-size=380928&quot;</span>
+</pre></div>
+</div>
+<p>Then you will adjust its size to 56.75M, at first round it down to 56M, then calculate as this formula:</p>
+<div class="math notranslate nohighlight">
+\[56 * 8 – 44 = 404\]</div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">MKUBIFS_ARGS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;-m 2048 -e 126976 -c 404 --jrn-size=380928&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="rootfs-ubi-c">
+<h3>rootfs ubi -c<a class="headerlink" href="#rootfs-ubi-c" title="Link to this heading"></a></h3>
+<p>The position is <code class="docutils literal notranslate"><span class="pre">&lt;sdk&gt;/source/yocto/meta-realtek-bsp/conf/machine/rtl8730elh-va7.conf</span></code>.</p>
+<p>Before modification, it is as below:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">MKUBIFS_ARGS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;-F -m 2048 -e 126976 -c 436 -j 380928&quot;</span>
+</pre></div>
+</div>
+<p>Then you will adjust its size to 20.19M, at first round it down to 20M, then calculate as this formula:</p>
+<div class="math notranslate nohighlight">
+\[20 * 8 - 44 = 116\]</div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">MKUBIFS_ARGS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;-F -m 2048 -e 126976 -c 116 -j 380928&quot;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="how-to-adjust-the-layout-in-imagetool">
+<h2>How to Adjust the Layout in ImageTool<a class="headerlink" href="#how-to-adjust-the-layout-in-imagetool" title="Link to this heading"></a></h2>
+<p>Before the modification, the default start address and end address are shown in the ImageTool as below.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/address_before_modification.png"><img alt="../../_images/address_before_modification.png" src="../../_images/address_before_modification.png" style="width: 688.0px; height: 149.6px;" /></a>
+</figure>
+<p>You can adjust the start address or end address according to Section <a class="reference internal" href="#offset-and-size-of-each-layout-in-imagetool"><span class="std std-ref">Offset and Size of Each Layout in ImageTool</span></a>.</p>
+<p>After the modification, the new start address and end address may be like below.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/address_after_modification.png"><img alt="../../_images/address_after_modification.png" src="../../_images/address_after_modification.png" style="width: 597.8px; height: 242.2px;" /></a>
+</figure>
+</section>
+<section id="add-partition-of-oem">
+<h2>Add Partition of OEM<a class="headerlink" href="#add-partition-of-oem" title="Link to this heading"></a></h2>
+<section id="new-file-ameba-image-oem-bb">
+<h3>New File ameba-image-oem.bb<a class="headerlink" href="#new-file-ameba-image-oem-bb" title="Link to this heading"></a></h3>
+<p>User can add new file ameba-image-oem.bb in directory <code class="docutils literal notranslate"><span class="pre">&lt;sdk&gt;/sources/yocto/meta-realtek/meta-sdk/recipes-core/images</span></code>. The content could be as below.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp"># Copyright 2023 Realtek.</span>
+<span class="cp"># Released under the MIT license (see COPYING.MIT for the terms)</span>
+<span class="n">SUMMARY</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;This is the oem image.&quot;</span>
+<span class="n">IMAGE_FSTYPES</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;ubi&quot;</span>
+<span class="n">MKUBIFS_ARGS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;-m 2048 -e 126976 -c 260 --jrn-size=380928&quot;</span>
+<span class="n">UBINIZE_ARGS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;-m 2048 -p 131072&quot;</span>
+<span class="n">UBI_IMGTYPE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;ubifs&quot;</span>
+<span class="n">IMAGE_NAME_SUFFIX</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;.oem&quot;</span>
+<span class="n">IMAGE_INSTALL</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;&quot;</span>
+<span class="n">IMAGE_LINGUAS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;&quot;</span>
+<span class="n">PACKAGE_INSTALL</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;&quot;</span>
+<span class="n">inherit</span><span class="w"> </span><span class="n">image</span>
+</pre></div>
+</div>
+<p>Where 260 is calculated as this formula:</p>
+<div class="math notranslate nohighlight">
+\[38 * 8 - 44\]</div>
+<p>User can use bitbake command to build this ameba-image-oem.</p>
+</section>
+<section id="mount-mtd-block-in-dts">
+<h3>Mount MTD Block in DTS<a class="headerlink" href="#mount-mtd-block-in-dts" title="Link to this heading"></a></h3>
+<p>For example of machine generic 128M, user can modify the file of <code class="docutils literal notranslate"><span class="pre">rtl8730e-spi-nand-128m.dtsi</span></code> to mount specific MTD block.</p>
+<p>Here, we add a MTD block 10 in dts file.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// Add ubi.mtd=10 at end of this line.</span>
+<span class="n">bootargs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;console=ttyS0,1500000 earlycon psci=enable ubi.mtd=8 ubi.block=0,0 root=/dev/ubiblock0_0 rootfstype=squashfs,ubifs ubi.mtd=9 ubifs ubi.mtd=10&quot;</span><span class="p">;</span>
+</pre></div>
+</div>
+</section>
+<section id="mount-oem-partition-automatically">
+<h3>Mount OEM Partition Automatically<a class="headerlink" href="#mount-oem-partition-automatically" title="Link to this heading"></a></h3>
+<p>User can add procedure to let the OEM partition be mounted automatically, in the script file <code class="docutils literal notranslate"><span class="pre">&lt;sdk&gt;/sources/yocto/meta-realtek/meta-realtek-bsp/recipes-core/initscripts/initscripts-1.0/overlay.sh</span></code>.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">pivot_root</span><span class="w"> </span><span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">merged</span><span class="w"> </span><span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">merged</span><span class="o">/</span><span class="n">rom</span>
+<span class="cp">#Add the procedure here.</span>
+<span class="n">mkdir</span><span class="w"> </span><span class="o">-</span><span class="n">p</span><span class="w"> </span><span class="o">/</span><span class="n">oem</span>
+<span class="n">mount</span><span class="w"> </span><span class="o">-</span><span class="n">t</span><span class="w"> </span><span class="n">ubifs</span><span class="w"> </span><span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">ubi2_0</span><span class="w"> </span><span class="o">/</span><span class="n">oem</span>
+<span class="k">if</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="o">!</span><span class="w"> </span><span class="o">-</span><span class="n">e</span><span class="w"> </span><span class="o">/</span><span class="n">run</span><span class="o">/</span><span class="n">udev</span><span class="w"> </span><span class="p">]</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="n">then</span>
+<span class="n">mkdir</span><span class="w"> </span><span class="o">-</span><span class="n">p</span><span class="w"> </span><span class="o">/</span><span class="n">run</span><span class="o">/</span><span class="n">udev</span>
+<span class="n">fi</span>
+</pre></div>
+</div>
+<p>In another way, user can implement automatically mounting by modifying the rcS file: <code class="docutils literal notranslate"><span class="pre">&lt;sdk&gt;/sources/yocto/meta-realtek/meta-sdk/recipes-rtk/rtk-rc-local/rtk-rc-local/rcS</span></code>. User can choose any way of them.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">cat</span><span class="w"> </span><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">motd</span>
+<span class="cp">#Add the procedure here.</span>
+<span class="n">mkdir</span><span class="w"> </span><span class="o">-</span><span class="n">p</span><span class="w"> </span><span class="o">/</span><span class="n">oem</span>
+<span class="n">mount</span><span class="w"> </span><span class="o">-</span><span class="n">t</span><span class="w"> </span><span class="n">ubifs</span><span class="w"> </span><span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">ubi2_0</span><span class="w"> </span><span class="o">/</span><span class="n">oem</span>
+<span class="cp"># Set country to Worldwide</span>
+<span class="cp">#iw reg set 00</span>
+</pre></div>
+</div>
+<p>Build the OEM separately.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">bitbake</span><span class="w"> </span><span class="n">ameba</span><span class="o">-</span><span class="n">image</span><span class="o">-</span><span class="n">oem</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="build">
+<h2>Build<a class="headerlink" href="#build" title="Link to this heading"></a></h2>
+<p>Before building new images, user should execute <em>mclean</em> to clean the former images.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">mclean</span>
+</pre></div>
+</div>
+<p>Execute <em>m</em> or <em>bitbake</em> to build new ones finally.</p>
+</section>
+<section id="debug">
+<h2>Debug<a class="headerlink" href="#debug" title="Link to this heading"></a></h2>
+<section id="can-not-load-kernel-at-uboot">
+<h3>Can Not Load Kernel at Uboot<a class="headerlink" href="#can-not-load-kernel-at-uboot" title="Link to this heading"></a></h3>
+<p>There may be problems when loading kernel at uboot, as the figure below. User can execute <em>env print</em> or <em>printenv</em>, then can see that the environment variables are different with expected.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/load_kernel_at_uboot.png"><img alt="../../_images/load_kernel_at_uboot.png" src="../../_images/load_kernel_at_uboot.png" style="width: 744.6px; height: 414.59999999999997px;" /></a>
+</figure>
+<p>For this issue, user is suggested to check the information below:</p>
+<ol class="arabic">
+<li><p>Refer to section <a class="reference internal" href="#how-to-adjust-uboot-defconfig"><span class="std std-ref">How to Adjust Uboot Defconfig</span></a>, make sure the contents modified are as expected.</p></li>
+<li><p>Clean the former image at first.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">bitbake</span><span class="w"> </span><span class="n">atf</span><span class="o">-</span><span class="n">ameba</span><span class="w"> </span><span class="o">-</span><span class="n">c</span><span class="w"> </span><span class="n">cleanall</span>
+<span class="n">bitbake</span><span class="w"> </span><span class="n">u</span><span class="o">-</span><span class="n">boot</span><span class="o">-</span><span class="n">ameba</span><span class="w"> </span><span class="o">-</span><span class="n">c</span><span class="w"> </span><span class="n">cleanall</span>
+</pre></div>
+</div>
+</li>
+<li><p>Build it again, make sure the contents modified are in the new image.</p></li>
+</ol>
+</section>
+<section id="can-not-find-oem-image">
+<span id="id5"></span><h3>Can Not Find OEM Image<a class="headerlink" href="#can-not-find-oem-image" title="Link to this heading"></a></h3>
+<p>Before building, user can make OEM image manually at first.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">bitbake</span><span class="w"> </span><span class="n">ameba</span><span class="o">-</span><span class="n">image</span><span class="o">-</span><span class="n">oem</span>
+</pre></div>
+</div>
+<p>The following steps describe how to add it into command <em>m</em>.</p>
+<ol class="arabic">
+<li><p>Edit the script file <code class="docutils literal notranslate"><span class="pre">&lt;sdk&gt;/sources/yocto/meta-realtek/tools/envsetup.sh</span></code>.Then add this part of oem into this file, as the figure below.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/add_part_oem.png"><img alt="../../_images/add_part_oem.png" src="../../_images/add_part_oem.png" style="width: 457.8px; height: 521.4px;" /></a>
+</figure>
+</li>
+<li><p>Execute this command to copy the script file to root directory.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span><span class="w"> </span><span class="o">&lt;</span><span class="n">sdk</span><span class="o">&gt;</span>
+<span class="n">cp</span><span class="w"> </span><span class="n">sources</span><span class="o">/</span><span class="n">yocto</span><span class="o">/</span><span class="n">meta</span><span class="o">-</span><span class="n">realtek</span><span class="o">/</span><span class="n">tools</span><span class="o">/</span><span class="n">envsetup</span><span class="p">.</span><span class="n">sh</span><span class="p">.</span>
+</pre></div>
+</div>
+</li>
+<li><p>Build it with command <em>m</em>. You can see the image of oem.img produced.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/build_with_command_m.png"><img alt="../../_images/build_with_command_m.png" src="../../_images/build_with_command_m.png" style="width: 520.1999999999999px; height: 271.2px;" /></a>
+</figure>
+</li>
+</ol>
+</section>
+<section id="download-images">
+<h3>Download Images<a class="headerlink" href="#download-images" title="Link to this heading"></a></h3>
+<p>User can modify the layout manually as below:</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/download_images1.png"><img alt="../../_images/download_images1.png" src="../../_images/download_images1.png" style="width: 824.4px; height: 200.4px;" /></a>
+</figure>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/download_images2.png"><img alt="../../_images/download_images2.png" src="../../_images/download_images2.png" style="width: 811.1999999999999px; height: 27.599999999999998px;" /></a>
+</figure>
+<p>Or, user can load the <code class="docutils literal notranslate"><span class="pre">AmebaSmart_Linux_NAND_128MB_Anker.rdev</span></code> for Image-Tool.</p>
+<p>If the OEM is built manually alone, user should download the <code class="docutils literal notranslate"><span class="pre">meba-image-oem-rtl8730elh-va7-20240906032841.oem.ubi</span></code> instead. If user has modified this filename into oem.img as described in envsetup.sh (<a class="reference internal" href="#can-not-find-oem-image"><span class="std std-ref">Can Not Find OEM Image</span></a>), please download oem.img.</p>
+</section>
+</section>
+<section id="function-test">
+<h2>Function Test<a class="headerlink" href="#function-test" title="Link to this heading"></a></h2>
+<section id="boot-normally">
+<h3>Boot Normally<a class="headerlink" href="#boot-normally" title="Link to this heading"></a></h3>
+<p>During booting, user can see the information as below:</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/booting_information.png"><img alt="../../_images/booting_information.png" src="../../_images/booting_information.png" style="width: 481.59999999999997px; height: 139.29999999999998px;" /></a>
+</figure>
+<p>User can see that the information is same as layout expected.</p>
+<p>And, if the OEM image is loaded, user can see more information as below:</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/information_after_loaded_oem_image1.png"><img alt="../../_images/information_after_loaded_oem_image1.png" src="../../_images/information_after_loaded_oem_image1.png" style="width: 614.5999999999999px; height: 464.79999999999995px;" /></a>
+</figure>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/information_after_loaded_oem_image2.png"><img alt="../../_images/information_after_loaded_oem_image2.png" src="../../_images/information_after_loaded_oem_image2.png" style="width: 350.7px; height: 51.8px;" /></a>
+</figure>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/information_after_loaded_oem_image3.png"><img alt="../../_images/information_after_loaded_oem_image3.png" src="../../_images/information_after_loaded_oem_image3.png" style="width: 535.5px; height: 226.79999999999998px;" /></a>
+</figure>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/information_after_loaded_oem_image4.png"><img alt="../../_images/information_after_loaded_oem_image4.png" src="../../_images/information_after_loaded_oem_image4.png" style="width: 452.9px; height: 163.1px;" /></a>
+</figure>
+</section>
+<section id="recovery-system">
+<h3>Recovery System<a class="headerlink" href="#recovery-system" title="Link to this heading"></a></h3>
+<p>The dts file for recovery is as below:</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/dts_file_for_recovery.png"><img alt="../../_images/dts_file_for_recovery.png" src="../../_images/dts_file_for_recovery.png" style="width: 516.6px; height: 566.4px;" /></a>
+</figure>
+<p>If you need to modify this dts file, you can adjust the reg values as below:</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/adjust_reg_values.png"><img alt="../../_images/adjust_reg_values.png" src="../../_images/adjust_reg_values.png" style="width: 261.0px; height: 278.1px;" /></a>
+</figure>
+<p>If user deals with recovery with USB, the udev-extraconf should be added into <code class="docutils literal notranslate"><span class="pre">ameba-image-core.bb</span></code> in order to support USB.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/deals_with_recovery_usb.png"><img alt="../../_images/deals_with_recovery_usb.png" src="../../_images/deals_with_recovery_usb.png" style="width: 439.8px; height: 355.2px;" /></a>
+</figure>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="0_question_help_index.html" class="btn btn-neutral float-left" title="Questions and Help" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../0_debugging/0_debugging_index.html" class="btn btn-neutral float-right" title="System Debugging" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Realsil.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+ 
+
+
+
+</body>
+</html>

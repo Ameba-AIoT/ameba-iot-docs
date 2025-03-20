@@ -1,0 +1,416 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Overview &mdash; Ameba IoT Docs  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=7d84cf84" />
+      <link rel="stylesheet" type="text/css" href="../../_static/tabs.css?v=a5c4661c" />
+      <link rel="stylesheet" type="text/css" href="../../_static/_static/custom.css" />
+
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>let toggleHintShow = 'Click to show';</script>
+        <script>let toggleHintHide = 'Click to hide';</script>
+        <script>let toggleOpenOnPrint = 'true';</script>
+        <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Boot Process" href="../1_boot_process/0_boot_index.html" />
+    <link rel="prev" title="System Debugging" href="0_debugging_index.html" />
+   
+  
+  <script type="text/javascript" src="../../_static/js/selector.js"></script>
+
+  <style>
+    .wy-nav-content {max-width: 1000px;} /* 设置最大宽度 */
+  </style>
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Ameba IoT Docs
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../rst_rtos/0_ameba_product/0_ameba_product_center_index.html">Products Center</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rst_rtos/0_ameba_sdk/0_ameba_sdks_index.html">Ameba SDK</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_release_packages/0_release_packages_index.html">0.0 Release Packages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_gcc_build_environment/0_gcc_build_index.html">0.1 Build Environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_sdk_architecture/0_sdk_architecture_index.html">0.2 SDK Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rst_rtos/0_tools/0_tools_index.html">0.7 Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_question_help/0_question_help_index.html">0.A Questions and Help</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="0_debugging_index.html">0.B System Debugging</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#adb">ADB</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#setup-adb-environment-on-host">Setup ADB Environment on Host</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#windows">Windows</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#linux">Linux</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#setup-adb-environment-on-board">Setup ADB Environment on Board</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#usb-mode">USB Mode</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tcp-ip-mode">TCP/IP Mode</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#how-to-use-adb">How to Use ADB</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#connect-adb">Connect ADB</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#adb-commands">ADB Commands</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#fastboot">fastboot</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#setup-fastboot-environment-on-board">Setup fastboot Environment on Board</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#setup-fastboot-environment-on-pc">Setup fastboot Environment on PC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#how-to-use-fastboot">How to Use fastboot</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../1_boot_process/0_boot_index.html">1.1 BOOT Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_ota/0_ota_index.html">1.2 OTA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_otpc/0_otpc_index.html">1.3 OTPC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_flash/0_flash_index.html">1.4 Flash</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_gpio/0_gpio_index.html">1.7 GPIO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_power_save/0_ps_index.html">1.8 Power Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_secure_boot/0_secure_boot_index_nda.html">3.6 Secure Boot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../7_usb_boot/0_usb_boot_index.html">3.7 USB Boot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_crypto_engine/0_crypto_engine_index.html">3.8 Crypto Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../4_multimedia/0_multimedia_index.html">4.3 Multimedia</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../7_usb/0_usb_index.html">7.1 USB Host &amp; Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../7_sdio/0_sdioh_index.html">7.2 SDIO Host</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_dmac/0_dmac_index.html">8.1 DMA Controllor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_rtc/0_rtc_index.html">8.2 RTC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_thermal/0_thermal_index.html">8.3 Thermal Meter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_adc/0_adc_index.html">8.4 ADC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_cap_touch/0_cap_touch_index.html">8.5 Cap-Touch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_ir/0_ir_index.html">8.6 IR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_ledc/0_ledc_index.html">8.7 LEDC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_i2c/0_i2c_index.html">8.8 I2C</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_uart/0_uart_index.html">8.9 UART</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_lcdc/0_lcdc_index.html">8.A LCDC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_spi/0_spi_index.html">8.B SPI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_spic/0_spic_index.html">8.C SPI Flash Controller</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_timer/0_timer_index.html">8.D Timer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_wdg/0_wdg_index.html">8.E Watchdog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../9_bluetooth/0_bluetooth_index.html">9.1 Bluetooth</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Ameba IoT Docs</a>
+      </nav>
+
+      <div class="wy-nav-content">
+
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="0_debugging_index.html">System Debugging</a></li>
+      <li class="breadcrumb-item active">Overview</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="overview">
+<span id="system-debugging"></span><h1>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h1>
+<p>This chapter describes how to set up ADB (Android Debug Bridge) and GDB (GNU Project Debugger) environments on PC and target board.</p>
+</section>
+<section id="adb">
+<h1>ADB<a class="headerlink" href="#adb" title="Link to this heading"></a></h1>
+<p>The ADB is a versatile command-line tool that lets you communicate with a device. The <em>adb</em> command facilitates a variety of device actions, and it provides access to a Unix shell that you can use to run a variety of commands on a device. It is a client-server program including three components:</p>
+<ul class="simple">
+<li><p>Client: sends commands. The client runs on your development machine.</p></li>
+<li><p>Daemon (adbd): runs commands on a device. The daemon runs as a background process on device.</p></li>
+<li><p>Server: manages communication between the client and the daemon. The server runs as a background process on your development machine.</p></li>
+</ul>
+<section id="setup-adb-environment-on-host">
+<h2>Setup ADB Environment on Host<a class="headerlink" href="#setup-adb-environment-on-host" title="Link to this heading"></a></h2>
+<p>ADB is included in the Android SDK Platform-Tools package, which can be downloaded from <a class="reference external" href="https://developer.android.com/studio/releases/platform-tools">Adroid Studio SDK build tools</a>.</p>
+<section id="windows">
+<h3>Windows<a class="headerlink" href="#windows" title="Link to this heading"></a></h3>
+<ol class="arabic">
+<li><p>Download ADB on PC.</p></li>
+<li><p>Setup environment variable on PC.</p>
+<ol class="loweralpha simple">
+<li><p>Right-click on <span class="menuselection">This PC</span>, and choose <span class="menuselection">Properties &gt; Advanced system settings &gt; Environment Variables…</span>.</p></li>
+<li><p>Edit <em>Path</em> to create a new environment variable and input the ADB path (<code class="docutils literal notranslate"><span class="pre">adb.exe</span></code> is in platform-tools, such as <code class="docutils literal notranslate"><span class="pre">D:\adb\aosp-sdk-platform-tool</span></code>), then save it.</p></li>
+</ol>
+</li>
+<li><p>Check ADB environment on host.</p>
+<p>Open Windows command line, input <em>adb –help</em>. If ADB version and global options is shown, the environment on host is OK.</p>
+</li>
+</ol>
+</section>
+<section id="linux">
+<h3>Linux<a class="headerlink" href="#linux" title="Link to this heading"></a></h3>
+<ol class="arabic">
+<li><p>Download ADB to host.</p></li>
+<li><p>Export ADB path to shell environment.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>export PATH=/xyz/platform-tools/bin:$PATH to .bashrc
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+</section>
+<section id="setup-adb-environment-on-board">
+<h2>Setup ADB Environment on Board<a class="headerlink" href="#setup-adb-environment-on-board" title="Link to this heading"></a></h2>
+<p>The adb supports both TCP/IP and USB protocol that enable you debug the target device with Wi-Fi or USB line.</p>
+<section id="usb-mode">
+<h3>USB Mode<a class="headerlink" href="#usb-mode" title="Link to this heading"></a></h3>
+<ol class="arabic">
+<li><p>Connect host and target board with USB cable and set device to USB mode.</p></li>
+<li><p>Switch USB mode and start adbd daemon on target board by executing <code class="docutils literal notranslate"><span class="pre">/bin/usb.sh</span> <span class="pre">usbd_adb</span></code>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$/bin/usb.sh usbd_adb
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="tcp-ip-mode">
+<h3>TCP/IP Mode<a class="headerlink" href="#tcp-ip-mode" title="Link to this heading"></a></h3>
+<ol class="arabic">
+<li><p>Setup Wi-Fi connection and ensure that <em>ping</em> between host and target board is OK.</p></li>
+<li><p>Start adbd daemon on target board.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">adbd</span> <span class="o">&amp;</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+</section>
+<section id="how-to-use-adb">
+<h2>How to Use ADB<a class="headerlink" href="#how-to-use-adb" title="Link to this heading"></a></h2>
+<section id="connect-adb">
+<h3>Connect ADB<a class="headerlink" href="#connect-adb" title="Link to this heading"></a></h3>
+<ul>
+<li><p>USB Mode</p>
+<p>After executing command above on board, host can use command <em>adb devices</em> to show the connected device.</p>
+</li>
+<li><p>TCP/IP Mode</p>
+<p>Connect the target device with command <em>adb connect</em>. After successful connection, host can use command <em>adb devices</em> to show the connected device.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$adb connect &lt;board_ip&gt;:5555
+$adb devices
+</pre></div>
+</div>
+</li>
+</ul>
+</section>
+<section id="adb-commands">
+<h3>ADB Commands<a class="headerlink" href="#adb-commands" title="Link to this heading"></a></h3>
+<p>Command <code class="docutils literal notranslate"><span class="pre">adb</span> <span class="pre">--help</span></code> on host can show all ADB commands, which are listed below.</p>
+<dl class="field-list">
+<dt class="field-odd">adb devices<span class="colon">:</span></dt>
+<dd class="field-odd"><p>shows the connection states of all devices.</p>
+</dd>
+<dt class="field-even">adb start-server<span class="colon">:</span></dt>
+<dd class="field-even"><p>starts ADB server.</p>
+</dd>
+<dt class="field-odd">adb kill-server<span class="colon">:</span></dt>
+<dd class="field-odd"><p>stops ADB server.</p>
+</dd>
+<dt class="field-even">adb connect ip:5555<span class="colon">:</span></dt>
+<dd class="field-even"><p>connects devices for TCP/IP mode.</p>
+</dd>
+<dt class="field-odd">adb push &lt;local&gt; &lt;remote&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pushes the specific file from host to device.</p>
+<dl class="field-list simple">
+<dt class="field-odd">&lt;local&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>indicates the file position stored in host.</p>
+</dd>
+<dt class="field-even">&lt;remote&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>indicates the destination needed to be pushed to the board.</p>
+</dd>
+</dl>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$adb push ~/system/lib/libfoo_bar.so /lib/
+</pre></div>
+</div>
+</dd>
+<dt class="field-even">adb pull &lt;remote&gt; &lt;local&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>pulls the specific file from device to host.</p>
+<dl class="field-list simple">
+<dt class="field-odd">&lt;remote&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>indicates the file on board needed to be copied to host.</p>
+</dd>
+<dt class="field-even">&lt;local&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>indicates the position to store the file in host.</p>
+</dd>
+</dl>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$adb pull /lib/libfoo_bar.so ~/system/lib/
+</pre></div>
+</div>
+</dd>
+<dt class="field-odd">adb shell<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Window command line or Linux shell can enter device command line. Use exit to return to Window command line or Linux shell.</p>
+</dd>
+</dl>
+</section>
+</section>
+</section>
+<section id="fastboot">
+<h1>fastboot<a class="headerlink" href="#fastboot" title="Link to this heading"></a></h1>
+<p>The fastboot protocol is a mechanism for communicating with boot over USB. It is designed to download the images to the Flash. Generally, images are stored in flash and then loaded to RAM to boot system. The fastboot allows user to download images to ram and reboot it, or to burn images to the Flash.</p>
+<p>This section describes how to download the image to target board RAM with fastboot.</p>
+<section id="setup-fastboot-environment-on-board">
+<h2>Setup fastboot Environment on Board<a class="headerlink" href="#setup-fastboot-environment-on-board" title="Link to this heading"></a></h2>
+<ol class="arabic">
+<li><p>To enable fastboot in U-boot, the following configuration should be enabled for U-Boot. In SDK, these configurations are enabled by default.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>CONFIG_FASTBOOT=y
+CONFIG_CMD_FASTBOOT=y
+USB_FUNCTION_FASTBOOT=y
+CONFIG_USB_FUNCTION_FASTBOOT=y
+CONFIG_ANDROID_BOOT_IMAGE=y
+CONFIG_ANDROID_BOOT_IMAGE_CHECK=n
+CONFIG_ANDROID_IMAGE_HEADER_LENGTH=0x800
+CONFIG_FASTBOOT_FLASH_NAND=y
+CONFIG_FASTBOOT_BUF_ADDR=0x60380000
+CONFIG_FASTBOOT_BUF_SIZE=0xF00000
+CONFIG_DM_USB_GADGET=y
+CONFIG_USB_GADGET=y
+CONFIG_USB_GADGET_VENDOR_NUM=0x18D1
+CONFIG_USB_GADGET_PRODUCT_NUM=0x4E21
+CONFIG_USB_GADGET_MANUFACTURER=&quot;realtek&quot;
+CONFIG_USB_GADGET_DWC2_OTG=y、
+CONFIG_USB_GADGET_VBUS_DRAW=200
+CONFIG_USB_GADGET_DOWNLOAD=y
+</pre></div>
+</div>
+</li>
+<li><p>Input any content in time when booting system to enter U-Boot command line mode.</p></li>
+</ol>
+</section>
+<section id="setup-fastboot-environment-on-pc">
+<h2>Setup fastboot Environment on PC<a class="headerlink" href="#setup-fastboot-environment-on-pc" title="Link to this heading"></a></h2>
+<p>Download the fastboot tool for Windows from <a class="reference external" href="https://dl.google.com/android/repository/platform-tools_r34.0.0-windows.zip">platform-tools_r34.0.0-windows.zip</a> and unzip it, start a command window and switch to the directory where the fastboot program is located.</p>
+</section>
+<section id="how-to-use-fastboot">
+<h2>How to Use fastboot<a class="headerlink" href="#how-to-use-fastboot" title="Link to this heading"></a></h2>
+<ol class="arabic">
+<li><p>Start fastboot on the U-boot of the target board.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">=&gt;</span> <span class="n">fastboot</span> <span class="n">usb</span> <span class="mi">0</span>
+</pre></div>
+</div>
+</li>
+<li><p>Start fastboot client on PC, input command <em>fastboot.exe devices</em>, If the following information is displayed, fastboot runs success.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">=&gt;</span> <span class="n">fastboot</span><span class="o">.</span><span class="n">exe</span> <span class="n">devices</span>
+<span class="mi">0123456789</span><span class="n">AB</span>  <span class="n">fastboot</span>
+</pre></div>
+</div>
+</li>
+<li><p>Continue to input command <em>fastboot.exe boot d:kernel.img</em> to load kernel image to RAM. It will display as follows.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">=&gt;</span> <span class="n">fastboot</span><span class="o">.</span><span class="n">exe</span> <span class="n">boot</span> <span class="n">D</span><span class="p">:</span>\<span class="n">kernel</span><span class="o">.</span><span class="n">img</span>
+<span class="n">creating</span> <span class="n">boot</span> <span class="n">image</span><span class="o">...</span>
+<span class="n">creating</span> <span class="n">boot</span> <span class="n">image</span> <span class="o">-</span> <span class="mi">3596288</span> <span class="nb">bytes</span>
+<span class="n">Sending</span> <span class="s1">&#39;boot.img&#39;</span> <span class="p">(</span><span class="mi">3512</span> <span class="n">KB</span><span class="p">)</span>                       <span class="n">OKAY</span> <span class="p">[</span>  <span class="mf">0.111</span><span class="n">s</span><span class="p">]</span>
+<span class="n">Booting</span>                                            <span class="n">OKAY</span> <span class="p">[</span>  <span class="mf">0.000</span><span class="n">s</span><span class="p">]</span>
+<span class="n">Finished</span><span class="o">.</span> <span class="n">Total</span> <span class="n">time</span><span class="p">:</span> <span class="mf">0.549</span><span class="n">s</span>
+</pre></div>
+</div>
+</li>
+<li><p>The uboot will show below log, which means download to ram status, and boot from the ram address</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>=&gt; fastboot usb 0
+Starting download of 3596288 bytes
+...........................
+downloading of 3596288 bytes finished
+Booting kernel at 0x60380000...
+## Booting kernel from Legacy Image at 60380000 ...
+Image Name:   Linux-5.4.63
+Created:      2023-03-08  11:59:51 UTC
+Image Type:   ARM Linux Kernel Image (uncompressed)
+Data Size:    3593416 Bytes = 3.4 MiB
+Load Address: 60388000
+Entry Point:  60388000
+Verifying Checksum ... OK
+Loading Kernel Image ……
+</pre></div>
+</div>
+</li>
+</ol>
+<p>For more details about fastboot, refer to <a class="reference external" href="https://u-boot.readthedocs.io/en/latest/android/fastboot-protocol.html">Android-specific doc</a>.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="0_debugging_index.html" class="btn btn-neutral float-left" title="System Debugging" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../1_boot_process/0_boot_index.html" class="btn btn-neutral float-right" title="Boot Process" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Realsil.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+ 
+
+
+
+</body>
+</html>

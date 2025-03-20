@@ -1,0 +1,1052 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Overview &mdash; Ameba IoT Docs  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=7d84cf84" />
+      <link rel="stylesheet" type="text/css" href="../../_static/tabs.css?v=a5c4661c" />
+      <link rel="stylesheet" type="text/css" href="../../_static/_static/custom.css" />
+
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>let toggleHintShow = 'Click to show';</script>
+        <script>let toggleHintHide = 'Click to hide';</script>
+        <script>let toggleOpenOnPrint = 'true';</script>
+        <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Tools" href="../../rst_rtos/0_tools/0_tools_index.html" />
+    <link rel="prev" title="SDK Architecture" href="0_sdk_architecture_index.html" />
+   
+  
+  <script type="text/javascript" src="../../_static/js/selector.js"></script>
+
+  <style>
+    .wy-nav-content {max-width: 1000px;} /* 设置最大宽度 */
+  </style>
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Ameba IoT Docs
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../rst_rtos/0_ameba_product/0_ameba_product_center_index.html">Products Center</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rst_rtos/0_ameba_sdk/0_ameba_sdks_index.html">Ameba SDK</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_release_packages/0_release_packages_index.html">0.0 Release Packages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_gcc_build_environment/0_gcc_build_index.html">0.1 Build Environment</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="0_sdk_architecture_index.html">0.2 SDK Architecture</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sdk-directory">SDK Directory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#bsp">BSP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#flash-layout">Flash Layout</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#nand-flash-layout">NAND Flash Layout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#customize-nand-flash-layout">Customize NAND Flash Layout</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#dram-layout">DRAM Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#u-boot">U-Boot</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#directory">Directory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dts">DTS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#drivers">Drivers</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#linux-kernel">Linux Kernel</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">Directory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">DTS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">Drivers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#configuration">Configuration</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../rst_rtos/0_tools/0_tools_index.html">0.7 Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_question_help/0_question_help_index.html">0.A Questions and Help</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_debugging/0_debugging_index.html">0.B System Debugging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_boot_process/0_boot_index.html">1.1 BOOT Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_ota/0_ota_index.html">1.2 OTA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_otpc/0_otpc_index.html">1.3 OTPC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_flash/0_flash_index.html">1.4 Flash</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_gpio/0_gpio_index.html">1.7 GPIO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_power_save/0_ps_index.html">1.8 Power Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_secure_boot/0_secure_boot_index_nda.html">3.6 Secure Boot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../7_usb_boot/0_usb_boot_index.html">3.7 USB Boot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_crypto_engine/0_crypto_engine_index.html">3.8 Crypto Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../4_multimedia/0_multimedia_index.html">4.3 Multimedia</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../7_usb/0_usb_index.html">7.1 USB Host &amp; Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../7_sdio/0_sdioh_index.html">7.2 SDIO Host</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_dmac/0_dmac_index.html">8.1 DMA Controllor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_rtc/0_rtc_index.html">8.2 RTC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_thermal/0_thermal_index.html">8.3 Thermal Meter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_adc/0_adc_index.html">8.4 ADC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_cap_touch/0_cap_touch_index.html">8.5 Cap-Touch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_ir/0_ir_index.html">8.6 IR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_ledc/0_ledc_index.html">8.7 LEDC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_i2c/0_i2c_index.html">8.8 I2C</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_uart/0_uart_index.html">8.9 UART</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_lcdc/0_lcdc_index.html">8.A LCDC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_spi/0_spi_index.html">8.B SPI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_spic/0_spic_index.html">8.C SPI Flash Controller</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_timer/0_timer_index.html">8.D Timer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_wdg/0_wdg_index.html">8.E Watchdog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../9_bluetooth/0_bluetooth_index.html">9.1 Bluetooth</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Ameba IoT Docs</a>
+      </nav>
+
+      <div class="wy-nav-content">
+
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="0_sdk_architecture_index.html">SDK Architecture</a></li>
+      <li class="breadcrumb-item active">Overview</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="overview">
+<span id="architecture"></span><h1>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h1>
+<p>The Linux SDK architecture of Realtek is shown below.</p>
+<ul class="simple">
+<li><p>Linux Software: running on the application processor (AP). It contains several component layers that provide different level interfaces to help user run their own applications.</p></li>
+<li><p>OPTEE OS: running on the Arm TrustZone to provide security functionality.</p></li>
+<li><p>Firmware: running on KM4, can provide task offload and low power actions.</p></li>
+</ul>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/sdk_arch.svg"><img alt="../../_images/sdk_arch.svg" height="193" src="../../_images/sdk_arch.svg" width="428" /></a>
+</figure>
+</section>
+<section id="sdk-directory">
+<h1>SDK Directory<a class="headerlink" href="#sdk-directory" title="Link to this heading"></a></h1>
+<p>The Linux SDK directory architecture of Realtek is illustrated below.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/sdk_directory.svg"><img alt="../../_images/sdk_directory.svg" height="267" src="../../_images/sdk_directory.svg" width="544" /></a>
+</figure>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Path</p></th>
+<th class="head"><p>Component</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>sources/boot</p></td>
+<td><p>Bootloader</p></td>
+<td><p>The bootloader includes arm-trusted-firmware, OPTEE OS and u-boot</p></td>
+</tr>
+<tr class="row-odd"><td><p>sources/development</p></td>
+<td><p>Development tools</p></td>
+<td><p>Development tools used for debug</p></td>
+</tr>
+<tr class="row-even"><td><p>sources/kernel</p></td>
+<td><p>Linux kernel</p></td>
+<td><p>Linux kernel 5.4</p></td>
+</tr>
+<tr class="row-odd"><td><p>sources/firmware</p></td>
+<td><p>KM4 firmware</p></td>
+<td><p>Firmware running on KM4</p></td>
+</tr>
+<tr class="row-even"><td><p>sources/yocto</p></td>
+<td><p>Yocto</p></td>
+<td><p>Yocto 4.0 Kirkstone</p></td>
+</tr>
+<tr class="row-odd"><td><p>sources/tests</p></td>
+<td><p>Test cases</p></td>
+<td><p>Sample test for drivers</p></td>
+</tr>
+<tr class="row-even"><td><p>Tools</p></td>
+<td><p>Tools</p></td>
+<td><p>Flash download and debug tool</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="bsp">
+<h1>BSP<a class="headerlink" href="#bsp" title="Link to this heading"></a></h1>
+<p>The SDK provides a series of BSP source packages.</p>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Path</p></th>
+<th class="head"><p>Component</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>sources/&lt;linux&gt;</p></td>
+<td><p>Linux Kernel</p></td>
+<td><p>Linux kernel source codes</p></td>
+</tr>
+<tr class="row-odd"><td><p>sources/boot/arm-trusted-firmware</p></td>
+<td><p>Trusted Firmware</p></td>
+<td><p>Arm trusted firmware</p></td>
+</tr>
+<tr class="row-even"><td><p>sources/boot/uboot</p></td>
+<td><p>U-Boot</p></td>
+<td><p>Application processor’s second bootloader</p></td>
+</tr>
+<tr class="row-odd"><td><p>sources/boot/optee</p></td>
+<td><p>Trusted OS</p></td>
+<td><p>OPTEE OS runs as a trusted OS to provide secure functions</p></td>
+</tr>
+</tbody>
+</table>
+<p>Where <em>&lt;linux&gt;</em> means the kernel linux directory in sdk, which is <code class="docutils literal notranslate"><span class="pre">kernel/linux-5.4</span></code> for kernel 5.4.x, and <code class="docutils literal notranslate"><span class="pre">kernel/linux-6.6</span></code> for kernel 6.6.x.</p>
+</section>
+<section id="flash-layout">
+<span id="sdk-architecutre-flash-layout"></span><h1>Flash Layout<a class="headerlink" href="#flash-layout" title="Link to this heading"></a></h1>
+<section id="nand-flash-layout">
+<h2>NAND Flash Layout<a class="headerlink" href="#nand-flash-layout" title="Link to this heading"></a></h2>
+<p>Two default NAND Flash layouts are provided in SDK.</p>
+<ul>
+<li><p>The 128MB NAND Flash layout is illustrated in the table below. The start address of SlotA KM4 bootloader is fixed to <strong>0x0800_0000</strong> and other start addresses are configurable for users.</p>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p>Sub-item</p></th>
+<th class="head"><p>Address</p></th>
+<th class="head"><p>Size (bytes)</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td rowspan="4"><p>KM0/KM4/AP BOOT SlotA</p></td>
+<td><p>KM4 Bootloader</p></td>
+<td><p>0x0800_0000</p></td>
+<td><p>24K</p></td>
+<td><p>KM4 bootloader code/data</p></td>
+</tr>
+<tr class="row-odd"><td><p>System Data</p></td>
+<td><p>0x0801_F000</p></td>
+<td><p>4K</p></td>
+<td><p>System data</p></td>
+</tr>
+<tr class="row-even"><td><p>Key Certificate, KM0 &amp; KM4 IMG2</p></td>
+<td><p>0x0802_0000</p></td>
+<td><p>1152K</p></td>
+<td><p>This image combines Key Certificate, KM0 image and KM4 image2.</p>
+<ul class="simple">
+<li><p>Key Certificate: PK hash information for other images</p></li>
+<li><p>KM0_IMG: contains KM0 image code/data, mapped to virtual address 0x0C00_0000.</p></li>
+<li><p>KM4_IMG2: contains KM4 non-secure image code/data, mapped to virtual address 0x0E00_0000.</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>AP BL1 &amp; FIP</p></td>
+<td><p>0x0814_0000</p></td>
+<td><p>1536K</p></td>
+<td><p>AP BL1 &amp; FIP image, including BL1, BL2, BL32 (OPTEE) and BL33 (U-Boot)</p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><p>KM0/KM4/AP BOOT SlotB[1]</p></td>
+<td><p>KM4 Bootloader</p></td>
+<td><p>0x082C_0000</p></td>
+<td><p>256K</p></td>
+<td><p>The same as SlotA.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Key Certificate, KM0 &amp; KM4 IMG2</p></td>
+<td><p>0x0830_0000</p></td>
+<td><p>1152K</p></td>
+<td><p>The same as SlotA.</p></td>
+</tr>
+<tr class="row-even"><td><p>AP BL1 &amp; FIP</p></td>
+<td><p>0x0842_0000</p></td>
+<td><p>1536K</p></td>
+<td><p>The same as SlotA.</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="10"></td>
+<td><p>A: AP Misc</p></td>
+<td><p>0x0862_0000</p></td>
+<td><p>256K</p></td>
+<td><p>SlotA: AP Misc information for recovery</p></td>
+</tr>
+<tr class="row-even"><td><p>B: AP Misc Backup</p></td>
+<td><p>0x0866_0000</p></td>
+<td><p>256K</p></td>
+<td><p>SlotB: AP Misc information backup for recovery</p></td>
+</tr>
+<tr class="row-odd"><td><p>A: AP VBMeta</p></td>
+<td><p>0x086A_0000</p></td>
+<td><p>256K</p></td>
+<td><p>SlotA: AP VBMeta information for secure boot</p></td>
+</tr>
+<tr class="row-even"><td><p>B: AP VBMeta</p></td>
+<td><p>0x086E_0000</p></td>
+<td><p>256K</p></td>
+<td><p>SlotB: AP VBMeta currently for recovery secure boot</p></td>
+</tr>
+<tr class="row-odd"><td><p>A: AP DTB</p></td>
+<td><p>0x0872_0000</p></td>
+<td><p>384K</p></td>
+<td><p>SlotA: AP device tree binary</p></td>
+</tr>
+<tr class="row-even"><td><p>B: AP DTB</p></td>
+<td><p>0x0878_0000</p></td>
+<td><p>384K</p></td>
+<td><p>SlotB: Currently for AP recovery device tree blob</p></td>
+</tr>
+<tr class="row-odd"><td><p>A: AP Kernel</p></td>
+<td><p>0x087E_0000</p></td>
+<td><p>10M</p></td>
+<td><p>SlotA: AP Linux kernel image</p></td>
+</tr>
+<tr class="row-even"><td><p>B: AP Kernel</p></td>
+<td><p>0x091E_0000</p></td>
+<td><p>10M</p></td>
+<td><p>SlotB: Currently for AP recovery kernel and initramfs</p></td>
+</tr>
+<tr class="row-odd"><td><p>AP Rootfs</p></td>
+<td><p>0x09BE_0000</p></td>
+<td><p>60M</p></td>
+<td><p>AP rootfs binary</p></td>
+</tr>
+<tr class="row-even"><td><p>AP Userdata</p></td>
+<td><p>0x0D7E_0000</p></td>
+<td><p>40.125M</p></td>
+<td><p>AP UBIFS user data binary</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>[1]    SlotB is used for OTA.</p>
+</div>
+</li>
+<li><p>The 256MB NAND Flash layout is illustrated in the table below. The start address of slotA KM4 bootloader is fixed to <strong>0x0800_0000</strong> and other start addresses are configurable for users.</p>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p>Sub-item</p></th>
+<th class="head"><p>Address</p></th>
+<th class="head"><p>Size (bytes)</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td rowspan="4"><p>KM0/KM4/AP BOOT SlotA</p></td>
+<td><p>KM4 Bootloader</p></td>
+<td><p>0x0800_0000</p></td>
+<td><p>24K</p></td>
+<td><p>KM4 bootloader code/data</p></td>
+</tr>
+<tr class="row-odd"><td><p>System Data</p></td>
+<td><p>0x0801_F000</p></td>
+<td><p>4K</p></td>
+<td><p>System data</p></td>
+</tr>
+<tr class="row-even"><td><p>Key Certificate, KM0 &amp; KM4 IMG2</p></td>
+<td><p>0x0802_0000</p></td>
+<td><p>1152K</p></td>
+<td><p>This image combines Key Certificate, KM0 image and KM4 image2.</p>
+<ul class="simple">
+<li><p>Key Certificate: PK hash information for other images</p></li>
+<li><p>KM0_IMG: contains KM0 image code/data, mapped to virtual address 0x0C00_0000.</p></li>
+<li><p>KM4_IMG2: contains KM4 non-secure image code/data, mapped to virtual address 0x0E00_0000.</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>AP BL1 &amp; FIP</p></td>
+<td><p>0x0814_0000</p></td>
+<td><p>1536K</p></td>
+<td><p>AP BL1 &amp; FIP image, including BL1, BL2, BL32 (OPTEE) and BL33 (U-Boot)</p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><p>KM0/KM4/AP BOOT SlotB</p></td>
+<td><p>KM4 Bootloader</p></td>
+<td><p>0x082C_0000</p></td>
+<td><p>256K</p></td>
+<td><p>The same as SlotA.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Key Certificate, KM0 &amp; KM4 IMG2</p></td>
+<td><p>0x0830_0000</p></td>
+<td><p>1152K</p></td>
+<td><p>The same as SlotA.</p></td>
+</tr>
+<tr class="row-even"><td><p>AP BL1 &amp; FIP</p></td>
+<td><p>0x0842_0000</p></td>
+<td><p>1536K</p></td>
+<td><p>The same as SlotA.</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="10"></td>
+<td><p>A: AP Misc</p></td>
+<td><p>0x0862_0000</p></td>
+<td><p>256K</p></td>
+<td><p>SlotA: AP Misc information for recovery</p></td>
+</tr>
+<tr class="row-even"><td><p>B: AP Misc Backup</p></td>
+<td><p>0x0866_0000</p></td>
+<td><p>256K</p></td>
+<td><p>SlotB: AP Misc information backup for recovery</p></td>
+</tr>
+<tr class="row-odd"><td><p>A: AP VBMeta</p></td>
+<td><p>0x086A_0000</p></td>
+<td><p>256K</p></td>
+<td><p>SlotA: AP meta data for secure boot</p></td>
+</tr>
+<tr class="row-even"><td><p>B: AP VBMeta</p></td>
+<td><p>0x086E_0000</p></td>
+<td><p>256K</p></td>
+<td><p>SlotB: AP meta data currently for recovery secure boot</p></td>
+</tr>
+<tr class="row-odd"><td><p>A: AP DTB</p></td>
+<td><p>0x0872_0000</p></td>
+<td><p>384K</p></td>
+<td><p>SlotA: AP device tree binary</p></td>
+</tr>
+<tr class="row-even"><td><p>B: AP DTB</p></td>
+<td><p>0x0878_0000</p></td>
+<td><p>384K</p></td>
+<td><p>SlotB: Currently for AP recovery device tree blob</p></td>
+</tr>
+<tr class="row-odd"><td><p>A: AP Kernel</p></td>
+<td><p>0x087E_0000</p></td>
+<td><p>15M</p></td>
+<td><p>SlotA: AP Linux kernel image</p></td>
+</tr>
+<tr class="row-even"><td><p>B: AP Kernel</p></td>
+<td><p>0x096E_0000</p></td>
+<td><p>15M</p></td>
+<td><p>SlotB: Currently for AP recovery kernel and initramfs</p></td>
+</tr>
+<tr class="row-odd"><td><p>AP Rootfs</p></td>
+<td><p>0x0A5E_0000</p></td>
+<td><p>120M</p></td>
+<td><p>AP rootfs binary</p></td>
+</tr>
+<tr class="row-even"><td><p>AP Userdata</p></td>
+<td><p>0x11DE_0000</p></td>
+<td><p>98.125M</p></td>
+<td><p>AP UBIFS user data binary</p></td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+</section>
+<section id="customize-nand-flash-layout">
+<h2>Customize NAND Flash Layout<a class="headerlink" href="#customize-nand-flash-layout" title="Link to this heading"></a></h2>
+<p>Change the Flash layout in specific Linux DTS file as required.</p>
+<ul class="simple">
+<li><p>For 128MB NAND Flash: <cite>&lt;linux&gt;/arch/arm/boot/dts/rtl8730e-spi-nand-128m.dtsi</cite></p></li>
+<li><p>For 256MB NAND Flash: <cite>&lt;linux&gt;/arch/arm/boot/dts/rtl8730e-spi-nand-256m.dtsi</cite></p></li>
+</ul>
+<p>Change the reg and/or label properties of partition nodes as required:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">partitions</span> <span class="p">{</span>
+    <span class="n">compatible</span> <span class="o">=</span> <span class="s2">&quot;fixed-partitions&quot;</span><span class="p">;</span>
+    <span class="c1">#address-cells = &lt;1&gt;;</span>
+    <span class="c1">#size-cells = &lt;1&gt;;</span>
+    <span class="n">partition</span><span class="o">@</span><span class="mi">0</span> <span class="p">{</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;Miscellaneous Information&quot;</span><span class="p">;</span>      <span class="c1"># Partition name</span>
+        <span class="n">reg</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mh">0x620000</span> <span class="mh">0x40000</span><span class="o">&gt;</span><span class="p">;</span>            <span class="c1"># &lt;offset size&gt;</span>
+    <span class="p">};</span>
+    <span class="c1"># More partitions</span>
+<span class="p">};</span>
+<span class="n">chosen</span> <span class="p">{</span>
+    <span class="n">bootargs</span> <span class="o">=</span> <span class="s2">&quot;console=ttyS0,1500000 earlycon psci=enable ubi.mtd=8 ubi.block=0,0 root=/dev/ubiblock0_0 rootfstype=squashfs,ubifs ubi.mtd=9&quot;</span><span class="p">;</span>
+    <span class="n">stdout</span><span class="o">-</span><span class="n">path</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">loguart</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>The partition offset shall correspond with its address: <em>offset | 0x0800_0000 = address</em></p></li>
+<li><p>The partition offset and size of NAND Flash shall be aligned to NAND block size, e.g. normally 128KB for most SPI NAND Flash models, and each partition shall reserve at least one bock size for bad block management.</p></li>
+<li><p>Do not change the order of default partitions if not necessary; otherwise, the rootfs and userdata paths in bootargs shall also be changed accordingly.</p></li>
+</ul>
+</div>
+<p>Change the U-Boot configurations as required.</p>
+<p>Find the default U-Boot configuration file under <cite>&lt;sdk&gt;/sources/boot/uboot/configs</cite> for specific board, e.g. <em>rtl8730elh-va7_defconfig</em> for <em>rtl8730elh-va7</em> board options. The available Flash layout configurations are listed as below.</p>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p>U-Boot configuration</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>AP kernel start address</p></td>
+<td><p>CONFIG_IMG_FLASH_ADDR</p></td>
+</tr>
+<tr class="row-odd"><td><p>AP kernel size</p></td>
+<td><p>CONFIG_IMG_FLASH_SIZE</p></td>
+</tr>
+<tr class="row-even"><td><p>AP DTB start address (NOR Flash only)</p></td>
+<td><p>CONFIG_FDT_FLASH_ADDR</p></td>
+</tr>
+<tr class="row-odd"><td><p>AP DTB size</p></td>
+<td><p>CONFIG_FDT_FLASH_SIZE</p></td>
+</tr>
+<tr class="row-even"><td><p>AP Misc start address (NOR Flash only)</p></td>
+<td><p>CONFIG_BOOT_OPTION_MISC_FLASH_ADDR</p></td>
+</tr>
+<tr class="row-odd"><td><p>AP Misc size (NOR Flash only)</p></td>
+<td><p>CONFIG_BOOT_OPTION_MISC_FLASH_SIZE</p></td>
+</tr>
+<tr class="row-even"><td><p>AP DTB for recovery start address (NOR Flash only)</p></td>
+<td><p>CONFIG_RECOVERY_FDT_FLASH_ADDR</p></td>
+</tr>
+<tr class="row-odd"><td><p>AP DTB for recovery size</p></td>
+<td><p>CONFIG_RECOVERY_FDT_FLASH_SIZE</p></td>
+</tr>
+<tr class="row-even"><td><p>AP kernel + rootfs for recovery start address (NOR Flash only)</p></td>
+<td><p>CONFIG_RECOVERY_IMG_FLASH_ADDR</p></td>
+</tr>
+<tr class="row-odd"><td><p>AP kernel + rootfs for recovery size</p></td>
+<td><p>CONFIG_RECOVERY_IMG_FLASH_SIZE</p></td>
+</tr>
+<tr class="row-even"><td><p>Partition info defined by mtdparts (NAND Flash only)</p></td>
+<td><p>CONFIG_MTDPARTS_DEFAULT</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition caution">
+<p class="admonition-title">Caution</p>
+<p>Do NOT rename the partitions defined in <strong>CONFIG_MTDPARTS_DEFAULT</strong>.</p>
+</div>
+<p>Rebuild the images.</p>
+<p>Accordingly change the Flash layout in device profile via Device Profile Editor.</p>
+</section>
+</section>
+<section id="dram-layout">
+<h1>DRAM Layout<a class="headerlink" href="#dram-layout" title="Link to this heading"></a></h1>
+<p>Taking 16MB DRAM as an example, the layout is illustrated in the figure below.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/dram_layout.svg"><img alt="../../_images/dram_layout.svg" height="499" src="../../_images/dram_layout.svg" width="738" /></a>
+</figure>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p>Sub-item</p></th>
+<th class="head"><p>Physical address</p></th>
+<th class="head"><p>Size (bytes)</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>KM4 IMG2</p></td>
+<td><p>KM4_IMG2_RAM_NS</p></td>
+<td><p>0x6000_0000</p></td>
+<td><p>1.5M</p></td>
+<td><p>KM4 image2 SRAM, including CODE, DATA, BSS and HEAP</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="8"><p>AP IMG</p></td>
+<td><p>BL1_RO</p></td>
+<td><p>0x6018_0000</p></td>
+<td><p>128K</p></td>
+<td><p>AP BL1 CODE and RO DATA</p></td>
+</tr>
+<tr class="row-even"><td><p>BL1_RW</p></td>
+<td><p>0x601A_0000</p></td>
+<td><p>64K</p></td>
+<td><p>AP BL1 Stack and BSS</p></td>
+</tr>
+<tr class="row-odd"><td><p>SHARED_RAM</p></td>
+<td><p>0x601B_0000</p></td>
+<td><p>64K</p></td>
+<td><p>AP shared memory for multi-core</p></td>
+</tr>
+<tr class="row-even"><td><p>BL2</p></td>
+<td><p>0x601C_0000</p></td>
+<td><p>256K</p></td>
+<td><p>AP BL2 CODE, DATA, Stack, BSS</p></td>
+</tr>
+<tr class="row-odd"><td><p>BL32</p></td>
+<td><p>0x6020_0000</p></td>
+<td><p>1M</p></td>
+<td><p>AP BL32 CODE, DATA, Stack, BSS</p>
+<p>For Linux SDK, BL32 is OPTEE, which contains TEE_RAM, TA_RAM and shared memory.</p>
+</td>
+</tr>
+<tr class="row-even"><td><p>BL33</p></td>
+<td><p>0x6030_0000</p></td>
+<td><p>448K</p></td>
+<td><p>AP BL33 CODE, DATA, Stack, BSS.</p>
+<p>For Linux SDK, BL33 is U-Boot.</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p>DTB</p></td>
+<td><p>0x6037_0000</p></td>
+<td><p>64K</p></td>
+<td><p>AP device tree binary</p></td>
+</tr>
+<tr class="row-even"><td><p>Kernel</p></td>
+<td><p>0x6038_0000</p></td>
+<td><p>-</p></td>
+<td><p>AP Linux kernel image</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="u-boot">
+<h1>U-Boot<a class="headerlink" href="#u-boot" title="Link to this heading"></a></h1>
+<section id="directory">
+<h2>Directory<a class="headerlink" href="#directory" title="Link to this heading"></a></h2>
+<p>U-Boot code path: <code class="docutils literal notranslate"><span class="pre">&lt;sdk&gt;/sources/boot/uboot</span></code></p>
+<p><em>&lt;uboot&gt;</em> will be used for short of above path in the following chapters.</p>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p>Path</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Platform-specific code</p></td>
+<td><p>&lt;uboot&gt;/board/realtek/amebasmart/</p></td>
+</tr>
+<tr class="row-odd"><td><p>Default configuration files</p></td>
+<td><p>&lt;uboot&gt;/configs/</p></td>
+</tr>
+<tr class="row-even"><td><p>DTS files</p></td>
+<td><p>&lt;uboot&gt;/arch/arm/dts/</p></td>
+</tr>
+<tr class="row-odd"><td><p>Peripheral drivers</p></td>
+<td><p>&lt;uboot&gt;/uboot/drivers/rtkdrivers/</p></td>
+</tr>
+<tr class="row-even"><td><p>DT-bindings</p></td>
+<td><p>&lt;uboot&gt;/include/dt-bindings/realtek/</p></td>
+</tr>
+<tr class="row-odd"><td><p>Customized commands</p></td>
+<td><p>&lt;uboot&gt;/cmd/</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="dts">
+<h2>DTS<a class="headerlink" href="#dts" title="Link to this heading"></a></h2>
+<p>The DTS for U-Boot corresponds with different boards, only differ in chip and Flash layout, etc.</p>
+<p>The naming rule of board level DTS file is:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">SoC</span><span class="o">&gt;-</span><span class="n">uboot</span><span class="o">-&lt;</span><span class="n">Flash</span><span class="o">&gt;.</span><span class="n">dts</span>
+</pre></div>
+</div>
+<p>Where:</p>
+<dl class="field-list simple">
+<dt class="field-odd">SoC<span class="colon">:</span></dt>
+<dd class="field-odd"><p>SoC RTL number, e.g. rtl8730e</p>
+</dd>
+<dt class="field-even">Flash<span class="colon">:</span></dt>
+<dd class="field-even"><p>Flash type, e.g. NAND or NOR</p>
+</dd>
+</dl>
+<p>For example, <code class="docutils literal notranslate"><span class="pre">rtl8730e-uboot-nand.dts</span></code> for all RTL8730E boards with NAND flash.</p>
+<p>Different with DTS for Linux kernel, DTS for U-Boot is minimized, providing minimum platform-specific support with the only purpose of booting Linux kernel.</p>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p>DTS for U-Boot</p></th>
+<th class="head"><p>DTS for Linux kernel</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>DTB existence</p></td>
+<td><p>Combined with U-Boot image</p></td>
+<td><p>Standalone image</p></td>
+</tr>
+<tr class="row-odd"><td><p>Runtime configuration (chosen)</p></td>
+<td><p>stdout-path</p></td>
+<td><p>bootargs, stdout-path</p></td>
+</tr>
+<tr class="row-even"><td><p>CPU (cpus)</p></td>
+<td><p>No (Core 0 only, specified in default configuration files)</p></td>
+<td><p>Yes (Core 0 + Core 1)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Memory (memory)</p></td>
+<td><p>Fixed to 64MB</p></td>
+<td><p>64/128/256MB (differs in different boards)</p></td>
+</tr>
+<tr class="row-even"><td><p>Flash partitions (partitions)</p></td>
+<td><p>No (specified in default configuration files)</p></td>
+<td><p>Yes (differs in different boards)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Peripherals</p></td>
+<td><p>Minimum support (LOGUART/SPIC/Flash/USB/OTP)</p></td>
+<td><p>Full support</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="drivers">
+<h2>Drivers<a class="headerlink" href="#drivers" title="Link to this heading"></a></h2>
+<p>The U-Boot provides drivers for minimum peripherals with the only purpose of booting Linux kernel.</p>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Driver</p></th>
+<th class="head"><p>Source code</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>LOGUART</p></td>
+<td><p>drivers/rtkdrivers/serial/</p></td>
+<td><p>Console for logging and USB boot operation</p></td>
+</tr>
+<tr class="row-odd"><td><p>OTP</p></td>
+<td><p>drivers/rtkdrivers/otp/</p></td>
+<td><p>OTP driver for accessing anti-rollback index during secure boot</p></td>
+</tr>
+<tr class="row-even"><td><p>SPIC</p></td>
+<td><p>drivers/rtkdrivers/spi/</p></td>
+<td><p>SPIC driver for accessing SPI NAND/NOR Flash</p></td>
+</tr>
+<tr class="row-odd"><td><p>USB</p></td>
+<td><p>drivers/rtkdrivers/phy/</p>
+<p>drivers/usb/</p>
+</td>
+<td><p>USB phy &amp; hcd driver for USB boot</p></td>
+</tr>
+<tr class="row-even"><td><p>NAND Flash</p></td>
+<td><p>drivers/mtd/nand/spi/</p></td>
+<td><p>SPI NAND Flash driver</p></td>
+</tr>
+<tr class="row-odd"><td><p>NOR Flash</p></td>
+<td><p>drivers/mtd/spi-nor/</p></td>
+<td><p>SPI NOR Flash driver</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="linux-kernel">
+<h1>Linux Kernel<a class="headerlink" href="#linux-kernel" title="Link to this heading"></a></h1>
+<section id="id1">
+<h2>Directory<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<p>Linux kernel code path: <code class="docutils literal notranslate"><span class="pre">&lt;sdk&gt;/sources/kernel/linux-&lt;version&gt;</span></code></p>
+<p><em>&lt;linux&gt;</em> will be used for short of above path in the following chapters.</p>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p>Path</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Platform-specific code</p></td>
+<td><p>&lt;linux&gt;/arch/arm/mach-amebasmart/</p></td>
+</tr>
+<tr class="row-odd"><td><p>Default configuration files</p></td>
+<td><p>&lt;linux&gt;/arch/arm/configs/</p></td>
+</tr>
+<tr class="row-even"><td><p>DTS files</p></td>
+<td><p>&lt;linux&gt;/arch/arm/boot/dts/</p></td>
+</tr>
+<tr class="row-odd"><td><p>Peripheral drivers</p></td>
+<td><p>&lt;linux&gt;/drivers/rtkdrivers/</p></td>
+</tr>
+<tr class="row-even"><td><p>Audio drivers</p></td>
+<td><p>&lt;linux&gt;/sound/soc/realtek/</p>
+<p>&lt;linux&gt;/sound/soc/codecs/</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p>DT-bindings</p></td>
+<td><p>&lt;linux&gt;/include/dt-bindings/realtek/</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><em>&lt;dts&gt;</em> will be used for short of Linux DTS files path in the following sections.</p>
+</div>
+</section>
+<section id="id2">
+<h2>DTS<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+<p>The DTS files for Linux kernel are organized in three levels:</p>
+<ul>
+<li><p>Board level</p>
+<p>Corresponds with different boards, may differ in chip, DRAM, Flash layout, bootargs, pinmux, etc.</p>
+<p>The naming rule of board level DTS file is:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">SoC</span><span class="o">&gt;-&lt;</span><span class="n">Feature</span><span class="o">&gt;.</span><span class="n">dts</span>
+</pre></div>
+</div>
+<p>Where:</p>
+<ul class="simple">
+<li><p>SoC: SoC model name, e.g. <em>rtl8730elh-va7</em>, <em>rtl8730elh-va8</em></p></li>
+<li><p>Feature:</p>
+<ul>
+<li><p>full: maximum features for development and demonstration</p></li>
+<li><p>generic: minimum features for customer design reference</p></li>
+<li><p>recovery: minimum features for recovery</p></li>
+<li><p>tests-xxx: features for QC test</p></li>
+</ul>
+</li>
+</ul>
+<p>For example, <code class="docutils literal notranslate"><span class="pre">rtl8730elh-va8-generic.dts</span></code> is for <em>rtl8730elh-va8</em> board with generic features.</p>
+<p>Board level DTS can override the chip level DTS configurations.</p>
+</li>
+<li><p>Chip level</p>
+<p>Corresponds with different chips, differs in CPU and peripherals.</p>
+<p>For example, <code class="docutils literal notranslate"><span class="pre">rtl8730e.dts</span></code> is for RTL8730E SoC.</p>
+</li>
+<li><p>IP level</p>
+<p>Corresponds with common on-chip modules, e.g.:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">rtl8730e-a32.dtsi</span></code>: CPU configurations for Cortex-A32</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rtl8730e-spi-nand-128m.dtsi</span></code>: SPI Flash controller, 128MB NAND Flash default layout and runtime configurations</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rtl8730e-spi-nand-256m.dtsi</span></code>: SPI Flash controller, 256MB NAND Flash default layout and runtime configurations</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rtl8730e-audio.dtsi</span></code>: Audio configurations</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rtl8730e-captouch.dtsi</span></code>: Cap-touch configurations</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rtl8730e-drm.dtsi</span></code>: DRM configurations</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rtl8730e-ocp.dtsi</span></code>: On-chip peripherals configurations, including <code class="docutils literal notranslate"><span class="pre">rtl8730e-audio.dtsi</span></code>, <code class="docutils literal notranslate"><span class="pre">rtl8730e-rcc.dtsi</span></code> and <code class="docutils literal notranslate"><span class="pre">rtl8730e-pinctrl.dtsi</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rtl8730e-pinctrl.dtsi</span></code>: Pinmux configurations</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rtl8730e-rcc.dtsi</span></code>: Clock configurations</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="id3">
+<h2>Drivers<a class="headerlink" href="#id3" title="Link to this heading"></a></h2>
+<p>Linux kernel provides full support for drivers of on-chip peripherals.</p>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Driver</p></th>
+<th class="head"><p>Source code</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>ADC</p></td>
+<td><p>drivers/rtkdrivers/adc/</p></td>
+<td><p>IIO driver for ADC</p></td>
+</tr>
+<tr class="row-odd"><td><p>Audio</p></td>
+<td><p>sound/soc/realtek/</p>
+<p>sound/soc/codecs/ameba*.c</p>
+</td>
+<td><p>Audio codec/platform/machine drivers</p></td>
+</tr>
+<tr class="row-even"><td><p>Bluetooth</p></td>
+<td><p>drivers/bluetooth/</p>
+<p>drivers/rtkdrivers/misc/</p>
+</td>
+<td><p>Bluetooth controller power on driver and HCI driver</p></td>
+</tr>
+<tr class="row-odd"><td><p>Cap-touch</p></td>
+<td><p>drivers/rtkdrivers/touchscreen/</p></td>
+<td><p>Cap-touch controller driver</p></td>
+</tr>
+<tr class="row-even"><td><p>Clock</p></td>
+<td><p>drivers/rtkdrivers/clk/</p></td>
+<td><p>Driver for RCC (Reset and clock control) module</p></td>
+</tr>
+<tr class="row-odd"><td><p>CPUFREQ</p></td>
+<td><p>drivers/rtkdrivers/cpufreq/</p></td>
+<td><p>Driver for CPU frequency and voltage scaling</p></td>
+</tr>
+<tr class="row-even"><td><p>Crypto</p></td>
+<td><p>drivers/rtkdrivers/crypto/</p></td>
+<td><p>Hardware crypto engine driver</p></td>
+</tr>
+<tr class="row-odd"><td><p>DMAC</p></td>
+<td><p>drivers/rtkdrivers/dma/</p></td>
+<td><p>DMA controller driver</p></td>
+</tr>
+<tr class="row-even"><td><p>DM-Verity</p></td>
+<td><p>drivers/md/</p></td>
+<td><p>DM verify driver for secure boot</p></td>
+</tr>
+<tr class="row-odd"><td><p>DRM</p></td>
+<td><p>drivers/rtkdrivers/drm/</p></td>
+<td><p>LCDC &amp; MIPI-DSI driver</p></td>
+</tr>
+<tr class="row-even"><td><p>GIC</p></td>
+<td><p>drivers/irqchip/</p></td>
+<td><p>GIC driver</p></td>
+</tr>
+<tr class="row-odd"><td><p>GPIO</p></td>
+<td><p>drivers/rtkdrivers/gpio/</p></td>
+<td><p>GPIO driver</p></td>
+</tr>
+<tr class="row-even"><td><p>I2C</p></td>
+<td><p>drivers/rtkdrivers/i2c/</p></td>
+<td><p>I2C master/slave driver</p></td>
+</tr>
+<tr class="row-odd"><td><p>IPC</p></td>
+<td><p>drivers/rtkdrivers/ipc/</p></td>
+<td><p>IPC driver</p></td>
+</tr>
+<tr class="row-even"><td><p>IR</p></td>
+<td><p>drivers/rtkdrivers/ir/</p></td>
+<td><p>IR remote control driver</p></td>
+</tr>
+<tr class="row-odd"><td><p>LEDC</p></td>
+<td><p>drivers/rtkdrivers/ledc/</p></td>
+<td><p>LEDC driver specific for WS28XXX</p></td>
+</tr>
+<tr class="row-even"><td><p>LOGUART</p></td>
+<td><p>drivers/rtkdrivers/tty_serial/</p></td>
+<td><p>LOGUART driver for console</p></td>
+</tr>
+<tr class="row-odd"><td><p>NAND Flash</p></td>
+<td><p>drivers/mtd/nand/spi/</p></td>
+<td><p>SPI NAND flash driver</p></td>
+</tr>
+<tr class="row-even"><td><p>NOR Flash</p></td>
+<td><p>drivers/mtd/spi-nor/</p></td>
+<td><p>SPI NOR flash driver</p></td>
+</tr>
+<tr class="row-odd"><td><p>OTP</p></td>
+<td><p>drivers/rtkdrivers/otp/</p></td>
+<td><p>OTP driver</p></td>
+</tr>
+<tr class="row-even"><td><p>PINCTRL</p></td>
+<td><p>drivers/rtkdrivers/pinctrl/</p></td>
+<td><p>PIN controller driver</p></td>
+</tr>
+<tr class="row-odd"><td><p>RTC</p></td>
+<td><p>drivers/rtkdrivers/rtc/</p></td>
+<td><p>RTC driver</p></td>
+</tr>
+<tr class="row-even"><td><p>SDIOH</p></td>
+<td><p>drivers/rtkdrivers/mmc/</p></td>
+<td><p>SDIO host driver</p></td>
+</tr>
+<tr class="row-odd"><td><p>SPI</p></td>
+<td><p>drivers/rtkdrivers/spi/</p></td>
+<td><p>General SPI controller driver</p></td>
+</tr>
+<tr class="row-even"><td><p>SPIC</p></td>
+<td><p>drivers/rtkdrivers/spic/</p></td>
+<td><p>SPI flash controller driver</p></td>
+</tr>
+<tr class="row-odd"><td><p>System Timer</p></td>
+<td><p>drivers/clocksource/arm_arch_timer.c</p></td>
+<td><p>System timer driver</p></td>
+</tr>
+<tr class="row-even"><td><p>Thermal</p></td>
+<td><p>drivers/rtkdrivers/thermal/</p></td>
+<td><p>Thermal driver</p></td>
+</tr>
+<tr class="row-odd"><td><p>TIMER</p></td>
+<td><p>drivers/rtkdrivers/clocksource/</p>
+<p>drivers/rtkdrivers/mfd_timer/</p>
+<p>drivers/rtkdrivers/pwm/</p>
+</td>
+<td><p>Clocksource/MFD/PWM drivers for TIMER module</p></td>
+</tr>
+<tr class="row-even"><td><p>UART</p></td>
+<td><p>drivers/rtkdrivers/tty_serial/</p></td>
+<td><p>General UART driver</p></td>
+</tr>
+<tr class="row-odd"><td><p>USB</p></td>
+<td><p>drivers/rtkdrivers/usb_phy/</p>
+<p>drivers/usb/</p>
+</td>
+<td><p>USB PHY/controller/class drivers</p></td>
+</tr>
+<tr class="row-even"><td><p>Watchdog</p></td>
+<td><p>drivers/rtkdrivers/watchdog/</p></td>
+<td><p>Watchdog driver</p></td>
+</tr>
+<tr class="row-odd"><td><p>Wi-Fi</p></td>
+<td><p>drivers/rtkdrivers/net/</p></td>
+<td><p>Wi-Fi driver</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Link to this heading"></a></h2>
+<p>To change the kernel configuration, execute the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">bitbake</span> <span class="n">virtual</span><span class="o">/</span><span class="n">kernel</span> <span class="o">-</span><span class="n">c</span> <span class="n">menuconfig</span>
+</pre></div>
+</div>
+<p>Here is an example to change configuration for peripheral drivers:</p>
+<ol class="arabic">
+<li><p>Select <span class="menuselection">Device Drivers &gt; Drivers for Realtek</span>.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/sdk_arch_configuration_1.png"><img alt="../../_images/sdk_arch_configuration_1.png" src="../../_images/sdk_arch_configuration_1.png" style="width: 577.8000000000001px; height: 347.40000000000003px;" /></a>
+</figure>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/sdk_arch_configuration_2.png"><img alt="../../_images/sdk_arch_configuration_2.png" src="../../_images/sdk_arch_configuration_2.png" style="width: 578.7px; height: 348.3px;" /></a>
+</figure>
+</li>
+<li><p>Configure the peripheral drivers as required.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/sdk_arch_configuration_3.png"><img alt="../../_images/sdk_arch_configuration_3.png" src="../../_images/sdk_arch_configuration_3.png" style="width: 577.8000000000001px; height: 347.40000000000003px;" /></a>
+</figure>
+</li>
+</ol>
+<p>The configuration for Realtek peripheral drivers will be illustrated in details in the following chapters.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="0_sdk_architecture_index.html" class="btn btn-neutral float-left" title="SDK Architecture" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../../rst_rtos/0_tools/0_tools_index.html" class="btn btn-neutral float-right" title="Tools" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Realsil.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+ 
+
+
+
+</body>
+</html>
