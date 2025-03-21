@@ -1,0 +1,2490 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IPC 架构 &mdash; Ameba IoT Docs  文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=536412e7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/tabs.css?v=a5c4661c" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=536412e7" />
+
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=7d86a446"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="../../_static/tabs.js?v=3030b3cb"></script>
+        <script>let toggleHintShow = 'Click to show';</script>
+        <script>let toggleHintHide = 'Click to hide';</script>
+        <script>let toggleOpenOnPrint = 'true';</script>
+        <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+        <script src="../../_static/translations.js?v=beaddf03"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="引脚复用" href="../1_pinmux/0_pinmux_index_cn.html" />
+    <link rel="prev" title="核间通信 (IPC)" href="0_ipc_index_cn.html" />
+     
+
+    <!-- NDA文档输入密码的框 -->
+    
+<script>
+// ▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼ 多语言配置 ▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼
+const lang = 'zh';  // 使用 Python 字符串切片
+const i18n = {
+    zh: {
+        title: '访问授权',
+        username: '用户名',
+        password: '密码',
+        confirm: '确认',
+        cancel: '取消',
+        usernameError: '用户名错误',
+        userNotExist: '该用户不存在',
+        passwordError: '密码错误',
+        wrongPassword: '请输入正确的密码',
+        accessDenied: '无访问权限',
+        noPermission: '您无权查看此内容',
+        expiredTitle: '访问已过期',
+        expiredMsg: '您的权限已失效<br>有效期：%s 至 %s',
+        deniedTitle: '⚠️ 无访问权限',
+        contact: '请联系 claire_wang@realsil.com.cn 获取权限'
+    },
+    en: {
+        title: 'Access Required',
+        username: 'Username',
+        password: 'Password',
+        confirm: 'Confirm',
+        cancel: 'Cancel',
+        usernameError: 'Invalid Username',
+        userNotExist: 'User does not exist',
+        passwordError: 'Wrong Password',
+        wrongPassword: 'Please enter correct password',
+        accessDenied: 'Access Denied',
+        noPermission: 'You have no permission to view this content',
+        expiredTitle: 'Authorization Expired',
+        expiredMsg: 'Your access has expired<br>Valid period: %s to %s',
+        deniedTitle: '⚠️ Access Denied',
+        contact: 'Please contact claire_wang@realsil.com.cn for access'
+    }
+};
+// ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲ 多语言配置结束 ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
+</script>
+
+    <!-- 样式模板 -->
+    
+
+<style>
+    .wy-nav-content {
+        max-width: 1000px;
+         
+    }
+    
+    .auth-denied {
+        padding: 20px;
+        background: #f8f9fa;
+        border-radius: 4px;
+        border: 1px solid #dee2e6;
+        text-align: center;
+        color: #721c24;
+        margin-top: 20px;
+    }
+    .auth-denied h3 {
+        margin-bottom: 10px;
+        color: #dc3545;
+    }
+    
+    #report-button {
+        position: fixed;
+        top: 10px;
+        left: 1120px;
+        padding: 10px 20px;
+        background-color: #ff00a2;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        z-index: 1000;
+    }
+    #report-button:hover {
+        background-color: #0056b3;
+    }
+    
+    .feedback-dialog {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        z-index: 1001;
+        width: 600px;
+    }
+    .feedback-dialog textarea {
+        width: 100%;
+        height: 150px;
+        margin-top: 10px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        resize: vertical;
+    }
+    .feedback-dialog button {
+        margin-top: 10px;
+        padding: 8px 16px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    .feedback-dialog button:hover {
+        background-color: #0056b3;
+    }
+
+    
+    
+</style>
+    <style>
+    /* ====================== 选择器样式 ====================== */
+    /* 选择器容器 */
+    .selector-container {
+        margin: 8px 0;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+    }
+    
+    /* 版本选择器特殊边距 */
+    .version-selector-container {
+        margin-bottom: 8px !important;
+    }
+    
+    /* 选择器标签 */
+    .selector-label {
+        color: white;
+        margin-right: 10px;
+        width: 80px;
+        text-align: right;
+        font-size: 0.9em;
+    }
+    
+    /* 下拉选择框 */
+    .selector-dropdown {
+        width: 120px;
+        border-radius: 2px;
+        padding: 4px 8px;
+        border: 1px solid #405261;
+        background: #2c3e50;
+        color: white;
+        font-size: 0.9em;
+    }
+    
+    /* 下拉选择框悬停效果 */
+    .selector-dropdown:hover {
+        border-color: #3498db;
+        transition: border-color 0.3s;
+    }
+    
+    /* 选择器响应式布局 */
+    @media (max-width: 768px) {
+        .selector-container {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        
+        .selector-label {
+            width: 100%;
+            text-align: left;
+            margin-bottom: 4px;
+        }
+        
+        .selector-dropdown {
+            width: 100%;
+        }
+    }
+</style>
+    <style>
+/* =============== 左上角登录区域  =============== */
+/* ================= 用户面板 ================= */
+.user-panel {
+    padding: 15px;
+    background: #34495e;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.username {
+    color: #fff;
+    font-weight: 500;
+    font-size: 1.1em;
+    text-align: center;
+    margin: 10px 0;
+}
+
+/* ================= 按钮容器 ================= */
+.button-row {
+    display: flex;
+    gap: 8px;
+    width: 100%;
+    margin: 10px 0;
+}
+
+/* 通用按钮样式 */
+.auth-btn, .forum-btn, .official-btn {
+    flex: 1;
+    padding: 8px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: opacity 0.3s;
+    text-align: center;
+    color: white !important;
+}
+
+/* 认证按钮 */
+.auth-btn {
+    background: #3498db;
+}
+
+/* 论坛按钮 */
+.forum-btn {
+    background: #9b59b6; /* 与参考代码的官方按钮同色 */
+}
+
+/* 官网按钮 */
+.official-btn {
+    background: #2ecc71; /* 与参考代码文档按钮同色 */
+}
+/* =============== 左上角登录区域  =============== */
+</style>
+
+    <!-- 注入 TOC 映射和当前页面信息 -->
+    
+
+<!-- TOC 映射和当前文档信息 -->
+<script>
+// 将 Python 字典转换为 JS 对象
+const TOC_TITLE_MAP = {"rst_rtos/0_ameba_product": "\u4ea7\u54c1\u4e2d\u5fc3", "rst_rtos/0_ameba_product/0_ameba_product_center_index_cn": "\u4ea7\u54c1\u4e2d\u5fc3", "rst_rtos/0_ameba_sdk": "Ameba SDK", "rst_rtos/0_ameba_sdk/0_ameba_sdks_index_cn": "Ameba SDK", "rst_rtos/0_ameba_solutions": "\u89e3\u51b3\u65b9\u6848", "rst_rtos/0_ameba_solutions/0_ameba_solutions_index_cn": "\u89e3\u51b3\u65b9\u6848", "rst_rtos/0_at_command": "0.8 AT \u547d\u4ee4\u96c6", "rst_rtos/0_at_command/0_at_command_index_cn": "0.8 AT \u547d\u4ee4\u96c6", "rst_rtos/0_file_system": "0.9 \u865a\u62df\u6587\u4ef6\u7cfb\u7edf", "rst_rtos/0_file_system/0_vfs_index_cn": "0.9 \u865a\u62df\u6587\u4ef6\u7cfb\u7edf", "rst_rtos/0_ftl": "0.A Flash \u8f6c\u6362\u5c42", "rst_rtos/0_ftl/0_ftl_index_cn": "0.A Flash \u8f6c\u6362\u5c42", "rst_rtos/0_gcc_build_environment": "0.1 GCC \u7f16\u8bd1\u73af\u5883", "rst_rtos/0_gcc_build_environment/0_gcc_build_index_cn": "0.1 GCC \u7f16\u8bd1\u73af\u5883", "rst_rtos/0_gcc_build_library": "0.3 GCC \u5e93\u7684\u751f\u6210\u548c\u4f7f\u7528", "rst_rtos/0_gcc_build_library/0_gcc_build_library_index_cn": "0.3 GCC \u5e93\u7684\u751f\u6210\u548c\u4f7f\u7528", "rst_rtos/0_gdb_debug": "0.2 GDB \u8c03\u8bd5", "rst_rtos/0_gdb_debug/0_gdb_debug_index_cn": "0.2 GDB \u8c03\u8bd5", "rst_rtos/0_memory_layout": "0.5 Flash \u548c RAM \u5e03\u5c40", "rst_rtos/0_memory_layout/0_layout_index_cn": "0.5 Flash \u548c RAM \u5e03\u5c40", "rst_rtos/0_sdk_example": "0.4 SDK \u793a\u4f8b", "rst_rtos/0_sdk_example/0_sdk_example_index_cn": "0.4 SDK \u793a\u4f8b", "rst_rtos/0_tools": "0.7 \u5de5\u5177", "rst_rtos/0_tools/0_tools_index_cn": "0.7 \u5de5\u5177", "rst_rtos/0_user_config": "0.6 \u5f00\u53d1\u8005\u914d\u7f6e", "rst_rtos/0_user_config/0_usrcfg_index_cn": "0.6 \u5f00\u53d1\u8005\u914d\u7f6e", "rst_rtos/1_boot_process": "1.1 \u542f\u52a8\u8fc7\u7a0b", "rst_rtos/1_boot_process/0_boot_index_cn": "1.1 \u542f\u52a8\u8fc7\u7a0b", "rst_rtos/1_chipen": "1.4 \u82af\u7247\u4f7f\u80fd", "rst_rtos/1_chipen/0_chipen_index_cn": "1.4 \u82af\u7247\u4f7f\u80fd", "rst_rtos/1_gpio": "1.7 GPIO \u548c\u5f15\u811a\u63a7\u5236", "rst_rtos/1_gpio/0_gpio_index_cn": "1.7 GPIO \u548c\u5f15\u811a\u63a7\u5236", "rst_rtos/1_ipc": "1.5 \u6838\u95f4\u901a\u4fe1", "rst_rtos/1_ipc/0_ipc_index_cn": "1.5 \u6838\u95f4\u901a\u4fe1", "rst_rtos/1_mpu_cache": "1.0 \u5185\u5b58\u4fdd\u62a4\u5355\u5143\u548c\u7f13\u5b58", "rst_rtos/1_mpu_cache/0_mpu_cache_index_cn": "1.0 \u5185\u5b58\u4fdd\u62a4\u5355\u5143\u548c\u7f13\u5b58", "rst_rtos/1_ota": "1.2 \u56fa\u4ef6\u5728\u7ebf\u5347\u7ea7\uff08OTA\uff09", "rst_rtos/1_ota/0_ota_index_cn": "1.2 \u56fa\u4ef6\u5728\u7ebf\u5347\u7ea7\uff08OTA\uff09", "rst_rtos/1_otpc": "1.3 OTP \u5b58\u50a8\u5668", "rst_rtos/1_otpc/0_otpc_index_cn": "1.3 OTP \u5b58\u50a8\u5668", "rst_rtos/1_pinmux": "1.6 \u5f15\u811a\u590d\u7528", "rst_rtos/1_pinmux/0_pinmux_index_cn": "1.6 \u5f15\u811a\u590d\u7528", "rst_rtos/1_power_save": "1.9 \u4f4e\u529f\u8017\u5f00\u53d1", "rst_rtos/1_power_save/0_ps_index_cn": "1.9 \u4f4e\u529f\u8017\u5f00\u53d1", "rst_rtos/2_whc_fullmac": "2.1 WHC FullMAC", "rst_rtos/2_whc_fullmac/0_fullmac_index_cn": "2.1 WHC FullMAC", "rst_rtos/2_whc_wifi_bridge": "2.0 WHC Bridge", "rst_rtos/2_whc_wifi_bridge/0_wifi_bridge_index_cn": "2.0 WHC Bridge", "rst_rtos/2_wifi_adaptivity_test": "2.4 Wi-Fi Adaptivity \u6d4b\u8bd5\u6307\u5357", "rst_rtos/2_wifi_adaptivity_test/0_wifi_adaptivity_index_cn": "2.4 Wi-Fi Adaptivity \u6d4b\u8bd5\u6307\u5357", "rst_rtos/2_wifi_csi": "2.3 Wi-Fi CSI", "rst_rtos/2_wifi_csi/0_wifi_csi_index_cn": "2.3 Wi-Fi CSI", "rst_rtos/2_wifi_tunnel": "2.2 Wi-Fi R-Mesh", "rst_rtos/2_wifi_tunnel/0_wifi_tunnel_index_cn": "2.2 Wi-Fi R-Mesh", "rst_rtos/3_crypto_engine": "3.9 \u5bf9\u79f0\u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_crypto_engine/0_crypto_engine_index_cn": "3.9 \u5bf9\u79f0\u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_ecdsa_engine": "3.a ECDSA \u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_ecdsa_engine/0_ecdsa_index_cn": "3.a ECDSA \u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_eddsa_engine": "3.b EDDSA \u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_eddsa_engine/0_eddsa_index_cn": "3.b EDDSA \u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_nda_huk_derivation": "3.3 HUK \u751f\u6210 \ud83d\udd12", "rst_rtos/3_nda_huk_derivation/0_huk_derivation_index_nda": "3.3 HUK \u751f\u6210 \ud83d\udd12", "rst_rtos/3_nda_rdp": "3.4 RDP \ud83d\udd12", "rst_rtos/3_nda_rdp/0_rdp_index_nda": "3.4 RDP \ud83d\udd12", "rst_rtos/3_nda_rsip": "3.5 RSIP \ud83d\udd12", "rst_rtos/3_nda_rsip/0_rsip_index_nda": "3.5 RSIP \ud83d\udd12", "rst_rtos/3_nda_secure_boot": "3.6 \u5b89\u5168\u542f\u52a8 \ud83d\udd12", "rst_rtos/3_nda_secure_boot/0_secure_boot_index_nda": "3.6 \u5b89\u5168\u542f\u52a8 \ud83d\udd12", "rst_rtos/3_nda_swd_protection": "3.7 SWD \u4fdd\u62a4 \ud83d\udd12", "rst_rtos/3_nda_swd_protection/0_swd_protection_index_nda": "3.7 SWD \u4fdd\u62a4 \ud83d\udd12", "rst_rtos/3_nda_tfm": "3.8 Trusted Firmware-M (TF-M) \ud83d\udd12", "rst_rtos/3_nda_tfm/0_tfm_index_nda": "3.8 Trusted Firmware-M (TF-M) \ud83d\udd12", "rst_rtos/3_rsa_engine": "3.c RSA \u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_rsa_engine/0_rsa_index_cn": "3.c RSA \u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_security": "3.1 \u5b89\u5168\u4e0e\u52a0\u5bc6", "rst_rtos/3_security/0_security_index_cn": "3.1 \u5b89\u5168\u4e0e\u52a0\u5bc6", "rst_rtos/3_trng": "3.2 \u771f\u968f\u673a\u6570\u53d1\u751f\u5668", "rst_rtos/3_trng/0_trng_index_cn": "3.2 \u771f\u968f\u673a\u6570\u53d1\u751f\u5668", "rst_rtos/4_ai": "4.1 \u4eba\u5de5\u667a\u80fd", "rst_rtos/4_ai/0_ai_index_cn": "4.1 \u4eba\u5de5\u667a\u80fd", "rst_rtos/4_ai_voice": "4.2 \u8bed\u97f3\u8bc6\u522b", "rst_rtos/4_ai_voice/0_ai_voice_index_cn": "4.2 \u8bed\u97f3\u8bc6\u522b", "rst_rtos/4_dsp": "4.4 DSP \u4f7f\u7528\u6307\u5357", "rst_rtos/4_dsp/0_dsp_index_cn": "4.4 DSP \u4f7f\u7528\u6307\u5357", "rst_rtos/4_multimedia": "4.3 \u591a\u5a92\u4f53", "rst_rtos/4_multimedia/0_multimedia_index_cn": "4.3 \u591a\u5a92\u4f53", "rst_rtos/6_mass_production": "6.1 \u91cf\u4ea7\u6307\u5bfc", "rst_rtos/6_mass_production/0_mp_index_cn": "6.1 \u91cf\u4ea7\u6307\u5bfc", "rst_rtos/6_mp_image": "6.2 MP \u56fa\u4ef6", "rst_rtos/6_mp_image/0_mp_image_index_cn": "6.2 MP \u56fa\u4ef6", "rst_rtos/6_mptools": "6.3 \u4ea7\u6d4b\u5de5\u5177", "rst_rtos/6_mptools/0_mptools_index_cn": "6.3 \u4ea7\u6d4b\u5de5\u5177", "rst_rtos/7_usb": "7.1 USB \u4e3b\u673a\u4e0e\u4ece\u673a", "rst_rtos/7_usb/0_usb_index_cn": "7.1 USB \u4e3b\u673a\u4e0e\u4ece\u673a", "rst_rtos/8_adc": "8.4 \u6a21\u6570\u8f6c\u6362\u5668", "rst_rtos/8_adc/0_adc_index_cn": "8.4 \u6a21\u6570\u8f6c\u6362\u5668", "rst_rtos/8_cap_touch": "8.7 Cap-Touch", "rst_rtos/8_cap_touch/0_cap_touch_index_cn": "8.7 Cap-Touch", "rst_rtos/8_dmac": "8.1 DMA \u63a7\u5236\u5668", "rst_rtos/8_dmac/0_dmac_index_cn": "8.1 DMA \u63a7\u5236\u5668", "rst_rtos/8_ir": "8.5 \u7ea2\u5916\u6536\u53d1\u5668", "rst_rtos/8_ir/0_ir_index_cn": "8.5 \u7ea2\u5916\u6536\u53d1\u5668", "rst_rtos/8_key_scan": "8.8 Key-Scan", "rst_rtos/8_key_scan/0_key_scan_index_cn": "8.8 Key-Scan", "rst_rtos/8_lcdc": "8.A LCD \u63a7\u5236\u5668", "rst_rtos/8_lcdc/0_lcdc_index_cn": "8.A LCD \u63a7\u5236\u5668", "rst_rtos/8_ledc": "8.6 LED \u63a7\u5236\u5668", "rst_rtos/8_ledc/0_ledc_index_cn": "8.6 LED \u63a7\u5236\u5668", "rst_rtos/8_psram": "8.2 PSRAM", "rst_rtos/8_psram/0_psram_index_cn": "8.2 PSRAM", "rst_rtos/8_rtc_io": "8.9 RTC-IO", "rst_rtos/8_rtc_io/0_rtc_io_index_cn": "8.9 RTC-IO", "rst_rtos/8_thermal": "8.3 \u6e29\u5ea6\u6d4b\u91cf", "rst_rtos/8_thermal/0_thermal_index_cn": "8.3 \u6e29\u5ea6\u6d4b\u91cf"};
+console.log("TOC_TITLE_MAP:", TOC_TITLE_MAP);
+
+// 获取当前页面的文档名 (例如 'rst_rtos/3_nda_secure_boot/0_secure_boot_index_nda')
+const CURRENT_DOCNAME = 'rst_rtos/1_ipc/1_ipc_toprst_cn';
+
+// 动态查找顶级分类函数（定义为全局函数）
+window.findTopLevelChapter = function(docname) {
+    console.log("Attempting to find top-level chapter for:", docname);
+    let bestMatch = "";
+    let bestTitle = "Unknown Chapter";
+
+    // 按路径长度降序排序以确保最长匹配
+    const sortedPaths = Object.keys(TOC_TITLE_MAP).sort((a, b) => b.length - a.length);
+
+    for (const path of sortedPaths) {
+        console.log("Checking path:", path);
+        if (docname === path || docname.startsWith(path + '/')) { // 子页面
+            bestMatch = path;
+            bestTitle = TOC_TITLE_MAP[path];
+            console.log("Matched path:", path, "with title:", bestTitle);
+            break;
+        }
+    }
+
+    // 如果没有找到任何匹配项，则尝试更短的路径
+    if (bestMatch === "") {
+        const pathSegments = docname.split('/');
+        while (pathSegments.length > 1) { // 至少保留根路径
+            const candidate = pathSegments.join('/');
+            console.log("Checking shorter path:", candidate);
+            if (TOC_TITLE_MAP[candidate]) {
+                bestTitle = TOC_TITLE_MAP[candidate];
+                console.log("Matched shorter path:", candidate, "with title:", bestTitle);
+                break;
+            }
+            pathSegments.pop();
+        }
+    }
+
+    console.log("Final top-level chapter:", bestTitle);
+    return bestTitle;
+}
+
+// 初始化时调用
+document.addEventListener('DOMContentLoaded', function() {
+    const topLevelChapter = findTopLevelChapter(CURRENT_DOCNAME);
+    console.log("Top Level Chapter:", topLevelChapter);
+
+    // 将顶级分类插入到DOM中（根据需要）
+    const chapterElement = document.createElement('div');
+    chapterElement.className = 'top-level-chapter';
+    chapterElement.innerHTML = `<strong>Top Level Chapter: </strong>${topLevelChapter}`;
+    document.body.appendChild(chapterElement);
+});
+</script>
+
+    <!-- 问题回报 -->
+    <!-- source/_templates/_layout_issue_report.html -->
+<div id="prompt-box" style="
+    display: none;
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.8);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    z-index: 9999;
+    text-align: center;
+    font-size: 14px;
+"></div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const reportButton = document.getElementById('report-button');
+    const feedbackDialog = document.getElementById('feedback-dialog');
+    const feedbackText = document.getElementById('feedback-text');
+    const submitButton = document.getElementById('submit-feedback');
+    const cancelButton = document.getElementById('cancel-feedback');
+    const promptBox = document.getElementById('prompt-box');
+
+    let selectedText = '';
+    let selectedChapters = '';
+    const language = 'zh-CN'; // 获取语言变量
+
+    // 定义标题变量（顶格显示）
+    const userHeader = 'User:';
+    const chaptersHeader = 'Chapters:';
+    const paragraphHeader = 'Paragraph:';
+    const questionHeader = 'Question:';
+
+    // 定义提示消息
+    const saveSuccessMessage = language === 'zh_CN' ? '问题已保存到本地文件 feedback.txt' : 'Issue saved to local file feedback.txt';
+
+    // 检查 findTopLevelChapter 是否已定义
+    if (typeof window.findTopLevelChapter !== 'function') {
+        console.error("findTopLevelChapter 函数未定义，请检查加载顺序！");
+        return;
+    }
+
+    reportButton.addEventListener('click', function() {
+        const selection = window.getSelection();
+        selectedText = selection.toString();
+        if (!selectedText) {
+            alert('Please select the problematic content first');
+            return;
+        }
+
+        // 收集章节信息
+        let chapters = new Set(); // 使用 Set 来避免重复章节
+        if (selection.rangeCount > 0) {
+            const range = selection.getRangeAt(0);
+            let node = range.commonAncestorContainer;
+
+            // 确保从最近的元素节点开始
+            while (node && node.nodeType !== Node.ELEMENT_NODE) {
+                node = node.parentElement;
+            }
+
+            // 使用递归方法遍历DOM树
+            function collectHeadings(node, level = 0) {
+                if (!node) return;
+
+                if (node.tagName && node.tagName.match(/^H[1-6]$/)) {
+                    chapters.add(`${node.textContent.trim()}`);
+                }
+
+                if (node.previousElementSibling) {
+                    collectHeadings(node.previousElementSibling, level);
+                }
+
+                if (node.parentElement && node.parentElement.tagName !== 'BODY') {
+                    collectHeadings(node.parentElement, level + 1);
+                }
+            }
+
+            collectHeadings(node);
+
+            // 如果没有找到任何章节信息，则添加默认提示
+            if (chapters.size === 0) {
+                chapters.add('No chapter information found');
+            }
+        }
+
+        // 获取顶级侧边栏章节
+        const topLevelChapter = window.findTopLevelChapter(CURRENT_DOCNAME); // 调用全局函数
+        chapters.add(`顶级分类：${topLevelChapter}`); // 插入到章节集合中
+
+        // 添加章节标题
+        const chapterHeader = language === 'zh_CN' ? '以下逐级向上追溯：' : 'Trace upwards level by level:';
+        selectedChapters = chapterHeader + '\n' + Array.from(chapters).join('\n');
+
+        feedbackDialog.style.display = 'block';
+        feedbackText.value = '';
+    });
+
+    submitButton.addEventListener('click', function() {
+        const userQuestion = feedbackText.value.trim();
+        if (!userQuestion) {
+            alert('Issue description cannot be empty');
+            return;
+        }
+
+        // 获取用户信息（关键修改点）
+        const username = localStorage.getItem('username') || '匿名'; // 从 localStorage 获取用户名
+
+        // 统一处理内容缩进
+        const formatContent = text => text.split('\n').map(line => '    ' + line).join('\n');
+
+        // 生成消息内容（标题顶格，内容缩进）
+        const message = `${userHeader}\n` + 
+                        `${formatContent(username)}\n\n` +
+                        `${chaptersHeader}\n` + 
+                        `${formatContent(selectedChapters)}\n\n` +
+                        `${paragraphHeader}\n` + 
+                        `${formatContent(selectedText)}\n\n` +
+                        `${questionHeader}\n` + 
+                        `${formatContent(userQuestion)}`;
+
+        // 提交到后端（关键修改点）
+        const feedbackData = {
+            user: username,  // 使用真实用户名
+            chapters: selectedChapters,
+            paragraph: selectedText,
+            question: userQuestion
+        };
+
+        fetch('http://172.29.57.206:5000/submit', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(feedbackData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('提交成功:', data);
+        })
+        .catch(error => {
+            console.error('提交失败:', error);
+        });
+
+        // 创建Blob对象并保存到本地文件
+        const blob = new Blob([message], { type: 'text/plain' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = 'feedback.txt';
+        link.click();
+
+        // 显示提示框
+        promptBox.textContent = saveSuccessMessage;
+        promptBox.style.display = 'block';
+        const promptTimeout = setTimeout(() => {
+            promptBox.style.display = 'none';
+        }, 10000);
+
+        // 自动关闭反馈对话框
+        feedbackDialog.style.display = 'none';
+    });
+
+    cancelButton.addEventListener('click', function() {
+        feedbackDialog.style.display = 'none';
+    });
+});
+</script>
+
+    <style>
+        /* 隐藏整个搜索栏容器 */
+        .wy-side-nav-search > div[role="search"] {
+            display: none !important;
+        }
+
+        /* 或者更精确地隐藏表单 */
+        form#rtd-search-form {
+            display: none !important;
+        }
+    </style>
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+    
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Ameba IoT Docs
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+    
+    <div id="custom-selectors" style="display: block !important; padding: 0; background: none; border: none;">
+    </div>
+
+    <script>
+    /* ====================== 嵌入式配置开始 ====================== */
+    const embeddedConfig = {
+        "freertos": {
+            "name": "FreeRTOS",
+            "languages": {
+                "en": ["latest"],
+                "cn": ["latest"]
+            }
+        },
+        "linux": {
+            "name": "Linux",
+            "languages": {
+                "en": ["latest"],
+                "cn": ["latest"]
+            }
+        }
+    };
+    /* ====================== 嵌入式配置结束 ====================== */
+
+    (function() {
+        // 获取基础URL路径
+        function getBaseURL() {
+            const url = new URL(window.location.href);
+            if (url.protocol === 'file:') {
+                // 本地路径处理
+                const pathParts = url.pathname.split('/').filter(part => part !== '');
+                const index = pathParts.indexOf('build');
+                return `file://${pathParts.slice(0, index + 1).join('/')}/`;
+            } else {
+                // 网络路径处理
+                return `${url.origin}/${url.pathname.split('/').slice(1, 3).join('/')}/`;
+            }
+        }
+
+        // 获取当前URL路径分段
+        function getCurrentSegments() {
+            const url = new URL(window.location.href);
+            let segments = url.pathname.split('/').filter(segment => segment);
+
+            if (url.protocol === 'file:') {
+                // 本地路径处理
+                const index = segments.indexOf('build');
+                segments = segments.slice(index + 1); // 去掉 build 及之前的路径
+            } else {
+                // 网络路径处理
+                segments = segments.slice(3); // 去掉 ameba-iot-docs/
+            }
+
+            return {
+                osKey: segments[0] || 'freertos', // 默认为 freertos
+                language: segments[1] || 'en',   // 默认为 en
+                version: segments[2] || 'latest' // 默认为 latest
+            };
+        }
+
+        // 获取OS显示名称列表
+        function getOSNames(data) {
+            return Object.keys(data).map(key => data[key].name);
+        }
+
+        // 获取指定OS的语言列表
+        function getLanguages(data, osKey) {
+            return Object.keys(data[osKey]?.languages || {});
+        }
+
+        // 获取指定OS和语言的版本列表
+        function getVersions(data, osKey, language) {
+            return data[osKey]?.languages?.[language] || ['latest'];
+        }
+
+        // 根据显示名称查找OS键
+        function findOSKey(data, displayName) {
+            return Object.keys(data).find(key => data[key].name === displayName);
+        }
+
+        // 初始化选择器
+        function initSelectors() {
+            const segments = getCurrentSegments();
+            const currentOSName = embeddedConfig[segments.osKey]?.name;
+
+            // 如果 OS 无效，默认设置为 FreeRTOS
+            if (!currentOSName) {
+                console.warn("Invalid OS key, defaulting to FreeRTOS");
+                segments.osKey = 'freertos';
+            }
+
+            // 如果语言无效，默认设置为 en
+            if (!getLanguages(embeddedConfig, segments.osKey).includes(segments.language)) {
+                console.warn("Invalid language, defaulting to en");
+                segments.language = 'en';
+            }
+
+            // 获取基础URL
+            const baseURL = getBaseURL();
+
+            // 生成选择器HTML
+            document.getElementById('custom-selectors').innerHTML = `
+                <div id="custom-selectors" style="padding: 0; background: none; border: none;">
+                    <!-- 系统选择器 -->
+                    <div class="selector-container">
+                        <label class="selector-label">
+                            ${segments.language === 'cn' ? '系统' : 'OS'}:
+                        </label>
+                        <select id="os-selector" class="selector-dropdown">
+                            ${Object.keys(embeddedConfig).map(key => `
+                                <option value="${key}">${embeddedConfig[key].name}</option>
+                            `).join('')}
+                        </select>
+                    </div>
+
+                    <!-- 语言选择器 -->
+                    <div class="selector-container">
+                        <label class="selector-label">
+                            ${segments.language === 'cn' ? '语言' : 'Language'}:
+                        </label>
+                        <select id="language-selector" class="selector-dropdown">
+                            ${getLanguages(embeddedConfig, segments.osKey).map(lang => `
+                                <option value="${lang}">${lang}</option>
+                            `).join('')}
+                        </select>
+                    </div>
+
+                    <!-- 版本选择器 -->
+                    <div class="selector-container version-selector-container">
+                        <label class="selector-label">
+                            ${segments.language === 'cn' ? '版本' : 'Version'}:
+                        </label>
+                        <select id="version-selector" class="selector-dropdown">
+                            ${getVersions(embeddedConfig, segments.osKey, segments.language).map(ver => `
+                                <option value="${ver}">${ver}</option>
+                            `).join('')}
+                        </select>
+                    </div>
+
+                    
+
+                </div>`;
+
+            // 设置初始选中值
+            document.getElementById('os-selector').value = segments.osKey;
+            document.getElementById('language-selector').value = segments.language;
+
+            // 确保版本选择框有默认值
+            const versionSelector = document.getElementById('version-selector');
+            const availableVersions = getVersions(embeddedConfig, segments.osKey, segments.language);
+            versionSelector.value = availableVersions.includes(segments.version) ? segments.version : availableVersions[0] || 'latest';
+
+            // 绑定事件监听
+            document.getElementById('os-selector').addEventListener('change', () => {
+                const newOSKey = document.getElementById('os-selector').value;
+                const availableLangs = getLanguages(embeddedConfig, newOSKey);
+                const defaultLang = availableLangs[0] || 'en';
+                const defaultVersion = getVersions(embeddedConfig, newOSKey, defaultLang)[0] || 'latest';
+                redirectTo(`${baseURL}${newOSKey}/${defaultLang}/${defaultVersion}/`);
+            });
+
+            document.getElementById('language-selector').addEventListener('change', () => {
+                const newLang = document.getElementById('language-selector').value;
+                const defaultVersion = getVersions(embeddedConfig, segments.osKey, newLang)[0] || 'latest';
+                redirectTo(`${baseURL}${segments.osKey}/${newLang}/${defaultVersion}/`);
+            });
+
+            document.getElementById('version-selector').addEventListener('change', () => {
+                const newVer = document.getElementById('version-selector').value;
+                redirectTo(`${baseURL}${segments.osKey}/${segments.language}/${newVer}/`);
+            });
+
+            // ====================== 新增代码：注册和登录的弹窗逻辑 ======================
+            function createAuthDialog(type) {
+                const lang = segments.language === 'cn' ? 'cn' : 'en';
+                
+                // 创建弹窗容器
+                const dialog = document.createElement('div');
+                dialog.style.cssText = `
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: rgba(0,0,0,0.5);
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    z-index: 9999;
+                `;
+
+                // 弹窗内容
+                const content = document.createElement('div');
+                content.style.cssText = `
+                    background: white;
+                    padding: 20px;
+                    border-radius: 8px;
+                    min-width: 300px;
+                `;
+
+                // 标题
+                const title = document.createElement('h3');
+                title.textContent = type === 'register' 
+                    ? (lang === 'cn' ? '注册' : 'Register') 
+                    : (lang === 'cn' ? '登录' : 'Login');
+                content.appendChild(title);
+
+                // 用户名输入
+                const usernameLabel = document.createElement('label');
+                usernameLabel.textContent = lang === 'cn' ? '用户名：' : 'Username:';
+                const usernameInput = document.createElement('input');
+                usernameInput.style.cssText = 'width: 100%; margin-bottom: 10px; padding: 5px;';
+                content.appendChild(usernameLabel);
+                content.appendChild(usernameInput);
+
+                // 密码输入
+                const passwordLabel = document.createElement('label');
+                passwordLabel.textContent = lang === 'cn' ? '密码：' : 'Password:';
+                const passwordInput = document.createElement('input');
+                passwordInput.type = 'password';
+                passwordInput.style.cssText = 'width: 100%; margin-bottom: 10px; padding: 5px;';
+                content.appendChild(passwordLabel);
+                content.appendChild(passwordInput);
+
+                // 注册时需要确认密码
+                let confirmPasswordInput;
+                if (type === 'register') {
+                    const confirmLabel = document.createElement('label');
+                    confirmLabel.textContent = lang === 'cn' ? '确认密码：' : 'Confirm Password:';
+                    confirmPasswordInput = document.createElement('input');
+                    confirmPasswordInput.type = 'password';
+                    confirmPasswordInput.style.cssText = 'width: 100%; margin-bottom: 10px; padding: 5px;';
+                    content.appendChild(confirmLabel);
+                    content.appendChild(confirmPasswordInput);
+                }
+
+                // 按钮容器
+                const buttonContainer = document.createElement('div');
+                buttonContainer.style.cssText = 'display: flex; gap: 10px; margin-top: 10px;';
+
+                // 确认按钮
+                const confirmBtn = document.createElement('button');
+                confirmBtn.textContent = lang === 'cn' ? '确认' : 'Confirm';
+                confirmBtn.onclick = () => {
+                    const username = usernameInput.value.trim();
+                    const password = passwordInput.value.trim();
+                    const confirmPassword = confirmPasswordInput ? confirmPasswordInput.value.trim() : null;
+
+                    // 验证输入
+                    if (!username || !password) {
+                        alert(lang === 'cn' ? '用户名和密码不能为空！' : 'Username and password are required!');
+                        return;
+                    }
+
+                    if (type === 'register' && password !== confirmPassword) {
+                        alert(lang === 'cn' ? '两次输入的密码不一致！' : 'Passwords do not match!');
+                        return;
+                    }
+
+                    // flask 发送请求
+                    fetch('http://172.29.57.206:5000/auth', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            action: type,
+                            username,
+                            password
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert(lang === 'cn' ? '操作成功！' : 'Success!');
+                            // 更新本地存储和UI
+                            localStorage.setItem('isLoggedIn', 'true');
+                            localStorage.setItem('username', username);
+                            // 强制刷新显示状态
+                            document.getElementById('auth-buttons').style.display = 'none';
+                            document.getElementById('user-info').style.display = 'block';
+                            document.getElementById('username-display').textContent = username;
+                            document.body.removeChild(dialog);
+                        } else {
+                            alert(lang === 'cn' ? '失败：' + data.message : 'Failed: ' + data.message);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert(lang === 'cn' ? '网络错误' : 'Network error');
+                    });
+                };
+
+                // 取消按钮
+                const cancelBtn = document.createElement('button');
+                cancelBtn.textContent = lang === 'cn' ? '取消' : 'Cancel';
+                cancelBtn.onclick = () => document.body.removeChild(dialog);
+
+                buttonContainer.appendChild(confirmBtn);
+                buttonContainer.appendChild(cancelBtn);
+                content.appendChild(buttonContainer);
+                dialog.appendChild(content);
+                document.body.appendChild(dialog);
+            }
+
+            // 注册按钮点击事件
+            document.getElementById('register-button').addEventListener('click', () => {
+                createAuthDialog('register');
+            });
+
+            // 登录按钮点击事件
+            document.getElementById('login-button').addEventListener('click', () => {
+                createAuthDialog('login');
+            });
+
+            // 跳转函数
+            function redirectTo(path) {
+                const url = new URL(path, window.location.href);
+                if (url.protocol === 'file:') {
+                    // 本地路径附加 index.html
+                    url.pathname += 'index.html';
+                }
+                window.location.href = url.href;
+            }
+
+            /* =============== 左上角登录区域  =============== */
+            function syncLoginState() {
+                const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+                document.getElementById('auth-buttons').style.display = isLoggedIn ? 'none' : 'flex';
+                document.getElementById('user-info').style.display = isLoggedIn ? 'block' : 'none';
+                if (isLoggedIn) {
+                    document.getElementById('username-display').textContent = localStorage.getItem('username') || '';
+                }
+            }
+
+            // 初始化同步状态
+            syncLoginState();
+            /* =============== 左上角登录区域  =============== */
+        }
+
+        // DOM加载完成后初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            try {
+                initSelectors();
+            } catch (error) {
+                console.error("Error initializing selectors:", error);
+            }
+        });
+    })();
+</script>
+
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../0_ameba_product/0_ameba_product_center_index_cn.html">产品中心</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_ameba_sdk/0_ameba_sdks_index_cn.html">Ameba SDK</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_ameba_solutions/0_ameba_solutions_index_cn.html">解决方案</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_gcc_build_environment/0_gcc_build_index_cn.html">0.1 GCC 编译环境</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_gdb_debug/0_gdb_debug_index_cn.html">0.2 GDB 调试</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_gcc_build_library/0_gcc_build_library_index_cn.html">0.3 GCC 库的生成和使用</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_sdk_example/0_sdk_example_index_cn.html">0.4 SDK 示例</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_memory_layout/0_layout_index_cn.html">0.5 Flash 和 RAM 布局</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_user_config/0_usrcfg_index_cn.html">0.6 开发者配置</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_tools/0_tools_index_cn.html">0.7 工具</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_at_command/0_at_command_index_cn.html">0.8 AT 命令集</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_file_system/0_vfs_index_cn.html">0.9 虚拟文件系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_ftl/0_ftl_index_cn.html">0.A Flash 转换层</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_mpu_cache/0_mpu_cache_index_cn.html">1.0 内存保护单元和缓存</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_boot_process/0_boot_index_cn.html">1.1 启动过程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_ota/0_ota_index_cn.html">1.2 固件在线升级（OTA）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_otpc/0_otpc_index_cn.html">1.3 OTP 存储器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_chipen/0_chipen_index_cn.html">1.4 芯片使能</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="0_ipc_index_cn.html">1.5 核间通信</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">IPC 架构</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">IPC 配置方法</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id4">IPC 常见问题排查</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id5">IPC 应用层使用说明</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../1_pinmux/0_pinmux_index_cn.html">1.6 引脚复用</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_gpio/0_gpio_index_cn.html">1.7 GPIO 和引脚控制</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_power_save/0_ps_index_cn.html">1.9 低功耗开发</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_whc_wifi_bridge/0_wifi_bridge_index_cn.html">2.0 WHC Bridge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_whc_fullmac/0_fullmac_index_cn.html">2.1 WHC FullMAC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_wifi_tunnel/0_wifi_tunnel_index_cn.html">2.2 Wi-Fi R-Mesh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_wifi_csi/0_wifi_csi_index_cn.html">2.3 Wi-Fi CSI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_wifi_adaptivity_test/0_wifi_adaptivity_index_cn.html">2.4 Wi-Fi Adaptivity 测试指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_security/0_security_index_cn.html">3.1 安全与加密</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_trng/0_trng_index_cn.html">3.2 真随机数发生器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_huk_derivation/0_huk_derivation_index_nda.html">3.3 HUK 生成 🔒</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_rdp/0_rdp_index_nda.html">3.4 RDP 🔒</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_rsip/0_rsip_index_nda.html">3.5 RSIP 🔒</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_secure_boot/0_secure_boot_index_nda.html">3.6 安全启动 🔒</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_swd_protection/0_swd_protection_index_nda.html">3.7 SWD 保护 🔒</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_tfm/0_tfm_index_nda.html">3.8 Trusted Firmware-M (TF-M) 🔒</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_crypto_engine/0_crypto_engine_index_cn.html">3.9 对称硬件加密引擎</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_ecdsa_engine/0_ecdsa_index_cn.html">3.a ECDSA 硬件加密引擎</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_eddsa_engine/0_eddsa_index_cn.html">3.b EDDSA 硬件加密引擎</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_rsa_engine/0_rsa_index_cn.html">3.c RSA 硬件加密引擎</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../4_ai/0_ai_index_cn.html">4.1 人工智能</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../4_ai_voice/0_ai_voice_index_cn.html">4.2 语音识别</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../4_multimedia/0_multimedia_index_cn.html">4.3 多媒体</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../4_dsp/0_dsp_index_cn.html">4.4 DSP 使用指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../6_mass_production/0_mp_index_cn.html">6.1 量产指导</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../6_mp_image/0_mp_image_index_cn.html">6.2 MP 固件</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../6_mptools/0_mptools_index_cn.html">6.3 产测工具</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../7_usb/0_usb_index_cn.html">7.1 USB 主机与从机</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_dmac/0_dmac_index_cn.html">8.1 DMA 控制器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_psram/0_psram_index_cn.html">8.2 PSRAM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_thermal/0_thermal_index_cn.html">8.3 温度测量</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_adc/0_adc_index_cn.html">8.4 模数转换器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_ir/0_ir_index_cn.html">8.5 红外收发器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_ledc/0_ledc_index_cn.html">8.6 LED 控制器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_cap_touch/0_cap_touch_index_cn.html">8.7 Cap-Touch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_key_scan/0_key_scan_index_cn.html">8.8 Key-Scan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_rtc_io/0_rtc_io_index_cn.html">8.9 RTC-IO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_lcdc/0_lcdc_index_cn.html">8.A LCD 控制器</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Ameba IoT Docs</a>
+      </nav>
+
+      <div class="wy-nav-content">
+    
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="0_ipc_index_cn.html">核间通信 (IPC)</a></li>
+      <li class="breadcrumb-item active">IPC 架构</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <span class="target" id="ipc"></span><!-- 下拉菜单 -->
+<div style="margin: 20px 0; text-align: left;">
+    <div style="display: flex; align-items: center; gap: 10px;">
+        <span style="font-size: 14px;">IC: </span>
+        <select class="tab-selector" style="height: 22px; padding: 2px 8px; font-size: 13px;">
+            <option value="RTL8721Dx">RTL8721Dx</option>
+            <option value="RTL8720E">RTL8720E</option>
+            <option value="RTL8726E">RTL8726E</option>
+            <option value="RTL8730E">RTL8730E</option>
+        </select>
+    </div>
+</div>
+
+<!-- 修复后的 JavaScript -->
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const selector = document.querySelector('.tab-selector');
+
+    selector.addEventListener('change', function() {
+        const targetTab = this.value;
+        const tabs = document.querySelectorAll('.sphinx-tabs-tab');
+        let found = false;
+
+        tabs.forEach(tab => {
+            const tabText = tab.textContent.trim();
+            if (tabText === targetTab) {
+                tab.click();
+                window.dispatchEvent(new Event('resize')); // 触发插件更新
+                found = true;
+            }
+        });
+
+        if (!found) {
+            console.error("未找到选项卡:", targetTab);
+        }
+    });
+});
+</script><section id="id1">
+<h1>IPC 架构<a class="headerlink" href="#id1" title="Link to this heading"></a></h1>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-0-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-0-0-0" name="0-0" role="tab" tabindex="0">RTL8721Dx</button><button aria-controls="panel-0-0-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-1" name="0-1" role="tab" tabindex="-1">RTL8720E</button><button aria-controls="panel-0-0-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-2" name="0-2" role="tab" tabindex="-1">RTL8726E</button><button aria-controls="panel-0-0-3" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-3" name="0-3" role="tab" tabindex="-1">RTL8730E</button></div><div aria-labelledby="tab-0-0-0" class="sphinx-tabs-panel" id="panel-0-0-0" name="0-0" role="tabpanel" tabindex="0"><ol class="arabic simple">
+<li><p><strong>IPC定义</strong></p>
+<ul class="simple">
+<li><p>处理器间通信（Inter-Processor Communication, IPC）是专为多核异构系统设计的硬件加速通信机制，通过共享SRAM实现跨核数据交互，确保多核间低延迟的信息传递。其核心目标是为多核之间提供高效协同的工作能力。</p></li>
+</ul>
+</li>
+<li><p><strong>硬件架构特性</strong></p>
+<ol class="loweralpha simple">
+<li><p>对称结构</p>
+<ul class="simple">
+<li><p>每个CPU都有一套相同的IPC模块。</p></li>
+</ul>
+</li>
+<li><p>双工通信模型</p>
+<ul class="simple">
+<li><p>支持双向全双工通信。</p></li>
+</ul>
+</li>
+<li><p>通道隔离性</p>
+<ul class="simple">
+<li><p>通道间采用硬件级资源隔离设计，任意通道的数据传输互不阻塞。</p></li>
+<li><p>支持并行多通道操作（如CPUA可同时通过通道n发送传感器数据、通道m传输日志信息）。</p></li>
+</ul>
+</li>
+<li><p>信息池</p>
+<ul class="simple">
+<li><p>预分配的一块内存，每个IPC通道通过信息池中预设的固定地址来收发信息。</p></li>
+</ul>
+</li>
+<li><p>共享内存</p>
+<ul class="simple">
+<li><p>当收发消息大于4字节时，发送端动态分配一块共享内存，并将内存地址作为消息写入信息池，接收端在发送端释放共享内存前，将数据拷贝到本地。</p></li>
+<li><p>当收发消息小于等于4字节时，将消息写入信息池。</p></li>
+</ul>
+</li>
+<li><p>NVIC中断生成器</p>
+<ul class="simple">
+<li><p>在IPC通道准备好数据之后，通过写IPC某块中的寄存器，在接收端产生接收中断， 同样在接收端完成接收后，也可以在接收端触发发送完成中断。</p></li>
+</ul>
+</li>
+</ol>
+</li>
+</ol>
+<figure class="align-center" id="id7">
+<a class="reference internal image-reference" href="../../_images/ipc_block_diagram_dplus.svg"><img alt="../../_images/ipc_block_diagram_dplus.svg" height="667" src="../../_images/ipc_block_diagram_dplus.svg" width="616" /></a>
+<figcaption>
+<p><span class="caption-text">IPC 结构框图</span><a class="headerlink" href="#id7" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<ol class="arabic" start="3">
+<li><p><strong>数据流模型</strong></p>
+<ul>
+<li><p>发送端流程：</p>
+<p>[共享信息] → 选择可用通道 → 写入共享内存 → 更新通道寄存器 → 触发对端中断 → 对端读取内存</p>
+</li>
+<li><p>接收端流程：</p>
+<p>中断上报 → 读取通道寄存器 → 定位共享内存 → 拷贝数据到本地 → 处理数据 → 清除中断标志</p>
+</li>
+</ul>
+</li>
+</ol>
+</div><div aria-labelledby="tab-0-0-1" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-1" name="0-1" role="tabpanel" tabindex="0"><ol class="arabic simple">
+<li><p><strong>IPC定义</strong></p>
+<ul class="simple">
+<li><p>处理器间通信（Inter-Processor Communication, IPC）是专为多核异构系统设计的硬件加速通信机制，通过共享SRAM实现跨核数据交互，确保多核间低延迟的信息传递。其核心目标是为KR4与KM4提供高效协同工作能力。</p></li>
+</ul>
+</li>
+</ol>
+<figure class="align-center" id="id8">
+<a class="reference internal image-reference" href="../../_images/ipc_block_diagram_8720EA.svg"><img alt="../../_images/ipc_block_diagram_8720EA.svg" height="94" src="../../_images/ipc_block_diagram_8720EA.svg" width="347" /></a>
+<figcaption>
+<p><span class="caption-text">IPC 框图</span><a class="headerlink" href="#id8" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<ol class="arabic" start="2">
+<li><p><strong>硬件架构特性</strong></p>
+<ul>
+<li><p>对称结构</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>每个CPU都有一套相同的IPC模块</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>双工通信模型</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>支持双向全双工通信：KR4↔KM4双方向独立通道</p></li>
+<li><p>每个方向配置8组物理通道，共16个独立通信链路</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>通道隔离性</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>通道间采用硬件级资源隔离设计，任意通道的数据传输互不阻塞</p></li>
+<li><p>支持并行多通道操作（如KR4可同时通过通道n发送传感器数据、通道m传输日志信息）</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>地址映射机制</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>共享SRAM区域, 芯片内部分配一块物理内存，双核通过统一内存映射直接访问，地址空间对等可见</p></li>
+<li><p>发送端写入操作自动触发接收端中断通知，实现硬实时响应</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>零拷贝传输</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>指针传递模式： 发送方直接传送数据结构指针， 接收方通过地址直接访问，减少内存copy</p></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</li>
+</ol>
+<figure class="align-center" id="id9">
+<a class="reference internal image-reference" href="../../_images/ipc_schematic_diagram_8720EA.svg"><img alt="../../_images/ipc_schematic_diagram_8720EA.svg" height="116" src="../../_images/ipc_schematic_diagram_8720EA.svg" width="464" /></a>
+<figcaption>
+<p><span class="caption-text">IPC 原理图</span><a class="headerlink" href="#id9" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<ol class="arabic" start="3">
+<li><p><strong>IPC工作机制</strong></p>
+<ul>
+<li><p>关键寄存器 (KR4侧为例)</p>
+<blockquote>
+<div><ul>
+<li><p>两组传输信道</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>REG_TX_DATA_R2M</p></li>
+<li><p>REG_RX_DATA_M2R</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>中断状态寄存器</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>REG_ISR_KR4</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>中断掩码寄存器</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>REG_IMR_KR4</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>中断清除寄存器</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>REG_ICR_KR4</p></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>端到端触发机制 （KR4发送至km4为例）</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>REG_TX_DATA_R2M用于KR4向KM4传输数据，一旦将位“1”写入通道n（n=0，1，…，7），目标REG_RX_DATA_R2M中的n位将被设置。REG_ISR_KM4中通道n的Rx full将同时设置。</p></li>
+<li><p>将位“1”写入REG_ISR_KM4中的通道n会清除通道n的Rx full中断，REG_ISR_KR4中相应的通道n的Tx empty中断位将自动设置, 同时REG_TX_DATA_R2M和REG_RX_DATA_R2M的通道n位也会被清除。</p></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</li>
+</ol>
+<figure class="align-center" id="id10">
+<a class="reference internal image-reference" href="../../_images/ipc_message_transmission_mapping_lite_20E.svg"><img alt="../../_images/ipc_message_transmission_mapping_lite_20E.svg" height="151" src="../../_images/ipc_message_transmission_mapping_lite_20E.svg" width="760" /></a>
+<figcaption>
+<p><span class="caption-text">IPC 消息传输映射</span><a class="headerlink" href="#id10" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<figure class="align-center" id="id11">
+<a class="reference internal image-reference" href="../../_images/ipc_message_receive_mapping_lite_20E.svg"><img alt="../../_images/ipc_message_receive_mapping_lite_20E.svg" height="161" src="../../_images/ipc_message_receive_mapping_lite_20E.svg" width="833" /></a>
+<figcaption>
+<p><span class="caption-text">IPC 消息接收映射</span><a class="headerlink" href="#id11" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<ol class="arabic" start="4">
+<li><p><strong>数据流模型</strong></p>
+<ul>
+<li><p>发送端流程：</p>
+<blockquote>
+<div><p>[应用数据] → 获取可用通道 → 写入共享内存 → 更新通道寄存器 → 触发对端中断 → 对端读取内存</p>
+</div></blockquote>
+</li>
+<li><p>接收端流程：</p>
+<blockquote>
+<div><p>中断上报 → 读取通道寄存器 → 定位共享内存 → 处理数据 → 清除中断标志</p>
+</div></blockquote>
+</li>
+</ul>
+</li>
+</ol>
+</div><div aria-labelledby="tab-0-0-2" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-2" name="0-2" role="tabpanel" tabindex="0"><ol class="arabic simple">
+<li><p><strong>IPC定义</strong></p>
+<ul class="simple">
+<li><p>处理器间通信（Inter-Processor Communication, IPC）是专为多核异构系统设计的硬件加速通信机制，通过共享SRAM实现跨核数据交互，确保多核间低延迟的信息传递。其核心目标是为KR4与KM4，KR4与DSP, DSP与KM4 提供高效协同工作能力。</p></li>
+</ul>
+</li>
+</ol>
+<figure class="align-center" id="id12">
+<a class="reference internal image-reference" href="../../_images/ipc_block_diagram_8726EA.svg"><img alt="../../_images/ipc_block_diagram_8726EA.svg" height="168" src="../../_images/ipc_block_diagram_8726EA.svg" width="347" /></a>
+<figcaption>
+<p><span class="caption-text">IPC 框图</span><a class="headerlink" href="#id12" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<ol class="arabic" start="2">
+<li><p><strong>硬件架构特性</strong></p>
+<ul>
+<li><p>对称结构</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>每个CPU都有一套相同的IPC模块</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>双工通信模型</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>支持双向全双工通信：KR4↔KM4, DSP↔KM4, DSP↔KR4双方向独立通道</p></li>
+<li><p>每个方向配置16组物理通道，共32个独立通信链路</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>通道隔离性</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>通道间采用硬件级资源隔离设计，任意通道的数据传输互不阻塞</p></li>
+<li><p>支持并行多通道操作（如KR4可同时通过通道n发送传感器数据、通道m传输日志信息）</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>地址映射机制</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>共享SRAM区域, 芯片内部分配一块物理内存，双核通过统一内存映射直接访问，地址空间对等可见</p></li>
+<li><p>发送端写入操作自动触发接收端中断通知，实现硬实时响应</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>零拷贝传输</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>指针传递模式： 发送方直接传送数据结构指针， 接收方通过地址直接访问，减少内存copy</p></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</li>
+</ol>
+<figure class="align-center" id="id13">
+<a class="reference internal image-reference" href="../../_images/ipc_schematic_diagram_8726EA.svg"><img alt="../../_images/ipc_schematic_diagram_8726EA.svg" height="306" src="../../_images/ipc_schematic_diagram_8726EA.svg" width="785" /></a>
+<figcaption>
+<p><span class="caption-text">IPC 原理图</span><a class="headerlink" href="#id13" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<ol class="arabic" start="3">
+<li><p><strong>IPC工作机制</strong></p>
+<ul>
+<li><p>关键寄存器 (KR4侧为例)</p>
+<blockquote>
+<div><ul>
+<li><p>两组传输信道</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>REG_TX_DATA_R2M</p></li>
+<li><p>REG_RX_DATA_M2R</p></li>
+<li><p>REG_TX_DATA_R2D</p></li>
+<li><p>REG_RX_DATA_D2R</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>中断状态寄存器</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>REG_ISR_KR4</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>中断掩码寄存器</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>REG_IMR_KR4</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>中断清除寄存器</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>REG_ICR_KR4</p></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>端到端触发机制 （KR4发送至km4和DSP为例）</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>REG_TX_DATA_R2M用于KR4向KM4传输数据，一旦将位“1”写入通道n（n=0，1，…，7），目标REG_RX_DATA_R2M中的n位将被设置。REG_ISR_KM4中通道n的Rx full将同时设置。</p></li>
+<li><p>REG_TX_DATA_R2D用于KR4向DSP传输数据，一旦将位“1”写入通道n（n=0，1，…，7），目标REG_RX_DATA_R2D中的n位将被设置。REG_ISR_DSP中通道n的Rx full将同时设置。</p></li>
+</ul>
+<figure class="align-center" id="id14">
+<a class="reference internal image-reference" href="../../_images/ipc_message_transmission_mapping_lite_26E.svg"><img alt="../../_images/ipc_message_transmission_mapping_lite_26E.svg" height="306" src="../../_images/ipc_message_transmission_mapping_lite_26E.svg" width="684" /></a>
+<figcaption>
+<p><span class="caption-text">IPC 消息传输映射</span><a class="headerlink" href="#id14" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<ul class="simple">
+<li><p>将位“1”写入REG_ISR_KM4中的通道n会清除通道n的Rx full中断，REG_ISR_KR4中相应的通道n的Tx empty中断位将自动设置, 同时REG_TX_DATA_R2M和REG_RX_DATA_R2M的通道n位也会被清除。</p></li>
+<li><p>将位“1”写入REG_ISR_DSP中的通道n会清除通道n的Rx full中断，REG_ISR_KR4中相应的通道n的Tx empty中断位将自动设置, 同时REG_TX_DATA_R2D和REG_RX_DATA_R2D的通道n位也会被清除。</p></li>
+</ul>
+<figure class="align-center" id="id15">
+<a class="reference internal image-reference" href="../../_images/ipc_message_receive_mapping_lite_26E.svg"><img alt="../../_images/ipc_message_receive_mapping_lite_26E.svg" height="312" src="../../_images/ipc_message_receive_mapping_lite_26E.svg" width="672" /></a>
+<figcaption>
+<p><span class="caption-text">IPC 消息接收映射</span><a class="headerlink" href="#id15" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</div></blockquote>
+</li>
+</ul>
+</li>
+<li><p><strong>数据流模型</strong></p>
+<ul>
+<li><p>发送端流程：</p>
+<blockquote>
+<div><p>[应用数据] → 获取可用通道 → 写入共享内存 → 更新通道寄存器 → 触发对端中断 → 对端读取内存</p>
+</div></blockquote>
+</li>
+<li><p>接收端流程：</p>
+<blockquote>
+<div><p>中断上报 → 读取通道寄存器 → 定位共享内存 → 处理数据 → 清除中断标志</p>
+</div></blockquote>
+</li>
+</ul>
+</li>
+</ol>
+</div><div aria-labelledby="tab-0-0-3" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-3" name="0-3" role="tabpanel" tabindex="0"><ol class="arabic simple">
+<li><p><strong>IPC定义</strong></p>
+<ul class="simple">
+<li><p>处理器间通信（Inter-Processor Communication, IPC）是专为多核异构系统设计的硬件加速通信机制，通过共享SRAM实现跨核数据交互，确保多核间低延迟的信息传递。其核心目标是为KM0与AP， KM0与NP， NP与AP提供高效协同工作能力。</p></li>
+</ul>
+</li>
+</ol>
+<figure class="align-center" id="id16">
+<a class="reference internal image-reference" href="../../_images/ipc_block_diagram_smart.svg"><img alt="../../_images/ipc_block_diagram_smart.svg" height="168" src="../../_images/ipc_block_diagram_smart.svg" width="347" /></a>
+<figcaption>
+<p><span class="caption-text">IPC 框图</span><a class="headerlink" href="#id16" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<ol class="arabic" start="2">
+<li><p><strong>硬件架构特性</strong></p>
+<ul>
+<li><p>对称结构</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>每个CPU都有一套相同的IPC模块</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>双工通信模型</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>支持双向全双工通信：KM0↔NP, KM0↔AP, AP↔NP双方向独立通道</p></li>
+<li><p>每个方向配置16组物理通道，共32个独立通信链路</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>通道隔离性</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>通道间采用硬件级资源隔离设计，任意通道的数据传输互不阻塞</p></li>
+<li><p>支持并行多通道操作（如KR4可同时通过通道n发送传感器数据、通道m传输日志信息）</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>地址映射机制</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>共享SRAM区域, 芯片内部分配一块物理内存，双核通过统一内存映射直接访问，地址空间对等可见</p></li>
+<li><p>发送端写入操作自动触发接收端中断通知，实现硬实时响应</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>零拷贝传输</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>指针传递模式： 发送方直接传送数据结构指针， 接收方通过地址直接访问，减少内存copy</p></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</li>
+</ol>
+<figure class="align-center" id="id17">
+<a class="reference internal image-reference" href="../../_images/ipc_schematic_diagram_smart.svg"><img alt="../../_images/ipc_schematic_diagram_smart.svg" height="306" src="../../_images/ipc_schematic_diagram_smart.svg" width="785" /></a>
+<figcaption>
+<p><span class="caption-text">IPC 原理图</span><a class="headerlink" href="#id17" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<ol class="arabic" start="3">
+<li><p><strong>IPC工作机制</strong></p>
+<ul>
+<li><p>关键寄存器 (KM0侧为例)</p>
+<blockquote>
+<div><ul>
+<li><p>两组传输信道</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>REG_TX_DATA_L2N</p></li>
+<li><p>REG_RX_DATA_N2L</p></li>
+<li><p>REG_TX_DATA_L2A</p></li>
+<li><p>REG_RX_DATA_A2L</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>中断状态寄存器</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>REG_ISR_KR4</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>中断掩码寄存器</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>REG_IMR_KR4</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>中断清除寄存器</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>REG_ICR_KR4</p></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>端到端触发机制 （KR4发送至AP和NP为例）</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>REG_TX_DATA_L2N用于KM0向NP传输数据，一旦将位“1”写入通道n（n=0，1，…，7），目标REG_RX_DATA_L2N中的n位将被设置。REG_ISR_NP中通道n的Rx full将同时设置。</p></li>
+<li><p>REG_TX_DATA_L2A用于KM0向AP传输数据，一旦将位“1”写入通道n（n=0，1，…，7），目标REG_RX_DATA_L2A中的n位将被设置。REG_ISR_AP中通道n的Rx full将同时设置。</p></li>
+</ul>
+<figure class="align-center" id="id18">
+<a class="reference internal image-reference" href="../../_images/ipc_message_transmission_mapping_smart.svg"><img alt="../../_images/ipc_message_transmission_mapping_smart.svg" height="306" src="../../_images/ipc_message_transmission_mapping_smart.svg" width="684" /></a>
+<figcaption>
+<p><span class="caption-text">IPC 消息传输映射</span><a class="headerlink" href="#id18" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<ul class="simple">
+<li><p>将位“1”写入REG_ISR_NP中的通道n会清除通道n的Rx full中断，REG_ISR_KM0中相应的通道n的Tx empty中断位将自动设置, 同时REG_TX_DATA_L2N和REG_RX_DATA_L2N的通道n位也会被清除。</p></li>
+<li><p>将位“1”写入REG_ISR_AP中的通道n会清除通道n的Rx full中断，REG_ISR_KM0中相应的通道n的Tx empty中断位将自动设置, 同时REG_TX_DATA_L2A和REG_RX_DATA_L2A的通道n位也会被清除。</p></li>
+</ul>
+<figure class="align-center" id="id19">
+<a class="reference internal image-reference" href="../../_images/ipc_message_receive_mapping_smart.svg"><img alt="../../_images/ipc_message_receive_mapping_smart.svg" height="312" src="../../_images/ipc_message_receive_mapping_smart.svg" width="704" /></a>
+<figcaption>
+<p><span class="caption-text">IPC 消息接收映射</span><a class="headerlink" href="#id19" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</div></blockquote>
+</li>
+</ul>
+</li>
+<li><p><strong>数据流模型</strong></p>
+<ul>
+<li><p>发送端流程：</p>
+<blockquote>
+<div><p>[应用数据] → 获取可用通道 → 写入共享内存 → 更新通道寄存器 → 触发对端中断 → 对端读取内存</p>
+</div></blockquote>
+</li>
+<li><p>接收端流程：</p>
+<blockquote>
+<div><p>中断上报 → 读取通道寄存器 → 定位共享内存 → 处理数据 → 清除中断标志</p>
+</div></blockquote>
+</li>
+</ul>
+</li>
+</ol>
+</div></div>
+</section>
+<section id="id2">
+<h1>IPC 配置方法<a class="headerlink" href="#id2" title="Link to this heading"></a></h1>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-1-1-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-1-1-0" name="1-0" role="tab" tabindex="0">RTL8721Dx</button><button aria-controls="panel-1-1-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-1-1-1" name="1-1" role="tab" tabindex="-1">RTL8720E</button><button aria-controls="panel-1-1-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-1-1-2" name="1-2" role="tab" tabindex="-1">RTL8726E</button><button aria-controls="panel-1-1-3" aria-selected="false" class="sphinx-tabs-tab" id="tab-1-1-3" name="1-3" role="tab" tabindex="-1">RTL8730E</button></div><div aria-labelledby="tab-1-1-0" class="sphinx-tabs-panel" id="panel-1-1-0" name="1-0" role="tabpanel" tabindex="0"><ol class="arabic">
+<li><p><strong>通道选择与定义</strong></p>
+<ul>
+<li><p><strong>概念</strong>：IPC通道是连接两个IPC实体之间的双向独立通信路径，每个方向包含多组通道。</p></li>
+<li><p><strong>作用</strong>：用于在两个CPU之间传输发送和接收事件，实现核间通信。</p></li>
+<li><p><strong>文件路径</strong> : <a class="reference external" href="https://github.com/Ameba-AIoT/ameba-rtos/blob/master/component/soc/amebadplus/fwlib/include/ameba_ipccfg.h">ameba_ipccfg.h</a></p></li>
+<li><p><strong>选择与定义示例</strong>：</p>
+<p>在 <cite>ameba_ipccfg.h</cite> 文件中，可以通过取消注释并修改通道定义来选择和自定义通道。例如：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="cm">/* 取消通道n的注释，并添加功能描述 */</span>
+<span class="linenos">2</span><span class="cp">#define IPC_N2A_Channeln  n  </span><span class="cm">/*!&lt; 用户自定义通道：KM0到KM4的传感器数据传输 */</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>注意事项</strong>：
+避免使用系统已预留的通道，这些通道可能用于WiFi/BT等系统组件。</p></li>
+</ul>
+</li>
+<li><p><strong>组件概念与定义</strong></p>
+<ol class="loweralpha">
+<li><p><strong>IPC配置表（IPC_INIT_TABLE）</strong></p>
+<ul>
+<li><p><strong>作用</strong>：定义了整个传输链路的所有信息，包括数据类型、接收和发送回调函数、中断处理函数参数、传输方向和IPC通道号。</p></li>
+<li><p><strong>使用说明</strong>：用户需要将此结构体实例存放到 <cite>IPC_TABLE_DATA_SECTION</cite> 中，SDK会根据结构体的成员信息开启相应通道的Tx/Rx中断，并注册中断处理函数。</p></li>
+<li><p><strong>结构体定义</strong>：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="k">typedef</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">_IPC_INIT_TABLE_</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">2</span><span class="w">   </span><span class="n">u32</span><span class="w"> </span><span class="n">USER_MSG_TYPE</span><span class="p">;</span><span class="w">  </span><span class="cm">/* 数据类型：IPC_USER_DATA（小于32bit数据）或IPC_USER_POINT（大于32bit数据的地址） */</span>
+<span class="linenos">3</span><span class="w">   </span><span class="kt">void</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">Rxfunc</span><span class="p">)(</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">Data</span><span class="p">,</span><span class="w"> </span><span class="n">u32</span><span class="w"> </span><span class="n">IrqStatus</span><span class="p">,</span><span class="w"> </span><span class="n">u32</span><span class="w"> </span><span class="n">ChanNum</span><span class="p">);</span><span class="w"> </span><span class="cm">/* 接收中断回调函数 */</span>
+<span class="linenos">4</span><span class="w">   </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">RxIrqData</span><span class="p">;</span><span class="w">    </span><span class="cm">/* 接收回调函数参数 */</span>
+<span class="linenos">5</span><span class="w">   </span><span class="kt">void</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">Txfunc</span><span class="p">)(</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">Data</span><span class="p">,</span><span class="w"> </span><span class="n">u32</span><span class="w"> </span><span class="n">IrqStatus</span><span class="p">,</span><span class="w"> </span><span class="n">u32</span><span class="w"> </span><span class="n">ChanNum</span><span class="p">);</span><span class="w"> </span><span class="cm">/* 发送完成中断回调函数 */</span>
+<span class="linenos">6</span><span class="w">   </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">TxIrqData</span><span class="p">;</span><span class="w">    </span><span class="cm">/* 发送回调函数参数 */</span>
+<span class="linenos">7</span><span class="w">   </span><span class="n">u32</span><span class="w"> </span><span class="n">IPC_Direction</span><span class="p">;</span><span class="w">  </span><span class="cm">/* 传输方向 */</span>
+<span class="linenos">8</span><span class="w">   </span><span class="n">u32</span><span class="w"> </span><span class="n">IPC_Channel</span><span class="p">;</span><span class="w">    </span><span class="cm">/* IPC通道号 */</span>
+<span class="linenos">9</span><span class="p">}</span><span class="w"> </span><span class="n">IPC_INIT_TABLE</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">PIPC_INIT_TABLE</span><span class="p">;</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</li>
+<li><p><strong>IPC数据结构（IPC_MSG_STRUCT）</strong></p>
+<ul>
+<li><p><strong>作用</strong>：在消息池中，每个IPC通道拥有一个固定位置用于存放 <cite>IPC_MSG_STRUCT</cite> 结构体，用于存储和传输数据。</p></li>
+<li><p><strong>结构体定义</strong>：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="k">typedef</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">ipc_msg_struct</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">2</span><span class="w">   </span><span class="n">u32</span><span class="w"> </span><span class="n">msg_type</span><span class="p">;</span><span class="w">   </span><span class="cm">/* 数据类型，与USER_MSG_TYPE相同 */</span>
+<span class="linenos">3</span><span class="w">   </span><span class="n">u32</span><span class="w"> </span><span class="n">msg</span><span class="p">;</span><span class="w">        </span><span class="cm">/* 需要传递的32bit数据或数据地址（对于大于32bit的数据） */</span>
+<span class="linenos">4</span><span class="w">   </span><span class="n">u32</span><span class="w"> </span><span class="n">msg_len</span><span class="p">;</span><span class="w">    </span><span class="cm">/* 数据长度 */</span>
+<span class="linenos">5</span><span class="w">   </span><span class="n">u32</span><span class="w"> </span><span class="n">rsvd</span><span class="p">;</span><span class="w">       </span><span class="cm">/* 保留字段 */</span>
+<span class="linenos">6</span><span class="p">}</span><span class="w"> </span><span class="n">IPC_MSG_STRUCT</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">PIPC_MSG_STRUCT</span><span class="p">,</span><span class="w"> </span><span class="n">ipc_msg_struct_t</span><span class="p">;</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</li>
+</ol>
+</li>
+<li><p><strong>通信协议栈注册</strong></p>
+<ul>
+<li><p>中断回调注册（KM4侧）</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>在KM4中为从KM0到KM4的通道n添加一个新的 <code class="docutils literal notranslate"><span class="pre">IPC_INIT_TABLE</span></code>。</p></li>
+</ul>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="cm">/* 通道配置表*/</span>
+<span class="linenos"> 2</span><span class="n">IPC_TABLE_DATA_SECTION</span>
+<span class="linenos"> 3</span><span class="k">const</span><span class="w"> </span><span class="n">IPC_INIT_TABLE</span><span class="w"> </span><span class="n">ipc_chn_config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos"> 4</span><span class="w">   </span><span class="p">.</span><span class="n">msg_type</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="n">IPC_USER_POINT</span><span class="p">,</span><span class="w">     </span><span class="c1">// 消息传递方式：指针传递</span>
+<span class="linenos"> 5</span><span class="w">   </span><span class="p">.</span><span class="n">rx_func</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="n">KM4_Channeln_Handler</span><span class="p">,</span>
+<span class="linenos"> 6</span><span class="w">   </span><span class="p">.</span><span class="n">rx_irq_data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w">               </span><span class="c1">// 无附加参数</span>
+<span class="linenos"> 7</span><span class="w">   </span><span class="p">.</span><span class="n">tx_func</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="n">IPC_TXHandler</span><span class="p">,</span><span class="w">      </span><span class="c1">// 发送完成回调（SDK标准API）</span>
+<span class="linenos"> 8</span><span class="w">   </span><span class="p">.</span><span class="n">tx_irq_data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span>
+<span class="linenos"> 9</span><span class="w">   </span><span class="p">.</span><span class="n">direction</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="n">IPC_KM0_TO_KM4</span><span class="p">,</span><span class="w">     </span><span class="c1">// 方向标识</span>
+<span class="linenos">10</span><span class="w">   </span><span class="p">.</span><span class="n">channel_num</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">IPC_N2A_Channeln</span><span class="w">    </span><span class="c1">// 通道号宏定义</span>
+<span class="linenos">11</span><span class="p">};</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>SDK将自动启用IPC中断，并为该通道注册相应的IRQ处理程序和数据。在本例中，当KM0通过通道n发送IPC时，KM4将进入  <code class="xref py py-func docutils literal notranslate"><span class="pre">KM4_Channeln_Handler()</span></code> （即通道n的中断处理函数）。SDK会在IRQ退出后清除对应通道的ISR。</p></li>
+</ul>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="cm">/* KM4接收处理函数（中断上下文）*/</span>
+<span class="linenos">2</span><span class="kt">void</span><span class="w"> </span><span class="nf">KM4_Channeln_Handler</span><span class="p">(</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">data</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">3</span><span class="w">   </span><span class="n">PIPC_MSG_STRUCT</span><span class="w"> </span><span class="n">msg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ipc_get_message</span><span class="p">(</span><span class="n">IPC_KM0_TO_KM4</span><span class="p">,</span><span class="w"> </span><span class="n">IPC_N2A_Channeln</span><span class="p">);</span>
+<span class="linenos">4</span><span class="w">   </span><span class="kt">uint32_t</span><span class="w"> </span><span class="o">*</span><span class="n">sensor_data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">uint32_t</span><span class="o">*</span><span class="p">)</span><span class="n">msg</span><span class="o">-&gt;</span><span class="n">msg</span><span class="p">;</span><span class="w">  </span><span class="c1">// 提取共享内存数据</span>
+<span class="linenos">5</span><span class="w">   </span><span class="n">_memcpy</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="n">sensor_data</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">data</span><span class="p">));</span><span class="w">  </span><span class="c1">// 内存屏障保护</span>
+<span class="linenos">6</span><span class="w">   </span><span class="n">process_sensor_data</span><span class="p">(</span><span class="n">data</span><span class="p">);</span><span class="w">            </span><span class="c1">// 用户数据处理</span>
+<span class="linenos">7</span><span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><dl>
+<dt>发送端配置（KM0侧） <strong>（可选）</strong></dt><dd><ul class="simple">
+<li><p>如果有多笔数据需要发送，为了避免轮询发送状态占用cpu资源, 可以给tx 的通道n注册IRQ处理程序。我们建议将此处理函数注册为 <a class="reference external" href="https://github.com/Ameba-AIoT/ameba-rtos/blob/master/component/soc/amebadplus/fwlib/ram_common/ameba_ipc_api.c">ameba_ipc_api.c</a> 中的 <code class="xref py py-func docutils literal notranslate"><span class="pre">IPC_TXHandler()</span></code> 。在此函数中，如果使能了 <code class="docutils literal notranslate"><span class="pre">config_kernel</span></code> ，则会释放通道n的信号量（tx sema），在 <code class="xref py py-func docutils literal notranslate"><span class="pre">ipc_send_message()</span></code> 中会去获取信号量，以便及时启用下一次传输并避免任务阻塞。SDK会在IRQ退出后清除对应通道的ISR。在这种情况下，需要在KM0中为从KM0到KM4的通道n添加一个新的 <code class="docutils literal notranslate"><span class="pre">IPC_INIT_TABLE</span></code>。</p></li>
+</ul>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="cm">/* KM0发送完成回调*/</span>
+<span class="linenos"> 2</span><span class="kt">void</span><span class="w"> </span><span class="nf">IPC_TXHandler</span><span class="p">(</span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">status</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos"> 3</span>
+<span class="linenos"> 4</span><span class="w">   </span><span class="n">IPC_INTConfig</span><span class="p">(</span><span class="n">IPCx</span><span class="p">,</span><span class="w"> </span><span class="n">ChanNum</span><span class="p">,</span><span class="w"> </span><span class="n">DISABLE</span><span class="p">);</span><span class="w"> </span><span class="c1">// 关闭中断</span>
+<span class="linenos"> 5</span><span class="w">   </span><span class="p">...</span>
+<span class="linenos"> 6</span><span class="w">   </span><span class="n">rtos_sema_give</span><span class="p">(</span><span class="n">tx_sema</span><span class="p">);</span><span class="w">  </span><span class="c1">// 释放信号量继续发送</span>
+<span class="linenos"> 7</span><span class="w">   </span><span class="p">...</span>
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span><span class="p">}</span>
+<span class="linenos">10</span>
+<span class="linenos">11</span><span class="cm">/* KM0发送配置表 */</span>
+<span class="linenos">12</span><span class="n">IPC_TABLE_DATA_SECTION</span>
+<span class="linenos">13</span><span class="k">const</span><span class="w"> </span><span class="n">IPC_INIT_TABLE</span><span class="w"> </span><span class="n">ipc_km0_tx_config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">14</span><span class="w">   </span><span class="p">.</span><span class="n">msg_type</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="n">IPC_USER_POINT</span><span class="p">,</span>
+<span class="linenos">15</span><span class="w">   </span><span class="p">.</span><span class="n">rx_func</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w">              </span><span class="c1">// 接收函数置空</span>
+<span class="linenos">16</span><span class="w">   </span><span class="p">.</span><span class="n">tx_func</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="n">IPC_TXHandler</span><span class="p">,</span><span class="w">    </span><span class="c1">// 发送完成回调（SDK标准API），可自定义</span>
+<span class="linenos">17</span><span class="w">   </span><span class="p">.</span><span class="n">tx_irq_data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span>
+<span class="linenos">18</span><span class="w">   </span><span class="p">.</span><span class="n">direction</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="n">IPC_KM0_TO_KM4</span><span class="p">,</span><span class="w">     </span><span class="c1">// 方向标识</span>
+<span class="linenos">19</span><span class="w">   </span><span class="p">.</span><span class="n">channel_num</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">IPC_N2A_Channeln</span><span class="w">    </span><span class="c1">// 通道号宏定义</span>
+<span class="linenos">20</span><span class="p">};</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</li>
+</ul>
+</li>
+</ol>
+<ol class="arabic" start="3">
+<li><p><strong>实现数据收发</strong></p>
+<ul>
+<li><dl>
+<dt>KM0发送数据</dt><dd><ul class="simple">
+<li><p>当KM0通过通道n向KM4发送IPC请求时，应调用 <code class="xref py py-func docutils literal notranslate"><span class="pre">ipc_send_message()</span></code> 函数，并指定通道号和消息。如果不需要消息，则只需将 <code class="xref py py-func docutils literal notranslate"><span class="pre">ipc_send_message()</span></code> 的第三个参数输入为NULL。</p></li>
+</ul>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kt">void</span><span class="w"> </span><span class="nf">send_sensor_data</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span><span class="w">   </span><span class="n">IPC_MSG_STRUCT</span><span class="w"> </span><span class="n">ipc_msg_temp</span><span class="p">;</span>
+<span class="linenos"> 4</span><span class="w">   </span><span class="n">sensor_buffer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">read_sensor</span><span class="p">();</span><span class="w">  </span><span class="c1">// 更新共享内存</span>
+<span class="linenos"> 5</span>
+<span class="linenos"> 6</span><span class="w">   </span><span class="n">ipc_msg_temp</span><span class="p">.</span><span class="n">msg_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">IPC_USER_POINT</span><span class="p">;</span><span class="w"> </span><span class="c1">// 传递指针</span>
+<span class="linenos"> 7</span><span class="w">   </span><span class="n">ipc_msg_temp</span><span class="p">.</span><span class="n">msg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">u32</span><span class="p">)</span><span class="o">&amp;</span><span class="n">sensor_buffer</span><span class="p">;</span>
+<span class="linenos"> 8</span><span class="w">   </span><span class="n">ipc_msg_temp</span><span class="p">.</span><span class="n">msg_len</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w">              </span><span class="c1">// 数据长度（字节）</span>
+<span class="linenos"> 9</span><span class="w">   </span><span class="n">ipc_msg_temp</span><span class="p">.</span><span class="n">rsvd</span><span class="w"> </span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+<span class="linenos">10</span>
+<span class="linenos">11</span><span class="w">   </span><span class="cm">/* 发送共享数据(SDK标准API)， 带超时处理 */</span>
+<span class="linenos">12</span><span class="w">   </span><span class="n">ipc_send_message</span><span class="p">(</span><span class="n">IPC_KM0_TO_KM4</span><span class="p">,</span><span class="w"> </span><span class="n">IPC_N2A_Channeln</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">ipc_msg_temp</span><span class="p">);</span>
+<span class="linenos">13</span><span class="p">}</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</li>
+<li><dl>
+<dt>KM4接收处理（中断+任务协作）</dt><dd><ul class="simple">
+<li><p>在KM4通过KM0的通道n接收到IPC后，它将进入IPC中断处理程序，并执行相应的接收IRQ处理程序。如果需要获取消息，可以调用 <code class="xref py py-func docutils literal notranslate"><span class="pre">ipc_get_message()</span></code> 函数。</p></li>
+</ul>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="cm">/* 中断上下文：快速捕获数据 */</span>
+<span class="linenos"> 2</span><span class="kt">void</span><span class="w"> </span><span class="nf">KM4_Channeln_Handler</span><span class="p">(</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">data</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos"> 3</span>
+<span class="linenos"> 4</span><span class="w">   </span><span class="c1">// get message</span>
+<span class="linenos"> 5</span>
+<span class="linenos"> 6</span><span class="w">   </span><span class="n">rtos_sema_give</span><span class="p">(</span><span class="n">ipc_sema</span><span class="p">);</span><span class="w">  </span><span class="c1">// 触发任务级处理</span>
+<span class="linenos"> 7</span><span class="p">}</span>
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span><span class="cm">/* 任务上下文：数据处理 */</span>
+<span class="linenos">10</span><span class="kt">void</span><span class="w"> </span><span class="nf">ipc_task</span><span class="p">(</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">param</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">11</span><span class="w">   </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">12</span><span class="w">      </span><span class="n">rtos_sema_take</span><span class="p">(</span><span class="n">ipc_sema</span><span class="p">,</span><span class="w"> </span><span class="n">RTOS_WAIT_FOREVER</span><span class="p">);</span>
+<span class="linenos">13</span><span class="w">      </span><span class="n">data_pipeline_process</span><span class="p">(</span><span class="n">data</span><span class="p">);</span>
+<span class="linenos">14</span><span class="w">   </span><span class="p">}</span>
+<span class="linenos">15</span><span class="p">}</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</li>
+</ul>
+</li>
+</ol>
+</div><div aria-labelledby="tab-1-1-1" class="sphinx-tabs-panel" hidden="true" id="panel-1-1-1" name="1-1" role="tabpanel" tabindex="0"><ol class="arabic">
+<li><p><strong>通道选择与定义</strong></p>
+<ul>
+<li><p>操作目标：启用KR4→KM4方向的通道n</p></li>
+<li><p>文件路径 : <a class="reference external" href="https://github.com/Ameba-AIoT/ameba-rtos/blob/master/component/soc/amebalite/fwlib/include/ameba_ipc.h">ameba_ipc.h</a></p></li>
+<li><p>修改步骤：</p>
+<blockquote>
+<div><div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="cm">/* 取消通道n的注释，并添加功能描述 */</span>
+<span class="linenos">2</span><span class="cp">#define IPC_R2M_Channeln  n  </span><span class="cm">/*!&lt; 用户自定义通道：KR4→KM4传感器数据传输 */</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><dl class="simple">
+<dt>注意事项：</dt><dd><ul class="simple">
+<li><p>避免使用已占用的系统通道（部分通道为WiFi/BT系统预留）</p></li>
+<li><p>通道号需在0-7范围内</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</li>
+<li><p><strong>通信协议栈注册</strong></p>
+<ul>
+<li><p>ipc 配置表介绍</p>
+<blockquote>
+<div><dl class="field-list simple">
+<dt class="field-odd">&lt;USER_MSG_TYPE&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>此参数可以是</p>
+<ul class="simple">
+<li><p><strong>IPC_USER_DATA</strong>:  当传输的数据只有32bit时, 可以直接将数据传输</p></li>
+<li><p><strong>IPC_USER_POINT</strong>: 当传输的数据大于32bit时， 将数据的地址作为指针传输</p></li>
+</ul>
+</dd>
+<dt class="field-even">&lt;RxFunc&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>CPU接收IPC后执行的回调函数</p>
+</dd>
+<dt class="field-odd">&lt;RxIrqData&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>传递给接收回调函数的参数</p>
+</dd>
+<dt class="field-even">&lt;TxFunc&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>CPU在发送IPC后执行的回调函数</p>
+</dd>
+<dt class="field-odd">&lt;TxIrqData&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>传递给发送回调函数的参数</p>
+</dd>
+<dt class="field-even">&lt;IPC_Direction&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>此参数可以是</p>
+<ul class="simple">
+<li><p><strong>IPC_KM4_TO_KR4</strong>: IPC从KM4发送到KR4</p></li>
+<li><p><strong>IPC_KR4_TO_KM4</strong>: IPC从KR4发送到KM4</p></li>
+</ul>
+</dd>
+<dt class="field-odd">&lt;IPC_Channel&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>IPC 通道， 取值范围为（0~7）</p>
+</dd>
+</dl>
+</div></blockquote>
+</li>
+<li><p>ipc 传递数据结构介绍</p>
+<blockquote>
+<div><div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="k">typedef</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">ipc_msg_struct</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">2</span><span class="w">   </span><span class="n">u32</span><span class="w"> </span><span class="n">msg_type</span><span class="p">;</span><span class="w">   </span><span class="c1">//同USER_MSG_TYPE</span>
+<span class="linenos">3</span><span class="w">   </span><span class="n">u32</span><span class="w"> </span><span class="n">msg</span><span class="p">;</span><span class="w">        </span><span class="c1">//需要传递的32bit的数据</span>
+<span class="linenos">4</span><span class="w">   </span><span class="n">u32</span><span class="w"> </span><span class="n">msg_len</span><span class="p">;</span><span class="w">    </span><span class="c1">//数据长度</span>
+<span class="linenos">5</span><span class="w">   </span><span class="n">u32</span><span class="w"> </span><span class="n">rsvd</span><span class="p">;</span>
+<span class="linenos">6</span><span class="p">}</span><span class="w"> </span><span class="n">IPC_MSG_STRUCT</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">PIPC_MSG_STRUCT</span><span class="p">,</span><span class="w"> </span><span class="n">ipc_msg_struct_t</span><span class="p">;</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p>中断回调注册（KM4侧）</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>在KM4中为从KR4到KM4的通道n添加一个新的 <code class="docutils literal notranslate"><span class="pre">IPC_INIT_TABLE</span></code>。</p></li>
+</ul>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="cm">/* 通道配置表*/</span>
+<span class="linenos"> 2</span><span class="n">IPC_TABLE_DATA_SECTION</span>
+<span class="linenos"> 3</span><span class="k">const</span><span class="w"> </span><span class="n">IPC_INIT_TABLE</span><span class="w"> </span><span class="n">ipc_chn_config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos"> 4</span><span class="w">   </span><span class="p">.</span><span class="n">msg_type</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="n">IPC_USER_POINT</span><span class="p">,</span><span class="w">     </span><span class="c1">// 消息传递方式：指针传递</span>
+<span class="linenos"> 5</span><span class="w">   </span><span class="p">.</span><span class="n">rx_func</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="n">KM4_Channeln_Handler</span><span class="p">,</span>
+<span class="linenos"> 6</span><span class="w">   </span><span class="p">.</span><span class="n">rx_irq_data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w">               </span><span class="c1">// 无附加参数</span>
+<span class="linenos"> 7</span><span class="w">   </span><span class="p">.</span><span class="n">tx_func</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="n">IPC_TXHandler</span><span class="p">,</span><span class="w">      </span><span class="c1">// 发送完成回调（SDK标准API）</span>
+<span class="linenos"> 8</span><span class="w">   </span><span class="p">.</span><span class="n">tx_irq_data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span>
+<span class="linenos"> 9</span><span class="w">   </span><span class="p">.</span><span class="n">direction</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="n">IPC_KR4_TO_KM4</span><span class="p">,</span><span class="w">     </span><span class="c1">// 方向标识</span>
+<span class="linenos">10</span><span class="w">   </span><span class="p">.</span><span class="n">channel_num</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">IPC_R2M_Channeln</span><span class="w">    </span><span class="c1">// 通道号宏定义</span>
+<span class="linenos">11</span><span class="p">};</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>SDK将自动启用IPC中断，并为该通道注册相应的IRQ处理程序和数据。在本例中，当KR4通过通道n发送IPC时，KM4将进入  <code class="xref py py-func docutils literal notranslate"><span class="pre">KM4_Channeln_Handler()</span></code> （即通道n的中断处理函数）。SDK会在IRQ退出后清除对应通道的ISR。</p></li>
+</ul>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="cm">/* KM4接收处理函数（中断上下文）*/</span>
+<span class="linenos">2</span><span class="kt">void</span><span class="w"> </span><span class="nf">KM4_Channeln_Handler</span><span class="p">(</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">data</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">3</span><span class="w">   </span><span class="n">PIPC_MSG_STRUCT</span><span class="w"> </span><span class="n">msg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ipc_get_message</span><span class="p">(</span><span class="n">IPC_KR4_TO_KM4</span><span class="p">,</span><span class="w"> </span><span class="n">IPC_R2M_Channeln</span><span class="p">);</span>
+<span class="linenos">4</span><span class="w">   </span><span class="kt">uint32_t</span><span class="w"> </span><span class="o">*</span><span class="n">sensor_data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">uint32_t</span><span class="o">*</span><span class="p">)</span><span class="n">msg</span><span class="o">-&gt;</span><span class="n">msg</span><span class="p">;</span><span class="w">  </span><span class="c1">// 提取共享内存数据</span>
+<span class="linenos">5</span><span class="w">   </span><span class="n">_memcpy</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="n">sensor_data</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">data</span><span class="p">));</span><span class="w">  </span><span class="c1">// 内存屏障保护</span>
+<span class="linenos">6</span><span class="w">   </span><span class="n">process_sensor_data</span><span class="p">(</span><span class="n">data</span><span class="p">);</span><span class="w">            </span><span class="c1">// 用户数据处理</span>
+<span class="linenos">7</span><span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><dl>
+<dt>发送端配置（KR4侧） <strong>（可选）</strong></dt><dd><ul class="simple">
+<li><p>如果有多笔数据需要发送，为了避免轮询发送状态占用cpu资源, 可以给tx 的通道n注册IRQ处理程序。我们建议将此处理函数注册为 <a class="reference external" href="https://github.com/Ameba-AIoT/ameba-rtos/blob/master/component/soc/amebalite/fwlib/ram_common/ameba_ipc_api.c">ameba_ipc_api.c</a> 中的 <code class="xref py py-func docutils literal notranslate"><span class="pre">IPC_TXHandler()</span></code> 。在此函数中，如果使能了 <code class="docutils literal notranslate"><span class="pre">config_kernel</span></code> ，则会释放通道n的信号量（tx sema），在 <code class="xref py py-func docutils literal notranslate"><span class="pre">ipc_send_message()</span></code> 中会去获取信号量，以便及时启用下一次传输并避免任务阻塞。SDK会在IRQ退出后清除对应通道的ISR。在这种情况下，需要在KR4中为从KR4到KM4的通道n添加一个新的 <code class="docutils literal notranslate"><span class="pre">IPC_INIT_TABLE</span></code>。</p></li>
+</ul>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="cm">/* KR4发送完成回调*/</span>
+<span class="linenos"> 2</span><span class="kt">void</span><span class="w"> </span><span class="nf">IPC_TXHandler</span><span class="p">(</span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">status</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos"> 3</span>
+<span class="linenos"> 4</span><span class="w">   </span><span class="n">IPC_INTConfig</span><span class="p">(</span><span class="n">IPCx</span><span class="p">,</span><span class="w"> </span><span class="n">ChanNum</span><span class="p">,</span><span class="w"> </span><span class="n">DISABLE</span><span class="p">);</span><span class="w"> </span><span class="c1">// 关闭中断</span>
+<span class="linenos"> 5</span><span class="w">   </span><span class="p">...</span>
+<span class="linenos"> 6</span><span class="w">   </span><span class="n">rtos_sema_give</span><span class="p">(</span><span class="n">tx_sema</span><span class="p">);</span><span class="w">  </span><span class="c1">// 释放信号量继续发送</span>
+<span class="linenos"> 7</span><span class="w">   </span><span class="p">...</span>
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span><span class="p">}</span>
+<span class="linenos">10</span>
+<span class="linenos">11</span><span class="cm">/* KR4发送配置表 */</span>
+<span class="linenos">12</span><span class="n">IPC_TABLE_DATA_SECTION</span>
+<span class="linenos">13</span><span class="k">const</span><span class="w"> </span><span class="n">IPC_INIT_TABLE</span><span class="w"> </span><span class="n">ipc_km0_tx_config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">14</span><span class="w">   </span><span class="p">.</span><span class="n">msg_type</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="n">IPC_USER_POINT</span><span class="p">,</span>
+<span class="linenos">15</span><span class="w">   </span><span class="p">.</span><span class="n">rx_func</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w">              </span><span class="c1">// 接收函数置空</span>
+<span class="linenos">16</span><span class="w">   </span><span class="p">.</span><span class="n">tx_func</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="n">IPC_TXHandler</span><span class="p">,</span><span class="w">    </span><span class="c1">// 发送完成回调（SDK标准API），可自定义</span>
+<span class="linenos">17</span><span class="w">   </span><span class="p">.</span><span class="n">tx_irq_data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span>
+<span class="linenos">18</span><span class="w">   </span><span class="p">.</span><span class="n">direction</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="n">IPC_KR4_TO_KM4</span><span class="p">,</span><span class="w">     </span><span class="c1">// 方向标识</span>
+<span class="linenos">19</span><span class="w">   </span><span class="p">.</span><span class="n">channel_num</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">IPC_R2M_Channeln</span><span class="w">    </span><span class="c1">// 通道号宏定义</span>
+<span class="linenos">20</span><span class="p">};</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</li>
+</ul>
+</li>
+<li><p><strong>实现数据收发</strong></p>
+<ul>
+<li><dl>
+<dt>KR4发送数据</dt><dd><ul class="simple">
+<li><p>当KR4通过通道n向KM4发送IPC请求时，应调用 <code class="xref py py-func docutils literal notranslate"><span class="pre">ipc_send_message()</span></code> 函数，并指定通道号和消息。如果不需要消息，则只需将 <code class="xref py py-func docutils literal notranslate"><span class="pre">ipc_send_message()</span></code> 的第三个参数输入为NULL。</p></li>
+</ul>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kt">void</span><span class="w"> </span><span class="nf">send_sensor_data</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span><span class="w">   </span><span class="n">IPC_MSG_STRUCT</span><span class="w"> </span><span class="n">ipc_msg_temp</span><span class="p">;</span>
+<span class="linenos"> 4</span><span class="w">   </span><span class="n">sensor_buffer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">read_sensor</span><span class="p">();</span><span class="w">  </span><span class="c1">// 更新共享内存</span>
+<span class="linenos"> 5</span>
+<span class="linenos"> 6</span><span class="w">   </span><span class="n">ipc_msg_temp</span><span class="p">.</span><span class="n">msg_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">IPC_USER_POINT</span><span class="p">;</span><span class="w"> </span><span class="c1">// 传递指针</span>
+<span class="linenos"> 7</span><span class="w">   </span><span class="n">ipc_msg_temp</span><span class="p">.</span><span class="n">msg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">u32</span><span class="p">)</span><span class="o">&amp;</span><span class="n">sensor_buffer</span><span class="p">;</span>
+<span class="linenos"> 8</span><span class="w">   </span><span class="n">ipc_msg_temp</span><span class="p">.</span><span class="n">msg_len</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w">              </span><span class="c1">// 数据长度（字节）</span>
+<span class="linenos"> 9</span><span class="w">   </span><span class="n">ipc_msg_temp</span><span class="p">.</span><span class="n">rsvd</span><span class="w"> </span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+<span class="linenos">10</span>
+<span class="linenos">11</span><span class="w">   </span><span class="cm">/* 发送共享数据(SDK标准API)， 带超时处理 */</span>
+<span class="linenos">12</span><span class="w">   </span><span class="n">ipc_send_message</span><span class="p">(</span><span class="n">IPC_KR4_TO_KM4</span><span class="p">,</span><span class="w"> </span><span class="n">IPC_R2M_Channeln</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">ipc_msg_temp</span><span class="p">);</span>
+<span class="linenos">13</span><span class="p">}</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</li>
+<li><dl>
+<dt>KM4接收处理（中断+任务协作）</dt><dd><ul class="simple">
+<li><p>在KM4通过KR4的通道n接收到IPC后，它将进入IPC中断处理程序，并执行相应的接收IRQ处理程序。如果需要获取消息，可以调用 <code class="xref py py-func docutils literal notranslate"><span class="pre">ipc_get_message()</span></code> 函数。</p></li>
+</ul>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="cm">/* 中断上下文：快速捕获数据 */</span>
+<span class="linenos"> 2</span><span class="kt">void</span><span class="w"> </span><span class="nf">KM4_Channeln_Handler</span><span class="p">(</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">data</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos"> 3</span>
+<span class="linenos"> 4</span><span class="w">   </span><span class="c1">// get message</span>
+<span class="linenos"> 5</span>
+<span class="linenos"> 6</span><span class="w">   </span><span class="n">rtos_sema_give</span><span class="p">(</span><span class="n">ipc_sema</span><span class="p">);</span><span class="w">  </span><span class="c1">// 触发任务级处理</span>
+<span class="linenos"> 7</span><span class="p">}</span>
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span><span class="cm">/* 任务上下文：数据处理 */</span>
+<span class="linenos">10</span><span class="kt">void</span><span class="w"> </span><span class="nf">ipc_task</span><span class="p">(</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">param</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">11</span><span class="w">   </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">12</span><span class="w">      </span><span class="n">rtos_sema_take</span><span class="p">(</span><span class="n">ipc_sema</span><span class="p">,</span><span class="w"> </span><span class="n">RTOS_WAIT_FOREVER</span><span class="p">);</span>
+<span class="linenos">13</span><span class="w">      </span><span class="n">data_pipeline_process</span><span class="p">(</span><span class="n">data</span><span class="p">);</span>
+<span class="linenos">14</span><span class="w">   </span><span class="p">}</span>
+<span class="linenos">15</span><span class="p">}</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</li>
+</ul>
+</li>
+</ol>
+</div><div aria-labelledby="tab-1-1-2" class="sphinx-tabs-panel" hidden="true" id="panel-1-1-2" name="1-2" role="tabpanel" tabindex="0"><ol class="arabic">
+<li><p><strong>通道选择与定义</strong></p>
+<ul>
+<li><p>操作目标：启用KR4→KM4方向的通道n</p></li>
+<li><p>文件路径 : <a class="reference external" href="https://github.com/Ameba-AIoT/ameba-rtos/blob/master/component/soc/amebalite/fwlib/include/ameba_ipc.h">ameba_ipc.h</a></p></li>
+<li><p>修改步骤：</p>
+<blockquote>
+<div><div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="cm">/* 取消通道n的注释，并添加功能描述 */</span>
+<span class="linenos">2</span><span class="cp">#define IPC_R2M_Channeln  n  </span><span class="cm">/*!&lt; 用户自定义通道：KR4→KM4传感器数据传输 */</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><dl class="simple">
+<dt>注意事项：</dt><dd><ul class="simple">
+<li><p>避免使用已占用的系统通道（部分通道为WiFi/BT系统预留）</p></li>
+<li><p>通道号需在0-7范围内</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</li>
+<li><p><strong>通信协议栈注册</strong></p>
+<ul>
+<li><p>ipc 配置表介绍</p>
+<blockquote>
+<div><dl class="field-list simple">
+<dt class="field-odd">&lt;USER_MSG_TYPE&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>此参数可以是</p>
+<ul class="simple">
+<li><p><strong>IPC_USER_DATA</strong>:  当传输的数据只有32bit时, 可以直接将数据传输</p></li>
+<li><p><strong>IPC_USER_POINT</strong>: 当传输的数据大于32bit时， 将数据的地址作为指针传输</p></li>
+</ul>
+</dd>
+<dt class="field-even">&lt;RxFunc&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>CPU接收IPC后执行的回调函数</p>
+</dd>
+<dt class="field-odd">&lt;RxIrqData&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>传递给接收回调函数的参数</p>
+</dd>
+<dt class="field-even">&lt;TxFunc&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>CPU在发送IPC后执行的回调函数</p>
+</dd>
+<dt class="field-odd">&lt;TxIrqData&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>传递给发送回调函数的参数</p>
+</dd>
+<dt class="field-even">&lt;IPC_Direction&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>此参数可以是</p>
+<ul class="simple">
+<li><p><strong>IPC_KM4_TO_KR4</strong>: IPC从KM4发送到KR4</p></li>
+<li><p><strong>IPC_KR4_TO_KM4</strong>: IPC从KR4发送到KM4</p></li>
+<li><p><strong>IPC_DSP_TO_KR4</strong>: IPC从DSP发送到KR4</p></li>
+<li><p><strong>IPC_KR4_TO_DSP</strong>: IPC从KR4发送到DSP</p></li>
+<li><p><strong>IPC_KM4_TO_DSP</strong>: IPC从KM4发送到DSP</p></li>
+<li><p><strong>IPC_DSP_TO_KM4</strong>: IPC从DSP发送到KM4</p></li>
+</ul>
+</dd>
+<dt class="field-odd">&lt;IPC_Channel&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>IPC 通道， 取值范围为（0~7）</p>
+</dd>
+</dl>
+</div></blockquote>
+</li>
+<li><p>ipc 传递数据结构介绍</p>
+<blockquote>
+<div><div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="k">typedef</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">ipc_msg_struct</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">2</span><span class="w">   </span><span class="n">u32</span><span class="w"> </span><span class="n">msg_type</span><span class="p">;</span><span class="w">   </span><span class="c1">//同USER_MSG_TYPE</span>
+<span class="linenos">3</span><span class="w">   </span><span class="n">u32</span><span class="w"> </span><span class="n">msg</span><span class="p">;</span><span class="w">        </span><span class="c1">//需要传递的32bit的数据</span>
+<span class="linenos">4</span><span class="w">   </span><span class="n">u32</span><span class="w"> </span><span class="n">msg_len</span><span class="p">;</span><span class="w">    </span><span class="c1">//数据长度</span>
+<span class="linenos">5</span><span class="w">   </span><span class="n">u32</span><span class="w"> </span><span class="n">rsvd</span><span class="p">;</span>
+<span class="linenos">6</span><span class="p">}</span><span class="w"> </span><span class="n">IPC_MSG_STRUCT</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">PIPC_MSG_STRUCT</span><span class="p">,</span><span class="w"> </span><span class="n">ipc_msg_struct_t</span><span class="p">;</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p>中断回调注册（KM4侧）</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>在KM4中为从KR4到KM4的通道n添加一个新的 <code class="docutils literal notranslate"><span class="pre">IPC_INIT_TABLE</span></code>。</p></li>
+</ul>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="cm">/* 通道配置表*/</span>
+<span class="linenos"> 2</span><span class="n">IPC_TABLE_DATA_SECTION</span>
+<span class="linenos"> 3</span><span class="k">const</span><span class="w"> </span><span class="n">IPC_INIT_TABLE</span><span class="w"> </span><span class="n">ipc_chn_config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos"> 4</span><span class="w">   </span><span class="p">.</span><span class="n">msg_type</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="n">IPC_USER_POINT</span><span class="p">,</span><span class="w">     </span><span class="c1">// 消息传递方式：指针传递</span>
+<span class="linenos"> 5</span><span class="w">   </span><span class="p">.</span><span class="n">rx_func</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="n">KM4_Channeln_Handler</span><span class="p">,</span>
+<span class="linenos"> 6</span><span class="w">   </span><span class="p">.</span><span class="n">rx_irq_data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w">               </span><span class="c1">// 无附加参数</span>
+<span class="linenos"> 7</span><span class="w">   </span><span class="p">.</span><span class="n">tx_func</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="n">IPC_TXHandler</span><span class="p">,</span><span class="w">      </span><span class="c1">// 发送完成回调（SDK标准API）</span>
+<span class="linenos"> 8</span><span class="w">   </span><span class="p">.</span><span class="n">tx_irq_data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span>
+<span class="linenos"> 9</span><span class="w">   </span><span class="p">.</span><span class="n">direction</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="n">IPC_KR4_TO_KM4</span><span class="p">,</span><span class="w">     </span><span class="c1">// 方向标识</span>
+<span class="linenos">10</span><span class="w">   </span><span class="p">.</span><span class="n">channel_num</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">IPC_R2M_Channeln</span><span class="w">    </span><span class="c1">// 通道号宏定义</span>
+<span class="linenos">11</span><span class="p">};</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>SDK将自动启用IPC中断，并为该通道注册相应的IRQ处理程序和数据。在本例中，当KR4通过通道n发送IPC时，KM4将进入  <code class="xref py py-func docutils literal notranslate"><span class="pre">KM4_Channeln_Handler()</span></code> （即通道n的中断处理函数）。SDK会在IRQ退出后清除对应通道的ISR。</p></li>
+</ul>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="cm">/* KM4接收处理函数（中断上下文）*/</span>
+<span class="linenos">2</span><span class="kt">void</span><span class="w"> </span><span class="nf">KM4_Channeln_Handler</span><span class="p">(</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">data</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">3</span><span class="w">   </span><span class="n">PIPC_MSG_STRUCT</span><span class="w"> </span><span class="n">msg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ipc_get_message</span><span class="p">(</span><span class="n">IPC_KR4_TO_KM4</span><span class="p">,</span><span class="w"> </span><span class="n">IPC_R2M_Channeln</span><span class="p">);</span>
+<span class="linenos">4</span><span class="w">   </span><span class="kt">uint32_t</span><span class="w"> </span><span class="o">*</span><span class="n">sensor_data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">uint32_t</span><span class="o">*</span><span class="p">)</span><span class="n">msg</span><span class="o">-&gt;</span><span class="n">msg</span><span class="p">;</span><span class="w">  </span><span class="c1">// 提取共享内存数据</span>
+<span class="linenos">5</span><span class="w">   </span><span class="n">_memcpy</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="n">sensor_data</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">data</span><span class="p">));</span><span class="w">  </span><span class="c1">// 内存屏障保护</span>
+<span class="linenos">6</span><span class="w">   </span><span class="n">process_sensor_data</span><span class="p">(</span><span class="n">data</span><span class="p">);</span><span class="w">            </span><span class="c1">// 用户数据处理</span>
+<span class="linenos">7</span><span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><dl>
+<dt>发送端配置（KR4侧） <strong>（可选）</strong></dt><dd><ul class="simple">
+<li><p>如果有多笔数据需要发送，为了避免轮询发送状态占用cpu资源, 可以给tx 的通道n注册IRQ处理程序。我们建议将此处理函数注册为 <a class="reference external" href="https://github.com/Ameba-AIoT/ameba-rtos/blob/master/component/soc/amebalite/fwlib/ram_common/ameba_ipc_api.c">ameba_ipc_api.c</a> 中的 <code class="xref py py-func docutils literal notranslate"><span class="pre">IPC_TXHandler()</span></code> 。在此函数中，如果使能了 <code class="docutils literal notranslate"><span class="pre">config_kernel</span></code> ，则会释放通道n的信号量（tx sema），在 <code class="xref py py-func docutils literal notranslate"><span class="pre">ipc_send_message()</span></code> 中会去获取信号量，以便及时启用下一次传输并避免任务阻塞。SDK会在IRQ退出后清除对应通道的ISR。在这种情况下，需要在KR4中为从KR4到KM4的通道n添加一个新的 <code class="docutils literal notranslate"><span class="pre">IPC_INIT_TABLE</span></code>。</p></li>
+</ul>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="cm">/* KR4发送完成回调*/</span>
+<span class="linenos"> 2</span><span class="kt">void</span><span class="w"> </span><span class="nf">IPC_TXHandler</span><span class="p">(</span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">status</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos"> 3</span>
+<span class="linenos"> 4</span><span class="w">   </span><span class="n">IPC_INTConfig</span><span class="p">(</span><span class="n">IPCx</span><span class="p">,</span><span class="w"> </span><span class="n">ChanNum</span><span class="p">,</span><span class="w"> </span><span class="n">DISABLE</span><span class="p">);</span><span class="w"> </span><span class="c1">// 关闭中断</span>
+<span class="linenos"> 5</span><span class="w">   </span><span class="p">...</span>
+<span class="linenos"> 6</span><span class="w">   </span><span class="n">rtos_sema_give</span><span class="p">(</span><span class="n">tx_sema</span><span class="p">);</span><span class="w">  </span><span class="c1">// 释放信号量继续发送</span>
+<span class="linenos"> 7</span><span class="w">   </span><span class="p">...</span>
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span><span class="p">}</span>
+<span class="linenos">10</span>
+<span class="linenos">11</span><span class="cm">/* KR4发送配置表 */</span>
+<span class="linenos">12</span><span class="n">IPC_TABLE_DATA_SECTION</span>
+<span class="linenos">13</span><span class="k">const</span><span class="w"> </span><span class="n">IPC_INIT_TABLE</span><span class="w"> </span><span class="n">ipc_km0_tx_config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">14</span><span class="w">   </span><span class="p">.</span><span class="n">msg_type</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="n">IPC_USER_POINT</span><span class="p">,</span>
+<span class="linenos">15</span><span class="w">   </span><span class="p">.</span><span class="n">rx_func</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w">              </span><span class="c1">// 接收函数置空</span>
+<span class="linenos">16</span><span class="w">   </span><span class="p">.</span><span class="n">tx_func</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="n">IPC_TXHandler</span><span class="p">,</span><span class="w">    </span><span class="c1">// 发送完成回调（SDK标准API），可自定义</span>
+<span class="linenos">17</span><span class="w">   </span><span class="p">.</span><span class="n">tx_irq_data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span>
+<span class="linenos">18</span><span class="w">   </span><span class="p">.</span><span class="n">direction</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="n">IPC_KR4_TO_KM4</span><span class="p">,</span><span class="w">     </span><span class="c1">// 方向标识</span>
+<span class="linenos">19</span><span class="w">   </span><span class="p">.</span><span class="n">channel_num</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">IPC_R2M_Channeln</span><span class="w">    </span><span class="c1">// 通道号宏定义</span>
+<span class="linenos">20</span><span class="p">};</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</li>
+</ul>
+</li>
+<li><p><strong>实现数据收发</strong></p>
+<ul>
+<li><dl>
+<dt>KR4发送数据</dt><dd><ul class="simple">
+<li><p>当KR4通过通道n向KM4发送IPC请求时，应调用 <code class="xref py py-func docutils literal notranslate"><span class="pre">ipc_send_message()</span></code> 函数，并指定通道号和消息。如果不需要消息，则只需将 <code class="xref py py-func docutils literal notranslate"><span class="pre">ipc_send_message()</span></code> 的第三个参数输入为NULL。</p></li>
+</ul>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kt">void</span><span class="w"> </span><span class="nf">send_sensor_data</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span><span class="w">   </span><span class="n">IPC_MSG_STRUCT</span><span class="w"> </span><span class="n">ipc_msg_temp</span><span class="p">;</span>
+<span class="linenos"> 4</span><span class="w">   </span><span class="n">sensor_buffer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">read_sensor</span><span class="p">();</span><span class="w">  </span><span class="c1">// 更新共享内存</span>
+<span class="linenos"> 5</span>
+<span class="linenos"> 6</span><span class="w">   </span><span class="n">ipc_msg_temp</span><span class="p">.</span><span class="n">msg_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">IPC_USER_POINT</span><span class="p">;</span><span class="w"> </span><span class="c1">// 传递指针</span>
+<span class="linenos"> 7</span><span class="w">   </span><span class="n">ipc_msg_temp</span><span class="p">.</span><span class="n">msg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">u32</span><span class="p">)</span><span class="o">&amp;</span><span class="n">sensor_buffer</span><span class="p">;</span>
+<span class="linenos"> 8</span><span class="w">   </span><span class="n">ipc_msg_temp</span><span class="p">.</span><span class="n">msg_len</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w">              </span><span class="c1">// 数据长度（字节）</span>
+<span class="linenos"> 9</span><span class="w">   </span><span class="n">ipc_msg_temp</span><span class="p">.</span><span class="n">rsvd</span><span class="w"> </span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+<span class="linenos">10</span>
+<span class="linenos">11</span><span class="w">   </span><span class="cm">/* 发送共享数据(SDK标准API)， 带超时处理 */</span>
+<span class="linenos">12</span><span class="w">   </span><span class="n">ipc_send_message</span><span class="p">(</span><span class="n">IPC_KR4_TO_KM4</span><span class="p">,</span><span class="w"> </span><span class="n">IPC_R2M_Channeln</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">ipc_msg_temp</span><span class="p">);</span>
+<span class="linenos">13</span><span class="p">}</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</li>
+<li><dl>
+<dt>KM4接收处理（中断+任务协作）</dt><dd><ul class="simple">
+<li><p>在KM4通过KR4的通道n接收到IPC后，它将进入IPC中断处理程序，并执行相应的接收IRQ处理程序。如果需要获取消息，可以调用 <code class="xref py py-func docutils literal notranslate"><span class="pre">ipc_get_message()</span></code> 函数。</p></li>
+</ul>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="cm">/* 中断上下文：快速捕获数据 */</span>
+<span class="linenos"> 2</span><span class="kt">void</span><span class="w"> </span><span class="nf">KM4_Channeln_Handler</span><span class="p">(</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">data</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos"> 3</span>
+<span class="linenos"> 4</span><span class="w">   </span><span class="c1">// get message</span>
+<span class="linenos"> 5</span>
+<span class="linenos"> 6</span><span class="w">   </span><span class="n">rtos_sema_give</span><span class="p">(</span><span class="n">ipc_sema</span><span class="p">);</span><span class="w">  </span><span class="c1">// 触发任务级处理</span>
+<span class="linenos"> 7</span><span class="p">}</span>
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span><span class="cm">/* 任务上下文：数据处理 */</span>
+<span class="linenos">10</span><span class="kt">void</span><span class="w"> </span><span class="nf">ipc_task</span><span class="p">(</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">param</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">11</span><span class="w">   </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">12</span><span class="w">      </span><span class="n">rtos_sema_take</span><span class="p">(</span><span class="n">ipc_sema</span><span class="p">,</span><span class="w"> </span><span class="n">RTOS_WAIT_FOREVER</span><span class="p">);</span>
+<span class="linenos">13</span><span class="w">      </span><span class="n">data_pipeline_process</span><span class="p">(</span><span class="n">data</span><span class="p">);</span>
+<span class="linenos">14</span><span class="w">   </span><span class="p">}</span>
+<span class="linenos">15</span><span class="p">}</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</li>
+</ul>
+</li>
+</ol>
+</div><div aria-labelledby="tab-1-1-3" class="sphinx-tabs-panel" hidden="true" id="panel-1-1-3" name="1-3" role="tabpanel" tabindex="0"><ol class="arabic">
+<li><p><strong>通道选择与定义</strong></p>
+<ul>
+<li><p>操作目标：启用KM0→NP方向的通道n</p></li>
+<li><p>文件路径 : <a class="reference external" href="https://github.com/Ameba-AIoT/ameba-rtos/blob/master/component/soc/amebasmart/fwlib/include/ameba_ipc.h">ameba_ipc.h</a></p></li>
+<li><p>修改步骤：</p>
+<blockquote>
+<div><div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="cm">/* 取消通道n的注释，并添加功能描述 */</span>
+<span class="linenos">2</span><span class="cp">#define IPC_L2N_Channeln  n  </span><span class="cm">/*!&lt; 用户自定义通道：KM0→NP传感器数据传输 */</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><dl class="simple">
+<dt>注意事项：</dt><dd><ul class="simple">
+<li><p>避免使用已占用的系统通道（部分通道为WiFi/BT系统预留）</p></li>
+<li><p>通道号需在0-15范围内</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</li>
+<li><p><strong>通信协议栈注册</strong></p>
+<ul>
+<li><p>ipc 配置表介绍</p>
+<blockquote>
+<div><dl class="field-list simple">
+<dt class="field-odd">&lt;USER_MSG_TYPE&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>此参数可以是</p>
+<ul class="simple">
+<li><p><strong>IPC_USER_DATA</strong>:  当传输的数据只有32bit时, 可以直接将数据传输</p></li>
+<li><p><strong>IPC_USER_POINT</strong>: 当传输的数据大于32bit时， 将数据的地址作为指针传输</p></li>
+</ul>
+</dd>
+<dt class="field-even">&lt;RxFunc&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>CPU接收IPC后执行的回调函数</p>
+</dd>
+<dt class="field-odd">&lt;RxIrqData&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>传递给接收回调函数的参数</p>
+</dd>
+<dt class="field-even">&lt;TxFunc&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>CPU在发送IPC后执行的回调函数</p>
+</dd>
+<dt class="field-odd">&lt;TxIrqData&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>传递给发送回调函数的参数</p>
+</dd>
+<dt class="field-even">&lt;IPC_Direction&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>此参数可以是</p>
+<ul class="simple">
+<li><p><strong>IPC_LP_TO_NP</strong>: IPC从KM0发送到NP</p></li>
+<li><p><strong>IPC_NP_TO_LP</strong>: IPC从NP发送到KM0</p></li>
+<li><p><strong>IPC_LP_TO_AP</strong>: IPC从KM0发送到AP</p></li>
+<li><p><strong>IPC_AP_TO_LP</strong>: IPC从AP发送到KM0</p></li>
+<li><p><strong>IPC_AP_TO_NP</strong>: IPC从AP发送到NP</p></li>
+<li><p><strong>IPC_NP_TO_AP</strong>: IPC从NP发送到AP</p></li>
+</ul>
+</dd>
+<dt class="field-odd">&lt;IPC_Channel&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>IPC 通道， 取值范围为（0~15）</p>
+</dd>
+</dl>
+</div></blockquote>
+</li>
+<li><p>ipc 传递数据结构介绍</p>
+<blockquote>
+<div><div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="k">typedef</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">ipc_msg_struct</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">2</span><span class="w">   </span><span class="n">u32</span><span class="w"> </span><span class="n">msg_type</span><span class="p">;</span><span class="w">   </span><span class="c1">//同USER_MSG_TYPE</span>
+<span class="linenos">3</span><span class="w">   </span><span class="n">u32</span><span class="w"> </span><span class="n">msg</span><span class="p">;</span><span class="w">        </span><span class="c1">//需要传递的32bit的数据</span>
+<span class="linenos">4</span><span class="w">   </span><span class="n">u32</span><span class="w"> </span><span class="n">msg_len</span><span class="p">;</span><span class="w">    </span><span class="c1">//数据长度</span>
+<span class="linenos">5</span><span class="w">   </span><span class="n">u32</span><span class="w"> </span><span class="n">rsvd</span><span class="p">;</span>
+<span class="linenos">6</span><span class="p">}</span><span class="w"> </span><span class="n">IPC_MSG_STRUCT</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">PIPC_MSG_STRUCT</span><span class="p">,</span><span class="w"> </span><span class="n">ipc_msg_struct_t</span><span class="p">;</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p>中断回调注册（NP侧）</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>在NP中为从KM0到NP的通道n添加一个新的 <code class="docutils literal notranslate"><span class="pre">IPC_INIT_TABLE</span></code>。</p></li>
+</ul>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="cm">/* 通道配置表*/</span>
+<span class="linenos"> 2</span><span class="n">IPC_TABLE_DATA_SECTION</span>
+<span class="linenos"> 3</span><span class="k">const</span><span class="w"> </span><span class="n">IPC_INIT_TABLE</span><span class="w"> </span><span class="n">ipc_chn_config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos"> 4</span><span class="w">   </span><span class="p">.</span><span class="n">msg_type</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="n">IPC_USER_POINT</span><span class="p">,</span><span class="w">     </span><span class="c1">// 消息传递方式：指针传递</span>
+<span class="linenos"> 5</span><span class="w">   </span><span class="p">.</span><span class="n">rx_func</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="n">NP_Channeln_Handler</span><span class="p">,</span>
+<span class="linenos"> 6</span><span class="w">   </span><span class="p">.</span><span class="n">rx_irq_data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w">               </span><span class="c1">// 无附加参数</span>
+<span class="linenos"> 7</span><span class="w">   </span><span class="p">.</span><span class="n">tx_func</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="n">IPC_TXHandler</span><span class="p">,</span><span class="w">      </span><span class="c1">// 发送完成回调（SDK标准API）</span>
+<span class="linenos"> 8</span><span class="w">   </span><span class="p">.</span><span class="n">tx_irq_data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span>
+<span class="linenos"> 9</span><span class="w">   </span><span class="p">.</span><span class="n">direction</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="n">IPC_KM0_TO_NP</span><span class="p">,</span><span class="w">     </span><span class="c1">// 方向标识</span>
+<span class="linenos">10</span><span class="w">   </span><span class="p">.</span><span class="n">channel_num</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">IPC_L2N_Channeln</span><span class="w">    </span><span class="c1">// 通道号宏定义</span>
+<span class="linenos">11</span><span class="p">};</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>SDK将自动启用IPC中断，并为该通道注册相应的IRQ处理程序和数据。在本例中，当KM0通过通道n发送IPC时，NP将进入  <code class="xref py py-func docutils literal notranslate"><span class="pre">NP_Channeln_Handler()</span></code> （即通道n的中断处理函数）。SDK会在IRQ退出后清除对应通道的ISR。</p></li>
+</ul>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="cm">/* NP接收处理函数（中断上下文）*/</span>
+<span class="linenos">2</span><span class="kt">void</span><span class="w"> </span><span class="nf">NP_Channeln_Handler</span><span class="p">(</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">data</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">3</span><span class="w">   </span><span class="n">PIPC_MSG_STRUCT</span><span class="w"> </span><span class="n">msg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ipc_get_message</span><span class="p">(</span><span class="n">IPC_KM0_TO_NP</span><span class="p">,</span><span class="w"> </span><span class="n">IPC_L2N_Channeln</span><span class="p">);</span>
+<span class="linenos">4</span><span class="w">   </span><span class="kt">uint32_t</span><span class="w"> </span><span class="o">*</span><span class="n">sensor_data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">uint32_t</span><span class="o">*</span><span class="p">)</span><span class="n">msg</span><span class="o">-&gt;</span><span class="n">msg</span><span class="p">;</span><span class="w">  </span><span class="c1">// 提取共享内存数据</span>
+<span class="linenos">5</span><span class="w">   </span><span class="n">_memcpy</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="n">sensor_data</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">data</span><span class="p">));</span><span class="w">  </span><span class="c1">// 内存屏障保护</span>
+<span class="linenos">6</span><span class="w">   </span><span class="n">process_sensor_data</span><span class="p">(</span><span class="n">data</span><span class="p">);</span><span class="w">            </span><span class="c1">// 用户数据处理</span>
+<span class="linenos">7</span><span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><dl>
+<dt>发送端配置（KM0侧） <strong>（可选）</strong></dt><dd><ul class="simple">
+<li><p>如果有多笔数据需要发送，为了避免轮询发送状态占用cpu资源, 可以给tx 的通道n注册IRQ处理程序。我们建议将此处理函数注册为 <a class="reference external" href="https://github.com/Ameba-AIoT/ameba-rtos/blob/master/component/soc/amebasmart/fwlib/ram_common/ameba_ipc_api.c">ameba_ipc_api.c</a> 中的 <code class="xref py py-func docutils literal notranslate"><span class="pre">IPC_TXHandler()</span></code> 。在此函数中，如果使能了 <code class="docutils literal notranslate"><span class="pre">config_kernel</span></code> ，则会释放通道n的信号量（tx sema），在 <code class="xref py py-func docutils literal notranslate"><span class="pre">ipc_send_message()</span></code> 中会去获取信号量，以便及时启用下一次传输并避免任务阻塞。SDK会在IRQ退出后清除对应通道的ISR。在这种情况下，需要在KM0中为从KM0到NP的通道n添加一个新的 <code class="docutils literal notranslate"><span class="pre">IPC_INIT_TABLE</span></code>。</p></li>
+</ul>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="cm">/* KM0发送完成回调*/</span>
+<span class="linenos"> 2</span><span class="kt">void</span><span class="w"> </span><span class="nf">IPC_TXHandler</span><span class="p">(</span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">status</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos"> 3</span>
+<span class="linenos"> 4</span><span class="w">   </span><span class="n">IPC_INTConfig</span><span class="p">(</span><span class="n">IPCx</span><span class="p">,</span><span class="w"> </span><span class="n">ChanNum</span><span class="p">,</span><span class="w"> </span><span class="n">DISABLE</span><span class="p">);</span><span class="w"> </span><span class="c1">// 关闭中断</span>
+<span class="linenos"> 5</span><span class="w">   </span><span class="p">...</span>
+<span class="linenos"> 6</span><span class="w">   </span><span class="n">rtos_sema_give</span><span class="p">(</span><span class="n">tx_sema</span><span class="p">);</span><span class="w">  </span><span class="c1">// 释放信号量继续发送</span>
+<span class="linenos"> 7</span><span class="w">   </span><span class="p">...</span>
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span><span class="p">}</span>
+<span class="linenos">10</span>
+<span class="linenos">11</span><span class="cm">/* KM0发送配置表 */</span>
+<span class="linenos">12</span><span class="n">IPC_TABLE_DATA_SECTION</span>
+<span class="linenos">13</span><span class="k">const</span><span class="w"> </span><span class="n">IPC_INIT_TABLE</span><span class="w"> </span><span class="n">ipc_km0_tx_config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">14</span><span class="w">   </span><span class="p">.</span><span class="n">msg_type</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="n">IPC_USER_POINT</span><span class="p">,</span>
+<span class="linenos">15</span><span class="w">   </span><span class="p">.</span><span class="n">rx_func</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w">              </span><span class="c1">// 接收函数置空</span>
+<span class="linenos">16</span><span class="w">   </span><span class="p">.</span><span class="n">tx_func</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="n">IPC_TXHandler</span><span class="p">,</span><span class="w">    </span><span class="c1">// 发送完成回调（SDK标准API），可自定义</span>
+<span class="linenos">17</span><span class="w">   </span><span class="p">.</span><span class="n">tx_irq_data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span>
+<span class="linenos">18</span><span class="w">   </span><span class="p">.</span><span class="n">direction</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="n">IPC_KM0_TO_NP</span><span class="p">,</span><span class="w">     </span><span class="c1">// 方向标识</span>
+<span class="linenos">19</span><span class="w">   </span><span class="p">.</span><span class="n">channel_num</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">IPC_L2N_Channeln</span><span class="w">    </span><span class="c1">// 通道号宏定义</span>
+<span class="linenos">20</span><span class="p">};</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</li>
+</ul>
+</li>
+<li><p><strong>实现数据收发</strong></p>
+<ul>
+<li><dl>
+<dt>KM0发送数据</dt><dd><ul class="simple">
+<li><p>当KM0通过通道n向NP发送IPC请求时，应调用 <code class="xref py py-func docutils literal notranslate"><span class="pre">ipc_send_message()</span></code> 函数，并指定通道号和消息。如果不需要消息，则只需将 <code class="xref py py-func docutils literal notranslate"><span class="pre">ipc_send_message()</span></code> 的第三个参数输入为NULL。</p></li>
+</ul>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kt">void</span><span class="w"> </span><span class="nf">send_sensor_data</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span><span class="w">   </span><span class="n">IPC_MSG_STRUCT</span><span class="w"> </span><span class="n">ipc_msg_temp</span><span class="p">;</span>
+<span class="linenos"> 4</span><span class="w">   </span><span class="n">sensor_buffer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">read_sensor</span><span class="p">();</span><span class="w">  </span><span class="c1">// 更新共享内存</span>
+<span class="linenos"> 5</span>
+<span class="linenos"> 6</span><span class="w">   </span><span class="n">ipc_msg_temp</span><span class="p">.</span><span class="n">msg_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">IPC_USER_POINT</span><span class="p">;</span><span class="w"> </span><span class="c1">// 传递指针</span>
+<span class="linenos"> 7</span><span class="w">   </span><span class="n">ipc_msg_temp</span><span class="p">.</span><span class="n">msg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">u32</span><span class="p">)</span><span class="o">&amp;</span><span class="n">sensor_buffer</span><span class="p">;</span>
+<span class="linenos"> 8</span><span class="w">   </span><span class="n">ipc_msg_temp</span><span class="p">.</span><span class="n">msg_len</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w">              </span><span class="c1">// 数据长度（字节）</span>
+<span class="linenos"> 9</span><span class="w">   </span><span class="n">ipc_msg_temp</span><span class="p">.</span><span class="n">rsvd</span><span class="w"> </span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+<span class="linenos">10</span>
+<span class="linenos">11</span><span class="w">   </span><span class="cm">/* 发送共享数据(SDK标准API)， 带超时处理 */</span>
+<span class="linenos">12</span><span class="w">   </span><span class="n">ipc_send_message</span><span class="p">(</span><span class="n">IPC_KM0_TO_NP</span><span class="p">,</span><span class="w"> </span><span class="n">IPC_L2N_Channeln</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">ipc_msg_temp</span><span class="p">);</span>
+<span class="linenos">13</span><span class="p">}</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</li>
+<li><dl>
+<dt>NP接收处理（中断+任务协作）</dt><dd><ul class="simple">
+<li><p>在NP通过KM0的通道n接收到IPC后，它将进入IPC中断处理程序，并执行相应的接收IRQ处理程序。如果需要获取消息，可以调用 <code class="xref py py-func docutils literal notranslate"><span class="pre">ipc_get_message()</span></code> 函数。</p></li>
+</ul>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="cm">/* 中断上下文：快速捕获数据 */</span>
+<span class="linenos"> 2</span><span class="kt">void</span><span class="w"> </span><span class="nf">NP_Channeln_Handler</span><span class="p">(</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">data</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos"> 3</span>
+<span class="linenos"> 4</span><span class="w">   </span><span class="c1">// get message</span>
+<span class="linenos"> 5</span>
+<span class="linenos"> 6</span><span class="w">   </span><span class="n">rtos_sema_give</span><span class="p">(</span><span class="n">ipc_sema</span><span class="p">);</span><span class="w">  </span><span class="c1">// 触发任务级处理</span>
+<span class="linenos"> 7</span><span class="p">}</span>
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span><span class="cm">/* 任务上下文：数据处理 */</span>
+<span class="linenos">10</span><span class="kt">void</span><span class="w"> </span><span class="nf">ipc_task</span><span class="p">(</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">param</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">11</span><span class="w">   </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">12</span><span class="w">      </span><span class="n">rtos_sema_take</span><span class="p">(</span><span class="n">ipc_sema</span><span class="p">,</span><span class="w"> </span><span class="n">RTOS_WAIT_FOREVER</span><span class="p">);</span>
+<span class="linenos">13</span><span class="w">      </span><span class="n">data_pipeline_process</span><span class="p">(</span><span class="n">data</span><span class="p">);</span>
+<span class="linenos">14</span><span class="w">   </span><span class="p">}</span>
+<span class="linenos">15</span><span class="p">}</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</li>
+</ul>
+</li>
+</ol>
+</div></div>
+</section>
+<section id="id4">
+<h1>IPC 常见问题排查<a class="headerlink" href="#id4" title="Link to this heading"></a></h1>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"></div><table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>现象</p></th>
+<th class="head"><p>原因</p></th>
+<th class="head"><p>解决方法</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>通道冲突</p></td>
+<td><p>为同一个通道注册了两个IRQ(中断请求)</p></td>
+<td><p>检查通道是否重复注册</p></td>
+</tr>
+<tr class="row-odd"><td><p>发送IPC超时</p></td>
+<td><ol class="arabic simple">
+<li><p>多个线程连续通过同一个通道发送IPC</p></li>
+</ol>
+</td>
+<td><p>为tx empty注册中断处理函数， 在通道忙碌时通过等待os semaphore 让出调度， 避免死等</p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><ol class="arabic simple" start="2">
+<li><p>rx端收数据过慢</p></li>
+</ol>
+</td>
+<td><p>检查rx端收数据通路是否正常</p></td>
+</tr>
+<tr class="row-odd"><td><p>IPC获取信号量超时</p></td>
+<td><ol class="arabic simple">
+<li><p>多个线程连续通过同一个通道发送IPC</p></li>
+</ol>
+</td>
+<td><p>避免大于2个线程同时使用同一个通道</p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><ol class="arabic simple" start="2">
+<li><p>rx端收数据过慢</p></li>
+</ol>
+</td>
+<td><p>检查rx端收数据通路是否正常</p></td>
+</tr>
+<tr class="row-odd"><td><p>rx端无响应</p></td>
+<td><ol class="arabic simple">
+<li><p>rx端中断未使能</p></li>
+</ol>
+</td>
+<td><p>使用InterruptRegister为IPC开启中断, 调用IPC_INTConfig, 开启相应通道中断。</p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><ol class="arabic simple" start="2">
+<li><p>通道方向配置错误</p></li>
+</ol>
+</td>
+<td><p>检查IPC_INIT_TABLE的direction字段</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="id5">
+<h1>IPC 应用层使用说明<a class="headerlink" href="#id5" title="Link to this heading"></a></h1>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-3-3-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-3-3-0" name="3-0" role="tab" tabindex="0">RTL8726E</button><button aria-controls="panel-3-3-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-3-3-1" name="3-1" role="tab" tabindex="-1">RTL8720E</button></div><div aria-labelledby="tab-3-3-0" class="sphinx-tabs-panel" id="panel-3-3-0" name="3-0" role="tabpanel" tabindex="0"><p><strong>Introduction</strong></p>
+<p>IPC queue is designed for cores communication. Define an IPC queue between every two cores, and the two cores can send and receive messages through this IPC queue.</p>
+<p>IPC Message Queue:</p>
+<ol class="arabic simple">
+<li><p>Packets send data from Core A to Core B through IPC message queue.</p></li>
+<li><p>Sender copy a complete packet into queue.</p></li>
+<li><p>Receiver copy packet with custom size from queue.</p></li>
+</ol>
+<p>For receiver, IPC interrupt is necessary.</p>
+<figure class="align-center" id="id20">
+<a class="reference internal image-reference" href="../../_images/ipc_message_queue_block_diagram_lite.svg"><img alt="../../_images/ipc_message_queue_block_diagram_lite.svg" height="179" src="../../_images/ipc_message_queue_block_diagram_lite.svg" width="709" /></a>
+<figcaption>
+<p><span class="caption-text">IPC Message Queue block diagram</span><a class="headerlink" href="#id20" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p><strong>How to Use IPC Application</strong></p>
+<p>Before use IPC application, users should enable this function and initial it in each core.</p>
+<ul class="simple">
+<li><p>For KM4: <span class="menuselection">make menuconfig &gt; MENUCONFIG FOR KM4 CONFIG &gt; CONFIG IPC Message Queue &gt; Enable IPC Message Queue</span></p></li>
+<li><p>For KR4: <span class="menuselection">make menuconfig &gt; MENUCONFIG FOR KR4 CONFIG &gt; CONFIG IPC Message Queue &gt; Enable IPC Message Queue</span></p></li>
+<li><p>For DSP: Open project_dsp with Xplorer, then click <span class="menuselection">project_dsp &gt; Build Properties &gt; Symbols</span>, and set <span class="guilabel">CONFIG_RPC_EN</span> to 1</p></li>
+</ul>
+<p>The procedure will call <code class="xref py py-func docutils literal notranslate"><span class="pre">ipc_app_init()</span></code> in <code class="xref py py-func docutils literal notranslate"><span class="pre">main()</span></code> to initial IPC application when IPC application is enabled. The initialization include IPC queue initialization.</p>
+<p><strong>How to Use IPC Queue</strong></p>
+<p>For example, communication between KM4 and KR4 through <code class="docutils literal notranslate"><span class="pre">IPC_ID_KR4_TO_KM4</span></code>.</p>
+<ol class="arabic">
+<li><p><code class="docutils literal notranslate"><span class="pre">IPC_ID_KR4_TO_KM4</span></code> definition in enumeration <code class="docutils literal notranslate"><span class="pre">IPC_ID</span></code> in <code class="file docutils literal notranslate"><span class="pre">ipc.h</span></code> is shown below. This definition is used in <a class="reference internal" href="#e-how-to-use-ipc-queue-step-2"><span class="std std-ref">Stap 2</span></a>.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="k">enum</span><span class="w"> </span><span class="p">{</span>
+<span class="hll"><span class="w">   </span><span class="n">IPC_ID_KR4_TO_KM4</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+</span><span class="w">   </span><span class="n">IPC_ID_KM4_TO_KR4</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">   </span><span class="n">IPC_ID_KR4_TO_DSP</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+<span class="w">   </span><span class="n">IPC_ID_DSP_TO_KR4</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span>
+<span class="w">   </span><span class="n">IPC_ID_DSP_TO_KM4</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span>
+<span class="w">   </span><span class="n">IPC_ID_KM4_TO_DSP</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span>
+<span class="w">   </span><span class="cm">/*14-19 used for RPC*/</span>
+<span class="w">   </span><span class="n">IPC_ID_NUM</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="mi">20</span>
+<span class="p">}</span><span class="w"> </span><span class="n">IPC_ID</span><span class="p">;</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<ol class="arabic" id="e-how-to-use-ipc-queue-step-2" start="2">
+<li><p>When KR4 sends a message to KM4 through <code class="docutils literal notranslate"><span class="pre">IPC_ID_KR4_TO_KM4</span></code>, it should call <code class="xref py py-func docutils literal notranslate"><span class="pre">IPC_Message_Queue_Send()</span></code> and specify the queue ID and message.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int32_t</span><span class="w"> </span><span class="n">ret</span><span class="w"> </span><span class="o">=</span><span class="w">  </span><span class="n">IPC_Message_Queue_Send</span><span class="p">(</span><span class="n">IPC_ID_KR4_TO_KM4</span><span class="p">,</span><span class="w"> </span><span class="n">buf</span><span class="p">,</span><span class="w"> </span><span class="n">IMQ_BUF_SIZE</span><span class="p">,</span><span class="w"> </span><span class="n">WAIT_FOREVER</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+<li><p>When KM4 receives a message from KR4 through IPC_ID_KR4_TO_KM4, it should call <code class="xref py py-func docutils literal notranslate"><span class="pre">IPC_Message_Queue_Recv()</span></code> and the queue ID and a buffer to receive message.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">IMQ_BUF_SIZE</span><span class="p">;</span>
+<span class="kt">int32_t</span><span class="w"> </span><span class="n">ret</span><span class="w"> </span><span class="o">=</span><span class="w">  </span><span class="n">IPC_Message_Queue_Recv</span><span class="p">(</span><span class="n">IPC_ID_KR4_TO_KM4</span><span class="p">,</span><span class="w"> </span><span class="n">buf</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">size</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<ul class="simple">
+<li><p>The memory regions are only defined in AP core, the maximum data region is 40kB.</p></li>
+<li><p>Users can use default test demo to verify IPC queue by command <code class="docutils literal notranslate"><span class="pre">test_ipc_message</span></code> in console both in KR4 and KM4.</p></li>
+</ul>
+</div>
+</div><div aria-labelledby="tab-3-3-1" class="sphinx-tabs-panel" hidden="true" id="panel-3-3-1" name="3-1" role="tabpanel" tabindex="0"><p><strong>Introduction</strong></p>
+<p>IPC queue is designed for cores communication. Define an IPC queue between every two cores, and the two cores can send and receive messages through this IPC queue.</p>
+<p>IPC Message Queue:</p>
+<ol class="arabic simple">
+<li><p>Packets send data from Core A to Core B through IPC message queue.</p></li>
+<li><p>Sender copy a complete packet into queue.</p></li>
+<li><p>Receiver copy packet with custom size from queue.</p></li>
+</ol>
+<p>For receiver, IPC interrupt is necessary.</p>
+<figure class="align-center" id="id21">
+<a class="reference internal image-reference" href="../../_images/ipc_message_queue_block_diagram_lite.svg"><img alt="../../_images/ipc_message_queue_block_diagram_lite.svg" height="179" src="../../_images/ipc_message_queue_block_diagram_lite.svg" width="709" /></a>
+<figcaption>
+<p><span class="caption-text">IPC Message Queue block diagram</span><a class="headerlink" href="#id21" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p><strong>How to Use IPC Application</strong></p>
+<p>Before use IPC application, users should enable this function and initial it in each core.</p>
+<ul class="simple">
+<li><p>For KM4: <span class="menuselection">make menuconfig &gt; MENUCONFIG FOR KM4 CONFIG &gt; CONFIG IPC Message Queue &gt; Enable IPC Message Queue</span></p></li>
+<li><p>For KR4: <span class="menuselection">make menuconfig &gt; MENUCONFIG FOR KR4 CONFIG &gt; CONFIG IPC Message Queue &gt; Enable IPC Message Queue</span></p></li>
+</ul>
+<p>The procedure will call <code class="xref py py-func docutils literal notranslate"><span class="pre">ipc_app_init()</span></code> in <code class="xref py py-func docutils literal notranslate"><span class="pre">main()</span></code> to initial IPC application when IPC application is enabled. The initialization include IPC queue initialization.</p>
+<p><strong>How to Use IPC Queue</strong></p>
+<p>For example, communication between KM4 and KR4 through <code class="docutils literal notranslate"><span class="pre">IPC_ID_KR4_TO_KM4</span></code>.</p>
+<ol class="arabic">
+<li><p><code class="docutils literal notranslate"><span class="pre">IPC_ID_KR4_TO_KM4</span></code> definition in enumeration <code class="docutils literal notranslate"><span class="pre">IPC_ID</span></code> in <code class="file docutils literal notranslate"><span class="pre">ipc.h</span></code> is shown below. This definition is used in <a class="reference internal" href="#id6"><span class="std std-ref">Stap 2</span></a>.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="k">enum</span><span class="w"> </span><span class="p">{</span>
+<span class="hll"><span class="w">   </span><span class="n">IPC_ID_KR4_TO_KM4</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+</span><span class="w">   </span><span class="n">IPC_ID_KM4_TO_KR4</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">   </span><span class="cm">/*14-19 used for RPC*/</span>
+<span class="w">   </span><span class="n">IPC_ID_NUM</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="mi">20</span>
+<span class="p">}</span><span class="w"> </span><span class="n">IPC_ID</span><span class="p">;</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<ol class="arabic" id="id6" start="2">
+<li><p>When KR4 sends a message to KM4 through <code class="docutils literal notranslate"><span class="pre">IPC_ID_KR4_TO_KM4</span></code>, it should call <code class="xref py py-func docutils literal notranslate"><span class="pre">IPC_Message_Queue_Send()</span></code> and specify the queue ID and message.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int32_t</span><span class="w"> </span><span class="n">ret</span><span class="w"> </span><span class="o">=</span><span class="w">  </span><span class="n">IPC_Message_Queue_Send</span><span class="p">(</span><span class="n">IPC_ID_KR4_TO_KM4</span><span class="p">,</span><span class="w"> </span><span class="n">buf</span><span class="p">,</span><span class="w"> </span><span class="n">IMQ_BUF_SIZE</span><span class="p">,</span><span class="w"> </span><span class="n">WAIT_FOREVER</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+<li><p>When KM4 receives a message from KR4 through IPC_ID_KR4_TO_KM4, it should call <code class="xref py py-func docutils literal notranslate"><span class="pre">IPC_Message_Queue_Recv()</span></code> and the queue ID and a buffer to receive message.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">IMQ_BUF_SIZE</span><span class="p">;</span>
+<span class="kt">int32_t</span><span class="w"> </span><span class="n">ret</span><span class="w"> </span><span class="o">=</span><span class="w">  </span><span class="n">IPC_Message_Queue_Recv</span><span class="p">(</span><span class="n">IPC_ID_KR4_TO_KM4</span><span class="p">,</span><span class="w"> </span><span class="n">buf</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">size</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<ul class="simple">
+<li><p>The memory regions are only defined in AP core, the maximum data region is 40kB.</p></li>
+<li><p>Users can use default test demo to verify IPC queue by command <code class="docutils literal notranslate"><span class="pre">test_ipc_message</span></code> in console both in KR4 and KM4.</p></li>
+</ul>
+</div>
+</div></div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="0_ipc_index_cn.html" class="btn btn-neutral float-left" title="核间通信 (IPC)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="../1_pinmux/0_pinmux_index_cn.html" class="btn btn-neutral float-right" title="引脚复用" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2025, Realsil。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+    <!-- 问题反馈按钮和对话框 -->
+    
+    <div id="feedback-dialog" class="feedback-dialog" style="display: none;">
+        <p>Please describe your issue:</p>
+        <textarea id="feedback-text" placeholder="Feature enhancement in progress, please stay tuned..."></textarea>
+        <button id="submit-feedback">Submit</button>
+        <button id="cancel-feedback">Cancel</button>
+    </div>
+
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+     
+    
+
+
+</body>
+</html>
