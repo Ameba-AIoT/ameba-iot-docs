@@ -10,9 +10,9 @@
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
-      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=5f2c7a6f" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=536412e7" />
       <link rel="stylesheet" type="text/css" href="../../_static/tabs.css?v=a5c4661c" />
-      <link rel="stylesheet" type="text/css" href="../../_static/_static/custom.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=536412e7" />
 
   
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
@@ -41,8 +41,8 @@
     <link rel="next" title="官方发布的固件" href="at_command_image_cn.html" />
     <link rel="prev" title="AT 命令集" href="0_at_command_index_cn.html" />
      
-    
-    <script type="text/javascript" src="../../_static/js/selector.js"></script>
+
+    <!-- NDA文档输入密码的框 -->
     
 <script>
 // ▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼ 多语言配置 ▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼
@@ -162,6 +162,119 @@ const i18n = {
     
     
 </style>
+    <style>
+    /* ====================== 选择器样式 ====================== */
+    /* 选择器容器 */
+    .selector-container {
+        margin: 8px 0;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+    }
+    
+    /* 版本选择器特殊边距 */
+    .version-selector-container {
+        margin-bottom: 8px !important;
+    }
+    
+    /* 选择器标签 */
+    .selector-label {
+        color: white;
+        margin-right: 10px;
+        width: 80px;
+        text-align: right;
+        font-size: 0.9em;
+    }
+    
+    /* 下拉选择框 */
+    .selector-dropdown {
+        width: 120px;
+        border-radius: 2px;
+        padding: 4px 8px;
+        border: 1px solid #405261;
+        background: #2c3e50;
+        color: white;
+        font-size: 0.9em;
+    }
+    
+    /* 下拉选择框悬停效果 */
+    .selector-dropdown:hover {
+        border-color: #3498db;
+        transition: border-color 0.3s;
+    }
+    
+    /* 选择器响应式布局 */
+    @media (max-width: 768px) {
+        .selector-container {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        
+        .selector-label {
+            width: 100%;
+            text-align: left;
+            margin-bottom: 4px;
+        }
+        
+        .selector-dropdown {
+            width: 100%;
+        }
+    }
+</style>
+    <style>
+/* =============== 左上角登录区域  =============== */
+/* ================= 用户面板 ================= */
+.user-panel {
+    padding: 15px;
+    background: #34495e;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.username {
+    color: #fff;
+    font-weight: 500;
+    font-size: 1.1em;
+    text-align: center;
+    margin: 10px 0;
+}
+
+/* ================= 按钮容器 ================= */
+.button-row {
+    display: flex;
+    gap: 8px;
+    width: 100%;
+    margin: 10px 0;
+}
+
+/* 通用按钮样式 */
+.auth-btn, .forum-btn, .official-btn {
+    flex: 1;
+    padding: 8px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: opacity 0.3s;
+    text-align: center;
+    color: white !important;
+}
+
+/* 认证按钮 */
+.auth-btn {
+    background: #3498db;
+}
+
+/* 论坛按钮 */
+.forum-btn {
+    background: #9b59b6; /* 与参考代码的官方按钮同色 */
+}
+
+/* 官网按钮 */
+.official-btn {
+    background: #2ecc71; /* 与参考代码文档按钮同色 */
+}
+/* =============== 左上角登录区域  =============== */
+</style>
 
     <!-- 注入 TOC 映射和当前页面信息 -->
     
@@ -169,7 +282,7 @@ const i18n = {
 <!-- TOC 映射和当前文档信息 -->
 <script>
 // 将 Python 字典转换为 JS 对象
-const TOC_TITLE_MAP = {"rst_rtos/0_ameba_product": "\u4ea7\u54c1\u4e2d\u5fc3", "rst_rtos/0_ameba_product/0_ameba_product_center_index_cn": "\u4ea7\u54c1\u4e2d\u5fc3", "rst_rtos/0_ameba_sdk": "Ameba SDK", "rst_rtos/0_ameba_sdk/0_ameba_sdks_index_cn": "Ameba SDK", "rst_rtos/0_ameba_solutions": "\u89e3\u51b3\u65b9\u6848", "rst_rtos/0_ameba_solutions/0_ameba_solutions_index_cn": "\u89e3\u51b3\u65b9\u6848", "rst_rtos/0_at_command": "0.8 AT \u547d\u4ee4\u96c6", "rst_rtos/0_at_command/0_at_command_index_cn": "0.8 AT \u547d\u4ee4\u96c6", "rst_rtos/0_file_system": "0.9 \u865a\u62df\u6587\u4ef6\u7cfb\u7edf", "rst_rtos/0_file_system/0_vfs_index_cn": "0.9 \u865a\u62df\u6587\u4ef6\u7cfb\u7edf", "rst_rtos/0_ftl": "0.A Flash \u8f6c\u6362\u5c42", "rst_rtos/0_ftl/0_ftl_index_cn": "0.A Flash \u8f6c\u6362\u5c42", "rst_rtos/0_gcc_build_environment": "0.1 GCC \u7f16\u8bd1\u73af\u5883", "rst_rtos/0_gcc_build_environment/0_gcc_build_index_cn": "0.1 GCC \u7f16\u8bd1\u73af\u5883", "rst_rtos/0_gcc_build_library": "0.3 GCC \u5e93\u7684\u751f\u6210\u548c\u4f7f\u7528", "rst_rtos/0_gcc_build_library/0_gcc_build_library_index_cn": "0.3 GCC \u5e93\u7684\u751f\u6210\u548c\u4f7f\u7528", "rst_rtos/0_gdb_debug": "0.2 GDB\u8c03\u8bd5", "rst_rtos/0_gdb_debug/0_gdb_debug_index_cn": "0.2 GDB\u8c03\u8bd5", "rst_rtos/0_memory_layout": "0.5 Flash \u548c RAM \u5e03\u5c40", "rst_rtos/0_memory_layout/0_layout_index_cn": "0.5 Flash \u548c RAM \u5e03\u5c40", "rst_rtos/0_sdk_example": "0.4 SDK \u793a\u4f8b", "rst_rtos/0_sdk_example/0_sdk_example_index_cn": "0.4 SDK \u793a\u4f8b", "rst_rtos/0_tools": "0.7 \u5de5\u5177", "rst_rtos/0_tools/0_tools_index_cn": "0.7 \u5de5\u5177", "rst_rtos/0_user_config": "0.6 \u5f00\u53d1\u8005\u914d\u7f6e", "rst_rtos/0_user_config/0_usrcfg_index_cn": "0.6 \u5f00\u53d1\u8005\u914d\u7f6e", "rst_rtos/1_boot_process": "1.1 \u542f\u52a8\u8fc7\u7a0b", "rst_rtos/1_boot_process/0_boot_index_cn": "1.1 \u542f\u52a8\u8fc7\u7a0b", "rst_rtos/1_chipen": "1.4 CHIP_EN", "rst_rtos/1_chipen/0_chipen_index_cn": "1.4 CHIP_EN", "rst_rtos/1_gpio": "1.7 GPIO\u548c\u5f15\u811a\u63a7\u5236", "rst_rtos/1_gpio/0_gpio_index_cn": "1.7 GPIO\u548c\u5f15\u811a\u63a7\u5236", "rst_rtos/1_ipc": "1.5 \u6838\u95f4\u901a\u4fe1", "rst_rtos/1_ipc/0_ipc_index_cn": "1.5 \u6838\u95f4\u901a\u4fe1", "rst_rtos/1_mpu_cache": "1.0 \u5185\u5b58\u4fdd\u62a4\u5355\u5143\u548c\u7f13\u5b58", "rst_rtos/1_mpu_cache/0_mpu_cache_index_cn": "1.0 \u5185\u5b58\u4fdd\u62a4\u5355\u5143\u548c\u7f13\u5b58", "rst_rtos/1_ota": "1.2 \u56fa\u4ef6\u5728\u7ebf\u5347\u7ea7(OTA)", "rst_rtos/1_ota/0_ota_index_cn": "1.2 \u56fa\u4ef6\u5728\u7ebf\u5347\u7ea7(OTA)", "rst_rtos/1_otpc": "1.3 OTP\u5b58\u50a8\u5668", "rst_rtos/1_otpc/0_otpc_index": "1.3 OTP\u5b58\u50a8\u5668", "rst_rtos/1_pinmux": "1.6 \u5f15\u811a\u590d\u7528", "rst_rtos/1_pinmux/0_pinmux_index_cn": "1.6 \u5f15\u811a\u590d\u7528", "rst_rtos/1_power_save": "1.9 \u4f4e\u529f\u8017\u5f00\u53d1", "rst_rtos/1_power_save/0_ps_index_cn": "1.9 \u4f4e\u529f\u8017\u5f00\u53d1", "rst_rtos/2_whc_fullmac": "2.2 WHC FullMAC", "rst_rtos/2_whc_fullmac/0_fullmac_index_cn": "2.2 WHC FullMAC", "rst_rtos/2_whc_wifi_bridge": "2.1 WHC Bridge", "rst_rtos/2_whc_wifi_bridge/0_wifi_bridge_index_cn": "2.1 WHC Bridge", "rst_rtos/2_wifi_adaptivity_test": "2.6 Wi-Fi Adaptivity \u6d4b\u8bd5\u6307\u5357", "rst_rtos/2_wifi_adaptivity_test/0_wifi_adaptivity_index": "2.6 Wi-Fi Adaptivity \u6d4b\u8bd5\u6307\u5357", "rst_rtos/2_wifi_csi": "2.5 Wi-Fi CSI", "rst_rtos/2_wifi_csi/0_wifi_csi_index_cn": "2.5 Wi-Fi CSI", "rst_rtos/2_wifi_tunnel": "2.3 Wi-Fi R-Mesh", "rst_rtos/2_wifi_tunnel/0_wifi_tunnel_index_cn": "2.3 Wi-Fi R-Mesh", "rst_rtos/3_crypto_engine": "3.9 \u5bf9\u79f0\u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_crypto_engine/0_crypto_engine_index_cn": "3.9 \u5bf9\u79f0\u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_ecdsa_engine": "3.a ECDSA \u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_ecdsa_engine/0_ecdsa_index_cn": "3.a ECDSA \u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_eddsa_engine": "3.b EDDSA \u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_eddsa_engine/0_eddsa_index_cn": "3.b EDDSA \u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_nda_huk_derivation": "3.3 HUK \u751f\u6210 \ud83d\udd12", "rst_rtos/3_nda_huk_derivation/0_huk_derivation_index_nda": "3.3 HUK \u751f\u6210 \ud83d\udd12", "rst_rtos/3_nda_rdp": "3.4 RDP \ud83d\udd12", "rst_rtos/3_nda_rdp/0_rdp_index_nda": "3.4 RDP \ud83d\udd12", "rst_rtos/3_nda_rsip": "3.5 RSIP \ud83d\udd12", "rst_rtos/3_nda_rsip/0_rsip_index_nda": "3.5 RSIP \ud83d\udd12", "rst_rtos/3_nda_secure_boot": "3.6 Secure Boot \ud83d\udd12", "rst_rtos/3_nda_secure_boot/0_secure_boot_index_nda": "3.6 Secure Boot \ud83d\udd12", "rst_rtos/3_nda_swd_protection": "3.7 SWD Protection \ud83d\udd12", "rst_rtos/3_nda_swd_protection/0_swd_protection_index_nda": "3.7 SWD Protection \ud83d\udd12", "rst_rtos/3_nda_tfm": "3.8 Trusted Firmware-M (TF-M) \ud83d\udd12", "rst_rtos/3_nda_tfm/0_tfm_index_nda": "3.8 Trusted Firmware-M (TF-M) \ud83d\udd12", "rst_rtos/3_rsa_engine": "3.c RSA \u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_rsa_engine/0_rsa_index_cn": "3.c RSA \u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_security": "3.1 \u5b89\u5168\u4e0e\u52a0\u5bc6", "rst_rtos/3_security/0_security_index_cn": "3.1 \u5b89\u5168\u4e0e\u52a0\u5bc6", "rst_rtos/3_trng": "3.2 \u771f\u968f\u673a\u6570\u53d1\u751f\u5668", "rst_rtos/3_trng/0_trng_index_cn": "3.2 \u771f\u968f\u673a\u6570\u53d1\u751f\u5668", "rst_rtos/4_ai": "4.1 \u4eba\u5de5\u667a\u80fd", "rst_rtos/4_ai/0_ai_index_cn": "4.1 \u4eba\u5de5\u667a\u80fd", "rst_rtos/4_ai_voice": "4.2 \u8bed\u97f3\u8bc6\u522b", "rst_rtos/4_ai_voice/0_ai_voice_index_cn": "4.2 \u8bed\u97f3\u8bc6\u522b", "rst_rtos/4_dsp": "4.4 DSP \u4f7f\u7528\u6307\u5357", "rst_rtos/4_dsp/0_dsp_index_cn": "4.4 DSP \u4f7f\u7528\u6307\u5357", "rst_rtos/4_multimedia": "4.3 \u591a\u5a92\u4f53", "rst_rtos/4_multimedia/0_multimedia_index_cn": "4.3 \u591a\u5a92\u4f53", "rst_rtos/6_mass_production": "6.1 \u91cf\u4ea7\u6307\u5bfc", "rst_rtos/6_mass_production/0_mp_index_cn": "6.1 \u91cf\u4ea7\u6307\u5bfc", "rst_rtos/6_mp_image": "6.2 MP \u56fa\u4ef6", "rst_rtos/6_mp_image/0_mp_image_index_cn": "6.2 MP \u56fa\u4ef6", "rst_rtos/6_mptools": "6.3 \u4ea7\u6d4b\u5de5\u5177", "rst_rtos/6_mptools/0_mptools_index_cn": "6.3 \u4ea7\u6d4b\u5de5\u5177", "rst_rtos/7_usb": "7.1 USB \u4e3b\u673a\u4e0e\u4ece\u673a", "rst_rtos/7_usb/0_usb_index_cn": "7.1 USB \u4e3b\u673a\u4e0e\u4ece\u673a", "rst_rtos/8_adc": "8.4 \u6a21\u6570\u8f6c\u6362\u5668", "rst_rtos/8_adc/0_adc_index_cn": "8.4 \u6a21\u6570\u8f6c\u6362\u5668", "rst_rtos/8_cap_touch": "8.7 Cap-Touch", "rst_rtos/8_cap_touch/0_cap_touch_index_cn": "8.7 Cap-Touch", "rst_rtos/8_dmac": "8.1 DMA \u63a7\u5236\u5668", "rst_rtos/8_dmac/0_dmac_index_cn": "8.1 DMA \u63a7\u5236\u5668", "rst_rtos/8_ir": "8.5 \u7ea2\u5916\u6536\u53d1\u5668", "rst_rtos/8_ir/0_ir_index_cn": "8.5 \u7ea2\u5916\u6536\u53d1\u5668", "rst_rtos/8_key_scan": "8.8 Key-Scan", "rst_rtos/8_key_scan/0_key_scan_index_cn": "8.8 Key-Scan", "rst_rtos/8_lcdc": "8.A LCD\u63a7\u5236\u5668", "rst_rtos/8_lcdc/0_lcdc_index_cn": "8.A LCD\u63a7\u5236\u5668", "rst_rtos/8_ledc": "8.6 LED\u63a7\u5236\u5668", "rst_rtos/8_ledc/0_ledc_index_cn": "8.6 LED\u63a7\u5236\u5668", "rst_rtos/8_psram": "8.2 PSRAM", "rst_rtos/8_psram/0_psram_index_cn": "8.2 PSRAM", "rst_rtos/8_rtc_io": "8.9 RTC-IO", "rst_rtos/8_rtc_io/0_rtc_io_index_cn": "8.9 RTC-IO", "rst_rtos/8_thermal": "8.3 \u6e29\u5ea6\u6d4b\u91cf", "rst_rtos/8_thermal/0_thermal_index_cn": "8.3 \u6e29\u5ea6\u6d4b\u91cf"};
+const TOC_TITLE_MAP = {"rst_rtos/0_ameba_product": "\u4ea7\u54c1\u4e2d\u5fc3", "rst_rtos/0_ameba_product/0_ameba_product_center_index_cn": "\u4ea7\u54c1\u4e2d\u5fc3", "rst_rtos/0_ameba_sdk": "Ameba SDK", "rst_rtos/0_ameba_sdk/0_ameba_sdks_index_cn": "Ameba SDK", "rst_rtos/0_ameba_solutions": "\u89e3\u51b3\u65b9\u6848", "rst_rtos/0_ameba_solutions/0_ameba_solutions_index_cn": "\u89e3\u51b3\u65b9\u6848", "rst_rtos/0_at_command": "0.8 AT \u547d\u4ee4\u96c6", "rst_rtos/0_at_command/0_at_command_index_cn": "0.8 AT \u547d\u4ee4\u96c6", "rst_rtos/0_file_system": "0.9 \u865a\u62df\u6587\u4ef6\u7cfb\u7edf", "rst_rtos/0_file_system/0_vfs_index_cn": "0.9 \u865a\u62df\u6587\u4ef6\u7cfb\u7edf", "rst_rtos/0_ftl": "0.A Flash \u8f6c\u6362\u5c42", "rst_rtos/0_ftl/0_ftl_index_cn": "0.A Flash \u8f6c\u6362\u5c42", "rst_rtos/0_gcc_build_environment": "0.1 GCC \u7f16\u8bd1\u73af\u5883", "rst_rtos/0_gcc_build_environment/0_gcc_build_index_cn": "0.1 GCC \u7f16\u8bd1\u73af\u5883", "rst_rtos/0_gcc_build_library": "0.3 GCC \u5e93\u7684\u751f\u6210\u548c\u4f7f\u7528", "rst_rtos/0_gcc_build_library/0_gcc_build_library_index_cn": "0.3 GCC \u5e93\u7684\u751f\u6210\u548c\u4f7f\u7528", "rst_rtos/0_gdb_debug": "0.2 GDB \u8c03\u8bd5", "rst_rtos/0_gdb_debug/0_gdb_debug_index_cn": "0.2 GDB \u8c03\u8bd5", "rst_rtos/0_memory_layout": "0.5 Flash \u548c RAM \u5e03\u5c40", "rst_rtos/0_memory_layout/0_layout_index_cn": "0.5 Flash \u548c RAM \u5e03\u5c40", "rst_rtos/0_sdk_example": "0.4 SDK \u793a\u4f8b", "rst_rtos/0_sdk_example/0_sdk_example_index_cn": "0.4 SDK \u793a\u4f8b", "rst_rtos/0_tools": "0.7 \u5de5\u5177", "rst_rtos/0_tools/0_tools_index_cn": "0.7 \u5de5\u5177", "rst_rtos/0_user_config": "0.6 \u5f00\u53d1\u8005\u914d\u7f6e", "rst_rtos/0_user_config/0_usrcfg_index_cn": "0.6 \u5f00\u53d1\u8005\u914d\u7f6e", "rst_rtos/1_boot_process": "1.1 \u542f\u52a8\u8fc7\u7a0b", "rst_rtos/1_boot_process/0_boot_index_cn": "1.1 \u542f\u52a8\u8fc7\u7a0b", "rst_rtos/1_chipen": "1.4 \u82af\u7247\u4f7f\u80fd", "rst_rtos/1_chipen/0_chipen_index_cn": "1.4 \u82af\u7247\u4f7f\u80fd", "rst_rtos/1_gpio": "1.7 GPIO \u548c\u5f15\u811a\u63a7\u5236", "rst_rtos/1_gpio/0_gpio_index_cn": "1.7 GPIO \u548c\u5f15\u811a\u63a7\u5236", "rst_rtos/1_ipc": "1.5 \u6838\u95f4\u901a\u4fe1", "rst_rtos/1_ipc/0_ipc_index_cn": "1.5 \u6838\u95f4\u901a\u4fe1", "rst_rtos/1_mpu_cache": "1.0 \u5185\u5b58\u4fdd\u62a4\u5355\u5143\u548c\u7f13\u5b58", "rst_rtos/1_mpu_cache/0_mpu_cache_index_cn": "1.0 \u5185\u5b58\u4fdd\u62a4\u5355\u5143\u548c\u7f13\u5b58", "rst_rtos/1_ota": "1.2 \u56fa\u4ef6\u5728\u7ebf\u5347\u7ea7\uff08OTA\uff09", "rst_rtos/1_ota/0_ota_index_cn": "1.2 \u56fa\u4ef6\u5728\u7ebf\u5347\u7ea7\uff08OTA\uff09", "rst_rtos/1_otpc": "1.3 OTP \u5b58\u50a8\u5668", "rst_rtos/1_otpc/0_otpc_index_cn": "1.3 OTP \u5b58\u50a8\u5668", "rst_rtos/1_pinmux": "1.6 \u5f15\u811a\u590d\u7528", "rst_rtos/1_pinmux/0_pinmux_index_cn": "1.6 \u5f15\u811a\u590d\u7528", "rst_rtos/1_power_save": "1.9 \u4f4e\u529f\u8017\u5f00\u53d1", "rst_rtos/1_power_save/0_ps_index_cn": "1.9 \u4f4e\u529f\u8017\u5f00\u53d1", "rst_rtos/2_whc_fullmac": "2.1 WHC FullMAC", "rst_rtos/2_whc_fullmac/0_fullmac_index_cn": "2.1 WHC FullMAC", "rst_rtos/2_whc_wifi_bridge": "2.0 WHC Bridge", "rst_rtos/2_whc_wifi_bridge/0_wifi_bridge_index_cn": "2.0 WHC Bridge", "rst_rtos/2_wifi_adaptivity_test": "2.4 Wi-Fi Adaptivity \u6d4b\u8bd5\u6307\u5357", "rst_rtos/2_wifi_adaptivity_test/0_wifi_adaptivity_index_cn": "2.4 Wi-Fi Adaptivity \u6d4b\u8bd5\u6307\u5357", "rst_rtos/2_wifi_csi": "2.3 Wi-Fi CSI", "rst_rtos/2_wifi_csi/0_wifi_csi_index_cn": "2.3 Wi-Fi CSI", "rst_rtos/2_wifi_tunnel": "2.2 Wi-Fi R-Mesh", "rst_rtos/2_wifi_tunnel/0_wifi_tunnel_index_cn": "2.2 Wi-Fi R-Mesh", "rst_rtos/3_crypto_engine": "3.9 \u5bf9\u79f0\u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_crypto_engine/0_crypto_engine_index_cn": "3.9 \u5bf9\u79f0\u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_ecdsa_engine": "3.a ECDSA \u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_ecdsa_engine/0_ecdsa_index_cn": "3.a ECDSA \u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_eddsa_engine": "3.b EDDSA \u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_eddsa_engine/0_eddsa_index_cn": "3.b EDDSA \u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_nda_huk_derivation": "3.3 HUK \u751f\u6210 \ud83d\udd12", "rst_rtos/3_nda_huk_derivation/0_huk_derivation_index_nda": "3.3 HUK \u751f\u6210 \ud83d\udd12", "rst_rtos/3_nda_rdp": "3.4 RDP \ud83d\udd12", "rst_rtos/3_nda_rdp/0_rdp_index_nda": "3.4 RDP \ud83d\udd12", "rst_rtos/3_nda_rsip": "3.5 RSIP \ud83d\udd12", "rst_rtos/3_nda_rsip/0_rsip_index_nda": "3.5 RSIP \ud83d\udd12", "rst_rtos/3_nda_secure_boot": "3.6 \u5b89\u5168\u542f\u52a8 \ud83d\udd12", "rst_rtos/3_nda_secure_boot/0_secure_boot_index_nda": "3.6 \u5b89\u5168\u542f\u52a8 \ud83d\udd12", "rst_rtos/3_nda_swd_protection": "3.7 SWD \u4fdd\u62a4 \ud83d\udd12", "rst_rtos/3_nda_swd_protection/0_swd_protection_index_nda": "3.7 SWD \u4fdd\u62a4 \ud83d\udd12", "rst_rtos/3_nda_tfm": "3.8 Trusted Firmware-M (TF-M) \ud83d\udd12", "rst_rtos/3_nda_tfm/0_tfm_index_nda": "3.8 Trusted Firmware-M (TF-M) \ud83d\udd12", "rst_rtos/3_rsa_engine": "3.c RSA \u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_rsa_engine/0_rsa_index_cn": "3.c RSA \u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_security": "3.1 \u5b89\u5168\u4e0e\u52a0\u5bc6", "rst_rtos/3_security/0_security_index_cn": "3.1 \u5b89\u5168\u4e0e\u52a0\u5bc6", "rst_rtos/3_trng": "3.2 \u771f\u968f\u673a\u6570\u53d1\u751f\u5668", "rst_rtos/3_trng/0_trng_index_cn": "3.2 \u771f\u968f\u673a\u6570\u53d1\u751f\u5668", "rst_rtos/4_ai": "4.1 \u4eba\u5de5\u667a\u80fd", "rst_rtos/4_ai/0_ai_index_cn": "4.1 \u4eba\u5de5\u667a\u80fd", "rst_rtos/4_ai_voice": "4.2 \u8bed\u97f3\u8bc6\u522b", "rst_rtos/4_ai_voice/0_ai_voice_index_cn": "4.2 \u8bed\u97f3\u8bc6\u522b", "rst_rtos/4_dsp": "4.4 DSP \u4f7f\u7528\u6307\u5357", "rst_rtos/4_dsp/0_dsp_index_cn": "4.4 DSP \u4f7f\u7528\u6307\u5357", "rst_rtos/4_multimedia": "4.3 \u591a\u5a92\u4f53", "rst_rtos/4_multimedia/0_multimedia_index_cn": "4.3 \u591a\u5a92\u4f53", "rst_rtos/6_mass_production": "6.1 \u91cf\u4ea7\u6307\u5bfc", "rst_rtos/6_mass_production/0_mp_index_cn": "6.1 \u91cf\u4ea7\u6307\u5bfc", "rst_rtos/6_mp_image": "6.2 MP \u56fa\u4ef6", "rst_rtos/6_mp_image/0_mp_image_index_cn": "6.2 MP \u56fa\u4ef6", "rst_rtos/6_mptools": "6.3 \u4ea7\u6d4b\u5de5\u5177", "rst_rtos/6_mptools/0_mptools_index_cn": "6.3 \u4ea7\u6d4b\u5de5\u5177", "rst_rtos/7_usb": "7.1 USB \u4e3b\u673a\u4e0e\u4ece\u673a", "rst_rtos/7_usb/0_usb_index_cn": "7.1 USB \u4e3b\u673a\u4e0e\u4ece\u673a", "rst_rtos/8_adc": "8.4 \u6a21\u6570\u8f6c\u6362\u5668", "rst_rtos/8_adc/0_adc_index_cn": "8.4 \u6a21\u6570\u8f6c\u6362\u5668", "rst_rtos/8_cap_touch": "8.7 Cap-Touch", "rst_rtos/8_cap_touch/0_cap_touch_index_cn": "8.7 Cap-Touch", "rst_rtos/8_dmac": "8.1 DMA \u63a7\u5236\u5668", "rst_rtos/8_dmac/0_dmac_index_cn": "8.1 DMA \u63a7\u5236\u5668", "rst_rtos/8_ir": "8.5 \u7ea2\u5916\u6536\u53d1\u5668", "rst_rtos/8_ir/0_ir_index_cn": "8.5 \u7ea2\u5916\u6536\u53d1\u5668", "rst_rtos/8_key_scan": "8.8 Key-Scan", "rst_rtos/8_key_scan/0_key_scan_index_cn": "8.8 Key-Scan", "rst_rtos/8_lcdc": "8.A LCD \u63a7\u5236\u5668", "rst_rtos/8_lcdc/0_lcdc_index_cn": "8.A LCD \u63a7\u5236\u5668", "rst_rtos/8_ledc": "8.6 LED \u63a7\u5236\u5668", "rst_rtos/8_ledc/0_ledc_index_cn": "8.6 LED \u63a7\u5236\u5668", "rst_rtos/8_psram": "8.2 PSRAM", "rst_rtos/8_psram/0_psram_index_cn": "8.2 PSRAM", "rst_rtos/8_rtc_io": "8.9 RTC-IO", "rst_rtos/8_rtc_io/0_rtc_io_index_cn": "8.9 RTC-IO", "rst_rtos/8_thermal": "8.3 \u6e29\u5ea6\u6d4b\u91cf", "rst_rtos/8_thermal/0_thermal_index_cn": "8.3 \u6e29\u5ea6\u6d4b\u91cf"};
 console.log("TOC_TITLE_MAP:", TOC_TITLE_MAP);
 
 // 获取当前页面的文档名 (例如 'rst_rtos/3_nda_secure_boot/0_secure_boot_index_nda')
@@ -227,9 +340,7 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 
     <!-- 问题回报 -->
-    
-
-<!-- 添加自定义提示框 -->
+    <!-- source/_templates/_layout_issue_report.html -->
 <div id="prompt-box" style="
     display: none;
     position: fixed;
@@ -336,8 +447,8 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        // 获取用户信息
-        const username = sessionStorage.getItem('username') || '匿名';
+        // 获取用户信息（关键修改点）
+        const username = localStorage.getItem('username') || '匿名'; // 从 localStorage 获取用户名
 
         // 统一处理内容缩进
         const formatContent = text => text.split('\n').map(line => '    ' + line).join('\n');
@@ -352,32 +463,28 @@ document.addEventListener('DOMContentLoaded', function() {
                         `${questionHeader}\n` + 
                         `${formatContent(userQuestion)}`;
 
-        // flask client: 确保使用正确的JSON格式发送
+        // 提交到后端（关键修改点）
         const feedbackData = {
-            user: '匿名',
-            chapters: selectedChapters,  // 直接使用换行符
-            paragraph: selectedText,     // 直接使用换行符 
+            user: username,  // 使用真实用户名
+            chapters: selectedChapters,
+            paragraph: selectedText,
             question: userQuestion
         };
 
-        fetch('http://localhost:5000/submit', {
+        fetch('http://172.29.57.206:5000/submit', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json', // 必须明确指定
+                'Content-Type': 'application/json',
             },
-            body: JSON.stringify(feedbackData) // 自动处理转义
+            body: JSON.stringify(feedbackData)
         })
-        .then(response => {
-            console.log('响应状态:', response.status);
-            return response.json();
-        })
+        .then(response => response.json())
         .then(data => {
-            console.log('响应内容:', data);
+            console.log('提交成功:', data);
         })
         .catch(error => {
-            console.error('请求失败:', error);
+            console.error('提交失败:', error);
         });
-        // flask client: 确保使用正确的JSON格式发送
 
         // 创建Blob对象并保存到本地文件
         const blob = new Blob([message], { type: 'text/plain' });
@@ -403,6 +510,18 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
+    <style>
+        /* 隐藏整个搜索栏容器 */
+        .wy-side-nav-search > div[role="search"] {
+            display: none !important;
+        }
+
+        /* 或者更精确地隐藏表单 */
+        form#rtd-search-form {
+            display: none !important;
+        }
+    </style>
+
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -410,6 +529,7 @@ document.addEventListener('DOMContentLoaded', function() {
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
+    
 
           
           
@@ -423,13 +543,363 @@ document.addEventListener('DOMContentLoaded', function() {
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
+
+    
+    <div id="custom-selectors" style="display: block !important; padding: 0; background: none; border: none;">
+    </div>
+
+    <script>
+    /* ====================== 嵌入式配置开始 ====================== */
+    const embeddedConfig = {
+        "freertos": {
+            "name": "FreeRTOS",
+            "languages": {
+                "en": ["latest"],
+                "cn": ["latest"]
+            }
+        },
+        "linux": {
+            "name": "Linux",
+            "languages": {
+                "en": ["latest"],
+                "cn": ["latest"]
+            }
+        }
+    };
+    /* ====================== 嵌入式配置结束 ====================== */
+
+    (function() {
+        // 获取基础URL路径
+        function getBaseURL() {
+            const url = new URL(window.location.href);
+            if (url.protocol === 'file:') {
+                // 本地路径处理
+                const pathParts = url.pathname.split('/').filter(part => part !== '');
+                const index = pathParts.indexOf('build');
+                return `file://${pathParts.slice(0, index + 1).join('/')}/`;
+            } else {
+                // 网络路径处理
+                return `${url.origin}/${url.pathname.split('/').slice(1, 3).join('/')}/`;
+            }
+        }
+
+        // 获取当前URL路径分段
+        function getCurrentSegments() {
+            const url = new URL(window.location.href);
+            let segments = url.pathname.split('/').filter(segment => segment);
+
+            if (url.protocol === 'file:') {
+                // 本地路径处理
+                const index = segments.indexOf('build');
+                segments = segments.slice(index + 1); // 去掉 build 及之前的路径
+            } else {
+                // 网络路径处理
+                segments = segments.slice(3); // 去掉 ameba-iot-docs/
+            }
+
+            return {
+                osKey: segments[0] || 'freertos', // 默认为 freertos
+                language: segments[1] || 'en',   // 默认为 en
+                version: segments[2] || 'latest' // 默认为 latest
+            };
+        }
+
+        // 获取OS显示名称列表
+        function getOSNames(data) {
+            return Object.keys(data).map(key => data[key].name);
+        }
+
+        // 获取指定OS的语言列表
+        function getLanguages(data, osKey) {
+            return Object.keys(data[osKey]?.languages || {});
+        }
+
+        // 获取指定OS和语言的版本列表
+        function getVersions(data, osKey, language) {
+            return data[osKey]?.languages?.[language] || ['latest'];
+        }
+
+        // 根据显示名称查找OS键
+        function findOSKey(data, displayName) {
+            return Object.keys(data).find(key => data[key].name === displayName);
+        }
+
+        // 初始化选择器
+        function initSelectors() {
+            const segments = getCurrentSegments();
+            const currentOSName = embeddedConfig[segments.osKey]?.name;
+
+            // 如果 OS 无效，默认设置为 FreeRTOS
+            if (!currentOSName) {
+                console.warn("Invalid OS key, defaulting to FreeRTOS");
+                segments.osKey = 'freertos';
+            }
+
+            // 如果语言无效，默认设置为 en
+            if (!getLanguages(embeddedConfig, segments.osKey).includes(segments.language)) {
+                console.warn("Invalid language, defaulting to en");
+                segments.language = 'en';
+            }
+
+            // 获取基础URL
+            const baseURL = getBaseURL();
+
+            // 生成选择器HTML
+            document.getElementById('custom-selectors').innerHTML = `
+                <div id="custom-selectors" style="padding: 0; background: none; border: none;">
+                    <!-- 系统选择器 -->
+                    <div class="selector-container">
+                        <label class="selector-label">
+                            ${segments.language === 'cn' ? '系统' : 'OS'}:
+                        </label>
+                        <select id="os-selector" class="selector-dropdown">
+                            ${Object.keys(embeddedConfig).map(key => `
+                                <option value="${key}">${embeddedConfig[key].name}</option>
+                            `).join('')}
+                        </select>
+                    </div>
+
+                    <!-- 语言选择器 -->
+                    <div class="selector-container">
+                        <label class="selector-label">
+                            ${segments.language === 'cn' ? '语言' : 'Language'}:
+                        </label>
+                        <select id="language-selector" class="selector-dropdown">
+                            ${getLanguages(embeddedConfig, segments.osKey).map(lang => `
+                                <option value="${lang}">${lang}</option>
+                            `).join('')}
+                        </select>
+                    </div>
+
+                    <!-- 版本选择器 -->
+                    <div class="selector-container version-selector-container">
+                        <label class="selector-label">
+                            ${segments.language === 'cn' ? '版本' : 'Version'}:
+                        </label>
+                        <select id="version-selector" class="selector-dropdown">
+                            ${getVersions(embeddedConfig, segments.osKey, segments.language).map(ver => `
+                                <option value="${ver}">${ver}</option>
+                            `).join('')}
+                        </select>
+                    </div>
+
+                    
+
+                </div>`;
+
+            // 设置初始选中值
+            document.getElementById('os-selector').value = segments.osKey;
+            document.getElementById('language-selector').value = segments.language;
+
+            // 确保版本选择框有默认值
+            const versionSelector = document.getElementById('version-selector');
+            const availableVersions = getVersions(embeddedConfig, segments.osKey, segments.language);
+            versionSelector.value = availableVersions.includes(segments.version) ? segments.version : availableVersions[0] || 'latest';
+
+            // 绑定事件监听
+            document.getElementById('os-selector').addEventListener('change', () => {
+                const newOSKey = document.getElementById('os-selector').value;
+                const availableLangs = getLanguages(embeddedConfig, newOSKey);
+                const defaultLang = availableLangs[0] || 'en';
+                const defaultVersion = getVersions(embeddedConfig, newOSKey, defaultLang)[0] || 'latest';
+                redirectTo(`${baseURL}${newOSKey}/${defaultLang}/${defaultVersion}/`);
+            });
+
+            document.getElementById('language-selector').addEventListener('change', () => {
+                const newLang = document.getElementById('language-selector').value;
+                const defaultVersion = getVersions(embeddedConfig, segments.osKey, newLang)[0] || 'latest';
+                redirectTo(`${baseURL}${segments.osKey}/${newLang}/${defaultVersion}/`);
+            });
+
+            document.getElementById('version-selector').addEventListener('change', () => {
+                const newVer = document.getElementById('version-selector').value;
+                redirectTo(`${baseURL}${segments.osKey}/${segments.language}/${newVer}/`);
+            });
+
+            // ====================== 新增代码：注册和登录的弹窗逻辑 ======================
+            function createAuthDialog(type) {
+                const lang = segments.language === 'cn' ? 'cn' : 'en';
+                
+                // 创建弹窗容器
+                const dialog = document.createElement('div');
+                dialog.style.cssText = `
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: rgba(0,0,0,0.5);
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    z-index: 9999;
+                `;
+
+                // 弹窗内容
+                const content = document.createElement('div');
+                content.style.cssText = `
+                    background: white;
+                    padding: 20px;
+                    border-radius: 8px;
+                    min-width: 300px;
+                `;
+
+                // 标题
+                const title = document.createElement('h3');
+                title.textContent = type === 'register' 
+                    ? (lang === 'cn' ? '注册' : 'Register') 
+                    : (lang === 'cn' ? '登录' : 'Login');
+                content.appendChild(title);
+
+                // 用户名输入
+                const usernameLabel = document.createElement('label');
+                usernameLabel.textContent = lang === 'cn' ? '用户名：' : 'Username:';
+                const usernameInput = document.createElement('input');
+                usernameInput.style.cssText = 'width: 100%; margin-bottom: 10px; padding: 5px;';
+                content.appendChild(usernameLabel);
+                content.appendChild(usernameInput);
+
+                // 密码输入
+                const passwordLabel = document.createElement('label');
+                passwordLabel.textContent = lang === 'cn' ? '密码：' : 'Password:';
+                const passwordInput = document.createElement('input');
+                passwordInput.type = 'password';
+                passwordInput.style.cssText = 'width: 100%; margin-bottom: 10px; padding: 5px;';
+                content.appendChild(passwordLabel);
+                content.appendChild(passwordInput);
+
+                // 注册时需要确认密码
+                let confirmPasswordInput;
+                if (type === 'register') {
+                    const confirmLabel = document.createElement('label');
+                    confirmLabel.textContent = lang === 'cn' ? '确认密码：' : 'Confirm Password:';
+                    confirmPasswordInput = document.createElement('input');
+                    confirmPasswordInput.type = 'password';
+                    confirmPasswordInput.style.cssText = 'width: 100%; margin-bottom: 10px; padding: 5px;';
+                    content.appendChild(confirmLabel);
+                    content.appendChild(confirmPasswordInput);
+                }
+
+                // 按钮容器
+                const buttonContainer = document.createElement('div');
+                buttonContainer.style.cssText = 'display: flex; gap: 10px; margin-top: 10px;';
+
+                // 确认按钮
+                const confirmBtn = document.createElement('button');
+                confirmBtn.textContent = lang === 'cn' ? '确认' : 'Confirm';
+                confirmBtn.onclick = () => {
+                    const username = usernameInput.value.trim();
+                    const password = passwordInput.value.trim();
+                    const confirmPassword = confirmPasswordInput ? confirmPasswordInput.value.trim() : null;
+
+                    // 验证输入
+                    if (!username || !password) {
+                        alert(lang === 'cn' ? '用户名和密码不能为空！' : 'Username and password are required!');
+                        return;
+                    }
+
+                    if (type === 'register' && password !== confirmPassword) {
+                        alert(lang === 'cn' ? '两次输入的密码不一致！' : 'Passwords do not match!');
+                        return;
+                    }
+
+                    // flask 发送请求
+                    fetch('http://172.29.57.206:5000/auth', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            action: type,
+                            username,
+                            password
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert(lang === 'cn' ? '操作成功！' : 'Success!');
+                            // 更新本地存储和UI
+                            localStorage.setItem('isLoggedIn', 'true');
+                            localStorage.setItem('username', username);
+                            // 强制刷新显示状态
+                            document.getElementById('auth-buttons').style.display = 'none';
+                            document.getElementById('user-info').style.display = 'block';
+                            document.getElementById('username-display').textContent = username;
+                            document.body.removeChild(dialog);
+                        } else {
+                            alert(lang === 'cn' ? '失败：' + data.message : 'Failed: ' + data.message);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert(lang === 'cn' ? '网络错误' : 'Network error');
+                    });
+                };
+
+                // 取消按钮
+                const cancelBtn = document.createElement('button');
+                cancelBtn.textContent = lang === 'cn' ? '取消' : 'Cancel';
+                cancelBtn.onclick = () => document.body.removeChild(dialog);
+
+                buttonContainer.appendChild(confirmBtn);
+                buttonContainer.appendChild(cancelBtn);
+                content.appendChild(buttonContainer);
+                dialog.appendChild(content);
+                document.body.appendChild(dialog);
+            }
+
+            // 注册按钮点击事件
+            document.getElementById('register-button').addEventListener('click', () => {
+                createAuthDialog('register');
+            });
+
+            // 登录按钮点击事件
+            document.getElementById('login-button').addEventListener('click', () => {
+                createAuthDialog('login');
+            });
+
+            // 跳转函数
+            function redirectTo(path) {
+                const url = new URL(path, window.location.href);
+                if (url.protocol === 'file:') {
+                    // 本地路径附加 index.html
+                    url.pathname += 'index.html';
+                }
+                window.location.href = url.href;
+            }
+
+            /* =============== 左上角登录区域  =============== */
+            function syncLoginState() {
+                const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+                document.getElementById('auth-buttons').style.display = isLoggedIn ? 'none' : 'flex';
+                document.getElementById('user-info').style.display = isLoggedIn ? 'block' : 'none';
+                if (isLoggedIn) {
+                    document.getElementById('username-display').textContent = localStorage.getItem('username') || '';
+                }
+            }
+
+            // 初始化同步状态
+            syncLoginState();
+            /* =============== 左上角登录区域  =============== */
+        }
+
+        // DOM加载完成后初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            try {
+                initSelectors();
+            } catch (error) {
+                console.error("Error initializing selectors:", error);
+            }
+        });
+    })();
+</script>
+
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../0_ameba_product/0_ameba_product_center_index_cn.html">产品中心</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../0_ameba_sdk/0_ameba_sdks_index_cn.html">Ameba SDK</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../0_ameba_solutions/0_ameba_solutions_index_cn.html">解决方案</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../0_gcc_build_environment/0_gcc_build_index_cn.html">0.1 GCC 编译环境</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../0_gdb_debug/0_gdb_debug_index_cn.html">0.2 GDB调试</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_gdb_debug/0_gdb_debug_index_cn.html">0.2 GDB 调试</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../0_gcc_build_library/0_gcc_build_library_index_cn.html">0.3 GCC 库的生成和使用</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../0_sdk_example/0_sdk_example_index_cn.html">0.4 SDK 示例</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../0_memory_layout/0_layout_index_cn.html">0.5 Flash 和 RAM 布局</a></li>
@@ -437,22 +907,24 @@ document.addEventListener('DOMContentLoaded', function() {
 <li class="toctree-l1"><a class="reference internal" href="../0_tools/0_tools_index_cn.html">0.7 工具</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="0_at_command_index_cn.html">0.8 AT 命令集</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">概述</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#at">AT指令的模式</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#at">AT命令的模式</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#id2">软件环境准备</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#id3">准备工作</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#atcmd-image-building">AT固件编译</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#atcmd-host-control-mode-configuration">AT配置修改</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#atcmd-host-control-mode-certificate">AT安全证书</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#atcmd-config-example">提前预置示例</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#id8">硬件环境准备</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#id9">命令描述</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#id10">命令格式</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id11">命令响应</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id12">命令参数</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id13">转义字符</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id14">命令长度</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#transparent-transmission">透传模式</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id11">命令参数</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id12">转义字符</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id13">命令长度</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id14">命令响应</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id15">AT消息</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tt">透传（TT）模式</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#id16">AT命令列表</a></li>
@@ -462,12 +934,12 @@ document.addEventListener('DOMContentLoaded', function() {
 <li class="toctree-l2"><a class="reference internal" href="at_command_image_cn.html">官方发布的固件</a></li>
 <li class="toctree-l2"><a class="reference internal" href="at_command_common_cn.html">通用 AT命令集</a></li>
 <li class="toctree-l2"><a class="reference internal" href="at_command_wifi_cn.html">Wi-Fi AT命令集</a></li>
+<li class="toctree-l2"><a class="reference internal" href="at_command_socket_cn.html">Socket AT命令集</a></li>
 <li class="toctree-l2"><a class="reference internal" href="at_command_mqtt_cn.html">MQTT AT命令集</a></li>
 <li class="toctree-l2"><a class="reference internal" href="at_command_http_cn.html">HTTP AT命令集</a></li>
 <li class="toctree-l2"><a class="reference internal" href="at_command_websocket_cn.html">WebSocket AT命令集</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_socket_cn.html">Socket AT命令集</a></li>
 <li class="toctree-l2"><a class="reference internal" href="at_command_bluetooth_cn.html">蓝牙 AT命令集</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_file_system_cn.html">文件系统 AT命令集</a></li>
+<li class="toctree-l2"><a class="reference internal" href="at_command_file_system_cn.html">文件系统 AT 命令集</a></li>
 <li class="toctree-l2"><a class="reference internal" href="at_command_ota_cn.html">OTA AT命令集</a></li>
 <li class="toctree-l2"><a class="reference internal" href="at_command_use_spi_cn.html">通过SPI接口使用AT命令</a></li>
 </ul>
@@ -476,25 +948,25 @@ document.addEventListener('DOMContentLoaded', function() {
 <li class="toctree-l1"><a class="reference internal" href="../0_ftl/0_ftl_index_cn.html">0.A Flash 转换层</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../1_mpu_cache/0_mpu_cache_index_cn.html">1.0 内存保护单元和缓存</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../1_boot_process/0_boot_index_cn.html">1.1 启动过程</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../1_ota/0_ota_index_cn.html">1.2 固件在线升级(OTA)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../1_otpc/0_otpc_index.html">1.3 OTP存储器</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../1_chipen/0_chipen_index_cn.html">1.4 CHIP_EN</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_ota/0_ota_index_cn.html">1.2 固件在线升级（OTA）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_otpc/0_otpc_index_cn.html">1.3 OTP 存储器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_chipen/0_chipen_index_cn.html">1.4 芯片使能</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../1_ipc/0_ipc_index_cn.html">1.5 核间通信</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../1_pinmux/0_pinmux_index_cn.html">1.6 引脚复用</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../1_gpio/0_gpio_index_cn.html">1.7 GPIO和引脚控制</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_gpio/0_gpio_index_cn.html">1.7 GPIO 和引脚控制</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../1_power_save/0_ps_index_cn.html">1.9 低功耗开发</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../2_whc_wifi_bridge/0_wifi_bridge_index_cn.html">2.1 WHC Bridge</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../2_whc_fullmac/0_fullmac_index_cn.html">2.2 WHC FullMAC</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../2_wifi_tunnel/0_wifi_tunnel_index_cn.html">2.3 Wi-Fi R-Mesh</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../2_wifi_csi/0_wifi_csi_index_cn.html">2.5 Wi-Fi CSI</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../2_wifi_adaptivity_test/0_wifi_adaptivity_index.html">2.6 Wi-Fi Adaptivity 测试指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_whc_wifi_bridge/0_wifi_bridge_index_cn.html">2.0 WHC Bridge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_whc_fullmac/0_fullmac_index_cn.html">2.1 WHC FullMAC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_wifi_tunnel/0_wifi_tunnel_index_cn.html">2.2 Wi-Fi R-Mesh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_wifi_csi/0_wifi_csi_index_cn.html">2.3 Wi-Fi CSI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_wifi_adaptivity_test/0_wifi_adaptivity_index_cn.html">2.4 Wi-Fi Adaptivity 测试指南</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../3_security/0_security_index_cn.html">3.1 安全与加密</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../3_trng/0_trng_index_cn.html">3.2 真随机数发生器</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../3_nda_huk_derivation/0_huk_derivation_index_nda.html">3.3 HUK 生成 🔒</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../3_nda_rdp/0_rdp_index_nda.html">3.4 RDP 🔒</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../3_nda_rsip/0_rsip_index_nda.html">3.5 RSIP 🔒</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../3_nda_secure_boot/0_secure_boot_index_nda.html">3.6 Secure Boot 🔒</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../3_nda_swd_protection/0_swd_protection_index_nda.html">3.7 SWD Protection 🔒</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_secure_boot/0_secure_boot_index_nda.html">3.6 安全启动 🔒</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_swd_protection/0_swd_protection_index_nda.html">3.7 SWD 保护 🔒</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../3_nda_tfm/0_tfm_index_nda.html">3.8 Trusted Firmware-M (TF-M) 🔒</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../3_crypto_engine/0_crypto_engine_index_cn.html">3.9 对称硬件加密引擎</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../3_ecdsa_engine/0_ecdsa_index_cn.html">3.a ECDSA 硬件加密引擎</a></li>
@@ -513,11 +985,11 @@ document.addEventListener('DOMContentLoaded', function() {
 <li class="toctree-l1"><a class="reference internal" href="../8_thermal/0_thermal_index_cn.html">8.3 温度测量</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../8_adc/0_adc_index_cn.html">8.4 模数转换器</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../8_ir/0_ir_index_cn.html">8.5 红外收发器</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../8_ledc/0_ledc_index_cn.html">8.6 LED控制器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_ledc/0_ledc_index_cn.html">8.6 LED 控制器</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../8_cap_touch/0_cap_touch_index_cn.html">8.7 Cap-Touch</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../8_key_scan/0_key_scan_index_cn.html">8.8 Key-Scan</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../8_rtc_io/0_rtc_io_index_cn.html">8.9 RTC-IO</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../8_lcdc/0_lcdc_index_cn.html">8.A LCD控制器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_lcdc/0_lcdc_index_cn.html">8.A LCD 控制器</a></li>
 </ul>
 
         </div>
@@ -530,7 +1002,7 @@ document.addEventListener('DOMContentLoaded', function() {
       </nav>
 
       <div class="wy-nav-content">
-
+    
         <div class="rst-content">
           <div role="navigation" aria-label="页面导航">
   <ul class="wy-breadcrumbs">
@@ -547,10 +1019,10 @@ document.addEventListener('DOMContentLoaded', function() {
              
   <section id="at-commands">
 <span id="id1"></span><h1>概述<a class="headerlink" href="#at-commands" title="Link to this heading"></a></h1>
-<p>本节描述AT指令的模式,使用场景,使用方法等相关信息。</p>
+<p>本节描述AT命令的模式,使用场景,使用方法等相关信息。</p>
 <section id="at">
-<h2>AT指令的模式<a class="headerlink" href="#at" title="Link to this heading"></a></h2>
-<p>当前支持的AT指令模式分为两种： <strong>手动测试模式</strong> 与 <strong>主控控制模式</strong>，分别适合不同的场景。</p>
+<h2>AT命令的模式<a class="headerlink" href="#at" title="Link to this heading"></a></h2>
+<p>当前支持的AT命令模式分为两种： <strong>手动测试模式</strong> 与 <strong>主控控制模式</strong>，分别适合不同的场景。</p>
 <div class="sphinx-tabs docutils container">
 <div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-0-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-0-0-0" name="0-0" role="tab" tabindex="0">手动测试模式</button><button aria-controls="panel-0-0-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-1" name="0-1" role="tab" tabindex="-1">主控控制模式</button></div><div aria-labelledby="tab-0-0-0" class="sphinx-tabs-panel" id="panel-0-0-0" name="0-0" role="tabpanel" tabindex="0"><ul class="simple">
 <li><p>适用场景：单命令调试, 功能评估验证, 快速测试</p></li>
@@ -606,18 +1078,15 @@ document.addEventListener('DOMContentLoaded', function() {
 <section id="atcmd-host-control-mode-configuration">
 <span id="id5"></span><h3>AT配置修改<a class="headerlink" href="#atcmd-host-control-mode-configuration" title="Link to this heading"></a></h3>
 <p>主控控制模式下，可以在不修改更新应用固件的情况下，直接通过配置文件 <code class="file docutils literal notranslate"><span class="pre">atcmd_config.json</span></code> 来修改外设接口以及其对应的管脚等信息。</p>
-<ul>
+<ul class="simple">
 <li><p>在SDK中找到 <code class="file docutils literal notranslate"><span class="pre">atcmd_config.json</span></code> 文件，根据需要来修改该文件中的对应栏位</p></li>
-<li><p>将 <code class="file docutils literal notranslate"><span class="pre">atcmd_config.json</span></code> 文件提前预置到LittleFS虚拟文件系统（VFS）的根目录下，并且制作VFS固件（参考 <a class="reference internal" href="#atcmd-config-example"><span class="std std-ref">示例</span></a> ）</p></li>
+<li><p>将 <code class="file docutils literal notranslate"><span class="pre">atcmd_config.json</span></code> 文件提前预置到LittleFS虚拟文件系统（VFS）的根目录下，并且制作VFS固件（参考 <a class="reference internal" href="#atcmd-config-example"><span class="std std-ref">提前预置示例</span></a> ）</p></li>
 <li><p>将VFS固件烧录到Ameba开发板对应的flash的VFS1区域 （参考）</p></li>
-<li><p>重启模组，上电后会在LogUART输出AT命令初始化相关信息</p>
-<blockquote>
-<div><div class="highlight-none notranslate"><div class="highlight"><pre><span></span>[AT-I] ATCMD Host Control Mode : SPI, mosi:PA_27, miso:PA_28, clk:PA_26,cs:PA_12, master_sync_pin:PB_30, slave_sync_pin:PB_31
+<li><p>重启模组，上电后会在LogUART输出AT命令初始化相关信息</p></li>
+</ul>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>[AT-I] ATCMD Host Control Mode : SPI, mosi:PA_27, miso:PA_28, clk:PA_26,cs:PA_12, master_sync_pin:PB_30, slave_sync_pin:PB_31
 </pre></div>
 </div>
-</div></blockquote>
-</li>
-</ul>
 <div class="admonition note">
 <p class="admonition-title">备注</p>
 <p>外设接口支持UART/SPI/SDIO, 相关对应的管脚请参考规格书以及硬件资料文档。</p>
@@ -651,7 +1120,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <p>一些AT功能组件可能需要使用安全证书，比如连接Wifi企业级路由器，HTTPS，WebSocket服务器功能等</p>
 <p>安全证书套件分为客户端证书套件和服务器证书套件，均包含CA证书，证书和秘钥，证书的格式是crt，秘钥格式是key</p>
 <p>一个安全证书套件可以根据需要只提供部分文件，比如HTTPS的client单向认证只会使用CA证书进行认证服务器合法性，只需要在文件系统提前预置对应序号的客户端CA证书即可</p>
-<p>安全证书套件存放于LittleFS的虚拟文件系统上的固定路径 <code class="docutils literal notranslate"><span class="pre">/CERT/</span></code> 下， 如何提前预置安全证书请参考</p>
+<p>安全证书套件存放于LittleFS的虚拟文件系统上的固定路径 <code class="docutils literal notranslate"><span class="pre">/CERT/</span></code> 下， 如何提前预置安全证书请参考 <a class="reference internal" href="#atcmd-config-example"><span class="std std-ref">提前预置示例</span></a></p>
 <p>安全证书套件的序号从数字1开始递增</p>
 <p>AT命令在需要使用安全证书时，会以 <code class="docutils literal notranslate"><span class="pre">&lt;cert_index&gt;</span></code> 的可选参数作为序号从文件系统 <code class="docutils literal notranslate"><span class="pre">/CERT/</span></code> 目录中查找和使用对应的安全证书套件</p>
 <table class="docutils align-default" id="id18" style="width: 100%">
@@ -712,13 +1181,15 @@ document.addEventListener('DOMContentLoaded', function() {
 </tr>
 </tbody>
 </table>
+</section>
 <section id="atcmd-config-example">
-<span id="id7"></span><h4>示例<a class="headerlink" href="#atcmd-config-example" title="Link to this heading"></a></h4>
-<p>本节演示如何提前预置 <code class="file docutils literal notranslate"><span class="pre">atcmd_config.json</span></code> 和安全证书文件，以及如何使用：</p>
+<span id="id7"></span><h3>提前预置示例<a class="headerlink" href="#atcmd-config-example" title="Link to this heading"></a></h3>
+<p>本节演示如何提前预置 <code class="file docutils literal notranslate"><span class="pre">atcmd_config.json</span></code> 和安全证书文件和 <a class="reference internal" href="at_command_file_system_cn.html#file-system-at-fs"><span class="std std-ref">AT+FS</span></a> 命令使用的test.txt文件，以及如何使用：</p>
 <ol class="arabic">
 <li><p>创建 vfs_dir 目录和 CERT 子目录：</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mkdir<span class="w"> </span>vfs_dir
 mkdir<span class="w"> </span>vfs_dir/CERT
+mkdir<span class="w"> </span>vfs_dir/AT
 </pre></div>
 </div>
 </li>
@@ -729,6 +1200,11 @@ mkdir<span class="w"> </span>vfs_dir/CERT
 </li>
 <li><p>将安全证书文件复制到 CERT 子目录：</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cp<span class="w"> </span>client_ca_1.crt<span class="w"> </span>client_cert_1.crt<span class="w"> </span>client_key_1.key<span class="w"> </span>server_ca_1.crt<span class="w"> </span>vfs_dir/CERT/
+</pre></div>
+</div>
+</li>
+<li><p>将test.txt文件复制到 AT 子目录：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cp<span class="w"> </span>test.txt<span class="w"> </span>vfs_dir/AT/
 </pre></div>
 </div>
 </li>
@@ -755,8 +1231,13 @@ AT+CERT=1,1
 </pre></div>
 </div>
 </li>
+<li><p>使用以下命令输出test.txt文件前10个字节内容：</p></li>
 </ol>
-</section>
+<blockquote>
+<div><div class="highlight-none notranslate"><div class="highlight"><pre><span></span>AT+FS=3,test.txt,0,10
+</pre></div>
+</div>
+</div></blockquote>
 </section>
 </section>
 <section id="id8">
@@ -765,7 +1246,7 @@ AT+CERT=1,1
 <div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-4-4-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-4-4-0" name="4-0" role="tab" tabindex="0">手动测试模式</button><button aria-controls="panel-4-4-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-4-4-1" name="4-1" role="tab" tabindex="-1">主控控制模式</button></div><div aria-labelledby="tab-4-4-0" class="sphinx-tabs-panel" id="panel-4-4-0" name="4-0" role="tabpanel" tabindex="0"><p><strong>所需材料：</strong></p>
 <ul class="simple">
 <li><p>Ameba开发板</p></li>
-<li><p>电脑： 用于烧录固件， 输入AT指令，观察AT命令的响应</p></li>
+<li><p>电脑： 用于烧录固件， 输入AT命令，观察AT命令的响应</p></li>
 <li><p>Type-C USB连接线</p></li>
 </ul>
 <p><strong>操作步骤：</strong></p>
@@ -830,19 +1311,7 @@ AT+CERT=1,1
 </div>
 </section>
 <section id="id11">
-<h3>命令响应<a class="headerlink" href="#id11" title="Link to this heading"></a></h3>
-<ul class="simple">
-<li><p>在接收到AT命令后，从机首先判断其是否为有效命令。如果被视为无效命令（不在AT命令集内），将显示 <code class="docutils literal notranslate"><span class="pre">unknown</span> <span class="pre">command</span> <span class="pre">COMMAND</span></code>。否则，将根据输入的命令及参数执行相应操作。</p></li>
-<li><p>当命令执行成功时，通常会返回 <code class="docutils literal notranslate"><span class="pre">OK</span></code> 。</p></li>
-<li><p>当命令执行失败时，通常会返回 <code class="docutils literal notranslate"><span class="pre">ERROR</span></code> ，并附加一个错误代码。</p></li>
-</ul>
-<div class="admonition note">
-<p class="admonition-title">备注</p>
-<p>每个AT命令都有其对应的错误代码编号和意义,具体请参考各AT命令的介绍说明。</p>
-</div>
-</section>
-<section id="id12">
-<h3>命令参数<a class="headerlink" href="#id12" title="Link to this heading"></a></h3>
+<h3>命令参数<a class="headerlink" href="#id11" title="Link to this heading"></a></h3>
 <p>AT命令的参数列表遵循以下约定：</p>
 <ul class="simple">
 <li><p>尖括号&lt; &gt;表示 <strong>必选</strong> 参数</p></li>
@@ -857,8 +1326,8 @@ AT+CERT=1,1
 <p>在这个AT命令中，第一个参数 <em>param1</em> 是必须的，第二个参数 <em>param2</em> 和第三个参数 <em>param3</em> 是可选的。</p>
 </div>
 </section>
-<section id="id13">
-<h3>转义字符<a class="headerlink" href="#id13" title="Link to this heading"></a></h3>
+<section id="id12">
+<h3>转义字符<a class="headerlink" href="#id12" title="Link to this heading"></a></h3>
 <p>在某些AT命令中，如果确实需要将逗号作为参数的一部分，建议使用转义字符 <code class="docutils literal notranslate"><span class="pre">\,</span></code>。反斜杠本身用转义字符表示为 <code class="docutils literal notranslate"><span class="pre">\\</span></code>。
 对于其他不需要使用转义字符的AT命令，逗号通常被视为分隔符，单个反斜杠可作为普通字符使用。</p>
 <div class="admonition- admonition">
@@ -874,8 +1343,8 @@ AT+CERT=1,1
 </ul>
 </div>
 </section>
-<section id="id14">
-<h3>命令长度<a class="headerlink" href="#id14" title="Link to this heading"></a></h3>
+<section id="id13">
+<h3>命令长度<a class="headerlink" href="#id13" title="Link to this heading"></a></h3>
 <p>每个AT命令包含 <strong>AT</strong> 开头和 <strong>CR-LF</strong> 结束符，必须不超过指定的长度限制，否则，多余的部分将被忽略。</p>
 <ul class="simple">
 <li><p><strong>手动测试模式</strong> 的长度限制为127字节。</p></li>
@@ -883,13 +1352,129 @@ AT+CERT=1,1
 </ul>
 <p>在使用转义字符的AT命令中，转义字符（如 <code class="docutils literal notranslate"><span class="pre">\,</span></code> 或 <code class="docutils literal notranslate"><span class="pre">\\</span></code>）应被视为占用2个字节。</p>
 </section>
-<section id="transparent-transmission">
-<span id="id15"></span><h3>透传模式<a class="headerlink" href="#transparent-transmission" title="Link to this heading"></a></h3>
-<p>在透传传输模式下，通过命令传输的数据长度仅受到可用堆内存大小的限制。传输的数据不受格式检查的约束，也不会因命令结束字符（ <code class="docutils literal notranslate"><span class="pre">\r\n</span></code>）而终止。</p>
-<p>在执行支持透传模式的命令后，AT模块将返回 <code class="docutils literal notranslate"><span class="pre">&gt;&gt;&gt;</span></code> 指示已进入透传模式。此时，主控需要传输AT命令中指定长度的数据。一旦接收到指定长度的数据，AT模块将自动退出透传模式，并返回AT命令执行的结果。</p>
+<section id="id14">
+<h3>命令响应<a class="headerlink" href="#id14" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>在接收到AT命令后，从机首先判断其是否为有效命令。如果被视为无效命令（不在AT命令集内），将显示 <code class="docutils literal notranslate"><span class="pre">unknown</span> <span class="pre">command</span> <span class="pre">COMMAND</span></code>。否则，将根据输入的命令及参数执行相应操作。</p></li>
+<li><p>当命令执行期间，可能会有各类信息输出。</p></li>
+<li><p>当命令执行成功时，通常最后会输出 <code class="docutils literal notranslate"><span class="pre">OK</span></code> 。</p></li>
+<li><p>当命令执行失败时，通常最后会输出 <code class="docutils literal notranslate"><span class="pre">ERROR</span></code> ，并附加一个错误代码。</p></li>
+</ul>
 <div class="admonition note">
 <p class="admonition-title">备注</p>
-<p>仅主控控制模式支持透传模式。</p>
+<p>每个AT命令都有其对应的错误代码编号和意义,具体请参考各AT命令的介绍说明。</p>
+</div>
+</section>
+<section id="id15">
+<h3>AT消息<a class="headerlink" href="#id15" title="Link to this heading"></a></h3>
+<p>在非AT命令执行期间，也可能有主动的AT消息，比如wifi连接被路由器主动断开，Websocket client长连接突然接收到服务器发送的消息。</p>
+<p>这些AT消息会在消息会在消息开头增加 <code class="docutils literal notranslate"><span class="pre">[$]</span></code> 作为提示，以供主控应用程序解析判断。</p>
+<div class="admonition- admonition">
+<p class="admonition-title">示例</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>[$]wifi disconnected
+</pre></div>
+</div>
+</div>
+<p>下表列出了所有的主动AT消息</p>
+<table class="docutils align-center" id="id19">
+<caption><span class="caption-text">主动AT消息列表</span><a class="headerlink" href="#id19" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 15.0%" />
+<col style="width: 40.0%" />
+<col style="width: 45.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>模块</p></th>
+<th class="head"><p>AT消息</p></th>
+<th class="head"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td rowspan="10"><p>Wi-Fi</p></td>
+<td><p>[$]wifi connected</p></td>
+<td><p>wifi 连接路由器成功</p></td>
+</tr>
+<tr class="row-odd"><td><p>[$]wifi connect failed</p></td>
+<td><p>wifi 连接路由器失败</p></td>
+</tr>
+<tr class="row-even"><td><p>[$]wifi got ip:&lt;ip&gt;</p></td>
+<td><p>wifi 申请IP地址成功</p></td>
+</tr>
+<tr class="row-odd"><td><p>[$]wifi got ip timeout</p></td>
+<td><p>wifi 申请IP地址超时</p></td>
+</tr>
+<tr class="row-even"><td><p>[$]wifi disconnected</p></td>
+<td><p>wifi 被路由器主动断开</p></td>
+</tr>
+<tr class="row-odd"><td><p>[$]wifi reconnecting</p></td>
+<td><p>wifi 自动重连开始</p></td>
+</tr>
+<tr class="row-even"><td><p>[$]wifi reconnect done</p></td>
+<td><p>wifi 自动重连完成</p></td>
+</tr>
+<tr class="row-odd"><td><p>[$]client connected:&lt;sta_mac&gt;</p></td>
+<td><p>wifi 热点模式有sta连接成功</p></td>
+</tr>
+<tr class="row-even"><td><p>[$]client disconnected:&lt;sta_mac&gt;</p></td>
+<td><p>wifi 热点模式有sta主动断开</p></td>
+</tr>
+<tr class="row-odd"><td><p>[$]assign client ip:&lt;sta_ip&gt;,
+hwaddr:&lt;sta_mac&gt;</p></td>
+<td><p>wifi 热点模式分配IP地址</p></td>
+</tr>
+<tr class="row-even"><td><p>Socket</p></td>
+<td><p>（待添加）</p></td>
+<td><p>（待添加）</p></td>
+</tr>
+<tr class="row-odd"><td><p>MQTT</p></td>
+<td><p>（待添加）</p></td>
+<td><p>（待添加）</p></td>
+</tr>
+<tr class="row-even"><td><p>Websocket</p></td>
+<td><p>（待添加）</p></td>
+<td><p>（待添加）</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="tt">
+<span id="transparent-transmission"></span><h3>透传（TT）模式<a class="headerlink" href="#tt" title="Link to this heading"></a></h3>
+<p>部分AT命令执行后会进入透传（TT）模式，用于主控端进行超大数据量或高性能传输。典型场景包括通过HTTP POST上传大文件或通过Websocket客户端发送二进制数据。</p>
+<p><strong>进入指示</strong>：</p>
+<ul class="simple">
+<li><p>成功进入透传模式时会输出 <code class="docutils literal notranslate"><span class="pre">&gt;&gt;&gt;</span></code> 消息</p></li>
+</ul>
+<p><strong>数据处理规则</strong>：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">,</span></code> , <code class="docutils literal notranslate"><span class="pre">\</span></code> 等无需转义，所有数据可直接发送</p></li>
+<li><p>可包含ASCII <strong>CR-LF</strong> 字符，透传模式下不会被识别为AT命令终止符</p></li>
+<li><p>数据长度由对应AT命令参数指定，未明确时长度不受限制</p></li>
+</ul>
+<p><strong>缓冲区管理</strong>：</p>
+<ul>
+<li><p>数据量 &lt;120KB：支持完整缓存</p></li>
+<li><p>数据量 ≥120KB：需启用流控</p>
+<blockquote>
+<div><ul>
+<li><p>防溢出机制：</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">[$][TT]:</span> <span class="pre">High</span> <span class="pre">Watermark</span></code> 消息提示主控需要暂停发送</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[$][TT]:</span> <span class="pre">Low</span> <span class="pre">Watermark</span></code> 消息提示主控可以恢复发送</p></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+<p><strong>退出条件</strong>：</p>
+<ul class="simple">
+<li><p>收到指定长度数据后自动退出透传模式并返回命令执行结果</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>透传模式仅在 <strong>主控控制模式</strong> 下生效，因此涉及透传模式的AT命令仅支持在 <strong>主控控制模式</strong> 中使用。</p>
 </div>
 </section>
 </section>
@@ -899,11 +1484,12 @@ AT+CERT=1,1
 <ul class="simple">
 <li><p><a class="reference internal" href="at_command_common_cn.html#common-at-commands"><span class="std std-ref">通用 AT命令集</span></a></p></li>
 <li><p><a class="reference internal" href="at_command_wifi_cn.html#wi-fi-at-commands"><span class="std std-ref">Wi-Fi AT命令集</span></a></p></li>
-<li><p><a class="reference internal" href="at_command_mqtt_cn.html#mqtt-at-commands"><span class="std std-ref">MQTT AT命令集</span></a></p></li>
-<li><p><a class="reference internal" href="at_command_websocket_cn.html#websocket-at-commands"><span class="std std-ref">WebSocket AT命令集</span></a></p></li>
 <li><p><a class="reference internal" href="at_command_socket_cn.html#socket-at-commands"><span class="std std-ref">Socket AT命令集</span></a></p></li>
+<li><p><a class="reference internal" href="at_command_mqtt_cn.html#mqtt-at-commands"><span class="std std-ref">MQTT AT命令集</span></a></p></li>
+<li><p><a class="reference internal" href="at_command_http_cn.html#http-at-commands"><span class="std std-ref">HTTP AT命令集</span></a></p></li>
+<li><p><a class="reference internal" href="at_command_websocket_cn.html#websocket-at-commands"><span class="std std-ref">WebSocket AT命令集</span></a></p></li>
 <li><p><a class="reference internal" href="at_command_bluetooth_cn.html#bluetooth-at-commands"><span class="std std-ref">蓝牙 AT命令集</span></a></p></li>
-<li><p><a class="reference internal" href="at_command_file_system_cn.html#file-system-at-commands"><span class="std std-ref">文件系统 AT命令集</span></a></p></li>
+<li><p><a class="reference internal" href="at_command_file_system_cn.html#file-system-at-commands"><span class="std std-ref">文件系统 AT 命令集</span></a></p></li>
 <li><p><a class="reference internal" href="at_command_ota_cn.html#ota-at-commands"><span class="std std-ref">OTA AT命令集</span></a></p></li>
 </ul>
 <p>请参考以上章节获取不同AT命令的详细信息。</p>
@@ -926,9 +1512,15 @@ AT+CERT=1,1
 </pre></div>
 </div>
 <p>响应：</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+</span><span class="n">GMR</span><span class="p">:</span>
-<span class="n">ATCMD</span> <span class="n">VERSION</span><span class="p">:</span> <span class="n">v2</span><span class="mf">.2.1</span>
-<span class="n">SDK</span> <span class="n">VERSION</span><span class="p">:</span> <span class="n">v3</span><span class="mf">.5</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">GMR</span>
+<span class="n">AMEBA</span><span class="o">-</span><span class="n">RTOS</span> <span class="n">SDK</span> <span class="n">VERSION</span><span class="p">:</span> <span class="mf">1.1.0</span>
+<span class="n">ATCMD</span> <span class="n">VERSION</span><span class="p">:</span> <span class="mf">2.2.0</span>
+<span class="n">amebasmart</span><span class="p">:</span> <span class="n">e1ffe0ff2504cc5383c030d6ffffff28</span>
+<span class="n">COMPILE</span> <span class="n">TIME</span><span class="p">:</span> <span class="mi">2025</span><span class="o">-</span><span class="mi">03</span><span class="o">-</span><span class="mi">03</span> <span class="mi">16</span><span class="p">:</span><span class="mi">48</span><span class="p">:</span><span class="mi">37</span>
+<span class="n">COMPILE</span> <span class="n">USER</span><span class="p">:</span> <span class="n">user</span><span class="nd">@linux</span>
+<span class="n">COMPILE</span> <span class="n">ENV</span> <span class="p">:</span> <span class="n">arm</span><span class="o">-</span><span class="n">none</span><span class="o">-</span><span class="n">eabi</span><span class="o">-</span><span class="n">gcc</span>
+
+<span class="n">OK</span>
 </pre></div>
 </div>
 </div>
@@ -956,16 +1548,14 @@ AT+CERT=1,1
 
 </footer>
         </div>
-
-<!-- 渲染按钮和对话框 -->
-<button id="report-button">Report Issue</button>
-<div id="feedback-dialog" class="feedback-dialog" style="display: none;">
-    <p>Please describe your issue:</p>
-    <!-- <textarea id="feedback-text" placeholder="Enter your issue description..."></textarea> -->
-    <textarea id="feedback-text" placeholder="Feature enhancement in progress, please stay tuned..."></textarea>
-    <button id="submit-feedback">Submit</button>
-    <button id="cancel-feedback">Cancel</button>
-</div>
+    <!-- 问题反馈按钮和对话框 -->
+    
+    <div id="feedback-dialog" class="feedback-dialog" style="display: none;">
+        <p>Please describe your issue:</p>
+        <textarea id="feedback-text" placeholder="Feature enhancement in progress, please stay tuned..."></textarea>
+        <button id="submit-feedback">Submit</button>
+        <button id="cancel-feedback">Cancel</button>
+    </div>
 
       </div>
     </section>
