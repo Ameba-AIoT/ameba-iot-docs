@@ -6,13 +6,13 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Introduction &mdash; Ameba IoT Docs  documentation</title>
+  <title>Supported Chips &mdash; Ameba IoT Docs  documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
-      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=b0e775ca" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=536412e7" />
       <link rel="stylesheet" type="text/css" href="../../_static/tabs.css?v=a5c4661c" />
-      <link rel="stylesheet" type="text/css" href="../../_static/_static/custom.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=536412e7" />
 
   
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
@@ -27,6 +27,7 @@
         <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="../../_static/tabs.js?v=3030b3cb"></script>
         <script>let toggleHintShow = 'Click to show';</script>
         <script>let toggleHintHide = 'Click to hide';</script>
         <script>let toggleOpenOnPrint = 'true';</script>
@@ -38,13 +39,487 @@
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Security and Encryption" href="../3_security/0_security_index.html" />
     <link rel="prev" title="Wi-Fi Adaptivity Test" href="0_wifi_adaptivity_index.html" />
-   
-  
-  <script type="text/javascript" src="../../_static/js/selector.js"></script>
+     
 
-  <style>
-    .wy-nav-content {max-width: 1000px;} /* 设置最大宽度 */
-  </style>
+    <!-- NDA文档输入密码的框 -->
+    
+<script>
+// ▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼ 多语言配置 ▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼
+const lang = 'en';  // 使用 Python 字符串切片
+const i18n = {
+    zh: {
+        title: '访问授权',
+        username: '用户名',
+        password: '密码',
+        confirm: '确认',
+        cancel: '取消',
+        usernameError: '用户名错误',
+        userNotExist: '该用户不存在',
+        passwordError: '密码错误',
+        wrongPassword: '请输入正确的密码',
+        accessDenied: '无访问权限',
+        noPermission: '您无权查看此内容',
+        expiredTitle: '访问已过期',
+        expiredMsg: '您的权限已失效<br>有效期：%s 至 %s',
+        deniedTitle: '⚠️ 无访问权限',
+        contact: '请联系 claire_wang@realsil.com.cn 获取权限'
+    },
+    en: {
+        title: 'Access Required',
+        username: 'Username',
+        password: 'Password',
+        confirm: 'Confirm',
+        cancel: 'Cancel',
+        usernameError: 'Invalid Username',
+        userNotExist: 'User does not exist',
+        passwordError: 'Wrong Password',
+        wrongPassword: 'Please enter correct password',
+        accessDenied: 'Access Denied',
+        noPermission: 'You have no permission to view this content',
+        expiredTitle: 'Authorization Expired',
+        expiredMsg: 'Your access has expired<br>Valid period: %s to %s',
+        deniedTitle: '⚠️ Access Denied',
+        contact: 'Please contact claire_wang@realsil.com.cn for access'
+    }
+};
+// ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲ 多语言配置结束 ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
+</script>
+
+    <!-- 样式模板 -->
+    
+
+<style>
+    .wy-nav-content {
+        max-width: 1000px;
+         
+    }
+    
+    .auth-denied {
+        padding: 20px;
+        background: #f8f9fa;
+        border-radius: 4px;
+        border: 1px solid #dee2e6;
+        text-align: center;
+        color: #721c24;
+        margin-top: 20px;
+    }
+    .auth-denied h3 {
+        margin-bottom: 10px;
+        color: #dc3545;
+    }
+    
+    #report-button {
+        position: fixed;
+        top: 10px;
+        left: 1120px;
+        padding: 10px 20px;
+        background-color: #ff00a2;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        z-index: 1000;
+    }
+    #report-button:hover {
+        background-color: #0056b3;
+    }
+    
+    .feedback-dialog {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        z-index: 1001;
+        width: 600px;
+    }
+    .feedback-dialog textarea {
+        width: 100%;
+        height: 150px;
+        margin-top: 10px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        resize: vertical;
+    }
+    .feedback-dialog button {
+        margin-top: 10px;
+        padding: 8px 16px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    .feedback-dialog button:hover {
+        background-color: #0056b3;
+    }
+
+    
+    
+</style>
+    <style>
+    /* ====================== 选择器样式 ====================== */
+    /* 选择器容器 */
+    .selector-container {
+        margin: 8px 0;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+    }
+    
+    /* 版本选择器特殊边距 */
+    .version-selector-container {
+        margin-bottom: 8px !important;
+    }
+    
+    /* 选择器标签 */
+    .selector-label {
+        color: white;
+        margin-right: 10px;
+        width: 80px;
+        text-align: right;
+        font-size: 0.9em;
+    }
+    
+    /* 下拉选择框 */
+    .selector-dropdown {
+        width: 120px;
+        border-radius: 2px;
+        padding: 4px 8px;
+        border: 1px solid #405261;
+        background: #2c3e50;
+        color: white;
+        font-size: 0.9em;
+    }
+    
+    /* 下拉选择框悬停效果 */
+    .selector-dropdown:hover {
+        border-color: #3498db;
+        transition: border-color 0.3s;
+    }
+    
+    /* 选择器响应式布局 */
+    @media (max-width: 768px) {
+        .selector-container {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        
+        .selector-label {
+            width: 100%;
+            text-align: left;
+            margin-bottom: 4px;
+        }
+        
+        .selector-dropdown {
+            width: 100%;
+        }
+    }
+</style>
+    <style>
+/* =============== 左上角登录区域  =============== */
+/* ================= 用户面板 ================= */
+.user-panel {
+    padding: 15px;
+    background: #34495e;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.username {
+    color: #fff;
+    font-weight: 500;
+    font-size: 1.1em;
+    text-align: center;
+    margin: 10px 0;
+}
+
+/* ================= 按钮容器 ================= */
+.button-row {
+    display: flex;
+    gap: 8px;
+    width: 100%;
+    margin: 10px 0;
+}
+
+/* 通用按钮样式 */
+.auth-btn, .forum-btn, .official-btn {
+    flex: 1;
+    padding: 8px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: opacity 0.3s;
+    text-align: center;
+    color: white !important;
+}
+
+/* 认证按钮 */
+.auth-btn {
+    background: #3498db;
+}
+
+/* 论坛按钮 */
+.forum-btn {
+    background: #9b59b6; /* 与参考代码的官方按钮同色 */
+}
+
+/* 官网按钮 */
+.official-btn {
+    background: #2ecc71; /* 与参考代码文档按钮同色 */
+}
+/* =============== 左上角登录区域  =============== */
+</style>
+
+    <!-- 注入 TOC 映射和当前页面信息 -->
+    
+
+<!-- TOC 映射和当前文档信息 -->
+<script>
+// 将 Python 字典转换为 JS 对象
+const TOC_TITLE_MAP = {"rst_rtos/0_ameba_product": "Products Center", "rst_rtos/0_ameba_product/0_ameba_product_center_index": "Products Center", "rst_rtos/0_ameba_sdk": "Ameba SDK", "rst_rtos/0_ameba_sdk/0_ameba_sdks_index": "Ameba SDK", "rst_rtos/0_ameba_solutions": "Ameba Solutions", "rst_rtos/0_ameba_solutions/0_ameba_solutions_index": "Ameba Solutions", "rst_rtos/0_at_command": "0.8 AT Commands", "rst_rtos/0_at_command/0_at_command_index": "0.8 AT Commands", "rst_rtos/0_file_system": "0.9 Virtual File System", "rst_rtos/0_file_system/0_vfs_index": "0.9 Virtual File System", "rst_rtos/0_gcc_build_environment": "0.1 GCC Build Environment", "rst_rtos/0_gcc_build_environment/0_gcc_build_index": "0.1 GCC Build Environment", "rst_rtos/0_gcc_build_library": "0.3 GCC Build Library", "rst_rtos/0_gcc_build_library/0_gcc_build_library_index": "0.3 GCC Build Library", "rst_rtos/0_gdb_debug": "0.2 GDB Debug", "rst_rtos/0_gdb_debug/0_gdb_debug_index": "0.2 GDB Debug", "rst_rtos/0_memory_layout": "0.5 Flash \u0026 RAM Layout", "rst_rtos/0_memory_layout/0_layout_index": "0.5 Flash \u0026 RAM Layout", "rst_rtos/0_sdk_example": "0.4 SDK Example", "rst_rtos/0_sdk_example/0_sdk_example_index": "0.4 SDK Example", "rst_rtos/0_tools": "0.7 Tools", "rst_rtos/0_tools/0_tools_index": "0.7 Tools", "rst_rtos/0_user_config": "0.6 User Config", "rst_rtos/0_user_config/0_usrcfg_index": "0.6 User Config", "rst_rtos/10_api_docs": "10.0 API Reference", "rst_rtos/10_api_docs/0_api_index": "10.0 API Reference", "rst_rtos/1_boot_process": "1.1 BOOT Process", "rst_rtos/1_boot_process/0_boot_index": "1.1 BOOT Process", "rst_rtos/1_chipen": "1.4 Chip Enable", "rst_rtos/1_chipen/0_chipen_index": "1.4 Chip Enable", "rst_rtos/1_gpio": "1.7 GPIO \u0026 Pin Control", "rst_rtos/1_gpio/0_gpio_index": "1.7 GPIO \u0026 Pin Control", "rst_rtos/1_ipc": "1.5 Inter Processor Communication", "rst_rtos/1_ipc/0_ipc_index": "1.5 Inter Processor Communication", "rst_rtos/1_mpu_cache": "1.0 MPU and Cache", "rst_rtos/1_mpu_cache/0_mpu_cache_index": "1.0 MPU and Cache", "rst_rtos/1_ota": "1.2 OTA", "rst_rtos/1_ota/0_ota_index": "1.2 OTA", "rst_rtos/1_otpc": "1.3 OTPC", "rst_rtos/1_otpc/0_otpc_index": "1.3 OTPC", "rst_rtos/1_pinmux": "1.6 Pin Multiplexing", "rst_rtos/1_pinmux/0_pinmux_index": "1.6 Pin Multiplexing", "rst_rtos/1_power_save": "1.9 Power Save", "rst_rtos/1_power_save/0_ps_index": "1.9 Power Save", "rst_rtos/2_whc_fullmac": "2.1 WHC FullMAC", "rst_rtos/2_whc_fullmac/0_fullmac_index": "2.1 WHC FullMAC", "rst_rtos/2_whc_wifi_bridge": "2.0 WHC Bridge", "rst_rtos/2_whc_wifi_bridge/0_wifi_bridge_index": "2.0 WHC Bridge", "rst_rtos/2_wifi_adaptivity_test": "2.4 Wi-Fi Adaptivity Test", "rst_rtos/2_wifi_adaptivity_test/0_wifi_adaptivity_index": "2.4 Wi-Fi Adaptivity Test", "rst_rtos/2_wifi_csi": "2.3 Wi-Fi CSI", "rst_rtos/2_wifi_csi/0_wifi_csi_index": "2.3 Wi-Fi CSI", "rst_rtos/2_wifi_tunnel": "2.2 Wi-Fi R-Mesh", "rst_rtos/2_wifi_tunnel/0_wifi_tunnel_index": "2.2 Wi-Fi R-Mesh", "rst_rtos/3_crypto_engine": "3.9 Crypto Engine", "rst_rtos/3_crypto_engine/0_crypto_engine_index": "3.9 Crypto Engine", "rst_rtos/3_ecdsa_engine": "3.a ECDSA Engine", "rst_rtos/3_ecdsa_engine/0_ecdsa_index": "3.a ECDSA Engine", "rst_rtos/3_eddsa_engine": "3.b EDDSA Engine", "rst_rtos/3_eddsa_engine/0_eddsa_index": "3.b EDDSA Engine", "rst_rtos/3_nda_huk_derivation": "3.3 HUK Derivation \ud83d\udd12", "rst_rtos/3_nda_huk_derivation/0_huk_derivation_index_nda": "3.3 HUK Derivation \ud83d\udd12", "rst_rtos/3_nda_rdp": "3.4 RDP \ud83d\udd12", "rst_rtos/3_nda_rdp/0_rdp_index_nda": "3.4 RDP \ud83d\udd12", "rst_rtos/3_nda_rsip": "3.5 RSIP \ud83d\udd12", "rst_rtos/3_nda_rsip/0_rsip_index_nda": "3.5 RSIP \ud83d\udd12", "rst_rtos/3_nda_secure_boot": "3.6 Secure Boot \ud83d\udd12", "rst_rtos/3_nda_secure_boot/0_secure_boot_index_nda": "3.6 Secure Boot \ud83d\udd12", "rst_rtos/3_nda_swd_protection": "3.7 SWD Protection \ud83d\udd12", "rst_rtos/3_nda_swd_protection/0_swd_protection_index_nda": "3.7 SWD Protection \ud83d\udd12", "rst_rtos/3_nda_tfm": "3.8 Trusted Firmware-M (TF-M) \ud83d\udd12", "rst_rtos/3_nda_tfm/0_tfm_index_nda": "3.8 Trusted Firmware-M (TF-M) \ud83d\udd12", "rst_rtos/3_rsa_engine": "3.c RSA Engine", "rst_rtos/3_rsa_engine/0_rsa_index": "3.c RSA Engine", "rst_rtos/3_security": "3.1 Security \u0026 Encryption", "rst_rtos/3_security/0_security_index": "3.1 Security \u0026 Encryption", "rst_rtos/3_trng": "3.2 True Random Number Generator", "rst_rtos/3_trng/0_trng_index": "3.2 True Random Number Generator", "rst_rtos/4_ai": "4.1 AI", "rst_rtos/4_ai/0_ai_index": "4.1 AI", "rst_rtos/4_ai_voice": "4.2 AIVoice", "rst_rtos/4_ai_voice/0_ai_voice_index": "4.2 AIVoice", "rst_rtos/4_dsp": "4.4 DSP", "rst_rtos/4_dsp/0_dsp_index": "4.4 DSP", "rst_rtos/4_multimedia": "4.3 Multimedia", "rst_rtos/4_multimedia/0_multimedia_index": "4.3 Multimedia", "rst_rtos/6_mass_production": "6.1 Mass Production", "rst_rtos/6_mass_production/0_mp_index": "6.1 Mass Production", "rst_rtos/6_mp_image": "6.2 MP Image", "rst_rtos/6_mp_image/0_mp_image_index": "6.2 MP Image", "rst_rtos/6_mptools": "6.3 MP Tools", "rst_rtos/6_mptools/0_mptools_index": "6.3 MP Tools", "rst_rtos/7_usb": "7.1 USB Host \u0026 Device", "rst_rtos/7_usb/0_usb_index": "7.1 USB Host \u0026 Device", "rst_rtos/8_adc": "8.4 ADC", "rst_rtos/8_adc/0_adc_index": "8.4 ADC", "rst_rtos/8_cap_touch": "8.7 Cap-Touch", "rst_rtos/8_cap_touch/0_cap_touch_index": "8.7 Cap-Touch", "rst_rtos/8_dmac": "8.1 DMA Controller", "rst_rtos/8_dmac/0_dmac_index": "8.1 DMA Controller", "rst_rtos/8_ir": "8.5 IR", "rst_rtos/8_ir/0_ir_index": "8.5 IR", "rst_rtos/8_key_scan": "8.8 Key-Scan", "rst_rtos/8_key_scan/0_key_scan_index": "8.8 Key-Scan", "rst_rtos/8_lcdc": "8.A LCD Controller", "rst_rtos/8_lcdc/0_lcdc_index": "8.A LCD Controller", "rst_rtos/8_ledc": "8.6 LED Controller", "rst_rtos/8_ledc/0_ledc_index": "8.6 LED Controller", "rst_rtos/8_psram": "8.2 PSRAM", "rst_rtos/8_psram/0_psram_index": "8.2 PSRAM", "rst_rtos/8_rtc_io": "8.9 RTC-IO", "rst_rtos/8_rtc_io/0_rtc_io_index": "8.9 RTC-IO", "rst_rtos/8_thermal": "8.3 Thermal Meter", "rst_rtos/8_thermal/0_thermal_index": "8.3 Thermal Meter"};
+console.log("TOC_TITLE_MAP:", TOC_TITLE_MAP);
+
+// 获取当前页面的文档名 (例如 'rst_rtos/3_nda_secure_boot/0_secure_boot_index_nda')
+const CURRENT_DOCNAME = 'rst_rtos/2_wifi_adaptivity_test/1_wifi_adaptivity_test_toprst';
+
+// 动态查找顶级分类函数（定义为全局函数）
+window.findTopLevelChapter = function(docname) {
+    console.log("Attempting to find top-level chapter for:", docname);
+    let bestMatch = "";
+    let bestTitle = "Unknown Chapter";
+
+    // 按路径长度降序排序以确保最长匹配
+    const sortedPaths = Object.keys(TOC_TITLE_MAP).sort((a, b) => b.length - a.length);
+
+    for (const path of sortedPaths) {
+        console.log("Checking path:", path);
+        if (docname === path || docname.startsWith(path + '/')) { // 子页面
+            bestMatch = path;
+            bestTitle = TOC_TITLE_MAP[path];
+            console.log("Matched path:", path, "with title:", bestTitle);
+            break;
+        }
+    }
+
+    // 如果没有找到任何匹配项，则尝试更短的路径
+    if (bestMatch === "") {
+        const pathSegments = docname.split('/');
+        while (pathSegments.length > 1) { // 至少保留根路径
+            const candidate = pathSegments.join('/');
+            console.log("Checking shorter path:", candidate);
+            if (TOC_TITLE_MAP[candidate]) {
+                bestTitle = TOC_TITLE_MAP[candidate];
+                console.log("Matched shorter path:", candidate, "with title:", bestTitle);
+                break;
+            }
+            pathSegments.pop();
+        }
+    }
+
+    console.log("Final top-level chapter:", bestTitle);
+    return bestTitle;
+}
+
+// 初始化时调用
+document.addEventListener('DOMContentLoaded', function() {
+    const topLevelChapter = findTopLevelChapter(CURRENT_DOCNAME);
+    console.log("Top Level Chapter:", topLevelChapter);
+
+    // 将顶级分类插入到DOM中（根据需要）
+    const chapterElement = document.createElement('div');
+    chapterElement.className = 'top-level-chapter';
+    chapterElement.innerHTML = `<strong>Top Level Chapter: </strong>${topLevelChapter}`;
+    document.body.appendChild(chapterElement);
+});
+</script>
+
+    <!-- 问题回报 -->
+    <!-- source/_templates/_layout_issue_report.html -->
+<div id="prompt-box" style="
+    display: none;
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.8);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    z-index: 9999;
+    text-align: center;
+    font-size: 14px;
+"></div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const reportButton = document.getElementById('report-button');
+    const feedbackDialog = document.getElementById('feedback-dialog');
+    const feedbackText = document.getElementById('feedback-text');
+    const submitButton = document.getElementById('submit-feedback');
+    const cancelButton = document.getElementById('cancel-feedback');
+    const promptBox = document.getElementById('prompt-box');
+
+    let selectedText = '';
+    let selectedChapters = '';
+    const language = 'en'; // 获取语言变量
+
+    // 定义标题变量（顶格显示）
+    const userHeader = 'User:';
+    const chaptersHeader = 'Chapters:';
+    const paragraphHeader = 'Paragraph:';
+    const questionHeader = 'Question:';
+
+    // 定义提示消息
+    const saveSuccessMessage = language === 'zh_CN' ? '问题已保存到本地文件 feedback.txt' : 'Issue saved to local file feedback.txt';
+
+    // 检查 findTopLevelChapter 是否已定义
+    if (typeof window.findTopLevelChapter !== 'function') {
+        console.error("findTopLevelChapter 函数未定义，请检查加载顺序！");
+        return;
+    }
+
+    reportButton.addEventListener('click', function() {
+        const selection = window.getSelection();
+        selectedText = selection.toString();
+        if (!selectedText) {
+            alert('Please select the problematic content first');
+            return;
+        }
+
+        // 收集章节信息
+        let chapters = new Set(); // 使用 Set 来避免重复章节
+        if (selection.rangeCount > 0) {
+            const range = selection.getRangeAt(0);
+            let node = range.commonAncestorContainer;
+
+            // 确保从最近的元素节点开始
+            while (node && node.nodeType !== Node.ELEMENT_NODE) {
+                node = node.parentElement;
+            }
+
+            // 使用递归方法遍历DOM树
+            function collectHeadings(node, level = 0) {
+                if (!node) return;
+
+                if (node.tagName && node.tagName.match(/^H[1-6]$/)) {
+                    chapters.add(`${node.textContent.trim()}`);
+                }
+
+                if (node.previousElementSibling) {
+                    collectHeadings(node.previousElementSibling, level);
+                }
+
+                if (node.parentElement && node.parentElement.tagName !== 'BODY') {
+                    collectHeadings(node.parentElement, level + 1);
+                }
+            }
+
+            collectHeadings(node);
+
+            // 如果没有找到任何章节信息，则添加默认提示
+            if (chapters.size === 0) {
+                chapters.add('No chapter information found');
+            }
+        }
+
+        // 获取顶级侧边栏章节
+        const topLevelChapter = window.findTopLevelChapter(CURRENT_DOCNAME); // 调用全局函数
+        chapters.add(`顶级分类：${topLevelChapter}`); // 插入到章节集合中
+
+        // 添加章节标题
+        const chapterHeader = language === 'zh_CN' ? '以下逐级向上追溯：' : 'Trace upwards level by level:';
+        selectedChapters = chapterHeader + '\n' + Array.from(chapters).join('\n');
+
+        feedbackDialog.style.display = 'block';
+        feedbackText.value = '';
+    });
+
+    submitButton.addEventListener('click', function() {
+        const userQuestion = feedbackText.value.trim();
+        if (!userQuestion) {
+            alert('Issue description cannot be empty');
+            return;
+        }
+
+        // 获取用户信息（关键修改点）
+        const username = localStorage.getItem('username') || '匿名'; // 从 localStorage 获取用户名
+
+        // 统一处理内容缩进
+        const formatContent = text => text.split('\n').map(line => '    ' + line).join('\n');
+
+        // 生成消息内容（标题顶格，内容缩进）
+        const message = `${userHeader}\n` + 
+                        `${formatContent(username)}\n\n` +
+                        `${chaptersHeader}\n` + 
+                        `${formatContent(selectedChapters)}\n\n` +
+                        `${paragraphHeader}\n` + 
+                        `${formatContent(selectedText)}\n\n` +
+                        `${questionHeader}\n` + 
+                        `${formatContent(userQuestion)}`;
+
+        // 提交到后端（关键修改点）
+        const feedbackData = {
+            user: username,  // 使用真实用户名
+            chapters: selectedChapters,
+            paragraph: selectedText,
+            question: userQuestion
+        };
+
+        fetch('http://172.29.57.206:5000/submit', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(feedbackData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('提交成功:', data);
+        })
+        .catch(error => {
+            console.error('提交失败:', error);
+        });
+
+        // 创建Blob对象并保存到本地文件
+        const blob = new Blob([message], { type: 'text/plain' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = 'feedback.txt';
+        link.click();
+
+        // 显示提示框
+        promptBox.textContent = saveSuccessMessage;
+        promptBox.style.display = 'block';
+        const promptTimeout = setTimeout(() => {
+            promptBox.style.display = 'none';
+        }, 10000);
+
+        // 自动关闭反馈对话框
+        feedbackDialog.style.display = 'none';
+    });
+
+    cancelButton.addEventListener('click', function() {
+        feedbackDialog.style.display = 'none';
+    });
+});
+</script>
+
+    <style>
+        /* 隐藏整个搜索栏容器 */
+        .wy-side-nav-search > div[role="search"] {
+            display: none !important;
+        }
+
+        /* 或者更精确地隐藏表单 */
+        form#rtd-search-form {
+            display: none !important;
+        }
+    </style>
 
 </head>
 
@@ -53,6 +528,7 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
+    
 
           
           
@@ -66,6 +542,356 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
+
+    
+    <div id="custom-selectors" style="display: block !important; padding: 0; background: none; border: none;">
+    </div>
+
+    <script>
+    /* ====================== 嵌入式配置开始 ====================== */
+    const embeddedConfig = {
+        "freertos": {
+            "name": "FreeRTOS",
+            "languages": {
+                "en": ["latest"],
+                "cn": ["latest"]
+            }
+        },
+        "linux": {
+            "name": "Linux",
+            "languages": {
+                "en": ["latest"],
+                "cn": ["latest"]
+            }
+        }
+    };
+    /* ====================== 嵌入式配置结束 ====================== */
+
+    (function() {
+        // 获取基础URL路径
+        function getBaseURL() {
+            const url = new URL(window.location.href);
+            if (url.protocol === 'file:') {
+                // 本地路径处理
+                const pathParts = url.pathname.split('/').filter(part => part !== '');
+                const index = pathParts.indexOf('build');
+                return `file://${pathParts.slice(0, index + 1).join('/')}/`;
+            } else {
+                // 网络路径处理
+                return `${url.origin}/${url.pathname.split('/').slice(1, 3).join('/')}/`;
+            }
+        }
+
+        // 获取当前URL路径分段
+        function getCurrentSegments() {
+            const url = new URL(window.location.href);
+            let segments = url.pathname.split('/').filter(segment => segment);
+
+            if (url.protocol === 'file:') {
+                // 本地路径处理
+                const index = segments.indexOf('build');
+                segments = segments.slice(index + 1); // 去掉 build 及之前的路径
+            } else {
+                // 网络路径处理
+                segments = segments.slice(3); // 去掉 ameba-iot-docs/
+            }
+
+            return {
+                osKey: segments[0] || 'freertos', // 默认为 freertos
+                language: segments[1] || 'en',   // 默认为 en
+                version: segments[2] || 'latest' // 默认为 latest
+            };
+        }
+
+        // 获取OS显示名称列表
+        function getOSNames(data) {
+            return Object.keys(data).map(key => data[key].name);
+        }
+
+        // 获取指定OS的语言列表
+        function getLanguages(data, osKey) {
+            return Object.keys(data[osKey]?.languages || {});
+        }
+
+        // 获取指定OS和语言的版本列表
+        function getVersions(data, osKey, language) {
+            return data[osKey]?.languages?.[language] || ['latest'];
+        }
+
+        // 根据显示名称查找OS键
+        function findOSKey(data, displayName) {
+            return Object.keys(data).find(key => data[key].name === displayName);
+        }
+
+        // 初始化选择器
+        function initSelectors() {
+            const segments = getCurrentSegments();
+            const currentOSName = embeddedConfig[segments.osKey]?.name;
+
+            // 如果 OS 无效，默认设置为 FreeRTOS
+            if (!currentOSName) {
+                console.warn("Invalid OS key, defaulting to FreeRTOS");
+                segments.osKey = 'freertos';
+            }
+
+            // 如果语言无效，默认设置为 en
+            if (!getLanguages(embeddedConfig, segments.osKey).includes(segments.language)) {
+                console.warn("Invalid language, defaulting to en");
+                segments.language = 'en';
+            }
+
+            // 获取基础URL
+            const baseURL = getBaseURL();
+
+            // 生成选择器HTML
+            document.getElementById('custom-selectors').innerHTML = `
+                <div id="custom-selectors" style="padding: 0; background: none; border: none;">
+                    <!-- 系统选择器 -->
+                    <div class="selector-container">
+                        <label class="selector-label">
+                            ${segments.language === 'cn' ? '系统' : 'OS'}:
+                        </label>
+                        <select id="os-selector" class="selector-dropdown">
+                            ${Object.keys(embeddedConfig).map(key => `
+                                <option value="${key}">${embeddedConfig[key].name}</option>
+                            `).join('')}
+                        </select>
+                    </div>
+
+                    <!-- 语言选择器 -->
+                    <div class="selector-container">
+                        <label class="selector-label">
+                            ${segments.language === 'cn' ? '语言' : 'Language'}:
+                        </label>
+                        <select id="language-selector" class="selector-dropdown">
+                            ${getLanguages(embeddedConfig, segments.osKey).map(lang => `
+                                <option value="${lang}">${lang}</option>
+                            `).join('')}
+                        </select>
+                    </div>
+
+                    <!-- 版本选择器 -->
+                    <div class="selector-container version-selector-container">
+                        <label class="selector-label">
+                            ${segments.language === 'cn' ? '版本' : 'Version'}:
+                        </label>
+                        <select id="version-selector" class="selector-dropdown">
+                            ${getVersions(embeddedConfig, segments.osKey, segments.language).map(ver => `
+                                <option value="${ver}">${ver}</option>
+                            `).join('')}
+                        </select>
+                    </div>
+
+                    
+
+                </div>`;
+
+            // 设置初始选中值
+            document.getElementById('os-selector').value = segments.osKey;
+            document.getElementById('language-selector').value = segments.language;
+
+            // 确保版本选择框有默认值
+            const versionSelector = document.getElementById('version-selector');
+            const availableVersions = getVersions(embeddedConfig, segments.osKey, segments.language);
+            versionSelector.value = availableVersions.includes(segments.version) ? segments.version : availableVersions[0] || 'latest';
+
+            // 绑定事件监听
+            document.getElementById('os-selector').addEventListener('change', () => {
+                const newOSKey = document.getElementById('os-selector').value;
+                const availableLangs = getLanguages(embeddedConfig, newOSKey);
+                const defaultLang = availableLangs[0] || 'en';
+                const defaultVersion = getVersions(embeddedConfig, newOSKey, defaultLang)[0] || 'latest';
+                redirectTo(`${baseURL}${newOSKey}/${defaultLang}/${defaultVersion}/`);
+            });
+
+            document.getElementById('language-selector').addEventListener('change', () => {
+                const newLang = document.getElementById('language-selector').value;
+                const defaultVersion = getVersions(embeddedConfig, segments.osKey, newLang)[0] || 'latest';
+                redirectTo(`${baseURL}${segments.osKey}/${newLang}/${defaultVersion}/`);
+            });
+
+            document.getElementById('version-selector').addEventListener('change', () => {
+                const newVer = document.getElementById('version-selector').value;
+                redirectTo(`${baseURL}${segments.osKey}/${segments.language}/${newVer}/`);
+            });
+
+            // ====================== 新增代码：注册和登录的弹窗逻辑 ======================
+            function createAuthDialog(type) {
+                const lang = segments.language === 'cn' ? 'cn' : 'en';
+                
+                // 创建弹窗容器
+                const dialog = document.createElement('div');
+                dialog.style.cssText = `
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: rgba(0,0,0,0.5);
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    z-index: 9999;
+                `;
+
+                // 弹窗内容
+                const content = document.createElement('div');
+                content.style.cssText = `
+                    background: white;
+                    padding: 20px;
+                    border-radius: 8px;
+                    min-width: 300px;
+                `;
+
+                // 标题
+                const title = document.createElement('h3');
+                title.textContent = type === 'register' 
+                    ? (lang === 'cn' ? '注册' : 'Register') 
+                    : (lang === 'cn' ? '登录' : 'Login');
+                content.appendChild(title);
+
+                // 用户名输入
+                const usernameLabel = document.createElement('label');
+                usernameLabel.textContent = lang === 'cn' ? '用户名：' : 'Username:';
+                const usernameInput = document.createElement('input');
+                usernameInput.style.cssText = 'width: 100%; margin-bottom: 10px; padding: 5px;';
+                content.appendChild(usernameLabel);
+                content.appendChild(usernameInput);
+
+                // 密码输入
+                const passwordLabel = document.createElement('label');
+                passwordLabel.textContent = lang === 'cn' ? '密码：' : 'Password:';
+                const passwordInput = document.createElement('input');
+                passwordInput.type = 'password';
+                passwordInput.style.cssText = 'width: 100%; margin-bottom: 10px; padding: 5px;';
+                content.appendChild(passwordLabel);
+                content.appendChild(passwordInput);
+
+                // 注册时需要确认密码
+                let confirmPasswordInput;
+                if (type === 'register') {
+                    const confirmLabel = document.createElement('label');
+                    confirmLabel.textContent = lang === 'cn' ? '确认密码：' : 'Confirm Password:';
+                    confirmPasswordInput = document.createElement('input');
+                    confirmPasswordInput.type = 'password';
+                    confirmPasswordInput.style.cssText = 'width: 100%; margin-bottom: 10px; padding: 5px;';
+                    content.appendChild(confirmLabel);
+                    content.appendChild(confirmPasswordInput);
+                }
+
+                // 按钮容器
+                const buttonContainer = document.createElement('div');
+                buttonContainer.style.cssText = 'display: flex; gap: 10px; margin-top: 10px;';
+
+                // 确认按钮
+                const confirmBtn = document.createElement('button');
+                confirmBtn.textContent = lang === 'cn' ? '确认' : 'Confirm';
+                confirmBtn.onclick = () => {
+                    const username = usernameInput.value.trim();
+                    const password = passwordInput.value.trim();
+                    const confirmPassword = confirmPasswordInput ? confirmPasswordInput.value.trim() : null;
+
+                    // 验证输入
+                    if (!username || !password) {
+                        alert(lang === 'cn' ? '用户名和密码不能为空！' : 'Username and password are required!');
+                        return;
+                    }
+
+                    if (type === 'register' && password !== confirmPassword) {
+                        alert(lang === 'cn' ? '两次输入的密码不一致！' : 'Passwords do not match!');
+                        return;
+                    }
+
+                    // flask 发送请求
+                    fetch('http://172.29.57.206:5000/auth', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            action: type,
+                            username,
+                            password
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert(lang === 'cn' ? '操作成功！' : 'Success!');
+                            // 更新本地存储和UI
+                            localStorage.setItem('isLoggedIn', 'true');
+                            localStorage.setItem('username', username);
+                            // 强制刷新显示状态
+                            document.getElementById('auth-buttons').style.display = 'none';
+                            document.getElementById('user-info').style.display = 'block';
+                            document.getElementById('username-display').textContent = username;
+                            document.body.removeChild(dialog);
+                        } else {
+                            alert(lang === 'cn' ? '失败：' + data.message : 'Failed: ' + data.message);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert(lang === 'cn' ? '网络错误' : 'Network error');
+                    });
+                };
+
+                // 取消按钮
+                const cancelBtn = document.createElement('button');
+                cancelBtn.textContent = lang === 'cn' ? '取消' : 'Cancel';
+                cancelBtn.onclick = () => document.body.removeChild(dialog);
+
+                buttonContainer.appendChild(confirmBtn);
+                buttonContainer.appendChild(cancelBtn);
+                content.appendChild(buttonContainer);
+                dialog.appendChild(content);
+                document.body.appendChild(dialog);
+            }
+
+            // 注册按钮点击事件
+            document.getElementById('register-button').addEventListener('click', () => {
+                createAuthDialog('register');
+            });
+
+            // 登录按钮点击事件
+            document.getElementById('login-button').addEventListener('click', () => {
+                createAuthDialog('login');
+            });
+
+            // 跳转函数
+            function redirectTo(path) {
+                const url = new URL(path, window.location.href);
+                if (url.protocol === 'file:') {
+                    // 本地路径附加 index.html
+                    url.pathname += 'index.html';
+                }
+                window.location.href = url.href;
+            }
+
+            /* =============== 左上角登录区域  =============== */
+            function syncLoginState() {
+                const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+                document.getElementById('auth-buttons').style.display = isLoggedIn ? 'none' : 'flex';
+                document.getElementById('user-info').style.display = isLoggedIn ? 'block' : 'none';
+                if (isLoggedIn) {
+                    document.getElementById('username-display').textContent = localStorage.getItem('username') || '';
+                }
+            }
+
+            // 初始化同步状态
+            syncLoginState();
+            /* =============== 左上角登录区域  =============== */
+        }
+
+        // DOM加载完成后初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            try {
+                initSelectors();
+            } catch (error) {
+                console.error("Error initializing selectors:", error);
+            }
+        });
+    })();
+</script>
+
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../0_ameba_product/0_ameba_product_center_index.html">Products Center</a></li>
@@ -78,38 +904,31 @@
 <li class="toctree-l1"><a class="reference internal" href="../0_memory_layout/0_layout_index.html">0.5 Flash &amp; RAM Layout</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../0_user_config/0_usrcfg_index.html">0.6 User Config</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../0_tools/0_tools_index.html">0.7 Tools</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../0_at_command/0_at_command_index.html">0.8 AT Command</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_at_command/0_at_command_index.html">0.8 AT Commands</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../0_file_system/0_vfs_index.html">0.9 Virtual File System</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../1_mpu_cache/0_mpu_cache_index.html">1.0 MPU and Cache</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../1_boot_process/0_boot_index.html">1.1 BOOT Process</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../1_ota/0_ota_index.html">1.2 OTA</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../1_otpc/0_otpc_index.html">1.3 OTPC</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../1_chipen/0_chipen_index.html">1.4 CHIPEN</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_chipen/0_chipen_index.html">1.4 Chip Enable</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../1_ipc/0_ipc_index.html">1.5 Inter Processor Communication</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../1_pinmux/0_pinmux_index.html">1.6 PINMUX</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../1_gpio/0_gpio_index.html">1.7 GPIO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_pinmux/0_pinmux_index.html">1.6 Pin Multiplexing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_gpio/0_gpio_index.html">1.7 GPIO &amp; Pin Control</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../1_power_save/0_ps_index.html">1.9 Power Save</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../2_whc_wifi_bridge/0_wifi_bridge_index.html">2.1 WHC Bridge</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../2_whc_fullmac/0_fullmac_index.html">2.2 WHC FullMAC</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../2_wifi_tunnel/0_wifi_tunnel_index.html">2.3 Wi-Fi R-Mesh</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../2_wifi_csi/0_wifi_csi_index.html">2.5 Wi-Fi CSI</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="0_wifi_adaptivity_index.html">2.6 Wi-Fi Adaptivity Test</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Introduction</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#standards">Standards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_whc_wifi_bridge/0_wifi_bridge_index.html">2.0 WHC Bridge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_whc_fullmac/0_fullmac_index.html">2.1 WHC FullMAC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_wifi_tunnel/0_wifi_tunnel_index.html">2.2 Wi-Fi R-Mesh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_wifi_csi/0_wifi_csi_index.html">2.3 Wi-Fi CSI</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="0_wifi_adaptivity_index.html">2.4 Wi-Fi Adaptivity Test</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Supported Chips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#adaptivity-test-introduction">Adaptivity Test Introduction</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#standard">Standard</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#interference-power">Interference Power</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#software-configuration">Software Configuration</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#edcca-mode">EDCCA Mode</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#static-adjustment">Static Adjustment</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#dynamic-adjustment">Dynamic Adjustment</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#edcca-threshold">EDCCA Threshold</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#command">Command</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#example">Example</a></li>
-</ul>
-</li>
+<li class="toctree-l3"><a class="reference internal" href="#edcca-mode">EDCCA Mode</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#edcca-threshold">EDCCA Threshold</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#debug-sop">Debug SOP</a></li>
@@ -117,12 +936,12 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../3_security/0_security_index.html">3.1 Security &amp; Encryption</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../3_trng/0_trng_index.html">3.2 True Random Number Generator</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../3_nda_huk_derivation/0_huk_derivation_index_nda.html">3.3 HUK Derivation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../3_nda_rdp/0_rdp_index_nda.html">3.4 RDP</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../3_nda_rsip/0_rsip_index_nda.html">3.5 RSIP</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../3_nda_secure_boot/0_secure_boot_index_nda.html">3.6 Secure Boot</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../3_nda_swd_protection/0_swd_protection_index_nda.html">3.7 SWD Protection</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../3_nda_tfm/0_tfm_index_nda.html">3.8 Trusted Firmware-M (TF-M)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_huk_derivation/0_huk_derivation_index_nda.html">3.3 HUK Derivation 🔒</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_rdp/0_rdp_index_nda.html">3.4 RDP 🔒</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_rsip/0_rsip_index_nda.html">3.5 RSIP 🔒</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_secure_boot/0_secure_boot_index_nda.html">3.6 Secure Boot 🔒</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_swd_protection/0_swd_protection_index_nda.html">3.7 SWD Protection 🔒</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_tfm/0_tfm_index_nda.html">3.8 Trusted Firmware-M (TF-M) 🔒</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../3_crypto_engine/0_crypto_engine_index.html">3.9 Crypto Engine</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../3_ecdsa_engine/0_ecdsa_index.html">3.a ECDSA Engine</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../3_eddsa_engine/0_eddsa_index.html">3.b EDDSA Engine</a></li>
@@ -135,16 +954,17 @@
 <li class="toctree-l1"><a class="reference internal" href="../6_mp_image/0_mp_image_index.html">6.2 MP Image</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../6_mptools/0_mptools_index.html">6.3 MP Tools</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../7_usb/0_usb_index.html">7.1 USB Host &amp; Device</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../8_dmac/0_dmac_index.html">8.1 DMA Controllor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_dmac/0_dmac_index.html">8.1 DMA Controller</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../8_psram/0_psram_index.html">8.2 PSRAM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../8_thermal/0_thermal_index.html">8.3 Thermal Meter</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../8_adc/0_adc_index.html">8.4 ADC</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../8_ir/0_ir_index.html">8.5 IR</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../8_ledc/0_ledc_index.html">8.6 LEDC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_ledc/0_ledc_index.html">8.6 LED Controller</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../8_cap_touch/0_cap_touch_index.html">8.7 Cap-Touch</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../8_key_scan/0_key_scan_index.html">8.8 Key-Scan</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../8_rtc_io/0_rtc_io_index.html">8.9 RTC-IO</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../8_lcdc/0_lcdc_index.html">8.A LCDC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_lcdc/0_lcdc_index.html">8.A LCD Controller</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../10_api_docs/0_api_index.html">10.0 API Reference</a></li>
 </ul>
 
         </div>
@@ -157,13 +977,13 @@
       </nav>
 
       <div class="wy-nav-content">
-
+    
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="0_wifi_adaptivity_index.html">Wi-Fi Adaptivity Test</a></li>
-      <li class="breadcrumb-item active">Introduction</li>
+      <li class="breadcrumb-item active">Supported Chips</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -172,42 +992,94 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="introduction">
-<span id="wifi-guide-adaptivity-test"></span><h1>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h1>
-<section id="standards">
-<h2>Standards<a class="headerlink" href="#standards" title="Link to this heading"></a></h2>
-<p>Adaptivity is an automatic channel access mechanism by which a device avoids transmission in a channel in the presence of transmission in that channel. Any equipment with maximum declared RF output power level greater than 10dBm e.i.r.p. should apply Adaptivity mechanism.</p>
-<p>ETSI has mandated Adaptivity certification since December 31, 2017. The related Standards are <em>ETSI EN 300 328 V2.2.2 (for 2G)</em> and <em>ETSI EN 301 893 V2.1.1 (for 5G)</em>. Steps of Adaptivity test are defined by ETSI as follows:</p>
-<ol class="arabic simple">
-<li><p>Connect the test object and the companion object, and the traffic is transmitted.</p></li>
-<li><p>Add the interference signal, blocking signal of out of band is also necessary for 2G.</p></li>
-<li><p>The test object stops TX.</p></li>
-<li><p>Only allow short control signaling transmission (e.g. ACK) for the companion object.</p>
-<ul class="simple">
-<li><p>For 2G pass criteria, the TX duty cycle cannot exceed 10% within 50ms.</p></li>
-<li><p>For 5G Pass criteria, the TX duty cycle within 50ms cannot exceed 5%.</p></li>
+  <section id="supported-chips">
+<span id="wifi-guide-adaptivity-test"></span><h1>Supported Chips<a class="headerlink" href="#supported-chips" title="Link to this heading"></a></h1>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Ameba SoC</p></th>
+<th class="head"><p>RTL8721Dx</p></th>
+<th class="head"><p>RTL8726E</p></th>
+<th class="head"><p>RTL8720E</p></th>
+<th class="head"><p>RTL8730E</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>RTOS</p></td>
+<td><p>Y</p></td>
+<td><p>Y</p></td>
+<td><p>Y</p></td>
+<td><p>Y</p></td>
+</tr>
+<tr class="row-odd"><td><p>Linux</p></td>
+<td><p>Y</p></td>
+<td><p>N</p></td>
+<td><p>N</p></td>
+<td><p>Y</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="adaptivity-test-introduction">
+<h1>Adaptivity Test Introduction<a class="headerlink" href="#adaptivity-test-introduction" title="Link to this heading"></a></h1>
+<section id="standard">
+<h2>Standard<a class="headerlink" href="#standard" title="Link to this heading"></a></h2>
+<p>Adaptivity is an automatic channel access protocol that inhibits a device from transmitting on a channel when ongoing transmissions are detected. Devices with a maximum declared RF output power level greater than 10 dBm effective isotropic radiated power (e.i.r.p.) are required to implement this Adaptivity protocol.</p>
+<p>Since December 31, 2017, ETSI has required Adaptivity certification. The applicable standards are ETSI EN 300 328 V2.2.2 for 2.4 GHz bands and ETSI EN 301 893 V2.1.1 for 5 GHz bands.</p>
+<p>The Adaptivity test procedures are specified by ETSI as follows:</p>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Steps</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Step 1</p></td>
+<td><p>Establish a connection between the DUT and the companion device and start data transmission.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Step 2</p></td>
+<td><p>Add the interference signal, and ensure that out-of-band blocking signals are also added for 2G compliance.</p></td>
+</tr>
+<tr class="row-even"><td><p>Step 3</p></td>
+<td><p>Check whether the DUT has stopped transmitting data.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Step 4</p></td>
+<td><p>The DUT is restricted to transmitting only short control signals, such as acknowledgment (ACK) frames, to the companion device.</p></td>
+</tr>
+<tr class="row-even"><td><p>Step 5</p></td>
+<td><ul class="simple">
+<li><p>For 2G compliance, check whether the TX duty cycle is below 10% within any 50 ms interval, If yes, pass, otherwise, fail.</p></li>
+<li><p>For 5G compliance, check whether the TX duty cycle is below 5% within any 50 ms interval. If yes, pass, otherwise, fail.</p></li>
 </ul>
-</li>
-<li><p>Repeat the above steps for different channels, bandwidths and modes.</p></li>
-</ol>
+</td>
+</tr>
+<tr class="row-odd"><td><p>Step 6</p></td>
+<td><p>Repeat above steps for each channel, bandwidth, and mode.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><strong>DUT</strong> stands for “Device Under Test.”</p>
+</div>
 </section>
 <section id="interference-power">
 <h2>Interference Power<a class="headerlink" href="#interference-power" title="Link to this heading"></a></h2>
-<p>For interference signal power, the energy formula to be detected by ETSI is as follows. Additionally, the interference signal must exceed BW of the test object and have a 100% duty cycle.</p>
-<ul class="simple">
-<li><p>2G: TL = -70dBm/MHz + 10*log10(100mW/Pout)</p></li>
-<li><p>5G: TL = -75dBm/MHz</p></li>
-</ul>
+<p>The energy detection formula specified by ETSI is as follows:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="mi">2</span><span class="n">G</span><span class="o">:</span><span class="w"> </span><span class="n">TL</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-70</span><span class="n">dBm</span><span class="o">/</span><span class="n">MHz</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">10</span><span class="o">*</span><span class="n">log10</span><span class="p">(</span><span class="mi">100</span><span class="n">mW</span><span class="o">/</span><span class="n">Pout</span><span class="p">)</span>
+<span class="mi">5</span><span class="n">G</span><span class="o">:</span><span class="w"> </span><span class="n">TL</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-75</span><span class="n">dBm</span><span class="o">/</span><span class="n">MHz</span>
+</pre></div>
+</div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Pout is the maximum TX power of test object.</p>
+<p><strong>Pout</strong> is the maximum TX power of test object.</p>
+<p>The interference signal must exceed BW of the test object and have a 100% duty cycle.</p>
 </div>
-<p>Ameba is tested with the worst case in LAB.</p>
-<ul class="simple">
-<li><p>2G: TL = -70dBm/MHz</p></li>
-<li><p>5G: TL = -75dBm/MHz</p></li>
-</ul>
-<p>The following table is the interference power with different frequencies and bandwidths.</p>
+<p>Realtek conducts testing under the most stringent conditions in the LAB.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="mi">2</span><span class="n">G</span><span class="o">:</span><span class="w"> </span><span class="n">TL</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-70</span><span class="n">dBm</span><span class="o">/</span><span class="n">MHz</span>
+<span class="mi">5</span><span class="n">G</span><span class="o">:</span><span class="w"> </span><span class="n">TL</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-75</span><span class="n">dBm</span><span class="o">/</span><span class="n">MHz</span>
+</pre></div>
+</div>
+<p>The table below illustrates the interference power with different frequencies and bandwidths.</p>
 <table class="docutils align-default" id="id1" style="width: 100%">
 <caption><span class="caption-text">Interference power with different frequencies and bandwidths</span><a class="headerlink" href="#id1" title="Link to this table"></a></caption>
 <thead>
@@ -234,8 +1106,8 @@
 </tr>
 </tbody>
 </table>
-<p>When the interference power is greater than the threshold, the MAC is told to stop TX.</p>
-<p>The following section illustrates software configuration, you can refer it to set EDCCA mode as <em>RTW_EDCCA_ADAPT</em> and adjust EDCCA threshold to pass Adaptivity test.</p>
+<p>When the interference power exceeds the threshold, the MAC layer will be instructed to pause data transmission.</p>
+<p>The following section details the software configuration and debug SOP essential for successfully passing the Adaptivity test.</p>
 </section>
 </section>
 <section id="software-configuration">
@@ -243,146 +1115,115 @@
 <section id="edcca-mode">
 <h2>EDCCA Mode<a class="headerlink" href="#edcca-mode" title="Link to this heading"></a></h2>
 <p>Ameba supports four EDCCA mode types:</p>
-<ul class="simple">
-<li><p><strong>RTW_EDCCA_NORM</strong>: Set EDCCA threshold dynamically with reference to current RSSI, default value</p></li>
-<li><p><strong>RTW_EDCCA_ADAPT</strong>: Adaptivity certification for ETSI, fixed threshold, threshold can be modified by commands</p></li>
-<li><p><strong>RTW_EDCCA_CS</strong>: Carrier Sense, Japan’s interference avoidance laws</p></li>
-<li><p><strong>RTW_EDCCA_DISABLE</strong>: MAC TX without checking EDCCA signal</p></li>
-</ul>
-<p>There are two major differences between Adaptivity test (mode 1) and Carrier Sense (mode 2):</p>
-<ul class="simple">
-<li><p>The types of test interference required by ETSI regulations are AWGN White noise, remove preamble’s OFDM packet and LTE interference. Carrier Sense is single tone.</p></li>
-<li><p>The interference retreat energy required by Carrier Sense is relatively high, which is -50dBm, and the interference energy threshold of ETSI is lower than that of carrier sense.</p></li>
-</ul>
-<p>The EDCCA mode types are defined in <code class="docutils literal notranslate"><span class="pre">component/wifi/driver/include/rtw_wifi_defs.h</span></code>.</p>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Mode</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>RTW_EDCCA_NORM</p></td>
+<td><p>Dynamically adjusts the EDCCA threshold based on real-time RSSI measurements and is configured as the default mode.</p></td>
+</tr>
+<tr class="row-odd"><td><p>RTW_EDCCA_ADAPT</p></td>
+<td><p>Utilizes a fixed threshold to meet the requirements of ETSI Adaptivity test.</p></td>
+</tr>
+<tr class="row-even"><td><p>RTW_EDCCA_CS</p></td>
+<td><p>Implements Carrier Sense to comply with Japan’s interference avoidance regulations.</p></td>
+</tr>
+<tr class="row-odd"><td><p>RTW_EDCCA_DISABLE</p></td>
+<td><p>Allows MAC transmission without EDCCA signal verification.</p></td>
+</tr>
+</tbody>
+</table>
+<p>The EDCCA mode types are specified in the file <code class="docutils literal notranslate"><span class="pre">rtw_wifi_defs.h</span></code> located under <code class="docutils literal notranslate"><span class="pre">/component/wifi/driver/include/rtw_wifi_defs.h</span></code>.</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/*The enumeration lists the edcca mode types*/</span>
 <span class="k">enum</span><span class="w"> </span><span class="n">rtw_edcca_mode</span><span class="w"> </span><span class="p">{</span>
-<span class="n">RTW_EDCCA_NORM</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="cm">/* normal*/</span>
-<span class="n">RTW_EDCCA_ADAPT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="cm">/* Adaptivity, ETSI*/</span>
-<span class="n">RTW_EDCCA_CS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="cm">/*carrier sense, Japan*/</span>
-<span class="n">RTW_EDCCA_DISABLE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">9</span><span class="p">,</span><span class="w"> </span><span class="cm">/*disable*/</span>
+<span class="w">   </span><span class="n">RTW_EDCCA_NORM</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="cm">/* normal*/</span>
+<span class="w">   </span><span class="n">RTW_EDCCA_ADAPT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="cm">/* Adaptivity, ETSI*/</span>
+<span class="w">   </span><span class="n">RTW_EDCCA_CS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="cm">/*carrier sense, Japan*/</span>
+<span class="w">   </span><span class="n">RTW_EDCCA_DISABLE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">9</span><span class="p">,</span><span class="w"> </span><span class="cm">/*disable*/</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-<section id="static-adjustment">
-<h3>Static Adjustment<a class="headerlink" href="#static-adjustment" title="Link to this heading"></a></h3>
-<p>The file for setting the EDCCA mode is in the following path, and it will be written statically during Wi-Fi initialization process.</p>
-<ul class="simple">
-<li><p>FreeRTOS:</p>
-<ul>
-<li><p>RTL8730E: <code class="docutils literal notranslate"><span class="pre">/component/soc/amebasmart/usrcfg/Ameba_wificfg.c</span></code></p></li>
-<li><p>RTL8726EA/RTL8713EC/RTL8720EA/RTL8710EC: <code class="docutils literal notranslate"><span class="pre">/component/soc/amebalite/usrcfg/Ameba_wificfg.c</span></code></p></li>
-<li><p>RTL8721Dx/RTL8711Dx: <code class="docutils literal notranslate"><span class="pre">/component/soc/amebadplus/usrcfg/Ameba_wificfg.c</span></code></p></li>
-</ul>
-</li>
-<li><p>Linux:</p>
-<ul>
-<li><p>RTL8730E: <code class="docutils literal notranslate"><span class="pre">/firmware/component/wifi/cfg80211_fullmac/rtl8730e/ipc/Ameba_wificfg.c</span></code></p></li>
-</ul>
-</li>
-</ul>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-0-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-0-0-0" name="0-0" role="tab" tabindex="0">RTOS</button><button aria-controls="panel-0-0-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-1" name="0-1" role="tab" tabindex="-1">Linux</button></div><div aria-labelledby="tab-0-0-0" class="sphinx-tabs-panel" id="panel-0-0-0" name="0-0" role="tabpanel" tabindex="0"><ol class="arabic">
+<li><p>Static Adjustment</p>
+<p>File path: <code class="docutils literal notranslate"><span class="pre">/component/soc/amebaxxx/usrcfg/ameba_wificfg.c</span></code></p>
 <p>Function name: <code class="xref py py-func docutils literal notranslate"><span class="pre">wifi_set_user_config()</span></code></p>
 <ul>
-<li><p>For ETSI Adaptivity certification, set EDCCA mode as <em>RTW_EDCCA_ADAPT</em></p>
+<li><p>For the ETSI Adaptivity test, configure the EDCCA mode to <strong>RTW_EDCCA_ADAPT</strong></p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">wifi_user_config_edcca_mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RTW_EDCCA_ADAPT</span><span class="p">;</span>
 </pre></div>
 </div>
 </li>
-<li><p>For Carrier Sense, set EDCCA mode as <em>RTW_EDCCA_CS</em></p>
+<li><p>For Carrier Sense, configure the EDCCA mode to <strong>RTW_EDCCA_CS</strong></p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">wifi_user_config_edcca_mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RTW_EDCCA_CS</span><span class="p">;</span>
 </pre></div>
 </div>
 </li>
 </ul>
-</section>
-<section id="dynamic-adjustment">
-<h3>Dynamic Adjustment<a class="headerlink" href="#dynamic-adjustment" title="Link to this heading"></a></h3>
-<p>In addition, EDCCA mode can also be set dynamically by commands.</p>
-<div class="admonition important">
-<p class="admonition-title">Important</p>
-<p>The dynamic adjustment of EDCCA mode is supported <strong>only</strong> on Linux.</p>
-</div>
+<p>The configuration will be applied during the Wi-Fi initialization process.</p>
+</li>
+<li><p>Dynamic Adjustment</p>
+<p>Not support.</p>
+</li>
+</ol>
+</div><div aria-labelledby="tab-0-0-1" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-1" name="0-1" role="tabpanel" tabindex="0"><ol class="arabic">
+<li><p>Static Adjustment</p>
+<p>File path: <code class="docutils literal notranslate"><span class="pre">/firmware/component/wifi/whc_host_linux/fullmac/ipc/ameba_wificfg.c</span></code></p>
+<p>Function name: <code class="xref py py-func docutils literal notranslate"><span class="pre">wifi_set_user_config()</span></code></p>
 <ul>
-<li><p>Linux:</p>
-<div class="toggle docutils container">
-<p>The EDCCA mode has been added in <code class="docutils literal notranslate"><span class="pre">/proc/net/rtl8730e/wlan0/edcca_mode</span></code>. You can write or read it by the following command:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">echo</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="o">/</span><span class="n">proc</span><span class="o">/</span><span class="n">net</span><span class="o">/</span><span class="n">rtl8730e</span><span class="o">/</span><span class="n">wlan0</span><span class="o">/</span><span class="n">edcca_mode</span>
-<span class="n">cat</span> <span class="o">/</span><span class="n">proc</span><span class="o">/</span><span class="n">net</span><span class="o">/</span><span class="n">rtl8730e</span><span class="o">/</span><span class="n">wlan0</span><span class="o">/</span><span class="n">edcca_mode</span>
+<li><p>For the ETSI Adaptivity test, configure the EDCCA mode to <strong>RTW_EDCCA_ADAPT</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">wifi_user_config_edcca_mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RTW_EDCCA_ADAPT</span><span class="p">;</span>
+</pre></div>
+</div>
+</li>
+<li><p>For Carrier Sense, configure the EDCCA mode to <strong>RTW_EDCCA_CS</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">wifi_user_config_edcca_mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RTW_EDCCA_CS</span><span class="p">;</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p>The configuration will be applied during the Wi-Fi initialization process.</p>
+</li>
+<li><p>Dynamic Adjustment</p>
+<p>EDCCA mode has been integrated at the path <code class="docutils literal notranslate"><span class="pre">/proc/net/whc_fullmac/wlan0/edcca_mode</span></code>. Use the following commands to read or write this setting:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">echo</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="o">/</span><span class="n">proc</span><span class="o">/</span><span class="n">net</span><span class="o">/</span><span class="n">whc_fullmac</span><span class="o">/</span><span class="n">wlan0</span><span class="o">/</span><span class="n">edcca_mode</span>
+<span class="n">cat</span> <span class="o">/</span><span class="n">proc</span><span class="o">/</span><span class="n">net</span><span class="o">/</span><span class="n">whc_fullmac</span><span class="o">/</span><span class="n">wlan0</span><span class="o">/</span><span class="n">edcca_mode</span>
 </pre></div>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>n is in [0, 1, 2, 9].</p>
+<p>The network interface may not be designated as wlan0, utilize the actual interface identifier specific to the system configuration.</p>
 </div>
-<p>For example (Adaptivity certification):</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span> <span class="c1"># echo 1 &gt; /proc/net/rtl8730e/wlan0/edcca_mode</span>
-<span class="o">/</span> <span class="c1"># cat /proc/net/rtl8730e/wlan0/edcca_mode</span>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span> <span class="c1"># echo 1 &gt; /proc/net/whc_fullmac/wlan0/edcca_mode</span>
+<span class="o">/</span> <span class="c1"># cat /proc/net/whc_fullmac/wlan0/edcca_mode</span>
 <span class="mi">1</span>
 </pre></div>
 </div>
-</div>
 </li>
-<li><p>FreeRTOS:</p>
-<p>Not support.</p>
-</li>
-</ul>
-</section>
+</ol>
+</div></div>
 </section>
 <section id="edcca-threshold">
 <h2>EDCCA Threshold<a class="headerlink" href="#edcca-threshold" title="Link to this heading"></a></h2>
-<section id="command">
-<h3>Command<a class="headerlink" href="#command" title="Link to this heading"></a></h3>
-<p>After connection with AP, you can get the current EDCCA threshold by the following command:</p>
-<ul>
-<li><p>FreeRTOS</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-1-1-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-1-1-0" name="1-0" role="tab" tabindex="0">RTOS</button><button aria-controls="panel-1-1-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-1-1-1" name="1-1" role="tab" tabindex="-1">Linux</button></div><div aria-labelledby="tab-1-1-0" class="sphinx-tabs-panel" id="panel-1-1-0" name="1-0" role="tabpanel" tabindex="0"><p>Once connected to the AP, retrieve the current EDCCA threshold using the following command:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">WLDBG</span><span class="o">=</span><span class="n">get_edcca_th</span>
 </pre></div>
 </div>
-</li>
-<li><p>Linux</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ATWZ</span> <span class="n">get_edcca_th</span>
-</pre></div>
-</div>
-</li>
-</ul>
-<p>In most cases, the default values are sufficient to pass Adaptivity certification. If it doesn’t work, you can modify the EDCCA threshold by the following command:</p>
-<ul>
-<li><p>FreeRTOS:</p>
+<p>In most scenarios, the default settings suffice to pass the Adaptivity test. If modification is required, adjust the EDCCA threshold using the following command:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">WLDBG</span><span class="o">=</span><span class="n">fix_edcca_th</span> <span class="o">&lt;</span><span class="n">value</span><span class="o">&gt;</span>
 </pre></div>
 </div>
-</li>
-<li><p>Linux:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ATWZ</span> <span class="n">fix_edcca_th</span> <span class="o">&lt;</span><span class="n">value</span><span class="o">&gt;</span>
-</pre></div>
-</div>
-</li>
-</ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The value’s unit is dBm and the scope is [-60, -80], and the minimum step is 1.</p>
 </div>
-</section>
-<section id="example">
-<h3>Example<a class="headerlink" href="#example" title="Link to this heading"></a></h3>
-<p>The examples of getting or setting the EDCCA threshold are as follows:</p>
-<ul>
-<li><p>FreeRTOS:</p>
-<div class="toggle docutils container">
-<ul>
-<li><p>RTL8721Dx/RTL8711Dx 5G:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">WLDBG</span><span class="o">=</span><span class="n">get_edcca_th</span>
-<span class="p">[</span><span class="n">WLDBG</span><span class="p">]:</span> <span class="n">_AT_WLAN_IWPRIV_</span>
-<span class="p">[</span><span class="n">WLAN</span><span class="o">-</span><span class="n">A</span><span class="p">]</span> <span class="p">[</span><span class="n">iwpriv_command</span><span class="p">]</span> <span class="n">cmd</span> <span class="n">name</span><span class="p">:</span> <span class="n">get_edcca_th</span>
-<span class="p">[</span><span class="n">WLAN</span><span class="o">-</span><span class="n">A</span><span class="p">]</span> <span class="n">edcca</span> <span class="n">L2H</span> <span class="n">thre</span><span class="o">=-</span><span class="mi">65</span> <span class="n">dbm</span>
-
-<span class="n">AT</span><span class="o">+</span><span class="n">WLDBG</span><span class="o">=</span><span class="n">fix_edcca_th</span> <span class="o">-</span><span class="mi">62</span>
-<span class="p">[</span><span class="n">WLDBG</span><span class="p">]:</span> <span class="n">_AT_WLAN_IWPRIV_</span>
-<span class="p">[</span><span class="n">WLAN</span><span class="o">-</span><span class="n">A</span><span class="p">]</span> <span class="p">[</span><span class="n">iwpriv_command</span><span class="p">]</span> <span class="n">cmd</span> <span class="n">name</span><span class="p">:</span> <span class="n">fix_edcca_th</span>
-</pre></div>
-</div>
-</li>
-<li><p>RTL8730E 2G:</p>
+<p>For example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">WLDBG</span><span class="o">=</span><span class="n">get_edcca_th</span>
 <span class="p">[</span><span class="n">WLDBG</span><span class="p">]:</span> <span class="n">_AT_WLAN_IWPRIV_</span>
 <span class="p">[</span><span class="n">WLAN</span><span class="o">-</span><span class="n">A</span><span class="p">]</span> <span class="p">[</span><span class="n">iwpriv_command</span><span class="p">]</span> <span class="n">cmd</span> <span class="n">name</span><span class="p">:</span> <span class="n">get_edcca_th</span>
@@ -393,14 +1234,39 @@
 <span class="p">[</span><span class="n">WLAN</span><span class="o">-</span><span class="n">A</span><span class="p">]</span> <span class="p">[</span><span class="n">iwpriv_command</span><span class="p">]</span> <span class="n">cmd</span> <span class="n">name</span><span class="p">:</span> <span class="n">fix_edcca_th</span>
 </pre></div>
 </div>
-</li>
-</ul>
+</div><div aria-labelledby="tab-1-1-1" class="sphinx-tabs-panel" hidden="true" id="panel-1-1-1" name="1-1" role="tabpanel" tabindex="0"><div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-2-2-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-2-2-0" name="2-0" role="tab" tabindex="0">RTL8721Dx</button><button aria-controls="panel-2-2-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-2-2-1" name="2-1" role="tab" tabindex="-1">RTL8730E</button></div><div aria-labelledby="tab-2-2-0" class="sphinx-tabs-panel" id="panel-2-2-0" name="2-0" role="tabpanel" tabindex="0"><p>There is currently no command available to set or retrieve the EDCCA threshold, as described below.</p>
+<ul>
+<li><p>Get Current EDCCA Threshold</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ATWZ</span> <span class="n">get_edcca_th</span>
+</pre></div>
 </div>
 </li>
-<li><p>Linux:</p>
-<div class="toggle docutils container">
-<ul>
-<li><p>RTL8730E:</p>
+<li><p>Set EDCCA Threshold</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ATWZ</span> <span class="n">fix_edcca_th</span> <span class="o">&lt;</span><span class="n">value</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The value’s unit is dBm and the scope is [-60, -80], and the minimum step is 1.</p>
+</div>
+</li>
+</ul>
+<p>Customers can refer to the following link to add “ATWZ” commands, which should be adapted for the Linux operating system.</p>
+<p><a class="reference external" href="https://github.com/Ameba-AIoT/ameba-linux-development/tree/ameba-6.6.y/wifi/ATWZ">https://github.com/Ameba-AIoT/ameba-linux-development/tree/ameba-6.6.y/wifi/ATWZ</a></p>
+</div><div aria-labelledby="tab-2-2-1" class="sphinx-tabs-panel" hidden="true" id="panel-2-2-1" name="2-1" role="tabpanel" tabindex="0"><p>Once connected to the AP, retrieve the current EDCCA threshold using the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ATWZ</span> <span class="n">get_edcca_th</span>
+</pre></div>
+</div>
+<p>In most scenarios, the default settings suffice to pass the Adaptivity test. If modification is required, adjust the EDCCA threshold using the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ATWZ</span> <span class="n">fix_edcca_th</span> <span class="o">&lt;</span><span class="n">value</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The value’s unit is dBm, the scope is [-60, -80], and the minimum step is 1.</p>
+</div>
+<p>For example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span> <span class="c1"># ATWZ get_edcca_th</span>
 <span class="p">[</span><span class="n">WLDBG</span><span class="p">]:</span> <span class="n">_AT_WLAN_IWPRIV_</span>
 <span class="p">[</span><span class="n">WLAN</span><span class="o">-</span><span class="n">A</span><span class="p">]</span> <span class="p">[</span><span class="n">iwpriv_command</span><span class="p">]</span> <span class="n">cmd</span> <span class="n">name</span><span class="p">:</span> <span class="n">get_edcca_th</span>
@@ -415,43 +1281,45 @@
 <span class="p">[</span><span class="n">WLAN</span><span class="o">-</span><span class="n">A</span><span class="p">]</span> <span class="n">edcca</span> <span class="n">thre</span><span class="o">=-</span><span class="mi">61</span> <span class="n">dbm</span>
 </pre></div>
 </div>
-</li>
-</ul>
-</div>
-</li>
-</ul>
-</section>
+</div></div>
+</div></div>
 </section>
 </section>
 <section id="debug-sop">
 <h1>Debug SOP<a class="headerlink" href="#debug-sop" title="Link to this heading"></a></h1>
-<ol class="arabic">
-<li><p>Verify that the Adaptivity mode is turned on.</p>
-<p>The default SDK is normal EDCCA mode, so make sure that the driver switches to the Adaptivity mode for Adaptivity certification. Otherwise, the certification will fail.</p>
-</li>
-<li><p>Confirm whether there is a problem with the test method. For example:</p>
-<ol class="loweralpha simple">
-<li><p>It is recommended to test in a shielding room, excluding that some lab is not clean and may cause FA/CCA.</p></li>
-<li><p>Adaptivity’s TP measures the TX of the object instead of the RX.</p></li>
-<li><p>All antennas need to be connected to a source of interference. Otherwise, antenna diversity will cause authentication fail.</p></li>
-<li><p>The RSSI of the object to be tested should be kept at -50dBm or above to prevent certification failure due to wire breakage. When a disconnection happens, a scan will be performed, and the scan will inevitably result in Adaptivity fail.</p></li>
-<li><p>Confirm whether the interference energy size is correct. Some customers may mistake the meaning of dBM/MHZ and dBm, so they will mistype the interference energy and cause fail.</p></li>
-</ol>
-</li>
-<li><p>If the proportion of missing packets exceeds the regulatory requirements: <code class="docutils literal notranslate"><span class="pre">2G:</span> <span class="pre">10%</span></code>, <code class="docutils literal notranslate"><span class="pre">5G:</span> <span class="pre">5%</span></code>, confirm whether it is our TX signal indeed.</p>
-<p>You can check it by the following steps:</p>
-<ol class="loweralpha simple">
-<li><p>Use the sniffer to capture packets and check whether it is the beacon or BT signal sent by the AP.</p>
-<ul class="simple">
-<li><p>If it is indeed the packet of Ameba TX, check the packet type of TX. For example, is it scan packet or ACK?</p></li>
-<li><p>If the problem is caused by AP, it is generally suggested that LAB should replace AP. This requirement is reasonable, because some AP behaviors will indeed lead to the Adaptivity failure of STA. For example, Ameba has TX silent, but the AP behavior may have been repeatedly harassing STA to let it back to ACK. ACK is a passive TX and cannot be blocked by the AdaptivIty mechanism.</p></li>
-<li><p>If TX fail is caused by Ameba, for example, scan packet, which is sent by Ameba proactively, analyze why it enters the scan mode, which may be solved by modifying the driver code.</p></li>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Checklist</p></th>
+<th class="head"><p>Points</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Test SDK</p></td>
+<td><ul class="simple">
+<li><p>The SDK is in normal mode, not in manufacturing (MP) mode.</p></li>
+<li><p>The EDCCA mode is set to <strong>RTW_EDCCA_ADAPT</strong>.</p></li>
 </ul>
-</li>
-<li><p>When the proportion of missing packets is high or almost no stop TX, check whether the threshold is not appropriate. If the test energy hits correctly, the threshold can be adjusted appropriately to pass the test.</p></li>
-</ol>
-</li>
-</ol>
+</td>
+</tr>
+<tr class="row-odd"><td><p>Test Environment</p></td>
+<td><ul class="simple">
+<li><p>Testing should be conducted in a shielding room.</p></li>
+<li><p>Connect all antennas to controlled interference sources.</p></li>
+<li><p>When packet loss occurs, verify that the packet type transmitted by the DUT is not an ACK (Acknowledgment) packet.</p></li>
+<li><p>Maintain the device’s RSSI at -50 dBm or higher.</p></li>
+<li><p>Adaptivity test measures the TX of the DUT, not the RX.</p></li>
+<li><p>Interference energy is measured in dBm, not dBm/MHz.</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>Optimize the EDCCA threshold</p></td>
+<td><ul class="simple">
+<li><p>Use “ATWZ” command to modify EDCCA threshold.</p></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 </section>
 
 
@@ -475,6 +1343,14 @@
 
 </footer>
         </div>
+    <!-- 问题反馈按钮和对话框 -->
+    
+    <div id="feedback-dialog" class="feedback-dialog" style="display: none;">
+        <p>Please describe your issue:</p>
+        <textarea id="feedback-text" placeholder="Feature enhancement in progress, please stay tuned..."></textarea>
+        <button id="submit-feedback">Submit</button>
+        <button id="cancel-feedback">Cancel</button>
+    </div>
 
       </div>
     </section>
@@ -484,8 +1360,8 @@
           SphinxRtdTheme.Navigation.enable(true);
       });
   </script>
- 
-
+     
+    
 
 
 </body>
