@@ -10,9 +10,9 @@
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
-      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=5f2c7a6f" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=536412e7" />
       <link rel="stylesheet" type="text/css" href="../../_static/tabs.css?v=a5c4661c" />
-      <link rel="stylesheet" type="text/css" href="../../_static/_static/custom.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=536412e7" />
 
   
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
@@ -39,8 +39,8 @@
     <link rel="next" title="Virtual File System" href="../0_file_system/0_vfs_index.html" />
     <link rel="prev" title="OTA AT Commands" href="at_command_ota.html" />
      
-    
-    <script type="text/javascript" src="../../_static/js/selector.js"></script>
+
+    <!-- NDA文档输入密码的框 -->
     
 <script>
 // ▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼ 多语言配置 ▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼
@@ -160,6 +160,119 @@ const i18n = {
     
     
 </style>
+    <style>
+    /* ====================== 选择器样式 ====================== */
+    /* 选择器容器 */
+    .selector-container {
+        margin: 8px 0;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+    }
+    
+    /* 版本选择器特殊边距 */
+    .version-selector-container {
+        margin-bottom: 8px !important;
+    }
+    
+    /* 选择器标签 */
+    .selector-label {
+        color: white;
+        margin-right: 10px;
+        width: 80px;
+        text-align: right;
+        font-size: 0.9em;
+    }
+    
+    /* 下拉选择框 */
+    .selector-dropdown {
+        width: 120px;
+        border-radius: 2px;
+        padding: 4px 8px;
+        border: 1px solid #405261;
+        background: #2c3e50;
+        color: white;
+        font-size: 0.9em;
+    }
+    
+    /* 下拉选择框悬停效果 */
+    .selector-dropdown:hover {
+        border-color: #3498db;
+        transition: border-color 0.3s;
+    }
+    
+    /* 选择器响应式布局 */
+    @media (max-width: 768px) {
+        .selector-container {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        
+        .selector-label {
+            width: 100%;
+            text-align: left;
+            margin-bottom: 4px;
+        }
+        
+        .selector-dropdown {
+            width: 100%;
+        }
+    }
+</style>
+    <style>
+/* =============== 左上角登录区域  =============== */
+/* ================= 用户面板 ================= */
+.user-panel {
+    padding: 15px;
+    background: #34495e;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.username {
+    color: #fff;
+    font-weight: 500;
+    font-size: 1.1em;
+    text-align: center;
+    margin: 10px 0;
+}
+
+/* ================= 按钮容器 ================= */
+.button-row {
+    display: flex;
+    gap: 8px;
+    width: 100%;
+    margin: 10px 0;
+}
+
+/* 通用按钮样式 */
+.auth-btn, .forum-btn, .official-btn {
+    flex: 1;
+    padding: 8px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: opacity 0.3s;
+    text-align: center;
+    color: white !important;
+}
+
+/* 认证按钮 */
+.auth-btn {
+    background: #3498db;
+}
+
+/* 论坛按钮 */
+.forum-btn {
+    background: #9b59b6; /* 与参考代码的官方按钮同色 */
+}
+
+/* 官网按钮 */
+.official-btn {
+    background: #2ecc71; /* 与参考代码文档按钮同色 */
+}
+/* =============== 左上角登录区域  =============== */
+</style>
 
     <!-- 注入 TOC 映射和当前页面信息 -->
     
@@ -167,7 +280,7 @@ const i18n = {
 <!-- TOC 映射和当前文档信息 -->
 <script>
 // 将 Python 字典转换为 JS 对象
-const TOC_TITLE_MAP = {"rst_rtos/0_ameba_product": "Products Center", "rst_rtos/0_ameba_product/0_ameba_product_center_index": "Products Center", "rst_rtos/0_ameba_sdk": "Ameba SDK", "rst_rtos/0_ameba_sdk/0_ameba_sdks_index": "Ameba SDK", "rst_rtos/0_ameba_solutions": "Ameba Solutions", "rst_rtos/0_ameba_solutions/0_ameba_solutions_index": "Ameba Solutions", "rst_rtos/0_at_command": "0.8 AT Commands", "rst_rtos/0_at_command/0_at_command_index": "0.8 AT Commands", "rst_rtos/0_file_system": "0.9 Virtual File System", "rst_rtos/0_file_system/0_vfs_index": "0.9 Virtual File System", "rst_rtos/0_gcc_build_environment": "0.1 GCC Build Environment", "rst_rtos/0_gcc_build_environment/0_gcc_build_index": "0.1 GCC Build Environment", "rst_rtos/0_gcc_build_library": "0.3 GCC Build Library", "rst_rtos/0_gcc_build_library/0_gcc_build_library_index": "0.3 GCC Build Library", "rst_rtos/0_gdb_debug": "0.2 GDB Debug", "rst_rtos/0_gdb_debug/0_gdb_debug_index": "0.2 GDB Debug", "rst_rtos/0_memory_layout": "0.5 Flash \u0026 RAM Layout", "rst_rtos/0_memory_layout/0_layout_index": "0.5 Flash \u0026 RAM Layout", "rst_rtos/0_sdk_example": "0.4 SDK Example", "rst_rtos/0_sdk_example/0_sdk_example_index": "0.4 SDK Example", "rst_rtos/0_tools": "0.7 Tools", "rst_rtos/0_tools/0_tools_index": "0.7 Tools", "rst_rtos/0_user_config": "0.6 User Config", "rst_rtos/0_user_config/0_usrcfg_index": "0.6 User Config", "rst_rtos/10_api_docs": "10.0 API Reference", "rst_rtos/10_api_docs/0_api_index": "10.0 API Reference", "rst_rtos/1_boot_process": "1.1 BOOT Process", "rst_rtos/1_boot_process/0_boot_index": "1.1 BOOT Process", "rst_rtos/1_chipen": "1.4 CHIPEN", "rst_rtos/1_chipen/0_chipen_index": "1.4 CHIPEN", "rst_rtos/1_gpio": "1.7 GPIO \u0026 Pin Control", "rst_rtos/1_gpio/0_gpio_index": "1.7 GPIO \u0026 Pin Control", "rst_rtos/1_ipc": "1.5 Inter Processor Communication", "rst_rtos/1_ipc/0_ipc_index": "1.5 Inter Processor Communication", "rst_rtos/1_mpu_cache": "1.0 MPU and Cache", "rst_rtos/1_mpu_cache/0_mpu_cache_index": "1.0 MPU and Cache", "rst_rtos/1_ota": "1.2 OTA", "rst_rtos/1_ota/0_ota_index": "1.2 OTA", "rst_rtos/1_otpc": "1.3 OTPC", "rst_rtos/1_otpc/0_otpc_index": "1.3 OTPC", "rst_rtos/1_pinmux": "1.6 PINMUX", "rst_rtos/1_pinmux/0_pinmux_index": "1.6 PINMUX", "rst_rtos/1_power_save": "1.9 Power Save", "rst_rtos/1_power_save/0_ps_index": "1.9 Power Save", "rst_rtos/2_whc_fullmac": "2.2 WHC FullMAC", "rst_rtos/2_whc_fullmac/0_fullmac_index": "2.2 WHC FullMAC", "rst_rtos/2_whc_wifi_bridge": "2.1 WHC Bridge", "rst_rtos/2_whc_wifi_bridge/0_wifi_bridge_index": "2.1 WHC Bridge", "rst_rtos/2_wifi_adaptivity_test": "2.6 Wi-Fi Adaptivity Test", "rst_rtos/2_wifi_adaptivity_test/0_wifi_adaptivity_index": "2.6 Wi-Fi Adaptivity Test", "rst_rtos/2_wifi_csi": "2.5 Wi-Fi CSI", "rst_rtos/2_wifi_csi/0_wifi_csi_index": "2.5 Wi-Fi CSI", "rst_rtos/2_wifi_tunnel": "2.3 Wi-Fi R-Mesh", "rst_rtos/2_wifi_tunnel/0_wifi_tunnel_index": "2.3 Wi-Fi R-Mesh", "rst_rtos/3_crypto_engine": "3.9 Crypto Engine", "rst_rtos/3_crypto_engine/0_crypto_engine_index": "3.9 Crypto Engine", "rst_rtos/3_ecdsa_engine": "3.a ECDSA Engine", "rst_rtos/3_ecdsa_engine/0_ecdsa_index": "3.a ECDSA Engine", "rst_rtos/3_eddsa_engine": "3.b EDDSA Engine", "rst_rtos/3_eddsa_engine/0_eddsa_index": "3.b EDDSA Engine", "rst_rtos/3_nda_huk_derivation": "3.3 HUK Derivation \ud83d\udd12", "rst_rtos/3_nda_huk_derivation/0_huk_derivation_index_nda": "3.3 HUK Derivation \ud83d\udd12", "rst_rtos/3_nda_rdp": "3.4 RDP \ud83d\udd12", "rst_rtos/3_nda_rdp/0_rdp_index_nda": "3.4 RDP \ud83d\udd12", "rst_rtos/3_nda_rsip": "3.5 RSIP \ud83d\udd12", "rst_rtos/3_nda_rsip/0_rsip_index_nda": "3.5 RSIP \ud83d\udd12", "rst_rtos/3_nda_secure_boot": "3.6 Secure Boot \ud83d\udd12", "rst_rtos/3_nda_secure_boot/0_secure_boot_index_nda": "3.6 Secure Boot \ud83d\udd12", "rst_rtos/3_nda_swd_protection": "3.7 SWD Protection \ud83d\udd12", "rst_rtos/3_nda_swd_protection/0_swd_protection_index_nda": "3.7 SWD Protection \ud83d\udd12", "rst_rtos/3_nda_tfm": "3.8 Trusted Firmware-M (TF-M) \ud83d\udd12", "rst_rtos/3_nda_tfm/0_tfm_index_nda": "3.8 Trusted Firmware-M (TF-M) \ud83d\udd12", "rst_rtos/3_rsa_engine": "3.c RSA Engine", "rst_rtos/3_rsa_engine/0_rsa_index": "3.c RSA Engine", "rst_rtos/3_security": "3.1 Security \u0026 Encryption", "rst_rtos/3_security/0_security_index": "3.1 Security \u0026 Encryption", "rst_rtos/3_trng": "3.2 True Random Number Generator", "rst_rtos/3_trng/0_trng_index": "3.2 True Random Number Generator", "rst_rtos/4_ai": "4.1 AI", "rst_rtos/4_ai/0_ai_index": "4.1 AI", "rst_rtos/4_ai_voice": "4.2 AIVoice", "rst_rtos/4_ai_voice/0_ai_voice_index": "4.2 AIVoice", "rst_rtos/4_dsp": "4.4 DSP", "rst_rtos/4_dsp/0_dsp_index": "4.4 DSP", "rst_rtos/4_multimedia": "4.3 Multimedia", "rst_rtos/4_multimedia/0_multimedia_index": "4.3 Multimedia", "rst_rtos/6_mass_production": "6.1 Mass Production", "rst_rtos/6_mass_production/0_mp_index": "6.1 Mass Production", "rst_rtos/6_mp_image": "6.2 MP Image", "rst_rtos/6_mp_image/0_mp_image_index": "6.2 MP Image", "rst_rtos/6_mptools": "6.3 MP Tools", "rst_rtos/6_mptools/0_mptools_index": "6.3 MP Tools", "rst_rtos/7_usb": "7.1 USB Host \u0026 Device", "rst_rtos/7_usb/0_usb_index": "7.1 USB Host \u0026 Device", "rst_rtos/8_adc": "8.4 ADC", "rst_rtos/8_adc/0_adc_index": "8.4 ADC", "rst_rtos/8_cap_touch": "8.7 Cap-Touch", "rst_rtos/8_cap_touch/0_cap_touch_index": "8.7 Cap-Touch", "rst_rtos/8_dmac": "8.1 DMA Controllor", "rst_rtos/8_dmac/0_dmac_index": "8.1 DMA Controllor", "rst_rtos/8_ir": "8.5 IR", "rst_rtos/8_ir/0_ir_index": "8.5 IR", "rst_rtos/8_key_scan": "8.8 Key-Scan", "rst_rtos/8_key_scan/0_key_scan_index": "8.8 Key-Scan", "rst_rtos/8_lcdc": "8.A LCDC", "rst_rtos/8_lcdc/0_lcdc_index": "8.A LCDC", "rst_rtos/8_ledc": "8.6 LEDC", "rst_rtos/8_ledc/0_ledc_index": "8.6 LEDC", "rst_rtos/8_psram": "8.2 PSRAM", "rst_rtos/8_psram/0_psram_index": "8.2 PSRAM", "rst_rtos/8_rtc_io": "8.9 RTC-IO", "rst_rtos/8_rtc_io/0_rtc_io_index": "8.9 RTC-IO", "rst_rtos/8_thermal": "8.3 Thermal Meter", "rst_rtos/8_thermal/0_thermal_index": "8.3 Thermal Meter"};
+const TOC_TITLE_MAP = {"rst_rtos/0_ameba_product": "Products Center", "rst_rtos/0_ameba_product/0_ameba_product_center_index": "Products Center", "rst_rtos/0_ameba_sdk": "Ameba SDK", "rst_rtos/0_ameba_sdk/0_ameba_sdks_index": "Ameba SDK", "rst_rtos/0_ameba_solutions": "Ameba Solutions", "rst_rtos/0_ameba_solutions/0_ameba_solutions_index": "Ameba Solutions", "rst_rtos/0_at_command": "0.8 AT Commands", "rst_rtos/0_at_command/0_at_command_index": "0.8 AT Commands", "rst_rtos/0_file_system": "0.9 Virtual File System", "rst_rtos/0_file_system/0_vfs_index": "0.9 Virtual File System", "rst_rtos/0_gcc_build_environment": "0.1 GCC Build Environment", "rst_rtos/0_gcc_build_environment/0_gcc_build_index": "0.1 GCC Build Environment", "rst_rtos/0_gcc_build_library": "0.3 GCC Build Library", "rst_rtos/0_gcc_build_library/0_gcc_build_library_index": "0.3 GCC Build Library", "rst_rtos/0_gdb_debug": "0.2 GDB Debug", "rst_rtos/0_gdb_debug/0_gdb_debug_index": "0.2 GDB Debug", "rst_rtos/0_memory_layout": "0.5 Flash \u0026 RAM Layout", "rst_rtos/0_memory_layout/0_layout_index": "0.5 Flash \u0026 RAM Layout", "rst_rtos/0_sdk_example": "0.4 SDK Example", "rst_rtos/0_sdk_example/0_sdk_example_index": "0.4 SDK Example", "rst_rtos/0_tools": "0.7 Tools", "rst_rtos/0_tools/0_tools_index": "0.7 Tools", "rst_rtos/0_user_config": "0.6 User Config", "rst_rtos/0_user_config/0_usrcfg_index": "0.6 User Config", "rst_rtos/10_api_docs": "10.0 API Reference", "rst_rtos/10_api_docs/0_api_index": "10.0 API Reference", "rst_rtos/1_boot_process": "1.1 BOOT Process", "rst_rtos/1_boot_process/0_boot_index": "1.1 BOOT Process", "rst_rtos/1_chipen": "1.4 Chip Enable", "rst_rtos/1_chipen/0_chipen_index": "1.4 Chip Enable", "rst_rtos/1_gpio": "1.7 GPIO \u0026 Pin Control", "rst_rtos/1_gpio/0_gpio_index": "1.7 GPIO \u0026 Pin Control", "rst_rtos/1_ipc": "1.5 Inter Processor Communication", "rst_rtos/1_ipc/0_ipc_index": "1.5 Inter Processor Communication", "rst_rtos/1_mpu_cache": "1.0 MPU and Cache", "rst_rtos/1_mpu_cache/0_mpu_cache_index": "1.0 MPU and Cache", "rst_rtos/1_ota": "1.2 OTA", "rst_rtos/1_ota/0_ota_index": "1.2 OTA", "rst_rtos/1_otpc": "1.3 OTPC", "rst_rtos/1_otpc/0_otpc_index": "1.3 OTPC", "rst_rtos/1_pinmux": "1.6 Pin Multiplexing", "rst_rtos/1_pinmux/0_pinmux_index": "1.6 Pin Multiplexing", "rst_rtos/1_power_save": "1.9 Power Save", "rst_rtos/1_power_save/0_ps_index": "1.9 Power Save", "rst_rtos/2_whc_fullmac": "2.1 WHC FullMAC", "rst_rtos/2_whc_fullmac/0_fullmac_index": "2.1 WHC FullMAC", "rst_rtos/2_whc_wifi_bridge": "2.0 WHC Bridge", "rst_rtos/2_whc_wifi_bridge/0_wifi_bridge_index": "2.0 WHC Bridge", "rst_rtos/2_wifi_adaptivity_test": "2.4 Wi-Fi Adaptivity Test", "rst_rtos/2_wifi_adaptivity_test/0_wifi_adaptivity_index": "2.4 Wi-Fi Adaptivity Test", "rst_rtos/2_wifi_csi": "2.3 Wi-Fi CSI", "rst_rtos/2_wifi_csi/0_wifi_csi_index": "2.3 Wi-Fi CSI", "rst_rtos/2_wifi_tunnel": "2.2 Wi-Fi R-Mesh", "rst_rtos/2_wifi_tunnel/0_wifi_tunnel_index": "2.2 Wi-Fi R-Mesh", "rst_rtos/3_crypto_engine": "3.9 Crypto Engine", "rst_rtos/3_crypto_engine/0_crypto_engine_index": "3.9 Crypto Engine", "rst_rtos/3_ecdsa_engine": "3.a ECDSA Engine", "rst_rtos/3_ecdsa_engine/0_ecdsa_index": "3.a ECDSA Engine", "rst_rtos/3_eddsa_engine": "3.b EDDSA Engine", "rst_rtos/3_eddsa_engine/0_eddsa_index": "3.b EDDSA Engine", "rst_rtos/3_nda_huk_derivation": "3.3 HUK Derivation \ud83d\udd12", "rst_rtos/3_nda_huk_derivation/0_huk_derivation_index_nda": "3.3 HUK Derivation \ud83d\udd12", "rst_rtos/3_nda_rdp": "3.4 RDP \ud83d\udd12", "rst_rtos/3_nda_rdp/0_rdp_index_nda": "3.4 RDP \ud83d\udd12", "rst_rtos/3_nda_rsip": "3.5 RSIP \ud83d\udd12", "rst_rtos/3_nda_rsip/0_rsip_index_nda": "3.5 RSIP \ud83d\udd12", "rst_rtos/3_nda_secure_boot": "3.6 Secure Boot \ud83d\udd12", "rst_rtos/3_nda_secure_boot/0_secure_boot_index_nda": "3.6 Secure Boot \ud83d\udd12", "rst_rtos/3_nda_swd_protection": "3.7 SWD Protection \ud83d\udd12", "rst_rtos/3_nda_swd_protection/0_swd_protection_index_nda": "3.7 SWD Protection \ud83d\udd12", "rst_rtos/3_nda_tfm": "3.8 Trusted Firmware-M (TF-M) \ud83d\udd12", "rst_rtos/3_nda_tfm/0_tfm_index_nda": "3.8 Trusted Firmware-M (TF-M) \ud83d\udd12", "rst_rtos/3_rsa_engine": "3.c RSA Engine", "rst_rtos/3_rsa_engine/0_rsa_index": "3.c RSA Engine", "rst_rtos/3_security": "3.1 Security \u0026 Encryption", "rst_rtos/3_security/0_security_index": "3.1 Security \u0026 Encryption", "rst_rtos/3_trng": "3.2 True Random Number Generator", "rst_rtos/3_trng/0_trng_index": "3.2 True Random Number Generator", "rst_rtos/4_ai": "4.1 AI", "rst_rtos/4_ai/0_ai_index": "4.1 AI", "rst_rtos/4_ai_voice": "4.2 AIVoice", "rst_rtos/4_ai_voice/0_ai_voice_index": "4.2 AIVoice", "rst_rtos/4_dsp": "4.4 DSP", "rst_rtos/4_dsp/0_dsp_index": "4.4 DSP", "rst_rtos/4_multimedia": "4.3 Multimedia", "rst_rtos/4_multimedia/0_multimedia_index": "4.3 Multimedia", "rst_rtos/6_mass_production": "6.1 Mass Production", "rst_rtos/6_mass_production/0_mp_index": "6.1 Mass Production", "rst_rtos/6_mp_image": "6.2 MP Image", "rst_rtos/6_mp_image/0_mp_image_index": "6.2 MP Image", "rst_rtos/6_mptools": "6.3 MP Tools", "rst_rtos/6_mptools/0_mptools_index": "6.3 MP Tools", "rst_rtos/7_usb": "7.1 USB Host \u0026 Device", "rst_rtos/7_usb/0_usb_index": "7.1 USB Host \u0026 Device", "rst_rtos/8_adc": "8.4 ADC", "rst_rtos/8_adc/0_adc_index": "8.4 ADC", "rst_rtos/8_cap_touch": "8.7 Cap-Touch", "rst_rtos/8_cap_touch/0_cap_touch_index": "8.7 Cap-Touch", "rst_rtos/8_dmac": "8.1 DMA Controller", "rst_rtos/8_dmac/0_dmac_index": "8.1 DMA Controller", "rst_rtos/8_ir": "8.5 IR", "rst_rtos/8_ir/0_ir_index": "8.5 IR", "rst_rtos/8_key_scan": "8.8 Key-Scan", "rst_rtos/8_key_scan/0_key_scan_index": "8.8 Key-Scan", "rst_rtos/8_lcdc": "8.A LCD Controller", "rst_rtos/8_lcdc/0_lcdc_index": "8.A LCD Controller", "rst_rtos/8_ledc": "8.6 LED Controller", "rst_rtos/8_ledc/0_ledc_index": "8.6 LED Controller", "rst_rtos/8_psram": "8.2 PSRAM", "rst_rtos/8_psram/0_psram_index": "8.2 PSRAM", "rst_rtos/8_rtc_io": "8.9 RTC-IO", "rst_rtos/8_rtc_io/0_rtc_io_index": "8.9 RTC-IO", "rst_rtos/8_thermal": "8.3 Thermal Meter", "rst_rtos/8_thermal/0_thermal_index": "8.3 Thermal Meter"};
 console.log("TOC_TITLE_MAP:", TOC_TITLE_MAP);
 
 // 获取当前页面的文档名 (例如 'rst_rtos/3_nda_secure_boot/0_secure_boot_index_nda')
@@ -225,9 +338,7 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 
     <!-- 问题回报 -->
-    
-
-<!-- 添加自定义提示框 -->
+    <!-- source/_templates/_layout_issue_report.html -->
 <div id="prompt-box" style="
     display: none;
     position: fixed;
@@ -334,8 +445,8 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        // 获取用户信息
-        const username = sessionStorage.getItem('username') || '匿名';
+        // 获取用户信息（关键修改点）
+        const username = localStorage.getItem('username') || '匿名'; // 从 localStorage 获取用户名
 
         // 统一处理内容缩进
         const formatContent = text => text.split('\n').map(line => '    ' + line).join('\n');
@@ -350,32 +461,28 @@ document.addEventListener('DOMContentLoaded', function() {
                         `${questionHeader}\n` + 
                         `${formatContent(userQuestion)}`;
 
-        // flask client: 确保使用正确的JSON格式发送
+        // 提交到后端（关键修改点）
         const feedbackData = {
-            user: '匿名',
-            chapters: selectedChapters,  // 直接使用换行符
-            paragraph: selectedText,     // 直接使用换行符 
+            user: username,  // 使用真实用户名
+            chapters: selectedChapters,
+            paragraph: selectedText,
             question: userQuestion
         };
 
-        fetch('http://localhost:5000/submit', {
+        fetch('http://172.29.57.206:5000/submit', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json', // 必须明确指定
+                'Content-Type': 'application/json',
             },
-            body: JSON.stringify(feedbackData) // 自动处理转义
+            body: JSON.stringify(feedbackData)
         })
-        .then(response => {
-            console.log('响应状态:', response.status);
-            return response.json();
-        })
+        .then(response => response.json())
         .then(data => {
-            console.log('响应内容:', data);
+            console.log('提交成功:', data);
         })
         .catch(error => {
-            console.error('请求失败:', error);
+            console.error('提交失败:', error);
         });
-        // flask client: 确保使用正确的JSON格式发送
 
         // 创建Blob对象并保存到本地文件
         const blob = new Blob([message], { type: 'text/plain' });
@@ -401,6 +508,18 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
+    <style>
+        /* 隐藏整个搜索栏容器 */
+        .wy-side-nav-search > div[role="search"] {
+            display: none !important;
+        }
+
+        /* 或者更精确地隐藏表单 */
+        form#rtd-search-form {
+            display: none !important;
+        }
+    </style>
+
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -408,6 +527,7 @@ document.addEventListener('DOMContentLoaded', function() {
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
+    
 
           
           
@@ -421,6 +541,356 @@ document.addEventListener('DOMContentLoaded', function() {
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
+
+    
+    <div id="custom-selectors" style="display: block !important; padding: 0; background: none; border: none;">
+    </div>
+
+    <script>
+    /* ====================== 嵌入式配置开始 ====================== */
+    const embeddedConfig = {
+        "freertos": {
+            "name": "FreeRTOS",
+            "languages": {
+                "en": ["latest"],
+                "cn": ["latest"]
+            }
+        },
+        "linux": {
+            "name": "Linux",
+            "languages": {
+                "en": ["latest"],
+                "cn": ["latest"]
+            }
+        }
+    };
+    /* ====================== 嵌入式配置结束 ====================== */
+
+    (function() {
+        // 获取基础URL路径
+        function getBaseURL() {
+            const url = new URL(window.location.href);
+            if (url.protocol === 'file:') {
+                // 本地路径处理
+                const pathParts = url.pathname.split('/').filter(part => part !== '');
+                const index = pathParts.indexOf('build');
+                return `file://${pathParts.slice(0, index + 1).join('/')}/`;
+            } else {
+                // 网络路径处理
+                return `${url.origin}/${url.pathname.split('/').slice(1, 3).join('/')}/`;
+            }
+        }
+
+        // 获取当前URL路径分段
+        function getCurrentSegments() {
+            const url = new URL(window.location.href);
+            let segments = url.pathname.split('/').filter(segment => segment);
+
+            if (url.protocol === 'file:') {
+                // 本地路径处理
+                const index = segments.indexOf('build');
+                segments = segments.slice(index + 1); // 去掉 build 及之前的路径
+            } else {
+                // 网络路径处理
+                segments = segments.slice(3); // 去掉 ameba-iot-docs/
+            }
+
+            return {
+                osKey: segments[0] || 'freertos', // 默认为 freertos
+                language: segments[1] || 'en',   // 默认为 en
+                version: segments[2] || 'latest' // 默认为 latest
+            };
+        }
+
+        // 获取OS显示名称列表
+        function getOSNames(data) {
+            return Object.keys(data).map(key => data[key].name);
+        }
+
+        // 获取指定OS的语言列表
+        function getLanguages(data, osKey) {
+            return Object.keys(data[osKey]?.languages || {});
+        }
+
+        // 获取指定OS和语言的版本列表
+        function getVersions(data, osKey, language) {
+            return data[osKey]?.languages?.[language] || ['latest'];
+        }
+
+        // 根据显示名称查找OS键
+        function findOSKey(data, displayName) {
+            return Object.keys(data).find(key => data[key].name === displayName);
+        }
+
+        // 初始化选择器
+        function initSelectors() {
+            const segments = getCurrentSegments();
+            const currentOSName = embeddedConfig[segments.osKey]?.name;
+
+            // 如果 OS 无效，默认设置为 FreeRTOS
+            if (!currentOSName) {
+                console.warn("Invalid OS key, defaulting to FreeRTOS");
+                segments.osKey = 'freertos';
+            }
+
+            // 如果语言无效，默认设置为 en
+            if (!getLanguages(embeddedConfig, segments.osKey).includes(segments.language)) {
+                console.warn("Invalid language, defaulting to en");
+                segments.language = 'en';
+            }
+
+            // 获取基础URL
+            const baseURL = getBaseURL();
+
+            // 生成选择器HTML
+            document.getElementById('custom-selectors').innerHTML = `
+                <div id="custom-selectors" style="padding: 0; background: none; border: none;">
+                    <!-- 系统选择器 -->
+                    <div class="selector-container">
+                        <label class="selector-label">
+                            ${segments.language === 'cn' ? '系统' : 'OS'}:
+                        </label>
+                        <select id="os-selector" class="selector-dropdown">
+                            ${Object.keys(embeddedConfig).map(key => `
+                                <option value="${key}">${embeddedConfig[key].name}</option>
+                            `).join('')}
+                        </select>
+                    </div>
+
+                    <!-- 语言选择器 -->
+                    <div class="selector-container">
+                        <label class="selector-label">
+                            ${segments.language === 'cn' ? '语言' : 'Language'}:
+                        </label>
+                        <select id="language-selector" class="selector-dropdown">
+                            ${getLanguages(embeddedConfig, segments.osKey).map(lang => `
+                                <option value="${lang}">${lang}</option>
+                            `).join('')}
+                        </select>
+                    </div>
+
+                    <!-- 版本选择器 -->
+                    <div class="selector-container version-selector-container">
+                        <label class="selector-label">
+                            ${segments.language === 'cn' ? '版本' : 'Version'}:
+                        </label>
+                        <select id="version-selector" class="selector-dropdown">
+                            ${getVersions(embeddedConfig, segments.osKey, segments.language).map(ver => `
+                                <option value="${ver}">${ver}</option>
+                            `).join('')}
+                        </select>
+                    </div>
+
+                    
+
+                </div>`;
+
+            // 设置初始选中值
+            document.getElementById('os-selector').value = segments.osKey;
+            document.getElementById('language-selector').value = segments.language;
+
+            // 确保版本选择框有默认值
+            const versionSelector = document.getElementById('version-selector');
+            const availableVersions = getVersions(embeddedConfig, segments.osKey, segments.language);
+            versionSelector.value = availableVersions.includes(segments.version) ? segments.version : availableVersions[0] || 'latest';
+
+            // 绑定事件监听
+            document.getElementById('os-selector').addEventListener('change', () => {
+                const newOSKey = document.getElementById('os-selector').value;
+                const availableLangs = getLanguages(embeddedConfig, newOSKey);
+                const defaultLang = availableLangs[0] || 'en';
+                const defaultVersion = getVersions(embeddedConfig, newOSKey, defaultLang)[0] || 'latest';
+                redirectTo(`${baseURL}${newOSKey}/${defaultLang}/${defaultVersion}/`);
+            });
+
+            document.getElementById('language-selector').addEventListener('change', () => {
+                const newLang = document.getElementById('language-selector').value;
+                const defaultVersion = getVersions(embeddedConfig, segments.osKey, newLang)[0] || 'latest';
+                redirectTo(`${baseURL}${segments.osKey}/${newLang}/${defaultVersion}/`);
+            });
+
+            document.getElementById('version-selector').addEventListener('change', () => {
+                const newVer = document.getElementById('version-selector').value;
+                redirectTo(`${baseURL}${segments.osKey}/${segments.language}/${newVer}/`);
+            });
+
+            // ====================== 新增代码：注册和登录的弹窗逻辑 ======================
+            function createAuthDialog(type) {
+                const lang = segments.language === 'cn' ? 'cn' : 'en';
+                
+                // 创建弹窗容器
+                const dialog = document.createElement('div');
+                dialog.style.cssText = `
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: rgba(0,0,0,0.5);
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    z-index: 9999;
+                `;
+
+                // 弹窗内容
+                const content = document.createElement('div');
+                content.style.cssText = `
+                    background: white;
+                    padding: 20px;
+                    border-radius: 8px;
+                    min-width: 300px;
+                `;
+
+                // 标题
+                const title = document.createElement('h3');
+                title.textContent = type === 'register' 
+                    ? (lang === 'cn' ? '注册' : 'Register') 
+                    : (lang === 'cn' ? '登录' : 'Login');
+                content.appendChild(title);
+
+                // 用户名输入
+                const usernameLabel = document.createElement('label');
+                usernameLabel.textContent = lang === 'cn' ? '用户名：' : 'Username:';
+                const usernameInput = document.createElement('input');
+                usernameInput.style.cssText = 'width: 100%; margin-bottom: 10px; padding: 5px;';
+                content.appendChild(usernameLabel);
+                content.appendChild(usernameInput);
+
+                // 密码输入
+                const passwordLabel = document.createElement('label');
+                passwordLabel.textContent = lang === 'cn' ? '密码：' : 'Password:';
+                const passwordInput = document.createElement('input');
+                passwordInput.type = 'password';
+                passwordInput.style.cssText = 'width: 100%; margin-bottom: 10px; padding: 5px;';
+                content.appendChild(passwordLabel);
+                content.appendChild(passwordInput);
+
+                // 注册时需要确认密码
+                let confirmPasswordInput;
+                if (type === 'register') {
+                    const confirmLabel = document.createElement('label');
+                    confirmLabel.textContent = lang === 'cn' ? '确认密码：' : 'Confirm Password:';
+                    confirmPasswordInput = document.createElement('input');
+                    confirmPasswordInput.type = 'password';
+                    confirmPasswordInput.style.cssText = 'width: 100%; margin-bottom: 10px; padding: 5px;';
+                    content.appendChild(confirmLabel);
+                    content.appendChild(confirmPasswordInput);
+                }
+
+                // 按钮容器
+                const buttonContainer = document.createElement('div');
+                buttonContainer.style.cssText = 'display: flex; gap: 10px; margin-top: 10px;';
+
+                // 确认按钮
+                const confirmBtn = document.createElement('button');
+                confirmBtn.textContent = lang === 'cn' ? '确认' : 'Confirm';
+                confirmBtn.onclick = () => {
+                    const username = usernameInput.value.trim();
+                    const password = passwordInput.value.trim();
+                    const confirmPassword = confirmPasswordInput ? confirmPasswordInput.value.trim() : null;
+
+                    // 验证输入
+                    if (!username || !password) {
+                        alert(lang === 'cn' ? '用户名和密码不能为空！' : 'Username and password are required!');
+                        return;
+                    }
+
+                    if (type === 'register' && password !== confirmPassword) {
+                        alert(lang === 'cn' ? '两次输入的密码不一致！' : 'Passwords do not match!');
+                        return;
+                    }
+
+                    // flask 发送请求
+                    fetch('http://172.29.57.206:5000/auth', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            action: type,
+                            username,
+                            password
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert(lang === 'cn' ? '操作成功！' : 'Success!');
+                            // 更新本地存储和UI
+                            localStorage.setItem('isLoggedIn', 'true');
+                            localStorage.setItem('username', username);
+                            // 强制刷新显示状态
+                            document.getElementById('auth-buttons').style.display = 'none';
+                            document.getElementById('user-info').style.display = 'block';
+                            document.getElementById('username-display').textContent = username;
+                            document.body.removeChild(dialog);
+                        } else {
+                            alert(lang === 'cn' ? '失败：' + data.message : 'Failed: ' + data.message);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert(lang === 'cn' ? '网络错误' : 'Network error');
+                    });
+                };
+
+                // 取消按钮
+                const cancelBtn = document.createElement('button');
+                cancelBtn.textContent = lang === 'cn' ? '取消' : 'Cancel';
+                cancelBtn.onclick = () => document.body.removeChild(dialog);
+
+                buttonContainer.appendChild(confirmBtn);
+                buttonContainer.appendChild(cancelBtn);
+                content.appendChild(buttonContainer);
+                dialog.appendChild(content);
+                document.body.appendChild(dialog);
+            }
+
+            // 注册按钮点击事件
+            document.getElementById('register-button').addEventListener('click', () => {
+                createAuthDialog('register');
+            });
+
+            // 登录按钮点击事件
+            document.getElementById('login-button').addEventListener('click', () => {
+                createAuthDialog('login');
+            });
+
+            // 跳转函数
+            function redirectTo(path) {
+                const url = new URL(path, window.location.href);
+                if (url.protocol === 'file:') {
+                    // 本地路径附加 index.html
+                    url.pathname += 'index.html';
+                }
+                window.location.href = url.href;
+            }
+
+            /* =============== 左上角登录区域  =============== */
+            function syncLoginState() {
+                const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+                document.getElementById('auth-buttons').style.display = isLoggedIn ? 'none' : 'flex';
+                document.getElementById('user-info').style.display = isLoggedIn ? 'block' : 'none';
+                if (isLoggedIn) {
+                    document.getElementById('username-display').textContent = localStorage.getItem('username') || '';
+                }
+            }
+
+            // 初始化同步状态
+            syncLoginState();
+            /* =============== 左上角登录区域  =============== */
+        }
+
+        // DOM加载完成后初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            try {
+                initSelectors();
+            } catch (error) {
+                console.error("Error initializing selectors:", error);
+            }
+        });
+    })();
+</script>
+
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../0_ameba_product/0_ameba_product_center_index.html">Products Center</a></li>
@@ -438,10 +908,10 @@ document.addEventListener('DOMContentLoaded', function() {
 <li class="toctree-l2"><a class="reference internal" href="at_command_image.html">Officially Released Image</a></li>
 <li class="toctree-l2"><a class="reference internal" href="at_command_common.html">Common AT Commands</a></li>
 <li class="toctree-l2"><a class="reference internal" href="at_command_wifi.html">Wi-Fi AT Commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="at_command_socket.html">Socket AT Commands</a></li>
 <li class="toctree-l2"><a class="reference internal" href="at_command_mqtt.html">MQTT AT Commands</a></li>
 <li class="toctree-l2"><a class="reference internal" href="at_command_http.html">HTTP AT Commands</a></li>
 <li class="toctree-l2"><a class="reference internal" href="at_command_websocket.html">WebSocket AT Commands</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_socket.html">Socket AT Commands</a></li>
 <li class="toctree-l2"><a class="reference internal" href="at_command_bluetooth.html">Bluetooth AT Commands</a></li>
 <li class="toctree-l2"><a class="reference internal" href="at_command_file_system.html">File System AT Commands</a></li>
 <li class="toctree-l2"><a class="reference internal" href="at_command_ota.html">OTA AT Commands</a></li>
@@ -462,16 +932,16 @@ document.addEventListener('DOMContentLoaded', function() {
 <li class="toctree-l1"><a class="reference internal" href="../1_boot_process/0_boot_index.html">1.1 BOOT Process</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../1_ota/0_ota_index.html">1.2 OTA</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../1_otpc/0_otpc_index.html">1.3 OTPC</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../1_chipen/0_chipen_index.html">1.4 CHIPEN</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_chipen/0_chipen_index.html">1.4 Chip Enable</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../1_ipc/0_ipc_index.html">1.5 Inter Processor Communication</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../1_pinmux/0_pinmux_index.html">1.6 PINMUX</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_pinmux/0_pinmux_index.html">1.6 Pin Multiplexing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../1_gpio/0_gpio_index.html">1.7 GPIO &amp; Pin Control</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../1_power_save/0_ps_index.html">1.9 Power Save</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../2_whc_wifi_bridge/0_wifi_bridge_index.html">2.1 WHC Bridge</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../2_whc_fullmac/0_fullmac_index.html">2.2 WHC FullMAC</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../2_wifi_tunnel/0_wifi_tunnel_index.html">2.3 Wi-Fi R-Mesh</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../2_wifi_csi/0_wifi_csi_index.html">2.5 Wi-Fi CSI</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../2_wifi_adaptivity_test/0_wifi_adaptivity_index.html">2.6 Wi-Fi Adaptivity Test</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_whc_wifi_bridge/0_wifi_bridge_index.html">2.0 WHC Bridge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_whc_fullmac/0_fullmac_index.html">2.1 WHC FullMAC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_wifi_tunnel/0_wifi_tunnel_index.html">2.2 Wi-Fi R-Mesh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_wifi_csi/0_wifi_csi_index.html">2.3 Wi-Fi CSI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_wifi_adaptivity_test/0_wifi_adaptivity_index.html">2.4 Wi-Fi Adaptivity Test</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../3_security/0_security_index.html">3.1 Security &amp; Encryption</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../3_trng/0_trng_index.html">3.2 True Random Number Generator</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../3_nda_huk_derivation/0_huk_derivation_index_nda.html">3.3 HUK Derivation 🔒</a></li>
@@ -492,16 +962,16 @@ document.addEventListener('DOMContentLoaded', function() {
 <li class="toctree-l1"><a class="reference internal" href="../6_mp_image/0_mp_image_index.html">6.2 MP Image</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../6_mptools/0_mptools_index.html">6.3 MP Tools</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../7_usb/0_usb_index.html">7.1 USB Host &amp; Device</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../8_dmac/0_dmac_index.html">8.1 DMA Controllor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_dmac/0_dmac_index.html">8.1 DMA Controller</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../8_psram/0_psram_index.html">8.2 PSRAM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../8_thermal/0_thermal_index.html">8.3 Thermal Meter</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../8_adc/0_adc_index.html">8.4 ADC</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../8_ir/0_ir_index.html">8.5 IR</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../8_ledc/0_ledc_index.html">8.6 LEDC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_ledc/0_ledc_index.html">8.6 LED Controller</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../8_cap_touch/0_cap_touch_index.html">8.7 Cap-Touch</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../8_key_scan/0_key_scan_index.html">8.8 Key-Scan</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../8_rtc_io/0_rtc_io_index.html">8.9 RTC-IO</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../8_lcdc/0_lcdc_index.html">8.A LCDC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_lcdc/0_lcdc_index.html">8.A LCD Controller</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../10_api_docs/0_api_index.html">10.0 API Reference</a></li>
 </ul>
 
@@ -515,7 +985,7 @@ document.addEventListener('DOMContentLoaded', function() {
       </nav>
 
       <div class="wy-nav-content">
-
+    
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
@@ -671,16 +1141,14 @@ After this, you can refer to our host example to adapt it to the specific MCU pl
 
 </footer>
         </div>
-
-<!-- 渲染按钮和对话框 -->
-<button id="report-button">Report Issue</button>
-<div id="feedback-dialog" class="feedback-dialog" style="display: none;">
-    <p>Please describe your issue:</p>
-    <!-- <textarea id="feedback-text" placeholder="Enter your issue description..."></textarea> -->
-    <textarea id="feedback-text" placeholder="Feature enhancement in progress, please stay tuned..."></textarea>
-    <button id="submit-feedback">Submit</button>
-    <button id="cancel-feedback">Cancel</button>
-</div>
+    <!-- 问题反馈按钮和对话框 -->
+    
+    <div id="feedback-dialog" class="feedback-dialog" style="display: none;">
+        <p>Please describe your issue:</p>
+        <textarea id="feedback-text" placeholder="Feature enhancement in progress, please stay tuned..."></textarea>
+        <button id="submit-feedback">Submit</button>
+        <button id="cancel-feedback">Cancel</button>
+    </div>
 
       </div>
     </section>
