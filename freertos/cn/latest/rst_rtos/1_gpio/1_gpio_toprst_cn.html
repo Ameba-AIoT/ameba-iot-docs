@@ -6,13 +6,13 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>General Purpose Input/Output (GPIO) &mdash; Ameba IoT Docs  文档</title>
+  <title>GPIO &mdash; Ameba IoT Docs  文档</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
-      <link rel="stylesheet" type="text/css" href="../../_static/custom_cn.css?v=0d22fac7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=536412e7" />
       <link rel="stylesheet" type="text/css" href="../../_static/tabs.css?v=a5c4661c" />
-      <link rel="stylesheet" type="text/css" href="../../_static/_static/custom_cn.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=536412e7" />
 
   
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
@@ -26,6 +26,7 @@
         <script src="../../_static/doctools.js?v=9a2dae69"></script>
         <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script>let toggleHintShow = 'Click to show';</script>
         <script>let toggleHintHide = 'Click to hide';</script>
         <script>let toggleOpenOnPrint = 'true';</script>
@@ -36,15 +37,489 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="索引" href="../../genindex.html" />
     <link rel="search" title="搜索" href="../../search.html" />
-    <link rel="next" title="Pin Controller (Pinctrl)" href="1_pinctrl_toprst_cn.html" />
-    <link rel="prev" title="GPIO 和 Pin脚控制" href="0_gpio_index_cn.html" />
-   
-  
-  <script type="text/javascript" src="../../_static/js/selector.js"></script>
+    <link rel="next" title="引脚控制" href="1_pinctrl_toprst_cn.html" />
+    <link rel="prev" title="GPIO &amp; 引脚控制" href="0_gpio_index_cn.html" />
+     
 
-  <style>
-    .wy-nav-content {max-width: 1000px;} /* 设置最大宽度 */
-  </style>
+    <!-- NDA文档输入密码的框 -->
+    
+<script>
+// ▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼ 多语言配置 ▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼
+const lang = 'zh';  // 使用 Python 字符串切片
+const i18n = {
+    zh: {
+        title: '访问授权',
+        username: '用户名',
+        password: '密码',
+        confirm: '确认',
+        cancel: '取消',
+        usernameError: '用户名错误',
+        userNotExist: '该用户不存在',
+        passwordError: '密码错误',
+        wrongPassword: '请输入正确的密码',
+        accessDenied: '无访问权限',
+        noPermission: '您无权查看此内容',
+        expiredTitle: '访问已过期',
+        expiredMsg: '您的权限已失效<br>有效期：%s 至 %s',
+        deniedTitle: '⚠️ 无访问权限',
+        contact: '请联系 claire_wang@realsil.com.cn 获取权限'
+    },
+    en: {
+        title: 'Access Required',
+        username: 'Username',
+        password: 'Password',
+        confirm: 'Confirm',
+        cancel: 'Cancel',
+        usernameError: 'Invalid Username',
+        userNotExist: 'User does not exist',
+        passwordError: 'Wrong Password',
+        wrongPassword: 'Please enter correct password',
+        accessDenied: 'Access Denied',
+        noPermission: 'You have no permission to view this content',
+        expiredTitle: 'Authorization Expired',
+        expiredMsg: 'Your access has expired<br>Valid period: %s to %s',
+        deniedTitle: '⚠️ Access Denied',
+        contact: 'Please contact claire_wang@realsil.com.cn for access'
+    }
+};
+// ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲ 多语言配置结束 ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
+</script>
+
+    <!-- 样式模板 -->
+    
+
+<style>
+    .wy-nav-content {
+        max-width: 1000px;
+         
+    }
+    
+    .auth-denied {
+        padding: 20px;
+        background: #f8f9fa;
+        border-radius: 4px;
+        border: 1px solid #dee2e6;
+        text-align: center;
+        color: #721c24;
+        margin-top: 20px;
+    }
+    .auth-denied h3 {
+        margin-bottom: 10px;
+        color: #dc3545;
+    }
+    
+    #report-button {
+        position: fixed;
+        top: 10px;
+        left: 1120px;
+        padding: 10px 20px;
+        background-color: #ff00a2;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        z-index: 1000;
+    }
+    #report-button:hover {
+        background-color: #0056b3;
+    }
+    
+    .feedback-dialog {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        z-index: 1001;
+        width: 600px;
+    }
+    .feedback-dialog textarea {
+        width: 100%;
+        height: 150px;
+        margin-top: 10px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        resize: vertical;
+    }
+    .feedback-dialog button {
+        margin-top: 10px;
+        padding: 8px 16px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    .feedback-dialog button:hover {
+        background-color: #0056b3;
+    }
+
+    
+    
+</style>
+    <style>
+    /* ====================== 选择器样式 ====================== */
+    /* 选择器容器 */
+    .selector-container {
+        margin: 8px 0;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+    }
+    
+    /* 版本选择器特殊边距 */
+    .version-selector-container {
+        margin-bottom: 8px !important;
+    }
+    
+    /* 选择器标签 */
+    .selector-label {
+        color: white;
+        margin-right: 10px;
+        width: 80px;
+        text-align: right;
+        font-size: 0.9em;
+    }
+    
+    /* 下拉选择框 */
+    .selector-dropdown {
+        width: 120px;
+        border-radius: 2px;
+        padding: 4px 8px;
+        border: 1px solid #405261;
+        background: #2c3e50;
+        color: white;
+        font-size: 0.9em;
+    }
+    
+    /* 下拉选择框悬停效果 */
+    .selector-dropdown:hover {
+        border-color: #3498db;
+        transition: border-color 0.3s;
+    }
+    
+    /* 选择器响应式布局 */
+    @media (max-width: 768px) {
+        .selector-container {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        
+        .selector-label {
+            width: 100%;
+            text-align: left;
+            margin-bottom: 4px;
+        }
+        
+        .selector-dropdown {
+            width: 100%;
+        }
+    }
+</style>
+    <style>
+/* =============== 左上角登录区域  =============== */
+/* ================= 用户面板 ================= */
+.user-panel {
+    padding: 15px;
+    background: #34495e;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.username {
+    color: #fff;
+    font-weight: 500;
+    font-size: 1.1em;
+    text-align: center;
+    margin: 10px 0;
+}
+
+/* ================= 按钮容器 ================= */
+.button-row {
+    display: flex;
+    gap: 8px;
+    width: 100%;
+    margin: 10px 0;
+}
+
+/* 通用按钮样式 */
+.auth-btn, .forum-btn, .official-btn {
+    flex: 1;
+    padding: 8px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: opacity 0.3s;
+    text-align: center;
+    color: white !important;
+}
+
+/* 认证按钮 */
+.auth-btn {
+    background: #3498db;
+}
+
+/* 论坛按钮 */
+.forum-btn {
+    background: #9b59b6; /* 与参考代码的官方按钮同色 */
+}
+
+/* 官网按钮 */
+.official-btn {
+    background: #2ecc71; /* 与参考代码文档按钮同色 */
+}
+/* =============== 左上角登录区域  =============== */
+</style>
+
+    <!-- 注入 TOC 映射和当前页面信息 -->
+    
+
+<!-- TOC 映射和当前文档信息 -->
+<script>
+// 将 Python 字典转换为 JS 对象
+const TOC_TITLE_MAP = {"rst_rtos/0_ameba_product": "\u4ea7\u54c1\u4e2d\u5fc3", "rst_rtos/0_ameba_product/0_ameba_product_center_index_cn": "\u4ea7\u54c1\u4e2d\u5fc3", "rst_rtos/0_ameba_sdk": "Ameba SDK", "rst_rtos/0_ameba_sdk/0_ameba_sdks_index_cn": "Ameba SDK", "rst_rtos/0_ameba_solutions": "\u89e3\u51b3\u65b9\u6848", "rst_rtos/0_ameba_solutions/0_ameba_solutions_index_cn": "\u89e3\u51b3\u65b9\u6848", "rst_rtos/0_at_command": "0.8 AT \u547d\u4ee4\u96c6", "rst_rtos/0_at_command/0_at_command_index_cn": "0.8 AT \u547d\u4ee4\u96c6", "rst_rtos/0_file_system": "0.9 \u865a\u62df\u6587\u4ef6\u7cfb\u7edf", "rst_rtos/0_file_system/0_vfs_index_cn": "0.9 \u865a\u62df\u6587\u4ef6\u7cfb\u7edf", "rst_rtos/0_ftl": "0.A Flash \u8f6c\u6362\u5c42", "rst_rtos/0_ftl/0_ftl_index_cn": "0.A Flash \u8f6c\u6362\u5c42", "rst_rtos/0_gcc_build_environment": "0.1 GCC \u7f16\u8bd1\u73af\u5883", "rst_rtos/0_gcc_build_environment/0_gcc_build_index_cn": "0.1 GCC \u7f16\u8bd1\u73af\u5883", "rst_rtos/0_gcc_build_library": "0.3 GCC \u5e93\u7684\u751f\u6210\u548c\u4f7f\u7528", "rst_rtos/0_gcc_build_library/0_gcc_build_library_index_cn": "0.3 GCC \u5e93\u7684\u751f\u6210\u548c\u4f7f\u7528", "rst_rtos/0_gdb_debug": "0.2 GDB \u8c03\u8bd5", "rst_rtos/0_gdb_debug/0_gdb_debug_index_cn": "0.2 GDB \u8c03\u8bd5", "rst_rtos/0_memory_layout": "0.5 Flash \u548c RAM \u5e03\u5c40", "rst_rtos/0_memory_layout/0_layout_index_cn": "0.5 Flash \u548c RAM \u5e03\u5c40", "rst_rtos/0_sdk_example": "0.4 SDK \u793a\u4f8b", "rst_rtos/0_sdk_example/0_sdk_example_index_cn": "0.4 SDK \u793a\u4f8b", "rst_rtos/0_tools": "0.7 \u5de5\u5177", "rst_rtos/0_tools/0_tools_index_cn": "0.7 \u5de5\u5177", "rst_rtos/0_user_config": "0.6 \u5f00\u53d1\u8005\u914d\u7f6e", "rst_rtos/0_user_config/0_usrcfg_index_cn": "0.6 \u5f00\u53d1\u8005\u914d\u7f6e", "rst_rtos/1_boot_process": "1.1 \u542f\u52a8\u8fc7\u7a0b", "rst_rtos/1_boot_process/0_boot_index_cn": "1.1 \u542f\u52a8\u8fc7\u7a0b", "rst_rtos/1_chipen": "1.4 \u82af\u7247\u4f7f\u80fd", "rst_rtos/1_chipen/0_chipen_index_cn": "1.4 \u82af\u7247\u4f7f\u80fd", "rst_rtos/1_gpio": "1.7 GPIO \u548c\u5f15\u811a\u63a7\u5236", "rst_rtos/1_gpio/0_gpio_index_cn": "1.7 GPIO \u548c\u5f15\u811a\u63a7\u5236", "rst_rtos/1_ipc": "1.5 \u6838\u95f4\u901a\u4fe1", "rst_rtos/1_ipc/0_ipc_index_cn": "1.5 \u6838\u95f4\u901a\u4fe1", "rst_rtos/1_mpu_cache": "1.0 \u5185\u5b58\u4fdd\u62a4\u5355\u5143\u548c\u7f13\u5b58", "rst_rtos/1_mpu_cache/0_mpu_cache_index_cn": "1.0 \u5185\u5b58\u4fdd\u62a4\u5355\u5143\u548c\u7f13\u5b58", "rst_rtos/1_ota": "1.2 \u56fa\u4ef6\u5728\u7ebf\u5347\u7ea7\uff08OTA\uff09", "rst_rtos/1_ota/0_ota_index_cn": "1.2 \u56fa\u4ef6\u5728\u7ebf\u5347\u7ea7\uff08OTA\uff09", "rst_rtos/1_otpc": "1.3 OTP \u5b58\u50a8\u5668", "rst_rtos/1_otpc/0_otpc_index_cn": "1.3 OTP \u5b58\u50a8\u5668", "rst_rtos/1_pinmux": "1.6 \u5f15\u811a\u590d\u7528", "rst_rtos/1_pinmux/0_pinmux_index_cn": "1.6 \u5f15\u811a\u590d\u7528", "rst_rtos/1_power_save": "1.9 \u4f4e\u529f\u8017\u5f00\u53d1", "rst_rtos/1_power_save/0_ps_index_cn": "1.9 \u4f4e\u529f\u8017\u5f00\u53d1", "rst_rtos/2_whc_fullmac": "2.1 WHC FullMAC", "rst_rtos/2_whc_fullmac/0_fullmac_index_cn": "2.1 WHC FullMAC", "rst_rtos/2_whc_wifi_bridge": "2.0 WHC Bridge", "rst_rtos/2_whc_wifi_bridge/0_wifi_bridge_index_cn": "2.0 WHC Bridge", "rst_rtos/2_wifi_adaptivity_test": "2.4 Wi-Fi Adaptivity \u6d4b\u8bd5\u6307\u5357", "rst_rtos/2_wifi_adaptivity_test/0_wifi_adaptivity_index_cn": "2.4 Wi-Fi Adaptivity \u6d4b\u8bd5\u6307\u5357", "rst_rtos/2_wifi_csi": "2.3 Wi-Fi CSI", "rst_rtos/2_wifi_csi/0_wifi_csi_index_cn": "2.3 Wi-Fi CSI", "rst_rtos/2_wifi_tunnel": "2.2 Wi-Fi R-Mesh", "rst_rtos/2_wifi_tunnel/0_wifi_tunnel_index_cn": "2.2 Wi-Fi R-Mesh", "rst_rtos/3_crypto_engine": "3.9 \u5bf9\u79f0\u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_crypto_engine/0_crypto_engine_index_cn": "3.9 \u5bf9\u79f0\u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_ecdsa_engine": "3.a ECDSA \u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_ecdsa_engine/0_ecdsa_index_cn": "3.a ECDSA \u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_eddsa_engine": "3.b EDDSA \u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_eddsa_engine/0_eddsa_index_cn": "3.b EDDSA \u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_nda_huk_derivation": "3.3 HUK \u751f\u6210 \ud83d\udd12", "rst_rtos/3_nda_huk_derivation/0_huk_derivation_index_nda": "3.3 HUK \u751f\u6210 \ud83d\udd12", "rst_rtos/3_nda_rdp": "3.4 RDP \ud83d\udd12", "rst_rtos/3_nda_rdp/0_rdp_index_nda": "3.4 RDP \ud83d\udd12", "rst_rtos/3_nda_rsip": "3.5 RSIP \ud83d\udd12", "rst_rtos/3_nda_rsip/0_rsip_index_nda": "3.5 RSIP \ud83d\udd12", "rst_rtos/3_nda_secure_boot": "3.6 \u5b89\u5168\u542f\u52a8 \ud83d\udd12", "rst_rtos/3_nda_secure_boot/0_secure_boot_index_nda": "3.6 \u5b89\u5168\u542f\u52a8 \ud83d\udd12", "rst_rtos/3_nda_swd_protection": "3.7 SWD \u4fdd\u62a4 \ud83d\udd12", "rst_rtos/3_nda_swd_protection/0_swd_protection_index_nda": "3.7 SWD \u4fdd\u62a4 \ud83d\udd12", "rst_rtos/3_nda_tfm": "3.8 Trusted Firmware-M (TF-M) \ud83d\udd12", "rst_rtos/3_nda_tfm/0_tfm_index_nda": "3.8 Trusted Firmware-M (TF-M) \ud83d\udd12", "rst_rtos/3_rsa_engine": "3.c RSA \u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_rsa_engine/0_rsa_index_cn": "3.c RSA \u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_security": "3.1 \u5b89\u5168\u4e0e\u52a0\u5bc6", "rst_rtos/3_security/0_security_index_cn": "3.1 \u5b89\u5168\u4e0e\u52a0\u5bc6", "rst_rtos/3_trng": "3.2 \u771f\u968f\u673a\u6570\u53d1\u751f\u5668", "rst_rtos/3_trng/0_trng_index_cn": "3.2 \u771f\u968f\u673a\u6570\u53d1\u751f\u5668", "rst_rtos/4_ai": "4.1 \u4eba\u5de5\u667a\u80fd", "rst_rtos/4_ai/0_ai_index_cn": "4.1 \u4eba\u5de5\u667a\u80fd", "rst_rtos/4_ai_voice": "4.2 \u8bed\u97f3\u8bc6\u522b", "rst_rtos/4_ai_voice/0_ai_voice_index_cn": "4.2 \u8bed\u97f3\u8bc6\u522b", "rst_rtos/4_dsp": "4.4 DSP \u4f7f\u7528\u6307\u5357", "rst_rtos/4_dsp/0_dsp_index_cn": "4.4 DSP \u4f7f\u7528\u6307\u5357", "rst_rtos/4_multimedia": "4.3 \u591a\u5a92\u4f53", "rst_rtos/4_multimedia/0_multimedia_index_cn": "4.3 \u591a\u5a92\u4f53", "rst_rtos/6_mass_production": "6.1 \u91cf\u4ea7\u6307\u5bfc", "rst_rtos/6_mass_production/0_mp_index_cn": "6.1 \u91cf\u4ea7\u6307\u5bfc", "rst_rtos/6_mp_image": "6.2 MP \u56fa\u4ef6", "rst_rtos/6_mp_image/0_mp_image_index_cn": "6.2 MP \u56fa\u4ef6", "rst_rtos/6_mptools": "6.3 \u4ea7\u6d4b\u5de5\u5177", "rst_rtos/6_mptools/0_mptools_index_cn": "6.3 \u4ea7\u6d4b\u5de5\u5177", "rst_rtos/7_usb": "7.1 USB \u4e3b\u673a\u4e0e\u4ece\u673a", "rst_rtos/7_usb/0_usb_index_cn": "7.1 USB \u4e3b\u673a\u4e0e\u4ece\u673a", "rst_rtos/8_adc": "8.4 \u6a21\u6570\u8f6c\u6362\u5668", "rst_rtos/8_adc/0_adc_index_cn": "8.4 \u6a21\u6570\u8f6c\u6362\u5668", "rst_rtos/8_cap_touch": "8.7 Cap-Touch", "rst_rtos/8_cap_touch/0_cap_touch_index_cn": "8.7 Cap-Touch", "rst_rtos/8_dmac": "8.1 DMA \u63a7\u5236\u5668", "rst_rtos/8_dmac/0_dmac_index_cn": "8.1 DMA \u63a7\u5236\u5668", "rst_rtos/8_ir": "8.5 \u7ea2\u5916\u6536\u53d1\u5668", "rst_rtos/8_ir/0_ir_index_cn": "8.5 \u7ea2\u5916\u6536\u53d1\u5668", "rst_rtos/8_key_scan": "8.8 Key-Scan", "rst_rtos/8_key_scan/0_key_scan_index_cn": "8.8 Key-Scan", "rst_rtos/8_lcdc": "8.A LCD \u63a7\u5236\u5668", "rst_rtos/8_lcdc/0_lcdc_index_cn": "8.A LCD \u63a7\u5236\u5668", "rst_rtos/8_ledc": "8.6 LED \u63a7\u5236\u5668", "rst_rtos/8_ledc/0_ledc_index_cn": "8.6 LED \u63a7\u5236\u5668", "rst_rtos/8_psram": "8.2 PSRAM", "rst_rtos/8_psram/0_psram_index_cn": "8.2 PSRAM", "rst_rtos/8_rtc_io": "8.9 RTC-IO", "rst_rtos/8_rtc_io/0_rtc_io_index_cn": "8.9 RTC-IO", "rst_rtos/8_thermal": "8.3 \u6e29\u5ea6\u6d4b\u91cf", "rst_rtos/8_thermal/0_thermal_index_cn": "8.3 \u6e29\u5ea6\u6d4b\u91cf"};
+console.log("TOC_TITLE_MAP:", TOC_TITLE_MAP);
+
+// 获取当前页面的文档名 (例如 'rst_rtos/3_nda_secure_boot/0_secure_boot_index_nda')
+const CURRENT_DOCNAME = 'rst_rtos/1_gpio/1_gpio_toprst_cn';
+
+// 动态查找顶级分类函数（定义为全局函数）
+window.findTopLevelChapter = function(docname) {
+    console.log("Attempting to find top-level chapter for:", docname);
+    let bestMatch = "";
+    let bestTitle = "Unknown Chapter";
+
+    // 按路径长度降序排序以确保最长匹配
+    const sortedPaths = Object.keys(TOC_TITLE_MAP).sort((a, b) => b.length - a.length);
+
+    for (const path of sortedPaths) {
+        console.log("Checking path:", path);
+        if (docname === path || docname.startsWith(path + '/')) { // 子页面
+            bestMatch = path;
+            bestTitle = TOC_TITLE_MAP[path];
+            console.log("Matched path:", path, "with title:", bestTitle);
+            break;
+        }
+    }
+
+    // 如果没有找到任何匹配项，则尝试更短的路径
+    if (bestMatch === "") {
+        const pathSegments = docname.split('/');
+        while (pathSegments.length > 1) { // 至少保留根路径
+            const candidate = pathSegments.join('/');
+            console.log("Checking shorter path:", candidate);
+            if (TOC_TITLE_MAP[candidate]) {
+                bestTitle = TOC_TITLE_MAP[candidate];
+                console.log("Matched shorter path:", candidate, "with title:", bestTitle);
+                break;
+            }
+            pathSegments.pop();
+        }
+    }
+
+    console.log("Final top-level chapter:", bestTitle);
+    return bestTitle;
+}
+
+// 初始化时调用
+document.addEventListener('DOMContentLoaded', function() {
+    const topLevelChapter = findTopLevelChapter(CURRENT_DOCNAME);
+    console.log("Top Level Chapter:", topLevelChapter);
+
+    // 将顶级分类插入到DOM中（根据需要）
+    const chapterElement = document.createElement('div');
+    chapterElement.className = 'top-level-chapter';
+    chapterElement.innerHTML = `<strong>Top Level Chapter: </strong>${topLevelChapter}`;
+    document.body.appendChild(chapterElement);
+});
+</script>
+
+    <!-- 问题回报 -->
+    <!-- source/_templates/_layout_issue_report.html -->
+<div id="prompt-box" style="
+    display: none;
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.8);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    z-index: 9999;
+    text-align: center;
+    font-size: 14px;
+"></div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const reportButton = document.getElementById('report-button');
+    const feedbackDialog = document.getElementById('feedback-dialog');
+    const feedbackText = document.getElementById('feedback-text');
+    const submitButton = document.getElementById('submit-feedback');
+    const cancelButton = document.getElementById('cancel-feedback');
+    const promptBox = document.getElementById('prompt-box');
+
+    let selectedText = '';
+    let selectedChapters = '';
+    const language = 'zh-CN'; // 获取语言变量
+
+    // 定义标题变量（顶格显示）
+    const userHeader = 'User:';
+    const chaptersHeader = 'Chapters:';
+    const paragraphHeader = 'Paragraph:';
+    const questionHeader = 'Question:';
+
+    // 定义提示消息
+    const saveSuccessMessage = language === 'zh_CN' ? '问题已保存到本地文件 feedback.txt' : 'Issue saved to local file feedback.txt';
+
+    // 检查 findTopLevelChapter 是否已定义
+    if (typeof window.findTopLevelChapter !== 'function') {
+        console.error("findTopLevelChapter 函数未定义，请检查加载顺序！");
+        return;
+    }
+
+    reportButton.addEventListener('click', function() {
+        const selection = window.getSelection();
+        selectedText = selection.toString();
+        if (!selectedText) {
+            alert('Please select the problematic content first');
+            return;
+        }
+
+        // 收集章节信息
+        let chapters = new Set(); // 使用 Set 来避免重复章节
+        if (selection.rangeCount > 0) {
+            const range = selection.getRangeAt(0);
+            let node = range.commonAncestorContainer;
+
+            // 确保从最近的元素节点开始
+            while (node && node.nodeType !== Node.ELEMENT_NODE) {
+                node = node.parentElement;
+            }
+
+            // 使用递归方法遍历DOM树
+            function collectHeadings(node, level = 0) {
+                if (!node) return;
+
+                if (node.tagName && node.tagName.match(/^H[1-6]$/)) {
+                    chapters.add(`${node.textContent.trim()}`);
+                }
+
+                if (node.previousElementSibling) {
+                    collectHeadings(node.previousElementSibling, level);
+                }
+
+                if (node.parentElement && node.parentElement.tagName !== 'BODY') {
+                    collectHeadings(node.parentElement, level + 1);
+                }
+            }
+
+            collectHeadings(node);
+
+            // 如果没有找到任何章节信息，则添加默认提示
+            if (chapters.size === 0) {
+                chapters.add('No chapter information found');
+            }
+        }
+
+        // 获取顶级侧边栏章节
+        const topLevelChapter = window.findTopLevelChapter(CURRENT_DOCNAME); // 调用全局函数
+        chapters.add(`顶级分类：${topLevelChapter}`); // 插入到章节集合中
+
+        // 添加章节标题
+        const chapterHeader = language === 'zh_CN' ? '以下逐级向上追溯：' : 'Trace upwards level by level:';
+        selectedChapters = chapterHeader + '\n' + Array.from(chapters).join('\n');
+
+        feedbackDialog.style.display = 'block';
+        feedbackText.value = '';
+    });
+
+    submitButton.addEventListener('click', function() {
+        const userQuestion = feedbackText.value.trim();
+        if (!userQuestion) {
+            alert('Issue description cannot be empty');
+            return;
+        }
+
+        // 获取用户信息（关键修改点）
+        const username = localStorage.getItem('username') || '匿名'; // 从 localStorage 获取用户名
+
+        // 统一处理内容缩进
+        const formatContent = text => text.split('\n').map(line => '    ' + line).join('\n');
+
+        // 生成消息内容（标题顶格，内容缩进）
+        const message = `${userHeader}\n` + 
+                        `${formatContent(username)}\n\n` +
+                        `${chaptersHeader}\n` + 
+                        `${formatContent(selectedChapters)}\n\n` +
+                        `${paragraphHeader}\n` + 
+                        `${formatContent(selectedText)}\n\n` +
+                        `${questionHeader}\n` + 
+                        `${formatContent(userQuestion)}`;
+
+        // 提交到后端（关键修改点）
+        const feedbackData = {
+            user: username,  // 使用真实用户名
+            chapters: selectedChapters,
+            paragraph: selectedText,
+            question: userQuestion
+        };
+
+        fetch('http://172.29.57.206:5000/submit', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(feedbackData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('提交成功:', data);
+        })
+        .catch(error => {
+            console.error('提交失败:', error);
+        });
+
+        // 创建Blob对象并保存到本地文件
+        const blob = new Blob([message], { type: 'text/plain' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = 'feedback.txt';
+        link.click();
+
+        // 显示提示框
+        promptBox.textContent = saveSuccessMessage;
+        promptBox.style.display = 'block';
+        const promptTimeout = setTimeout(() => {
+            promptBox.style.display = 'none';
+        }, 10000);
+
+        // 自动关闭反馈对话框
+        feedbackDialog.style.display = 'none';
+    });
+
+    cancelButton.addEventListener('click', function() {
+        feedbackDialog.style.display = 'none';
+    });
+});
+</script>
+
+    <style>
+        /* 隐藏整个搜索栏容器 */
+        .wy-side-nav-search > div[role="search"] {
+            display: none !important;
+        }
+
+        /* 或者更精确地隐藏表单 */
+        form#rtd-search-form {
+            display: none !important;
+        }
+    </style>
 
 </head>
 
@@ -53,6 +528,7 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
+    
 
           
           
@@ -66,52 +542,402 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
+
+    
+    <div id="custom-selectors" style="display: block !important; padding: 0; background: none; border: none;">
+    </div>
+
+    <script>
+    /* ====================== 嵌入式配置开始 ====================== */
+    const embeddedConfig = {
+        "freertos": {
+            "name": "FreeRTOS",
+            "languages": {
+                "en": ["latest"],
+                "cn": ["latest"]
+            }
+        },
+        "linux": {
+            "name": "Linux",
+            "languages": {
+                "en": ["latest"],
+                "cn": ["latest"]
+            }
+        }
+    };
+    /* ====================== 嵌入式配置结束 ====================== */
+
+    (function() {
+        // 获取基础URL路径
+        function getBaseURL() {
+            const url = new URL(window.location.href);
+            if (url.protocol === 'file:') {
+                // 本地路径处理
+                const pathParts = url.pathname.split('/').filter(part => part !== '');
+                const index = pathParts.indexOf('build');
+                return `file://${pathParts.slice(0, index + 1).join('/')}/`;
+            } else {
+                // 网络路径处理
+                return `${url.origin}/${url.pathname.split('/').slice(1, 3).join('/')}/`;
+            }
+        }
+
+        // 获取当前URL路径分段
+        function getCurrentSegments() {
+            const url = new URL(window.location.href);
+            let segments = url.pathname.split('/').filter(segment => segment);
+
+            if (url.protocol === 'file:') {
+                // 本地路径处理
+                const index = segments.indexOf('build');
+                segments = segments.slice(index + 1); // 去掉 build 及之前的路径
+            } else {
+                // 网络路径处理
+                segments = segments.slice(3); // 去掉 ameba-iot-docs/
+            }
+
+            return {
+                osKey: segments[0] || 'freertos', // 默认为 freertos
+                language: segments[1] || 'en',   // 默认为 en
+                version: segments[2] || 'latest' // 默认为 latest
+            };
+        }
+
+        // 获取OS显示名称列表
+        function getOSNames(data) {
+            return Object.keys(data).map(key => data[key].name);
+        }
+
+        // 获取指定OS的语言列表
+        function getLanguages(data, osKey) {
+            return Object.keys(data[osKey]?.languages || {});
+        }
+
+        // 获取指定OS和语言的版本列表
+        function getVersions(data, osKey, language) {
+            return data[osKey]?.languages?.[language] || ['latest'];
+        }
+
+        // 根据显示名称查找OS键
+        function findOSKey(data, displayName) {
+            return Object.keys(data).find(key => data[key].name === displayName);
+        }
+
+        // 初始化选择器
+        function initSelectors() {
+            const segments = getCurrentSegments();
+            const currentOSName = embeddedConfig[segments.osKey]?.name;
+
+            // 如果 OS 无效，默认设置为 FreeRTOS
+            if (!currentOSName) {
+                console.warn("Invalid OS key, defaulting to FreeRTOS");
+                segments.osKey = 'freertos';
+            }
+
+            // 如果语言无效，默认设置为 en
+            if (!getLanguages(embeddedConfig, segments.osKey).includes(segments.language)) {
+                console.warn("Invalid language, defaulting to en");
+                segments.language = 'en';
+            }
+
+            // 获取基础URL
+            const baseURL = getBaseURL();
+
+            // 生成选择器HTML
+            document.getElementById('custom-selectors').innerHTML = `
+                <div id="custom-selectors" style="padding: 0; background: none; border: none;">
+                    <!-- 系统选择器 -->
+                    <div class="selector-container">
+                        <label class="selector-label">
+                            ${segments.language === 'cn' ? '系统' : 'OS'}:
+                        </label>
+                        <select id="os-selector" class="selector-dropdown">
+                            ${Object.keys(embeddedConfig).map(key => `
+                                <option value="${key}">${embeddedConfig[key].name}</option>
+                            `).join('')}
+                        </select>
+                    </div>
+
+                    <!-- 语言选择器 -->
+                    <div class="selector-container">
+                        <label class="selector-label">
+                            ${segments.language === 'cn' ? '语言' : 'Language'}:
+                        </label>
+                        <select id="language-selector" class="selector-dropdown">
+                            ${getLanguages(embeddedConfig, segments.osKey).map(lang => `
+                                <option value="${lang}">${lang}</option>
+                            `).join('')}
+                        </select>
+                    </div>
+
+                    <!-- 版本选择器 -->
+                    <div class="selector-container version-selector-container">
+                        <label class="selector-label">
+                            ${segments.language === 'cn' ? '版本' : 'Version'}:
+                        </label>
+                        <select id="version-selector" class="selector-dropdown">
+                            ${getVersions(embeddedConfig, segments.osKey, segments.language).map(ver => `
+                                <option value="${ver}">${ver}</option>
+                            `).join('')}
+                        </select>
+                    </div>
+
+                    
+
+                </div>`;
+
+            // 设置初始选中值
+            document.getElementById('os-selector').value = segments.osKey;
+            document.getElementById('language-selector').value = segments.language;
+
+            // 确保版本选择框有默认值
+            const versionSelector = document.getElementById('version-selector');
+            const availableVersions = getVersions(embeddedConfig, segments.osKey, segments.language);
+            versionSelector.value = availableVersions.includes(segments.version) ? segments.version : availableVersions[0] || 'latest';
+
+            // 绑定事件监听
+            document.getElementById('os-selector').addEventListener('change', () => {
+                const newOSKey = document.getElementById('os-selector').value;
+                const availableLangs = getLanguages(embeddedConfig, newOSKey);
+                const defaultLang = availableLangs[0] || 'en';
+                const defaultVersion = getVersions(embeddedConfig, newOSKey, defaultLang)[0] || 'latest';
+                redirectTo(`${baseURL}${newOSKey}/${defaultLang}/${defaultVersion}/`);
+            });
+
+            document.getElementById('language-selector').addEventListener('change', () => {
+                const newLang = document.getElementById('language-selector').value;
+                const defaultVersion = getVersions(embeddedConfig, segments.osKey, newLang)[0] || 'latest';
+                redirectTo(`${baseURL}${segments.osKey}/${newLang}/${defaultVersion}/`);
+            });
+
+            document.getElementById('version-selector').addEventListener('change', () => {
+                const newVer = document.getElementById('version-selector').value;
+                redirectTo(`${baseURL}${segments.osKey}/${segments.language}/${newVer}/`);
+            });
+
+            // ====================== 新增代码：注册和登录的弹窗逻辑 ======================
+            function createAuthDialog(type) {
+                const lang = segments.language === 'cn' ? 'cn' : 'en';
+                
+                // 创建弹窗容器
+                const dialog = document.createElement('div');
+                dialog.style.cssText = `
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: rgba(0,0,0,0.5);
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    z-index: 9999;
+                `;
+
+                // 弹窗内容
+                const content = document.createElement('div');
+                content.style.cssText = `
+                    background: white;
+                    padding: 20px;
+                    border-radius: 8px;
+                    min-width: 300px;
+                `;
+
+                // 标题
+                const title = document.createElement('h3');
+                title.textContent = type === 'register' 
+                    ? (lang === 'cn' ? '注册' : 'Register') 
+                    : (lang === 'cn' ? '登录' : 'Login');
+                content.appendChild(title);
+
+                // 用户名输入
+                const usernameLabel = document.createElement('label');
+                usernameLabel.textContent = lang === 'cn' ? '用户名：' : 'Username:';
+                const usernameInput = document.createElement('input');
+                usernameInput.style.cssText = 'width: 100%; margin-bottom: 10px; padding: 5px;';
+                content.appendChild(usernameLabel);
+                content.appendChild(usernameInput);
+
+                // 密码输入
+                const passwordLabel = document.createElement('label');
+                passwordLabel.textContent = lang === 'cn' ? '密码：' : 'Password:';
+                const passwordInput = document.createElement('input');
+                passwordInput.type = 'password';
+                passwordInput.style.cssText = 'width: 100%; margin-bottom: 10px; padding: 5px;';
+                content.appendChild(passwordLabel);
+                content.appendChild(passwordInput);
+
+                // 注册时需要确认密码
+                let confirmPasswordInput;
+                if (type === 'register') {
+                    const confirmLabel = document.createElement('label');
+                    confirmLabel.textContent = lang === 'cn' ? '确认密码：' : 'Confirm Password:';
+                    confirmPasswordInput = document.createElement('input');
+                    confirmPasswordInput.type = 'password';
+                    confirmPasswordInput.style.cssText = 'width: 100%; margin-bottom: 10px; padding: 5px;';
+                    content.appendChild(confirmLabel);
+                    content.appendChild(confirmPasswordInput);
+                }
+
+                // 按钮容器
+                const buttonContainer = document.createElement('div');
+                buttonContainer.style.cssText = 'display: flex; gap: 10px; margin-top: 10px;';
+
+                // 确认按钮
+                const confirmBtn = document.createElement('button');
+                confirmBtn.textContent = lang === 'cn' ? '确认' : 'Confirm';
+                confirmBtn.onclick = () => {
+                    const username = usernameInput.value.trim();
+                    const password = passwordInput.value.trim();
+                    const confirmPassword = confirmPasswordInput ? confirmPasswordInput.value.trim() : null;
+
+                    // 验证输入
+                    if (!username || !password) {
+                        alert(lang === 'cn' ? '用户名和密码不能为空！' : 'Username and password are required!');
+                        return;
+                    }
+
+                    if (type === 'register' && password !== confirmPassword) {
+                        alert(lang === 'cn' ? '两次输入的密码不一致！' : 'Passwords do not match!');
+                        return;
+                    }
+
+                    // flask 发送请求
+                    fetch('http://172.29.57.206:5000/auth', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            action: type,
+                            username,
+                            password
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert(lang === 'cn' ? '操作成功！' : 'Success!');
+                            // 更新本地存储和UI
+                            localStorage.setItem('isLoggedIn', 'true');
+                            localStorage.setItem('username', username);
+                            // 强制刷新显示状态
+                            document.getElementById('auth-buttons').style.display = 'none';
+                            document.getElementById('user-info').style.display = 'block';
+                            document.getElementById('username-display').textContent = username;
+                            document.body.removeChild(dialog);
+                        } else {
+                            alert(lang === 'cn' ? '失败：' + data.message : 'Failed: ' + data.message);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert(lang === 'cn' ? '网络错误' : 'Network error');
+                    });
+                };
+
+                // 取消按钮
+                const cancelBtn = document.createElement('button');
+                cancelBtn.textContent = lang === 'cn' ? '取消' : 'Cancel';
+                cancelBtn.onclick = () => document.body.removeChild(dialog);
+
+                buttonContainer.appendChild(confirmBtn);
+                buttonContainer.appendChild(cancelBtn);
+                content.appendChild(buttonContainer);
+                dialog.appendChild(content);
+                document.body.appendChild(dialog);
+            }
+
+            // 注册按钮点击事件
+            document.getElementById('register-button').addEventListener('click', () => {
+                createAuthDialog('register');
+            });
+
+            // 登录按钮点击事件
+            document.getElementById('login-button').addEventListener('click', () => {
+                createAuthDialog('login');
+            });
+
+            // 跳转函数
+            function redirectTo(path) {
+                const url = new URL(path, window.location.href);
+                if (url.protocol === 'file:') {
+                    // 本地路径附加 index.html
+                    url.pathname += 'index.html';
+                }
+                window.location.href = url.href;
+            }
+
+            /* =============== 左上角登录区域  =============== */
+            function syncLoginState() {
+                const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+                document.getElementById('auth-buttons').style.display = isLoggedIn ? 'none' : 'flex';
+                document.getElementById('user-info').style.display = isLoggedIn ? 'block' : 'none';
+                if (isLoggedIn) {
+                    document.getElementById('username-display').textContent = localStorage.getItem('username') || '';
+                }
+            }
+
+            // 初始化同步状态
+            syncLoginState();
+            /* =============== 左上角登录区域  =============== */
+        }
+
+        // DOM加载完成后初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            try {
+                initSelectors();
+            } catch (error) {
+                console.error("Error initializing selectors:", error);
+            }
+        });
+    })();
+</script>
+
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../0_ameba_product/0_ameba_product_center_index_cn.html">产品中心</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../0_ameba_sdk/0_ameba_sdks_index_cn.html">Ameba SDK</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../0_ameba_solutions/0_ameba_solutions_index_cn.html">解决方案</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../0_gcc_build_environment/0_gcc_build_index_cn.html">0.1 GCC 编译环境</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../0_gdb_debug/0_gdb_debug_index_cn.html">0.2 GDB调试</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_gdb_debug/0_gdb_debug_index_cn.html">0.2 GDB 调试</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../0_gcc_build_library/0_gcc_build_library_index_cn.html">0.3 GCC 库的生成和使用</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../0_sdk_example/0_sdk_example_index_cn.html">0.4 SDK 示例</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../0_memory_layout/0_layout_index_cn.html">0.5 Flash 和 RAM 布局</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../0_user_config/0_usrcfg_index_cn.html">0.6 开发者配置</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../0_tools/0_tools_index_cn.html">0.7 工具</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../0_at_command/0_at_command_index_cn.html">0.8 AT 命令</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_at_command/0_at_command_index_cn.html">0.8 AT 命令集</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../0_file_system/0_vfs_index_cn.html">0.9 虚拟文件系统</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../0_ftl/0_ftl_index_cn.html">0.A Flash 转换层</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../1_mpu_cache/0_mpu_cache_index_cn.html">1.0 内存保护单元和缓存</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../1_boot_process/0_boot_index_cn.html">1.1 启动过程</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../1_ota/0_ota_index_cn.html">1.2 固件在线升级(OTA)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../1_otpc/0_otpc_index.html">1.3 OTP存储器</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../1_chipen/0_chipen_index_cn.html">1.4 CHIP_EN</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_ota/0_ota_index_cn.html">1.2 固件在线升级（OTA）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_otpc/0_otpc_index_cn.html">1.3 OTP 存储器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_chipen/0_chipen_index_cn.html">1.4 芯片使能</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../1_ipc/0_ipc_index_cn.html">1.5 核间通信</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../1_pinmux/0_pinmux_index_cn.html">1.6 PINMUX</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="0_gpio_index_cn.html">1.7 GPIO</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">General Purpose Input/Output (GPIO)</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#output">Output</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#input">Input</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#interrupt">Interrupt</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_pinmux/0_pinmux_index_cn.html">1.6 引脚复用</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="0_gpio_index_cn.html">1.7 GPIO 和引脚控制</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">GPIO</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">输出测试</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">输入测试</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">中断测试</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="1_pinctrl_toprst_cn.html">Pin Controller (Pinctrl)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1_pinctrl_toprst_cn.html">引脚控制</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../1_power_save/0_ps_index_cn.html">1.9 低功耗开发</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../2_whc_wifi_bridge/0_wifi_bridge_index_cn.html">2.1 WHC Bridge</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../2_whc_fullmac/0_fullmac_index_cn.html">2.2 WHC FullMAC</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../2_wifi_tunnel/0_wifi_tunnel_index_cn.html">2.3 Wi-Fi R-Mesh</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../2_wifi_csi/0_wifi_csi_index_cn.html">2.5 Wi-Fi CSI</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../2_wifi_adaptivity_test/0_wifi_adaptivity_index.html">2.6 Wi-Fi Adaptivity 测试指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_whc_wifi_bridge/0_wifi_bridge_index_cn.html">2.0 WHC Bridge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_whc_fullmac/0_fullmac_index_cn.html">2.1 WHC FullMAC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_wifi_tunnel/0_wifi_tunnel_index_cn.html">2.2 Wi-Fi R-Mesh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_wifi_csi/0_wifi_csi_index_cn.html">2.3 Wi-Fi CSI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_wifi_adaptivity_test/0_wifi_adaptivity_index_cn.html">2.4 Wi-Fi Adaptivity 测试指南</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../3_security/0_security_index_cn.html">3.1 安全与加密</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../3_trng/0_trng_index_cn.html">3.2 真随机数发生器</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../3_nda_huk_derivation/0_huk_derivation_index_nda.html">3.3 HUK Derivation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../3_nda_rdp/0_rdp_index_nda.html">3.4 RDP</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../3_nda_rsip/0_rsip_index_nda.html">3.5 RSIP</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../3_nda_secure_boot/0_secure_boot_index_nda.html">3.6 Secure Boot</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../3_nda_swd_protection/0_swd_protection_index_nda.html">3.7 SWD Protection</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../3_nda_tfm/0_tfm_index_nda.html">3.8 Trusted Firmware-M (TF-M)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_huk_derivation/0_huk_derivation_index_nda.html">3.3 HUK 生成 🔒</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_rdp/0_rdp_index_nda.html">3.4 RDP 🔒</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_rsip/0_rsip_index_nda.html">3.5 RSIP 🔒</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_secure_boot/0_secure_boot_index_nda.html">3.6 安全启动 🔒</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_swd_protection/0_swd_protection_index_nda.html">3.7 SWD 保护 🔒</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_tfm/0_tfm_index_nda.html">3.8 Trusted Firmware-M (TF-M) 🔒</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../3_crypto_engine/0_crypto_engine_index_cn.html">3.9 对称硬件加密引擎</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../3_ecdsa_engine/0_ecdsa_index_cn.html">3.a ECDSA 硬件加密引擎</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../3_eddsa_engine/0_eddsa_index_cn.html">3.b EDDSA 硬件加密引擎</a></li>
@@ -129,11 +955,11 @@
 <li class="toctree-l1"><a class="reference internal" href="../8_thermal/0_thermal_index_cn.html">8.3 温度测量</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../8_adc/0_adc_index_cn.html">8.4 模数转换器</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../8_ir/0_ir_index_cn.html">8.5 红外收发器</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../8_ledc/0_ledc_index_cn.html">8.6 LED控制器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_ledc/0_ledc_index_cn.html">8.6 LED 控制器</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../8_cap_touch/0_cap_touch_index_cn.html">8.7 Cap-Touch</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../8_key_scan/0_key_scan_index_cn.html">8.8 Key-Scan</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../8_rtc_io/0_rtc_io_index_cn.html">8.9 RTC-IO</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../8_lcdc/0_lcdc_index_cn.html">8.A LCD控制器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_lcdc/0_lcdc_index_cn.html">8.A LCD 控制器</a></li>
 </ul>
 
         </div>
@@ -146,13 +972,13 @@
       </nav>
 
       <div class="wy-nav-content">
-
+    
         <div class="rst-content">
           <div role="navigation" aria-label="页面导航">
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="0_gpio_index_cn.html">GPIO 和 Pin脚控制</a></li>
-      <li class="breadcrumb-item active">General Purpose Input/Output (GPIO)</li>
+          <li class="breadcrumb-item"><a href="0_gpio_index_cn.html">GPIO &amp; 引脚控制</a></li>
+      <li class="breadcrumb-item active">GPIO</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -161,57 +987,57 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="general-purpose-input-output-gpio">
-<h1>General Purpose Input/Output (GPIO)<a class="headerlink" href="#general-purpose-input-output-gpio" title="Link to this heading"></a></h1>
-<section id="output">
-<h2>Output<a class="headerlink" href="#output" title="Link to this heading"></a></h2>
-<p>To do GPIO output test, the following steps are mandatory.</p>
+  <section id="gpio">
+<h1>GPIO<a class="headerlink" href="#gpio" title="Link to this heading"></a></h1>
+<section id="id1">
+<h2>输出测试<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<p>进行GPIO输出测试，请按照以下步骤操作：</p>
 <ol class="arabic">
-<li><p>Select GPIO pin, and set GPIO mode to output.</p>
+<li><p>选择GPIO引脚，并设置为输出模式</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">GPIO_InitStruct</span><span class="p">.</span><span class="n">GPIO_Pin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GPIO_Pin</span><span class="p">;</span>
 <span class="n">GPIO_InitStruct</span><span class="p">.</span><span class="n">GPIO_Mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GPIO_Mode_OUT</span><span class="p">;</span>
 </pre></div>
 </div>
 </li>
-<li><p>Initialize hardware using the parameters mentioned above.</p>
+<li><p>使用上述参数初始化硬件</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">GPIO_Init</span><span class="p">(</span><span class="n">GPIO_InitTypeDef</span><span class="w"> </span><span class="o">*</span><span class="n">GPIO_InitStruct</span><span class="p">);</span>
 </pre></div>
 </div>
 </li>
-<li><p>Write a logic value to a specified output port pin.</p>
+<li><p>向指定的输出端口引脚写入逻辑值</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">GPIO_WriteBit</span><span class="p">(</span><span class="n">u32</span><span class="w"> </span><span class="n">GPIO_Pin</span><span class="p">,</span><span class="w"> </span><span class="n">u32</span><span class="w"> </span><span class="n">Pin_State</span><span class="p">);</span>
 </pre></div>
 </div>
 </li>
 </ol>
 </section>
-<section id="input">
-<h2>Input<a class="headerlink" href="#input" title="Link to this heading"></a></h2>
-<p>To do GPIO input test, the following steps are mandatory.</p>
+<section id="id2">
+<h2>输入测试<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+<p>进行GPIO输入测试，请按照以下步骤操作：</p>
 <ol class="arabic">
-<li><p>Select GPIO pin, and set GPIO mode to input.</p>
+<li><p>选择GPIO引脚，并设置为输入模式</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">GPIO_InitStruct</span><span class="p">.</span><span class="n">GPIO_Pin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GPIO_Pin</span><span class="p">;</span>
 <span class="n">GPIO_InitStruct</span><span class="p">.</span><span class="n">GPIO_Mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GPIO_Mode_IN</span><span class="p">;</span>
 </pre></div>
 </div>
 </li>
-<li><p>Initialize hardware using the parameters mentioned above.</p>
+<li><p>使用上述参数初始化硬件</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">GPIO_Init</span><span class="p">(</span><span class="n">GPIO_InitTypeDef</span><span class="w"> </span><span class="o">*</span><span class="n">GPIO_InitStruct</span><span class="p">);</span>
 </pre></div>
 </div>
 </li>
-<li><p>Read a specified output port pin.</p>
+<li><p>读取指定的输入端口引脚</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">GPIO_ReadDataBit</span><span class="p">(</span><span class="n">u32</span><span class="w"> </span><span class="n">GPIO_Pin</span><span class="p">);</span>
 </pre></div>
 </div>
 </li>
 </ol>
 </section>
-<section id="interrupt">
-<h2>Interrupt<a class="headerlink" href="#interrupt" title="Link to this heading"></a></h2>
-<p>To do GPIO interrupt test, the following steps are mandatory.</p>
+<section id="id3">
+<h2>中断测试<a class="headerlink" href="#id3" title="Link to this heading"></a></h2>
+<p>进行GPIO中断测试，请按照以下步骤操作：</p>
 <ol class="arabic">
-<li><p>Select GPIO pin, set GPIO pin mode to interrupt, no pull, and configure interrupt trigger type, polarity, debounce.</p>
+<li><p>选择GPIO引脚，设置为中断模式，无上拉/下拉，并配置中断触发类型、极性、消抖</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">GPIO_InitStruct</span><span class="p">.</span><span class="n">GPIO_Pin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GPIO_Pin</span><span class="p">;</span>
 <span class="n">GPIO_InitStruct</span><span class="p">.</span><span class="n">GPIO_PuPd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GPIO_PuPd_NOPULL</span><span class="p">;</span>
 <span class="n">GPIO_InitStruct</span><span class="p">.</span><span class="n">GPIO_Mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GPIO_Mode_INT</span><span class="p">;</span>
@@ -221,28 +1047,28 @@
 </pre></div>
 </div>
 </li>
-<li><p>Initialize hardware using the parameters in step (1).</p>
+<li><p>使用上述参数初始化硬件</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">GPIO_Init</span><span class="p">(</span><span class="n">GPIO_InitTypeDef</span><span class="w"> </span><span class="o">*</span><span class="n">GPIO_InitStruct</span><span class="p">);</span>
 </pre></div>
 </div>
 </li>
-<li><p>Register and enable the GPIO interrupt.</p>
+<li><p>注册并启用GPIO中断</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">InterruptRegister</span><span class="p">(</span><span class="n">GPIO_INTHandler</span><span class="p">,</span><span class="n">GPIO_DEV_TABLE</span><span class="p">[</span><span class="n">port</span><span class="p">].</span><span class="n">IrqNum</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">u32</span><span class="p">)</span><span class="n">GPIO_DEV_TABLE</span><span class="p">[</span><span class="n">por</span><span class="w"> </span><span class="n">t</span><span class="p">].</span><span class="n">GPIOx</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">);</span>
 <span class="n">InterruptEn</span><span class="p">(</span><span class="n">GPIO_DEV_TABLE</span><span class="p">[</span><span class="n">port</span><span class="p">].</span><span class="n">IrqNum</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">);</span>
 </pre></div>
 </div>
 </li>
-<li><p>(Optional) Configure the GPIO interrupt mode.</p>
+<li><p>（可选）配置GPIO中断模式</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">GPIO_INTMode</span><span class="p">(</span><span class="n">u32</span><span class="w"> </span><span class="n">GPIO_Pin</span><span class="p">,</span><span class="w"> </span><span class="n">u32</span><span class="w"> </span><span class="n">NewState</span><span class="p">,</span><span class="w"> </span><span class="n">u32</span><span class="w"> </span><span class="n">GPIO_ITTrigger</span><span class="p">,</span><span class="w"> </span><span class="n">u32</span><span class="w"> </span><span class="n">GPIO_ITPolarity</span><span class="p">,</span><span class="w"> </span><span class="n">u32</span><span class="w"> </span><span class="n">GPIO_ITDebounce</span><span class="p">);</span>
 </pre></div>
 </div>
 </li>
-<li><p>Register user handle.</p>
+<li><p>注册用户处理函数</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">GPIO_UserRegIrq</span><span class="p">(</span><span class="n">GPIO_Pin</span><span class="p">,</span><span class="w"> </span><span class="n">gpio_test_irq_handler</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="o">&amp;</span><span class="n">GPIO_InitStruct_Temp</span><span class="p">));</span>
 </pre></div>
 </div>
 </li>
-<li><p>Enable the specified GPIO pin interrupt.</p>
+<li><p>启用指定的GPIO引脚中断</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">GPIO_INTConfig</span><span class="p">(</span><span class="n">GPIO_Pin</span><span class="p">,</span><span class="w"> </span><span class="n">ENABLE</span><span class="p">);</span>
 </pre></div>
 </div>
@@ -255,8 +1081,8 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
-        <a href="0_gpio_index_cn.html" class="btn btn-neutral float-left" title="GPIO 和 Pin脚控制" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
-        <a href="1_pinctrl_toprst_cn.html" class="btn btn-neutral float-right" title="Pin Controller (Pinctrl)" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="0_gpio_index_cn.html" class="btn btn-neutral float-left" title="GPIO &amp; 引脚控制" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="1_pinctrl_toprst_cn.html" class="btn btn-neutral float-right" title="引脚控制" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
@@ -272,6 +1098,14 @@
 
 </footer>
         </div>
+    <!-- 问题反馈按钮和对话框 -->
+    
+    <div id="feedback-dialog" class="feedback-dialog" style="display: none;">
+        <p>Please describe your issue:</p>
+        <textarea id="feedback-text" placeholder="Feature enhancement in progress, please stay tuned..."></textarea>
+        <button id="submit-feedback">Submit</button>
+        <button id="cancel-feedback">Cancel</button>
+    </div>
 
       </div>
     </section>
@@ -281,8 +1115,8 @@
           SphinxRtdTheme.Navigation.enable(true);
       });
   </script>
- 
-
+     
+    
 
 
 </body>
