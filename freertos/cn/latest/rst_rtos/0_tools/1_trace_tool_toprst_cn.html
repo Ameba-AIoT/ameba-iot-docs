@@ -10,9 +10,9 @@
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
-      <link rel="stylesheet" type="text/css" href="../../_static/custom_cn.css?v=0d22fac7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=c12c2b39" />
       <link rel="stylesheet" type="text/css" href="../../_static/tabs.css?v=a5c4661c" />
-      <link rel="stylesheet" type="text/css" href="../../_static/_static/custom_cn.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=c12c2b39" />
 
   
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
@@ -26,6 +26,8 @@
         <script src="../../_static/doctools.js?v=9a2dae69"></script>
         <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="../../_static/tabs.js?v=3030b3cb"></script>
         <script>let toggleHintShow = 'Click to show';</script>
         <script>let toggleHintHide = 'Click to hide';</script>
         <script>let toggleOpenOnPrint = 'true';</script>
@@ -36,15 +38,903 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="索引" href="../../genindex.html" />
     <link rel="search" title="搜索" href="../../search.html" />
-    <link rel="next" title="Layout Tool" href="1_layout_tool_toprst_cn.html" />
+    <link rel="next" title="Captouch Test Tool" href="1_cap_test_tool_toprst_cn.html" />
     <link rel="prev" title="Image Tool" href="1_image_tool_toprst_cn.html" />
-   
-  
-  <script type="text/javascript" src="../../_static/js/selector.js"></script>
+     
 
-  <style>
-    .wy-nav-content {max-width: 1000px;} /* 设置最大宽度 */
-  </style>
+    <!-- NDA文档输入密码的框 -->
+    
+<script>
+// ▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼ 多语言配置 ▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼
+const lang = 'zh';  // 使用 Python 字符串切片
+const i18n = {
+    zh: {
+        title: '访问授权',
+        username: '用户名',
+        password: '密码',
+        confirm: '确认',
+        cancel: '取消',
+        usernameError: '用户名错误',
+        userNotExist: '该用户不存在',
+        passwordError: '密码错误',
+        wrongPassword: '请输入正确的密码',
+        accessDenied: '无访问权限',
+        noPermission: '您无权查看此内容',
+        expiredTitle: '访问已过期',
+        expiredMsg: '您的权限已失效<br>有效期：%s 至 %s',
+        deniedTitle: '⚠️ 无访问权限',
+        contact: '请联系 claire_wang@realsil.com.cn 获取权限'
+    },
+    en: {
+        title: 'Access Required',
+        username: 'Username',
+        password: 'Password',
+        confirm: 'Confirm',
+        cancel: 'Cancel',
+        usernameError: 'Invalid Username',
+        userNotExist: 'User does not exist',
+        passwordError: 'Wrong Password',
+        wrongPassword: 'Please enter correct password',
+        accessDenied: 'Access Denied',
+        noPermission: 'You have no permission to view this content',
+        expiredTitle: 'Authorization Expired',
+        expiredMsg: 'Your access has expired<br>Valid period: %s to %s',
+        deniedTitle: '⚠️ Access Denied',
+        contact: 'Please contact claire_wang@realsil.com.cn for access'
+    }
+};
+// ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲ 多语言配置结束 ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
+</script>
+
+    <!-- 样式模板 -->
+    
+
+<style>
+    .wy-nav-content {
+        max-width: 1100px;
+         
+    }
+    
+    .auth-denied {
+        padding: 20px;
+        background: #f8f9fa;
+        border-radius: 4px;
+        border: 1px solid #dee2e6;
+        text-align: center;
+        color: #721c24;
+        margin-top: 20px;
+    }
+    .auth-denied h3 {
+        margin-bottom: 10px;
+        color: #dc3545;
+    }
+    
+    #report-button {
+        position: fixed;
+        top: 10px;
+        left: 1270px;
+        padding: 1px 15px; /* 调整内边距：1px 为上下，5px 为左右 */
+        height: 30px; /* 设置固定高度 */
+        background-color: #2ecc71;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        z-index: 1000;
+    }
+    #report-button:hover {
+        background-color: #2ecc71;
+    }
+    
+    .feedback-dialog {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        z-index: 1001;
+        width: 600px;
+    }
+    .feedback-dialog textarea {
+        width: 100%;
+        height: 150px;
+        margin-top: 10px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        resize: vertical;
+    }
+    .feedback-dialog button {
+        margin-top: 10px;
+        padding: 8px 16px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    .feedback-dialog button:hover {
+        background-color: #0056b3;
+    }
+
+    
+    
+</style>
+
+
+    <style>
+    /* ====================== 选择器样式 ====================== */
+    /* 选择器容器 */
+    .selector-container {
+        margin: 8px 0;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+    }
+    
+    /* 版本选择器特殊边距 */
+    .version-selector-container {
+        margin-bottom: 8px !important;
+    }
+    
+    /* 选择器标签 */
+    .selector-label {
+        color: white;
+        margin-right: 10px;
+        width: 80px;
+        text-align: right;
+        font-size: 0.9em;
+    }
+    
+    /* 下拉选择框 */
+    .selector-dropdown {
+        width: 120px;
+        border-radius: 2px;
+        padding: 4px 8px;
+        border: 1px solid #405261;
+        background: #2c3e50;
+        color: white;
+        font-size: 0.9em;
+    }
+    
+    /* 下拉选择框悬停效果 */
+    .selector-dropdown:hover {
+        border-color: #3498db;
+        transition: border-color 0.3s;
+    }
+    
+    /* 选择器响应式布局 */
+    @media (max-width: 768px) {
+        .selector-container {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        
+        .selector-label {
+            width: 100%;
+            text-align: left;
+            margin-bottom: 4px;
+        }
+        
+        .selector-dropdown {
+            width: 100%;
+        }
+    }
+</style>
+    <style>
+/* =============== 左上角登录区域  =============== */
+/* ================= 用户面板 ================= */
+.user-panel {
+    padding: 15px;
+    background: #34495e;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.username {
+    color: #fff;
+    font-weight: 500;
+    font-size: 1.1em;
+    text-align: center;
+    margin: 10px 0;
+}
+
+/* ================= 按钮容器 ================= */
+.button-row {
+    display: flex;
+    gap: 8px;
+    width: 100%;
+    margin: 10px 0;
+}
+
+/* 通用按钮样式 */
+.auth-btn, .forum-btn, .official-btn {
+    flex: 1;
+    padding: 8px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: opacity 0.3s;
+    text-align: center;
+    color: white !important;
+}
+
+/* 认证按钮 */
+.auth-btn {
+    background: #3498db;
+}
+
+/* 论坛按钮 */
+.forum-btn {
+    background: #9b59b6; /* 与参考代码的官方按钮同色 */
+}
+
+/* 官网按钮 */
+.official-btn {
+    background: #2ecc71; /* 与参考代码文档按钮同色 */
+}
+/* =============== 左上角登录区域  =============== */
+</style>
+
+    <!-- 注入 TOC 映射和当前页面信息 -->
+    
+
+<!-- TOC 映射和当前文档信息 -->
+<script>
+// 将 Python 字典转换为 JS 对象
+const TOC_TITLE_MAP = {"rst_rtos/0_ameba_product": "\u4ea7\u54c1\u4e2d\u5fc3", "rst_rtos/0_ameba_product/0_ameba_product_center_index_cn": "\u4ea7\u54c1\u4e2d\u5fc3", "rst_rtos/0_ameba_sdk": "Ameba SDK", "rst_rtos/0_ameba_sdk/0_ameba_sdks_index_cn": "Ameba SDK", "rst_rtos/0_ameba_solutions": "\u89e3\u51b3\u65b9\u6848", "rst_rtos/0_ameba_solutions/0_ameba_solutions_index_cn": "\u89e3\u51b3\u65b9\u6848", "rst_rtos/0_at_command": "0.8 AT \u547d\u4ee4\u96c6", "rst_rtos/0_at_command/0_at_command_index_cn": "0.8 AT \u547d\u4ee4\u96c6", "rst_rtos/0_file_system": "0.9 \u865a\u62df\u6587\u4ef6\u7cfb\u7edf", "rst_rtos/0_file_system/0_vfs_index_cn": "0.9 \u865a\u62df\u6587\u4ef6\u7cfb\u7edf", "rst_rtos/0_ftl": "0.a Flash \u8f6c\u6362\u5c42", "rst_rtos/0_ftl/0_ftl_index_cn": "0.a Flash \u8f6c\u6362\u5c42", "rst_rtos/0_gcc_build_environment": "0.1 GCC \u7f16\u8bd1\u73af\u5883", "rst_rtos/0_gcc_build_environment/0_gcc_build_index_cn": "0.1 GCC \u7f16\u8bd1\u73af\u5883", "rst_rtos/0_gcc_build_library": "0.3 GCC \u5e93\u7684\u751f\u6210\u548c\u4f7f\u7528", "rst_rtos/0_gcc_build_library/0_gcc_build_library_index_cn": "0.3 GCC \u5e93\u7684\u751f\u6210\u548c\u4f7f\u7528", "rst_rtos/0_gdb_debug": "0.2 GDB \u8c03\u8bd5", "rst_rtos/0_gdb_debug/0_gdb_debug_index_cn": "0.2 GDB \u8c03\u8bd5", "rst_rtos/0_memory_layout": "0.5 Flash \u548c RAM \u5e03\u5c40", "rst_rtos/0_memory_layout/0_layout_index_cn": "0.5 Flash \u548c RAM \u5e03\u5c40", "rst_rtos/0_sdk_example": "0.4 SDK \u793a\u4f8b", "rst_rtos/0_sdk_example/0_sdk_example_index_cn": "0.4 SDK \u793a\u4f8b", "rst_rtos/0_tools": "0.7 \u5de5\u5177", "rst_rtos/0_tools/0_tools_index_cn": "0.7 \u5de5\u5177", "rst_rtos/0_user_config": "0.6 \u5f00\u53d1\u8005\u914d\u7f6e", "rst_rtos/0_user_config/0_usrcfg_index_cn": "0.6 \u5f00\u53d1\u8005\u914d\u7f6e", "rst_rtos/1_boot_process": "1.1 \u542f\u52a8\u8fc7\u7a0b", "rst_rtos/1_boot_process/0_boot_index_cn": "1.1 \u542f\u52a8\u8fc7\u7a0b", "rst_rtos/1_chipen": "1.4 \u82af\u7247\u4f7f\u80fd", "rst_rtos/1_chipen/0_chipen_index_cn": "1.4 \u82af\u7247\u4f7f\u80fd", "rst_rtos/1_gpio": "1.7 GPIO \u548c\u5f15\u811a\u63a7\u5236", "rst_rtos/1_gpio/0_gpio_index_cn": "1.7 GPIO \u548c\u5f15\u811a\u63a7\u5236", "rst_rtos/1_ipc": "1.5 \u6838\u95f4\u901a\u4fe1", "rst_rtos/1_ipc/0_ipc_index_cn": "1.5 \u6838\u95f4\u901a\u4fe1", "rst_rtos/1_mpu_cache": "1.0 \u5185\u5b58\u4fdd\u62a4\u5355\u5143\u548c\u7f13\u5b58", "rst_rtos/1_mpu_cache/0_mpu_cache_index_cn": "1.0 \u5185\u5b58\u4fdd\u62a4\u5355\u5143\u548c\u7f13\u5b58", "rst_rtos/1_ota": "1.2 \u56fa\u4ef6\u5347\u7ea7\uff08OTA\uff09", "rst_rtos/1_ota/0_ota_index_cn": "1.2 \u56fa\u4ef6\u5347\u7ea7\uff08OTA\uff09", "rst_rtos/1_otpc": "1.3 OTP\u5b58\u50a8\u5668", "rst_rtos/1_otpc/0_otpc_index_cn": "1.3 OTP\u5b58\u50a8\u5668", "rst_rtos/1_pinmux": "1.6 \u5f15\u811a\u590d\u7528", "rst_rtos/1_pinmux/0_pinmux_index_cn": "1.6 \u5f15\u811a\u590d\u7528", "rst_rtos/1_power_save": "1.9 \u4f4e\u529f\u8017\u5f00\u53d1", "rst_rtos/1_power_save/0_ps_index_cn": "1.9 \u4f4e\u529f\u8017\u5f00\u53d1", "rst_rtos/2_whc_fullmac": "2.1 WHC FullMAC", "rst_rtos/2_whc_fullmac/0_fullmac_index_cn": "2.1 WHC FullMAC", "rst_rtos/2_whc_wifi_bridge": "2.0 WHC Bridge", "rst_rtos/2_whc_wifi_bridge/0_wifi_bridge_index_cn": "2.0 WHC Bridge", "rst_rtos/2_wifi_adaptivity_test": "2.4 Wi-Fi Adaptivity \u6d4b\u8bd5\u6307\u5357", "rst_rtos/2_wifi_adaptivity_test/0_wifi_adaptivity_index_cn": "2.4 Wi-Fi Adaptivity \u6d4b\u8bd5\u6307\u5357", "rst_rtos/2_wifi_csi": "2.3 Wi-Fi CSI", "rst_rtos/2_wifi_csi/0_wifi_csi_index_cn": "2.3 Wi-Fi CSI", "rst_rtos/2_wifi_tunnel": "2.2 Wi-Fi R-Mesh", "rst_rtos/2_wifi_tunnel/0_wifi_tunnel_index_cn": "2.2 Wi-Fi R-Mesh", "rst_rtos/3_ap_trustzone": "3.d AP \u5b89\u5168\u670d\u52a1", "rst_rtos/3_ap_trustzone/0_ap_tz_index_cn": "3.d AP \u5b89\u5168\u670d\u52a1", "rst_rtos/3_crypto_engine": "3.9 \u5bf9\u79f0\u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_crypto_engine/0_crypto_engine_index_cn": "3.9 \u5bf9\u79f0\u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_ecdsa_engine": "3.a ECDSA \u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_ecdsa_engine/0_ecdsa_index_cn": "3.a ECDSA \u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_eddsa_engine": "3.b EDDSA \u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_eddsa_engine/0_eddsa_index_cn": "3.b EDDSA \u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_nda_huk_derivation": "3.3 HUK \u751f\u6210 \ud83d\udd12", "rst_rtos/3_nda_huk_derivation/0_huk_derivation_index_nda": "3.3 HUK \u751f\u6210 \ud83d\udd12", "rst_rtos/3_nda_rdp": "3.4 RDP \ud83d\udd12", "rst_rtos/3_nda_rdp/0_rdp_index_nda": "3.4 RDP \ud83d\udd12", "rst_rtos/3_nda_rsip": "3.5 RSIP \ud83d\udd12", "rst_rtos/3_nda_rsip/0_rsip_index_nda": "3.5 RSIP \ud83d\udd12", "rst_rtos/3_nda_secure_boot": "3.6 \u5b89\u5168\u542f\u52a8 \ud83d\udd12", "rst_rtos/3_nda_secure_boot/0_secure_boot_index_nda": "3.6 \u5b89\u5168\u542f\u52a8 \ud83d\udd12", "rst_rtos/3_nda_swd_protection": "3.7 SWD \u4fdd\u62a4 \ud83d\udd12", "rst_rtos/3_nda_swd_protection/0_swd_protection_index_nda": "3.7 SWD \u4fdd\u62a4 \ud83d\udd12", "rst_rtos/3_nda_tfm": "3.8 Trusted Firmware-M (TF-M) \ud83d\udd12", "rst_rtos/3_nda_tfm/0_tfm_index_nda": "3.8 Trusted Firmware-M (TF-M) \ud83d\udd12", "rst_rtos/3_rsa_engine": "3.c RSA \u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_rsa_engine/0_rsa_index_cn": "3.c RSA \u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_security": "3.1 \u5b89\u5168\u4e0e\u52a0\u5bc6", "rst_rtos/3_security/0_security_index_cn": "3.1 \u5b89\u5168\u4e0e\u52a0\u5bc6", "rst_rtos/3_trng": "3.2 \u771f\u968f\u673a\u6570\u53d1\u751f\u5668", "rst_rtos/3_trng/0_trng_index_cn": "3.2 \u771f\u968f\u673a\u6570\u53d1\u751f\u5668", "rst_rtos/4_ai": "4.1 \u4eba\u5de5\u667a\u80fd", "rst_rtos/4_ai/0_ai_index_cn": "4.1 \u4eba\u5de5\u667a\u80fd", "rst_rtos/4_ai_voice": "4.2 \u8bed\u97f3\u8bc6\u522b", "rst_rtos/4_ai_voice/0_ai_voice_index_cn": "4.2 \u8bed\u97f3\u8bc6\u522b", "rst_rtos/4_dsp": "4.4 DSP \u4f7f\u7528\u6307\u5357", "rst_rtos/4_dsp/0_dsp_index_cn": "4.4 DSP \u4f7f\u7528\u6307\u5357", "rst_rtos/4_multimedia": "4.3 \u591a\u5a92\u4f53", "rst_rtos/4_multimedia/0_multimedia_index_cn": "4.3 \u591a\u5a92\u4f53", "rst_rtos/6_mass_production": "6.1 \u6279\u91cf\u751f\u4ea7", "rst_rtos/6_mass_production/0_mp_index_cn": "6.1 \u6279\u91cf\u751f\u4ea7", "rst_rtos/6_mptools": "6.2 \u4ea7\u6d4b\u5de5\u5177", "rst_rtos/6_mptools/0_mptools_index_cn": "6.2 \u4ea7\u6d4b\u5de5\u5177", "rst_rtos/7_usb": "7.1 USB \u4e3b\u673a\u4e0e\u4ece\u673a", "rst_rtos/7_usb/0_usb_index_cn": "7.1 USB \u4e3b\u673a\u4e0e\u4ece\u673a", "rst_rtos/8_adc": "8.4 \u6a21\u6570\u8f6c\u6362\u5668", "rst_rtos/8_adc/0_adc_index_cn": "8.4 \u6a21\u6570\u8f6c\u6362\u5668", "rst_rtos/8_cap_touch": "8.7 Cap-Touch", "rst_rtos/8_cap_touch/0_cap_touch_index_cn": "8.7 Cap-Touch", "rst_rtos/8_dmac": "8.1 DMA \u63a7\u5236\u5668", "rst_rtos/8_dmac/0_dmac_index_cn": "8.1 DMA \u63a7\u5236\u5668", "rst_rtos/8_ir": "8.5 \u7ea2\u5916\u6536\u53d1\u5668", "rst_rtos/8_ir/0_ir_index_cn": "8.5 \u7ea2\u5916\u6536\u53d1\u5668", "rst_rtos/8_key_scan": "8.8 Key-Scan", "rst_rtos/8_key_scan/0_key_scan_index_cn": "8.8 Key-Scan", "rst_rtos/8_lcdc": "8.a LCD \u63a7\u5236\u5668", "rst_rtos/8_lcdc/0_lcdc_index_cn": "8.a LCD \u63a7\u5236\u5668", "rst_rtos/8_ledc": "8.6 LED \u63a7\u5236\u5668", "rst_rtos/8_ledc/0_ledc_index_cn": "8.6 LED \u63a7\u5236\u5668", "rst_rtos/8_psram": "8.2 PSRAM", "rst_rtos/8_psram/0_psram_index_cn": "8.2 PSRAM", "rst_rtos/8_rtc_io": "8.9 RTC-IO", "rst_rtos/8_rtc_io/0_rtc_io_index_cn": "8.9 RTC-IO", "rst_rtos/8_thermal": "8.3 \u6e29\u5ea6\u6d4b\u91cf", "rst_rtos/8_thermal/0_thermal_index_cn": "8.3 \u6e29\u5ea6\u6d4b\u91cf"};
+console.log("TOC_TITLE_MAP:", TOC_TITLE_MAP);
+
+// 获取当前页面的文档名 (例如 'rst_rtos/3_nda_secure_boot/0_secure_boot_index_nda')
+const CURRENT_DOCNAME = 'rst_rtos/0_tools/1_trace_tool_toprst_cn';
+
+// 动态查找顶级分类函数（定义为全局函数）
+window.findTopLevelChapter = function(docname) {
+    console.log("Attempting to find top-level chapter for:", docname);
+    let bestMatch = "";
+    let bestTitle = "Unknown Chapter";
+
+    // 按路径长度降序排序以确保最长匹配
+    const sortedPaths = Object.keys(TOC_TITLE_MAP).sort((a, b) => b.length - a.length);
+
+    for (const path of sortedPaths) {
+        console.log("Checking path:", path);
+        if (docname === path || docname.startsWith(path + '/')) { // 子页面
+            bestMatch = path;
+            bestTitle = TOC_TITLE_MAP[path];
+            console.log("Matched path:", path, "with title:", bestTitle);
+            break;
+        }
+    }
+
+    // 如果没有找到任何匹配项，则尝试更短的路径
+    if (bestMatch === "") {
+        const pathSegments = docname.split('/');
+        while (pathSegments.length > 1) { // 至少保留根路径
+            const candidate = pathSegments.join('/');
+            console.log("Checking shorter path:", candidate);
+            if (TOC_TITLE_MAP[candidate]) {
+                bestTitle = TOC_TITLE_MAP[candidate];
+                console.log("Matched shorter path:", candidate, "with title:", bestTitle);
+                break;
+            }
+            pathSegments.pop();
+        }
+    }
+
+    console.log("Final top-level chapter:", bestTitle);
+    return bestTitle;
+}
+
+// 初始化时调用
+document.addEventListener('DOMContentLoaded', function() {
+    const topLevelChapter = findTopLevelChapter(CURRENT_DOCNAME);
+    console.log("Top Level Chapter:", topLevelChapter);
+
+    // 将顶级分类插入到DOM中（根据需要）
+    const chapterElement = document.createElement('div');
+    chapterElement.className = 'top-level-chapter';
+    chapterElement.innerHTML = `<strong>Top Level Chapter: </strong>${topLevelChapter}`;
+    document.body.appendChild(chapterElement);
+});
+</script>
+
+    <!-- 问题回报 -->
+    <!-- source/_templates/_layout_issue_report.html -->
+<div id="prompt-box" style="
+    display: none;
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.8);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    z-index: 9999;
+    text-align: center;
+    font-size: 14px;
+"></div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    'use strict'; // 添加严格模式
+
+    // 获取所有DOM元素引用
+    const reportButton = document.getElementById('report-button');
+    const feedbackDialog = document.getElementById('feedback-dialog');
+    const feedbackText = document.getElementById('inquire_input');
+    const submitButton = document.getElementById('submit-feedback');
+    const cancelButton = document.getElementById('cancel-feedback');
+    const promptBox = document.getElementById('prompt-box');
+    const chapterSelect = document.getElementById('chapter-select');
+    const paragraphInput = document.getElementById('paragraph-input');
+    const postTypeSelect = document.getElementById('post-type');
+    console.log('帖子类型(postTypeSelect)DOM元素:', postTypeSelect); // 应输出<select>元素
+
+    // 状态变量
+    let hasUserInput = false; // 跟踪用户是否主动输入
+    let selectedText = '';
+    const language = 'zh-CN'; // 从模板引擎获取语言变量
+
+    // 初始化时设置placeholder
+    paragraphInput.placeholder = language === 'zh_CN' 
+        ? '你可以先选择有问题的段落或手动输入...'
+        : 'You can select text or type directly here...';
+
+    // 获取当前激活的章节
+    function getCurrentChapter() {
+        try {
+            // 通过激活的菜单项获取当前章节
+            const currentLink = document.querySelector('.wy-menu .toctree-l1.current > a');
+            if (currentLink) {
+                return currentLink.textContent.replace('¶', '').trim();
+            }
+
+            // 如果没有找到激活的链接，尝试通过页面标题获取
+            const pageTitle = document.querySelector('h1');
+            if (pageTitle) {
+                return pageTitle.textContent.split('\n')[0].trim();
+            }
+
+            // 如果以上方法都失败，尝试通过URL路径推断章节
+            const pathParts = window.location.pathname.split('/');
+            if (pathParts.length > 2) {
+                return decodeURIComponent(pathParts[pathParts.length - 2]);
+            }
+
+            return null;
+        } catch (error) {
+            console.error('获取当前章节失败:', error);
+            return null;
+        }
+    }
+
+    // 填充章节选择框
+    function populateChapters() {
+        const chapterElements = document.querySelectorAll('.wy-menu .toctree-l1 > a');
+        const chapters = Array.from(chapterElements).map(el => el.textContent.replace('¶', '').trim());
+        const currentChapter = getCurrentChapter();
+
+        console.log('提取全部章节:', chapters);
+        console.log('当前页面章节:', currentChapter);
+
+        if (chapters.length === 0) {
+            console.error('未找到章节链接');
+            return;
+        }
+
+        chapterSelect.innerHTML = '';
+
+        // 添加默认选项
+        const defaultOption = document.createElement('option');
+        defaultOption.value = '';
+        defaultOption.textContent = language === 'zh_CN' ? '-- 请选择章节 --' : '-- Select Chapter --';
+        chapterSelect.appendChild(defaultOption);
+
+        // 添加章节选项
+        chapters.forEach(chapter => {
+            const option = document.createElement('option');
+            option.value = chapter;
+            option.textContent = chapter;
+            if (chapter === currentChapter) {
+                option.selected = true;
+            }
+            chapterSelect.appendChild(option);
+        });
+    }
+
+    // 初始化章节选择框
+    populateChapters();
+
+    // 报告按钮点击事件（处理文本选择）
+    reportButton.addEventListener('click', function() {
+        // 重置所有输入字段，每次重新inquire应该让对话框处于默认状态
+        feedbackText.value = '';          // 清空问题输入框
+        paragraphInput.value = '';        // 清空段落输入框
+        selectedText = '';                // 清除之前选择的文本
+
+        const selection = window.getSelection().toString().trim();
+        if (selection) {
+            paragraphInput.value = selection;
+        } else {
+            // 保持placeholder提示
+            if (!paragraphInput.value.trim()) {
+                paragraphInput.value = '';
+            }
+        }
+        feedbackDialog.style.display = 'block';
+    });
+
+    // 监听输入事件
+    paragraphInput.addEventListener('input', function() {
+        // 标记用户已经输入
+        this.placeholder = '';
+    });
+
+    // 提交按钮点击事件
+    submitButton.addEventListener('click', function() {
+        const userQuestion = feedbackText.value.trim();
+        const selectedChapter = chapterSelect.value;
+        const selectedPostType = postTypeSelect.value;
+        const paragraphContent = paragraphInput.value.trim() || 'null';
+
+        // 在提交事件顶部添加详细日志
+        console.group('=== 提交调试信息 ===');
+        console.log('章节选择值:', chapterSelect.value);
+        console.log('帖子类型postTypeSelect DOM元素:', postTypeSelect);
+        console.log('帖子类型postTypeSelect 选中的选项:', postTypeSelect.options[postTypeSelect.selectedIndex]);
+        console.log('帖子类型postTypeSelect 实际值:', postTypeSelect.value); // 应输出'doc_correction' 对应文档纠错
+          console.groupEnd();
+
+        // 验证输入
+        if (!userQuestion) {
+            alert(language === 'zh_CN' ? '问题描述为空' : 'Issue description cannot be empty');
+            return;
+        }
+        if (!selectedChapter) {
+            alert(language === 'zh_CN' ? '请选择相关章节' : 'Please select a related chapter');
+            return;
+        }
+
+        if (!selectedPostType) {
+            alert(language === 'zh_CN' ? '请选择帖子类型' : 'Please select a post type');
+            return;
+        }
+
+        // 获取用户名
+        const username = localStorage.getItem('username') || 'Anonymous';
+
+        // 构建提交数据
+        const feedbackData = {
+            user: username,
+            chapters: selectedChapter,
+            post_type: selectedPostType,
+            paragraph: paragraphContent,
+            question: userQuestion
+        };
+
+        console.log('完整提交数据:', feedbackData);
+
+        // 发送到后端
+        fetch('http://172.29.57.206:5000/submit', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(feedbackData)
+        })
+        .then(response => {
+            if (!response.ok) throw new Error('Network response was not ok');
+            return response.json();
+        })
+        .then(data => {
+            console.log('提交成功:', data);
+            promptBox.textContent = language === 'zh_CN' ? '问题已成功提交' : 'Issue submitted successfully';
+            promptBox.style.display = 'block';
+            setTimeout(() => promptBox.style.display = 'none', 5000);
+        })
+        .catch(error => {
+            console.error('提交失败:', error);
+            promptBox.textContent = language === 'zh_CN' ? '提交失败，请检查网络连接' : 'Submission failed, check your network';
+            promptBox.style.display = 'block';
+            setTimeout(() => promptBox.style.display = 'none', 5000);
+        });
+
+        // 关闭对话框
+        feedbackDialog.style.display = 'none';
+    });
+
+
+    // 取消按钮点击事件
+    cancelButton.addEventListener('click', function() {
+        feedbackDialog.style.display = 'none';
+    });
+
+    // 初始化检查
+    console.log('问题反馈系统已加载');
+    console.log('当前语言:', language);
+    console.log('检测到章节数量:', chapterSelect.options.length - 1);
+});
+</script>
+
+    <style>
+        /* 隐藏整个搜索栏容器 */
+        .wy-side-nav-search > div[role="search"] {
+            display: none !important;
+        }
+
+        /* 或者更精确地隐藏表单 */
+        form#rtd-search-form {
+            display: none !important;
+        }
+    </style>
+
+    <!-- 引入功能模块 -->
+    
+<script>
+    /* ====================== 嵌入式配置开始 ====================== */
+    const embeddedConfig = {
+        "freertos": {
+            "name": "FreeRTOS",
+            "languages": {
+                "en": ["latest"],
+                "cn": ["latest"]
+            }
+        },
+        "linux": {
+            "name": "Linux",
+            "languages": {
+                "en": ["latest"],
+                "cn": ["latest"]
+            }
+        }
+    };
+    /* ====================== 嵌入式配置结束 ====================== */
+</script>
+    
+<script>
+    // 获取基础URL路径
+    function getBaseURL() {
+        const url = new URL(window.location.href);
+        if (url.protocol === 'file:') {
+            // 本地路径处理
+            const pathParts = url.pathname.split('/').filter(part => part !== '');
+            const index = pathParts.indexOf('build');
+            return `file://${pathParts.slice(0, index + 1).join('/')}/`;
+        } else {
+            // 网络路径处理
+            return `${url.origin}/${url.pathname.split('/').slice(1, 3).join('/')}/`;
+        }
+    }
+
+    // 获取当前URL路径分段
+    function getCurrentSegments() {
+        const url = new URL(window.location.href);
+        let segments = url.pathname.split('/').filter(segment => segment);
+
+        if (url.protocol === 'file:') {
+            // 本地路径处理
+            const index = segments.indexOf('build');
+            segments = segments.slice(index + 1); // 去掉 build 及之前的路径
+        } else {
+            // 网络路径处理
+            segments = segments.slice(3); // 去掉 ameba-iot-docs/
+        }
+
+        return {
+            osKey: segments[0] || 'freertos', // 默认为 freertos
+            language: segments[1] || 'en',   // 默认为 en
+            version: segments[2] || 'latest' // 默认为 latest
+        };
+    }
+</script>
+    
+<script>
+    // 获取OS显示名称列表
+    function getOSNames(data) {
+        return Object.keys(data).map(key => data[key].name);
+    }
+
+    // 获取指定OS的语言列表
+    function getLanguages(data, osKey) {
+        return Object.keys(data[osKey]?.languages || {});
+    }
+
+    // 获取指定OS和语言的版本列表
+    function getVersions(data, osKey, language) {
+        return data[osKey]?.languages?.[language] || ['latest'];
+    }
+
+    // 根据显示名称查找OS键
+    function findOSKey(data, displayName) {
+        return Object.keys(data).find(key => data[key].name === displayName);
+    }
+</script>
+    
+<script>
+    // 验证并修正路径参数
+    function validateSegments(segments) {
+        const currentOSName = embeddedConfig[segments.osKey]?.name;
+
+        // 如果 OS 无效，默认设置为 FreeRTOS
+        if (!currentOSName) {
+            console.warn("Invalid OS key, defaulting to FreeRTOS");
+            segments.osKey = 'freertos';
+        }
+
+        // 如果语言无效，默认设置为 en
+        if (!getLanguages(embeddedConfig, segments.osKey).includes(segments.language)) {
+            console.warn("Invalid language, defaulting to en");
+            segments.language = 'en';
+        }
+
+        return segments;
+    }
+
+    // 生成选择器HTML
+    function generateSelectorsHTML(segments) {
+        return `
+            <div id="custom-selectors" style="padding: 0; background: none; border: none;">
+                <!-- 系统选择器 -->
+                <div class="selector-container">
+                    <label class="selector-label">
+                        ${segments.language === 'cn' ? '系统' : 'OS'}:
+                    </label>
+                    <select id="os-selector" class="selector-dropdown">
+                        ${Object.keys(embeddedConfig).map(key => `
+                            <option value="${key}">${embeddedConfig[key].name}</option>
+                        `).join('')}
+                    </select>
+                </div>
+
+                <!-- 语言选择器 -->
+                <div class="selector-container">
+                    <label class="selector-label">
+                        ${segments.language === 'cn' ? '语言' : 'Language'}:
+                    </label>
+                    <select id="language-selector" class="selector-dropdown">
+                        ${getLanguages(embeddedConfig, segments.osKey).map(lang => `
+                            <option value="${lang}">${lang}</option>
+                        `).join('')}
+                    </select>
+                </div>
+
+                <!-- 版本选择器 -->
+                <div class="selector-container version-selector-container">
+                    <label class="selector-label">
+                        ${segments.language === 'cn' ? '版本' : 'Version'}:
+                    </label>
+                    <select id="version-selector" class="selector-dropdown">
+                        ${getVersions(embeddedConfig, segments.osKey, segments.language).map(ver => `
+                            <option value="${ver}">${ver}</option>
+                        `).join('')}
+                    </select>
+                </div>
+
+                ${generateUserPanelHTML(segments)}
+            </div>`;
+    }
+
+    // 生成用户面板HTML
+    function generateUserPanelHTML(segments) {
+        return `
+            <div class="user-panel">
+                <!-- 用户名显示（登录后可见） -->
+                <div id="user-info" style="display: ${localStorage.getItem('isLoggedIn') ? 'block' : 'none'}">
+                    <span id="username-display" class="username">${localStorage.getItem('username') || ''}</span>
+                </div>
+
+                <!-- 登录注册按钮（未登录时可见） -->
+                <div id="auth-buttons" class="button-row" style="display: ${localStorage.getItem('isLoggedIn') ? 'none' : 'flex'}">
+                    <button class="auth-btn" id="register-button">${segments.language === 'cn' ? '注册' : 'Register'}</button>
+                    <button class="auth-btn" id="login-button">${segments.language === 'cn' ? '登录' : 'Login'}</button>
+                </div>
+
+                <!-- 外链按钮（始终可见） -->
+                <div class="button-row">
+                    <button class="official-btn" onclick="window.open('https://www.realmcu.com/', '_blank')">
+                        ${segments.language === 'cn' ? '官网' : 'Official'}
+                    </button>
+                    <button class="forum-btn" onclick="window.open('http://172.29.57.206:5000/view', '_blank')">
+                        ${segments.language === 'cn' ? '论坛' : 'Forum'}
+                    </button>
+                </div>
+            </div>
+        `;
+    }
+
+    // 设置初始选中值
+    function setInitialValues(segments) {
+        document.getElementById('os-selector').value = segments.osKey;
+        document.getElementById('language-selector').value = segments.language;
+
+        const versionSelector = document.getElementById('version-selector');
+        const availableVersions = getVersions(embeddedConfig, segments.osKey, segments.language);
+        versionSelector.value = availableVersions.includes(segments.version) ? segments.version : availableVersions[0] || 'latest';
+    }
+</script>
+    
+<script>
+    // 绑定事件监听
+    function bindEvents(baseURL, segments) {
+        document.getElementById('os-selector').addEventListener('change', () => {
+            const newOSKey = document.getElementById('os-selector').value;
+            const availableLangs = getLanguages(embeddedConfig, newOSKey);
+            const defaultLang = availableLangs[0] || 'en';
+            const defaultVersion = getVersions(embeddedConfig, newOSKey, defaultLang)[0] || 'latest';
+            redirectTo(`${baseURL}${newOSKey}/${defaultLang}/${defaultVersion}/`);
+        });
+
+        document.getElementById('language-selector').addEventListener('change', () => {
+            const newLang = document.getElementById('language-selector').value;
+            const defaultVersion = getVersions(embeddedConfig, segments.osKey, newLang)[0] || 'latest';
+            redirectTo(`${baseURL}${segments.osKey}/${newLang}/${defaultVersion}/`);
+        });
+
+        document.getElementById('version-selector').addEventListener('change', () => {
+            const newVer = document.getElementById('version-selector').value;
+            redirectTo(`${baseURL}${segments.osKey}/${segments.language}/${newVer}/`);
+        });
+    }
+
+    // 跳转函数
+    function redirectTo(path) {
+        const url = new URL(path, window.location.href);
+        if (url.protocol === 'file:') {
+            url.pathname += 'index.html';
+        }
+        window.location.href = url.href;
+    }
+</script>
+    
+<script>
+    // 初始化认证对话框
+    function initAuthDialogs() {
+        function createAuthDialog(type) {
+            const lang = document.getElementById('language-selector').value === 'cn' ? 'cn' : 'en';
+
+            const dialog = document.createElement('div');
+            dialog.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.5);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 9999;
+            `;
+
+            // 弹窗内容
+            const content = document.createElement('div');
+            content.style.cssText = `
+                background: white;
+                padding: 20px;
+                border-radius: 8px;
+                min-width: 300px;
+            `;
+
+            // 标题
+            const title = document.createElement('h3');
+            title.textContent = type === 'register' 
+                ? (lang === 'cn' ? '注册' : 'Register') 
+                : (lang === 'cn' ? '登录' : 'Login');
+            content.appendChild(title);
+
+            // 用户名输入
+            const usernameLabel = document.createElement('label');
+            usernameLabel.textContent = lang === 'cn' ? '用户名：' : 'Username:';
+            const usernameInput = document.createElement('input');
+            usernameInput.style.cssText = 'width: 100%; margin-bottom: 10px; padding: 5px;';
+            content.appendChild(usernameLabel);
+            content.appendChild(usernameInput);
+
+            // 密码输入
+            const passwordLabel = document.createElement('label');
+            passwordLabel.textContent = lang === 'cn' ? '密码：' : 'Password:';
+            const passwordInput = document.createElement('input');
+            passwordInput.type = 'password';
+            passwordInput.style.cssText = 'width: 100%; margin-bottom: 10px; padding: 5px;';
+            content.appendChild(passwordLabel);
+            content.appendChild(passwordInput);
+
+            // 注册时需要确认密码
+            let confirmPasswordInput;
+            if (type === 'register') {
+                const confirmLabel = document.createElement('label');
+                confirmLabel.textContent = lang === 'cn' ? '确认密码：' : 'Confirm Password:';
+                confirmPasswordInput = document.createElement('input');
+                confirmPasswordInput.type = 'password';
+                confirmPasswordInput.style.cssText = 'width: 100%; margin-bottom: 10px; padding: 5px;';
+                content.appendChild(confirmLabel);
+                content.appendChild(confirmPasswordInput);
+            }
+
+            // 按钮容器
+            const buttonContainer = document.createElement('div');
+            buttonContainer.style.cssText = 'display: flex; gap: 10px; margin-top: 10px;';
+
+            // 确认按钮
+            const confirmBtn = document.createElement('button');
+            confirmBtn.textContent = lang === 'cn' ? '确认' : 'Confirm';
+            confirmBtn.onclick = () => {
+                const username = usernameInput.value.trim();
+                const password = passwordInput.value.trim();
+                const confirmPassword = confirmPasswordInput ? confirmPasswordInput.value.trim() : null;
+
+                // 验证输入
+                if (!username || !password) {
+                    alert(lang === 'cn' ? '用户名和密码不能为空！' : 'Username and password are required!');
+                    return;
+                }
+
+                if (type === 'register' && password !== confirmPassword) {
+                    alert(lang === 'cn' ? '两次输入的密码不一致！' : 'Passwords do not match!');
+                    return;
+                }
+
+                // flask 发送请求
+                fetch('http://172.29.57.206:5000/auth', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        action: type,
+                        username,
+                        password
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert(lang === 'cn' ? '操作成功！' : 'Success!');
+                        // 更新本地存储和UI
+                        localStorage.setItem('isLoggedIn', 'true');
+                        localStorage.setItem('username', username);
+                        // 强制刷新显示状态
+                        document.getElementById('auth-buttons').style.display = 'none';
+                        document.getElementById('user-info').style.display = 'block';
+                        document.getElementById('username-display').textContent = username;
+                        document.body.removeChild(dialog);
+                    } else {
+                        alert(lang === 'cn' ? '失败：' + data.message : 'Failed: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert(lang === 'cn' ? '网络错误' : 'Network error');
+                });
+            };
+
+            // 取消按钮
+            const cancelBtn = document.createElement('button');
+            cancelBtn.textContent = lang === 'cn' ? '取消' : 'Cancel';
+            cancelBtn.onclick = () => document.body.removeChild(dialog);
+
+            buttonContainer.appendChild(confirmBtn);
+            buttonContainer.appendChild(cancelBtn);
+            content.appendChild(buttonContainer);
+            dialog.appendChild(content);
+            document.body.appendChild(dialog);
+        }
+
+        document.getElementById('register-button').addEventListener('click', () => createAuthDialog('register'));
+        document.getElementById('login-button').addEventListener('click', () => createAuthDialog('login'));
+    }
+
+    // 同步登录状态
+    function syncLoginState() {
+        const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+        document.getElementById('auth-buttons').style.display = isLoggedIn ? 'none' : 'flex';
+        document.getElementById('user-info').style.display = isLoggedIn ? 'block' : 'none';
+        if (isLoggedIn) {
+            document.getElementById('username-display').textContent = localStorage.getItem('username') || '';
+        }
+    }
+</script>
 
 </head>
 
@@ -53,6 +943,7 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
+    
 
           
           
@@ -66,13 +957,42 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
+
+    
+    <div id="custom-selectors" style="display: block !important; padding: 0; background: none; border: none;">
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        try {
+            const segments = validateSegments(getCurrentSegments());
+            const baseURL = getBaseURL();
+
+            // 渲染HTML
+            document.getElementById('custom-selectors').innerHTML = generateSelectorsHTML(segments);
+
+            // 设置初始值
+            setInitialValues(segments);
+
+            // 绑定事件
+            bindEvents(baseURL, segments);
+
+            // 初始化认证逻辑
+            initAuthDialogs();
+            syncLoginState();
+        } catch (error) {
+            console.error("Error initializing selectors:", error);
+        }
+    });
+</script>
+
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../0_ameba_product/0_ameba_product_center_index_cn.html">产品中心</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../0_ameba_sdk/0_ameba_sdks_index_cn.html">Ameba SDK</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../0_ameba_solutions/0_ameba_solutions_index_cn.html">解决方案</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../0_gcc_build_environment/0_gcc_build_index_cn.html">0.1 GCC 编译环境</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../0_gdb_debug/0_gdb_debug_index_cn.html">0.2 GDB调试</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_gdb_debug/0_gdb_debug_index_cn.html">0.2 GDB 调试</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../0_gcc_build_library/0_gcc_build_library_index_cn.html">0.3 GCC 库的生成和使用</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../0_sdk_example/0_sdk_example_index_cn.html">0.4 SDK 示例</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../0_memory_layout/0_layout_index_cn.html">0.5 Flash 和 RAM 布局</a></li>
@@ -80,74 +1000,73 @@
 <li class="toctree-l1 current"><a class="reference internal" href="0_tools_index_cn.html">0.7 工具</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="1_image_tool_toprst_cn.html">Image Tool</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Trace Tool</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#introduction">Introduction</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#environment-setup">Environment Setup</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#hardware-connection">Hardware Connection</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#software-setup">Software Setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">概述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#trace-tool-environment-setup">环境设置</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id4">硬件设置</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id5">软件设置</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#usage">Usage</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#log-print">Log Print</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#command-send">Command Send</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#command-prefix">Command Prefix</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#debug">Debug</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#auto-script">AUTO Script</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id6">使用方法</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id7">日志打印</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id8">命令发送</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#command-prefix">命令前缀</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id10">调试</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id13">自动化脚本</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#agg">AGG 功能</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="1_layout_tool_toprst_cn.html">Layout Tool</a></li>
-<li class="toctree-l2"><a class="reference internal" href="1_pinmux_tool_toprst_cn.html">Pinmux Tool</a></li>
 <li class="toctree-l2"><a class="reference internal" href="1_cap_test_tool_toprst_cn.html">Captouch Test Tool</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../0_at_command/0_at_command_index_cn.html">0.8 AT 命令</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_at_command/0_at_command_index_cn.html">0.8 AT 命令集</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../0_file_system/0_vfs_index_cn.html">0.9 虚拟文件系统</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../0_ftl/0_ftl_index_cn.html">0.A Flash 转换层</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_ftl/0_ftl_index_cn.html">0.a Flash 转换层</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../1_mpu_cache/0_mpu_cache_index_cn.html">1.0 内存保护单元和缓存</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../1_boot_process/0_boot_index_cn.html">1.1 启动过程</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../1_ota/0_ota_index_cn.html">1.2 固件在线升级(OTA)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../1_otpc/0_otpc_index.html">1.3 OTP存储器</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../1_chipen/0_chipen_index_cn.html">1.4 CHIP_EN</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_ota/0_ota_index_cn.html">1.2 固件升级（OTA）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_otpc/0_otpc_index_cn.html">1.3 OTP存储器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_chipen/0_chipen_index_cn.html">1.4 芯片使能</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../1_ipc/0_ipc_index_cn.html">1.5 核间通信</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../1_pinmux/0_pinmux_index_cn.html">1.6 PINMUX</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../1_gpio/0_gpio_index_cn.html">1.7 GPIO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_pinmux/0_pinmux_index_cn.html">1.6 引脚复用</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_gpio/0_gpio_index_cn.html">1.7 GPIO 和引脚控制</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../1_power_save/0_ps_index_cn.html">1.9 低功耗开发</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../2_whc_wifi_bridge/0_wifi_bridge_index_cn.html">2.1 WHC Bridge</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../2_whc_fullmac/0_fullmac_index_cn.html">2.2 WHC FullMAC</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../2_wifi_tunnel/0_wifi_tunnel_index_cn.html">2.3 Wi-Fi R-Mesh</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../2_wifi_csi/0_wifi_csi_index_cn.html">2.5 Wi-Fi CSI</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../2_wifi_adaptivity_test/0_wifi_adaptivity_index.html">2.6 Wi-Fi Adaptivity 测试指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_whc_wifi_bridge/0_wifi_bridge_index_cn.html">2.0 WHC Bridge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_whc_fullmac/0_fullmac_index_cn.html">2.1 WHC FullMAC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_wifi_tunnel/0_wifi_tunnel_index_cn.html">2.2 Wi-Fi R-Mesh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_wifi_csi/0_wifi_csi_index_cn.html">2.3 Wi-Fi CSI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_wifi_adaptivity_test/0_wifi_adaptivity_index_cn.html">2.4 Wi-Fi Adaptivity 测试指南</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../3_security/0_security_index_cn.html">3.1 安全与加密</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../3_trng/0_trng_index_cn.html">3.2 真随机数发生器</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../3_nda_huk_derivation/0_huk_derivation_index_nda.html">3.3 HUK Derivation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../3_nda_rdp/0_rdp_index_nda.html">3.4 RDP</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../3_nda_rsip/0_rsip_index_nda.html">3.5 RSIP</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../3_nda_secure_boot/0_secure_boot_index_nda.html">3.6 Secure Boot</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../3_nda_swd_protection/0_swd_protection_index_nda.html">3.7 SWD Protection</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../3_nda_tfm/0_tfm_index_nda.html">3.8 Trusted Firmware-M (TF-M)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_huk_derivation/0_huk_derivation_index_nda.html">3.3 HUK 生成 🔒</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_rdp/0_rdp_index_nda.html">3.4 RDP 🔒</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_rsip/0_rsip_index_nda.html">3.5 RSIP 🔒</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_secure_boot/0_secure_boot_index_nda.html">3.6 安全启动 🔒</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_swd_protection/0_swd_protection_index_nda.html">3.7 SWD 保护 🔒</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_tfm/0_tfm_index_nda.html">3.8 Trusted Firmware-M (TF-M) 🔒</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../3_crypto_engine/0_crypto_engine_index_cn.html">3.9 对称硬件加密引擎</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../3_ecdsa_engine/0_ecdsa_index_cn.html">3.a ECDSA 硬件加密引擎</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../3_eddsa_engine/0_eddsa_index_cn.html">3.b EDDSA 硬件加密引擎</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../3_rsa_engine/0_rsa_index_cn.html">3.c RSA 硬件加密引擎</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_ap_trustzone/0_ap_tz_index_cn.html">3.d AP 安全服务</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../4_ai/0_ai_index_cn.html">4.1 人工智能</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../4_ai_voice/0_ai_voice_index_cn.html">4.2 语音识别</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../4_multimedia/0_multimedia_index_cn.html">4.3 多媒体</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../4_dsp/0_dsp_index_cn.html">4.4 DSP 使用指南</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../6_mass_production/0_mp_index_cn.html">6.1 量产指导</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../6_mp_image/0_mp_image_index_cn.html">6.2 MP 固件</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../6_mptools/0_mptools_index_cn.html">6.3 产测工具</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../6_mass_production/0_mp_index_cn.html">6.1 批量生产</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../6_mptools/0_mptools_index_cn.html">6.2 产测工具</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../7_usb/0_usb_index_cn.html">7.1 USB 主机与从机</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../8_dmac/0_dmac_index_cn.html">8.1 DMA 控制器</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../8_psram/0_psram_index_cn.html">8.2 PSRAM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../8_thermal/0_thermal_index_cn.html">8.3 温度测量</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../8_adc/0_adc_index_cn.html">8.4 模数转换器</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../8_ir/0_ir_index_cn.html">8.5 红外收发器</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../8_ledc/0_ledc_index_cn.html">8.6 LED控制器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_ledc/0_ledc_index_cn.html">8.6 LED 控制器</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../8_cap_touch/0_cap_touch_index_cn.html">8.7 Cap-Touch</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../8_key_scan/0_key_scan_index_cn.html">8.8 Key-Scan</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../8_rtc_io/0_rtc_io_index_cn.html">8.9 RTC-IO</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../8_lcdc/0_lcdc_index_cn.html">8.A LCD控制器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_lcdc/0_lcdc_index_cn.html">8.a LCD 控制器</a></li>
 </ul>
 
         </div>
@@ -160,7 +1079,7 @@
       </nav>
 
       <div class="wy-nav-content">
-
+    
         <div class="rst-content">
           <div role="navigation" aria-label="页面导航">
   <ul class="wy-breadcrumbs">
@@ -177,207 +1096,367 @@
              
   <section id="trace-tool">
 <span id="id1"></span><h1>Trace Tool<a class="headerlink" href="#trace-tool" title="Link to this heading"></a></h1>
-<section id="introduction">
-<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
-<p>The Trace Tool is the official serial port debug tool developed by Realtek. It can be used to communicate with the device over a standard RS-232 port.
-You can directly input commands into the terminal and view or record logs in real time through Trace Tool.</p>
-<p>This chapter illustrates how to use Trace Tool to print logs and send commands. The UI of Trace Tool is shown below.
-The Trace Tool can display logs when the AGG function of loguart is enabled or disabled. There are two configuration tabs in the upper left corner of UI.</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">Edit</span></code>: the history logs clear, history commands clear, load and save.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">Option:</span> <span class="pre">Global</span> <span class="pre">Settings</span></code> including row count and timestamp, and <code class="docutils literal notranslate"><span class="pre">Tag</span> <span class="pre">Filter</span></code> is used to attach different tag before logs to distinguish logs from different cores when the AGG function is enabled.</p></li>
-</ul>
+<section id="id2">
+<h2>概述<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+<p>Trace Tool 是 Realtek 官方开发的串口调试工具。它可以通过标准的 RS-232 端口与设备进行通信。
+您可以直接在终端中输入命令，并通过 Trace Tool 实时查看或记录日志。</p>
+<p>本章将介绍如何使用 Trace Tool 打印日志和发送命令。Trace Tool 的用户界面如下图所示。</p>
 <figure class="align-center" id="fig1-trace-tool-ui">
-<a class="reference internal image-reference" href="../../_images/tracetool_ui.png"><img alt="../../_images/tracetool_ui.png" src="../../_images/tracetool_ui.png" style="width: 853.8px; height: 608.4px;" /></a>
+<a class="reference internal image-reference" href="../../_images/tracetool_ui.png"><img alt="../../_images/tracetool_ui.png" src="../../_images/tracetool_ui.png" style="width: 682.1999999999999px; height: 486.0px;" /></a>
 <figcaption>
-<p><span class="caption-text">Trace tool UI</span><a class="headerlink" href="#fig1-trace-tool-ui" title="Link to this image"></a></p>
+<p><span class="caption-text">Trace tool 用户界面</span><a class="headerlink" href="#fig1-trace-tool-ui" title="Link to this image"></a></p>
 </figcaption>
 </figure>
-<p>By default, the AGG (aggregation) function of loguart is disabled so any serial tool can be used to display logs.
-When the AGG function is enabled, every packet will be send from UART Tx module with AGG header, which is used for Trace Tool
-to distinguish multi-path data that from different cores.</p>
-<ul>
-<li><p>When the AGG function is enabled, hardware will attach AGG header automatically. TraceTool can separate logs from different paths according to AGG header.</p>
-<p>In this case, logs from BT trace and BT FW will be saved into files separately and other logs will print on screen.
-Therefore, users must use Trace Tool instead of any other serial port tools because the latter will print disordered logs.</p>
-</li>
-<li><p>When the AGG function is disabled, no AGG header is attached. In this case, users can use other tools to print log as long as there is no BT trace and BT FW logs.</p>
-<p>But disordered logs may appear when more than one CPU are printing logs.</p>
-</li>
-</ul>
-<div class="admonition note">
-<p class="admonition-title">备注</p>
-<p>The AGG function can be enabled by setting <em>Boot_Agg_En</em> to TRUE in <code class="file docutils literal notranslate"><span class="pre">ameba_bootcfg.c</span></code>.</p>
-</div>
-</section>
-<section id="environment-setup">
-<span id="trace-tool-environment-setup"></span><h2>Environment Setup<a class="headerlink" href="#environment-setup" title="Link to this heading"></a></h2>
-<section id="hardware-connection">
-<h3>Hardware Connection<a class="headerlink" href="#hardware-connection" title="Link to this heading"></a></h3>
-<p>The hardware connection is illustrated below.</p>
-<div class="admonition note">
-<p class="admonition-title">备注</p>
-<p>If external UART is used to download images, the USB to UART dongle must be used.</p>
-</div>
-</section>
-<section id="software-setup">
-<h3>Software Setup<a class="headerlink" href="#software-setup" title="Link to this heading"></a></h3>
+<p>左上角两个选项卡：</p>
 <ul class="simple">
-<li><p>Environment requirements:</p>
+<li><p><code class="docutils literal notranslate"><span class="pre">Edit</span></code>: 用于清除历史日志、清除历史命令、加载和保存操作。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Option:</span> <span class="pre">Global</span> <span class="pre">Settings</span></code> 包括行数和时间戳设置。 <code class="docutils literal notranslate"><span class="pre">Option:</span> <span class="pre">Tag</span> <span class="pre">Filter</span></code> 用于在当loguart 的 <a class="reference internal" href="#trace-tool-agg"><span class="std std-ref">AGG 功能</span></a> 启用时,在日志前附加不同的标签。</p></li>
+</ul>
+</section>
+<section id="trace-tool-environment-setup">
+<span id="id3"></span><h2>环境设置<a class="headerlink" href="#trace-tool-environment-setup" title="Link to this heading"></a></h2>
+<section id="id4">
+<h3>硬件设置<a class="headerlink" href="#id4" title="Link to this heading"></a></h3>
+<p>硬件连接如下图所示。</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-0-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-0-0-0" name="0-0" role="tab" tabindex="0">RTL8721Dx</button><button aria-controls="panel-0-0-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-1" name="0-1" role="tab" tabindex="-1">RTL8720E</button><button aria-controls="panel-0-0-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-2" name="0-2" role="tab" tabindex="-1">RTL8726E</button><button aria-controls="panel-0-0-3" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-3" name="0-3" role="tab" tabindex="-1">RTL8730E</button></div><div aria-labelledby="tab-0-0-0" class="sphinx-tabs-panel" id="panel-0-0-0" name="0-0" role="tabpanel" tabindex="0"><figure class="align-center" id="id16">
+<a class="reference internal image-reference" href="../../_images/tracetool_hardware_connection_dplus_cn.svg"><img alt="../../_images/tracetool_hardware_connection_dplus_cn.svg" height="136" src="../../_images/tracetool_hardware_connection_dplus_cn.svg" width="593" /></a>
+<figcaption>
+<p><span class="caption-text">RTL8721Dx 的硬件连接</span><a class="headerlink" href="#id16" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</div><div aria-labelledby="tab-0-0-1" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-1" name="0-1" role="tabpanel" tabindex="0"><figure class="align-center" id="id17">
+<a class="reference internal image-reference" href="../../_images/tracetool_hardware_connection_lite_cn.svg"><img alt="../../_images/tracetool_hardware_connection_lite_cn.svg" height="136" src="../../_images/tracetool_hardware_connection_lite_cn.svg" width="634" /></a>
+<figcaption>
+<p><span class="caption-text">RTL8720E 的硬件连接</span><a class="headerlink" href="#id17" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</div><div aria-labelledby="tab-0-0-2" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-2" name="0-2" role="tabpanel" tabindex="0"><figure class="align-center" id="id18">
+<a class="reference internal image-reference" href="../../_images/tracetool_hardware_connection_lite_cn.svg"><img alt="../../_images/tracetool_hardware_connection_lite_cn.svg" height="136" src="../../_images/tracetool_hardware_connection_lite_cn.svg" width="634" /></a>
+<figcaption>
+<p><span class="caption-text">RTL8726E 的硬件连接</span><a class="headerlink" href="#id18" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</div><div aria-labelledby="tab-0-0-3" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-3" name="0-3" role="tabpanel" tabindex="0"><figure class="align-center" id="id19">
+<a class="reference internal image-reference" href="../../_images/tracetool_hardware_connection_smart_cn.svg"><img alt="../../_images/tracetool_hardware_connection_smart_cn.svg" height="143" src="../../_images/tracetool_hardware_connection_smart_cn.svg" width="637" /></a>
+<figcaption>
+<p><span class="caption-text">RTL8730E 的硬件连接</span><a class="headerlink" href="#id19" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</div></div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>如果使用外部 UART 下载固件，则必须使用 USB 转 UART 转换器。</p>
+</div>
+</section>
+<section id="id5">
+<h3>软件设置<a class="headerlink" href="#id5" title="Link to this heading"></a></h3>
 <ul>
-<li><p>WinXP above</p></li>
+<li><p>环境要求：</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Windows XP 及以上版本</p></li>
 <li><p>.NET Framework 4.0</p></li>
 </ul>
+</div></blockquote>
 </li>
-<li><p>Software location: <code class="docutils literal notranslate"><span class="pre">{SDK}/tools/ameba/TraceTool/AmebaTraceTool.exe</span></code></p></li>
+<li><p>软件位置：<code class="docutils literal notranslate"><span class="pre">{SDK}/tools/ameba/TraceTool/AmebaTraceTool.exe</span></code></p></li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">备注</p>
-<p>The host driver for USB to UART adapter (e.g. PL2303GC) on the board shall be installed first; otherwise, the LOGUART port cannot be recognized by the host.
-Please find the exact driver from the official website of corresponding vendor of the USB to UART adapter.</p>
+<p>请先在主机安装板上 USB 转 UART 适配器（例如 PL2303GC）的驱动程序，否则主机无法识别 LOGUART 端口。
+请从对应 USB 转 UART 适配器供应商的官方网站下载相应的驱动程序。</p>
 </div>
 </section>
 </section>
-<section id="usage">
-<h2>Usage<a class="headerlink" href="#usage" title="Link to this heading"></a></h2>
-<section id="log-print">
-<h3>Log Print<a class="headerlink" href="#log-print" title="Link to this heading"></a></h3>
-<p>After setting the environment mentioned in Section <a class="reference internal" href="#trace-tool-environment-setup"><span class="std std-ref">Environment Setup</span></a>, execute the following steps:</p>
+<section id="id6">
+<h2>使用方法<a class="headerlink" href="#id6" title="Link to this heading"></a></h2>
+<section id="id7">
+<h3>日志打印<a class="headerlink" href="#id7" title="Link to this heading"></a></h3>
+<p>在按照 <a class="reference internal" href="#trace-tool-environment-setup"><span class="std std-ref">环境设置</span></a> 部分设置好环境后，执行以下步骤：</p>
 <ol class="arabic">
-<li><p>Select COM port.</p>
+<li><p>选择COM端口。</p>
 <ol class="loweralpha">
-<li><p>Check your COM through <strong>Device Manager</strong> in your computer, as shown below. In <span class="guilabel">COM &amp; LPT</span> item, all the COM ports connected to the computer are listed.</p>
-<figure class="align-center">
+<li><p>通过计算机中的 <strong>设备管理器</strong> 检查COM口，如下所示。在 <span class="guilabel">COM &amp; LPT</span> 项中，列出了连接到计算机的所有COM端口。</p>
+<figure class="align-center" id="id20">
 <a class="reference internal image-reference" href="../../_images/tracetool_port_1.PNG"><img alt="../../_images/tracetool_port_1.PNG" src="../../_images/tracetool_port_1.PNG" style="width: 362.7px; height: 422.1px;" /></a>
+<figcaption>
+<p><span class="caption-text">设备管理器检查COM口</span><a class="headerlink" href="#id20" title="Link to this image"></a></p>
+</figcaption>
 </figure>
 </li>
-<li><p>Select COM port in <span class="guilabel">Port Setting</span> box.</p>
-<figure class="align-center">
+<li><p>在 <span class="guilabel">COM</span> 框中选择COM端口。</p>
+<figure class="align-center" id="id21">
 <a class="reference internal image-reference" href="../../_images/tracetool_port_2.png"><img alt="../../_images/tracetool_port_2.png" src="../../_images/tracetool_port_2.png" style="width: 316.5px; height: 127.5px;" /></a>
+<figcaption>
+<p><span class="caption-text">Trace Tool 选择COM口</span><a class="headerlink" href="#id21" title="Link to this image"></a></p>
+</figcaption>
 </figure>
 </li>
 </ol>
 </li>
-<li><p>Set the format.</p>
+<li><p>设置参数。</p>
 <ul class="simple">
-<li><p><em>Baudrate</em>: default is 1500000bps.</p></li>
-<li><p><em>Data Bits</em>: default is 8.</p></li>
-<li><p><em>Parity</em>: default is “None”.</p></li>
-<li><p><em>Stop Bits</em>: default is 1.</p></li>
-<li><p><em>Encoding</em>: default is UTF8.</p></li>
+<li><p><em>波特率</em> : 默认值为1500000bps。</p></li>
+<li><p><em>数据位</em> : 默认值为8。</p></li>
+<li><p><em>校验位</em> : 默认值为“无”。</p></li>
+<li><p><em>停止位</em> : 默认值为1。</p></li>
+<li><p><em>编码</em> : 默认值为UTF8。</p></li>
 </ul>
-<p>These settings should not be changed freely. If users have to change the format setting for some reasons, the loguart format needs
-to be changed accordingly to make sure that the format of loguart matches that of Trace Tool.</p>
+<p>这些设置不应随意更改。如果用户因某些原因必须更改参数设置，则需要相应地更改loguart参数，以确保loguart的参数与Trace Tool的参数匹配。</p>
 </li>
-<li><p>Click the <span class="guilabel">Open</span> button, then choose <span class="guilabel">Global Settings</span> to select whether add timestamp.</p>
-<p>Note that the timestamp is not very accurate because log processing takes time so there is a slight time interval between receiving logs and displaying logs.</p>
+<li><p>点击 <span class="guilabel">Option</span> 按钮，然后选择 <span class="guilabel">Global Settings</span> 以选择是否添加时间戳。</p>
+<p>请注意，时间戳并不十分准确，因为日志处理需要时间，因此在接收日志和显示日志之间存在轻微的时间间隔。</p>
 <ul class="simple">
-<li><p>When COM port is open, the Trace Tool starts to receive logs from the device. Log is shown in Log window. By default, the timestamp is inserted at the start of each log.</p></li>
-<li><p>If COM port is closed, the Trace Tool will not display logs and the commands can’t be sent.</p></li>
+<li><p>当COM端口打开时，Trace Tool开始从设备接收日志。日志显示在日志窗口中。默认情况下，时间戳会插入到每条日志的开头。</p></li>
+<li><p>如果COM端口关闭，Trace Tool将不会显示日志，并且无法发送命令。</p></li>
 </ul>
-<figure class="align-center">
+<figure class="align-center" id="id22">
 <a class="reference internal image-reference" href="../../_images/tracetool_log.png"><img alt="../../_images/tracetool_log.png" src="../../_images/tracetool_log.png" style="width: 904.5px; height: 604.8000000000001px;" /></a>
+<figcaption>
+<p><span class="caption-text">Trace Tool 时间戳</span><a class="headerlink" href="#id22" title="Link to this image"></a></p>
+</figcaption>
 </figure>
 </li>
 </ol>
-<p>The Trace Tool supports log saving function.</p>
+<p>Trace Tool支持日志保存功能。</p>
 <ul>
-<li><p>After clicking <span class="guilabel">Start</span> button in <span class="guilabel">Logging</span> box, all the receiving logs can be saved in a <code class="docutils literal notranslate"><span class="pre">.txt</span></code> file in the log folder of the same directory for <code class="docutils literal notranslate"><span class="pre">.exe</span></code> file.</p>
+<li><p>点击 <span class="guilabel">Logging</span> 框中的 <span class="guilabel">Start</span> 按钮后，所有接收到的日志都可以保存到与 <code class="docutils literal notranslate"><span class="pre">.exe</span></code> 文件同目录的日志文件夹中的 <code class="docutils literal notranslate"><span class="pre">.txt</span></code> 文件中。</p>
 <div class="admonition note">
 <p class="admonition-title">备注</p>
-<p>For segmented log, click <span class="guilabel">Option</span> and <span class="guilabel">Global Settings</span> to set log size.</p>
+<p>对于分段日志，点击 <span class="guilabel">Option</span> 和 <span class="guilabel">Global Settings</span> 来设置日志大小。</p>
 </div>
 </li>
-<li><p>After clicking <span class="guilabel">Open Dir</span> button in <span class="guilabel">Logging</span> box, the folder where the log is stored can be opened directly.</p></li>
+<li><p>点击 <span class="guilabel">Logging</span> 框中的 <span class="guilabel">Open Dir</span> 按钮后，可以直接打开保存日志的文件夹。</p></li>
 </ul>
-<p>The Trace Tool can print logs when the AGG function of loguart is enabled or disabled, because the Trace Tool can automatically detect whether the AGG function is enabled
-or not and can handle it accordingly. When the AGG function is enabled, chick <span class="guilabel">Option</span> button and choose <span class="guilabel">Tag Filter</span>, log from different cores will be added corresponding tags.
-There may be a period of disorder logs when the AGG function switches from enable to disable or from disable to enable.</p>
+<p>Trace Tool可以在loguart的AGG功能启用或禁用时打印日志，因为Trace Tool可以自动检测AGG功能是否启用，并相应地处理。当AGG功能启用时，点击 <span class="guilabel">Option</span> 按钮并选择 <span class="guilabel">Tag Filter</span>，来自不同核心的日志将添加相应的标签。
+当AGG功能从启用切换到禁用或从禁用切换到启用时，可能会出现一段时间的日志混乱。</p>
 </section>
-<section id="command-send">
-<h3>Command Send<a class="headerlink" href="#command-send" title="Link to this heading"></a></h3>
-<p>When COM port is open, you can send commands to the device through Trace Tool. The steps are shown below:</p>
+<section id="id8">
+<h3>命令发送<a class="headerlink" href="#id8" title="Link to this heading"></a></h3>
+<p>命令发送的步骤如下：</p>
 <ol class="arabic">
-<li><p>Input a command in command box as shown in the red block.</p>
-<figure class="align-center">
+<li><p>在命令框中输入命令，如红色框所示。</p>
+<figure class="align-center" id="id23">
 <a class="reference internal image-reference" href="../../_images/tracetool_command_box.png"><img alt="../../_images/tracetool_command_box.png" src="../../_images/tracetool_command_box.png" style="width: 639.6px; height: 427.8px;" /></a>
+<figcaption>
+<p><span class="caption-text">Trace Tool 发送命令</span><a class="headerlink" href="#id23" title="Link to this image"></a></p>
+</figcaption>
 </figure>
 <div class="admonition note">
 <p class="admonition-title">备注</p>
-<p>Refer to <a class="reference internal" href="#command-prefix"><span class="std std-ref">Command Prefix</span></a> to decide whether a command prefix is needed to add before the command.</p>
+<p>参考 <a class="reference internal" href="#command-prefix"><span class="std std-ref">命令前缀</span></a> 来决定是否需要在命令前添加命令前缀。</p>
 </div>
 </li>
-<li><p>Press the <span class="guilabel">Enter</span> key.</p></li>
+<li><p>按下 <span class="guilabel">Enter</span> 键。</p></li>
 </ol>
-<p>The history command box records the commands have been sent before.</p>
+<p>历史命令框记录了之前发送过的命令。</p>
 <ul class="simple">
-<li><p>Click the command, it will be displayed in the command box.</p></li>
-<li><p>Double-click the command, it will be sent to the chip.</p></li>
-<li><p>Click the command then click <span class="guilabel">delete</span>, the command will be deleted from the history command box.</p></li>
+<li><p>点击命令，它将会显示在命令框中。</p></li>
+<li><p>双击命令，它将会发送到芯片。</p></li>
+<li><p>点击命令然后点击 <span class="guilabel">Delete</span>，该命令将从历史命令框中删除。</p></li>
 </ul>
 </section>
 <section id="command-prefix">
-<span id="id2"></span><h3>Command Prefix<a class="headerlink" href="#command-prefix" title="Link to this heading"></a></h3>
+<span id="id9"></span><h3>命令前缀<a class="headerlink" href="#command-prefix" title="Link to this heading"></a></h3>
+<p>各个芯片的各个核扮演不同角色时，对应需要添加的命令前缀如下：</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-1-1-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-1-1-0" name="1-0" role="tab" tabindex="0">RTL8721Dx</button><button aria-controls="panel-1-1-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-1-1-1" name="1-1" role="tab" tabindex="-1">RTL8720E</button><button aria-controls="panel-1-1-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-1-1-2" name="1-2" role="tab" tabindex="-1">RTL8726E</button><button aria-controls="panel-1-1-3" aria-selected="false" class="sphinx-tabs-tab" id="tab-1-1-3" name="1-3" role="tab" tabindex="-1">RTL8730E</button></div><div aria-labelledby="tab-1-1-0" class="sphinx-tabs-panel" id="panel-1-1-0" name="1-0" role="tabpanel" tabindex="0"><table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>核</p></th>
+<th class="head"><p>角色</p></th>
+<th class="head"><p>命令前缀</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>KM4</p></td>
+<td><p>AP</p></td>
+<td><p>无</p></td>
+</tr>
+<tr class="row-odd"><td><p>KM0</p></td>
+<td><p>NP</p></td>
+<td><p>&#64;</p></td>
+</tr>
+</tbody>
+</table>
+</div><div aria-labelledby="tab-1-1-1" class="sphinx-tabs-panel" hidden="true" id="panel-1-1-1" name="1-1" role="tabpanel" tabindex="0"><table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>核</p></th>
+<th class="head"><p>角色</p></th>
+<th class="head"><p>命令前缀</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>KM4</p></td>
+<td><p>NP</p></td>
+<td><p>&#64;</p></td>
+</tr>
+<tr class="row-odd"><td><p>KR4</p></td>
+<td><p>AP</p></td>
+<td><p>无</p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>核</p></th>
+<th class="head"><p>角色</p></th>
+<th class="head"><p>命令前缀</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>KM4</p></td>
+<td><p>AP</p></td>
+<td><p>无</p></td>
+</tr>
+<tr class="row-odd"><td><p>KR4</p></td>
+<td><p>NP</p></td>
+<td><p>&#64;</p></td>
+</tr>
+</tbody>
+</table>
+</div><div aria-labelledby="tab-1-1-2" class="sphinx-tabs-panel" hidden="true" id="panel-1-1-2" name="1-2" role="tabpanel" tabindex="0"><table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>核</p></th>
+<th class="head"><p>角色</p></th>
+<th class="head"><p>命令前缀</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>DSP</p></td>
+<td><p>算法</p></td>
+<td><p>~</p></td>
+</tr>
+<tr class="row-odd"><td><p>KM4</p></td>
+<td><p>NP</p></td>
+<td><p>&#64;</p></td>
+</tr>
+<tr class="row-even"><td><p>KR4</p></td>
+<td><p>AP</p></td>
+<td><p>无</p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>核</p></th>
+<th class="head"><p>角色</p></th>
+<th class="head"><p>命令前缀</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>DSP</p></td>
+<td><p>算法</p></td>
+<td><p>~</p></td>
+</tr>
+<tr class="row-odd"><td><p>KM4</p></td>
+<td><p>AP</p></td>
+<td><p>无</p></td>
+</tr>
+<tr class="row-even"><td><p>KR4</p></td>
+<td><p>NP</p></td>
+<td><p>&#64;</p></td>
+</tr>
+</tbody>
+</table>
+</div><div aria-labelledby="tab-1-1-3" class="sphinx-tabs-panel" hidden="true" id="panel-1-1-3" name="1-3" role="tabpanel" tabindex="0"><table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>核</p></th>
+<th class="head"><p>角色</p></th>
+<th class="head"><p>命令前缀</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>CA32</p></td>
+<td><p>AP</p></td>
+<td><p>无</p></td>
+</tr>
+<tr class="row-odd"><td><p>KM4</p></td>
+<td><p>NP</p></td>
+<td><p>~</p></td>
+</tr>
+<tr class="row-even"><td><p>KM0</p></td>
+<td><p>Firmware</p></td>
+<td><p>&#64;</p></td>
+</tr>
+</tbody>
+</table>
+</div></div>
 </section>
-<section id="debug">
-<h3>Debug<a class="headerlink" href="#debug" title="Link to this heading"></a></h3>
-<section id="register-access">
-<h4>Register Access<a class="headerlink" href="#register-access" title="Link to this heading"></a></h4>
-<p>The REG function is used to read and write registers by register address.</p>
+<section id="id10">
+<h3>调试<a class="headerlink" href="#id10" title="Link to this heading"></a></h3>
+<section id="id11">
+<h4>寄存器访问<a class="headerlink" href="#id11" title="Link to this heading"></a></h4>
+<p>寄存器访问功能用于通过寄存器地址读取和写入寄存器值。</p>
 <ul>
-<li><p><code class="docutils literal notranslate"><span class="pre">Type</span></code>: used to select the register type. Wifi MAC/Wifi BB/Wifi RF options are used for Wi-Fi function, which have different base addresses. Select the corresponding options according to your needs.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">Read/Write</span> <span class="pre">Register</span></code>: enter the register address to <code class="docutils literal notranslate"><span class="pre">Read</span></code> or <code class="docutils literal notranslate"><span class="pre">Write</span></code> the register value. <code class="docutils literal notranslate"><span class="pre">Dump</span></code> means batch printing register values, only Wifi MAC/Wifi BB/Wifi RF registers are supported to be dump.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">Bit</span> <span class="pre">Value</span></code>: bitwise accessing the register specified by address.</p>
-<figure class="align-center">
+<li><p><code class="docutils literal notranslate"><span class="pre">Type</span></code>: 用于选择寄存器类型。Wifi MAC/Wifi BB/Wifi RF选项用于Wi-Fi功能，它们具有不同的基地址。请根据您的需求选择相应的选项。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Read/Write</span> <span class="pre">Register</span></code>: 输入寄存器地址以 <code class="docutils literal notranslate"><span class="pre">Read</span></code> 或者 <code class="docutils literal notranslate"><span class="pre">Write</span></code> 寄存器值。 <code class="docutils literal notranslate"><span class="pre">Dump</span></code> 仅支持Wifi MAC/Wifi BB/Wifi RF寄存器的批量打印。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Bit</span> <span class="pre">Value</span></code>: 按位访问由地址指定的寄存器。</p>
+<figure class="align-center" id="id24">
 <a class="reference internal image-reference" href="../../_images/tracetool_register.png"><img alt="../../_images/tracetool_register.png" src="../../_images/tracetool_register.png" style="width: 250.5px; height: 301.5px;" /></a>
+<figcaption>
+<p><span class="caption-text">Trace Tool 寄存器访问</span><a class="headerlink" href="#id24" title="Link to this image"></a></p>
+</figcaption>
 </figure>
 </li>
 </ul>
 </section>
-<section id="scope-illustration">
-<h4>Scope Illustration<a class="headerlink" href="#scope-illustration" title="Link to this heading"></a></h4>
-<p>The scope function is used to capture specific data in log and illustrate waveform dynamically.</p>
+<section id="id12">
+<h4>示波器<a class="headerlink" href="#id12" title="Link to this heading"></a></h4>
+<p>示波器功能用于捕获日志中的特定数据并动态展示波形。此功能自版本v2.1.28起开始支持。</p>
 <ol class="arabic simple">
-<li><p>Enter <em>X</em> and <em>Y</em> pattern, <em>X</em> default value is time.</p></li>
-<li><p>Click <span class="guilabel">Start</span> button.</p></li>
+<li><p>输入 <em>X</em> 和 <em>Y</em> 模式， <em>X</em> 的默认值为时间。</p></li>
+<li><p>点击 <span class="guilabel">Start</span> 按钮。</p></li>
 </ol>
-<figure class="align-center">
+<figure class="align-center" id="id25">
 <a class="reference internal image-reference" href="../../_images/tracetool_scope_1.png"><img alt="../../_images/tracetool_scope_1.png" src="../../_images/tracetool_scope_1.png" style="width: 853.8px; height: 599.4px;" /></a>
+<figcaption>
+<p><span class="caption-text">Trace Tool 示波器设置</span><a class="headerlink" href="#id25" title="Link to this image"></a></p>
+</figcaption>
 </figure>
-<p>In the scope interface, waveform will be illustrated synchronously.</p>
-<figure class="align-center">
+<p>在示波器界面中，波形将同步展示。</p>
+<figure class="align-center" id="id26">
 <a class="reference internal image-reference" href="../../_images/tracetool_scope_2.png"><img alt="../../_images/tracetool_scope_2.png" src="../../_images/tracetool_scope_2.png" style="width: 853.8px; height: 599.4px;" /></a>
+<figcaption>
+<p><span class="caption-text">Trace Tool 示波器波形</span><a class="headerlink" href="#id26" title="Link to this image"></a></p>
+</figcaption>
 </figure>
 </section>
-<section id="wifi-debug">
-<h4>WiFi Debug<a class="headerlink" href="#wifi-debug" title="Link to this heading"></a></h4>
+<section id="wifi">
+<h4>WiFi 调试<a class="headerlink" href="#wifi" title="Link to this heading"></a></h4>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">DIG_MARGIN</span></code>: set WiFi DIG margin, available address: [0x00,0x3c].</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">EDCCA</span></code>: set MAC EDCCA mode, available value: 0/1/9.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">DBG</span></code>: set Wi-Fi RA debug, avilable address: [0,0xff], and illustrate <em>CCK_FA</em> and <em>OFDM_FA</em> average value.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">Power</span> <span class="pre">Save</span></code>: enable or disable Wi-Fi power saving mode.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">DIG_MARGIN</span></code>: 设置WiFi DIG余量，可用地址：[0x00,0x3c]。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EDCCA</span></code>: 设置MAC EDCCA模式，可用值：0/1/9。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">DBG</span></code>: 设置Wi-Fi RA调试，可用地址：[0,0xff]，并展示 <em>CCK_FA</em> 和 <em>OFDM_FA</em> 的平均值。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Power</span> <span class="pre">Save</span></code>: 启用或禁用Wi-Fi省电模式。</p></li>
 </ul>
-<figure class="align-center">
+<figure class="align-center" id="id27">
 <a class="reference internal image-reference" href="../../_images/tracetool_wifi_debug.png"><img alt="../../_images/tracetool_wifi_debug.png" src="../../_images/tracetool_wifi_debug.png" style="width: 278.1px; height: 162.9px;" /></a>
+<figcaption>
+<p><span class="caption-text">Trace Tool WiFi 调试</span><a class="headerlink" href="#id27" title="Link to this image"></a></p>
+</figcaption>
 </figure>
 </section>
 </section>
-<section id="auto-script">
-<h3>AUTO Script<a class="headerlink" href="#auto-script" title="Link to this heading"></a></h3>
-<section id="id3">
-<h4>Usage<a class="headerlink" href="#id3" title="Link to this heading"></a></h4>
-<p>The AUTO feature is used for automatic script execution.</p>
+<section id="id13">
+<h3>自动化脚本<a class="headerlink" href="#id13" title="Link to this heading"></a></h3>
+<section id="id14">
+<h4>使用方法<a class="headerlink" href="#id14" title="Link to this heading"></a></h4>
+<p>AUTO功能用于自动执行脚本。</p>
 <ol class="arabic simple">
-<li><p>Click <code class="docutils literal notranslate"><span class="pre">Browse</span></code> button to choose the script you want to execute.</p></li>
-<li><p>Click <code class="docutils literal notranslate"><span class="pre">Execute</span></code> button to execute the script.</p></li>
+<li><p>点击 <code class="docutils literal notranslate"><span class="pre">Browse</span></code> 按钮选择要执行的脚本。</p></li>
+<li><p>点击 <code class="docutils literal notranslate"><span class="pre">Execute</span></code> 按钮以执行脚本。</p></li>
 </ol>
-<figure class="align-center">
+<figure class="align-center" id="id28">
 <a class="reference internal image-reference" href="../../_images/tracetool_auto_script_1.png"><img alt="../../_images/tracetool_auto_script_1.png" src="../../_images/tracetool_auto_script_1.png" style="width: 287.1px; height: 196.20000000000002px;" /></a>
+<figcaption>
+<p><span class="caption-text">Trace Tool AUTO 功能</span><a class="headerlink" href="#id28" title="Link to this image"></a></p>
+</figcaption>
 </figure>
 </section>
-<section id="script-format">
-<h4>Script Format<a class="headerlink" href="#script-format" title="Link to this heading"></a></h4>
-<p>The format of script.txt which is used in auto mode is as follows:</p>
+<section id="id15">
+<h4>脚本格式<a class="headerlink" href="#id15" title="Link to this heading"></a></h4>
+<p>用于自动模式的 script.txt 文件格式如下：</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>CMD1
 CMD2
 CMD3
@@ -385,7 +1464,7 @@ CMD3
 </pre></div>
 </div>
 <ul>
-<li><p>If commands are required to be repeated multiple times, loop can be used:</p>
+<li><p>如果需要重复执行命令多次，可以使用循环：</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>loop=10
 loop_start
 CMD1
@@ -395,16 +1474,22 @@ sleep 1000
 loop_end
 </pre></div>
 </div>
-<p>For a loop, three key words are necessary:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">Loop</span></code>: The number after <code class="docutils literal notranslate"><span class="pre">loop=</span></code> means loop times.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">loop_start</span></code>: Used to mark the beginning of the loop.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">loop_end</span></code>: Used to mark the end of the loop.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">loop_start</span></code> and <code class="docutils literal notranslate"><span class="pre">loop_end</span></code> have to appear in pairs.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">sleep</span></code>: Used to delay some time between commands, and unit is millisecond. <code class="docutils literal notranslate"><span class="pre">sleep</span> <span class="pre">1000</span></code> means to delay 1000ms. There should be a blank space between sleep and sleep time.</p></li>
-</ul>
 </li>
-<li><p>Nested loop is supported as below:</p>
+</ul>
+<blockquote>
+<div><p>循环中的关键词和具体的规则如下：</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Loop</span></code>: <code class="docutils literal notranslate"><span class="pre">loop=</span></code> 后面的数字表示循环次数。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">loop_start</span></code>: 用于标记循环的开始。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">loop_end</span></code>: 用于标记循环的结束。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">loop_start</span></code> 和 <code class="docutils literal notranslate"><span class="pre">loop_end</span></code> 必须成对出现。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sleep</span></code>: 用于在命令之间延迟一段时间，单位为毫秒。 <code class="docutils literal notranslate"><span class="pre">sleep</span> <span class="pre">1000</span></code> 表示延迟 1000 毫秒。 <code class="docutils literal notranslate"><span class="pre">sleep</span></code> 和延迟时间之间需要有一个空格。</p></li>
+</ul>
+</div></blockquote>
+</div></blockquote>
+<ul>
+<li><p>支持嵌套循环，如下所示：</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">loop</span><span class="o">=</span><span class="mi">2</span>
 <span class="n">loop_start</span>
 <span class="n">CMD1</span>
@@ -418,7 +1503,7 @@ loop_end
 </pre></div>
 </div>
 </li>
-<li><p>Catching certain patterns, like <em>pass_pattern</em> or <em>fail_pattern</em>, to indicate that the result of specific CMD execution is supported, the format is as below:</p>
+<li><p>支持捕获特定模式（如 <em>pass_pattern</em> 或 <em>fail_pattern</em>）以指示特定 CMD 执行的结果，格式如下：</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>loop=10
 loop_start
 timeout=1000
@@ -434,32 +1519,64 @@ loop_end
 </pre></div>
 </div>
 <ul>
-<li><p>The key word <em>pass_pattern</em>, <em>fail_pattern</em> and <em>timeout</em> are only valid for the next command CMD1, used to catch patterns in CMD1 execution.</p>
-<p>When catching the patterns, key word <code class="docutils literal notranslate"><span class="pre">if...fi</span></code> can be used to perform subsequent operation, now only the <code class="docutils literal notranslate"><span class="pre">break</span></code> operation is supported, which is used to jump out of the loop.</p>
-<figure class="align-center">
+<li><p>关键词 <code class="docutils literal notranslate"><span class="pre">pass_pattern</span></code>， <code class="docutils literal notranslate"><span class="pre">fail_pattern</span></code> 和 <code class="docutils literal notranslate"><span class="pre">timeout</span></code> 仅对下一个命令 CMD1 有效，用于捕获 CMD1 执行中的模式。</p>
+<p>当捕获到模式时，可以使用关键词 <code class="docutils literal notranslate"><span class="pre">if...fi</span></code> 执行后续操作，目前仅支持 <code class="docutils literal notranslate"><span class="pre">break</span></code> 操作，用于跳出循环。</p>
+<figure class="align-center" id="id29">
 <a class="reference internal image-reference" href="../../_images/tracetool_auto_script_2.png"><img alt="../../_images/tracetool_auto_script_2.png" src="../../_images/tracetool_auto_script_2.png" style="width: 654.6px; height: 466.2px;" /></a>
+<figcaption>
+<p><span class="caption-text">Trace Tool 执行自动脚本</span><a class="headerlink" href="#id29" title="Link to this image"></a></p>
+</figcaption>
 </figure>
 </li>
-<li><p>The number after <code class="docutils literal notranslate"><span class="pre">timeout=</span></code> means the time frame you want to catch log to match the pattern. It can be set to different values according to needs (unit: millisecond), and default value is 5000.</p></li>
-<li><p>The string after <code class="docutils literal notranslate"><span class="pre">pass_pattern=</span></code> means the pass_pattern, and the string after <code class="docutils literal notranslate"><span class="pre">fail_pattern=</span></code> means the fail_pattern, which is used to indicate the result of the CMD execution.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">timeout=</span></code> 后面的数字表示获取匹配字符的等待时间，超出该时间即停止获取。可以根据需要设置为不同的值（单位：毫秒），默认值为 5000。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pass_pattern=</span></code> 后面的字符串表示 pass_pattern， <code class="docutils literal notranslate"><span class="pre">fail_pattern=</span></code> 表示 fail_pattern, 用于指示 CMD 执行的结果。</p></li>
 </ul>
-<p>When the corresponding pattern is matched or not during CMD execution, there will be three results:</p>
+<p>当 CMD 执行期间，会有如下三种结果：</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">Pass</span></code>: <em>pass_pattern</em> matched within timeout in CMD execution results.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">Fail</span></code>: <em>fail_pattern</em> matched within timeout in CMD execution results.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">Timeout</span></code>: no <em>pass_pattern</em>/<em>fail_pattern</em> matched within timeout in CMD execution results.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Pass</span></code>: 在 CMD 执行结果中， <em>pass_pattern</em> 在超时时间内匹配。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Fail</span></code>: 在 CMD 执行结果中， <em>fail_pattern</em> 在超时时间内匹配。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Timeout</span></code>: 在 CMD 执行结果中，超时时间内未匹配到 <em>pass_pattern</em>/<em>fail_pattern</em> 。</p></li>
 </ul>
 </li>
 </ul>
 <div class="admonition caution">
 <p class="admonition-title">小心</p>
 <ul class="simple">
-<li><p>One command in a single line.</p></li>
-<li><p>TAB is used to indent a line. Only TAB can be used, WHITE SPACE is not allowed.</p></li>
-<li><p>WHITE SPACE before or after <code class="docutils literal notranslate"><span class="pre">=</span></code> is not allowed.</p></li>
+<li><p>每行只能有一条命令。</p></li>
+<li><p>使用 TAB 缩进一行。只能使用 TAB，不允许使用空格。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">=</span></code> 前后不允许有空格。</p></li>
 </ul>
 </div>
 </section>
+</section>
+<section id="agg">
+<span id="trace-tool-agg"></span><h3>AGG 功能<a class="headerlink" href="#agg" title="Link to this heading"></a></h3>
+<p>当loguart 的 AGG 功能启用时，Trace Tool 支持通过选择 <code class="docutils literal notranslate"><span class="pre">Option:</span> <span class="pre">Tag</span> <span class="pre">Filter</span></code> 在日志前附加不同的标签，以便在启用 AGG 功能时区分来自不同核的日志。</p>
+<p>启用和禁用 AGG 功能时，Trace Tool的具体区别如下：</p>
+<ul>
+<li><p>当启用 AGG 功能时，每个数据包都会通过 UART Tx 模块发送，硬件会自动附加 AGG 头部信息。Trace Tool 可以根据 AGG 头部信息区分来自分来自不同核心的多路数据。</p>
+<blockquote>
+<div><div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-2-2-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-2-2-0" name="2-0" role="tab" tabindex="0">RTL8721Dx</button><button aria-controls="panel-2-2-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-2-2-1" name="2-1" role="tab" tabindex="-1">RTL8720E</button><button aria-controls="panel-2-2-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-2-2-2" name="2-2" role="tab" tabindex="-1">RTL8726E</button><button aria-controls="panel-2-2-3" aria-selected="false" class="sphinx-tabs-tab" id="tab-2-2-3" name="2-3" role="tab" tabindex="-1">RTL8730E</button></div><div aria-labelledby="tab-2-2-0" class="sphinx-tabs-panel" id="panel-2-2-0" name="2-0" role="tabpanel" tabindex="0"><p>AGG 功能用于同时从多个路径打印日志，这些路径包括 KM0、KM4、BT 跟踪日志和 BT 固件日志。</p>
+</div><div aria-labelledby="tab-2-2-1" class="sphinx-tabs-panel" hidden="true" id="panel-2-2-1" name="2-1" role="tabpanel" tabindex="0"><p>AGG 功能用于同时从多个路径打印日志，这些路径包括 KM4、KR4、BT 跟踪日志和 BT 固件日志。</p>
+</div><div aria-labelledby="tab-2-2-2" class="sphinx-tabs-panel" hidden="true" id="panel-2-2-2" name="2-2" role="tabpanel" tabindex="0"><p>AGG 功能用于同时从多个路径打印日志，这些路径包括 KM4、KR4、DSP、BT 跟踪日志和 BT 固件日志。</p>
+</div><div aria-labelledby="tab-2-2-3" class="sphinx-tabs-panel" hidden="true" id="panel-2-2-3" name="2-3" role="tabpanel" tabindex="0"><p>AGG 功能用于同时从多个路径打印日志，这些路径包括 KM0、KM4、CA32、BT 跟踪日志和 BT 固件日志。</p>
+</div></div>
+<p>在这种情况下，来自 BT 跟踪和 BT 固件的日志会分别保存到文件中，而其他日志则会直接打印在屏幕上。
+因此，用户必须使用 Trace Tool 而不是其他串口工具，因为其他工具可能会打印出混乱的日志。</p>
+</div></blockquote>
+</li>
+<li><p>当禁用 AGG 功能时，不会附加 AGG 头部信息。</p>
+<blockquote>
+<div><p>在这种情况下，只要没有 BT 跟踪和 BT 固件日志，用户可以使用其他工具来打印日志。默认情况下，loguart 的 AGG 功能是禁用的。</p>
+<p>但是，当多个 CPU 同时打印日志时，可能会出现日志混乱的情况。</p>
+</div></blockquote>
+</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>可以通过在 <code class="file docutils literal notranslate"><span class="pre">ameba_bootcfg.c</span></code> 文件中把 <em>Boot_Agg_En</em> 设置为 TRUE 来启用 AGG 功能。</p>
+</div>
 </section>
 </section>
 </section>
@@ -469,7 +1586,7 @@ loop_end
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
         <a href="1_image_tool_toprst_cn.html" class="btn btn-neutral float-left" title="Image Tool" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
-        <a href="1_layout_tool_toprst_cn.html" class="btn btn-neutral float-right" title="Layout Tool" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="1_cap_test_tool_toprst_cn.html" class="btn btn-neutral float-right" title="Captouch Test Tool" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
@@ -485,6 +1602,78 @@ loop_end
 
 </footer>
         </div>
+    <!-- 问题反馈按钮和对话框 -->
+    
+        <button id="report-button">Inquire</button>
+    
+    <div id="feedback-dialog" class="feedback-dialog" style="display: none;">
+        <div class="form-group">
+            <label style="font-weight: bold;">Please select the related chapter:</label>
+            <select id="chapter-select">
+                <option value="">Select Chapter</option>
+                <!-- 章节选项将通过JavaScript动态填充 -->
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label style="font-weight: bold;">Post Type</label>
+            <select id="post-type" class="form-control" required>
+                <option value="">-- Select Type --</option>
+                <option value="doc_correction">Document Correction</option>
+                <option value="tech_consult">Technical Consult</option>
+                <option value="tech_summary">Technical Summary</option>
+                <option value="operation_flow">Operation Flow</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label style="font-weight: bold;">Related Paragraph:</label>
+            <textarea
+                id="paragraph-input"
+                placeholder="{{ '你可以先选择有问题的段落或手动输入...' if language == 'zh_CN' else 'You can select text or type directly here...' }}"
+                rows="4"
+            ></textarea>
+        </div>
+
+        <div class="form-group">
+            <label style="font-weight: bold;">Please describe your issue:</label>
+            <textarea
+                id="inquire_input"
+                placeholder="Feature enhancement in progress, please stay tuned...">
+            </textarea>
+        </div>
+
+        <button id="submit-feedback">Submit</button>
+        <button id="cancel-feedback">Cancel</button>
+    </div>
+
+    <style>
+        .form-group {
+            margin: 5px 0;  /* 基础间距 */
+        }
+
+        /* 相邻表单项缩小上方间距 */
+        .form-group + .form-group {
+            margin-top: 10px;
+        }
+
+        /* 段落输入框底部微调 */
+        #paragraph-input, #inquire_input {
+            margin: 2px 0; /* 上下间距 */
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            resize: vertical;
+            min-height: 100px;
+
+            /* 占位符样式 */
+            &::placeholder {
+                color: #999;
+                font-style: italic;
+            }
+        }
+    </style>
 
       </div>
     </section>
@@ -494,8 +1683,8 @@ loop_end
           SphinxRtdTheme.Navigation.enable(true);
       });
   </script>
- 
-
+     
+    
 
 
 </body>

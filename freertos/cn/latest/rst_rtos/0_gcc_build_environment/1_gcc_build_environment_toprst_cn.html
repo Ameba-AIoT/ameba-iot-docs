@@ -10,9 +10,9 @@
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
-      <link rel="stylesheet" type="text/css" href="../../_static/custom_cn.css?v=0d22fac7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=c12c2b39" />
       <link rel="stylesheet" type="text/css" href="../../_static/tabs.css?v=a5c4661c" />
-      <link rel="stylesheet" type="text/css" href="../../_static/_static/custom_cn.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=c12c2b39" />
 
   
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
@@ -26,6 +26,7 @@
         <script src="../../_static/doctools.js?v=9a2dae69"></script>
         <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script src="../../_static/tabs.js?v=3030b3cb"></script>
         <script>let toggleHintShow = 'Click to show';</script>
         <script>let toggleHintHide = 'Click to hide';</script>
@@ -39,13 +40,901 @@
     <link rel="search" title="搜索" href="../../search.html" />
     <link rel="next" title="GDB调试" href="../0_gdb_debug/0_gdb_debug_index_cn.html" />
     <link rel="prev" title="GCC 编译环境" href="0_gcc_build_index_cn.html" />
-   
-  
-  <script type="text/javascript" src="../../_static/js/selector.js"></script>
+     
 
-  <style>
-    .wy-nav-content {max-width: 1000px;} /* 设置最大宽度 */
-  </style>
+    <!-- NDA文档输入密码的框 -->
+    
+<script>
+// ▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼ 多语言配置 ▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼
+const lang = 'zh';  // 使用 Python 字符串切片
+const i18n = {
+    zh: {
+        title: '访问授权',
+        username: '用户名',
+        password: '密码',
+        confirm: '确认',
+        cancel: '取消',
+        usernameError: '用户名错误',
+        userNotExist: '该用户不存在',
+        passwordError: '密码错误',
+        wrongPassword: '请输入正确的密码',
+        accessDenied: '无访问权限',
+        noPermission: '您无权查看此内容',
+        expiredTitle: '访问已过期',
+        expiredMsg: '您的权限已失效<br>有效期：%s 至 %s',
+        deniedTitle: '⚠️ 无访问权限',
+        contact: '请联系 claire_wang@realsil.com.cn 获取权限'
+    },
+    en: {
+        title: 'Access Required',
+        username: 'Username',
+        password: 'Password',
+        confirm: 'Confirm',
+        cancel: 'Cancel',
+        usernameError: 'Invalid Username',
+        userNotExist: 'User does not exist',
+        passwordError: 'Wrong Password',
+        wrongPassword: 'Please enter correct password',
+        accessDenied: 'Access Denied',
+        noPermission: 'You have no permission to view this content',
+        expiredTitle: 'Authorization Expired',
+        expiredMsg: 'Your access has expired<br>Valid period: %s to %s',
+        deniedTitle: '⚠️ Access Denied',
+        contact: 'Please contact claire_wang@realsil.com.cn for access'
+    }
+};
+// ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲ 多语言配置结束 ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
+</script>
+
+    <!-- 样式模板 -->
+    
+
+<style>
+    .wy-nav-content {
+        max-width: 1100px;
+         
+    }
+    
+    .auth-denied {
+        padding: 20px;
+        background: #f8f9fa;
+        border-radius: 4px;
+        border: 1px solid #dee2e6;
+        text-align: center;
+        color: #721c24;
+        margin-top: 20px;
+    }
+    .auth-denied h3 {
+        margin-bottom: 10px;
+        color: #dc3545;
+    }
+    
+    #report-button {
+        position: fixed;
+        top: 10px;
+        left: 1270px;
+        padding: 1px 15px; /* 调整内边距：1px 为上下，5px 为左右 */
+        height: 30px; /* 设置固定高度 */
+        background-color: #2ecc71;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        z-index: 1000;
+    }
+    #report-button:hover {
+        background-color: #2ecc71;
+    }
+    
+    .feedback-dialog {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        z-index: 1001;
+        width: 600px;
+    }
+    .feedback-dialog textarea {
+        width: 100%;
+        height: 150px;
+        margin-top: 10px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        resize: vertical;
+    }
+    .feedback-dialog button {
+        margin-top: 10px;
+        padding: 8px 16px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    .feedback-dialog button:hover {
+        background-color: #0056b3;
+    }
+
+    
+    
+</style>
+
+
+    <style>
+    /* ====================== 选择器样式 ====================== */
+    /* 选择器容器 */
+    .selector-container {
+        margin: 8px 0;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+    }
+    
+    /* 版本选择器特殊边距 */
+    .version-selector-container {
+        margin-bottom: 8px !important;
+    }
+    
+    /* 选择器标签 */
+    .selector-label {
+        color: white;
+        margin-right: 10px;
+        width: 80px;
+        text-align: right;
+        font-size: 0.9em;
+    }
+    
+    /* 下拉选择框 */
+    .selector-dropdown {
+        width: 120px;
+        border-radius: 2px;
+        padding: 4px 8px;
+        border: 1px solid #405261;
+        background: #2c3e50;
+        color: white;
+        font-size: 0.9em;
+    }
+    
+    /* 下拉选择框悬停效果 */
+    .selector-dropdown:hover {
+        border-color: #3498db;
+        transition: border-color 0.3s;
+    }
+    
+    /* 选择器响应式布局 */
+    @media (max-width: 768px) {
+        .selector-container {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        
+        .selector-label {
+            width: 100%;
+            text-align: left;
+            margin-bottom: 4px;
+        }
+        
+        .selector-dropdown {
+            width: 100%;
+        }
+    }
+</style>
+    <style>
+/* =============== 左上角登录区域  =============== */
+/* ================= 用户面板 ================= */
+.user-panel {
+    padding: 15px;
+    background: #34495e;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.username {
+    color: #fff;
+    font-weight: 500;
+    font-size: 1.1em;
+    text-align: center;
+    margin: 10px 0;
+}
+
+/* ================= 按钮容器 ================= */
+.button-row {
+    display: flex;
+    gap: 8px;
+    width: 100%;
+    margin: 10px 0;
+}
+
+/* 通用按钮样式 */
+.auth-btn, .forum-btn, .official-btn {
+    flex: 1;
+    padding: 8px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: opacity 0.3s;
+    text-align: center;
+    color: white !important;
+}
+
+/* 认证按钮 */
+.auth-btn {
+    background: #3498db;
+}
+
+/* 论坛按钮 */
+.forum-btn {
+    background: #9b59b6; /* 与参考代码的官方按钮同色 */
+}
+
+/* 官网按钮 */
+.official-btn {
+    background: #2ecc71; /* 与参考代码文档按钮同色 */
+}
+/* =============== 左上角登录区域  =============== */
+</style>
+
+    <!-- 注入 TOC 映射和当前页面信息 -->
+    
+
+<!-- TOC 映射和当前文档信息 -->
+<script>
+// 将 Python 字典转换为 JS 对象
+const TOC_TITLE_MAP = {"rst_rtos/0_ameba_product": "\u4ea7\u54c1\u4e2d\u5fc3", "rst_rtos/0_ameba_product/0_ameba_product_center_index_cn": "\u4ea7\u54c1\u4e2d\u5fc3", "rst_rtos/0_ameba_sdk": "Ameba SDK", "rst_rtos/0_ameba_sdk/0_ameba_sdks_index_cn": "Ameba SDK", "rst_rtos/0_ameba_solutions": "\u89e3\u51b3\u65b9\u6848", "rst_rtos/0_ameba_solutions/0_ameba_solutions_index_cn": "\u89e3\u51b3\u65b9\u6848", "rst_rtos/0_at_command": "0.8 AT \u547d\u4ee4\u96c6", "rst_rtos/0_at_command/0_at_command_index_cn": "0.8 AT \u547d\u4ee4\u96c6", "rst_rtos/0_file_system": "0.9 \u865a\u62df\u6587\u4ef6\u7cfb\u7edf", "rst_rtos/0_file_system/0_vfs_index_cn": "0.9 \u865a\u62df\u6587\u4ef6\u7cfb\u7edf", "rst_rtos/0_ftl": "0.a Flash \u8f6c\u6362\u5c42", "rst_rtos/0_ftl/0_ftl_index_cn": "0.a Flash \u8f6c\u6362\u5c42", "rst_rtos/0_gcc_build_environment": "0.1 GCC \u7f16\u8bd1\u73af\u5883", "rst_rtos/0_gcc_build_environment/0_gcc_build_index_cn": "0.1 GCC \u7f16\u8bd1\u73af\u5883", "rst_rtos/0_gcc_build_library": "0.3 GCC \u5e93\u7684\u751f\u6210\u548c\u4f7f\u7528", "rst_rtos/0_gcc_build_library/0_gcc_build_library_index_cn": "0.3 GCC \u5e93\u7684\u751f\u6210\u548c\u4f7f\u7528", "rst_rtos/0_gdb_debug": "0.2 GDB \u8c03\u8bd5", "rst_rtos/0_gdb_debug/0_gdb_debug_index_cn": "0.2 GDB \u8c03\u8bd5", "rst_rtos/0_memory_layout": "0.5 Flash \u548c RAM \u5e03\u5c40", "rst_rtos/0_memory_layout/0_layout_index_cn": "0.5 Flash \u548c RAM \u5e03\u5c40", "rst_rtos/0_sdk_example": "0.4 SDK \u793a\u4f8b", "rst_rtos/0_sdk_example/0_sdk_example_index_cn": "0.4 SDK \u793a\u4f8b", "rst_rtos/0_tools": "0.7 \u5de5\u5177", "rst_rtos/0_tools/0_tools_index_cn": "0.7 \u5de5\u5177", "rst_rtos/0_user_config": "0.6 \u5f00\u53d1\u8005\u914d\u7f6e", "rst_rtos/0_user_config/0_usrcfg_index_cn": "0.6 \u5f00\u53d1\u8005\u914d\u7f6e", "rst_rtos/1_boot_process": "1.1 \u542f\u52a8\u8fc7\u7a0b", "rst_rtos/1_boot_process/0_boot_index_cn": "1.1 \u542f\u52a8\u8fc7\u7a0b", "rst_rtos/1_chipen": "1.4 \u82af\u7247\u4f7f\u80fd", "rst_rtos/1_chipen/0_chipen_index_cn": "1.4 \u82af\u7247\u4f7f\u80fd", "rst_rtos/1_gpio": "1.7 GPIO \u548c\u5f15\u811a\u63a7\u5236", "rst_rtos/1_gpio/0_gpio_index_cn": "1.7 GPIO \u548c\u5f15\u811a\u63a7\u5236", "rst_rtos/1_ipc": "1.5 \u6838\u95f4\u901a\u4fe1", "rst_rtos/1_ipc/0_ipc_index_cn": "1.5 \u6838\u95f4\u901a\u4fe1", "rst_rtos/1_mpu_cache": "1.0 \u5185\u5b58\u4fdd\u62a4\u5355\u5143\u548c\u7f13\u5b58", "rst_rtos/1_mpu_cache/0_mpu_cache_index_cn": "1.0 \u5185\u5b58\u4fdd\u62a4\u5355\u5143\u548c\u7f13\u5b58", "rst_rtos/1_ota": "1.2 \u56fa\u4ef6\u5347\u7ea7\uff08OTA\uff09", "rst_rtos/1_ota/0_ota_index_cn": "1.2 \u56fa\u4ef6\u5347\u7ea7\uff08OTA\uff09", "rst_rtos/1_otpc": "1.3 OTP\u5b58\u50a8\u5668", "rst_rtos/1_otpc/0_otpc_index_cn": "1.3 OTP\u5b58\u50a8\u5668", "rst_rtos/1_pinmux": "1.6 \u5f15\u811a\u590d\u7528", "rst_rtos/1_pinmux/0_pinmux_index_cn": "1.6 \u5f15\u811a\u590d\u7528", "rst_rtos/1_power_save": "1.9 \u4f4e\u529f\u8017\u5f00\u53d1", "rst_rtos/1_power_save/0_ps_index_cn": "1.9 \u4f4e\u529f\u8017\u5f00\u53d1", "rst_rtos/2_whc_fullmac": "2.1 WHC FullMAC", "rst_rtos/2_whc_fullmac/0_fullmac_index_cn": "2.1 WHC FullMAC", "rst_rtos/2_whc_wifi_bridge": "2.0 WHC Bridge", "rst_rtos/2_whc_wifi_bridge/0_wifi_bridge_index_cn": "2.0 WHC Bridge", "rst_rtos/2_wifi_adaptivity_test": "2.4 Wi-Fi Adaptivity \u6d4b\u8bd5\u6307\u5357", "rst_rtos/2_wifi_adaptivity_test/0_wifi_adaptivity_index_cn": "2.4 Wi-Fi Adaptivity \u6d4b\u8bd5\u6307\u5357", "rst_rtos/2_wifi_csi": "2.3 Wi-Fi CSI", "rst_rtos/2_wifi_csi/0_wifi_csi_index_cn": "2.3 Wi-Fi CSI", "rst_rtos/2_wifi_tunnel": "2.2 Wi-Fi R-Mesh", "rst_rtos/2_wifi_tunnel/0_wifi_tunnel_index_cn": "2.2 Wi-Fi R-Mesh", "rst_rtos/3_ap_trustzone": "3.d AP \u5b89\u5168\u670d\u52a1", "rst_rtos/3_ap_trustzone/0_ap_tz_index_cn": "3.d AP \u5b89\u5168\u670d\u52a1", "rst_rtos/3_crypto_engine": "3.9 \u5bf9\u79f0\u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_crypto_engine/0_crypto_engine_index_cn": "3.9 \u5bf9\u79f0\u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_ecdsa_engine": "3.a ECDSA \u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_ecdsa_engine/0_ecdsa_index_cn": "3.a ECDSA \u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_eddsa_engine": "3.b EDDSA \u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_eddsa_engine/0_eddsa_index_cn": "3.b EDDSA \u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_nda_huk_derivation": "3.3 HUK \u751f\u6210 \ud83d\udd12", "rst_rtos/3_nda_huk_derivation/0_huk_derivation_index_nda": "3.3 HUK \u751f\u6210 \ud83d\udd12", "rst_rtos/3_nda_rdp": "3.4 RDP \ud83d\udd12", "rst_rtos/3_nda_rdp/0_rdp_index_nda": "3.4 RDP \ud83d\udd12", "rst_rtos/3_nda_rsip": "3.5 RSIP \ud83d\udd12", "rst_rtos/3_nda_rsip/0_rsip_index_nda": "3.5 RSIP \ud83d\udd12", "rst_rtos/3_nda_secure_boot": "3.6 \u5b89\u5168\u542f\u52a8 \ud83d\udd12", "rst_rtos/3_nda_secure_boot/0_secure_boot_index_nda": "3.6 \u5b89\u5168\u542f\u52a8 \ud83d\udd12", "rst_rtos/3_nda_swd_protection": "3.7 SWD \u4fdd\u62a4 \ud83d\udd12", "rst_rtos/3_nda_swd_protection/0_swd_protection_index_nda": "3.7 SWD \u4fdd\u62a4 \ud83d\udd12", "rst_rtos/3_nda_tfm": "3.8 Trusted Firmware-M (TF-M) \ud83d\udd12", "rst_rtos/3_nda_tfm/0_tfm_index_nda": "3.8 Trusted Firmware-M (TF-M) \ud83d\udd12", "rst_rtos/3_rsa_engine": "3.c RSA \u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_rsa_engine/0_rsa_index_cn": "3.c RSA \u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_security": "3.1 \u5b89\u5168\u4e0e\u52a0\u5bc6", "rst_rtos/3_security/0_security_index_cn": "3.1 \u5b89\u5168\u4e0e\u52a0\u5bc6", "rst_rtos/3_trng": "3.2 \u771f\u968f\u673a\u6570\u53d1\u751f\u5668", "rst_rtos/3_trng/0_trng_index_cn": "3.2 \u771f\u968f\u673a\u6570\u53d1\u751f\u5668", "rst_rtos/4_ai": "4.1 \u4eba\u5de5\u667a\u80fd", "rst_rtos/4_ai/0_ai_index_cn": "4.1 \u4eba\u5de5\u667a\u80fd", "rst_rtos/4_ai_voice": "4.2 \u8bed\u97f3\u8bc6\u522b", "rst_rtos/4_ai_voice/0_ai_voice_index_cn": "4.2 \u8bed\u97f3\u8bc6\u522b", "rst_rtos/4_dsp": "4.4 DSP \u4f7f\u7528\u6307\u5357", "rst_rtos/4_dsp/0_dsp_index_cn": "4.4 DSP \u4f7f\u7528\u6307\u5357", "rst_rtos/4_multimedia": "4.3 \u591a\u5a92\u4f53", "rst_rtos/4_multimedia/0_multimedia_index_cn": "4.3 \u591a\u5a92\u4f53", "rst_rtos/6_mass_production": "6.1 \u6279\u91cf\u751f\u4ea7", "rst_rtos/6_mass_production/0_mp_index_cn": "6.1 \u6279\u91cf\u751f\u4ea7", "rst_rtos/6_mptools": "6.2 \u4ea7\u6d4b\u5de5\u5177", "rst_rtos/6_mptools/0_mptools_index_cn": "6.2 \u4ea7\u6d4b\u5de5\u5177", "rst_rtos/7_usb": "7.1 USB \u4e3b\u673a\u4e0e\u4ece\u673a", "rst_rtos/7_usb/0_usb_index_cn": "7.1 USB \u4e3b\u673a\u4e0e\u4ece\u673a", "rst_rtos/8_adc": "8.4 \u6a21\u6570\u8f6c\u6362\u5668", "rst_rtos/8_adc/0_adc_index_cn": "8.4 \u6a21\u6570\u8f6c\u6362\u5668", "rst_rtos/8_cap_touch": "8.7 Cap-Touch", "rst_rtos/8_cap_touch/0_cap_touch_index_cn": "8.7 Cap-Touch", "rst_rtos/8_dmac": "8.1 DMA \u63a7\u5236\u5668", "rst_rtos/8_dmac/0_dmac_index_cn": "8.1 DMA \u63a7\u5236\u5668", "rst_rtos/8_ir": "8.5 \u7ea2\u5916\u6536\u53d1\u5668", "rst_rtos/8_ir/0_ir_index_cn": "8.5 \u7ea2\u5916\u6536\u53d1\u5668", "rst_rtos/8_key_scan": "8.8 Key-Scan", "rst_rtos/8_key_scan/0_key_scan_index_cn": "8.8 Key-Scan", "rst_rtos/8_lcdc": "8.a LCD \u63a7\u5236\u5668", "rst_rtos/8_lcdc/0_lcdc_index_cn": "8.a LCD \u63a7\u5236\u5668", "rst_rtos/8_ledc": "8.6 LED \u63a7\u5236\u5668", "rst_rtos/8_ledc/0_ledc_index_cn": "8.6 LED \u63a7\u5236\u5668", "rst_rtos/8_psram": "8.2 PSRAM", "rst_rtos/8_psram/0_psram_index_cn": "8.2 PSRAM", "rst_rtos/8_rtc_io": "8.9 RTC-IO", "rst_rtos/8_rtc_io/0_rtc_io_index_cn": "8.9 RTC-IO", "rst_rtos/8_thermal": "8.3 \u6e29\u5ea6\u6d4b\u91cf", "rst_rtos/8_thermal/0_thermal_index_cn": "8.3 \u6e29\u5ea6\u6d4b\u91cf"};
+console.log("TOC_TITLE_MAP:", TOC_TITLE_MAP);
+
+// 获取当前页面的文档名 (例如 'rst_rtos/3_nda_secure_boot/0_secure_boot_index_nda')
+const CURRENT_DOCNAME = 'rst_rtos/0_gcc_build_environment/1_gcc_build_environment_toprst_cn';
+
+// 动态查找顶级分类函数（定义为全局函数）
+window.findTopLevelChapter = function(docname) {
+    console.log("Attempting to find top-level chapter for:", docname);
+    let bestMatch = "";
+    let bestTitle = "Unknown Chapter";
+
+    // 按路径长度降序排序以确保最长匹配
+    const sortedPaths = Object.keys(TOC_TITLE_MAP).sort((a, b) => b.length - a.length);
+
+    for (const path of sortedPaths) {
+        console.log("Checking path:", path);
+        if (docname === path || docname.startsWith(path + '/')) { // 子页面
+            bestMatch = path;
+            bestTitle = TOC_TITLE_MAP[path];
+            console.log("Matched path:", path, "with title:", bestTitle);
+            break;
+        }
+    }
+
+    // 如果没有找到任何匹配项，则尝试更短的路径
+    if (bestMatch === "") {
+        const pathSegments = docname.split('/');
+        while (pathSegments.length > 1) { // 至少保留根路径
+            const candidate = pathSegments.join('/');
+            console.log("Checking shorter path:", candidate);
+            if (TOC_TITLE_MAP[candidate]) {
+                bestTitle = TOC_TITLE_MAP[candidate];
+                console.log("Matched shorter path:", candidate, "with title:", bestTitle);
+                break;
+            }
+            pathSegments.pop();
+        }
+    }
+
+    console.log("Final top-level chapter:", bestTitle);
+    return bestTitle;
+}
+
+// 初始化时调用
+document.addEventListener('DOMContentLoaded', function() {
+    const topLevelChapter = findTopLevelChapter(CURRENT_DOCNAME);
+    console.log("Top Level Chapter:", topLevelChapter);
+
+    // 将顶级分类插入到DOM中（根据需要）
+    const chapterElement = document.createElement('div');
+    chapterElement.className = 'top-level-chapter';
+    chapterElement.innerHTML = `<strong>Top Level Chapter: </strong>${topLevelChapter}`;
+    document.body.appendChild(chapterElement);
+});
+</script>
+
+    <!-- 问题回报 -->
+    <!-- source/_templates/_layout_issue_report.html -->
+<div id="prompt-box" style="
+    display: none;
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.8);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    z-index: 9999;
+    text-align: center;
+    font-size: 14px;
+"></div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    'use strict'; // 添加严格模式
+
+    // 获取所有DOM元素引用
+    const reportButton = document.getElementById('report-button');
+    const feedbackDialog = document.getElementById('feedback-dialog');
+    const feedbackText = document.getElementById('inquire_input');
+    const submitButton = document.getElementById('submit-feedback');
+    const cancelButton = document.getElementById('cancel-feedback');
+    const promptBox = document.getElementById('prompt-box');
+    const chapterSelect = document.getElementById('chapter-select');
+    const paragraphInput = document.getElementById('paragraph-input');
+    const postTypeSelect = document.getElementById('post-type');
+    console.log('帖子类型(postTypeSelect)DOM元素:', postTypeSelect); // 应输出<select>元素
+
+    // 状态变量
+    let hasUserInput = false; // 跟踪用户是否主动输入
+    let selectedText = '';
+    const language = 'zh-CN'; // 从模板引擎获取语言变量
+
+    // 初始化时设置placeholder
+    paragraphInput.placeholder = language === 'zh_CN' 
+        ? '你可以先选择有问题的段落或手动输入...'
+        : 'You can select text or type directly here...';
+
+    // 获取当前激活的章节
+    function getCurrentChapter() {
+        try {
+            // 通过激活的菜单项获取当前章节
+            const currentLink = document.querySelector('.wy-menu .toctree-l1.current > a');
+            if (currentLink) {
+                return currentLink.textContent.replace('¶', '').trim();
+            }
+
+            // 如果没有找到激活的链接，尝试通过页面标题获取
+            const pageTitle = document.querySelector('h1');
+            if (pageTitle) {
+                return pageTitle.textContent.split('\n')[0].trim();
+            }
+
+            // 如果以上方法都失败，尝试通过URL路径推断章节
+            const pathParts = window.location.pathname.split('/');
+            if (pathParts.length > 2) {
+                return decodeURIComponent(pathParts[pathParts.length - 2]);
+            }
+
+            return null;
+        } catch (error) {
+            console.error('获取当前章节失败:', error);
+            return null;
+        }
+    }
+
+    // 填充章节选择框
+    function populateChapters() {
+        const chapterElements = document.querySelectorAll('.wy-menu .toctree-l1 > a');
+        const chapters = Array.from(chapterElements).map(el => el.textContent.replace('¶', '').trim());
+        const currentChapter = getCurrentChapter();
+
+        console.log('提取全部章节:', chapters);
+        console.log('当前页面章节:', currentChapter);
+
+        if (chapters.length === 0) {
+            console.error('未找到章节链接');
+            return;
+        }
+
+        chapterSelect.innerHTML = '';
+
+        // 添加默认选项
+        const defaultOption = document.createElement('option');
+        defaultOption.value = '';
+        defaultOption.textContent = language === 'zh_CN' ? '-- 请选择章节 --' : '-- Select Chapter --';
+        chapterSelect.appendChild(defaultOption);
+
+        // 添加章节选项
+        chapters.forEach(chapter => {
+            const option = document.createElement('option');
+            option.value = chapter;
+            option.textContent = chapter;
+            if (chapter === currentChapter) {
+                option.selected = true;
+            }
+            chapterSelect.appendChild(option);
+        });
+    }
+
+    // 初始化章节选择框
+    populateChapters();
+
+    // 报告按钮点击事件（处理文本选择）
+    reportButton.addEventListener('click', function() {
+        // 重置所有输入字段，每次重新inquire应该让对话框处于默认状态
+        feedbackText.value = '';          // 清空问题输入框
+        paragraphInput.value = '';        // 清空段落输入框
+        selectedText = '';                // 清除之前选择的文本
+
+        const selection = window.getSelection().toString().trim();
+        if (selection) {
+            paragraphInput.value = selection;
+        } else {
+            // 保持placeholder提示
+            if (!paragraphInput.value.trim()) {
+                paragraphInput.value = '';
+            }
+        }
+        feedbackDialog.style.display = 'block';
+    });
+
+    // 监听输入事件
+    paragraphInput.addEventListener('input', function() {
+        // 标记用户已经输入
+        this.placeholder = '';
+    });
+
+    // 提交按钮点击事件
+    submitButton.addEventListener('click', function() {
+        const userQuestion = feedbackText.value.trim();
+        const selectedChapter = chapterSelect.value;
+        const selectedPostType = postTypeSelect.value;
+        const paragraphContent = paragraphInput.value.trim() || 'null';
+
+        // 在提交事件顶部添加详细日志
+        console.group('=== 提交调试信息 ===');
+        console.log('章节选择值:', chapterSelect.value);
+        console.log('帖子类型postTypeSelect DOM元素:', postTypeSelect);
+        console.log('帖子类型postTypeSelect 选中的选项:', postTypeSelect.options[postTypeSelect.selectedIndex]);
+        console.log('帖子类型postTypeSelect 实际值:', postTypeSelect.value); // 应输出'doc_correction' 对应文档纠错
+          console.groupEnd();
+
+        // 验证输入
+        if (!userQuestion) {
+            alert(language === 'zh_CN' ? '问题描述为空' : 'Issue description cannot be empty');
+            return;
+        }
+        if (!selectedChapter) {
+            alert(language === 'zh_CN' ? '请选择相关章节' : 'Please select a related chapter');
+            return;
+        }
+
+        if (!selectedPostType) {
+            alert(language === 'zh_CN' ? '请选择帖子类型' : 'Please select a post type');
+            return;
+        }
+
+        // 获取用户名
+        const username = localStorage.getItem('username') || 'Anonymous';
+
+        // 构建提交数据
+        const feedbackData = {
+            user: username,
+            chapters: selectedChapter,
+            post_type: selectedPostType,
+            paragraph: paragraphContent,
+            question: userQuestion
+        };
+
+        console.log('完整提交数据:', feedbackData);
+
+        // 发送到后端
+        fetch('http://172.29.57.206:5000/submit', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(feedbackData)
+        })
+        .then(response => {
+            if (!response.ok) throw new Error('Network response was not ok');
+            return response.json();
+        })
+        .then(data => {
+            console.log('提交成功:', data);
+            promptBox.textContent = language === 'zh_CN' ? '问题已成功提交' : 'Issue submitted successfully';
+            promptBox.style.display = 'block';
+            setTimeout(() => promptBox.style.display = 'none', 5000);
+        })
+        .catch(error => {
+            console.error('提交失败:', error);
+            promptBox.textContent = language === 'zh_CN' ? '提交失败，请检查网络连接' : 'Submission failed, check your network';
+            promptBox.style.display = 'block';
+            setTimeout(() => promptBox.style.display = 'none', 5000);
+        });
+
+        // 关闭对话框
+        feedbackDialog.style.display = 'none';
+    });
+
+
+    // 取消按钮点击事件
+    cancelButton.addEventListener('click', function() {
+        feedbackDialog.style.display = 'none';
+    });
+
+    // 初始化检查
+    console.log('问题反馈系统已加载');
+    console.log('当前语言:', language);
+    console.log('检测到章节数量:', chapterSelect.options.length - 1);
+});
+</script>
+
+    <style>
+        /* 隐藏整个搜索栏容器 */
+        .wy-side-nav-search > div[role="search"] {
+            display: none !important;
+        }
+
+        /* 或者更精确地隐藏表单 */
+        form#rtd-search-form {
+            display: none !important;
+        }
+    </style>
+
+    <!-- 引入功能模块 -->
+    
+<script>
+    /* ====================== 嵌入式配置开始 ====================== */
+    const embeddedConfig = {
+        "freertos": {
+            "name": "FreeRTOS",
+            "languages": {
+                "en": ["latest"],
+                "cn": ["latest"]
+            }
+        },
+        "linux": {
+            "name": "Linux",
+            "languages": {
+                "en": ["latest"],
+                "cn": ["latest"]
+            }
+        }
+    };
+    /* ====================== 嵌入式配置结束 ====================== */
+</script>
+    
+<script>
+    // 获取基础URL路径
+    function getBaseURL() {
+        const url = new URL(window.location.href);
+        if (url.protocol === 'file:') {
+            // 本地路径处理
+            const pathParts = url.pathname.split('/').filter(part => part !== '');
+            const index = pathParts.indexOf('build');
+            return `file://${pathParts.slice(0, index + 1).join('/')}/`;
+        } else {
+            // 网络路径处理
+            return `${url.origin}/${url.pathname.split('/').slice(1, 3).join('/')}/`;
+        }
+    }
+
+    // 获取当前URL路径分段
+    function getCurrentSegments() {
+        const url = new URL(window.location.href);
+        let segments = url.pathname.split('/').filter(segment => segment);
+
+        if (url.protocol === 'file:') {
+            // 本地路径处理
+            const index = segments.indexOf('build');
+            segments = segments.slice(index + 1); // 去掉 build 及之前的路径
+        } else {
+            // 网络路径处理
+            segments = segments.slice(3); // 去掉 ameba-iot-docs/
+        }
+
+        return {
+            osKey: segments[0] || 'freertos', // 默认为 freertos
+            language: segments[1] || 'en',   // 默认为 en
+            version: segments[2] || 'latest' // 默认为 latest
+        };
+    }
+</script>
+    
+<script>
+    // 获取OS显示名称列表
+    function getOSNames(data) {
+        return Object.keys(data).map(key => data[key].name);
+    }
+
+    // 获取指定OS的语言列表
+    function getLanguages(data, osKey) {
+        return Object.keys(data[osKey]?.languages || {});
+    }
+
+    // 获取指定OS和语言的版本列表
+    function getVersions(data, osKey, language) {
+        return data[osKey]?.languages?.[language] || ['latest'];
+    }
+
+    // 根据显示名称查找OS键
+    function findOSKey(data, displayName) {
+        return Object.keys(data).find(key => data[key].name === displayName);
+    }
+</script>
+    
+<script>
+    // 验证并修正路径参数
+    function validateSegments(segments) {
+        const currentOSName = embeddedConfig[segments.osKey]?.name;
+
+        // 如果 OS 无效，默认设置为 FreeRTOS
+        if (!currentOSName) {
+            console.warn("Invalid OS key, defaulting to FreeRTOS");
+            segments.osKey = 'freertos';
+        }
+
+        // 如果语言无效，默认设置为 en
+        if (!getLanguages(embeddedConfig, segments.osKey).includes(segments.language)) {
+            console.warn("Invalid language, defaulting to en");
+            segments.language = 'en';
+        }
+
+        return segments;
+    }
+
+    // 生成选择器HTML
+    function generateSelectorsHTML(segments) {
+        return `
+            <div id="custom-selectors" style="padding: 0; background: none; border: none;">
+                <!-- 系统选择器 -->
+                <div class="selector-container">
+                    <label class="selector-label">
+                        ${segments.language === 'cn' ? '系统' : 'OS'}:
+                    </label>
+                    <select id="os-selector" class="selector-dropdown">
+                        ${Object.keys(embeddedConfig).map(key => `
+                            <option value="${key}">${embeddedConfig[key].name}</option>
+                        `).join('')}
+                    </select>
+                </div>
+
+                <!-- 语言选择器 -->
+                <div class="selector-container">
+                    <label class="selector-label">
+                        ${segments.language === 'cn' ? '语言' : 'Language'}:
+                    </label>
+                    <select id="language-selector" class="selector-dropdown">
+                        ${getLanguages(embeddedConfig, segments.osKey).map(lang => `
+                            <option value="${lang}">${lang}</option>
+                        `).join('')}
+                    </select>
+                </div>
+
+                <!-- 版本选择器 -->
+                <div class="selector-container version-selector-container">
+                    <label class="selector-label">
+                        ${segments.language === 'cn' ? '版本' : 'Version'}:
+                    </label>
+                    <select id="version-selector" class="selector-dropdown">
+                        ${getVersions(embeddedConfig, segments.osKey, segments.language).map(ver => `
+                            <option value="${ver}">${ver}</option>
+                        `).join('')}
+                    </select>
+                </div>
+
+                ${generateUserPanelHTML(segments)}
+            </div>`;
+    }
+
+    // 生成用户面板HTML
+    function generateUserPanelHTML(segments) {
+        return `
+            <div class="user-panel">
+                <!-- 用户名显示（登录后可见） -->
+                <div id="user-info" style="display: ${localStorage.getItem('isLoggedIn') ? 'block' : 'none'}">
+                    <span id="username-display" class="username">${localStorage.getItem('username') || ''}</span>
+                </div>
+
+                <!-- 登录注册按钮（未登录时可见） -->
+                <div id="auth-buttons" class="button-row" style="display: ${localStorage.getItem('isLoggedIn') ? 'none' : 'flex'}">
+                    <button class="auth-btn" id="register-button">${segments.language === 'cn' ? '注册' : 'Register'}</button>
+                    <button class="auth-btn" id="login-button">${segments.language === 'cn' ? '登录' : 'Login'}</button>
+                </div>
+
+                <!-- 外链按钮（始终可见） -->
+                <div class="button-row">
+                    <button class="official-btn" onclick="window.open('https://www.realmcu.com/', '_blank')">
+                        ${segments.language === 'cn' ? '官网' : 'Official'}
+                    </button>
+                    <button class="forum-btn" onclick="window.open('http://172.29.57.206:5000/view', '_blank')">
+                        ${segments.language === 'cn' ? '论坛' : 'Forum'}
+                    </button>
+                </div>
+            </div>
+        `;
+    }
+
+    // 设置初始选中值
+    function setInitialValues(segments) {
+        document.getElementById('os-selector').value = segments.osKey;
+        document.getElementById('language-selector').value = segments.language;
+
+        const versionSelector = document.getElementById('version-selector');
+        const availableVersions = getVersions(embeddedConfig, segments.osKey, segments.language);
+        versionSelector.value = availableVersions.includes(segments.version) ? segments.version : availableVersions[0] || 'latest';
+    }
+</script>
+    
+<script>
+    // 绑定事件监听
+    function bindEvents(baseURL, segments) {
+        document.getElementById('os-selector').addEventListener('change', () => {
+            const newOSKey = document.getElementById('os-selector').value;
+            const availableLangs = getLanguages(embeddedConfig, newOSKey);
+            const defaultLang = availableLangs[0] || 'en';
+            const defaultVersion = getVersions(embeddedConfig, newOSKey, defaultLang)[0] || 'latest';
+            redirectTo(`${baseURL}${newOSKey}/${defaultLang}/${defaultVersion}/`);
+        });
+
+        document.getElementById('language-selector').addEventListener('change', () => {
+            const newLang = document.getElementById('language-selector').value;
+            const defaultVersion = getVersions(embeddedConfig, segments.osKey, newLang)[0] || 'latest';
+            redirectTo(`${baseURL}${segments.osKey}/${newLang}/${defaultVersion}/`);
+        });
+
+        document.getElementById('version-selector').addEventListener('change', () => {
+            const newVer = document.getElementById('version-selector').value;
+            redirectTo(`${baseURL}${segments.osKey}/${segments.language}/${newVer}/`);
+        });
+    }
+
+    // 跳转函数
+    function redirectTo(path) {
+        const url = new URL(path, window.location.href);
+        if (url.protocol === 'file:') {
+            url.pathname += 'index.html';
+        }
+        window.location.href = url.href;
+    }
+</script>
+    
+<script>
+    // 初始化认证对话框
+    function initAuthDialogs() {
+        function createAuthDialog(type) {
+            const lang = document.getElementById('language-selector').value === 'cn' ? 'cn' : 'en';
+
+            const dialog = document.createElement('div');
+            dialog.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.5);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 9999;
+            `;
+
+            // 弹窗内容
+            const content = document.createElement('div');
+            content.style.cssText = `
+                background: white;
+                padding: 20px;
+                border-radius: 8px;
+                min-width: 300px;
+            `;
+
+            // 标题
+            const title = document.createElement('h3');
+            title.textContent = type === 'register' 
+                ? (lang === 'cn' ? '注册' : 'Register') 
+                : (lang === 'cn' ? '登录' : 'Login');
+            content.appendChild(title);
+
+            // 用户名输入
+            const usernameLabel = document.createElement('label');
+            usernameLabel.textContent = lang === 'cn' ? '用户名：' : 'Username:';
+            const usernameInput = document.createElement('input');
+            usernameInput.style.cssText = 'width: 100%; margin-bottom: 10px; padding: 5px;';
+            content.appendChild(usernameLabel);
+            content.appendChild(usernameInput);
+
+            // 密码输入
+            const passwordLabel = document.createElement('label');
+            passwordLabel.textContent = lang === 'cn' ? '密码：' : 'Password:';
+            const passwordInput = document.createElement('input');
+            passwordInput.type = 'password';
+            passwordInput.style.cssText = 'width: 100%; margin-bottom: 10px; padding: 5px;';
+            content.appendChild(passwordLabel);
+            content.appendChild(passwordInput);
+
+            // 注册时需要确认密码
+            let confirmPasswordInput;
+            if (type === 'register') {
+                const confirmLabel = document.createElement('label');
+                confirmLabel.textContent = lang === 'cn' ? '确认密码：' : 'Confirm Password:';
+                confirmPasswordInput = document.createElement('input');
+                confirmPasswordInput.type = 'password';
+                confirmPasswordInput.style.cssText = 'width: 100%; margin-bottom: 10px; padding: 5px;';
+                content.appendChild(confirmLabel);
+                content.appendChild(confirmPasswordInput);
+            }
+
+            // 按钮容器
+            const buttonContainer = document.createElement('div');
+            buttonContainer.style.cssText = 'display: flex; gap: 10px; margin-top: 10px;';
+
+            // 确认按钮
+            const confirmBtn = document.createElement('button');
+            confirmBtn.textContent = lang === 'cn' ? '确认' : 'Confirm';
+            confirmBtn.onclick = () => {
+                const username = usernameInput.value.trim();
+                const password = passwordInput.value.trim();
+                const confirmPassword = confirmPasswordInput ? confirmPasswordInput.value.trim() : null;
+
+                // 验证输入
+                if (!username || !password) {
+                    alert(lang === 'cn' ? '用户名和密码不能为空！' : 'Username and password are required!');
+                    return;
+                }
+
+                if (type === 'register' && password !== confirmPassword) {
+                    alert(lang === 'cn' ? '两次输入的密码不一致！' : 'Passwords do not match!');
+                    return;
+                }
+
+                // flask 发送请求
+                fetch('http://172.29.57.206:5000/auth', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        action: type,
+                        username,
+                        password
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert(lang === 'cn' ? '操作成功！' : 'Success!');
+                        // 更新本地存储和UI
+                        localStorage.setItem('isLoggedIn', 'true');
+                        localStorage.setItem('username', username);
+                        // 强制刷新显示状态
+                        document.getElementById('auth-buttons').style.display = 'none';
+                        document.getElementById('user-info').style.display = 'block';
+                        document.getElementById('username-display').textContent = username;
+                        document.body.removeChild(dialog);
+                    } else {
+                        alert(lang === 'cn' ? '失败：' + data.message : 'Failed: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert(lang === 'cn' ? '网络错误' : 'Network error');
+                });
+            };
+
+            // 取消按钮
+            const cancelBtn = document.createElement('button');
+            cancelBtn.textContent = lang === 'cn' ? '取消' : 'Cancel';
+            cancelBtn.onclick = () => document.body.removeChild(dialog);
+
+            buttonContainer.appendChild(confirmBtn);
+            buttonContainer.appendChild(cancelBtn);
+            content.appendChild(buttonContainer);
+            dialog.appendChild(content);
+            document.body.appendChild(dialog);
+        }
+
+        document.getElementById('register-button').addEventListener('click', () => createAuthDialog('register'));
+        document.getElementById('login-button').addEventListener('click', () => createAuthDialog('login'));
+    }
+
+    // 同步登录状态
+    function syncLoginState() {
+        const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+        document.getElementById('auth-buttons').style.display = isLoggedIn ? 'none' : 'flex';
+        document.getElementById('user-info').style.display = isLoggedIn ? 'block' : 'none';
+        if (isLoggedIn) {
+            document.getElementById('username-display').textContent = localStorage.getItem('username') || '';
+        }
+    }
+</script>
 
 </head>
 
@@ -54,6 +943,7 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
+    
 
           
           
@@ -67,6 +957,35 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
+
+    
+    <div id="custom-selectors" style="display: block !important; padding: 0; background: none; border: none;">
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        try {
+            const segments = validateSegments(getCurrentSegments());
+            const baseURL = getBaseURL();
+
+            // 渲染HTML
+            document.getElementById('custom-selectors').innerHTML = generateSelectorsHTML(segments);
+
+            // 设置初始值
+            setInitialValues(segments);
+
+            // 绑定事件
+            bindEvents(baseURL, segments);
+
+            // 初始化认证逻辑
+            initAuthDialogs();
+            syncLoginState();
+        } catch (error) {
+            console.error("Error initializing selectors:", error);
+        }
+    });
+</script>
+
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../0_ameba_product/0_ameba_product_center_index_cn.html">产品中心</a></li>
@@ -76,65 +995,67 @@
 <li class="toctree-l2 current"><a class="current reference internal" href="#">概述</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#gcc">准备 GCC 编译环境</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#id2">安装工具链</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sdk">SDK 路径</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#sdk-menuconfig">配置 SDK (menuconfig)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#building-code">编译代码</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id4">固件文件</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id5">固件下载</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#image-files">固件文件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#creat-project">创建外部工程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id6">固件下载</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../0_gdb_debug/0_gdb_debug_index_cn.html">0.2 GDB调试</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_gdb_debug/0_gdb_debug_index_cn.html">0.2 GDB 调试</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../0_gcc_build_library/0_gcc_build_library_index_cn.html">0.3 GCC 库的生成和使用</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../0_sdk_example/0_sdk_example_index_cn.html">0.4 SDK 示例</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../0_memory_layout/0_layout_index_cn.html">0.5 Flash 和 RAM 布局</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../0_user_config/0_usrcfg_index_cn.html">0.6 开发者配置</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../0_tools/0_tools_index_cn.html">0.7 工具</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../0_at_command/0_at_command_index_cn.html">0.8 AT 命令</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_at_command/0_at_command_index_cn.html">0.8 AT 命令集</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../0_file_system/0_vfs_index_cn.html">0.9 虚拟文件系统</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../0_ftl/0_ftl_index_cn.html">0.A Flash 转换层</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_ftl/0_ftl_index_cn.html">0.a Flash 转换层</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../1_mpu_cache/0_mpu_cache_index_cn.html">1.0 内存保护单元和缓存</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../1_boot_process/0_boot_index_cn.html">1.1 启动过程</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../1_ota/0_ota_index_cn.html">1.2 固件在线升级(OTA)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../1_otpc/0_otpc_index.html">1.3 OTP存储器</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../1_chipen/0_chipen_index_cn.html">1.4 CHIP_EN</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_ota/0_ota_index_cn.html">1.2 固件升级（OTA）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_otpc/0_otpc_index_cn.html">1.3 OTP存储器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_chipen/0_chipen_index_cn.html">1.4 芯片使能</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../1_ipc/0_ipc_index_cn.html">1.5 核间通信</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../1_pinmux/0_pinmux_index_cn.html">1.6 PINMUX</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../1_gpio/0_gpio_index_cn.html">1.7 GPIO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_pinmux/0_pinmux_index_cn.html">1.6 引脚复用</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_gpio/0_gpio_index_cn.html">1.7 GPIO 和引脚控制</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../1_power_save/0_ps_index_cn.html">1.9 低功耗开发</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../2_whc_wifi_bridge/0_wifi_bridge_index_cn.html">2.1 WHC Bridge</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../2_whc_fullmac/0_fullmac_index_cn.html">2.2 WHC FullMAC</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../2_wifi_tunnel/0_wifi_tunnel_index_cn.html">2.3 Wi-Fi R-Mesh</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../2_wifi_csi/0_wifi_csi_index_cn.html">2.5 Wi-Fi CSI</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../2_wifi_adaptivity_test/0_wifi_adaptivity_index.html">2.6 Wi-Fi Adaptivity 测试指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_whc_wifi_bridge/0_wifi_bridge_index_cn.html">2.0 WHC Bridge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_whc_fullmac/0_fullmac_index_cn.html">2.1 WHC FullMAC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_wifi_tunnel/0_wifi_tunnel_index_cn.html">2.2 Wi-Fi R-Mesh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_wifi_csi/0_wifi_csi_index_cn.html">2.3 Wi-Fi CSI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_wifi_adaptivity_test/0_wifi_adaptivity_index_cn.html">2.4 Wi-Fi Adaptivity 测试指南</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../3_security/0_security_index_cn.html">3.1 安全与加密</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../3_trng/0_trng_index_cn.html">3.2 真随机数发生器</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../3_nda_huk_derivation/0_huk_derivation_index_nda.html">3.3 HUK Derivation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../3_nda_rdp/0_rdp_index_nda.html">3.4 RDP</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../3_nda_rsip/0_rsip_index_nda.html">3.5 RSIP</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../3_nda_secure_boot/0_secure_boot_index_nda.html">3.6 Secure Boot</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../3_nda_swd_protection/0_swd_protection_index_nda.html">3.7 SWD Protection</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../3_nda_tfm/0_tfm_index_nda.html">3.8 Trusted Firmware-M (TF-M)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_huk_derivation/0_huk_derivation_index_nda.html">3.3 HUK 生成 🔒</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_rdp/0_rdp_index_nda.html">3.4 RDP 🔒</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_rsip/0_rsip_index_nda.html">3.5 RSIP 🔒</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_secure_boot/0_secure_boot_index_nda.html">3.6 安全启动 🔒</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_swd_protection/0_swd_protection_index_nda.html">3.7 SWD 保护 🔒</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_tfm/0_tfm_index_nda.html">3.8 Trusted Firmware-M (TF-M) 🔒</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../3_crypto_engine/0_crypto_engine_index_cn.html">3.9 对称硬件加密引擎</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../3_ecdsa_engine/0_ecdsa_index_cn.html">3.a ECDSA 硬件加密引擎</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../3_eddsa_engine/0_eddsa_index_cn.html">3.b EDDSA 硬件加密引擎</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../3_rsa_engine/0_rsa_index_cn.html">3.c RSA 硬件加密引擎</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_ap_trustzone/0_ap_tz_index_cn.html">3.d AP 安全服务</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../4_ai/0_ai_index_cn.html">4.1 人工智能</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../4_ai_voice/0_ai_voice_index_cn.html">4.2 语音识别</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../4_multimedia/0_multimedia_index_cn.html">4.3 多媒体</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../4_dsp/0_dsp_index_cn.html">4.4 DSP 使用指南</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../6_mass_production/0_mp_index_cn.html">6.1 量产指导</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../6_mp_image/0_mp_image_index_cn.html">6.2 MP 固件</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../6_mptools/0_mptools_index_cn.html">6.3 产测工具</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../6_mass_production/0_mp_index_cn.html">6.1 批量生产</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../6_mptools/0_mptools_index_cn.html">6.2 产测工具</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../7_usb/0_usb_index_cn.html">7.1 USB 主机与从机</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../8_dmac/0_dmac_index_cn.html">8.1 DMA 控制器</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../8_psram/0_psram_index_cn.html">8.2 PSRAM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../8_thermal/0_thermal_index_cn.html">8.3 温度测量</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../8_adc/0_adc_index_cn.html">8.4 模数转换器</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../8_ir/0_ir_index_cn.html">8.5 红外收发器</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../8_ledc/0_ledc_index_cn.html">8.6 LED控制器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_ledc/0_ledc_index_cn.html">8.6 LED 控制器</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../8_cap_touch/0_cap_touch_index_cn.html">8.7 Cap-Touch</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../8_key_scan/0_key_scan_index_cn.html">8.8 Key-Scan</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../8_rtc_io/0_rtc_io_index_cn.html">8.9 RTC-IO</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../8_lcdc/0_lcdc_index_cn.html">8.A LCD控制器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_lcdc/0_lcdc_index_cn.html">8.a LCD 控制器</a></li>
 </ul>
 
         </div>
@@ -147,7 +1068,7 @@
       </nav>
 
       <div class="wy-nav-content">
-
+    
         <div class="rst-content">
           <div role="navigation" aria-label="页面导航">
   <ul class="wy-breadcrumbs">
@@ -223,24 +1144,27 @@ document.addEventListener("DOMContentLoaded", function() {
 <tr class="row-odd"><td><p>ninja</p></td>
 <td><p>&gt;=1.10.1</p></td>
 </tr>
-<tr class="row-even"><td><p>ccache</p></td>
+<tr class="row-even"><td><p>make</p></td>
+<td><p>&gt;=3.82</p></td>
+</tr>
+<tr class="row-odd"><td><p>ccache</p></td>
 <td><p>&gt;=4.5.1</p></td>
 </tr>
-<tr class="row-odd"><td><p>python3</p></td>
+<tr class="row-even"><td><p>python3</p></td>
 <td><p>&gt;=3.10</p></td>
 </tr>
-<tr class="row-even"><td><p>wget</p></td>
+<tr class="row-odd"><td><p>wget</p></td>
 <td><p>recommand newest</p></td>
 </tr>
-<tr class="row-odd"><td><p>7zip</p></td>
+<tr class="row-even"><td><p>7zip</p></td>
 <td><p>recommand newest</p></td>
 </tr>
 </tbody>
 </table>
 <p>用户可以采用两种方式搭建环境：</p>
 <ul class="simple">
-<li><p><strong>方式1:</strong> 下载我们提供的装软件合集包，并在编译前运行脚本自动配置环境变量。（这种方式不会影响用户原先的软件环境，并且可以避免软件版本带来的兼容性问题）</p></li>
-<li><p><strong>方式2:</strong> 自行下载需要的工具软件，并自行配置对应的环境变量。(如果用户希望使用本地已有的环境，也可以手动下载所需要的软件，但这种方式可能会影响用户的其他环境)</p></li>
+<li><p><strong>方式1:</strong> 下载我们提供的装软件合集包，并在编译前运行脚本自动配置环境变量。这种方式不会影响用户原先的软件环境，并且可以避免软件版本带来的兼容性问题。</p></li>
+<li><p><strong>方式2:</strong> 自行下载需要的工具软件，并配置对应的环境变量。如果用户希望使用本地已有的环境，可以采用此方式，但可能会影响用户的其他环境。</p></li>
 </ul>
 <div class="sphinx-tabs docutils container">
 <div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-0-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-0-0-0" name="0-0" role="tab" tabindex="0">安装软件合集（推荐）</button><button aria-controls="panel-0-0-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-1" name="0-1" role="tab" tabindex="-1">手动搭建环境</button></div><div aria-labelledby="tab-0-0-0" class="sphinx-tabs-panel" id="panel-0-0-0" name="0-0" role="tabpanel" tabindex="0"><div class="sphinx-tabs docutils container">
@@ -318,7 +1242,7 @@ document.addEventListener("DOMContentLoaded", function() {
 </div><div aria-labelledby="tab-0-0-1" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-1" name="0-1" role="tabpanel" tabindex="0"><div class="sphinx-tabs docutils container">
 <div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-2-2-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-2-2-0" name="2-0" role="tab" tabindex="0">Linux</button><button aria-controls="panel-2-2-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-2-2-1" name="2-1" role="tab" tabindex="-1">Windows</button></div><div aria-labelledby="tab-2-2-0" class="sphinx-tabs-panel" id="panel-2-2-0" name="2-0" role="tabpanel" tabindex="0"><ol class="arabic">
 <li><p>安装软件，需要用户拥有sudo 权限：</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">sudo apt-get install cmake ninja ccache wget python3 python3-pip python3-venv</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">sudo apt-get install cmake ninja make ccache wget python3 python3-pip python3-venv</span>
 </pre></div>
 </div>
 </li>
@@ -357,7 +1281,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 <span class="go">choco install cmake --installargs &#39;ADD_CMAKE_TO_PATH=System&#39;</span>
 
-<span class="go">choco install ninja ccache python310 wget 7zip</span>
+<span class="go">choco install ninja ccache python310 wget 7zip make</span>
 </pre></div>
 </div>
 </li>
@@ -448,149 +1372,131 @@ document.addEventListener("DOMContentLoaded", function() {
 </div>
 </div></div>
 </section>
-<section id="sdk-menuconfig">
-<span id="configuring-sdk"></span><h1>配置 SDK (menuconfig)<a class="headerlink" href="#sdk-menuconfig" title="Link to this heading"></a></h1>
-<p>用户可通过项目对应的 <code class="docutils literal notranslate"><span class="pre">menuconfig.py</span></code> 脚本配置 SDK。</p>
+<section id="sdk">
+<h1>SDK 路径<a class="headerlink" href="#sdk" title="Link to this heading"></a></h1>
+<p>配置及编译SDK需要在SOC的project路径下进行，对应路径下均放置了供配置及编译的python脚本。</p>
+<p>SOC对应的GCC project路径如下所示：</p>
 <div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-5-5-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-5-5-0" name="5-0" role="tab" tabindex="0">RTL8721Dx</button><button aria-controls="panel-5-5-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-5-5-1" name="5-1" role="tab" tabindex="-1">RTL8720E</button><button aria-controls="panel-5-5-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-5-5-2" name="5-2" role="tab" tabindex="-1">RTL8726E</button><button aria-controls="panel-5-5-3" aria-selected="false" class="sphinx-tabs-tab" id="tab-5-5-3" name="5-3" role="tab" tabindex="-1">RTL8730E</button></div><div aria-labelledby="tab-5-5-0" class="sphinx-tabs-panel" id="panel-5-5-0" name="5-0" role="tabpanel" tabindex="0"><p><strong>配置步骤</strong></p>
-<ol class="arabic simple">
-<li><p>进入 <code class="docutils literal notranslate"><span class="pre">{SDK}\amebadplus_gcc_project</span></code> 目录。</p></li>
-<li><p>在Windows的命令提示符窗口或Linux终端下运行 <code class="docutils literal notranslate"><span class="pre">menuconfig.py</span></code> 命令。</p></li>
-</ol>
-<p><strong>重要的编译配置选项</strong></p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">General</span> <span class="pre">Config</span></code>: KM4 and KM0 共享的配置选项，这些配置将同时影响KM4和KM0。</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">Network</span> <span class="pre">Config</span></code>:  KM4 and KM0 共享的配置选项，这些配置将同时影响KM4和KM0。</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">KM4</span> <span class="pre">Config</span></code>: 专为KM4设置的配置选项，这些配置仅会影响KM4，不会影响KM0。</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">KM0</span> <span class="pre">Config</span></code>: 专为KM0设置的配置选项，这些配置仅会影响KM0，不会影响KM4。</p></li>
-</ul>
-<p><strong>图示</strong></p>
-<figure class="align-center">
-<a class="reference internal image-reference" href="../../_images/menuconfig_ui_dplus.svg"><img alt="../../_images/menuconfig_ui_dplus.svg" height="598" src="../../_images/menuconfig_ui_dplus.svg" width="648" /></a>
-</figure>
-</div><div aria-labelledby="tab-5-5-1" class="sphinx-tabs-panel" hidden="true" id="panel-5-5-1" name="5-1" role="tabpanel" tabindex="0"><p><strong>配置步骤</strong></p>
-<ol class="arabic simple">
-<li><p>进入 <code class="docutils literal notranslate"><span class="pre">{SDK}\amebalite_gcc_project</span></code> 目录。</p></li>
-<li><p>在Windows的命令提示符窗口或Linux终端下运行 <code class="docutils literal notranslate"><span class="pre">menuconfig.py</span></code> 命令。</p></li>
-</ol>
-<p><strong>重要的编译配置选项</strong></p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">General</span> <span class="pre">Config</span></code>: KM4 and KR4 共享的配置选项，这些配置将同时影响KM4和KR4。</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">Network</span> <span class="pre">Config</span></code>:  KM4 and KR4 共享的配置选项，这些配置将同时影响KM4和KR4。</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">KM4</span> <span class="pre">Config</span></code>: 专为KM4设置的配置选项，这些配置仅会影响KM4，不会影响KR4。</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">KR4</span> <span class="pre">Config</span></code>: 专为KR4设置的配置选项，这些配置仅会影响KR4，不会影响KM4。</p></li>
-</ul>
-<p><strong>图示</strong></p>
-<figure class="align-center">
-<a class="reference internal image-reference" href="../../_images/menuconfig_ui_lite.svg"><img alt="../../_images/menuconfig_ui_lite.svg" height="479" src="../../_images/menuconfig_ui_lite.svg" width="527" /></a>
-</figure>
-</div><div aria-labelledby="tab-5-5-2" class="sphinx-tabs-panel" hidden="true" id="panel-5-5-2" name="5-2" role="tabpanel" tabindex="0"><p><strong>配置步骤</strong></p>
-<ol class="arabic simple">
-<li><p>进入 <code class="docutils literal notranslate"><span class="pre">{SDK}\amebalite_gcc_project</span></code> 目录。</p></li>
-<li><p>在Windows的命令提示符窗口或Linux终端下运行 <code class="docutils literal notranslate"><span class="pre">menuconfig.py</span></code> 命令。</p></li>
-</ol>
-<p><strong>重要的编译配置选项</strong></p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">General</span> <span class="pre">Config</span></code>: KM4 and KR4 共享的配置选项，这些配置将同时影响KM4和KR4。</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">Network</span> <span class="pre">Config</span></code>:  KM4 and KR4 共享的配置选项，这些配置将同时影响KM4和KR4。</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">KM4</span> <span class="pre">Config</span></code>: 专为KM4设置的配置选项，这些配置仅会影响KM4，不会影响KR4。</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">KR4</span> <span class="pre">Config</span></code>: 专为KR4设置的配置选项，这些配置仅会影响KR4，不会影响KM4。</p></li>
-</ul>
-<p><strong>图示</strong></p>
-<figure class="align-center">
-<a class="reference internal image-reference" href="../../_images/menuconfig_ui_lite.svg"><img alt="../../_images/menuconfig_ui_lite.svg" height="479" src="../../_images/menuconfig_ui_lite.svg" width="527" /></a>
-</figure>
-</div><div aria-labelledby="tab-5-5-3" class="sphinx-tabs-panel" hidden="true" id="panel-5-5-3" name="5-3" role="tabpanel" tabindex="0"><p><strong>配置步骤</strong></p>
-<ol class="arabic simple">
-<li><p>进入 <code class="docutils literal notranslate"><span class="pre">{SDK}\amebasmart_gcc_project</span></code> 目录。</p></li>
-<li><p>在Windows的命令提示符窗口或Linux终端下运行 <code class="docutils literal notranslate"><span class="pre">menuconfig.py</span></code> 命令。</p></li>
-</ol>
-<p><strong>重要的编译配置选项</strong></p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">General</span> <span class="pre">Config</span></code>: KM4 and KM0 共享的配置选项，这些配置将同时影响KM4和KM0。</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">Network</span> <span class="pre">Config</span></code>:  KM4 and KM0 共享的配置选项，这些配置将同时影响KM4和KM0。</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">KM4</span> <span class="pre">Config</span></code>: 专为KM4设置的配置选项，这些配置仅会影响KM4。</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">KM0</span> <span class="pre">Config</span></code>: 专为KM0设置的配置选项，这些配置仅会影响KM0。</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">CA32</span> <span class="pre">Config</span></code>: 专为CA32设置的配置选项，这些配置仅会影响CA32。</p></li>
-</ul>
-<p><strong>图示</strong></p>
-<figure class="align-center">
-<a class="reference internal image-reference" href="../../_images/menuconfig_ui_smart.svg"><img alt="../../_images/menuconfig_ui_smart.svg" height="714" src="../../_images/menuconfig_ui_smart.svg" width="772" /></a>
-</figure>
-</div></div>
-</section>
-<section id="building-code">
-<span id="id3"></span><h1>编译代码<a class="headerlink" href="#building-code" title="Link to this heading"></a></h1>
-<p>编译SDK需要在IC的project路径下进行，IC对应的GCC project路径如下所示：</p>
-<div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-6-6-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-6-6-0" name="6-0" role="tab" tabindex="0">RTL8721Dx</button><button aria-controls="panel-6-6-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-6-6-1" name="6-1" role="tab" tabindex="-1">RTL8720E</button><button aria-controls="panel-6-6-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-6-6-2" name="6-2" role="tab" tabindex="-1">RTL8726E</button><button aria-controls="panel-6-6-3" aria-selected="false" class="sphinx-tabs-tab" id="tab-6-6-3" name="6-3" role="tab" tabindex="-1">RTL8730E</button></div><div aria-labelledby="tab-6-6-0" class="sphinx-tabs-panel" id="panel-6-6-0" name="6-0" role="tabpanel" tabindex="0"><table class="docutils align-default" style="width: 100%">
-<thead>
-<tr class="row-odd"><th class="head"><p>GCC project</p></th>
-<th class="head"><p>Directory</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>KM4</p></td>
-<td><p>{SDK}\amebadplus_gcc_project\project_km4</p></td>
-</tr>
-<tr class="row-odd"><td><p>KM0</p></td>
-<td><p>{SDK}\amebadplus_gcc_project\project_km0</p></td>
-</tr>
-</tbody>
-</table>
-</div><div aria-labelledby="tab-6-6-1" class="sphinx-tabs-panel" hidden="true" id="panel-6-6-1" name="6-1" role="tabpanel" tabindex="0"><table class="docutils align-default" style="width: 100%">
-<thead>
-<tr class="row-odd"><th class="head"><p>GCC project</p></th>
-<th class="head"><p>Directory</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>KM4</p></td>
-<td><p>{SDK}\amebalite_gcc_project\project_km4</p></td>
-</tr>
-<tr class="row-odd"><td><p>KR4</p></td>
-<td><p>{SDK}\amebalite_gcc_project\project_kr4</p></td>
-</tr>
-</tbody>
-</table>
-</div><div aria-labelledby="tab-6-6-2" class="sphinx-tabs-panel" hidden="true" id="panel-6-6-2" name="6-2" role="tabpanel" tabindex="0"><table class="docutils align-default" style="width: 100%">
-<thead>
-<tr class="row-odd"><th class="head"><p>GCC project</p></th>
-<th class="head"><p>Directory</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>KM4</p></td>
-<td><p>{SDK}\amebalite_gcc_project\project_km4</p></td>
-</tr>
-<tr class="row-odd"><td><p>KR4</p></td>
-<td><p>{SDK}\amebalite_gcc_project\project_kr4</p></td>
-</tr>
-</tbody>
-</table>
-</div><div aria-labelledby="tab-6-6-3" class="sphinx-tabs-panel" hidden="true" id="panel-6-6-3" name="6-3" role="tabpanel" tabindex="0"><table class="docutils align-default" style="width: 100%">
-<thead>
-<tr class="row-odd"><th class="head"><p>GCC project</p></th>
-<th class="head"><p>Directory</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>CA32</p></td>
-<td><p>{SDK}\amebasmart_gcc_project\project_ap</p></td>
-</tr>
-<tr class="row-odd"><td><p>KM4</p></td>
-<td><p>{SDK}\amebasmart_gcc_project\project_hp</p></td>
-</tr>
-<tr class="row-even"><td><p>KM0</p></td>
-<td><p>{SDK}\amebasmart_gcc_project\project_lp</p></td>
-</tr>
-</tbody>
-</table>
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-5-5-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-5-5-0" name="5-0" role="tab" tabindex="0">RTL8721Dx</button><button aria-controls="panel-5-5-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-5-5-1" name="5-1" role="tab" tabindex="-1">RTL8720E</button><button aria-controls="panel-5-5-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-5-5-2" name="5-2" role="tab" tabindex="-1">RTL8726E</button><button aria-controls="panel-5-5-3" aria-selected="false" class="sphinx-tabs-tab" id="tab-5-5-3" name="5-3" role="tab" tabindex="-1">RTL8730E</button></div><div aria-labelledby="tab-5-5-0" class="sphinx-tabs-panel" id="panel-5-5-0" name="5-0" role="tabpanel" tabindex="0"><p><code class="docutils literal notranslate"><span class="pre">{SDK}/amebadplus_gcc_project</span></code></p>
+</div><div aria-labelledby="tab-5-5-1" class="sphinx-tabs-panel" hidden="true" id="panel-5-5-1" name="5-1" role="tabpanel" tabindex="0"><p><code class="docutils literal notranslate"><span class="pre">{SDK}/amebalite_gcc_project</span></code></p>
+</div><div aria-labelledby="tab-5-5-2" class="sphinx-tabs-panel" hidden="true" id="panel-5-5-2" name="5-2" role="tabpanel" tabindex="0"><p><code class="docutils literal notranslate"><span class="pre">{SDK}/amebalite_gcc_project</span></code></p>
+</div><div aria-labelledby="tab-5-5-3" class="sphinx-tabs-panel" hidden="true" id="panel-5-5-3" name="5-3" role="tabpanel" tabindex="0"><p><code class="docutils literal notranslate"><span class="pre">{SDK}/amebasmart_gcc_project</span></code></p>
 </div></div>
 <div class="admonition note">
 <p class="admonition-title">备注</p>
 <p>将表格中的 <code class="docutils literal notranslate"><span class="pre">{SDK}</span></code> 替换为用户自己的SDK路径。</p>
 </div>
+</section>
+<section id="sdk-menuconfig">
+<span id="configuring-sdk"></span><h1>配置 SDK (menuconfig)<a class="headerlink" href="#sdk-menuconfig" title="Link to this heading"></a></h1>
+<p>用户可通过项目对应的 <code class="docutils literal notranslate"><span class="pre">menuconfig.py</span></code> 脚本配置 SDK。</p>
+<p><strong>配置步骤</strong></p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>进入 <code class="docutils literal notranslate"><span class="pre">{SDK}/amebaxxx_gcc_project</span></code> 目录。</p></li>
+<li><p>在Windows的命令提示符窗口或Linux终端下运行 <code class="docutils literal notranslate"><span class="pre">menuconfig.py</span></code> 命令。</p></li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>如果用户未运行 <code class="docutils literal notranslate"><span class="pre">ameba.sh</span></code> 或 <code class="docutils literal notranslate"><span class="pre">ameba.bat</span></code> 脚本， <code class="docutils literal notranslate"><span class="pre">menuconfig.py</span></code> 命令需替换为 <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">menuconfig.py</span></code> 或 <code class="docutils literal notranslate"><span class="pre">./menuconfig.py</span></code>，下同。</p>
+</div>
+<p>正确运行命令后，终端会显示如下UI界面，用户可通过：</p>
+<ul class="simple">
+<li><p>方向键选择需设置的配置。</p></li>
+<li><p>空格或回车键进行选中/取消选中。</p></li>
+<li><p>ESC键返回上一层。</p></li>
+<li><p>Q键退出。</p></li>
+</ul>
+<div class="highlight-ruby notranslate"><div class="highlight"><pre><span></span><span class="o">***</span><span class="w"> </span><span class="o">--------</span><span class="no">MENUCONFIG</span><span class="w"> </span><span class="no">FOR</span><span class="w"> </span><span class="no">General</span><span class="o">---------</span><span class="w"> </span><span class="o">***</span>
+<span class="no">CONFIG</span><span class="w"> </span><span class="no">BOOT</span><span class="w"> </span><span class="no">OPTION</span><span class="w">  </span><span class="o">---&gt;</span>
+<span class="no">CONFIG</span><span class="w"> </span><span class="no">TrustZone</span><span class="w">  </span><span class="o">---&gt;</span>
+<span class="no">CONFIG</span><span class="w"> </span><span class="no">Mass</span><span class="w"> </span><span class="no">Production</span><span class="w">  </span><span class="o">---&gt;</span>
+<span class="no">CONFIG</span><span class="w"> </span><span class="no">Linux</span><span class="w">  </span><span class="o">---&gt;</span>
+<span class="no">CONFIG</span><span class="w"> </span><span class="no">AT</span><span class="w"> </span><span class="no">CMD</span><span class="w">  </span><span class="o">---&gt;</span>
+<span class="no">CONFIG</span><span class="w"> </span><span class="no">RTK</span><span class="w"> </span><span class="no">Assert</span><span class="w"> </span><span class="no">Level</span><span class="w">  </span><span class="o">---&gt;</span>
+<span class="no">CONFIG</span><span class="w"> </span><span class="no">VFS</span><span class="w">  </span><span class="o">---&gt;</span>
+<span class="no">CONFIG</span><span class="w"> </span><span class="no">OS</span><span class="w">  </span><span class="o">---&gt;</span>
+<span class="no">CONFIG</span><span class="w"> </span><span class="no">OTA</span><span class="w"> </span><span class="no">OPTION</span><span class="w">  </span><span class="o">---&gt;</span>
+<span class="no">CONFIG</span><span class="w"> </span><span class="no">USB</span><span class="w">  </span><span class="o">---&gt;</span>
+<span class="no">CONFIG</span><span class="w"> </span><span class="no">APPLICATION</span><span class="w">  </span><span class="o">---&gt;</span>
+<span class="o">***</span><span class="w"> </span><span class="o">-----</span><span class="no">Connectivity</span><span class="w"> </span><span class="no">Config</span><span class="o">-----</span><span class="w"> </span><span class="o">***</span>
+<span class="no">CONFIG</span><span class="w"> </span><span class="no">WHC</span><span class="w"> </span><span class="no">INTF</span><span class="w">  </span><span class="o">---&gt;</span>
+<span class="no">CONFIG</span><span class="w"> </span><span class="no">WIFI</span><span class="w">  </span><span class="o">---&gt;</span>
+<span class="no">CONFIG</span><span class="w"> </span><span class="no">BT</span><span class="w">  </span><span class="o">---&gt;</span>
+<span class="no">CONFIG</span><span class="w"> </span><span class="no">LWIP</span><span class="w">  </span><span class="o">---&gt;</span>
+<span class="no">CONFIG</span><span class="w"> </span><span class="no">SSL</span><span class="w">  </span><span class="o">---&gt;</span>
+<span class="no">CONFIG</span><span class="w"> </span><span class="no">WPAN</span><span class="w">  </span><span class="o">---&gt;</span>
+<span class="no">CONFIG</span><span class="w"> </span><span class="no">COEX</span><span class="w">  </span><span class="o">---&gt;</span>
+<span class="o">***</span><span class="w"> </span><span class="o">---------</span><span class="no">Test</span><span class="w"> </span><span class="no">Config</span><span class="o">---------</span><span class="w"> </span><span class="o">***</span>
+<span class="no">Verification</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="no">Test</span><span class="w">  </span><span class="o">---&gt;</span>
+<span class="o">***</span><span class="w"> </span><span class="o">--------</span><span class="no">Build</span><span class="w"> </span><span class="no">Config</span><span class="o">---------</span><span class="w"> </span><span class="o">***</span>
+<span class="no">Build</span><span class="w"> </span><span class="no">Option</span><span class="w">  </span><span class="o">---&gt;</span>
+<span class="o">***</span><span class="w"> </span><span class="o">-----</span><span class="k">end</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="no">MENUCONFIG</span><span class="w"> </span><span class="no">FOR</span><span class="w"> </span><span class="no">General</span><span class="o">-----</span><span class="w"> </span><span class="o">***</span>
+<span class="no">MENUCONFIG</span><span class="w"> </span><span class="no">FOR</span><span class="w"> </span><span class="no">KM0</span><span class="w"> </span><span class="no">CONFIG</span><span class="w">  </span><span class="o">---&gt;</span>
+<span class="no">MENUCONFIG</span><span class="w"> </span><span class="no">FOR</span><span class="w"> </span><span class="no">KM4</span><span class="w"> </span><span class="no">CONFIG</span><span class="w">  </span><span class="o">---&gt;</span>
+<span class="no">MENUCONFIG</span><span class="w"> </span><span class="no">FOR</span><span class="w"> </span><span class="no">CA32</span><span class="w"> </span><span class="no">CONFIG</span><span class="w">  </span><span class="o">---&gt;</span>
+<span class="o">***</span><span class="w"> </span><span class="o">-----</span><span class="w"> </span><span class="no">DO</span><span class="w"> </span><span class="no">NOT</span><span class="w"> </span><span class="no">ENTER</span><span class="w"> </span><span class="no">IN</span><span class="w"> </span><span class="no">THIS</span><span class="w"> </span><span class="no">BUTTON</span><span class="w"> </span><span class="o">------</span><span class="w"> </span><span class="o">***</span>
+<span class="no">MENUCONFIG</span><span class="w"> </span><span class="no">FOR</span><span class="w"> </span><span class="no">Private</span><span class="w">  </span><span class="o">---&gt;</span>
+</pre></div>
+</div>
+<p>退出menuconfig菜单后，UI会提示用户是否保存配置。若选择保存，配置将被存放到当前目录下的menuconfig文件夹中。
+文件夹内一般包含以下几项：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">.config</span></code> 文件：保存着用户选择的配置项</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.config_{MCU}</span></code> 文件：分配到每个MCU的最终配置文件，如 <code class="docutils literal notranslate"><span class="pre">.config_km4</span></code>, <code class="docutils literal notranslate"><span class="pre">.config_km0</span></code>，这些文件是基于 <code class="docutils literal notranslate"><span class="pre">.config</span></code> 文件二次处理的产物。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">project_{MCU}/platform_autoconf.h</span></code>：根据最终配置文件生成的头文件，供源文件引用。</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<ul class="simple">
+<li><p>每次手动选择后的结果会保存到 <code class="docutils literal notranslate"><span class="pre">menuconfig/.config</span></code> 文件，且此文件会作为下次menuconfig的基准。</p></li>
+<li><p>当打开menuconfig进行配置时，可以看到前一次的配置的记录，即通过命令行界面的方式配置是 <strong>有记忆的</strong></p></li>
+</ul>
+</div>
+</div></blockquote>
+<p id="init-config"><strong>初始配置</strong></p>
+<blockquote>
+<div><p>项目的配置从 <code class="docutils literal notranslate"><span class="pre">menuconfig/.config</span></code> 解析得来。但当项目不存在 <code class="docutils literal notranslate"><span class="pre">menuconfig/.config</span></code> 文件，即当前为空配置时，将会使用初始配置。</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">amebaxxx_gcc_project/default.conf</span></code> 中记录了该型号SOC默认需要打开的配置项，此文件将作为该SOC项目的配置初始值。</p></li>
+<li><p>特别地，当通过命令 <code class="docutils literal notranslate"><span class="pre">build.py</span> <span class="pre">-a</span></code> 指定一个 <a class="reference internal" href="../0_sdk_example/1_sdk_example_toprst_cn.html#sdk-example"><span class="std std-ref">example</span></a> 或在 <a class="reference internal" href="#creat-project"><span class="std std-ref">工程路径</span></a> 进行编译时，该路径下的 <code class="docutils literal notranslate"><span class="pre">prj.conf</span></code> (如有)，也将作为项目的初始配置生效，且优先级高于 <code class="docutils literal notranslate"><span class="pre">amebaxxx_gcc_project</span></code> 路径下的 <code class="docutils literal notranslate"><span class="pre">default.conf</span></code>。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">default.conf</span></code> 和 <code class="docutils literal notranslate"><span class="pre">prj.conf</span></code> 中未定义的项，将采用 Kconfig 中的 default 值作为初始值。</p></li>
+</ul>
+</div></blockquote>
+<p><strong>其他配置命令</strong></p>
+<blockquote>
+<div><ol class="arabic">
+<li><p>清理配置</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">menuconfig.py -c</span>
+</pre></div>
+</div>
+<p>此命令将会清理当前项目的配置 （ <code class="docutils literal notranslate"><span class="pre">menuconfig</span></code> 文件夹）及编译产物（如有，默认在 <code class="docutils literal notranslate"><span class="pre">build</span></code> 文件夹）。</p>
+</li>
+<li><p>通过conf文件配置。</p>
+<p>用户可以将一些配置项组合保存成 .conf 后缀的配置集合文件，代替UI界面中的手动选择。这样只需要一条指令就可以完成项目的配置。关于conf文件更详细的介绍，请参见 <a class="reference internal" href="../0_gcc_build_library/1_gcc_build_library_toprst_cn.html#write-conf-files"><span class="std std-ref">conf 文件介绍</span></a></p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">menuconfig.py -f &lt;name1&gt;.conf &lt;name2&gt;.conf ...</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">&lt;name1&gt;.conf，&lt;name2&gt;.conf</span></code> 为用户自定义命名的配置集合文件。运行 <code class="docutils literal notranslate"><span class="pre">menuconfig.py</span> <span class="pre">-f</span></code> 命令时，可以指定一个或多个.conf 文件， 如果多个.conf 文件中存在相同配置项， <code class="docutils literal notranslate"><span class="pre">&lt;name2&gt;.conf</span></code> 的优先级将高于 <code class="docutils literal notranslate"><span class="pre">&lt;name1&gt;.conf</span></code>。例如， <code class="docutils literal notranslate"><span class="pre">&lt;name1&gt;.conf</span></code> 中定义了 <code class="docutils literal notranslate"><span class="pre">CONFIG_BT_MENU=y</span></code>， <code class="docutils literal notranslate"><span class="pre">&lt;name2&gt;.conf</span></code> 中定义了 <code class="docutils literal notranslate"><span class="pre">CONFIG_BT_MENU=n</span></code>，那么最终 <code class="docutils literal notranslate"><span class="pre">CONFIG_BT_MENU=n</span></code> 将会生效。</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<ul class="simple">
+<li><p>在 -f 执行之前，会先自动删除 <code class="docutils literal notranslate"><span class="pre">menuconfig</span></code> 文件夹，这样通过-f 配置后的结果不会受到前一次 <code class="docutils literal notranslate"><span class="pre">.config</span></code> 文件的影响，即这种 -f 的配置方式是 <strong>无记忆的</strong>。</p></li>
+</ul>
+</div>
+</li>
+<li><p>生成conf文件。</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">menuconfig.py -s &lt;name&gt;.conf</span>
+</pre></div>
+</div>
+<p>如果用户不希望手动编写 .conf 文件，可以先运行 <code class="docutils literal notranslate"><span class="pre">menuconfig.py</span></code> 利用UI界面进行手动配置，退出后通过 <code class="docutils literal notranslate"><span class="pre">menuconfig.py</span> <span class="pre">-s</span></code> 命令将本次的配置结果保存为 <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;.conf</span></code> 文件。
+之后，用户可以利用 <code class="docutils literal notranslate"><span class="pre">menuconfig.py</span> <span class="pre">-f</span> <span class="pre">&lt;name&gt;.conf</span></code> 对保存的.conf 文件进行加载。</p>
+</li>
+</ol>
+</div></blockquote>
+</section>
+<section id="building-code">
+<span id="id3"></span><h1>编译代码<a class="headerlink" href="#building-code" title="Link to this heading"></a></h1>
 <p>我们提供 <code class="docutils literal notranslate"><span class="pre">build.py</span></code> 脚本来简化项目的编译，其常用指令如下所示：</p>
 <table class="docutils align-default" id="command-lists" style="width: 100%">
 <colgroup>
@@ -639,6 +1545,10 @@ document.addEventListener("DOMContentLoaded", function() {
 </tr>
 </tbody>
 </table>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>如果用户未运行 <code class="docutils literal notranslate"><span class="pre">ameba.sh</span></code> 或 <code class="docutils literal notranslate"><span class="pre">ameba.bat</span></code> 脚本， <code class="docutils literal notranslate"><span class="pre">build.py</span></code> 命令需替换为 <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">build.py</span></code> 或 <code class="docutils literal notranslate"><span class="pre">./build.py</span></code>，下同。</p>
+</div>
 <ol class="arabic">
 <li><p>帮助指令</p>
 <p>如果您是第一次使用 <code class="docutils literal notranslate"><span class="pre">build.py</span></code> 脚本，可以通过下面命令了解此脚本的用法。</p>
@@ -646,15 +1556,38 @@ document.addEventListener("DOMContentLoaded", function() {
 </pre></div>
 </div>
 <p>通过 <code class="docutils literal notranslate"><span class="pre">-h</span></code> 或 <code class="docutils literal notranslate"><span class="pre">--help</span></code> 选项，所有支持的命令将会被列出。</p>
-<figure class="align-center">
-<a class="reference internal image-reference" href="../../_images/build_py_help.png"><img alt="../../_images/build_py_help.png" src="../../_images/build_py_help.png" style="width: 656.5999999999999px; height: 281.4px;" /></a>
-</figure>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">build.py -h</span>
+<span class="go">usage: build.py [-h] [-a APP] [-c] [-p]</span>
+<span class="go">               [-g {flashloader,imgtool_flashloader,gen_imgtool_floader}]</span>
+<span class="go">               [-gdb] [-debug] [-D DEFINED [DEFINED ...]] [--new NEW [NEW ...]]</span>
+
+<span class="go">options:</span>
+<span class="go">-h, --help            show this help message and exit</span>
+<span class="go">-a APP, --app APP     application path</span>
+<span class="go">-c, --clean           clean</span>
+<span class="go">-p, --pristine        pristine build</span>
+<span class="go">-g {flashloader,imgtool_flashloader,gen_imgtool_floader}, --target {flashloader,imgtool_flashloader,gen_imgtool_floader}</span>
+<span class="go">                        custom target</span>
+<span class="go">-gdb, --gdb           gdb</span>
+<span class="go">-debug, --debug       debug</span>
+<span class="go">-D DEFINED [DEFINED ...], --Defined DEFINED [DEFINED ...]</span>
+<span class="go">                        user defined variables</span>
+<span class="go">--new NEW [NEW ...]   build.py --new-prj &lt;target_dir&gt; [-a &lt;APP&gt;]</span>
+</pre></div>
+</div>
 </li>
 <li><p>纯净编译</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">build.py -p</span>
 </pre></div>
 </div>
-<p>纯净编译意味着此次编译环境没有之前残留产物的影响，所有之前编译的产物都会在此次编译之前被移除。 <code class="docutils literal notranslate"><span class="pre">-p</span></code> 选项和 <code class="docutils literal notranslate"><span class="pre">--pristine</span></code> 选项等价。</p>
+<p>纯净编译意味着此次编译环境没有之前残留产物的影响，所有之前编译的产物及配置项都会在此次编译之前被移除。 <code class="docutils literal notranslate"><span class="pre">-p</span></code> 选项和 <code class="docutils literal notranslate"><span class="pre">--pristine</span></code> 选项等价。</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<ul class="simple">
+<li><p>纯净编译同时会移除 <code class="docutils literal notranslate"><span class="pre">menuconfig</span></code> 文件夹，之前的配置内容也将被丢弃，本次编译将会使用 <a class="reference internal" href="#init-config"><span class="std std-ref">初始配置</span></a>。</p></li>
+<li><p>如果仅需清理编译产物但保留之前的配置选项，请使用 <code class="docutils literal notranslate"><span class="pre">build.py</span> <span class="pre">-c</span></code> 命令进行清理。</p></li>
+</ul>
+</div>
 </li>
 <li><p>增量编译</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">build.py</span>
@@ -662,22 +1595,25 @@ document.addEventListener("DOMContentLoaded", function() {
 </div>
 <p>如果不带任何参数，项目将会进行增量编译，增量编译和全量编译相比会大大节省时间花费。</p>
 </li>
-<li><p>指定编译目录并编译</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">build.py -d &lt;BUILD_DIR&gt;</span>
-</pre></div>
-</div>
-<p>此命令可指定存放中间产物的目录。如果不指定此选项，默认将会创建 <code class="docutils literal notranslate"><span class="pre">build</span></code> 文件夹存放。</p>
-</li>
 <li><p>编译指定example</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">build.py -a &lt;APP&gt;</span>
 </pre></div>
 </div>
-<p><code class="docutils literal notranslate"><span class="pre">${SDK}/component/example</span></code> 目录下提供了丰富的应用示例。如果您想要编译其中一个示例，可以通过 <code class="docutils literal notranslate"><span class="pre">-a</span></code> 或 <code class="docutils literal notranslate"><span class="pre">--app</span></code> 将应用名称传递给 <code class="docutils literal notranslate"><span class="pre">build.py</span></code>。</p>
+<p><code class="docutils literal notranslate"><span class="pre">${SDK}/component/example</span></code> 目录下提供了丰富的应用示例。如果您想要编译其中一个示例，可以通过 <code class="docutils literal notranslate"><span class="pre">-a</span></code> 或 <code class="docutils literal notranslate"><span class="pre">--app</span></code> 将应用名称或应用路径传递给 <code class="docutils literal notranslate"><span class="pre">build.py</span></code>。</p>
 <p>例如，编译 <code class="docutils literal notranslate"><span class="pre">${SDK}/component/example/network_protocol/http_client</span></code> 示例，您可以输入以下命令：</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">build.py -a http_client</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">build.py -a ${SDK}/component/example/network_protocol/http_client</span>
+<span class="go">//or</span>
+<span class="go">build.py -a http_client</span>
 </pre></div>
 </div>
-<p>如果不通过 <code class="docutils literal notranslate"><span class="pre">-a</span></code> 传入APP名，将编译一个默认的空项目。</p>
+<p>如果不通过 <code class="docutils literal notranslate"><span class="pre">-a</span></code> 传入APP名称或路径，将编译一个默认的空项目。</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<ul class="simple">
+<li><p>如果对应的example目录下提供了名为 <code class="docutils literal notranslate"><span class="pre">prj.conf</span></code> 的文件，你可以先通过 <code class="docutils literal notranslate"><span class="pre">menuconfig.py</span> <span class="pre">-f</span> <span class="pre">/.../prj.conf</span></code> 配置，然后使用 <code class="docutils literal notranslate"><span class="pre">build.py</span> <span class="pre">-a</span> <span class="pre">&lt;APP&gt;</span></code> 编译。</p></li>
+<li><p>另外，当用户未配置过项目，即 <code class="docutils literal notranslate"><span class="pre">menuconfig</span></code> 文件夹 <strong>不存在</strong> 时， <code class="docutils literal notranslate"><span class="pre">build.py</span> <span class="pre">-a</span> <span class="pre">&lt;APP&gt;</span></code> 将会组合 <code class="docutils literal notranslate"><span class="pre">amebaxxx_gcc_project/default.conf</span></code> 与 <code class="docutils literal notranslate"><span class="pre">example/.../&lt;APP&gt;/prj.conf</span></code> 配置进行编译。因此你也可以直接运行 <code class="docutils literal notranslate"><span class="pre">build.py</span> <span class="pre">-a</span> <span class="pre">&lt;APP&gt;</span> <span class="pre">-p</span></code> 以使用:ref:<cite>初始配置 &lt;init_config&gt;</cite>。</p></li>
+</ul>
+</div>
 </li>
 <li><p>编译指定目标</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">build.py -g &lt;TARGET&gt;</span>
@@ -693,7 +1629,7 @@ document.addEventListener("DOMContentLoaded", function() {
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">build.py -c</span>
 </pre></div>
 </div>
-<p><code class="docutils literal notranslate"><span class="pre">-c</span></code> 和 <code class="docutils literal notranslate"><span class="pre">--clean</span></code> 都可以清理当前项目的产物及中间文件。</p>
+<p><code class="docutils literal notranslate"><span class="pre">-c</span></code> 和 <code class="docutils literal notranslate"><span class="pre">--clean</span></code> 都可以清理当前项目的产物及中间文件，但 <code class="docutils literal notranslate"><span class="pre">.config</span></code> 配置文件将会被保留。</p>
 </li>
 <li><p>传递CMake的cache变量</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">build.py -D CACHE_VAL1=VALUE1 CACHE_VAL2=VALUE2 …</span>
@@ -711,10 +1647,10 @@ document.addEventListener("DOMContentLoaded", function() {
 </li>
 </ol>
 </section>
-<section id="id4">
-<h1>固件文件<a class="headerlink" href="#id4" title="Link to this heading"></a></h1>
+<section id="image-files">
+<span id="id4"></span><h1>固件文件<a class="headerlink" href="#image-files" title="Link to this heading"></a></h1>
 <div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-7-7-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-7-7-0" name="7-0" role="tab" tabindex="0">RTL8721Dx</button><button aria-controls="panel-7-7-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-7-7-1" name="7-1" role="tab" tabindex="-1">RTL8720E</button><button aria-controls="panel-7-7-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-7-7-2" name="7-2" role="tab" tabindex="-1">RTL8726E</button><button aria-controls="panel-7-7-3" aria-selected="false" class="sphinx-tabs-tab" id="tab-7-7-3" name="7-3" role="tab" tabindex="-1">RTL8730E</button></div><div aria-labelledby="tab-7-7-0" class="sphinx-tabs-panel" id="panel-7-7-0" name="7-0" role="tabpanel" tabindex="0"><ul class="simple">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-6-6-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-6-6-0" name="6-0" role="tab" tabindex="0">RTL8721Dx</button><button aria-controls="panel-6-6-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-6-6-1" name="6-1" role="tab" tabindex="-1">RTL8720E</button><button aria-controls="panel-6-6-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-6-6-2" name="6-2" role="tab" tabindex="-1">RTL8726E</button><button aria-controls="panel-6-6-3" aria-selected="false" class="sphinx-tabs-tab" id="tab-6-6-3" name="6-3" role="tab" tabindex="-1">RTL8730E</button></div><div aria-labelledby="tab-6-6-0" class="sphinx-tabs-panel" id="panel-6-6-0" name="6-0" role="tabpanel" tabindex="0"><ul class="simple">
 <li><p>编译完成后，image文件将被拷贝到  <code class="docutils literal notranslate"><span class="pre">\amebadplus_gcc_project</span></code> 路径下，用户也可以在如下文件夹看到image文件：</p>
 <ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">\amebadplus_gcc_project\project_km0\asdk\image</span></code></p></li>
@@ -722,7 +1658,7 @@ document.addEventListener("DOMContentLoaded", function() {
 </ul>
 </li>
 <li><p>CMake生成的中间文件将会被存放在 <code class="docutils literal notranslate"><span class="pre">build</span></code> 文件夹。</p></li>
-<li><p>如果生成失败, 尝试运行  <code class="docutils literal notranslate"><span class="pre">build.py</span> <span class="pre">-c</span></code> 或 <code class="docutils literal notranslate"><span class="pre">ninja</span> <span class="pre">clean</span></code> 后重新编译。</p></li>
+<li><p>如果生成失败, 尝试运行  <code class="docutils literal notranslate"><span class="pre">build.py</span> <span class="pre">-c</span></code> 后重新编译。</p></li>
 </ul>
 <figure class="align-center" id="dplus-km4-km0-projects-make-all">
 <a class="reference internal image-reference" href="../../_images/dplus_km4_km0_projects_make_all.png"><img alt="../../_images/dplus_km4_km0_projects_make_all.png" src="../../_images/dplus_km4_km0_projects_make_all.png" style="width: 1026.0px; height: 213.0px;" /></a>
@@ -744,7 +1680,7 @@ document.addEventListener("DOMContentLoaded", function() {
 <li><p><code class="docutils literal notranslate"><span class="pre">\amebadplus_gcc_project\project_km4\asdk\image</span></code></p></li>
 </ul>
 </div>
-</div><div aria-labelledby="tab-7-7-1" class="sphinx-tabs-panel" hidden="true" id="panel-7-7-1" name="7-1" role="tabpanel" tabindex="0"><ul class="simple">
+</div><div aria-labelledby="tab-6-6-1" class="sphinx-tabs-panel" hidden="true" id="panel-6-6-1" name="6-1" role="tabpanel" tabindex="0"><ul class="simple">
 <li><p>编译完成后，image文件将被拷贝到 <code class="docutils literal notranslate"><span class="pre">\amebalite_gcc_project</span></code> 路径下，用户也可以在如下文件夹看到image文件：</p>
 <ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">\amebalite_gcc_project\project_km0\asdk\image</span></code></p></li>
@@ -752,18 +1688,18 @@ document.addEventListener("DOMContentLoaded", function() {
 </ul>
 </li>
 <li><p>CMake生成的中间文件将会被存放在 <code class="docutils literal notranslate"><span class="pre">build</span></code> 文件夹。</p></li>
-<li><p>如果生成失败, 尝试运行  <code class="docutils literal notranslate"><span class="pre">build.py</span> <span class="pre">-c</span></code> 或 <code class="docutils literal notranslate"><span class="pre">ninja</span> <span class="pre">clean</span></code> 后重新编译。</p></li>
+<li><p>如果生成失败, 尝试运行  <code class="docutils literal notranslate"><span class="pre">build.py</span> <span class="pre">-c</span></code> 后重新编译。</p></li>
 </ul>
-<figure class="align-center" id="id6">
-<a class="reference internal image-reference" href="../../_images/lite_km4_kr4_projects_make_all.png"><img alt="../../_images/lite_km4_kr4_projects_make_all.png" src="../../_images/lite_km4_kr4_projects_make_all.png" style="width: 808.5px; height: 195.75px;" /></a>
-<figcaption>
-<p><span class="caption-text">KM4 &amp; KR4 projects 编译日志</span><a class="headerlink" href="#id6" title="Link to this image"></a></p>
-</figcaption>
-</figure>
 <figure class="align-center" id="id7">
+<a class="reference internal image-reference" href="../../_images/lite_km4_kr4_projects_make_all.png"><img alt="../../_images/lite_km4_kr4_projects_make_all.png" src="../../_images/lite_km4_kr4_projects_make_all.png" style="width: 808.5px; height: 195.75px;" /></a>
+<figcaption>
+<p><span class="caption-text">KM4 &amp; KR4 projects 编译日志</span><a class="headerlink" href="#id7" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<figure class="align-center" id="id8">
 <a class="reference internal image-reference" href="../../_images/lite_km4_kr4_image_generation.png"><img alt="../../_images/lite_km4_kr4_image_generation.png" src="../../_images/lite_km4_kr4_image_generation.png" style="width: 363.6px; height: 266.40000000000003px;" /></a>
 <figcaption>
-<p><span class="caption-text">KM4 &amp; KR4 image 生成</span><a class="headerlink" href="#id7" title="Link to this image"></a></p>
+<p><span class="caption-text">KM4 &amp; KR4 image 生成</span><a class="headerlink" href="#id8" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <div class="admonition note">
@@ -774,7 +1710,7 @@ document.addEventListener("DOMContentLoaded", function() {
 <li><p><code class="docutils literal notranslate"><span class="pre">amebalite_gcc_project\project_km4\asdk\image</span></code></p></li>
 </ul>
 </div>
-</div><div aria-labelledby="tab-7-7-2" class="sphinx-tabs-panel" hidden="true" id="panel-7-7-2" name="7-2" role="tabpanel" tabindex="0"><ul class="simple">
+</div><div aria-labelledby="tab-6-6-2" class="sphinx-tabs-panel" hidden="true" id="panel-6-6-2" name="6-2" role="tabpanel" tabindex="0"><ul class="simple">
 <li><p>编译完成后，image文件将被拷贝到 <code class="docutils literal notranslate"><span class="pre">\amebalite_gcc_project</span></code> 路径下，用户也可以在如下文件夹看到image文件：</p>
 <ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">\amebalite_gcc_project\project_km0\asdk\image</span></code></p></li>
@@ -782,18 +1718,18 @@ document.addEventListener("DOMContentLoaded", function() {
 </ul>
 </li>
 <li><p>CMake生成的中间文件将会被存放在 <code class="docutils literal notranslate"><span class="pre">build</span></code> 文件夹。</p></li>
-<li><p>如果生成失败, 尝试运行  <code class="docutils literal notranslate"><span class="pre">build.py</span> <span class="pre">-c</span></code> 或 <code class="docutils literal notranslate"><span class="pre">ninja</span> <span class="pre">clean</span></code> 后重新编译。</p></li>
+<li><p>如果生成失败, 尝试运行  <code class="docutils literal notranslate"><span class="pre">build.py</span> <span class="pre">-c</span></code> 后重新编译。</p></li>
 </ul>
-<figure class="align-center" id="id8">
+<figure class="align-center" id="id9">
 <a class="reference internal image-reference" href="../../_images/lite_km4_kr4_projects_make_all.png"><img alt="../../_images/lite_km4_kr4_projects_make_all.png" src="../../_images/lite_km4_kr4_projects_make_all.png" style="width: 808.5px; height: 195.75px;" /></a>
 <figcaption>
-<p><span class="caption-text">KM4 &amp; KR4 projects 编译日志</span><a class="headerlink" href="#id8" title="Link to this image"></a></p>
+<p><span class="caption-text">KM4 &amp; KR4 projects 编译日志</span><a class="headerlink" href="#id9" title="Link to this image"></a></p>
 </figcaption>
 </figure>
-<figure class="align-center" id="id9">
+<figure class="align-center" id="id10">
 <a class="reference internal image-reference" href="../../_images/lite_km4_kr4_image_generation.png"><img alt="../../_images/lite_km4_kr4_image_generation.png" src="../../_images/lite_km4_kr4_image_generation.png" style="width: 363.6px; height: 266.40000000000003px;" /></a>
 <figcaption>
-<p><span class="caption-text">KM4 &amp; KR4 image 生成</span><a class="headerlink" href="#id9" title="Link to this image"></a></p>
+<p><span class="caption-text">KM4 &amp; KR4 image 生成</span><a class="headerlink" href="#id10" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <div class="admonition note">
@@ -804,7 +1740,7 @@ document.addEventListener("DOMContentLoaded", function() {
 <li><p><code class="docutils literal notranslate"><span class="pre">amebalite_gcc_project\project_km4\asdk\image</span></code></p></li>
 </ul>
 </div>
-</div><div aria-labelledby="tab-7-7-3" class="sphinx-tabs-panel" hidden="true" id="panel-7-7-3" name="7-3" role="tabpanel" tabindex="0"><ul class="simple">
+</div><div aria-labelledby="tab-6-6-3" class="sphinx-tabs-panel" hidden="true" id="panel-6-6-3" name="6-3" role="tabpanel" tabindex="0"><ul class="simple">
 <li><p>编译完成后，image文件将被拷贝到 <code class="docutils literal notranslate"><span class="pre">\amebasmart_gcc_project</span></code> 路径下，用户也可以在如下文件夹看到image文件：</p>
 <ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">\project_hp\asdk\image</span></code></p></li>
@@ -813,7 +1749,7 @@ document.addEventListener("DOMContentLoaded", function() {
 </ul>
 </li>
 <li><p>CMake生成的中间文件将会被存放在 <code class="docutils literal notranslate"><span class="pre">build</span></code> 文件夹。</p></li>
-<li><p>如果生成失败, 尝试运行  <code class="docutils literal notranslate"><span class="pre">build.py</span> <span class="pre">-c</span></code> 或 <code class="docutils literal notranslate"><span class="pre">ninja</span> <span class="pre">clean</span></code> 后重新编译。</p></li>
+<li><p>如果生成失败, 尝试运行  <code class="docutils literal notranslate"><span class="pre">build.py</span> <span class="pre">-c</span></code> 后重新编译。</p></li>
 </ul>
 <figure class="align-center" id="smart-km4-km0-ca32-make-all">
 <a class="reference internal image-reference" href="../../_images/smart_km4_km0_ca32_make_all.png"><img alt="../../_images/smart_km4_km0_ca32_make_all.png" src="../../_images/smart_km4_km0_ca32_make_all.png" style="width: 811.5px; height: 160.5px;" /></a>
@@ -838,8 +1774,45 @@ document.addEventListener("DOMContentLoaded", function() {
 </div>
 </div></div>
 </section>
-<section id="id5">
-<h1>固件下载<a class="headerlink" href="#id5" title="Link to this heading"></a></h1>
+<section id="creat-project">
+<span id="id5"></span><h1>创建外部工程<a class="headerlink" href="#creat-project" title="Link to this heading"></a></h1>
+<p><strong>创建命令</strong></p>
+<blockquote>
+<div><p>进入到 SOC 对应的 GCC project 路径下，运行：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="p">{</span><span class="n">SDK</span><span class="p">}</span><span class="o">/</span><span class="n">amebaxxx_gcc_project</span>
+
+<span class="n">build</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">new</span> <span class="o">&lt;</span><span class="n">project_dir</span><span class="o">&gt;</span> <span class="p">[</span><span class="o">-</span><span class="n">a</span> <span class="o">&lt;</span><span class="n">APP_NAME</span><span class="o">&gt;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>将以 example 中的 <code class="docutils literal notranslate"><span class="pre">APP_NAME</span></code> 为模板，在 <code class="docutils literal notranslate"><span class="pre">project_dir</span></code> 路径下建立新的工程。例如：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">build</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">new</span> <span class="o">~/</span><span class="n">my_project</span> <span class="o">-</span><span class="n">a</span> <span class="n">http_client</span>
+</pre></div>
+</div>
+<p>工程路径下包含：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">ameba.bat</span></code> <code class="docutils literal notranslate"><span class="pre">ameba.sh</span></code> : 用户可以通过这些脚本设置环境变量。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">menuconfig.py</span></code> <code class="docutils literal notranslate"><span class="pre">build.py</span></code> : 用于配置及编译工程</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> : 编译此新建工程的入口文件</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Kconfig</span></code> : 在此可添加用户自己的配置项</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&lt;APP_NAME&gt;</span></code> 文件夹 : 指定模板的文件将被拷贝至相应文件夹</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">prj.conf</span></code> : 用于记录该工程的默认配置。</p></li>
+</ul>
+</div></blockquote>
+<p><strong>在创建的工程目录下设置环境</strong></p>
+<blockquote>
+<div><p>工程目录下的 <code class="docutils literal notranslate"><span class="pre">ameba.bat</span></code> 和 <code class="docutils literal notranslate"><span class="pre">ameba.sh</span></code> 建立了对 <code class="docutils literal notranslate"><span class="pre">{SDK}</span></code> 根目录下的脚本的引用，用户可通过任意位置的脚本设置环境。</p>
+</div></blockquote>
+<p><strong>在创建的工程目录下配置</strong></p>
+<blockquote>
+<div><p>使用方法同 <a class="reference internal" href="#configuring-sdk"><span class="std std-ref">配置SDK</span></a> 中的命令。配置生成的 menuconfig 文件夹将会被生成在此工程目录下。</p>
+</div></blockquote>
+<p><strong>在创建的工程目录下编译</strong></p>
+<blockquote>
+<div><p>使用方法同 <a class="reference internal" href="#building-code"><span class="std std-ref">编译SDK</span></a> 中的命令。编译生成的 build 文件夹将会被生成在此工程目录下。</p>
+</div></blockquote>
+</section>
+<section id="id6">
+<h1>固件下载<a class="headerlink" href="#id6" title="Link to this heading"></a></h1>
 <p>我们提供了 ImageTool 专门用于固件的下载，请参考 <a class="reference internal" href="../0_tools/1_image_tool_toprst_cn.html#image-tool"><span class="std std-ref">Image Tool</span></a>.</p>
 </section>
 
@@ -864,6 +1837,78 @@ document.addEventListener("DOMContentLoaded", function() {
 
 </footer>
         </div>
+    <!-- 问题反馈按钮和对话框 -->
+    
+        <button id="report-button">Inquire</button>
+    
+    <div id="feedback-dialog" class="feedback-dialog" style="display: none;">
+        <div class="form-group">
+            <label style="font-weight: bold;">Please select the related chapter:</label>
+            <select id="chapter-select">
+                <option value="">Select Chapter</option>
+                <!-- 章节选项将通过JavaScript动态填充 -->
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label style="font-weight: bold;">Post Type</label>
+            <select id="post-type" class="form-control" required>
+                <option value="">-- Select Type --</option>
+                <option value="doc_correction">Document Correction</option>
+                <option value="tech_consult">Technical Consult</option>
+                <option value="tech_summary">Technical Summary</option>
+                <option value="operation_flow">Operation Flow</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label style="font-weight: bold;">Related Paragraph:</label>
+            <textarea
+                id="paragraph-input"
+                placeholder="{{ '你可以先选择有问题的段落或手动输入...' if language == 'zh_CN' else 'You can select text or type directly here...' }}"
+                rows="4"
+            ></textarea>
+        </div>
+
+        <div class="form-group">
+            <label style="font-weight: bold;">Please describe your issue:</label>
+            <textarea
+                id="inquire_input"
+                placeholder="Feature enhancement in progress, please stay tuned...">
+            </textarea>
+        </div>
+
+        <button id="submit-feedback">Submit</button>
+        <button id="cancel-feedback">Cancel</button>
+    </div>
+
+    <style>
+        .form-group {
+            margin: 5px 0;  /* 基础间距 */
+        }
+
+        /* 相邻表单项缩小上方间距 */
+        .form-group + .form-group {
+            margin-top: 10px;
+        }
+
+        /* 段落输入框底部微调 */
+        #paragraph-input, #inquire_input {
+            margin: 2px 0; /* 上下间距 */
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            resize: vertical;
+            min-height: 100px;
+
+            /* 占位符样式 */
+            &::placeholder {
+                color: #999;
+                font-style: italic;
+            }
+        }
+    </style>
 
       </div>
     </section>
@@ -873,8 +1918,8 @@ document.addEventListener("DOMContentLoaded", function() {
           SphinxRtdTheme.Navigation.enable(true);
       });
   </script>
- 
-
+     
+    
 
 
 </body>

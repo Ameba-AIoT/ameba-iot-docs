@@ -10,9 +10,9 @@
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
-      <link rel="stylesheet" type="text/css" href="../../_static/custom_cn.css?v=0d22fac7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=c12c2b39" />
       <link rel="stylesheet" type="text/css" href="../../_static/tabs.css?v=a5c4661c" />
-      <link rel="stylesheet" type="text/css" href="../../_static/_static/custom_cn.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=c12c2b39" />
 
   
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
@@ -26,6 +26,8 @@
         <script src="../../_static/doctools.js?v=9a2dae69"></script>
         <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="../../_static/tabs.js?v=3030b3cb"></script>
         <script>let toggleHintShow = 'Click to show';</script>
         <script>let toggleHintHide = 'Click to hide';</script>
         <script>let toggleOpenOnPrint = 'true';</script>
@@ -38,13 +40,901 @@
     <link rel="search" title="搜索" href="../../search.html" />
     <link rel="next" title="多媒体" href="../4_multimedia/0_multimedia_index_cn.html" />
     <link rel="prev" title="AIVoice" href="0_ai_voice_index_cn.html" />
-   
-  
-  <script type="text/javascript" src="../../_static/js/selector.js"></script>
+     
 
-  <style>
-    .wy-nav-content {max-width: 1000px;} /* 设置最大宽度 */
-  </style>
+    <!-- NDA文档输入密码的框 -->
+    
+<script>
+// ▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼ 多语言配置 ▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼
+const lang = 'zh';  // 使用 Python 字符串切片
+const i18n = {
+    zh: {
+        title: '访问授权',
+        username: '用户名',
+        password: '密码',
+        confirm: '确认',
+        cancel: '取消',
+        usernameError: '用户名错误',
+        userNotExist: '该用户不存在',
+        passwordError: '密码错误',
+        wrongPassword: '请输入正确的密码',
+        accessDenied: '无访问权限',
+        noPermission: '您无权查看此内容',
+        expiredTitle: '访问已过期',
+        expiredMsg: '您的权限已失效<br>有效期：%s 至 %s',
+        deniedTitle: '⚠️ 无访问权限',
+        contact: '请联系 claire_wang@realsil.com.cn 获取权限'
+    },
+    en: {
+        title: 'Access Required',
+        username: 'Username',
+        password: 'Password',
+        confirm: 'Confirm',
+        cancel: 'Cancel',
+        usernameError: 'Invalid Username',
+        userNotExist: 'User does not exist',
+        passwordError: 'Wrong Password',
+        wrongPassword: 'Please enter correct password',
+        accessDenied: 'Access Denied',
+        noPermission: 'You have no permission to view this content',
+        expiredTitle: 'Authorization Expired',
+        expiredMsg: 'Your access has expired<br>Valid period: %s to %s',
+        deniedTitle: '⚠️ Access Denied',
+        contact: 'Please contact claire_wang@realsil.com.cn for access'
+    }
+};
+// ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲ 多语言配置结束 ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
+</script>
+
+    <!-- 样式模板 -->
+    
+
+<style>
+    .wy-nav-content {
+        max-width: 1100px;
+         
+    }
+    
+    .auth-denied {
+        padding: 20px;
+        background: #f8f9fa;
+        border-radius: 4px;
+        border: 1px solid #dee2e6;
+        text-align: center;
+        color: #721c24;
+        margin-top: 20px;
+    }
+    .auth-denied h3 {
+        margin-bottom: 10px;
+        color: #dc3545;
+    }
+    
+    #report-button {
+        position: fixed;
+        top: 10px;
+        left: 1270px;
+        padding: 1px 15px; /* 调整内边距：1px 为上下，5px 为左右 */
+        height: 30px; /* 设置固定高度 */
+        background-color: #2ecc71;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        z-index: 1000;
+    }
+    #report-button:hover {
+        background-color: #2ecc71;
+    }
+    
+    .feedback-dialog {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        z-index: 1001;
+        width: 600px;
+    }
+    .feedback-dialog textarea {
+        width: 100%;
+        height: 150px;
+        margin-top: 10px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        resize: vertical;
+    }
+    .feedback-dialog button {
+        margin-top: 10px;
+        padding: 8px 16px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    .feedback-dialog button:hover {
+        background-color: #0056b3;
+    }
+
+    
+    
+</style>
+
+
+    <style>
+    /* ====================== 选择器样式 ====================== */
+    /* 选择器容器 */
+    .selector-container {
+        margin: 8px 0;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+    }
+    
+    /* 版本选择器特殊边距 */
+    .version-selector-container {
+        margin-bottom: 8px !important;
+    }
+    
+    /* 选择器标签 */
+    .selector-label {
+        color: white;
+        margin-right: 10px;
+        width: 80px;
+        text-align: right;
+        font-size: 0.9em;
+    }
+    
+    /* 下拉选择框 */
+    .selector-dropdown {
+        width: 120px;
+        border-radius: 2px;
+        padding: 4px 8px;
+        border: 1px solid #405261;
+        background: #2c3e50;
+        color: white;
+        font-size: 0.9em;
+    }
+    
+    /* 下拉选择框悬停效果 */
+    .selector-dropdown:hover {
+        border-color: #3498db;
+        transition: border-color 0.3s;
+    }
+    
+    /* 选择器响应式布局 */
+    @media (max-width: 768px) {
+        .selector-container {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        
+        .selector-label {
+            width: 100%;
+            text-align: left;
+            margin-bottom: 4px;
+        }
+        
+        .selector-dropdown {
+            width: 100%;
+        }
+    }
+</style>
+    <style>
+/* =============== 左上角登录区域  =============== */
+/* ================= 用户面板 ================= */
+.user-panel {
+    padding: 15px;
+    background: #34495e;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.username {
+    color: #fff;
+    font-weight: 500;
+    font-size: 1.1em;
+    text-align: center;
+    margin: 10px 0;
+}
+
+/* ================= 按钮容器 ================= */
+.button-row {
+    display: flex;
+    gap: 8px;
+    width: 100%;
+    margin: 10px 0;
+}
+
+/* 通用按钮样式 */
+.auth-btn, .forum-btn, .official-btn {
+    flex: 1;
+    padding: 8px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: opacity 0.3s;
+    text-align: center;
+    color: white !important;
+}
+
+/* 认证按钮 */
+.auth-btn {
+    background: #3498db;
+}
+
+/* 论坛按钮 */
+.forum-btn {
+    background: #9b59b6; /* 与参考代码的官方按钮同色 */
+}
+
+/* 官网按钮 */
+.official-btn {
+    background: #2ecc71; /* 与参考代码文档按钮同色 */
+}
+/* =============== 左上角登录区域  =============== */
+</style>
+
+    <!-- 注入 TOC 映射和当前页面信息 -->
+    
+
+<!-- TOC 映射和当前文档信息 -->
+<script>
+// 将 Python 字典转换为 JS 对象
+const TOC_TITLE_MAP = {"rst_rtos/0_ameba_product": "\u4ea7\u54c1\u4e2d\u5fc3", "rst_rtos/0_ameba_product/0_ameba_product_center_index_cn": "\u4ea7\u54c1\u4e2d\u5fc3", "rst_rtos/0_ameba_sdk": "Ameba SDK", "rst_rtos/0_ameba_sdk/0_ameba_sdks_index_cn": "Ameba SDK", "rst_rtos/0_ameba_solutions": "\u89e3\u51b3\u65b9\u6848", "rst_rtos/0_ameba_solutions/0_ameba_solutions_index_cn": "\u89e3\u51b3\u65b9\u6848", "rst_rtos/0_at_command": "0.8 AT \u547d\u4ee4\u96c6", "rst_rtos/0_at_command/0_at_command_index_cn": "0.8 AT \u547d\u4ee4\u96c6", "rst_rtos/0_file_system": "0.9 \u865a\u62df\u6587\u4ef6\u7cfb\u7edf", "rst_rtos/0_file_system/0_vfs_index_cn": "0.9 \u865a\u62df\u6587\u4ef6\u7cfb\u7edf", "rst_rtos/0_ftl": "0.a Flash \u8f6c\u6362\u5c42", "rst_rtos/0_ftl/0_ftl_index_cn": "0.a Flash \u8f6c\u6362\u5c42", "rst_rtos/0_gcc_build_environment": "0.1 GCC \u7f16\u8bd1\u73af\u5883", "rst_rtos/0_gcc_build_environment/0_gcc_build_index_cn": "0.1 GCC \u7f16\u8bd1\u73af\u5883", "rst_rtos/0_gcc_build_library": "0.3 GCC \u5e93\u7684\u751f\u6210\u548c\u4f7f\u7528", "rst_rtos/0_gcc_build_library/0_gcc_build_library_index_cn": "0.3 GCC \u5e93\u7684\u751f\u6210\u548c\u4f7f\u7528", "rst_rtos/0_gdb_debug": "0.2 GDB \u8c03\u8bd5", "rst_rtos/0_gdb_debug/0_gdb_debug_index_cn": "0.2 GDB \u8c03\u8bd5", "rst_rtos/0_memory_layout": "0.5 Flash \u548c RAM \u5e03\u5c40", "rst_rtos/0_memory_layout/0_layout_index_cn": "0.5 Flash \u548c RAM \u5e03\u5c40", "rst_rtos/0_sdk_example": "0.4 SDK \u793a\u4f8b", "rst_rtos/0_sdk_example/0_sdk_example_index_cn": "0.4 SDK \u793a\u4f8b", "rst_rtos/0_tools": "0.7 \u5de5\u5177", "rst_rtos/0_tools/0_tools_index_cn": "0.7 \u5de5\u5177", "rst_rtos/0_user_config": "0.6 \u5f00\u53d1\u8005\u914d\u7f6e", "rst_rtos/0_user_config/0_usrcfg_index_cn": "0.6 \u5f00\u53d1\u8005\u914d\u7f6e", "rst_rtos/1_boot_process": "1.1 \u542f\u52a8\u8fc7\u7a0b", "rst_rtos/1_boot_process/0_boot_index_cn": "1.1 \u542f\u52a8\u8fc7\u7a0b", "rst_rtos/1_chipen": "1.4 \u82af\u7247\u4f7f\u80fd", "rst_rtos/1_chipen/0_chipen_index_cn": "1.4 \u82af\u7247\u4f7f\u80fd", "rst_rtos/1_gpio": "1.7 GPIO \u548c\u5f15\u811a\u63a7\u5236", "rst_rtos/1_gpio/0_gpio_index_cn": "1.7 GPIO \u548c\u5f15\u811a\u63a7\u5236", "rst_rtos/1_ipc": "1.5 \u6838\u95f4\u901a\u4fe1", "rst_rtos/1_ipc/0_ipc_index_cn": "1.5 \u6838\u95f4\u901a\u4fe1", "rst_rtos/1_mpu_cache": "1.0 \u5185\u5b58\u4fdd\u62a4\u5355\u5143\u548c\u7f13\u5b58", "rst_rtos/1_mpu_cache/0_mpu_cache_index_cn": "1.0 \u5185\u5b58\u4fdd\u62a4\u5355\u5143\u548c\u7f13\u5b58", "rst_rtos/1_ota": "1.2 \u56fa\u4ef6\u5347\u7ea7\uff08OTA\uff09", "rst_rtos/1_ota/0_ota_index_cn": "1.2 \u56fa\u4ef6\u5347\u7ea7\uff08OTA\uff09", "rst_rtos/1_otpc": "1.3 OTP\u5b58\u50a8\u5668", "rst_rtos/1_otpc/0_otpc_index_cn": "1.3 OTP\u5b58\u50a8\u5668", "rst_rtos/1_pinmux": "1.6 \u5f15\u811a\u590d\u7528", "rst_rtos/1_pinmux/0_pinmux_index_cn": "1.6 \u5f15\u811a\u590d\u7528", "rst_rtos/1_power_save": "1.9 \u4f4e\u529f\u8017\u5f00\u53d1", "rst_rtos/1_power_save/0_ps_index_cn": "1.9 \u4f4e\u529f\u8017\u5f00\u53d1", "rst_rtos/2_whc_fullmac": "2.1 WHC FullMAC", "rst_rtos/2_whc_fullmac/0_fullmac_index_cn": "2.1 WHC FullMAC", "rst_rtos/2_whc_wifi_bridge": "2.0 WHC Bridge", "rst_rtos/2_whc_wifi_bridge/0_wifi_bridge_index_cn": "2.0 WHC Bridge", "rst_rtos/2_wifi_adaptivity_test": "2.4 Wi-Fi Adaptivity \u6d4b\u8bd5\u6307\u5357", "rst_rtos/2_wifi_adaptivity_test/0_wifi_adaptivity_index_cn": "2.4 Wi-Fi Adaptivity \u6d4b\u8bd5\u6307\u5357", "rst_rtos/2_wifi_csi": "2.3 Wi-Fi CSI", "rst_rtos/2_wifi_csi/0_wifi_csi_index_cn": "2.3 Wi-Fi CSI", "rst_rtos/2_wifi_tunnel": "2.2 Wi-Fi R-Mesh", "rst_rtos/2_wifi_tunnel/0_wifi_tunnel_index_cn": "2.2 Wi-Fi R-Mesh", "rst_rtos/3_ap_trustzone": "3.d AP \u5b89\u5168\u670d\u52a1", "rst_rtos/3_ap_trustzone/0_ap_tz_index_cn": "3.d AP \u5b89\u5168\u670d\u52a1", "rst_rtos/3_crypto_engine": "3.9 \u5bf9\u79f0\u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_crypto_engine/0_crypto_engine_index_cn": "3.9 \u5bf9\u79f0\u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_ecdsa_engine": "3.a ECDSA \u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_ecdsa_engine/0_ecdsa_index_cn": "3.a ECDSA \u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_eddsa_engine": "3.b EDDSA \u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_eddsa_engine/0_eddsa_index_cn": "3.b EDDSA \u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_nda_huk_derivation": "3.3 HUK \u751f\u6210 \ud83d\udd12", "rst_rtos/3_nda_huk_derivation/0_huk_derivation_index_nda": "3.3 HUK \u751f\u6210 \ud83d\udd12", "rst_rtos/3_nda_rdp": "3.4 RDP \ud83d\udd12", "rst_rtos/3_nda_rdp/0_rdp_index_nda": "3.4 RDP \ud83d\udd12", "rst_rtos/3_nda_rsip": "3.5 RSIP \ud83d\udd12", "rst_rtos/3_nda_rsip/0_rsip_index_nda": "3.5 RSIP \ud83d\udd12", "rst_rtos/3_nda_secure_boot": "3.6 \u5b89\u5168\u542f\u52a8 \ud83d\udd12", "rst_rtos/3_nda_secure_boot/0_secure_boot_index_nda": "3.6 \u5b89\u5168\u542f\u52a8 \ud83d\udd12", "rst_rtos/3_nda_swd_protection": "3.7 SWD \u4fdd\u62a4 \ud83d\udd12", "rst_rtos/3_nda_swd_protection/0_swd_protection_index_nda": "3.7 SWD \u4fdd\u62a4 \ud83d\udd12", "rst_rtos/3_nda_tfm": "3.8 Trusted Firmware-M (TF-M) \ud83d\udd12", "rst_rtos/3_nda_tfm/0_tfm_index_nda": "3.8 Trusted Firmware-M (TF-M) \ud83d\udd12", "rst_rtos/3_rsa_engine": "3.c RSA \u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_rsa_engine/0_rsa_index_cn": "3.c RSA \u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_security": "3.1 \u5b89\u5168\u4e0e\u52a0\u5bc6", "rst_rtos/3_security/0_security_index_cn": "3.1 \u5b89\u5168\u4e0e\u52a0\u5bc6", "rst_rtos/3_trng": "3.2 \u771f\u968f\u673a\u6570\u53d1\u751f\u5668", "rst_rtos/3_trng/0_trng_index_cn": "3.2 \u771f\u968f\u673a\u6570\u53d1\u751f\u5668", "rst_rtos/4_ai": "4.1 \u4eba\u5de5\u667a\u80fd", "rst_rtos/4_ai/0_ai_index_cn": "4.1 \u4eba\u5de5\u667a\u80fd", "rst_rtos/4_ai_voice": "4.2 \u8bed\u97f3\u8bc6\u522b", "rst_rtos/4_ai_voice/0_ai_voice_index_cn": "4.2 \u8bed\u97f3\u8bc6\u522b", "rst_rtos/4_dsp": "4.4 DSP \u4f7f\u7528\u6307\u5357", "rst_rtos/4_dsp/0_dsp_index_cn": "4.4 DSP \u4f7f\u7528\u6307\u5357", "rst_rtos/4_multimedia": "4.3 \u591a\u5a92\u4f53", "rst_rtos/4_multimedia/0_multimedia_index_cn": "4.3 \u591a\u5a92\u4f53", "rst_rtos/6_mass_production": "6.1 \u6279\u91cf\u751f\u4ea7", "rst_rtos/6_mass_production/0_mp_index_cn": "6.1 \u6279\u91cf\u751f\u4ea7", "rst_rtos/6_mptools": "6.2 \u4ea7\u6d4b\u5de5\u5177", "rst_rtos/6_mptools/0_mptools_index_cn": "6.2 \u4ea7\u6d4b\u5de5\u5177", "rst_rtos/7_usb": "7.1 USB \u4e3b\u673a\u4e0e\u4ece\u673a", "rst_rtos/7_usb/0_usb_index_cn": "7.1 USB \u4e3b\u673a\u4e0e\u4ece\u673a", "rst_rtos/8_adc": "8.4 \u6a21\u6570\u8f6c\u6362\u5668", "rst_rtos/8_adc/0_adc_index_cn": "8.4 \u6a21\u6570\u8f6c\u6362\u5668", "rst_rtos/8_cap_touch": "8.7 Cap-Touch", "rst_rtos/8_cap_touch/0_cap_touch_index_cn": "8.7 Cap-Touch", "rst_rtos/8_dmac": "8.1 DMA \u63a7\u5236\u5668", "rst_rtos/8_dmac/0_dmac_index_cn": "8.1 DMA \u63a7\u5236\u5668", "rst_rtos/8_ir": "8.5 \u7ea2\u5916\u6536\u53d1\u5668", "rst_rtos/8_ir/0_ir_index_cn": "8.5 \u7ea2\u5916\u6536\u53d1\u5668", "rst_rtos/8_key_scan": "8.8 Key-Scan", "rst_rtos/8_key_scan/0_key_scan_index_cn": "8.8 Key-Scan", "rst_rtos/8_lcdc": "8.a LCD \u63a7\u5236\u5668", "rst_rtos/8_lcdc/0_lcdc_index_cn": "8.a LCD \u63a7\u5236\u5668", "rst_rtos/8_ledc": "8.6 LED \u63a7\u5236\u5668", "rst_rtos/8_ledc/0_ledc_index_cn": "8.6 LED \u63a7\u5236\u5668", "rst_rtos/8_psram": "8.2 PSRAM", "rst_rtos/8_psram/0_psram_index_cn": "8.2 PSRAM", "rst_rtos/8_rtc_io": "8.9 RTC-IO", "rst_rtos/8_rtc_io/0_rtc_io_index_cn": "8.9 RTC-IO", "rst_rtos/8_thermal": "8.3 \u6e29\u5ea6\u6d4b\u91cf", "rst_rtos/8_thermal/0_thermal_index_cn": "8.3 \u6e29\u5ea6\u6d4b\u91cf"};
+console.log("TOC_TITLE_MAP:", TOC_TITLE_MAP);
+
+// 获取当前页面的文档名 (例如 'rst_rtos/3_nda_secure_boot/0_secure_boot_index_nda')
+const CURRENT_DOCNAME = 'rst_rtos/4_ai_voice/1_ai_voice_toprst_cn';
+
+// 动态查找顶级分类函数（定义为全局函数）
+window.findTopLevelChapter = function(docname) {
+    console.log("Attempting to find top-level chapter for:", docname);
+    let bestMatch = "";
+    let bestTitle = "Unknown Chapter";
+
+    // 按路径长度降序排序以确保最长匹配
+    const sortedPaths = Object.keys(TOC_TITLE_MAP).sort((a, b) => b.length - a.length);
+
+    for (const path of sortedPaths) {
+        console.log("Checking path:", path);
+        if (docname === path || docname.startsWith(path + '/')) { // 子页面
+            bestMatch = path;
+            bestTitle = TOC_TITLE_MAP[path];
+            console.log("Matched path:", path, "with title:", bestTitle);
+            break;
+        }
+    }
+
+    // 如果没有找到任何匹配项，则尝试更短的路径
+    if (bestMatch === "") {
+        const pathSegments = docname.split('/');
+        while (pathSegments.length > 1) { // 至少保留根路径
+            const candidate = pathSegments.join('/');
+            console.log("Checking shorter path:", candidate);
+            if (TOC_TITLE_MAP[candidate]) {
+                bestTitle = TOC_TITLE_MAP[candidate];
+                console.log("Matched shorter path:", candidate, "with title:", bestTitle);
+                break;
+            }
+            pathSegments.pop();
+        }
+    }
+
+    console.log("Final top-level chapter:", bestTitle);
+    return bestTitle;
+}
+
+// 初始化时调用
+document.addEventListener('DOMContentLoaded', function() {
+    const topLevelChapter = findTopLevelChapter(CURRENT_DOCNAME);
+    console.log("Top Level Chapter:", topLevelChapter);
+
+    // 将顶级分类插入到DOM中（根据需要）
+    const chapterElement = document.createElement('div');
+    chapterElement.className = 'top-level-chapter';
+    chapterElement.innerHTML = `<strong>Top Level Chapter: </strong>${topLevelChapter}`;
+    document.body.appendChild(chapterElement);
+});
+</script>
+
+    <!-- 问题回报 -->
+    <!-- source/_templates/_layout_issue_report.html -->
+<div id="prompt-box" style="
+    display: none;
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.8);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    z-index: 9999;
+    text-align: center;
+    font-size: 14px;
+"></div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    'use strict'; // 添加严格模式
+
+    // 获取所有DOM元素引用
+    const reportButton = document.getElementById('report-button');
+    const feedbackDialog = document.getElementById('feedback-dialog');
+    const feedbackText = document.getElementById('inquire_input');
+    const submitButton = document.getElementById('submit-feedback');
+    const cancelButton = document.getElementById('cancel-feedback');
+    const promptBox = document.getElementById('prompt-box');
+    const chapterSelect = document.getElementById('chapter-select');
+    const paragraphInput = document.getElementById('paragraph-input');
+    const postTypeSelect = document.getElementById('post-type');
+    console.log('帖子类型(postTypeSelect)DOM元素:', postTypeSelect); // 应输出<select>元素
+
+    // 状态变量
+    let hasUserInput = false; // 跟踪用户是否主动输入
+    let selectedText = '';
+    const language = 'zh-CN'; // 从模板引擎获取语言变量
+
+    // 初始化时设置placeholder
+    paragraphInput.placeholder = language === 'zh_CN' 
+        ? '你可以先选择有问题的段落或手动输入...'
+        : 'You can select text or type directly here...';
+
+    // 获取当前激活的章节
+    function getCurrentChapter() {
+        try {
+            // 通过激活的菜单项获取当前章节
+            const currentLink = document.querySelector('.wy-menu .toctree-l1.current > a');
+            if (currentLink) {
+                return currentLink.textContent.replace('¶', '').trim();
+            }
+
+            // 如果没有找到激活的链接，尝试通过页面标题获取
+            const pageTitle = document.querySelector('h1');
+            if (pageTitle) {
+                return pageTitle.textContent.split('\n')[0].trim();
+            }
+
+            // 如果以上方法都失败，尝试通过URL路径推断章节
+            const pathParts = window.location.pathname.split('/');
+            if (pathParts.length > 2) {
+                return decodeURIComponent(pathParts[pathParts.length - 2]);
+            }
+
+            return null;
+        } catch (error) {
+            console.error('获取当前章节失败:', error);
+            return null;
+        }
+    }
+
+    // 填充章节选择框
+    function populateChapters() {
+        const chapterElements = document.querySelectorAll('.wy-menu .toctree-l1 > a');
+        const chapters = Array.from(chapterElements).map(el => el.textContent.replace('¶', '').trim());
+        const currentChapter = getCurrentChapter();
+
+        console.log('提取全部章节:', chapters);
+        console.log('当前页面章节:', currentChapter);
+
+        if (chapters.length === 0) {
+            console.error('未找到章节链接');
+            return;
+        }
+
+        chapterSelect.innerHTML = '';
+
+        // 添加默认选项
+        const defaultOption = document.createElement('option');
+        defaultOption.value = '';
+        defaultOption.textContent = language === 'zh_CN' ? '-- 请选择章节 --' : '-- Select Chapter --';
+        chapterSelect.appendChild(defaultOption);
+
+        // 添加章节选项
+        chapters.forEach(chapter => {
+            const option = document.createElement('option');
+            option.value = chapter;
+            option.textContent = chapter;
+            if (chapter === currentChapter) {
+                option.selected = true;
+            }
+            chapterSelect.appendChild(option);
+        });
+    }
+
+    // 初始化章节选择框
+    populateChapters();
+
+    // 报告按钮点击事件（处理文本选择）
+    reportButton.addEventListener('click', function() {
+        // 重置所有输入字段，每次重新inquire应该让对话框处于默认状态
+        feedbackText.value = '';          // 清空问题输入框
+        paragraphInput.value = '';        // 清空段落输入框
+        selectedText = '';                // 清除之前选择的文本
+
+        const selection = window.getSelection().toString().trim();
+        if (selection) {
+            paragraphInput.value = selection;
+        } else {
+            // 保持placeholder提示
+            if (!paragraphInput.value.trim()) {
+                paragraphInput.value = '';
+            }
+        }
+        feedbackDialog.style.display = 'block';
+    });
+
+    // 监听输入事件
+    paragraphInput.addEventListener('input', function() {
+        // 标记用户已经输入
+        this.placeholder = '';
+    });
+
+    // 提交按钮点击事件
+    submitButton.addEventListener('click', function() {
+        const userQuestion = feedbackText.value.trim();
+        const selectedChapter = chapterSelect.value;
+        const selectedPostType = postTypeSelect.value;
+        const paragraphContent = paragraphInput.value.trim() || 'null';
+
+        // 在提交事件顶部添加详细日志
+        console.group('=== 提交调试信息 ===');
+        console.log('章节选择值:', chapterSelect.value);
+        console.log('帖子类型postTypeSelect DOM元素:', postTypeSelect);
+        console.log('帖子类型postTypeSelect 选中的选项:', postTypeSelect.options[postTypeSelect.selectedIndex]);
+        console.log('帖子类型postTypeSelect 实际值:', postTypeSelect.value); // 应输出'doc_correction' 对应文档纠错
+          console.groupEnd();
+
+        // 验证输入
+        if (!userQuestion) {
+            alert(language === 'zh_CN' ? '问题描述为空' : 'Issue description cannot be empty');
+            return;
+        }
+        if (!selectedChapter) {
+            alert(language === 'zh_CN' ? '请选择相关章节' : 'Please select a related chapter');
+            return;
+        }
+
+        if (!selectedPostType) {
+            alert(language === 'zh_CN' ? '请选择帖子类型' : 'Please select a post type');
+            return;
+        }
+
+        // 获取用户名
+        const username = localStorage.getItem('username') || 'Anonymous';
+
+        // 构建提交数据
+        const feedbackData = {
+            user: username,
+            chapters: selectedChapter,
+            post_type: selectedPostType,
+            paragraph: paragraphContent,
+            question: userQuestion
+        };
+
+        console.log('完整提交数据:', feedbackData);
+
+        // 发送到后端
+        fetch('http://172.29.57.206:5000/submit', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(feedbackData)
+        })
+        .then(response => {
+            if (!response.ok) throw new Error('Network response was not ok');
+            return response.json();
+        })
+        .then(data => {
+            console.log('提交成功:', data);
+            promptBox.textContent = language === 'zh_CN' ? '问题已成功提交' : 'Issue submitted successfully';
+            promptBox.style.display = 'block';
+            setTimeout(() => promptBox.style.display = 'none', 5000);
+        })
+        .catch(error => {
+            console.error('提交失败:', error);
+            promptBox.textContent = language === 'zh_CN' ? '提交失败，请检查网络连接' : 'Submission failed, check your network';
+            promptBox.style.display = 'block';
+            setTimeout(() => promptBox.style.display = 'none', 5000);
+        });
+
+        // 关闭对话框
+        feedbackDialog.style.display = 'none';
+    });
+
+
+    // 取消按钮点击事件
+    cancelButton.addEventListener('click', function() {
+        feedbackDialog.style.display = 'none';
+    });
+
+    // 初始化检查
+    console.log('问题反馈系统已加载');
+    console.log('当前语言:', language);
+    console.log('检测到章节数量:', chapterSelect.options.length - 1);
+});
+</script>
+
+    <style>
+        /* 隐藏整个搜索栏容器 */
+        .wy-side-nav-search > div[role="search"] {
+            display: none !important;
+        }
+
+        /* 或者更精确地隐藏表单 */
+        form#rtd-search-form {
+            display: none !important;
+        }
+    </style>
+
+    <!-- 引入功能模块 -->
+    
+<script>
+    /* ====================== 嵌入式配置开始 ====================== */
+    const embeddedConfig = {
+        "freertos": {
+            "name": "FreeRTOS",
+            "languages": {
+                "en": ["latest"],
+                "cn": ["latest"]
+            }
+        },
+        "linux": {
+            "name": "Linux",
+            "languages": {
+                "en": ["latest"],
+                "cn": ["latest"]
+            }
+        }
+    };
+    /* ====================== 嵌入式配置结束 ====================== */
+</script>
+    
+<script>
+    // 获取基础URL路径
+    function getBaseURL() {
+        const url = new URL(window.location.href);
+        if (url.protocol === 'file:') {
+            // 本地路径处理
+            const pathParts = url.pathname.split('/').filter(part => part !== '');
+            const index = pathParts.indexOf('build');
+            return `file://${pathParts.slice(0, index + 1).join('/')}/`;
+        } else {
+            // 网络路径处理
+            return `${url.origin}/${url.pathname.split('/').slice(1, 3).join('/')}/`;
+        }
+    }
+
+    // 获取当前URL路径分段
+    function getCurrentSegments() {
+        const url = new URL(window.location.href);
+        let segments = url.pathname.split('/').filter(segment => segment);
+
+        if (url.protocol === 'file:') {
+            // 本地路径处理
+            const index = segments.indexOf('build');
+            segments = segments.slice(index + 1); // 去掉 build 及之前的路径
+        } else {
+            // 网络路径处理
+            segments = segments.slice(3); // 去掉 ameba-iot-docs/
+        }
+
+        return {
+            osKey: segments[0] || 'freertos', // 默认为 freertos
+            language: segments[1] || 'en',   // 默认为 en
+            version: segments[2] || 'latest' // 默认为 latest
+        };
+    }
+</script>
+    
+<script>
+    // 获取OS显示名称列表
+    function getOSNames(data) {
+        return Object.keys(data).map(key => data[key].name);
+    }
+
+    // 获取指定OS的语言列表
+    function getLanguages(data, osKey) {
+        return Object.keys(data[osKey]?.languages || {});
+    }
+
+    // 获取指定OS和语言的版本列表
+    function getVersions(data, osKey, language) {
+        return data[osKey]?.languages?.[language] || ['latest'];
+    }
+
+    // 根据显示名称查找OS键
+    function findOSKey(data, displayName) {
+        return Object.keys(data).find(key => data[key].name === displayName);
+    }
+</script>
+    
+<script>
+    // 验证并修正路径参数
+    function validateSegments(segments) {
+        const currentOSName = embeddedConfig[segments.osKey]?.name;
+
+        // 如果 OS 无效，默认设置为 FreeRTOS
+        if (!currentOSName) {
+            console.warn("Invalid OS key, defaulting to FreeRTOS");
+            segments.osKey = 'freertos';
+        }
+
+        // 如果语言无效，默认设置为 en
+        if (!getLanguages(embeddedConfig, segments.osKey).includes(segments.language)) {
+            console.warn("Invalid language, defaulting to en");
+            segments.language = 'en';
+        }
+
+        return segments;
+    }
+
+    // 生成选择器HTML
+    function generateSelectorsHTML(segments) {
+        return `
+            <div id="custom-selectors" style="padding: 0; background: none; border: none;">
+                <!-- 系统选择器 -->
+                <div class="selector-container">
+                    <label class="selector-label">
+                        ${segments.language === 'cn' ? '系统' : 'OS'}:
+                    </label>
+                    <select id="os-selector" class="selector-dropdown">
+                        ${Object.keys(embeddedConfig).map(key => `
+                            <option value="${key}">${embeddedConfig[key].name}</option>
+                        `).join('')}
+                    </select>
+                </div>
+
+                <!-- 语言选择器 -->
+                <div class="selector-container">
+                    <label class="selector-label">
+                        ${segments.language === 'cn' ? '语言' : 'Language'}:
+                    </label>
+                    <select id="language-selector" class="selector-dropdown">
+                        ${getLanguages(embeddedConfig, segments.osKey).map(lang => `
+                            <option value="${lang}">${lang}</option>
+                        `).join('')}
+                    </select>
+                </div>
+
+                <!-- 版本选择器 -->
+                <div class="selector-container version-selector-container">
+                    <label class="selector-label">
+                        ${segments.language === 'cn' ? '版本' : 'Version'}:
+                    </label>
+                    <select id="version-selector" class="selector-dropdown">
+                        ${getVersions(embeddedConfig, segments.osKey, segments.language).map(ver => `
+                            <option value="${ver}">${ver}</option>
+                        `).join('')}
+                    </select>
+                </div>
+
+                ${generateUserPanelHTML(segments)}
+            </div>`;
+    }
+
+    // 生成用户面板HTML
+    function generateUserPanelHTML(segments) {
+        return `
+            <div class="user-panel">
+                <!-- 用户名显示（登录后可见） -->
+                <div id="user-info" style="display: ${localStorage.getItem('isLoggedIn') ? 'block' : 'none'}">
+                    <span id="username-display" class="username">${localStorage.getItem('username') || ''}</span>
+                </div>
+
+                <!-- 登录注册按钮（未登录时可见） -->
+                <div id="auth-buttons" class="button-row" style="display: ${localStorage.getItem('isLoggedIn') ? 'none' : 'flex'}">
+                    <button class="auth-btn" id="register-button">${segments.language === 'cn' ? '注册' : 'Register'}</button>
+                    <button class="auth-btn" id="login-button">${segments.language === 'cn' ? '登录' : 'Login'}</button>
+                </div>
+
+                <!-- 外链按钮（始终可见） -->
+                <div class="button-row">
+                    <button class="official-btn" onclick="window.open('https://www.realmcu.com/', '_blank')">
+                        ${segments.language === 'cn' ? '官网' : 'Official'}
+                    </button>
+                    <button class="forum-btn" onclick="window.open('http://172.29.57.206:5000/view', '_blank')">
+                        ${segments.language === 'cn' ? '论坛' : 'Forum'}
+                    </button>
+                </div>
+            </div>
+        `;
+    }
+
+    // 设置初始选中值
+    function setInitialValues(segments) {
+        document.getElementById('os-selector').value = segments.osKey;
+        document.getElementById('language-selector').value = segments.language;
+
+        const versionSelector = document.getElementById('version-selector');
+        const availableVersions = getVersions(embeddedConfig, segments.osKey, segments.language);
+        versionSelector.value = availableVersions.includes(segments.version) ? segments.version : availableVersions[0] || 'latest';
+    }
+</script>
+    
+<script>
+    // 绑定事件监听
+    function bindEvents(baseURL, segments) {
+        document.getElementById('os-selector').addEventListener('change', () => {
+            const newOSKey = document.getElementById('os-selector').value;
+            const availableLangs = getLanguages(embeddedConfig, newOSKey);
+            const defaultLang = availableLangs[0] || 'en';
+            const defaultVersion = getVersions(embeddedConfig, newOSKey, defaultLang)[0] || 'latest';
+            redirectTo(`${baseURL}${newOSKey}/${defaultLang}/${defaultVersion}/`);
+        });
+
+        document.getElementById('language-selector').addEventListener('change', () => {
+            const newLang = document.getElementById('language-selector').value;
+            const defaultVersion = getVersions(embeddedConfig, segments.osKey, newLang)[0] || 'latest';
+            redirectTo(`${baseURL}${segments.osKey}/${newLang}/${defaultVersion}/`);
+        });
+
+        document.getElementById('version-selector').addEventListener('change', () => {
+            const newVer = document.getElementById('version-selector').value;
+            redirectTo(`${baseURL}${segments.osKey}/${segments.language}/${newVer}/`);
+        });
+    }
+
+    // 跳转函数
+    function redirectTo(path) {
+        const url = new URL(path, window.location.href);
+        if (url.protocol === 'file:') {
+            url.pathname += 'index.html';
+        }
+        window.location.href = url.href;
+    }
+</script>
+    
+<script>
+    // 初始化认证对话框
+    function initAuthDialogs() {
+        function createAuthDialog(type) {
+            const lang = document.getElementById('language-selector').value === 'cn' ? 'cn' : 'en';
+
+            const dialog = document.createElement('div');
+            dialog.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.5);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 9999;
+            `;
+
+            // 弹窗内容
+            const content = document.createElement('div');
+            content.style.cssText = `
+                background: white;
+                padding: 20px;
+                border-radius: 8px;
+                min-width: 300px;
+            `;
+
+            // 标题
+            const title = document.createElement('h3');
+            title.textContent = type === 'register' 
+                ? (lang === 'cn' ? '注册' : 'Register') 
+                : (lang === 'cn' ? '登录' : 'Login');
+            content.appendChild(title);
+
+            // 用户名输入
+            const usernameLabel = document.createElement('label');
+            usernameLabel.textContent = lang === 'cn' ? '用户名：' : 'Username:';
+            const usernameInput = document.createElement('input');
+            usernameInput.style.cssText = 'width: 100%; margin-bottom: 10px; padding: 5px;';
+            content.appendChild(usernameLabel);
+            content.appendChild(usernameInput);
+
+            // 密码输入
+            const passwordLabel = document.createElement('label');
+            passwordLabel.textContent = lang === 'cn' ? '密码：' : 'Password:';
+            const passwordInput = document.createElement('input');
+            passwordInput.type = 'password';
+            passwordInput.style.cssText = 'width: 100%; margin-bottom: 10px; padding: 5px;';
+            content.appendChild(passwordLabel);
+            content.appendChild(passwordInput);
+
+            // 注册时需要确认密码
+            let confirmPasswordInput;
+            if (type === 'register') {
+                const confirmLabel = document.createElement('label');
+                confirmLabel.textContent = lang === 'cn' ? '确认密码：' : 'Confirm Password:';
+                confirmPasswordInput = document.createElement('input');
+                confirmPasswordInput.type = 'password';
+                confirmPasswordInput.style.cssText = 'width: 100%; margin-bottom: 10px; padding: 5px;';
+                content.appendChild(confirmLabel);
+                content.appendChild(confirmPasswordInput);
+            }
+
+            // 按钮容器
+            const buttonContainer = document.createElement('div');
+            buttonContainer.style.cssText = 'display: flex; gap: 10px; margin-top: 10px;';
+
+            // 确认按钮
+            const confirmBtn = document.createElement('button');
+            confirmBtn.textContent = lang === 'cn' ? '确认' : 'Confirm';
+            confirmBtn.onclick = () => {
+                const username = usernameInput.value.trim();
+                const password = passwordInput.value.trim();
+                const confirmPassword = confirmPasswordInput ? confirmPasswordInput.value.trim() : null;
+
+                // 验证输入
+                if (!username || !password) {
+                    alert(lang === 'cn' ? '用户名和密码不能为空！' : 'Username and password are required!');
+                    return;
+                }
+
+                if (type === 'register' && password !== confirmPassword) {
+                    alert(lang === 'cn' ? '两次输入的密码不一致！' : 'Passwords do not match!');
+                    return;
+                }
+
+                // flask 发送请求
+                fetch('http://172.29.57.206:5000/auth', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        action: type,
+                        username,
+                        password
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert(lang === 'cn' ? '操作成功！' : 'Success!');
+                        // 更新本地存储和UI
+                        localStorage.setItem('isLoggedIn', 'true');
+                        localStorage.setItem('username', username);
+                        // 强制刷新显示状态
+                        document.getElementById('auth-buttons').style.display = 'none';
+                        document.getElementById('user-info').style.display = 'block';
+                        document.getElementById('username-display').textContent = username;
+                        document.body.removeChild(dialog);
+                    } else {
+                        alert(lang === 'cn' ? '失败：' + data.message : 'Failed: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert(lang === 'cn' ? '网络错误' : 'Network error');
+                });
+            };
+
+            // 取消按钮
+            const cancelBtn = document.createElement('button');
+            cancelBtn.textContent = lang === 'cn' ? '取消' : 'Cancel';
+            cancelBtn.onclick = () => document.body.removeChild(dialog);
+
+            buttonContainer.appendChild(confirmBtn);
+            buttonContainer.appendChild(cancelBtn);
+            content.appendChild(buttonContainer);
+            dialog.appendChild(content);
+            document.body.appendChild(dialog);
+        }
+
+        document.getElementById('register-button').addEventListener('click', () => createAuthDialog('register'));
+        document.getElementById('login-button').addEventListener('click', () => createAuthDialog('login'));
+    }
+
+    // 同步登录状态
+    function syncLoginState() {
+        const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+        document.getElementById('auth-buttons').style.display = isLoggedIn ? 'none' : 'flex';
+        document.getElementById('user-info').style.display = isLoggedIn ? 'block' : 'none';
+        if (isLoggedIn) {
+            document.getElementById('username-display').textContent = localStorage.getItem('username') || '';
+        }
+    }
+</script>
 
 </head>
 
@@ -53,6 +943,7 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
+    
 
           
           
@@ -66,106 +957,143 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
+
+    
+    <div id="custom-selectors" style="display: block !important; padding: 0; background: none; border: none;">
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        try {
+            const segments = validateSegments(getCurrentSegments());
+            const baseURL = getBaseURL();
+
+            // 渲染HTML
+            document.getElementById('custom-selectors').innerHTML = generateSelectorsHTML(segments);
+
+            // 设置初始值
+            setInitialValues(segments);
+
+            // 绑定事件
+            bindEvents(baseURL, segments);
+
+            // 初始化认证逻辑
+            initAuthDialogs();
+            syncLoginState();
+        } catch (error) {
+            console.error("Error initializing selectors:", error);
+        }
+    });
+</script>
+
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../0_ameba_product/0_ameba_product_center_index_cn.html">产品中心</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../0_ameba_sdk/0_ameba_sdks_index_cn.html">Ameba SDK</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../0_ameba_solutions/0_ameba_solutions_index_cn.html">解决方案</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../0_gcc_build_environment/0_gcc_build_index_cn.html">0.1 GCC 编译环境</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../0_gdb_debug/0_gdb_debug_index_cn.html">0.2 GDB调试</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_gdb_debug/0_gdb_debug_index_cn.html">0.2 GDB 调试</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../0_gcc_build_library/0_gcc_build_library_index_cn.html">0.3 GCC 库的生成和使用</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../0_sdk_example/0_sdk_example_index_cn.html">0.4 SDK 示例</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../0_memory_layout/0_layout_index_cn.html">0.5 Flash 和 RAM 布局</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../0_user_config/0_usrcfg_index_cn.html">0.6 开发者配置</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../0_tools/0_tools_index_cn.html">0.7 工具</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../0_at_command/0_at_command_index_cn.html">0.8 AT 命令</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_at_command/0_at_command_index_cn.html">0.8 AT 命令集</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../0_file_system/0_vfs_index_cn.html">0.9 虚拟文件系统</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../0_ftl/0_ftl_index_cn.html">0.A Flash 转换层</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_ftl/0_ftl_index_cn.html">0.a Flash 转换层</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../1_mpu_cache/0_mpu_cache_index_cn.html">1.0 内存保护单元和缓存</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../1_boot_process/0_boot_index_cn.html">1.1 启动过程</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../1_ota/0_ota_index_cn.html">1.2 固件在线升级(OTA)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../1_otpc/0_otpc_index.html">1.3 OTP存储器</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../1_chipen/0_chipen_index_cn.html">1.4 CHIP_EN</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_ota/0_ota_index_cn.html">1.2 固件升级（OTA）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_otpc/0_otpc_index_cn.html">1.3 OTP存储器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_chipen/0_chipen_index_cn.html">1.4 芯片使能</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../1_ipc/0_ipc_index_cn.html">1.5 核间通信</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../1_pinmux/0_pinmux_index_cn.html">1.6 PINMUX</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../1_gpio/0_gpio_index_cn.html">1.7 GPIO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_pinmux/0_pinmux_index_cn.html">1.6 引脚复用</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_gpio/0_gpio_index_cn.html">1.7 GPIO 和引脚控制</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../1_power_save/0_ps_index_cn.html">1.9 低功耗开发</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../2_whc_wifi_bridge/0_wifi_bridge_index_cn.html">2.1 WHC Bridge</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../2_whc_fullmac/0_fullmac_index_cn.html">2.2 WHC FullMAC</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../2_wifi_tunnel/0_wifi_tunnel_index_cn.html">2.3 Wi-Fi R-Mesh</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../2_wifi_csi/0_wifi_csi_index_cn.html">2.5 Wi-Fi CSI</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../2_wifi_adaptivity_test/0_wifi_adaptivity_index.html">2.6 Wi-Fi Adaptivity 测试指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_whc_wifi_bridge/0_wifi_bridge_index_cn.html">2.0 WHC Bridge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_whc_fullmac/0_fullmac_index_cn.html">2.1 WHC FullMAC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_wifi_tunnel/0_wifi_tunnel_index_cn.html">2.2 Wi-Fi R-Mesh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_wifi_csi/0_wifi_csi_index_cn.html">2.3 Wi-Fi CSI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_wifi_adaptivity_test/0_wifi_adaptivity_index_cn.html">2.4 Wi-Fi Adaptivity 测试指南</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../3_security/0_security_index_cn.html">3.1 安全与加密</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../3_trng/0_trng_index_cn.html">3.2 真随机数发生器</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../3_nda_huk_derivation/0_huk_derivation_index_nda.html">3.3 HUK Derivation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../3_nda_rdp/0_rdp_index_nda.html">3.4 RDP</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../3_nda_rsip/0_rsip_index_nda.html">3.5 RSIP</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../3_nda_secure_boot/0_secure_boot_index_nda.html">3.6 Secure Boot</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../3_nda_swd_protection/0_swd_protection_index_nda.html">3.7 SWD Protection</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../3_nda_tfm/0_tfm_index_nda.html">3.8 Trusted Firmware-M (TF-M)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_huk_derivation/0_huk_derivation_index_nda.html">3.3 HUK 生成 🔒</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_rdp/0_rdp_index_nda.html">3.4 RDP 🔒</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_rsip/0_rsip_index_nda.html">3.5 RSIP 🔒</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_secure_boot/0_secure_boot_index_nda.html">3.6 安全启动 🔒</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_swd_protection/0_swd_protection_index_nda.html">3.7 SWD 保护 🔒</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_tfm/0_tfm_index_nda.html">3.8 Trusted Firmware-M (TF-M) 🔒</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../3_crypto_engine/0_crypto_engine_index_cn.html">3.9 对称硬件加密引擎</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../3_ecdsa_engine/0_ecdsa_index_cn.html">3.a ECDSA 硬件加密引擎</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../3_eddsa_engine/0_eddsa_index_cn.html">3.b EDDSA 硬件加密引擎</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../3_rsa_engine/0_rsa_index_cn.html">3.c RSA 硬件加密引擎</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_ap_trustzone/0_ap_tz_index_cn.html">3.d AP 安全服务</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../4_ai/0_ai_index_cn.html">4.1 人工智能</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="0_ai_voice_index_cn.html">4.2 语音识别</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">概述</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#id2">支持平台</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id3">模块</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#afe">AFE（信号处理）</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#kws">KWS（唤醒词检测）</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#vad">VAD（语音端点检测）</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#asr">ASR（语音识别）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">应用</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">支持平台</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">模块</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">流程</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#id4">流程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#afe">AFE（信号处理）</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id6">概述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id7">配置</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#id5">配置</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#aivoice">AIVoice</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id6">AFE</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id7">KWS</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id8">VAD</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id9">ASR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#kws">KWS（唤醒词检测）</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id8">概述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id9">配置</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id10">KWS模式</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#id10">接口</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#id11">流程和模块接口</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id12">事件及回调信息</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#id13">AFE事件定义</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id14">VAD事件定义</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#vad">VAD（语音端点检测）</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id11">概述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id12">配置</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#id15">KWS模式</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#asr">ASR（语音识别）</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id13">概述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id14">配置</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#id16">示例</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id15">接口</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id16">流程和模块接口</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id17">事件及回调信息</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id18">AFE事件定义</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id19">VAD事件定义</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id20">通用配置</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id21">示例</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#aivoice-full-flow">AIVoice Full Flow离线示例</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#id17">AIVoice使用步骤</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id18">编译示例</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#aivoice">AIVoice使用步骤</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id22">编译示例</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#id19">术语</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id23">术语</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../4_multimedia/0_multimedia_index_cn.html">4.3 多媒体</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../4_dsp/0_dsp_index_cn.html">4.4 DSP 使用指南</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../6_mass_production/0_mp_index_cn.html">6.1 量产指导</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../6_mp_image/0_mp_image_index_cn.html">6.2 MP 固件</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../6_mptools/0_mptools_index_cn.html">6.3 产测工具</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../6_mass_production/0_mp_index_cn.html">6.1 批量生产</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../6_mptools/0_mptools_index_cn.html">6.2 产测工具</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../7_usb/0_usb_index_cn.html">7.1 USB 主机与从机</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../8_dmac/0_dmac_index_cn.html">8.1 DMA 控制器</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../8_psram/0_psram_index_cn.html">8.2 PSRAM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../8_thermal/0_thermal_index_cn.html">8.3 温度测量</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../8_adc/0_adc_index_cn.html">8.4 模数转换器</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../8_ir/0_ir_index_cn.html">8.5 红外收发器</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../8_ledc/0_ledc_index_cn.html">8.6 LED控制器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_ledc/0_ledc_index_cn.html">8.6 LED 控制器</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../8_cap_touch/0_cap_touch_index_cn.html">8.7 Cap-Touch</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../8_key_scan/0_key_scan_index_cn.html">8.8 Key-Scan</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../8_rtc_io/0_rtc_io_index_cn.html">8.9 RTC-IO</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../8_lcdc/0_lcdc_index_cn.html">8.A LCD控制器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_lcdc/0_lcdc_index_cn.html">8.a LCD 控制器</a></li>
 </ul>
 
         </div>
@@ -178,7 +1106,7 @@
       </nav>
 
       <div class="wy-nav-content">
-
+    
         <div class="rst-content">
           <div role="navigation" aria-label="页面导航">
   <ul class="wy-breadcrumbs">
@@ -195,9 +1123,21 @@
              
   <section id="ai-voice">
 <span id="id1"></span><h1>概述<a class="headerlink" href="#ai-voice" title="Link to this heading"></a></h1>
-<p>AIVoice提供用于在Realtek SoC上编译语音相关应用的离线AI解决方案。</p>
+<p>AIVoice是一套由Realtek自主研发的离线AI解决方案，包含声学信号处理、唤醒、端点检测、识别等本地算法模块，可用于在Realtek SoC上搭建语音相关应用。</p>
+<p>AIVoice可以作为纯离线方案单独使用，也可以结合语音识别、大语言模型等云端系统实现一个离在线混合的语音交互方案。</p>
 <section id="id2">
-<h2>支持平台<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+<h2>应用<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+<p>智能语音系统广泛应用于多个领域，提升人机交互的效率和便捷性，其应用范围包括：</p>
+<ul class="simple">
+<li><p><strong>智能家居</strong>：如小爱音箱、天猫精灵等智能音箱设备，或是自带语音控制功能的家电产品，用户可以通过语音控制家中的灯光、温度和其他智能设备，提升居住的便利性和舒适度。</p></li>
+<li><p><strong>智能玩具</strong>：搭载智能语音系统的互动玩具（如AI故事机、语音教育机器人、陪伴机器人）正逐渐普及。这类玩具可通过语音与用户自然对话，回答十万个为什么、讲述定制化故事或进行双语教学。</p></li>
+<li><p><strong>车载系统</strong>：许多现代汽车配备了语音识别系统，允许驾驶员通过语音指令进行导航、拨打电话和播放音乐，确保驾驶安全并提升驾驶体验。</p></li>
+<li><p><strong>穿戴产品</strong>：如智能手表、智能耳机和健康监测设备等很多穿戴产品都配备了语音助手。用户可以通过语音指令查看和发送消息、控制音乐播放器、接听电话等，提升了用户体验和交互方式。</p></li>
+<li><p><strong>会议场景</strong>：语音识别技术可以实时转录会议内容，帮助与会者更好地记录和回顾讨论要点。</p></li>
+</ul>
+</section>
+<section id="id3">
+<h2>支持平台<a class="headerlink" href="#id3" title="Link to this heading"></a></h2>
 <table class="docutils align-default" style="width: 100%">
 <thead>
 <tr class="row-odd"><th class="head"><p>芯片</p></th>
@@ -216,21 +1156,58 @@
 </tr>
 <tr class="row-odd"><td><p>FreeRTOS</p></td>
 <td><p>{RTOSSDK}/component/aivoice</p></td>
-<td><p>{RTOSSDK}/example/aivoice</p></td>
+<td><p>{RTOSSDK}/component/example/aivoice</p></td>
 </tr>
 <tr class="row-even"><td><p>RTL8713EC,RTL8726EA</p></td>
 <td><p>FreeRTOS</p></td>
 <td><p>HiFi5 DSP</p></td>
 <td><p>{DSPSDK}/lib/aivoice</p></td>
-<td><p>{DSPSDK}/example/example_aivoice</p></td>
+<td><p>{DSPSDK}/example/aivoice</p></td>
 </tr>
 </tbody>
 </table>
 </section>
-<section id="id3">
-<h2>模块<a class="headerlink" href="#id3" title="Link to this heading"></a></h2>
+<section id="id4">
+<h2>模块<a class="headerlink" href="#id4" title="Link to this heading"></a></h2>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>模块</p></th>
+<th class="head"><p>功能</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>AFE（信号处理）</p></td>
+<td><p>增强语音信号、降噪</p></td>
+</tr>
+<tr class="row-odd"><td><p>KWS（唤醒词检测）</p></td>
+<td><p>检测唤醒词以激活语音助手，例如“小爱同学”、“天猫精灵”</p></td>
+</tr>
+<tr class="row-even"><td><p>VAD（语音端点检测）</p></td>
+<td><p>检测音频中的语音段或噪声段</p></td>
+</tr>
+<tr class="row-odd"><td><p>ASR（语音识别）</p></td>
+<td><p>检测离线语音控制命令</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id5">
+<h2>流程<a class="headerlink" href="#id5" title="Link to this heading"></a></h2>
+<p>为了方便用户开发，部分算法流程已在AIVoice中实现：</p>
+<dl class="field-list simple">
+<dt class="field-odd">- Full Flow<span class="colon">:</span></dt>
+<dd class="field-odd"><p>一个完整的离线流程，包括AFE，KWS和ASR。AFE和KWS始终开启，当KWS检测到唤醒词时，ASR开启并支持持续识别。超时后ASR退出。</p>
+</dd>
+<dt class="field-even">- AFE+KWS<span class="colon">:</span></dt>
+<dd class="field-even"><p>离线流程包括AFE和KWS，始终开启。</p>
+</dd>
+</dl>
+</section>
+</section>
 <section id="afe">
-<h3>AFE（信号处理）<a class="headerlink" href="#afe" title="Link to this heading"></a></h3>
+<h1>AFE（信号处理）<a class="headerlink" href="#afe" title="Link to this heading"></a></h1>
+<section id="id6">
+<h2>概述<a class="headerlink" href="#id6" title="Link to this heading"></a></h2>
 <p>AFE是用于增强语音信号的音频信号处理模块。它可以提高语音识别系统的鲁棒性或改善通信系统的信号质量。</p>
 <p>在AIVoice中，AFE算法包括以下子模块：</p>
 <ul class="simple">
@@ -248,75 +1225,8 @@
 </ul>
 <p>也可以通过定制服务提供其他麦克风阵列或性能优化。</p>
 </section>
-<section id="kws">
-<h3>KWS（唤醒词检测）<a class="headerlink" href="#kws" title="Link to this heading"></a></h3>
-<p>KWS是用于检测音频中特定唤醒词的模块。它通常是语音交互的第一步，设备检测到唤醒词后，会进入等待语音指令状态。</p>
-<p>AIVoice支持两种KWS算法方案：</p>
-<table class="docutils align-default" style="width: 100%">
-<thead>
-<tr class="row-odd"><th class="head"><p>方案</p></th>
-<th class="head"><p>训练数据</p></th>
-<th class="head"><p>可选唤醒词</p></th>
-<th class="head"><p>方案特点</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>固定唤醒词</p></td>
-<td><p>特定唤醒词</p></td>
-<td><p>训练数据所用唤醒词</p></td>
-<td><p>性能更好；模型更小</p></td>
-</tr>
-<tr class="row-odd"><td><p>自定义唤醒词</p></td>
-<td><p>通用数据</p></td>
-<td><p>与训练数据相同语种的任意自定义唤醒词</p></td>
-<td><p>更灵活</p></td>
-</tr>
-</tbody>
-</table>
-<p>当前SDK中提供了一个“小强小强”或“你好小强”的中文固定唤醒词模型，也可以通过定制服务提供其他唤醒词或性能优化。</p>
-</section>
-<section id="vad">
-<h3>VAD（语音端点检测）<a class="headerlink" href="#vad" title="Link to this heading"></a></h3>
-<p>VAD是用于检测音频中有无语音信号的模块。</p>
-<p>AIVoice提供了一个基于神经网络的VAD算法，可以用于语音增强、识别等语音系统中。</p>
-</section>
-<section id="asr">
-<h3>ASR（语音识别）<a class="headerlink" href="#asr" title="Link to this heading"></a></h3>
-<p>ASR是用于把语音信号识别为文本的模块。</p>
-<p>AIVoice提供了中文离线语音命令词检测的ASR算法。</p>
-<p>当前SDK中提供了一套包含“打开空调” “关闭空调”等空调相关的40条命令词的识别算法，也可以通过定制服务更换命令词、性能优化等。</p>
-</section>
-</section>
-<section id="id4">
-<h2>流程<a class="headerlink" href="#id4" title="Link to this heading"></a></h2>
-<p>为了方便用户开发，部分算法流程已在AIVoice中实现：</p>
-<dl class="field-list simple">
-<dt class="field-odd">- Full Flow<span class="colon">:</span></dt>
-<dd class="field-odd"><p>一个完整的离线流程，包括AFE，KWS和ASR。AFE和KWS始终开启，当KWS检测到关键字时，ASR开启并支持持续识别。超时后ASR退出。</p>
-</dd>
-<dt class="field-even">- AFE+KWS<span class="colon">:</span></dt>
-<dd class="field-even"><p>离线流程包括AFE和KWS，始终开启。</p>
-</dd>
-</dl>
-</section>
-</section>
-<section id="id5">
-<h1>配置<a class="headerlink" href="#id5" title="Link to this heading"></a></h1>
-<section id="aivoice">
-<h2>AIVoice<a class="headerlink" href="#aivoice" title="Link to this heading"></a></h2>
-<p>可配参数：</p>
-<dl class="field-list simple">
-<dt class="field-odd">- no_cmd_timeout<span class="colon">:</span></dt>
-<dd class="field-odd"><p>如果在此持续时间内未检测到命令字，则ASR退出。 <strong>仅在full flow中使用。</strong></p>
-</dd>
-<dt class="field-even">- memory_alloc_mode<span class="colon">:</span></dt>
-<dd class="field-even"><p>默认使用SDK默认堆。SRAM模式使用SDK默认堆，同时还从SRAM分配空间用于内存关键数据。 <strong>SRAM模式目前仅适用于RTL8713EC和RTL8726EA DSP。</strong></p>
-</dd>
-</dl>
-<p>详情请参考 <code class="docutils literal notranslate"><span class="pre">${aivoice_lib_dir}/include/aivoice_sdk_config.h</span></code>。</p>
-</section>
-<section id="id6">
-<h2>AFE<a class="headerlink" href="#id6" title="Link to this heading"></a></h2>
+<section id="id7">
+<h2>配置<a class="headerlink" href="#id7" title="Link to this heading"></a></h2>
 <p>AFE配置包括麦克风阵列，模式，子模块开关等。</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">afe_config</span><span class="p">{</span>
 
@@ -362,9 +1272,39 @@
 <p>注意：请确保 mic_array 、ref_num 两个参数与 AFE 输入音频匹配。</p>
 </div>
 </section>
-<section id="id7">
-<h2>KWS<a class="headerlink" href="#id7" title="Link to this heading"></a></h2>
-<p>可配参数：</p>
+</section>
+<section id="kws">
+<h1>KWS（唤醒词检测）<a class="headerlink" href="#kws" title="Link to this heading"></a></h1>
+<section id="id8">
+<h2>概述<a class="headerlink" href="#id8" title="Link to this heading"></a></h2>
+<p>KWS是用于检测音频中特定唤醒词的模块。它通常是语音交互的第一步，设备检测到唤醒词后，会进入等待语音指令状态。</p>
+<p>AIVoice支持两种KWS算法方案：</p>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>方案</p></th>
+<th class="head"><p>训练数据</p></th>
+<th class="head"><p>可选唤醒词</p></th>
+<th class="head"><p>方案特点</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>固定唤醒词</p></td>
+<td><p>特定唤醒词</p></td>
+<td><p>训练数据所用唤醒词</p></td>
+<td><p>性能更好；模型更小</p></td>
+</tr>
+<tr class="row-odd"><td><p>自定义唤醒词</p></td>
+<td><p>通用数据</p></td>
+<td><p>与训练数据相同语种的任意自定义唤醒词</p></td>
+<td><p>更灵活</p></td>
+</tr>
+</tbody>
+</table>
+<p>当前SDK中提供了一个“小强小强”或“你好小强”的中文固定唤醒词模型，也可以通过定制服务提供其他唤醒词或性能优化。</p>
+</section>
+<section id="id9">
+<h2>配置<a class="headerlink" href="#id9" title="Link to this heading"></a></h2>
+<p>KWS可配参数：</p>
 <dl class="field-list simple">
 <dt class="field-odd">- keywords<span class="colon">:</span></dt>
 <dd class="field-odd"><p>唤醒关键字， <strong>可选的关键字取决于KWS模型</strong>。如果KWS模型是固定唤醒词方案，则只能从训练过的单词中选择。对于自定义唤醒词方案，可以使用该语言建模单元的任意组合来定制关键字（例如中文拼音）。示例：”xiao-qiang-xiao-qiang”。</p>
@@ -378,9 +1318,49 @@
 </dl>
 <p>详情请参考 <code class="docutils literal notranslate"><span class="pre">${aivoice_lib_dir}/include/aivoice_kws_config.h</span></code>。</p>
 </section>
-<section id="id8">
-<h2>VAD<a class="headerlink" href="#id8" title="Link to this heading"></a></h2>
-<p>可配参数：</p>
+<section id="id10">
+<h2>KWS模式<a class="headerlink" href="#id10" title="Link to this heading"></a></h2>
+<p>有单路或多路两种KWS模式可供不同使用场景选择。与单路相比，多路模式可以提升KWS和ASR的准确率，但同时计算资源和内存使用也会上升。</p>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>KWS模式</p></th>
+<th class="head"><p>函数</p></th>
+<th class="head"><p>特点</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>单路模式</p></td>
+<td><p>void rtk_aivoice_set_single_kws_mode(void)</p></td>
+<td><p>更少的计算量和内存占用</p></td>
+</tr>
+<tr class="row-odd"><td><p>多路模式</p></td>
+<td><p>void rtk_aivoice_set_multi_kws_mode(void)</p></td>
+<td><p>更高的唤醒率和识别率</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition attention">
+<p class="admonition-title">注意</p>
+<p>在这些流程中创建实例之前必须设置KWS模式：</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>aivoice_iface_full_flow_v1</p></li>
+<li><p>aivoice_iface_afe_kws_v1</p></li>
+</ul>
+</div></blockquote>
+</div>
+</section>
+</section>
+<section id="vad">
+<h1>VAD（语音端点检测）<a class="headerlink" href="#vad" title="Link to this heading"></a></h1>
+<section id="id11">
+<h2>概述<a class="headerlink" href="#id11" title="Link to this heading"></a></h2>
+<p>VAD是用于检测音频中有无语音信号的模块。</p>
+<p>AIVoice提供了一个基于神经网络的VAD算法，可以用于语音增强、识别等语音系统中。</p>
+</section>
+<section id="id12">
+<h2>配置<a class="headerlink" href="#id12" title="Link to this heading"></a></h2>
+<p>VAD可配参数：</p>
 <dl class="field-list simple">
 <dt class="field-odd">- sensitivity<span class="colon">:</span></dt>
 <dd class="field-odd"><p>提供预先调好阈值的三档灵敏度，灵敏度越高，越容易检测到语音，但误报也越多。</p>
@@ -398,9 +1378,18 @@
 <p>left_margin参数仅影响vad返回的offset_ms数值, 无法影响vad状态的改变时间. 如果需要保留left_margin区间内的音频，请在外部通过音频缓存实现。</p>
 </div>
 </section>
-<section id="id9">
-<h2>ASR<a class="headerlink" href="#id9" title="Link to this heading"></a></h2>
-<p>可配参数：</p>
+</section>
+<section id="asr">
+<h1>ASR（语音识别）<a class="headerlink" href="#asr" title="Link to this heading"></a></h1>
+<section id="id13">
+<h2>概述<a class="headerlink" href="#id13" title="Link to this heading"></a></h2>
+<p>ASR是用于把语音信号识别为文本的模块。</p>
+<p>AIVoice提供了中文离线语音命令词检测的ASR算法。</p>
+<p>当前SDK中提供了一套包含“打开空调” “关闭空调”等空调相关的40条命令词的识别算法，也可以通过定制服务更换命令词、性能优化等。</p>
+</section>
+<section id="id14">
+<h2>配置<a class="headerlink" href="#id14" title="Link to this heading"></a></h2>
+<p>ASR可配参数：</p>
 <dl class="field-list simple">
 <dt class="field-odd">- sensitivity<span class="colon">:</span></dt>
 <dd class="field-odd"><p>提供预先调好阈值的三档灵敏度，灵敏度越高，更容易识别到命令词，但误触发也越多。</p>
@@ -409,10 +1398,10 @@
 <p>详情请参考 <code class="docutils literal notranslate"><span class="pre">${aivoice_lib_dir}/include/aivoice_asr_config.h</span></code>。</p>
 </section>
 </section>
-<section id="id10">
-<h1>接口<a class="headerlink" href="#id10" title="Link to this heading"></a></h1>
-<section id="id11">
-<h2>流程和模块接口<a class="headerlink" href="#id11" title="Link to this heading"></a></h2>
+<section id="id15">
+<h1>接口<a class="headerlink" href="#id15" title="Link to this heading"></a></h1>
+<section id="id16">
+<h2>流程和模块接口<a class="headerlink" href="#id16" title="Link to this heading"></a></h2>
 <table class="docutils align-default" style="width: 100%">
 <thead>
 <tr class="row-odd"><th class="head"><p>接口</p></th>
@@ -449,8 +1438,8 @@
 </ul>
 <p>详情请参考 <code class="docutils literal notranslate"><span class="pre">${aivoice_lib_dir}/include/aivoice_interface.h</span></code>。</p>
 </section>
-<section id="id12">
-<h2>事件及回调信息<a class="headerlink" href="#id12" title="Link to this heading"></a></h2>
+<section id="id17">
+<h2>事件及回调信息<a class="headerlink" href="#id17" title="Link to this heading"></a></h2>
 <table class="docutils align-default" style="width: 100%">
 <thead>
 <tr class="row-odd"><th class="head"><p>aivoice输出事件</p></th>
@@ -481,8 +1470,8 @@
 </tr>
 </tbody>
 </table>
-<section id="id13">
-<h3>AFE事件定义<a class="headerlink" href="#id13" title="Link to this heading"></a></h3>
+<section id="id18">
+<h3>AFE事件定义<a class="headerlink" href="#id18" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">aivoice_evout_afe</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="kt">int</span><span class="w">     </span><span class="n">ch_num</span><span class="p">;</span><span class="w">                       </span><span class="cm">/* channel number of output audio signal, default: 1 */</span>
 <span class="w">    </span><span class="kt">short</span><span class="o">*</span><span class="w">  </span><span class="n">data</span><span class="p">;</span><span class="w">                         </span><span class="cm">/* enhanced audio signal samples */</span>
@@ -491,8 +1480,8 @@
 </pre></div>
 </div>
 </section>
-<section id="id14">
-<h3>VAD事件定义<a class="headerlink" href="#id14" title="Link to this heading"></a></h3>
+<section id="id19">
+<h3>VAD事件定义<a class="headerlink" href="#id19" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">aivoice_evout_vad</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">status</span><span class="p">;</span><span class="w">                     </span><span class="cm">/*  0: vad is changed from speech to silence,</span>
 <span class="cm">                                           indicating the end point of a speech segment</span>
@@ -504,46 +1493,27 @@
 </div>
 </section>
 </section>
-<section id="id15">
-<h2>KWS模式<a class="headerlink" href="#id15" title="Link to this heading"></a></h2>
-<p>有单路或多路两种KWS模式可供不同使用场景选择。与单路相比，多路模式可以提升KWS和ASR的准确率，但同时计算资源和内存使用也会上升。</p>
-<table class="docutils align-default" style="width: 100%">
-<thead>
-<tr class="row-odd"><th class="head"><p>KWS模式</p></th>
-<th class="head"><p>函数</p></th>
-<th class="head"><p>特点</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>单路模式</p></td>
-<td><p>void rtk_aivoice_set_single_kws_mode(void)</p></td>
-<td><p>更少的计算量和内存占用</p></td>
-</tr>
-<tr class="row-odd"><td><p>多路模式</p></td>
-<td><p>void rtk_aivoice_set_multi_kws_mode(void)</p></td>
-<td><p>更高的唤醒率和识别率</p></td>
-</tr>
-</tbody>
-</table>
-<div class="admonition attention">
-<p class="admonition-title">注意</p>
-<p>在这些流程中创建实例之前必须设置KWS模式：</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>aivoice_iface_full_flow_v1</p></li>
-<li><p>aivoice_iface_afe_kws_v1</p></li>
-</ul>
-</div></blockquote>
-</div>
+<section id="id20">
+<h2>通用配置<a class="headerlink" href="#id20" title="Link to this heading"></a></h2>
+<p>AIVoice可配参数：</p>
+<dl class="field-list simple">
+<dt class="field-odd">- no_cmd_timeout<span class="colon">:</span></dt>
+<dd class="field-odd"><p>如果在此持续时间内未检测到命令字，则ASR退出。 <strong>仅在full flow中使用。</strong></p>
+</dd>
+<dt class="field-even">- memory_alloc_mode<span class="colon">:</span></dt>
+<dd class="field-even"><p>默认使用SDK默认堆。SRAM模式使用SDK默认堆，同时还从SRAM分配空间用于内存关键数据。 <strong>SRAM模式目前仅适用于RTL8713EC和RTL8726EA DSP。</strong></p>
+</dd>
+</dl>
+<p>详情请参考 <code class="docutils literal notranslate"><span class="pre">${aivoice_lib_dir}/include/aivoice_sdk_config.h</span></code>。</p>
 </section>
 </section>
-<section id="id16">
-<h1>示例<a class="headerlink" href="#id16" title="Link to this heading"></a></h1>
+<section id="id21">
+<h1>示例<a class="headerlink" href="#id21" title="Link to this heading"></a></h1>
 <section id="aivoice-full-flow">
 <h2>AIVoice Full Flow离线示例<a class="headerlink" href="#aivoice-full-flow" title="Link to this heading"></a></h2>
 <p>该例子通过一条提前录制的三通道音频演示如何使用AIVoice的全流程，在开发板启动后仅运行一次。 <strong>未整合录音、播放等音频功能。</strong></p>
-<section id="id17">
-<h3>AIVoice使用步骤<a class="headerlink" href="#id17" title="Link to this heading"></a></h3>
+<section id="aivoice">
+<h3>AIVoice使用步骤<a class="headerlink" href="#aivoice" title="Link to this heading"></a></h3>
 <ol class="arabic">
 <li><p>选择需要的aivoice流程或模块。如果使用full_flow或afe_kws流程，需要指定KWS模式为单路或多路模式。</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* step 1:</span>
@@ -709,13 +1679,66 @@
 </ol>
 <p>详情请参考 <code class="docutils literal notranslate"><span class="pre">${aivoice_example_dir}/full_flow_offline</span></code> 。</p>
 </section>
-<section id="id18">
-<h3>编译示例<a class="headerlink" href="#id18" title="Link to this heading"></a></h3>
+<section id="id22">
+<h3>编译示例<a class="headerlink" href="#id22" title="Link to this heading"></a></h3>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-0-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-0-0-0" name="0-0" role="tab" tabindex="0">RTL8726E</button><button aria-controls="panel-0-0-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-1" name="0-1" role="tab" tabindex="-1">RTL8730E</button></div><div aria-labelledby="tab-0-0-0" class="sphinx-tabs-panel" id="panel-0-0-0" name="0-0" role="tabpanel" tabindex="0"><ol class="arabic">
+<li><p>编译DSP的Tensorflow Lite Micro库, 请参考 <a class="reference internal" href="../4_ai/1_ai_tflm_toprst_cn.html#build-tflm-lib"><span class="std std-ref">编译Tensorflow Lite Micro库</span></a>。</p>
+<p>也可使用{DSPSDK}/lib/aivoice/prebuilts目录下预编译好的Tensorflow Lite Micro库。</p>
+</li>
+<li><p>在Xtensa Xplorer中导入 <code class="docutils literal notranslate"><span class="pre">{DSPSDK}/example/aivoice/full_flow_offline</span></code> 源。</p></li>
+<li><p>进行软件相关配置，按需修改链接的库如AFE资源、KWS资源等。</p>
+<ul>
+<li><p>添加包含路径 (-I)</p>
+<p>${workspace_loc}/../lib/aivoice/include</p>
+</li>
+<li><p>添加库搜索路径 (-L)</p>
+<p>${workspace_loc}/../lib/aivoice/prebuilts/$(TARGET_CONFIG)
+${workspace_loc}/../lib/xa_nnlib/v1.8.1/bin/$(TARGET_CONFIG)/Release
+${workspace_loc}/../lib/lib_hifi5/project/hifi5_library/bin/$(TARGET_CONFIG)/Release
+${workspace_loc}/../lib/tflite_micro/project/bin/$(TARGET_CONFIG)/Release</p>
+</li>
+<li><p>添加库 (-l)</p>
+<p>-laivoice -lafe_kernel -lafe_res_2mic50mm -lkernel -lvad -lkws -lasr -lfst -lcJSON -ltomlc99 -ltflite_micro -lxa_nnlib -lhifi5_dsp</p>
+</li>
+</ul>
+</li>
+<li><p>编译固件，请参考 <a class="reference internal" href="../4_dsp/dsp_build_environment_cn.html#build-environment-for-dsp"><span class="std std-ref">dsp_build</span></a> 中的步骤。</p></li>
+</ol>
+</div><div aria-labelledby="tab-0-0-1" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-1" name="0-1" role="tabpanel" tabindex="0"><p><strong>FreeRTOS</strong></p>
+<ol class="arabic">
+<li><p>在menuconfig里开启Tensorflow Lite Micro库编译，请参考 <a class="reference internal" href="../4_ai/1_ai_tflm_toprst_cn.html#build-tflm-lib"><span class="std std-ref">编译Tensorflow Lite Micro库</span></a>。</p></li>
+<li><p>在menuconfig里开启AIVoice</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/menuconfig_enable_aivoice.png"><img alt="../../_images/menuconfig_enable_aivoice.png" src="../../_images/menuconfig_enable_aivoice.png" style="width: 517.0px; height: 93.0px;" /></a>
+</figure>
+</li>
+<li><p>选择AFE资源</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/menuconfig_select_afe_res.png"><img alt="../../_images/menuconfig_select_afe_res.png" src="../../_images/menuconfig_select_afe_res.png" style="width: 699.0px; height: 108.0px;" /></a>
+</figure>
+</li>
+<li><p>编译固件</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">build</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span><span class="n">a</span> <span class="n">full_flow_offline</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<p><strong>Linux</strong></p>
+<ol class="arabic">
+<li><p>(可选) 如果需要更换AFE资源或KWS资源，修改yocto recipe <code class="docutils literal notranslate"><span class="pre">{LINUXSDK}/yocto/meta-realtek/meta-sdk/recipes-rtk/aivoice/rtk-aivoice-algo_1.2.bb.</span></code> 里的库。</p></li>
+<li><p>通过bitbake编译aivoice可执行文件：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">bitbake</span> <span class="n">rtk</span><span class="o">-</span><span class="n">aivoice</span><span class="o">-</span><span class="n">algo</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</div></div>
 </section>
 </section>
 </section>
-<section id="id19">
-<h1>术语<a class="headerlink" href="#id19" title="Link to this heading"></a></h1>
+<section id="id23">
+<h1>术语<a class="headerlink" href="#id23" title="Link to this heading"></a></h1>
 <dl class="simple glossary">
 <dt id="term-AEC">AEC<a class="headerlink" href="#term-AEC" title="Link to this term"></a></dt><dd><p>AEC(Acoustic Echo Cancellation)，声学回声消除，或回声消除，是指消除输入信号中的回声信号。回声信号是指麦克风采集到的设备自身扬声器播放的音频。</p>
 </dd>
@@ -765,6 +1788,78 @@
 
 </footer>
         </div>
+    <!-- 问题反馈按钮和对话框 -->
+    
+        <button id="report-button">Inquire</button>
+    
+    <div id="feedback-dialog" class="feedback-dialog" style="display: none;">
+        <div class="form-group">
+            <label style="font-weight: bold;">Please select the related chapter:</label>
+            <select id="chapter-select">
+                <option value="">Select Chapter</option>
+                <!-- 章节选项将通过JavaScript动态填充 -->
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label style="font-weight: bold;">Post Type</label>
+            <select id="post-type" class="form-control" required>
+                <option value="">-- Select Type --</option>
+                <option value="doc_correction">Document Correction</option>
+                <option value="tech_consult">Technical Consult</option>
+                <option value="tech_summary">Technical Summary</option>
+                <option value="operation_flow">Operation Flow</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label style="font-weight: bold;">Related Paragraph:</label>
+            <textarea
+                id="paragraph-input"
+                placeholder="{{ '你可以先选择有问题的段落或手动输入...' if language == 'zh_CN' else 'You can select text or type directly here...' }}"
+                rows="4"
+            ></textarea>
+        </div>
+
+        <div class="form-group">
+            <label style="font-weight: bold;">Please describe your issue:</label>
+            <textarea
+                id="inquire_input"
+                placeholder="Feature enhancement in progress, please stay tuned...">
+            </textarea>
+        </div>
+
+        <button id="submit-feedback">Submit</button>
+        <button id="cancel-feedback">Cancel</button>
+    </div>
+
+    <style>
+        .form-group {
+            margin: 5px 0;  /* 基础间距 */
+        }
+
+        /* 相邻表单项缩小上方间距 */
+        .form-group + .form-group {
+            margin-top: 10px;
+        }
+
+        /* 段落输入框底部微调 */
+        #paragraph-input, #inquire_input {
+            margin: 2px 0; /* 上下间距 */
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            resize: vertical;
+            min-height: 100px;
+
+            /* 占位符样式 */
+            &::placeholder {
+                color: #999;
+                font-style: italic;
+            }
+        }
+    </style>
 
       </div>
     </section>
@@ -774,8 +1869,8 @@
           SphinxRtdTheme.Navigation.enable(true);
       });
   </script>
- 
-
+     
+    
 
 
 </body>

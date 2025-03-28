@@ -10,9 +10,9 @@
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
-      <link rel="stylesheet" type="text/css" href="../../_static/custom_cn.css?v=0d22fac7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=c12c2b39" />
       <link rel="stylesheet" type="text/css" href="../../_static/tabs.css?v=a5c4661c" />
-      <link rel="stylesheet" type="text/css" href="../../_static/_static/custom_cn.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=c12c2b39" />
 
   
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
@@ -26,6 +26,8 @@
         <script src="../../_static/doctools.js?v=9a2dae69"></script>
         <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="../../_static/tabs.js?v=3030b3cb"></script>
         <script>let toggleHintShow = 'Click to show';</script>
         <script>let toggleHintHide = 'Click to hide';</script>
         <script>let toggleOpenOnPrint = 'true';</script>
@@ -38,13 +40,901 @@
     <link rel="search" title="搜索" href="../../search.html" />
     <link rel="next" title="Trace Tool" href="1_trace_tool_toprst_cn.html" />
     <link rel="prev" title="工具" href="0_tools_index_cn.html" />
-   
-  
-  <script type="text/javascript" src="../../_static/js/selector.js"></script>
+     
 
-  <style>
-    .wy-nav-content {max-width: 1000px;} /* 设置最大宽度 */
-  </style>
+    <!-- NDA文档输入密码的框 -->
+    
+<script>
+// ▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼ 多语言配置 ▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼
+const lang = 'zh';  // 使用 Python 字符串切片
+const i18n = {
+    zh: {
+        title: '访问授权',
+        username: '用户名',
+        password: '密码',
+        confirm: '确认',
+        cancel: '取消',
+        usernameError: '用户名错误',
+        userNotExist: '该用户不存在',
+        passwordError: '密码错误',
+        wrongPassword: '请输入正确的密码',
+        accessDenied: '无访问权限',
+        noPermission: '您无权查看此内容',
+        expiredTitle: '访问已过期',
+        expiredMsg: '您的权限已失效<br>有效期：%s 至 %s',
+        deniedTitle: '⚠️ 无访问权限',
+        contact: '请联系 claire_wang@realsil.com.cn 获取权限'
+    },
+    en: {
+        title: 'Access Required',
+        username: 'Username',
+        password: 'Password',
+        confirm: 'Confirm',
+        cancel: 'Cancel',
+        usernameError: 'Invalid Username',
+        userNotExist: 'User does not exist',
+        passwordError: 'Wrong Password',
+        wrongPassword: 'Please enter correct password',
+        accessDenied: 'Access Denied',
+        noPermission: 'You have no permission to view this content',
+        expiredTitle: 'Authorization Expired',
+        expiredMsg: 'Your access has expired<br>Valid period: %s to %s',
+        deniedTitle: '⚠️ Access Denied',
+        contact: 'Please contact claire_wang@realsil.com.cn for access'
+    }
+};
+// ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲ 多语言配置结束 ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
+</script>
+
+    <!-- 样式模板 -->
+    
+
+<style>
+    .wy-nav-content {
+        max-width: 1100px;
+         
+    }
+    
+    .auth-denied {
+        padding: 20px;
+        background: #f8f9fa;
+        border-radius: 4px;
+        border: 1px solid #dee2e6;
+        text-align: center;
+        color: #721c24;
+        margin-top: 20px;
+    }
+    .auth-denied h3 {
+        margin-bottom: 10px;
+        color: #dc3545;
+    }
+    
+    #report-button {
+        position: fixed;
+        top: 10px;
+        left: 1270px;
+        padding: 1px 15px; /* 调整内边距：1px 为上下，5px 为左右 */
+        height: 30px; /* 设置固定高度 */
+        background-color: #2ecc71;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        z-index: 1000;
+    }
+    #report-button:hover {
+        background-color: #2ecc71;
+    }
+    
+    .feedback-dialog {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        z-index: 1001;
+        width: 600px;
+    }
+    .feedback-dialog textarea {
+        width: 100%;
+        height: 150px;
+        margin-top: 10px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        resize: vertical;
+    }
+    .feedback-dialog button {
+        margin-top: 10px;
+        padding: 8px 16px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    .feedback-dialog button:hover {
+        background-color: #0056b3;
+    }
+
+    
+    
+</style>
+
+
+    <style>
+    /* ====================== 选择器样式 ====================== */
+    /* 选择器容器 */
+    .selector-container {
+        margin: 8px 0;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+    }
+    
+    /* 版本选择器特殊边距 */
+    .version-selector-container {
+        margin-bottom: 8px !important;
+    }
+    
+    /* 选择器标签 */
+    .selector-label {
+        color: white;
+        margin-right: 10px;
+        width: 80px;
+        text-align: right;
+        font-size: 0.9em;
+    }
+    
+    /* 下拉选择框 */
+    .selector-dropdown {
+        width: 120px;
+        border-radius: 2px;
+        padding: 4px 8px;
+        border: 1px solid #405261;
+        background: #2c3e50;
+        color: white;
+        font-size: 0.9em;
+    }
+    
+    /* 下拉选择框悬停效果 */
+    .selector-dropdown:hover {
+        border-color: #3498db;
+        transition: border-color 0.3s;
+    }
+    
+    /* 选择器响应式布局 */
+    @media (max-width: 768px) {
+        .selector-container {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        
+        .selector-label {
+            width: 100%;
+            text-align: left;
+            margin-bottom: 4px;
+        }
+        
+        .selector-dropdown {
+            width: 100%;
+        }
+    }
+</style>
+    <style>
+/* =============== 左上角登录区域  =============== */
+/* ================= 用户面板 ================= */
+.user-panel {
+    padding: 15px;
+    background: #34495e;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.username {
+    color: #fff;
+    font-weight: 500;
+    font-size: 1.1em;
+    text-align: center;
+    margin: 10px 0;
+}
+
+/* ================= 按钮容器 ================= */
+.button-row {
+    display: flex;
+    gap: 8px;
+    width: 100%;
+    margin: 10px 0;
+}
+
+/* 通用按钮样式 */
+.auth-btn, .forum-btn, .official-btn {
+    flex: 1;
+    padding: 8px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: opacity 0.3s;
+    text-align: center;
+    color: white !important;
+}
+
+/* 认证按钮 */
+.auth-btn {
+    background: #3498db;
+}
+
+/* 论坛按钮 */
+.forum-btn {
+    background: #9b59b6; /* 与参考代码的官方按钮同色 */
+}
+
+/* 官网按钮 */
+.official-btn {
+    background: #2ecc71; /* 与参考代码文档按钮同色 */
+}
+/* =============== 左上角登录区域  =============== */
+</style>
+
+    <!-- 注入 TOC 映射和当前页面信息 -->
+    
+
+<!-- TOC 映射和当前文档信息 -->
+<script>
+// 将 Python 字典转换为 JS 对象
+const TOC_TITLE_MAP = {"rst_rtos/0_ameba_product": "\u4ea7\u54c1\u4e2d\u5fc3", "rst_rtos/0_ameba_product/0_ameba_product_center_index_cn": "\u4ea7\u54c1\u4e2d\u5fc3", "rst_rtos/0_ameba_sdk": "Ameba SDK", "rst_rtos/0_ameba_sdk/0_ameba_sdks_index_cn": "Ameba SDK", "rst_rtos/0_ameba_solutions": "\u89e3\u51b3\u65b9\u6848", "rst_rtos/0_ameba_solutions/0_ameba_solutions_index_cn": "\u89e3\u51b3\u65b9\u6848", "rst_rtos/0_at_command": "0.8 AT \u547d\u4ee4\u96c6", "rst_rtos/0_at_command/0_at_command_index_cn": "0.8 AT \u547d\u4ee4\u96c6", "rst_rtos/0_file_system": "0.9 \u865a\u62df\u6587\u4ef6\u7cfb\u7edf", "rst_rtos/0_file_system/0_vfs_index_cn": "0.9 \u865a\u62df\u6587\u4ef6\u7cfb\u7edf", "rst_rtos/0_ftl": "0.a Flash \u8f6c\u6362\u5c42", "rst_rtos/0_ftl/0_ftl_index_cn": "0.a Flash \u8f6c\u6362\u5c42", "rst_rtos/0_gcc_build_environment": "0.1 GCC \u7f16\u8bd1\u73af\u5883", "rst_rtos/0_gcc_build_environment/0_gcc_build_index_cn": "0.1 GCC \u7f16\u8bd1\u73af\u5883", "rst_rtos/0_gcc_build_library": "0.3 GCC \u5e93\u7684\u751f\u6210\u548c\u4f7f\u7528", "rst_rtos/0_gcc_build_library/0_gcc_build_library_index_cn": "0.3 GCC \u5e93\u7684\u751f\u6210\u548c\u4f7f\u7528", "rst_rtos/0_gdb_debug": "0.2 GDB \u8c03\u8bd5", "rst_rtos/0_gdb_debug/0_gdb_debug_index_cn": "0.2 GDB \u8c03\u8bd5", "rst_rtos/0_memory_layout": "0.5 Flash \u548c RAM \u5e03\u5c40", "rst_rtos/0_memory_layout/0_layout_index_cn": "0.5 Flash \u548c RAM \u5e03\u5c40", "rst_rtos/0_sdk_example": "0.4 SDK \u793a\u4f8b", "rst_rtos/0_sdk_example/0_sdk_example_index_cn": "0.4 SDK \u793a\u4f8b", "rst_rtos/0_tools": "0.7 \u5de5\u5177", "rst_rtos/0_tools/0_tools_index_cn": "0.7 \u5de5\u5177", "rst_rtos/0_user_config": "0.6 \u5f00\u53d1\u8005\u914d\u7f6e", "rst_rtos/0_user_config/0_usrcfg_index_cn": "0.6 \u5f00\u53d1\u8005\u914d\u7f6e", "rst_rtos/1_boot_process": "1.1 \u542f\u52a8\u8fc7\u7a0b", "rst_rtos/1_boot_process/0_boot_index_cn": "1.1 \u542f\u52a8\u8fc7\u7a0b", "rst_rtos/1_chipen": "1.4 \u82af\u7247\u4f7f\u80fd", "rst_rtos/1_chipen/0_chipen_index_cn": "1.4 \u82af\u7247\u4f7f\u80fd", "rst_rtos/1_gpio": "1.7 GPIO \u548c\u5f15\u811a\u63a7\u5236", "rst_rtos/1_gpio/0_gpio_index_cn": "1.7 GPIO \u548c\u5f15\u811a\u63a7\u5236", "rst_rtos/1_ipc": "1.5 \u6838\u95f4\u901a\u4fe1", "rst_rtos/1_ipc/0_ipc_index_cn": "1.5 \u6838\u95f4\u901a\u4fe1", "rst_rtos/1_mpu_cache": "1.0 \u5185\u5b58\u4fdd\u62a4\u5355\u5143\u548c\u7f13\u5b58", "rst_rtos/1_mpu_cache/0_mpu_cache_index_cn": "1.0 \u5185\u5b58\u4fdd\u62a4\u5355\u5143\u548c\u7f13\u5b58", "rst_rtos/1_ota": "1.2 \u56fa\u4ef6\u5347\u7ea7\uff08OTA\uff09", "rst_rtos/1_ota/0_ota_index_cn": "1.2 \u56fa\u4ef6\u5347\u7ea7\uff08OTA\uff09", "rst_rtos/1_otpc": "1.3 OTP\u5b58\u50a8\u5668", "rst_rtos/1_otpc/0_otpc_index_cn": "1.3 OTP\u5b58\u50a8\u5668", "rst_rtos/1_pinmux": "1.6 \u5f15\u811a\u590d\u7528", "rst_rtos/1_pinmux/0_pinmux_index_cn": "1.6 \u5f15\u811a\u590d\u7528", "rst_rtos/1_power_save": "1.9 \u4f4e\u529f\u8017\u5f00\u53d1", "rst_rtos/1_power_save/0_ps_index_cn": "1.9 \u4f4e\u529f\u8017\u5f00\u53d1", "rst_rtos/2_whc_fullmac": "2.1 WHC FullMAC", "rst_rtos/2_whc_fullmac/0_fullmac_index_cn": "2.1 WHC FullMAC", "rst_rtos/2_whc_wifi_bridge": "2.0 WHC Bridge", "rst_rtos/2_whc_wifi_bridge/0_wifi_bridge_index_cn": "2.0 WHC Bridge", "rst_rtos/2_wifi_adaptivity_test": "2.4 Wi-Fi Adaptivity \u6d4b\u8bd5\u6307\u5357", "rst_rtos/2_wifi_adaptivity_test/0_wifi_adaptivity_index_cn": "2.4 Wi-Fi Adaptivity \u6d4b\u8bd5\u6307\u5357", "rst_rtos/2_wifi_csi": "2.3 Wi-Fi CSI", "rst_rtos/2_wifi_csi/0_wifi_csi_index_cn": "2.3 Wi-Fi CSI", "rst_rtos/2_wifi_tunnel": "2.2 Wi-Fi R-Mesh", "rst_rtos/2_wifi_tunnel/0_wifi_tunnel_index_cn": "2.2 Wi-Fi R-Mesh", "rst_rtos/3_ap_trustzone": "3.d AP \u5b89\u5168\u670d\u52a1", "rst_rtos/3_ap_trustzone/0_ap_tz_index_cn": "3.d AP \u5b89\u5168\u670d\u52a1", "rst_rtos/3_crypto_engine": "3.9 \u5bf9\u79f0\u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_crypto_engine/0_crypto_engine_index_cn": "3.9 \u5bf9\u79f0\u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_ecdsa_engine": "3.a ECDSA \u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_ecdsa_engine/0_ecdsa_index_cn": "3.a ECDSA \u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_eddsa_engine": "3.b EDDSA \u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_eddsa_engine/0_eddsa_index_cn": "3.b EDDSA \u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_nda_huk_derivation": "3.3 HUK \u751f\u6210 \ud83d\udd12", "rst_rtos/3_nda_huk_derivation/0_huk_derivation_index_nda": "3.3 HUK \u751f\u6210 \ud83d\udd12", "rst_rtos/3_nda_rdp": "3.4 RDP \ud83d\udd12", "rst_rtos/3_nda_rdp/0_rdp_index_nda": "3.4 RDP \ud83d\udd12", "rst_rtos/3_nda_rsip": "3.5 RSIP \ud83d\udd12", "rst_rtos/3_nda_rsip/0_rsip_index_nda": "3.5 RSIP \ud83d\udd12", "rst_rtos/3_nda_secure_boot": "3.6 \u5b89\u5168\u542f\u52a8 \ud83d\udd12", "rst_rtos/3_nda_secure_boot/0_secure_boot_index_nda": "3.6 \u5b89\u5168\u542f\u52a8 \ud83d\udd12", "rst_rtos/3_nda_swd_protection": "3.7 SWD \u4fdd\u62a4 \ud83d\udd12", "rst_rtos/3_nda_swd_protection/0_swd_protection_index_nda": "3.7 SWD \u4fdd\u62a4 \ud83d\udd12", "rst_rtos/3_nda_tfm": "3.8 Trusted Firmware-M (TF-M) \ud83d\udd12", "rst_rtos/3_nda_tfm/0_tfm_index_nda": "3.8 Trusted Firmware-M (TF-M) \ud83d\udd12", "rst_rtos/3_rsa_engine": "3.c RSA \u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_rsa_engine/0_rsa_index_cn": "3.c RSA \u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_security": "3.1 \u5b89\u5168\u4e0e\u52a0\u5bc6", "rst_rtos/3_security/0_security_index_cn": "3.1 \u5b89\u5168\u4e0e\u52a0\u5bc6", "rst_rtos/3_trng": "3.2 \u771f\u968f\u673a\u6570\u53d1\u751f\u5668", "rst_rtos/3_trng/0_trng_index_cn": "3.2 \u771f\u968f\u673a\u6570\u53d1\u751f\u5668", "rst_rtos/4_ai": "4.1 \u4eba\u5de5\u667a\u80fd", "rst_rtos/4_ai/0_ai_index_cn": "4.1 \u4eba\u5de5\u667a\u80fd", "rst_rtos/4_ai_voice": "4.2 \u8bed\u97f3\u8bc6\u522b", "rst_rtos/4_ai_voice/0_ai_voice_index_cn": "4.2 \u8bed\u97f3\u8bc6\u522b", "rst_rtos/4_dsp": "4.4 DSP \u4f7f\u7528\u6307\u5357", "rst_rtos/4_dsp/0_dsp_index_cn": "4.4 DSP \u4f7f\u7528\u6307\u5357", "rst_rtos/4_multimedia": "4.3 \u591a\u5a92\u4f53", "rst_rtos/4_multimedia/0_multimedia_index_cn": "4.3 \u591a\u5a92\u4f53", "rst_rtos/6_mass_production": "6.1 \u6279\u91cf\u751f\u4ea7", "rst_rtos/6_mass_production/0_mp_index_cn": "6.1 \u6279\u91cf\u751f\u4ea7", "rst_rtos/6_mptools": "6.2 \u4ea7\u6d4b\u5de5\u5177", "rst_rtos/6_mptools/0_mptools_index_cn": "6.2 \u4ea7\u6d4b\u5de5\u5177", "rst_rtos/7_usb": "7.1 USB \u4e3b\u673a\u4e0e\u4ece\u673a", "rst_rtos/7_usb/0_usb_index_cn": "7.1 USB \u4e3b\u673a\u4e0e\u4ece\u673a", "rst_rtos/8_adc": "8.4 \u6a21\u6570\u8f6c\u6362\u5668", "rst_rtos/8_adc/0_adc_index_cn": "8.4 \u6a21\u6570\u8f6c\u6362\u5668", "rst_rtos/8_cap_touch": "8.7 Cap-Touch", "rst_rtos/8_cap_touch/0_cap_touch_index_cn": "8.7 Cap-Touch", "rst_rtos/8_dmac": "8.1 DMA \u63a7\u5236\u5668", "rst_rtos/8_dmac/0_dmac_index_cn": "8.1 DMA \u63a7\u5236\u5668", "rst_rtos/8_ir": "8.5 \u7ea2\u5916\u6536\u53d1\u5668", "rst_rtos/8_ir/0_ir_index_cn": "8.5 \u7ea2\u5916\u6536\u53d1\u5668", "rst_rtos/8_key_scan": "8.8 Key-Scan", "rst_rtos/8_key_scan/0_key_scan_index_cn": "8.8 Key-Scan", "rst_rtos/8_lcdc": "8.a LCD \u63a7\u5236\u5668", "rst_rtos/8_lcdc/0_lcdc_index_cn": "8.a LCD \u63a7\u5236\u5668", "rst_rtos/8_ledc": "8.6 LED \u63a7\u5236\u5668", "rst_rtos/8_ledc/0_ledc_index_cn": "8.6 LED \u63a7\u5236\u5668", "rst_rtos/8_psram": "8.2 PSRAM", "rst_rtos/8_psram/0_psram_index_cn": "8.2 PSRAM", "rst_rtos/8_rtc_io": "8.9 RTC-IO", "rst_rtos/8_rtc_io/0_rtc_io_index_cn": "8.9 RTC-IO", "rst_rtos/8_thermal": "8.3 \u6e29\u5ea6\u6d4b\u91cf", "rst_rtos/8_thermal/0_thermal_index_cn": "8.3 \u6e29\u5ea6\u6d4b\u91cf"};
+console.log("TOC_TITLE_MAP:", TOC_TITLE_MAP);
+
+// 获取当前页面的文档名 (例如 'rst_rtos/3_nda_secure_boot/0_secure_boot_index_nda')
+const CURRENT_DOCNAME = 'rst_rtos/0_tools/1_image_tool_toprst_cn';
+
+// 动态查找顶级分类函数（定义为全局函数）
+window.findTopLevelChapter = function(docname) {
+    console.log("Attempting to find top-level chapter for:", docname);
+    let bestMatch = "";
+    let bestTitle = "Unknown Chapter";
+
+    // 按路径长度降序排序以确保最长匹配
+    const sortedPaths = Object.keys(TOC_TITLE_MAP).sort((a, b) => b.length - a.length);
+
+    for (const path of sortedPaths) {
+        console.log("Checking path:", path);
+        if (docname === path || docname.startsWith(path + '/')) { // 子页面
+            bestMatch = path;
+            bestTitle = TOC_TITLE_MAP[path];
+            console.log("Matched path:", path, "with title:", bestTitle);
+            break;
+        }
+    }
+
+    // 如果没有找到任何匹配项，则尝试更短的路径
+    if (bestMatch === "") {
+        const pathSegments = docname.split('/');
+        while (pathSegments.length > 1) { // 至少保留根路径
+            const candidate = pathSegments.join('/');
+            console.log("Checking shorter path:", candidate);
+            if (TOC_TITLE_MAP[candidate]) {
+                bestTitle = TOC_TITLE_MAP[candidate];
+                console.log("Matched shorter path:", candidate, "with title:", bestTitle);
+                break;
+            }
+            pathSegments.pop();
+        }
+    }
+
+    console.log("Final top-level chapter:", bestTitle);
+    return bestTitle;
+}
+
+// 初始化时调用
+document.addEventListener('DOMContentLoaded', function() {
+    const topLevelChapter = findTopLevelChapter(CURRENT_DOCNAME);
+    console.log("Top Level Chapter:", topLevelChapter);
+
+    // 将顶级分类插入到DOM中（根据需要）
+    const chapterElement = document.createElement('div');
+    chapterElement.className = 'top-level-chapter';
+    chapterElement.innerHTML = `<strong>Top Level Chapter: </strong>${topLevelChapter}`;
+    document.body.appendChild(chapterElement);
+});
+</script>
+
+    <!-- 问题回报 -->
+    <!-- source/_templates/_layout_issue_report.html -->
+<div id="prompt-box" style="
+    display: none;
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.8);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    z-index: 9999;
+    text-align: center;
+    font-size: 14px;
+"></div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    'use strict'; // 添加严格模式
+
+    // 获取所有DOM元素引用
+    const reportButton = document.getElementById('report-button');
+    const feedbackDialog = document.getElementById('feedback-dialog');
+    const feedbackText = document.getElementById('inquire_input');
+    const submitButton = document.getElementById('submit-feedback');
+    const cancelButton = document.getElementById('cancel-feedback');
+    const promptBox = document.getElementById('prompt-box');
+    const chapterSelect = document.getElementById('chapter-select');
+    const paragraphInput = document.getElementById('paragraph-input');
+    const postTypeSelect = document.getElementById('post-type');
+    console.log('帖子类型(postTypeSelect)DOM元素:', postTypeSelect); // 应输出<select>元素
+
+    // 状态变量
+    let hasUserInput = false; // 跟踪用户是否主动输入
+    let selectedText = '';
+    const language = 'zh-CN'; // 从模板引擎获取语言变量
+
+    // 初始化时设置placeholder
+    paragraphInput.placeholder = language === 'zh_CN' 
+        ? '你可以先选择有问题的段落或手动输入...'
+        : 'You can select text or type directly here...';
+
+    // 获取当前激活的章节
+    function getCurrentChapter() {
+        try {
+            // 通过激活的菜单项获取当前章节
+            const currentLink = document.querySelector('.wy-menu .toctree-l1.current > a');
+            if (currentLink) {
+                return currentLink.textContent.replace('¶', '').trim();
+            }
+
+            // 如果没有找到激活的链接，尝试通过页面标题获取
+            const pageTitle = document.querySelector('h1');
+            if (pageTitle) {
+                return pageTitle.textContent.split('\n')[0].trim();
+            }
+
+            // 如果以上方法都失败，尝试通过URL路径推断章节
+            const pathParts = window.location.pathname.split('/');
+            if (pathParts.length > 2) {
+                return decodeURIComponent(pathParts[pathParts.length - 2]);
+            }
+
+            return null;
+        } catch (error) {
+            console.error('获取当前章节失败:', error);
+            return null;
+        }
+    }
+
+    // 填充章节选择框
+    function populateChapters() {
+        const chapterElements = document.querySelectorAll('.wy-menu .toctree-l1 > a');
+        const chapters = Array.from(chapterElements).map(el => el.textContent.replace('¶', '').trim());
+        const currentChapter = getCurrentChapter();
+
+        console.log('提取全部章节:', chapters);
+        console.log('当前页面章节:', currentChapter);
+
+        if (chapters.length === 0) {
+            console.error('未找到章节链接');
+            return;
+        }
+
+        chapterSelect.innerHTML = '';
+
+        // 添加默认选项
+        const defaultOption = document.createElement('option');
+        defaultOption.value = '';
+        defaultOption.textContent = language === 'zh_CN' ? '-- 请选择章节 --' : '-- Select Chapter --';
+        chapterSelect.appendChild(defaultOption);
+
+        // 添加章节选项
+        chapters.forEach(chapter => {
+            const option = document.createElement('option');
+            option.value = chapter;
+            option.textContent = chapter;
+            if (chapter === currentChapter) {
+                option.selected = true;
+            }
+            chapterSelect.appendChild(option);
+        });
+    }
+
+    // 初始化章节选择框
+    populateChapters();
+
+    // 报告按钮点击事件（处理文本选择）
+    reportButton.addEventListener('click', function() {
+        // 重置所有输入字段，每次重新inquire应该让对话框处于默认状态
+        feedbackText.value = '';          // 清空问题输入框
+        paragraphInput.value = '';        // 清空段落输入框
+        selectedText = '';                // 清除之前选择的文本
+
+        const selection = window.getSelection().toString().trim();
+        if (selection) {
+            paragraphInput.value = selection;
+        } else {
+            // 保持placeholder提示
+            if (!paragraphInput.value.trim()) {
+                paragraphInput.value = '';
+            }
+        }
+        feedbackDialog.style.display = 'block';
+    });
+
+    // 监听输入事件
+    paragraphInput.addEventListener('input', function() {
+        // 标记用户已经输入
+        this.placeholder = '';
+    });
+
+    // 提交按钮点击事件
+    submitButton.addEventListener('click', function() {
+        const userQuestion = feedbackText.value.trim();
+        const selectedChapter = chapterSelect.value;
+        const selectedPostType = postTypeSelect.value;
+        const paragraphContent = paragraphInput.value.trim() || 'null';
+
+        // 在提交事件顶部添加详细日志
+        console.group('=== 提交调试信息 ===');
+        console.log('章节选择值:', chapterSelect.value);
+        console.log('帖子类型postTypeSelect DOM元素:', postTypeSelect);
+        console.log('帖子类型postTypeSelect 选中的选项:', postTypeSelect.options[postTypeSelect.selectedIndex]);
+        console.log('帖子类型postTypeSelect 实际值:', postTypeSelect.value); // 应输出'doc_correction' 对应文档纠错
+          console.groupEnd();
+
+        // 验证输入
+        if (!userQuestion) {
+            alert(language === 'zh_CN' ? '问题描述为空' : 'Issue description cannot be empty');
+            return;
+        }
+        if (!selectedChapter) {
+            alert(language === 'zh_CN' ? '请选择相关章节' : 'Please select a related chapter');
+            return;
+        }
+
+        if (!selectedPostType) {
+            alert(language === 'zh_CN' ? '请选择帖子类型' : 'Please select a post type');
+            return;
+        }
+
+        // 获取用户名
+        const username = localStorage.getItem('username') || 'Anonymous';
+
+        // 构建提交数据
+        const feedbackData = {
+            user: username,
+            chapters: selectedChapter,
+            post_type: selectedPostType,
+            paragraph: paragraphContent,
+            question: userQuestion
+        };
+
+        console.log('完整提交数据:', feedbackData);
+
+        // 发送到后端
+        fetch('http://172.29.57.206:5000/submit', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(feedbackData)
+        })
+        .then(response => {
+            if (!response.ok) throw new Error('Network response was not ok');
+            return response.json();
+        })
+        .then(data => {
+            console.log('提交成功:', data);
+            promptBox.textContent = language === 'zh_CN' ? '问题已成功提交' : 'Issue submitted successfully';
+            promptBox.style.display = 'block';
+            setTimeout(() => promptBox.style.display = 'none', 5000);
+        })
+        .catch(error => {
+            console.error('提交失败:', error);
+            promptBox.textContent = language === 'zh_CN' ? '提交失败，请检查网络连接' : 'Submission failed, check your network';
+            promptBox.style.display = 'block';
+            setTimeout(() => promptBox.style.display = 'none', 5000);
+        });
+
+        // 关闭对话框
+        feedbackDialog.style.display = 'none';
+    });
+
+
+    // 取消按钮点击事件
+    cancelButton.addEventListener('click', function() {
+        feedbackDialog.style.display = 'none';
+    });
+
+    // 初始化检查
+    console.log('问题反馈系统已加载');
+    console.log('当前语言:', language);
+    console.log('检测到章节数量:', chapterSelect.options.length - 1);
+});
+</script>
+
+    <style>
+        /* 隐藏整个搜索栏容器 */
+        .wy-side-nav-search > div[role="search"] {
+            display: none !important;
+        }
+
+        /* 或者更精确地隐藏表单 */
+        form#rtd-search-form {
+            display: none !important;
+        }
+    </style>
+
+    <!-- 引入功能模块 -->
+    
+<script>
+    /* ====================== 嵌入式配置开始 ====================== */
+    const embeddedConfig = {
+        "freertos": {
+            "name": "FreeRTOS",
+            "languages": {
+                "en": ["latest"],
+                "cn": ["latest"]
+            }
+        },
+        "linux": {
+            "name": "Linux",
+            "languages": {
+                "en": ["latest"],
+                "cn": ["latest"]
+            }
+        }
+    };
+    /* ====================== 嵌入式配置结束 ====================== */
+</script>
+    
+<script>
+    // 获取基础URL路径
+    function getBaseURL() {
+        const url = new URL(window.location.href);
+        if (url.protocol === 'file:') {
+            // 本地路径处理
+            const pathParts = url.pathname.split('/').filter(part => part !== '');
+            const index = pathParts.indexOf('build');
+            return `file://${pathParts.slice(0, index + 1).join('/')}/`;
+        } else {
+            // 网络路径处理
+            return `${url.origin}/${url.pathname.split('/').slice(1, 3).join('/')}/`;
+        }
+    }
+
+    // 获取当前URL路径分段
+    function getCurrentSegments() {
+        const url = new URL(window.location.href);
+        let segments = url.pathname.split('/').filter(segment => segment);
+
+        if (url.protocol === 'file:') {
+            // 本地路径处理
+            const index = segments.indexOf('build');
+            segments = segments.slice(index + 1); // 去掉 build 及之前的路径
+        } else {
+            // 网络路径处理
+            segments = segments.slice(3); // 去掉 ameba-iot-docs/
+        }
+
+        return {
+            osKey: segments[0] || 'freertos', // 默认为 freertos
+            language: segments[1] || 'en',   // 默认为 en
+            version: segments[2] || 'latest' // 默认为 latest
+        };
+    }
+</script>
+    
+<script>
+    // 获取OS显示名称列表
+    function getOSNames(data) {
+        return Object.keys(data).map(key => data[key].name);
+    }
+
+    // 获取指定OS的语言列表
+    function getLanguages(data, osKey) {
+        return Object.keys(data[osKey]?.languages || {});
+    }
+
+    // 获取指定OS和语言的版本列表
+    function getVersions(data, osKey, language) {
+        return data[osKey]?.languages?.[language] || ['latest'];
+    }
+
+    // 根据显示名称查找OS键
+    function findOSKey(data, displayName) {
+        return Object.keys(data).find(key => data[key].name === displayName);
+    }
+</script>
+    
+<script>
+    // 验证并修正路径参数
+    function validateSegments(segments) {
+        const currentOSName = embeddedConfig[segments.osKey]?.name;
+
+        // 如果 OS 无效，默认设置为 FreeRTOS
+        if (!currentOSName) {
+            console.warn("Invalid OS key, defaulting to FreeRTOS");
+            segments.osKey = 'freertos';
+        }
+
+        // 如果语言无效，默认设置为 en
+        if (!getLanguages(embeddedConfig, segments.osKey).includes(segments.language)) {
+            console.warn("Invalid language, defaulting to en");
+            segments.language = 'en';
+        }
+
+        return segments;
+    }
+
+    // 生成选择器HTML
+    function generateSelectorsHTML(segments) {
+        return `
+            <div id="custom-selectors" style="padding: 0; background: none; border: none;">
+                <!-- 系统选择器 -->
+                <div class="selector-container">
+                    <label class="selector-label">
+                        ${segments.language === 'cn' ? '系统' : 'OS'}:
+                    </label>
+                    <select id="os-selector" class="selector-dropdown">
+                        ${Object.keys(embeddedConfig).map(key => `
+                            <option value="${key}">${embeddedConfig[key].name}</option>
+                        `).join('')}
+                    </select>
+                </div>
+
+                <!-- 语言选择器 -->
+                <div class="selector-container">
+                    <label class="selector-label">
+                        ${segments.language === 'cn' ? '语言' : 'Language'}:
+                    </label>
+                    <select id="language-selector" class="selector-dropdown">
+                        ${getLanguages(embeddedConfig, segments.osKey).map(lang => `
+                            <option value="${lang}">${lang}</option>
+                        `).join('')}
+                    </select>
+                </div>
+
+                <!-- 版本选择器 -->
+                <div class="selector-container version-selector-container">
+                    <label class="selector-label">
+                        ${segments.language === 'cn' ? '版本' : 'Version'}:
+                    </label>
+                    <select id="version-selector" class="selector-dropdown">
+                        ${getVersions(embeddedConfig, segments.osKey, segments.language).map(ver => `
+                            <option value="${ver}">${ver}</option>
+                        `).join('')}
+                    </select>
+                </div>
+
+                ${generateUserPanelHTML(segments)}
+            </div>`;
+    }
+
+    // 生成用户面板HTML
+    function generateUserPanelHTML(segments) {
+        return `
+            <div class="user-panel">
+                <!-- 用户名显示（登录后可见） -->
+                <div id="user-info" style="display: ${localStorage.getItem('isLoggedIn') ? 'block' : 'none'}">
+                    <span id="username-display" class="username">${localStorage.getItem('username') || ''}</span>
+                </div>
+
+                <!-- 登录注册按钮（未登录时可见） -->
+                <div id="auth-buttons" class="button-row" style="display: ${localStorage.getItem('isLoggedIn') ? 'none' : 'flex'}">
+                    <button class="auth-btn" id="register-button">${segments.language === 'cn' ? '注册' : 'Register'}</button>
+                    <button class="auth-btn" id="login-button">${segments.language === 'cn' ? '登录' : 'Login'}</button>
+                </div>
+
+                <!-- 外链按钮（始终可见） -->
+                <div class="button-row">
+                    <button class="official-btn" onclick="window.open('https://www.realmcu.com/', '_blank')">
+                        ${segments.language === 'cn' ? '官网' : 'Official'}
+                    </button>
+                    <button class="forum-btn" onclick="window.open('http://172.29.57.206:5000/view', '_blank')">
+                        ${segments.language === 'cn' ? '论坛' : 'Forum'}
+                    </button>
+                </div>
+            </div>
+        `;
+    }
+
+    // 设置初始选中值
+    function setInitialValues(segments) {
+        document.getElementById('os-selector').value = segments.osKey;
+        document.getElementById('language-selector').value = segments.language;
+
+        const versionSelector = document.getElementById('version-selector');
+        const availableVersions = getVersions(embeddedConfig, segments.osKey, segments.language);
+        versionSelector.value = availableVersions.includes(segments.version) ? segments.version : availableVersions[0] || 'latest';
+    }
+</script>
+    
+<script>
+    // 绑定事件监听
+    function bindEvents(baseURL, segments) {
+        document.getElementById('os-selector').addEventListener('change', () => {
+            const newOSKey = document.getElementById('os-selector').value;
+            const availableLangs = getLanguages(embeddedConfig, newOSKey);
+            const defaultLang = availableLangs[0] || 'en';
+            const defaultVersion = getVersions(embeddedConfig, newOSKey, defaultLang)[0] || 'latest';
+            redirectTo(`${baseURL}${newOSKey}/${defaultLang}/${defaultVersion}/`);
+        });
+
+        document.getElementById('language-selector').addEventListener('change', () => {
+            const newLang = document.getElementById('language-selector').value;
+            const defaultVersion = getVersions(embeddedConfig, segments.osKey, newLang)[0] || 'latest';
+            redirectTo(`${baseURL}${segments.osKey}/${newLang}/${defaultVersion}/`);
+        });
+
+        document.getElementById('version-selector').addEventListener('change', () => {
+            const newVer = document.getElementById('version-selector').value;
+            redirectTo(`${baseURL}${segments.osKey}/${segments.language}/${newVer}/`);
+        });
+    }
+
+    // 跳转函数
+    function redirectTo(path) {
+        const url = new URL(path, window.location.href);
+        if (url.protocol === 'file:') {
+            url.pathname += 'index.html';
+        }
+        window.location.href = url.href;
+    }
+</script>
+    
+<script>
+    // 初始化认证对话框
+    function initAuthDialogs() {
+        function createAuthDialog(type) {
+            const lang = document.getElementById('language-selector').value === 'cn' ? 'cn' : 'en';
+
+            const dialog = document.createElement('div');
+            dialog.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.5);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 9999;
+            `;
+
+            // 弹窗内容
+            const content = document.createElement('div');
+            content.style.cssText = `
+                background: white;
+                padding: 20px;
+                border-radius: 8px;
+                min-width: 300px;
+            `;
+
+            // 标题
+            const title = document.createElement('h3');
+            title.textContent = type === 'register' 
+                ? (lang === 'cn' ? '注册' : 'Register') 
+                : (lang === 'cn' ? '登录' : 'Login');
+            content.appendChild(title);
+
+            // 用户名输入
+            const usernameLabel = document.createElement('label');
+            usernameLabel.textContent = lang === 'cn' ? '用户名：' : 'Username:';
+            const usernameInput = document.createElement('input');
+            usernameInput.style.cssText = 'width: 100%; margin-bottom: 10px; padding: 5px;';
+            content.appendChild(usernameLabel);
+            content.appendChild(usernameInput);
+
+            // 密码输入
+            const passwordLabel = document.createElement('label');
+            passwordLabel.textContent = lang === 'cn' ? '密码：' : 'Password:';
+            const passwordInput = document.createElement('input');
+            passwordInput.type = 'password';
+            passwordInput.style.cssText = 'width: 100%; margin-bottom: 10px; padding: 5px;';
+            content.appendChild(passwordLabel);
+            content.appendChild(passwordInput);
+
+            // 注册时需要确认密码
+            let confirmPasswordInput;
+            if (type === 'register') {
+                const confirmLabel = document.createElement('label');
+                confirmLabel.textContent = lang === 'cn' ? '确认密码：' : 'Confirm Password:';
+                confirmPasswordInput = document.createElement('input');
+                confirmPasswordInput.type = 'password';
+                confirmPasswordInput.style.cssText = 'width: 100%; margin-bottom: 10px; padding: 5px;';
+                content.appendChild(confirmLabel);
+                content.appendChild(confirmPasswordInput);
+            }
+
+            // 按钮容器
+            const buttonContainer = document.createElement('div');
+            buttonContainer.style.cssText = 'display: flex; gap: 10px; margin-top: 10px;';
+
+            // 确认按钮
+            const confirmBtn = document.createElement('button');
+            confirmBtn.textContent = lang === 'cn' ? '确认' : 'Confirm';
+            confirmBtn.onclick = () => {
+                const username = usernameInput.value.trim();
+                const password = passwordInput.value.trim();
+                const confirmPassword = confirmPasswordInput ? confirmPasswordInput.value.trim() : null;
+
+                // 验证输入
+                if (!username || !password) {
+                    alert(lang === 'cn' ? '用户名和密码不能为空！' : 'Username and password are required!');
+                    return;
+                }
+
+                if (type === 'register' && password !== confirmPassword) {
+                    alert(lang === 'cn' ? '两次输入的密码不一致！' : 'Passwords do not match!');
+                    return;
+                }
+
+                // flask 发送请求
+                fetch('http://172.29.57.206:5000/auth', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        action: type,
+                        username,
+                        password
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert(lang === 'cn' ? '操作成功！' : 'Success!');
+                        // 更新本地存储和UI
+                        localStorage.setItem('isLoggedIn', 'true');
+                        localStorage.setItem('username', username);
+                        // 强制刷新显示状态
+                        document.getElementById('auth-buttons').style.display = 'none';
+                        document.getElementById('user-info').style.display = 'block';
+                        document.getElementById('username-display').textContent = username;
+                        document.body.removeChild(dialog);
+                    } else {
+                        alert(lang === 'cn' ? '失败：' + data.message : 'Failed: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert(lang === 'cn' ? '网络错误' : 'Network error');
+                });
+            };
+
+            // 取消按钮
+            const cancelBtn = document.createElement('button');
+            cancelBtn.textContent = lang === 'cn' ? '取消' : 'Cancel';
+            cancelBtn.onclick = () => document.body.removeChild(dialog);
+
+            buttonContainer.appendChild(confirmBtn);
+            buttonContainer.appendChild(cancelBtn);
+            content.appendChild(buttonContainer);
+            dialog.appendChild(content);
+            document.body.appendChild(dialog);
+        }
+
+        document.getElementById('register-button').addEventListener('click', () => createAuthDialog('register'));
+        document.getElementById('login-button').addEventListener('click', () => createAuthDialog('login'));
+    }
+
+    // 同步登录状态
+    function syncLoginState() {
+        const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+        document.getElementById('auth-buttons').style.display = isLoggedIn ? 'none' : 'flex';
+        document.getElementById('user-info').style.display = isLoggedIn ? 'block' : 'none';
+        if (isLoggedIn) {
+            document.getElementById('username-display').textContent = localStorage.getItem('username') || '';
+        }
+    }
+</script>
 
 </head>
 
@@ -53,6 +943,7 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
+    
 
           
           
@@ -66,94 +957,125 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
+
+    
+    <div id="custom-selectors" style="display: block !important; padding: 0; background: none; border: none;">
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        try {
+            const segments = validateSegments(getCurrentSegments());
+            const baseURL = getBaseURL();
+
+            // 渲染HTML
+            document.getElementById('custom-selectors').innerHTML = generateSelectorsHTML(segments);
+
+            // 设置初始值
+            setInitialValues(segments);
+
+            // 绑定事件
+            bindEvents(baseURL, segments);
+
+            // 初始化认证逻辑
+            initAuthDialogs();
+            syncLoginState();
+        } catch (error) {
+            console.error("Error initializing selectors:", error);
+        }
+    });
+</script>
+
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../0_ameba_product/0_ameba_product_center_index_cn.html">产品中心</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../0_ameba_sdk/0_ameba_sdks_index_cn.html">Ameba SDK</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../0_ameba_solutions/0_ameba_solutions_index_cn.html">解决方案</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../0_gcc_build_environment/0_gcc_build_index_cn.html">0.1 GCC 编译环境</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../0_gdb_debug/0_gdb_debug_index_cn.html">0.2 GDB调试</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_gdb_debug/0_gdb_debug_index_cn.html">0.2 GDB 调试</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../0_gcc_build_library/0_gcc_build_library_index_cn.html">0.3 GCC 库的生成和使用</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../0_sdk_example/0_sdk_example_index_cn.html">0.4 SDK 示例</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../0_memory_layout/0_layout_index_cn.html">0.5 Flash 和 RAM 布局</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../0_user_config/0_usrcfg_index_cn.html">0.6 开发者配置</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="0_tools_index_cn.html">0.7 工具</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Image Tool</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#introduction">Introduction</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#environment-setup">Environment Setup</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#hardware-setup">Hardware Setup</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#software-setup">Software Setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">概述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">环境设置</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id4">硬件设置</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id5">软件设置</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#image-download">Image Download</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#download-images">Download Images</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#download-steps">Download Steps</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id6">固件下载</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#image-tool-image-files">固件文件</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id8">下载步骤</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#flash-erase">Flash Erase</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#flash-register-access">Flash Register Access</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#nor-flash-register-access">NOR Flash Register Access</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#flash">Flash 擦除</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id9">Flash 寄存器访问</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#nand">NAND 坏块管理</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id10">扫描块状态</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id11">标记块状态</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#flash-block-protection-process">Flash Block Protection Process</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#modifying-device-profile">Modifying Device Profile</a><ul class="simple">
+<li class="toctree-l3"><a class="reference internal" href="#image-tool-flash-block-protection-process">Flash 块保护过程</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id13">修改设备配置文件</a><ul class="simple">
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="#id17">固件合成</a></li>
+<li><a class="reference internal" href="#id18">固件验证</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="1_trace_tool_toprst_cn.html">Trace Tool</a></li>
-<li class="toctree-l2"><a class="reference internal" href="1_layout_tool_toprst_cn.html">Layout Tool</a></li>
-<li class="toctree-l2"><a class="reference internal" href="1_pinmux_tool_toprst_cn.html">Pinmux Tool</a></li>
 <li class="toctree-l2"><a class="reference internal" href="1_cap_test_tool_toprst_cn.html">Captouch Test Tool</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../0_at_command/0_at_command_index_cn.html">0.8 AT 命令</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_at_command/0_at_command_index_cn.html">0.8 AT 命令集</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../0_file_system/0_vfs_index_cn.html">0.9 虚拟文件系统</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../0_ftl/0_ftl_index_cn.html">0.A Flash 转换层</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_ftl/0_ftl_index_cn.html">0.a Flash 转换层</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../1_mpu_cache/0_mpu_cache_index_cn.html">1.0 内存保护单元和缓存</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../1_boot_process/0_boot_index_cn.html">1.1 启动过程</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../1_ota/0_ota_index_cn.html">1.2 固件在线升级(OTA)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../1_otpc/0_otpc_index.html">1.3 OTP存储器</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../1_chipen/0_chipen_index_cn.html">1.4 CHIP_EN</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_ota/0_ota_index_cn.html">1.2 固件升级（OTA）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_otpc/0_otpc_index_cn.html">1.3 OTP存储器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_chipen/0_chipen_index_cn.html">1.4 芯片使能</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../1_ipc/0_ipc_index_cn.html">1.5 核间通信</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../1_pinmux/0_pinmux_index_cn.html">1.6 PINMUX</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../1_gpio/0_gpio_index_cn.html">1.7 GPIO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_pinmux/0_pinmux_index_cn.html">1.6 引脚复用</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_gpio/0_gpio_index_cn.html">1.7 GPIO 和引脚控制</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../1_power_save/0_ps_index_cn.html">1.9 低功耗开发</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../2_whc_wifi_bridge/0_wifi_bridge_index_cn.html">2.1 WHC Bridge</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../2_whc_fullmac/0_fullmac_index_cn.html">2.2 WHC FullMAC</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../2_wifi_tunnel/0_wifi_tunnel_index_cn.html">2.3 Wi-Fi R-Mesh</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../2_wifi_csi/0_wifi_csi_index_cn.html">2.5 Wi-Fi CSI</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../2_wifi_adaptivity_test/0_wifi_adaptivity_index.html">2.6 Wi-Fi Adaptivity 测试指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_whc_wifi_bridge/0_wifi_bridge_index_cn.html">2.0 WHC Bridge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_whc_fullmac/0_fullmac_index_cn.html">2.1 WHC FullMAC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_wifi_tunnel/0_wifi_tunnel_index_cn.html">2.2 Wi-Fi R-Mesh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_wifi_csi/0_wifi_csi_index_cn.html">2.3 Wi-Fi CSI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_wifi_adaptivity_test/0_wifi_adaptivity_index_cn.html">2.4 Wi-Fi Adaptivity 测试指南</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../3_security/0_security_index_cn.html">3.1 安全与加密</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../3_trng/0_trng_index_cn.html">3.2 真随机数发生器</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../3_nda_huk_derivation/0_huk_derivation_index_nda.html">3.3 HUK Derivation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../3_nda_rdp/0_rdp_index_nda.html">3.4 RDP</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../3_nda_rsip/0_rsip_index_nda.html">3.5 RSIP</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../3_nda_secure_boot/0_secure_boot_index_nda.html">3.6 Secure Boot</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../3_nda_swd_protection/0_swd_protection_index_nda.html">3.7 SWD Protection</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../3_nda_tfm/0_tfm_index_nda.html">3.8 Trusted Firmware-M (TF-M)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_huk_derivation/0_huk_derivation_index_nda.html">3.3 HUK 生成 🔒</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_rdp/0_rdp_index_nda.html">3.4 RDP 🔒</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_rsip/0_rsip_index_nda.html">3.5 RSIP 🔒</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_secure_boot/0_secure_boot_index_nda.html">3.6 安全启动 🔒</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_swd_protection/0_swd_protection_index_nda.html">3.7 SWD 保护 🔒</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_tfm/0_tfm_index_nda.html">3.8 Trusted Firmware-M (TF-M) 🔒</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../3_crypto_engine/0_crypto_engine_index_cn.html">3.9 对称硬件加密引擎</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../3_ecdsa_engine/0_ecdsa_index_cn.html">3.a ECDSA 硬件加密引擎</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../3_eddsa_engine/0_eddsa_index_cn.html">3.b EDDSA 硬件加密引擎</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../3_rsa_engine/0_rsa_index_cn.html">3.c RSA 硬件加密引擎</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_ap_trustzone/0_ap_tz_index_cn.html">3.d AP 安全服务</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../4_ai/0_ai_index_cn.html">4.1 人工智能</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../4_ai_voice/0_ai_voice_index_cn.html">4.2 语音识别</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../4_multimedia/0_multimedia_index_cn.html">4.3 多媒体</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../4_dsp/0_dsp_index_cn.html">4.4 DSP 使用指南</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../6_mass_production/0_mp_index_cn.html">6.1 量产指导</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../6_mp_image/0_mp_image_index_cn.html">6.2 MP 固件</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../6_mptools/0_mptools_index_cn.html">6.3 产测工具</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../6_mass_production/0_mp_index_cn.html">6.1 批量生产</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../6_mptools/0_mptools_index_cn.html">6.2 产测工具</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../7_usb/0_usb_index_cn.html">7.1 USB 主机与从机</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../8_dmac/0_dmac_index_cn.html">8.1 DMA 控制器</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../8_psram/0_psram_index_cn.html">8.2 PSRAM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../8_thermal/0_thermal_index_cn.html">8.3 温度测量</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../8_adc/0_adc_index_cn.html">8.4 模数转换器</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../8_ir/0_ir_index_cn.html">8.5 红外收发器</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../8_ledc/0_ledc_index_cn.html">8.6 LED控制器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_ledc/0_ledc_index_cn.html">8.6 LED 控制器</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../8_cap_touch/0_cap_touch_index_cn.html">8.7 Cap-Touch</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../8_key_scan/0_key_scan_index_cn.html">8.8 Key-Scan</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../8_rtc_io/0_rtc_io_index_cn.html">8.9 RTC-IO</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../8_lcdc/0_lcdc_index_cn.html">8.A LCD控制器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_lcdc/0_lcdc_index_cn.html">8.a LCD 控制器</a></li>
 </ul>
 
         </div>
@@ -166,7 +1088,7 @@
       </nav>
 
       <div class="wy-nav-content">
-
+    
         <div class="rst-content">
           <div role="navigation" aria-label="页面导航">
   <ul class="wy-breadcrumbs">
@@ -183,371 +1105,920 @@
              
   <section id="image-tool">
 <span id="id1"></span><h1>Image Tool<a class="headerlink" href="#image-tool" title="Link to this heading"></a></h1>
-<section id="introduction">
-<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
-<p>The Image Tool is the official image download tool developed by Realtek for Ameba series SoC.
-It can be used to download images to the Flash of the device through the interfaces below.</p>
-<table class="docutils align-default" id="id3" style="width: 100%">
-<caption><span class="caption-text">Download interface supported by different Ameba SoCs</span><a class="headerlink" href="#id3" title="Link to this table"></a></caption>
+<section id="id2">
+<h2>概述<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+<p>Image Tool 是 Realtek官 方为 Ameba 系列 SoC 开发的固件下载工具。</p>
+<p>Image Tool可以通过以下接口下载固件到设备的Flash中:</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-0-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-0-0-0" name="0-0" role="tab" tabindex="0">RTL8721Dx</button><button aria-controls="panel-0-0-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-1" name="0-1" role="tab" tabindex="-1">RTL8720E</button><button aria-controls="panel-0-0-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-2" name="0-2" role="tab" tabindex="-1">RTL8726E</button><button aria-controls="panel-0-0-3" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-3" name="0-3" role="tab" tabindex="-1">RTL8730E</button></div><div aria-labelledby="tab-0-0-0" class="sphinx-tabs-panel" id="panel-0-0-0" name="0-0" role="tabpanel" tabindex="0"><table class="docutils align-default" style="width: 100%">
 <thead>
-<tr class="row-odd"><th class="head" rowspan="2"><p>Ameba SoC</p></th>
-<th class="head" rowspan="2"><p>Flash type</p></th>
-<th class="head" colspan="2"><p>Download interface</p></th>
-</tr>
-<tr class="row-even"><th class="head"><p>UART</p></th>
+<tr class="row-odd"><th class="head"><p>Flash 类型</p></th>
+<th class="head"><p>UART</p></th>
 <th class="head"><p>USB</p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-odd"><td rowspan="2"><p>RTL8730E</p></td>
-<td><p>NOR Flash</p></td>
+<tr class="row-even"><td><p>NOR Flash</p></td>
 <td><p>√</p></td>
 <td><p>√</p></td>
 </tr>
-<tr class="row-even"><td><p>NAND Flash</p></td>
-<td><p>X</p></td>
-<td><p>√</p></td>
+</tbody>
+</table>
+</div><div aria-labelledby="tab-0-0-1" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-1" name="0-1" role="tabpanel" tabindex="0"><table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Flash 类型</p></th>
+<th class="head"><p>UART</p></th>
+<th class="head"><p>USB</p></th>
 </tr>
-<tr class="row-odd"><td><p>RTL8721Dx</p>
-<p>RTL8711Dx</p>
-</td>
-<td><p>NOR Flash</p></td>
-<td><p>√</p></td>
-<td><p>√</p></td>
-</tr>
-<tr class="row-even"><td><p>RTL8726EA</p>
-<p>RTL8713EC</p>
-<p>RTL8720EA</p>
-<p>RTL8710EC</p>
-</td>
-<td><p>NOR Flash</p></td>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>NOR Flash</p></td>
 <td><p>√</p></td>
 <td><p>X</p></td>
 </tr>
 </tbody>
 </table>
-<p>The UI of Image Tool is shown below.</p>
-<figure class="align-center" id="id4">
+</div><div aria-labelledby="tab-0-0-2" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-2" name="0-2" role="tabpanel" tabindex="0"><table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Flash 类型</p></th>
+<th class="head"><p>UART</p></th>
+<th class="head"><p>USB</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>NOR Flash</p></td>
+<td><p>√</p></td>
+<td><p>X</p></td>
+</tr>
+</tbody>
+</table>
+</div><div aria-labelledby="tab-0-0-3" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-3" name="0-3" role="tabpanel" tabindex="0"><table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Flash 类型</p></th>
+<th class="head"><p>UART</p></th>
+<th class="head"><p>USB</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>NOR Flash</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>NAND Flash</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<p>Image Tool 的界面如下所示：</p>
+<blockquote>
+<div><figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/imgtool_image_tool_ui_freertos.png"><img alt="../../_images/imgtool_image_tool_ui_freertos.png" src="../../_images/imgtool_image_tool_ui_freertos.png" style="width: 851.4px; height: 713.7px;" /></a>
+</figure>
+</div></blockquote>
+</section>
+<section id="id3">
+<h2>环境设置<a class="headerlink" href="#id3" title="Link to this heading"></a></h2>
+<section id="id4">
+<h3>硬件设置<a class="headerlink" href="#id4" title="Link to this heading"></a></h3>
+<p>固件下载的硬件设置如下所示：</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-1-1-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-1-1-0" name="1-0" role="tab" tabindex="0">RTL8721Dx</button><button aria-controls="panel-1-1-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-1-1-1" name="1-1" role="tab" tabindex="-1">RTL8720E</button><button aria-controls="panel-1-1-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-1-1-2" name="1-2" role="tab" tabindex="-1">RTL8726E</button><button aria-controls="panel-1-1-3" aria-selected="false" class="sphinx-tabs-tab" id="tab-1-1-3" name="1-3" role="tab" tabindex="-1">RTL8730E</button></div><div aria-labelledby="tab-1-1-0" class="sphinx-tabs-panel" id="panel-1-1-0" name="1-0" role="tabpanel" tabindex="0"><figure class="align-center" id="id19">
+<a class="reference internal image-reference" href="../../_images/imgtool_hardware_setup_for_image_download_dplus_cn.svg"><img alt="../../_images/imgtool_hardware_setup_for_image_download_dplus_cn.svg" height="204" src="../../_images/imgtool_hardware_setup_for_image_download_dplus_cn.svg" width="629" /></a>
 <figcaption>
-<p><span class="caption-text">Image Tool UI</span><a class="headerlink" href="#id4" title="Link to this image"></a></p>
+<p><span class="caption-text">RTL8721Dx 固件下载的硬件设置</span><a class="headerlink" href="#id19" title="Link to this image"></a></p>
 </figcaption>
 </figure>
+</div><div aria-labelledby="tab-1-1-1" class="sphinx-tabs-panel" hidden="true" id="panel-1-1-1" name="1-1" role="tabpanel" tabindex="0"><figure class="align-center" id="id20">
+<a class="reference internal image-reference" href="../../_images/imgtool_hardware_setup_for_image_download_lite_cn.svg"><img alt="../../_images/imgtool_hardware_setup_for_image_download_lite_cn.svg" height="219" src="../../_images/imgtool_hardware_setup_for_image_download_lite_cn.svg" width="607" /></a>
+<figcaption>
+<p><span class="caption-text">RTL8720E 固件下载的硬件设置</span><a class="headerlink" href="#id20" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</div><div aria-labelledby="tab-1-1-2" class="sphinx-tabs-panel" hidden="true" id="panel-1-1-2" name="1-2" role="tabpanel" tabindex="0"><figure class="align-center" id="id21">
+<a class="reference internal image-reference" href="../../_images/imgtool_hardware_setup_for_image_download_lite_cn.svg"><img alt="../../_images/imgtool_hardware_setup_for_image_download_lite_cn.svg" height="219" src="../../_images/imgtool_hardware_setup_for_image_download_lite_cn.svg" width="607" /></a>
+<figcaption>
+<p><span class="caption-text">RTL8726E 固件下载的硬件设置</span><a class="headerlink" href="#id21" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</div><div aria-labelledby="tab-1-1-3" class="sphinx-tabs-panel" hidden="true" id="panel-1-1-3" name="1-3" role="tabpanel" tabindex="0"><figure class="align-center" id="id22">
+<a class="reference internal image-reference" href="../../_images/imgtool_hardware_setup_for_image_download_dplus_cn.svg"><img alt="../../_images/imgtool_hardware_setup_for_image_download_dplus_cn.svg" height="204" src="../../_images/imgtool_hardware_setup_for_image_download_dplus_cn.svg" width="629" /></a>
+<figcaption>
+<p><span class="caption-text">RTL8730E 固件下载的硬件设置</span><a class="headerlink" href="#id22" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</div></div>
 </section>
-<section id="environment-setup">
-<h2>Environment Setup<a class="headerlink" href="#environment-setup" title="Link to this heading"></a></h2>
-<section id="hardware-setup">
-<h3>Hardware Setup<a class="headerlink" href="#hardware-setup" title="Link to this heading"></a></h3>
-<p>The hardware setup for image download is shown below.</p>
-</section>
-<section id="software-setup">
-<h3>Software Setup<a class="headerlink" href="#software-setup" title="Link to this heading"></a></h3>
+<section id="id5">
+<h3>软件设置<a class="headerlink" href="#id5" title="Link to this heading"></a></h3>
 <ul>
-<li><p>Environment Requirements: EX. WinXP, Win 7 or later, Microsoft .NET Framework 4.0.</p></li>
-<li><p>Software location:</p>
+<li><p>环境要求：如 WinXP、Win7 或更高版本、Microsoft .NET Framework 4.0。</p></li>
+<li><p>软件位置:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p>Image Tool: <code class="docutils literal notranslate"><span class="pre">{SDK}/tools/ameba/ImageTool/AmebaImageTool.exe</span></code></p></li>
 <li><p>Device Profile Editor: <code class="docutils literal notranslate"><span class="pre">{SDK}/tools/ameba/DeviceProfileEditor/AmebaDeviceProfileEditor.exe</span></code></p></li>
 </ul>
-<ul>
-<li><p>Device profiles: <code class="docutils literal notranslate"><span class="pre">{SDK}/tools/ameba/DeviceProfiles</span></code></p>
-<p>Device profiles provide the necessary device information required for image download, with the naming rules:</p>
+<ul class="simple">
+<li><p>Device profiles: <code class="docutils literal notranslate"><span class="pre">{SDK}/tools/ameba/ImageTool/Devices/Profiles</span></code></p></li>
+</ul>
+<p>Device profiles 提供下载固件所需的设备信息，命名规则为：</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">SoC</span> <span class="n">name</span><span class="o">&gt;</span><span class="n">_</span><span class="o">&lt;</span><span class="n">OS</span> <span class="nb">type</span><span class="o">&gt;</span><span class="n">_</span><span class="o">&lt;</span><span class="n">Flash</span> <span class="nb">type</span><span class="o">&gt;</span><span class="p">[</span><span class="n">_</span><span class="o">&lt;</span><span class="n">Extra</span> <span class="n">info</span><span class="o">&gt;</span><span class="p">]</span><span class="o">.</span><span class="n">rdev</span>
 </pre></div>
 </div>
-<p>Where:</p>
-<dl class="field-list simple">
-<dt class="field-odd">SoC name<span class="colon">:</span></dt>
-<dd class="field-odd"><p>the name of Realtek Ameba SoC</p>
-</dd>
-<dt class="field-even">OS type<span class="colon">:</span></dt>
-<dd class="field-even"><p>FreeRTOS or Linux</p>
-</dd>
-<dt class="field-odd">Flash type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>NOR or NAND</p>
-</dd>
-<dt class="field-even">Extra info<span class="colon">:</span></dt>
-<dd class="field-even"><p>extra information like Flash size, application, etc.</p>
-</dd>
-</dl>
-</li>
-</ul>
+<p>其中:
+:SoC name: Realtek Ameba SoC的名字
+:OS type: FreeRTOS 或 Linux
+:Flash type: NOR 或 NAND
+:Extra info: 例如Flash大小、应用等的附加信息</p>
+<blockquote>
+<div></div></blockquote>
 </div></blockquote>
 </li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">备注</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">{ImageTool}</span></code> will be used for short of <code class="docutils literal notranslate"><span class="pre">{SDK}/tools/ameba/ImageTool</span></code> in the following sections.</p></li>
-<li><p>To download images through UART interface, the host driver for USB to UART adapter (e.g. PL2303GC) on the board shall be installed first, please find the exact driver from the official website of corresponding vendor of the USB to UART adapter.</p></li>
-<li><p>For WinXP or Win7 only, install the USB driver <code class="file docutils literal notranslate"><em><span class="pre">ImageTool</span></em><span class="pre">/RtkUsbCdcAcmSetup.INF</span></code> if there is a need to download images through USB interface.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">{ImageTool}</span></code> 将在后面的章节中指代 <code class="docutils literal notranslate"><span class="pre">{SDK}/tools/ameba/ImageTool</span></code> 。</p></li>
+<li><p>如需通过UART接口下载固件，需要先安装板载USB转UART适配器（例如PL2303GC）的主控制器驱动，具体驱动请在相应USB转UART适配器厂商的官方网站查询。</p></li>
+<li><p>对于WinXP或Win7, 若需通过USB接口下载固件，需要先安装USB驱动 <code class="file docutils literal notranslate"><em><span class="pre">ImageTool</span></em><span class="pre">/RtkUsbCdcAcmSetup.INF</span></code> 。</p></li>
 </ul>
 </div>
 </section>
 </section>
-<section id="image-download">
-<h2>Image Download<a class="headerlink" href="#image-download" title="Link to this heading"></a></h2>
-<section id="download-images">
-<h3>Download Images<a class="headerlink" href="#download-images" title="Link to this heading"></a></h3>
-<p>For an empty chip, the following mandatory images shall be downloaded:</p>
-<table class="docutils align-default" style="width: 100%">
+<section id="id6">
+<h2>固件下载<a class="headerlink" href="#id6" title="Link to this heading"></a></h2>
+<section id="image-tool-image-files">
+<span id="id7"></span><h3>固件文件<a class="headerlink" href="#image-tool-image-files" title="Link to this heading"></a></h3>
+<p>对于一个空芯片，必须下载以下强制性固件文件：</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-2-2-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-2-2-0" name="2-0" role="tab" tabindex="0">FreeRTOS</button><button aria-controls="panel-2-2-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-2-2-1" name="2-1" role="tab" tabindex="-1">Linux</button></div><div aria-labelledby="tab-2-2-0" class="sphinx-tabs-panel" id="panel-2-2-0" name="2-0" role="tabpanel" tabindex="0"><div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-3-3-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-3-3-0" name="3-0" role="tab" tabindex="0">RTL8721Dx</button><button aria-controls="panel-3-3-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-3-3-1" name="3-1" role="tab" tabindex="-1">RTL8720E</button><button aria-controls="panel-3-3-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-3-3-2" name="3-2" role="tab" tabindex="-1">RTL8726E</button><button aria-controls="panel-3-3-3" aria-selected="false" class="sphinx-tabs-tab" id="tab-3-3-3" name="3-3" role="tab" tabindex="-1">RTL8730E</button></div><div aria-labelledby="tab-3-3-0" class="sphinx-tabs-panel" id="panel-3-3-0" name="3-0" role="tabpanel" tabindex="0"><table class="docutils align-default" style="width: 100%">
 <thead>
-<tr class="row-odd"><th class="head"><p>Ameba SoC</p></th>
-<th class="head"><p>Image name</p></th>
-<th class="head"><p>Description</p></th>
-<th class="head"><p>Mandatory?</p></th>
+<tr class="row-odd"><th class="head"><p>固件名称</p></th>
+<th class="head"><p>描述</p></th>
+<th class="head"><p>是否必需?</p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td rowspan="2"><p>RTL8730E</p></td>
-<td><p>km4_boot_all.bin</p></td>
-<td><p>KM4 bootloader</p></td>
-<td><p>√</p></td>
-</tr>
-<tr class="row-odd"><td><p>km0_km4_ca32_app.bin</p></td>
-<td><p>KM0/KM4/CA32 applications</p></td>
-<td><p>√</p></td>
-</tr>
-<tr class="row-even"><td rowspan="2"><div class="line-block">
-<div class="line">RTL8726EA</div>
-<div class="line">RTL8713EC</div>
-<div class="line">RTL8720EA</div>
-<div class="line">RTL8710EC</div>
-</div>
-</td>
-<td><p>km4_boot_all.bin</p></td>
-<td><p>KM4 bootloader</p></td>
-<td><p>√</p></td>
-</tr>
-<tr class="row-odd"><td><p>kr4_km4_app.bin</p></td>
-<td><p>KR4/KM4 applications</p></td>
-<td><p>√</p></td>
-</tr>
-<tr class="row-even"><td><p>RTL8726EA/RTL8713EC</p></td>
-<td><p>dsp_all.bin</p></td>
-<td><p>DSP image</p></td>
-<td><p>√</p></td>
-</tr>
-<tr class="row-odd"><td><p>RTL8720EA/RTL8710EC</p></td>
-<td><p>dsp_all.bin</p></td>
-<td><p>DSP image</p></td>
-<td><p>X</p></td>
-</tr>
-<tr class="row-even"><td rowspan="2"><p>RTL8721Dx/RTL8711Dx</p></td>
-<td><p>km4_boot_all.bin</p></td>
-<td><p>KM4 bootloader</p></td>
-<td><p>√</p></td>
+<tr class="row-even"><td><p>km4_boot_all.bin</p></td>
+<td><p>KM4 引导程序</p></td>
+<td><p>是</p></td>
 </tr>
 <tr class="row-odd"><td><p>km0_km4_app.bin</p></td>
-<td><p>KM0/KM4 applications</p></td>
-<td><p>√</p></td>
+<td><p>KM0/KM4 应用程序</p></td>
+<td><p>是</p></td>
+</tr>
+<tr class="row-even"><td><p>km0_km4_app_mp.bin</p></td>
+<td><p>KM0/KM4 MP应用程序</p></td>
+<td><p>否</p></td>
 </tr>
 </tbody>
 </table>
+</div><div aria-labelledby="tab-3-3-1" class="sphinx-tabs-panel" hidden="true" id="panel-3-3-1" name="3-1" role="tabpanel" tabindex="0"><table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>固件名称</p></th>
+<th class="head"><p>描述</p></th>
+<th class="head"><p>是否必需?</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>km4_boot_all.bin</p></td>
+<td><p>KM4 引导程序</p></td>
+<td><p>是</p></td>
+</tr>
+<tr class="row-odd"><td><p>kr4_km4_app.bin</p></td>
+<td><p>KR4/KM4 应用程序</p></td>
+<td><p>是</p></td>
+</tr>
+<tr class="row-even"><td><p>dsp_all.bin</p></td>
+<td><p>DSP 固件</p></td>
+<td><p>否</p></td>
+</tr>
+<tr class="row-odd"><td><p>kr4_km4_app_mp.bin</p></td>
+<td><p>KR4/KM4 MP应用程序</p></td>
+<td><p>否</p></td>
+</tr>
+</tbody>
+</table>
+</div><div aria-labelledby="tab-3-3-2" class="sphinx-tabs-panel" hidden="true" id="panel-3-3-2" name="3-2" role="tabpanel" tabindex="0"><table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>固件名称</p></th>
+<th class="head"><p>描述</p></th>
+<th class="head"><p>是否必需?</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>km4_boot_all.bin</p></td>
+<td><p>KM4 引导程序</p></td>
+<td><p>是</p></td>
+</tr>
+<tr class="row-odd"><td><p>kr4_km4_app.bin</p></td>
+<td><p>KR4/KM4 应用程序</p></td>
+<td><p>是</p></td>
+</tr>
+<tr class="row-even"><td><p>dsp_all.bin</p></td>
+<td><p>DSP 固件</p></td>
+<td><p>否</p></td>
+</tr>
+<tr class="row-odd"><td><p>kr4_km4_app_mp.bin</p></td>
+<td><p>KR4/KM4 MP应用程序</p></td>
+<td><p>否</p></td>
+</tr>
+</tbody>
+</table>
+</div><div aria-labelledby="tab-3-3-3" class="sphinx-tabs-panel" hidden="true" id="panel-3-3-3" name="3-3" role="tabpanel" tabindex="0"><table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>固件名称</p></th>
+<th class="head"><p>描述</p></th>
+<th class="head"><p>是否必需?</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>km4_boot_all.bin</p></td>
+<td><p>KM4 引导程序</p></td>
+<td><p>是</p></td>
+</tr>
+<tr class="row-odd"><td><p>km0_km4_ca32_app.bin</p></td>
+<td><p>KM0/KM4/CA32 应用程序</p></td>
+<td><p>是</p></td>
+</tr>
+</tbody>
+</table>
+</div></div>
+</div><div aria-labelledby="tab-2-2-1" class="sphinx-tabs-panel" hidden="true" id="panel-2-2-1" name="2-1" role="tabpanel" tabindex="0"><table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>固件名称</p></th>
+<th class="head"><p>描述</p></th>
+<th class="head"><p>是否必需?</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>A: km4_boot_all.bin</p></td>
+<td><p>A 槽：KM4 引导程序</p></td>
+<td><p>是</p></td>
+</tr>
+<tr class="row-odd"><td><p>A: km0_km4_app.bin</p></td>
+<td><p>A 槽：KM0/KM4 应用程序</p></td>
+<td><p>是</p></td>
+</tr>
+<tr class="row-even"><td><p>A: boot.img</p></td>
+<td><p>A 槽：CA32 固件包，包括 BL1、BL2、BL32 和 BL33</p></td>
+<td><p>是</p></td>
+</tr>
+<tr class="row-odd"><td><p>B: km4_boot_all.bin</p></td>
+<td><p>B 槽：KM4 引导程序</p></td>
+<td><p>否</p></td>
+</tr>
+<tr class="row-even"><td><p>B: km0_km4_app.bin</p></td>
+<td><p>B 槽：KM0/KM4 应用程序</p></td>
+<td><p>否</p></td>
+</tr>
+<tr class="row-odd"><td><p>B: boot.img</p></td>
+<td><p>B 槽：CA32 固件包，包括 BL1、BL2、BL32 和 BL33</p></td>
+<td><p>否</p></td>
+</tr>
+<tr class="row-even"><td><p>A: vbmeta.img</p></td>
+<td><p>A 槽：仅用于安全启动的 AP Linux 元数据固件</p></td>
+<td><p>否</p></td>
+</tr>
+<tr class="row-odd"><td><p>B: vbmeta.img</p></td>
+<td><p>B 槽：仅用于安全启动的 AP Linux 元数据固件</p></td>
+<td><p>否</p></td>
+</tr>
+<tr class="row-even"><td><p>A: xxx.dtb*</p></td>
+<td><p>A 槽：AP Linux DTB (设备树块)</p></td>
+<td><p>是</p></td>
+</tr>
+<tr class="row-odd"><td><p>B: xxx.dtb*</p></td>
+<td><p>B槽：用于恢复的AP Linux DTB</p></td>
+<td><p>否</p></td>
+</tr>
+<tr class="row-even"><td><p>A: kernel.img</p></td>
+<td><p>A 槽：AP Linux 内核</p></td>
+<td><p>是</p></td>
+</tr>
+<tr class="row-odd"><td><p>B: kernel.img</p></td>
+<td><p>B 槽：AP Linux 内核</p></td>
+<td><p>否</p></td>
+</tr>
+<tr class="row-even"><td><p>rootfs.img</p></td>
+<td><p>AP Linux 根文件系统二进制文件</p></td>
+<td><p>是</p></td>
+</tr>
+<tr class="row-odd"><td><p>userdata.img</p></td>
+<td><p>AP 用户数据二进制文件</p></td>
+<td><p>是</p></td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<p>不同Ameba SoC对应的固件文件的生成路径可参考 <a class="reference internal" href="../0_gcc_build_environment/1_gcc_build_environment_toprst_cn.html#image-files"><span class="std std-ref">固件文件</span></a>.</p>
 </section>
-<section id="download-steps">
-<h3>Download Steps<a class="headerlink" href="#download-steps" title="Link to this heading"></a></h3>
-<p>The image download steps are illustrated below:</p>
+<section id="id8">
+<h3>下载步骤<a class="headerlink" href="#id8" title="Link to this heading"></a></h3>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-4-4-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-4-4-0" name="4-0" role="tab" tabindex="0">FreeRTOS</button><button aria-controls="panel-4-4-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-4-4-1" name="4-1" role="tab" tabindex="-1">Linux</button></div><div aria-labelledby="tab-4-4-0" class="sphinx-tabs-panel" id="panel-4-4-0" name="4-0" role="tabpanel" tabindex="0"><p>固件下载步骤如下所示：</p>
 <ol class="arabic">
-<li><p>Enter into download mode.</p>
-<p>There are two ways to enter into download mode.</p>
-<ol class="upperalpha simple">
-<li><p>The first and recommended way is to push the hardware <span class="guilabel">Download</span> and <span class="guilabel">CHIP_EN</span> buttons.</p>
+<li><p>进入下载模式。</p>
+<p>有如下三种方式进入下载模式：</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-5-5-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-5-5-0" name="5-0" role="tab" tabindex="0">Realtek公版使用按钮</button><button aria-controls="panel-5-5-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-5-5-1" name="5-1" role="tab" tabindex="-1">客户自定义使用Trap Pin</button><button aria-controls="panel-5-5-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-5-5-2" name="5-2" role="tab" tabindex="-1">使用命令</button></div><div aria-labelledby="tab-5-5-0" class="sphinx-tabs-panel" id="panel-5-5-0" name="5-0" role="tabpanel" tabindex="0"><ol class="loweralpha simple">
+<li><p>按下 <span class="guilabel">DOWNLOAD</span> 按钮并保持按下状态。</p></li>
+<li><p>重新接通设备电源或按下 <span class="guilabel">CHIP_EN</span> 按钮。</p></li>
+<li><p>松开 <span class="guilabel">DOWNLOAD</span> 按钮。</p></li>
+</ol>
+</div><div aria-labelledby="tab-5-5-1" class="sphinx-tabs-panel" hidden="true" id="panel-5-5-1" name="5-1" role="tabpanel" tabindex="0"><div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-6-6-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-6-6-0" name="6-0" role="tab" tabindex="0">RTL8721Dx</button><button aria-controls="panel-6-6-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-6-6-1" name="6-1" role="tab" tabindex="-1">RTL8720E</button><button aria-controls="panel-6-6-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-6-6-2" name="6-2" role="tab" tabindex="-1">RTL8726E</button><button aria-controls="panel-6-6-3" aria-selected="false" class="sphinx-tabs-tab" id="tab-6-6-3" name="6-3" role="tab" tabindex="-1">RTL8730E</button></div><div aria-labelledby="tab-6-6-0" class="sphinx-tabs-panel" id="panel-6-6-0" name="6-0" role="tabpanel" tabindex="0"><table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>引脚名称</p></th>
+<th class="head"><p>符号</p></th>
+<th class="head"><p>有效电平</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>PB5</p></td>
+<td><p>UD_DIS</p></td>
+<td><p>低电平</p></td>
+<td><p>UART 下载禁用，默认内部上拉</p>
+<ul class="simple">
+<li><p>1: 进入正常启动模式</p></li>
+<li><p>0: 进入 UART 下载模式</p></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</div><div aria-labelledby="tab-6-6-1" class="sphinx-tabs-panel" hidden="true" id="panel-6-6-1" name="6-1" role="tabpanel" tabindex="0"><table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>引脚名称</p></th>
+<th class="head"><p>符号</p></th>
+<th class="head"><p>有效电平</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>PA20</p></td>
+<td><p>UD_DIS</p></td>
+<td><p>低电平</p></td>
+<td><p>UART 下载禁用，默认内部上拉</p>
+<ul class="simple">
+<li><p>1: 进入正常启动模式</p></li>
+<li><p>0: 进入 UART 下载模式</p></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</div><div aria-labelledby="tab-6-6-2" class="sphinx-tabs-panel" hidden="true" id="panel-6-6-2" name="6-2" role="tabpanel" tabindex="0"><table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>引脚名称</p></th>
+<th class="head"><p>符号</p></th>
+<th class="head"><p>有效电平</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>PA20</p></td>
+<td><p>UD_DIS</p></td>
+<td><p>低电平</p></td>
+<td><p>UART 下载禁用，默认内部上拉</p>
+<ul class="simple">
+<li><p>1: 进入正常启动模式</p></li>
+<li><p>0: 进入 UART 下载模式</p></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</div><div aria-labelledby="tab-6-6-3" class="sphinx-tabs-panel" hidden="true" id="panel-6-6-3" name="6-3" role="tabpanel" tabindex="0"><table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>引脚名称</p></th>
+<th class="head"><p>符号</p></th>
+<th class="head"><p>有效电平</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>PB24</p></td>
+<td><p>UD_DIS</p></td>
+<td><p>低电平</p></td>
+<td><p>UART 下载禁用，默认内部上拉</p>
+<ul class="simple">
+<li><p>1: 进入正常启动模式</p></li>
+<li><p>0: 进入 UART 下载模式</p></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+</div><div aria-labelledby="tab-5-5-2" class="sphinx-tabs-panel" hidden="true" id="panel-5-5-2" name="5-2" role="tabpanel" tabindex="0"><p>如果AP正常运行，在UART控制台中输入 <code class="docutils literal notranslate"><span class="pre">reboot</span> <span class="pre">uartburn</span></code> 命令。</p>
+</div></div>
+<p>关于Trap Pin更详细的说明，请参考章节 <a class="reference internal" href="../1_pinmux/1_pinmux_toprst_cn.html#trap-pins"><span class="std std-ref">Trap Pins</span></a>。</p>
+<p>现在，设备进入下载模式，准备接收数据。</p>
+</li>
+<li><p>选择设备配置文件。</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-7-7-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-7-7-0" name="7-0" role="tab" tabindex="0">RTL8721Dx</button><button aria-controls="panel-7-7-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-7-7-1" name="7-1" role="tab" tabindex="-1">RTL8720E</button><button aria-controls="panel-7-7-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-7-7-2" name="7-2" role="tab" tabindex="-1">RTL8726E</button><button aria-controls="panel-7-7-3" aria-selected="false" class="sphinx-tabs-tab" id="tab-7-7-3" name="7-3" role="tab" tabindex="-1">RTL8730E</button></div><div aria-labelledby="tab-7-7-0" class="sphinx-tabs-panel" id="panel-7-7-0" name="7-0" role="tabpanel" tabindex="0"><p>打开Image Tool, 点击 <span class="menuselection">File &gt; Open</span> 并选择适当的设备配置文件 <code class="file docutils literal notranslate"><span class="pre">AmebaDplus_FreeRTOS_NOR.rdev</span></code>。</p>
+</div><div aria-labelledby="tab-7-7-1" class="sphinx-tabs-panel" hidden="true" id="panel-7-7-1" name="7-1" role="tabpanel" tabindex="0"><p>打开Image Tool, 点击 <span class="menuselection">File &gt; Open</span> 并选择适当的设备配置文件 <code class="file docutils literal notranslate"><span class="pre">AmebaLite_FreeRTOS_NOR.rdev</span></code>。</p>
+</div><div aria-labelledby="tab-7-7-2" class="sphinx-tabs-panel" hidden="true" id="panel-7-7-2" name="7-2" role="tabpanel" tabindex="0"><p>打开Image Tool, 点击 <span class="menuselection">File &gt; Open</span> 并选择适当的设备配置文件 <code class="file docutils literal notranslate"><span class="pre">AmebaLite_FreeRTOS_NOR.rdev</span></code>。</p>
+</div><div aria-labelledby="tab-7-7-3" class="sphinx-tabs-panel" hidden="true" id="panel-7-7-3" name="7-3" role="tabpanel" tabindex="0"><p>打开Image Tool, 点击 <span class="menuselection">File &gt; Open</span>  并选择适当的设备配置文件。</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>对于安装NOR Flash的IC系列，选择 <code class="file docutils literal notranslate"><span class="pre">AmebaSmart_FreeRTOS_NOR.rdev</span></code>。</p></li>
+<li><p>对于安装NAND Flash的IC系列，选择 <code class="file docutils literal notranslate"><span class="pre">AmebaSmart_FreeRTOS_NAND.rdev</span></code>。</p></li>
+</ul>
+</div></blockquote>
+</div></div>
+</li>
+<li><p>选择对应的串口和传输波特率。 默认波特率为1500000。</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>对于 RTL8721Dx 或 RTL8730E， USB下载接口会忽略波特率。</p>
+</div>
+</li>
+<li><p>点击 <span class="menuselection">Browse</span> 按钮选择要下载的固件。</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>可以根据需要更改Flash layout。
+建议使用 <code class="xref py py-mod docutils literal notranslate"><span class="pre">Device</span> <span class="pre">Profile</span> <span class="pre">Editor</span></code> 而不是 <code class="xref py py-mod docutils literal notranslate"><span class="pre">Image</span> <span class="pre">Tool</span></code> 更改Flash layout，并且SDK中的Flash layout也应相应更改。
+详情请参阅章节 <a class="reference internal" href="#image-tool-modifying-device-profile"><span class="std std-ref">修改设备配置文件</span></a> 。</p>
+</div>
+</li>
+<li><p>点击 <span class="menuselection">DOWNLOAD</span> 按钮开始下载。</p>
+<p>进度条将显示每个固件的下载进度，日志窗口将显示操作状态。</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-8-8-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-8-8-0" name="8-0" role="tab" tabindex="0">RTL8721Dx</button><button aria-controls="panel-8-8-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-8-8-1" name="8-1" role="tab" tabindex="-1">RTL8720E</button><button aria-controls="panel-8-8-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-8-8-2" name="8-2" role="tab" tabindex="-1">RTL8726E</button><button aria-controls="panel-8-8-3" aria-selected="false" class="sphinx-tabs-tab" id="tab-8-8-3" name="8-3" role="tab" tabindex="-1">RTL8730E</button></div><div aria-labelledby="tab-8-8-0" class="sphinx-tabs-panel" id="panel-8-8-0" name="8-0" role="tabpanel" tabindex="0"><figure class="align-center" id="id23">
+<a class="reference internal image-reference" href="../../_images/imgtool_image_download_operation_dplus.png"><img alt="../../_images/imgtool_image_download_operation_dplus.png" src="../../_images/imgtool_image_download_operation_dplus.png" style="width: 1004.6999999999999px; height: 673.1999999999999px;" /></a>
+<figcaption>
+<p><span class="caption-text">RTL8721Dx 固件下载操作</span><a class="headerlink" href="#id23" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</div><div aria-labelledby="tab-8-8-1" class="sphinx-tabs-panel" hidden="true" id="panel-8-8-1" name="8-1" role="tabpanel" tabindex="0"><figure class="align-center" id="id24">
+<a class="reference internal image-reference" href="../../_images/imgtool_image_download_operation_lite.png"><img alt="../../_images/imgtool_image_download_operation_lite.png" src="../../_images/imgtool_image_download_operation_lite.png" style="width: 1001.3px; height: 672.35px;" /></a>
+<figcaption>
+<p><span class="caption-text">RTL8720E 固件下载操作</span><a class="headerlink" href="#id24" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</div><div aria-labelledby="tab-8-8-2" class="sphinx-tabs-panel" hidden="true" id="panel-8-8-2" name="8-2" role="tabpanel" tabindex="0"><figure class="align-center" id="id25">
+<a class="reference internal image-reference" href="../../_images/imgtool_image_download_operation_lite.png"><img alt="../../_images/imgtool_image_download_operation_lite.png" src="../../_images/imgtool_image_download_operation_lite.png" style="width: 1001.3px; height: 672.35px;" /></a>
+<figcaption>
+<p><span class="caption-text">RTL8726E 固件下载操作</span><a class="headerlink" href="#id25" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</div><div aria-labelledby="tab-8-8-3" class="sphinx-tabs-panel" hidden="true" id="panel-8-8-3" name="8-3" role="tabpanel" tabindex="0"><figure class="align-center" id="id26">
+<a class="reference internal image-reference" href="../../_images/imgtool_image_download_operation_smart_freertos.png"><img alt="../../_images/imgtool_image_download_operation_smart_freertos.png" src="../../_images/imgtool_image_download_operation_smart_freertos.png" style="width: 1005.55px; height: 671.5px;" /></a>
+<figcaption>
+<p><span class="caption-text">RTL8730E 固件下载操作</span><a class="headerlink" href="#id26" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</div></div>
+</li>
+</ol>
+</div><div aria-labelledby="tab-4-4-1" class="sphinx-tabs-panel" hidden="true" id="panel-4-4-1" name="4-1" role="tabpanel" tabindex="0"><p>固件下载步骤如下所示：</p>
+<ol class="arabic">
+<li><p>进入下载模式。</p>
 <ol class="loweralpha simple">
-<li><p>Push the <span class="guilabel">Download</span> button and keep it pressed.</p></li>
-<li><p>Re-power on the device or press the <span class="guilabel">CHIP_EN</span> button.</p></li>
-<li><p>Release the <span class="guilabel">Download</span> button.</p></li>
+<li><p>按下 <span class="guilabel">DOWNLOAD</span> 按钮并保持按下状态。</p></li>
+<li><p>重新接通设备电源或按下 <span class="guilabel">CHIP_EN</span> 按钮。</p></li>
+<li><p>松开 <span class="guilabel">DOWNLOAD</span> 按钮。</p></li>
 </ol>
+<p>现在，设备进入下载模式，准备接收数据。</p>
 </li>
-<li><p>The alternate way is to type the <code class="docutils literal notranslate"><span class="pre">reboot</span> <span class="pre">uartburn</span></code> command from the UART console if this command is not removed from SDK and AP is running normally.</p></li>
-</ol>
-<p>Now, the device goes into download mode and is ready to receive data.</p>
+<li><p>选择设备配置文件。</p>
+<p>点击 <span class="menuselection">File &gt; Open</span> 并选择适当的设备配置文件：</p>
+<ul class="simple">
+<li><p>对于 RTL8730ELM-VA7, 选择 <code class="file docutils literal notranslate"><span class="pre">AmebaSmart_Linux_NAND_128MB.rdev</span></code></p></li>
+<li><p>对于 RTL8730ELM-VA8, 选择 <code class="file docutils literal notranslate"><span class="pre">AmebaSmart_Linux_NAND_256MB.rdev</span></code></p></li>
+</ul>
 </li>
-</ol>
-<ol class="arabic" start="3">
-<li><p>Select the corresponding serial port and transmission baud rate. The default baud rate is 1500000.</p>
-</li>
-<li><p>Click the <span class="menuselection">Browse</span> button to select the images to be programmed.</p>
+<li><p>选择对应的串口，USB 下载接口的波特率将被忽略。</p></li>
+<li><p>点击 <span class="menuselection">Browse</span> 按钮选择要下载的固件。</p>
 <div class="admonition note">
 <p class="admonition-title">备注</p>
-<p>Flash layout is allowed to be changed via Image Tool if indeed necessary.
-However, to formally change the Flash layout, it is suggested to use <code class="xref py py-mod docutils literal notranslate"><span class="pre">Device</span> <span class="pre">Profile</span> <span class="pre">Editor</span></code> other than <code class="xref py py-mod docutils literal notranslate"><span class="pre">Image</span> <span class="pre">Tool</span></code> and the Flash layout in SDK shall bechanged accordingly.
-Refer to Section <a class="reference internal" href="#image-tool-modifying-device-profile"><span class="std std-ref">Modifying Device Profile</span></a> for details.</p>
+<p>可以根据需要更改Flash layout。
+建议使用 <code class="xref py py-mod docutils literal notranslate"><span class="pre">Device</span> <span class="pre">Profile</span> <span class="pre">Editor</span></code> 而不是 <code class="xref py py-mod docutils literal notranslate"><span class="pre">Image</span> <span class="pre">Tool</span></code> 更改Flash layout，并且SDK中的Flash layout也应相应更改。
+详情请参阅章节 <a class="reference internal" href="#image-tool-modifying-device-profile"><span class="std std-ref">修改设备配置文件</span></a> 。</p>
 </div>
 </li>
-<li><p>Click the <span class="menuselection">Download</span> button to start.</p>
-<p>The progress bar will show the download progress of each image and the log widget will show the operation status.</p>
+<li><p>点击 <span class="menuselection">DOWNLOAD</span> 按钮开始下载。</p>
+<p>进度条将显示每个固件的下载进度，日志窗口将显示操作状态。</p>
+<figure class="align-center" id="id27">
+<a class="reference internal image-reference" href="../../_images/imgtool_image_download_operation_smart_linux.png"><img alt="../../_images/imgtool_image_download_operation_smart_linux.png" src="../../_images/imgtool_image_download_operation_smart_linux.png" style="width: 1002.15px; height: 653.65px;" /></a>
+<figcaption>
+<p><span class="caption-text">Linux 固件下载操作</span><a class="headerlink" href="#id27" title="Link to this image"></a></p>
+</figcaption>
+</figure>
 </li>
 </ol>
+</div></div>
 </section>
 </section>
-<section id="flash-erase">
-<h2>Flash Erase<a class="headerlink" href="#flash-erase" title="Link to this heading"></a></h2>
-<p>Steps to erase Flash are illustrated below:</p>
+<section id="flash">
+<h2>Flash 擦除<a class="headerlink" href="#flash" title="Link to this heading"></a></h2>
+<p>擦除 Flash 的步骤如下所示：</p>
 <ol class="arabic">
-<li><p>Enter into download mode as introduced above.</p></li>
-<li><p>Open Image Tool, click <span class="menuselection">File &gt; Open</span> and select the proper device profile.</p></li>
-<li><p>Select the corresponding serial port and baud rate.</p>
+<li><p>按上述方式进入下载模式。</p></li>
+<li><p>按上述方式选择相应的设备配置文件。</p></li>
+<li><p>选择对应的串口和波特率。</p>
 <div class="admonition note">
 <p class="admonition-title">备注</p>
-<p>The baud rate will be ignored for USB download interface.</p>
+<p>对于 USB 下载接口，将忽略波特率。</p>
 </div>
 </li>
-<li><p>Input erase start address.</p>
+<li><p>选择对应的 <span class="menuselection">Memory Type</span>。</p></li>
+<li><p>输入擦除起始地址。</p>
 <ul class="simple">
-<li><p>For NOR Flash, the value shall be 4KB aligned.</p></li>
-<li><p>For NAND Flash, the value shall be aligned to block size.</p></li>
+<li><p>对于 NOR Flash，值应为 4KB 对齐。</p></li>
+<li><p>对于 NAND Flash，值应与块大小对齐。</p></li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">备注</p>
-<p>Refer to the datasheet of the corresponding NAND Flash for block size, normally 128KB.</p>
-</div>
-</li>
-<li><p>Input erase size.</p>
-<ul class="simple">
-<li><p>For NOR Flash, the value shall be cast to a multiple of 4KB.</p></li>
-<li><p>For NAND Flash, the value shall be cast to a multiple of block size.</p></li>
-</ul>
-<div class="admonition note">
-<p class="admonition-title">备注</p>
-<p>Refer to the datasheet of the corresponding NAND Flash for block size, normally 128KB.</p>
+<p>请参考相应 NAND Flash 的数据手册获取块大小，通常为 128KB。</p>
 </div>
 </li>
 </ol>
 <ol class="arabic" id="image-tool-flash-erase-step-6" start="6">
-<li><p>Click the <span class="menuselection">Erase</span> button, and erase operation begins.</p>
-<p>You would get the operation result from the log window.</p>
-<figure class="align-center" id="id13">
-<a class="reference internal image-reference" href="../../_images/imgtool_nor_flash_erase_operation.png"><img alt="../../_images/imgtool_nor_flash_erase_operation.png" src="../../_images/imgtool_nor_flash_erase_operation.png" style="width: 849.6px; height: 212.4px;" /></a>
+<li><p>输入擦除大小或擦除结束位置。</p>
+<ul class="simple">
+<li><p>对于 NOR Flash，擦除大小值应为 4KB 的倍数。</p></li>
+<li><p>对于 NAND Flash，擦除大小值应为块大小的倍数。</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>请参考相应 NAND Flash 的数据手册获取块大小，通常为 128KB。</p>
+</div>
+</li>
+<li><p>点击 <span class="menuselection">Erase</span> 按钮，擦除操作开始。</p>
+<p>可以从日志窗口获取操作结果。</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-9-9-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-9-9-0" name="9-0" role="tab" tabindex="0">NOR Flash 擦除</button><button aria-controls="panel-9-9-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-9-9-1" name="9-1" role="tab" tabindex="-1">NAND Flash 擦除</button></div><div aria-labelledby="tab-9-9-0" class="sphinx-tabs-panel" id="panel-9-9-0" name="9-0" role="tabpanel" tabindex="0"><figure class="align-center" id="id28">
+<a class="reference internal image-reference" href="../../_images/imgtool_nor_flash_erase_operation.png"><img alt="../../_images/imgtool_nor_flash_erase_operation.png" src="../../_images/imgtool_nor_flash_erase_operation.png" style="width: 1065.6000000000001px; height: 194.4px;" /></a>
 <figcaption>
-<p><span class="caption-text">NOR Flash erase operation</span><a class="headerlink" href="#id13" title="Link to this image"></a></p>
+<p><span class="caption-text">NOR Flash 擦除操作</span><a class="headerlink" href="#id28" title="Link to this image"></a></p>
 </figcaption>
 </figure>
+</div><div aria-labelledby="tab-9-9-1" class="sphinx-tabs-panel" hidden="true" id="panel-9-9-1" name="9-1" role="tabpanel" tabindex="0"><figure class="align-center" id="id29">
+<a class="reference internal image-reference" href="../../_images/imgtool_nand_flash_erase_operation_smart.png"><img alt="../../_images/imgtool_nand_flash_erase_operation_smart.png" src="../../_images/imgtool_nand_flash_erase_operation_smart.png" style="width: 1054.8px; height: 198.0px;" /></a>
+<figcaption>
+<p><span class="caption-text">NAND Flash 擦除操作</span><a class="headerlink" href="#id29" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</div></div>
 <div class="admonition note">
 <p class="admonition-title">备注</p>
 <ul class="simple">
-<li><p>No need to erase Flash manually before image download since Flash will be automatically erased during image download process.</p></li>
-<li><p>If Flash block protection is detected at <a class="reference internal" href="#image-tool-flash-erase-step-6"><span class="std std-ref">Step 6</span></a>, refer to Section <a class="reference internal" href="#image-tool-flash-block-protection-process"><span class="std std-ref">Flash Block Protection Process</span></a> for details.</p></li>
+<li><p>在固件下载之前，不需要手动擦除 Flash，因为在固件下载过程中将自动擦除 Flash。</p></li>
+<li><p>如果在 <a class="reference internal" href="#image-tool-flash-erase-step-6"><span class="std std-ref">步骤6</span></a> , 检测到 Flash 块保护，请参考第 <a class="reference internal" href="#image-tool-flash-block-protection-process"><span class="std std-ref">Flash 块保护处理流程</span></a> 节获取详细信息。</p></li>
 </ul>
 </div>
 </li>
 </ol>
 </section>
-<section id="flash-register-access">
-<h2>Flash Register Access<a class="headerlink" href="#flash-register-access" title="Link to this heading"></a></h2>
-<p>This function is for internal usage only, used to read/write Flash status/feature registers.</p>
+<section id="id9">
+<h2>Flash 寄存器访问<a class="headerlink" href="#id9" title="Link to this heading"></a></h2>
+<p>此功能仅供内部使用，用于读取/写入 Flash 状态/功能寄存器。此功能自版本v2.2.0起开始支持。</p>
 <div class="admonition caution">
 <p class="admonition-title">小心</p>
-<p>Any Flash register operations, especially write operations, shall refer to the datasheet of the Flash; otherwise, it may cause irreversible damage to the Flash.</p>
+<p>任何 Flash 寄存器操作，特别是写操作，必须参考 Flash 的数据手册，否则可能导致对 Flash 的不可逆损坏。</p>
 </div>
-<p>Common pre-steps to access Flash register are illustrated below:</p>
+<p>访问 Flash 寄存器的常见预步骤如下：</p>
 <ol class="arabic simple">
-<li><p>Make sure the Image Tool is closed.</p></li>
-<li><p>Enter <strong>expert mode</strong> by editing <code class="file docutils literal notranslate"><span class="pre">&lt;ImageTool&gt;/Setting.json</span></code>, and set <cite>ExpertMode</cite> value to none-zero integer (such as 1).</p></li>
-<li><p>Enter into download mode as introduced above.</p></li>
-<li><p>Open Image Tool, click <span class="menuselection">File &gt; Open</span> and select the proper device profile.</p></li>
-<li><p>Select the corresponding serial port and baud rate.</p></li>
+<li><p>确保 Image Tool 已关闭。</p></li>
+<li><p>编辑 <code class="file docutils literal notranslate"><span class="pre">&lt;ImageTool&gt;/Setting.json</span></code> 文件 <cite>ExpertMode</cite> 的值为非零整数（例如 1），进入 <strong>expert mode</strong> 。</p></li>
+<li><p>按上述方式进入下载模式。</p></li>
+<li><p>按上述方式选择相应的设备配置文件。</p></li>
+<li><p>选择对应的串口和波特率。</p></li>
 </ol>
-<section id="nor-flash-register-access">
-<h3>NOR Flash Register Access<a class="headerlink" href="#nor-flash-register-access" title="Link to this heading"></a></h3>
-<p>Besides the common pre-steps, click <span class="menuselection">Advanced</span> and select <span class="menuselection">NOR Flash Register Access</span> item to lunch the NOR Flash Register Access dialog for further operations:</p>
-<figure class="align-center" id="id15">
+<p>NOR 或 NAND 寄存器访问的具体操作如下：</p>
+<blockquote>
+<div><div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-10-10-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-10-10-0" name="10-0" role="tab" tabindex="0">NOR Flash 寄存器访问</button><button aria-controls="panel-10-10-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-10-10-1" name="10-1" role="tab" tabindex="-1">NAND Flash 寄存器访问</button></div><div aria-labelledby="tab-10-10-0" class="sphinx-tabs-panel" id="panel-10-10-0" name="10-0" role="tabpanel" tabindex="0"><p>除了常见预步骤外，点击 <span class="menuselection">Advanced</span> 并选择 <span class="menuselection">NOR Flash Register Access</span> 项，打开 NOR Flash Register 寄存器访问对话框：</p>
+<blockquote>
+<div><figure class="align-center" id="id30">
 <a class="reference internal image-reference" href="../../_images/imgtool_nor_flash_register_access.png"><img alt="../../_images/imgtool_nor_flash_register_access.png" src="../../_images/imgtool_nor_flash_register_access.png" style="width: 507.6px; height: 309.6px;" /></a>
 <figcaption>
-<p><span class="caption-text">NOR Flash Register Access dialog</span><a class="headerlink" href="#id15" title="Link to this image"></a></p>
+<p><span class="caption-text">NOR Flash 寄存器访问对话框</span><a class="headerlink" href="#id30" title="Link to this image"></a></p>
 </figcaption>
 </figure>
-<section id="read-nor-flash-register">
-<span id="id2"></span><h4>Read NOR Flash Register<a class="headerlink" href="#read-nor-flash-register" title="Link to this heading"></a></h4>
-<p>After the common pre-steps, next steps to read NOR Flash register:</p>
+</div></blockquote>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-11-11-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-11-11-0" name="11-0" role="tab" tabindex="0">读 NOR Flash 寄存器</button><button aria-controls="panel-11-11-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-11-11-1" name="11-1" role="tab" tabindex="-1">写 NOR Flash 寄存器</button></div><div aria-labelledby="tab-11-11-0" class="sphinx-tabs-panel" id="panel-11-11-0" name="11-0" role="tabpanel" tabindex="0">
+<span id="read-nor-flash-register"></span><p>在完成常见预步骤后，继续下面的步骤来读取 NOR Flash 寄存器：</p>
 <ol class="arabic">
-<li><p>Select the read command to read specific register.</p></li>
-<li><p>Click the <span class="menuselection">Read</span> button, the register value will show up in the Register Value text box.</p>
-<figure class="align-center" id="id16">
+<li><p>选择 <span class="menuselection">Read Command</span> 来读取特定寄存器。</p></li>
+<li><p>点击 <span class="menuselection">Read</span> 按钮，寄存器值将在寄存器值文本框中显示。</p>
+<figure class="align-center" id="id31">
 <a class="reference internal image-reference" href="../../_images/imgtool_read_nor_flash_register_operation.png"><img alt="../../_images/imgtool_read_nor_flash_register_operation.png" src="../../_images/imgtool_read_nor_flash_register_operation.png" style="width: 507.6px; height: 309.6px;" /></a>
 <figcaption>
-<p><span class="caption-text">Read NOR Flash register operation</span><a class="headerlink" href="#id16" title="Link to this image"></a></p>
+<p><span class="caption-text">读 NOR Flash 寄存器操作</span><a class="headerlink" href="#id31" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 </li>
 </ol>
-</section>
-<section id="write-nor-flash-register">
-<h4>Write NOR Flash Register<a class="headerlink" href="#write-nor-flash-register" title="Link to this heading"></a></h4>
-<p>After the common pre-steps, next steps to write NOR Flash register:</p>
+</div><div aria-labelledby="tab-11-11-1" class="sphinx-tabs-panel" hidden="true" id="panel-11-11-1" name="11-1" role="tabpanel" tabindex="0"><p>在完成常见预步骤后，继续下面的步骤来写 NOR Flash 寄存器：</p>
 <ol class="arabic">
-<li><p>Select the write command to write specific register.</p></li>
-<li><p>Input the register value.</p></li>
-<li><p>Click the <span class="menuselection">Write</span> button.</p></li>
-<li><p>Read back the register value for verification, refer to Section <a class="reference internal" href="#read-nor-flash-register"><span class="std std-ref">Read NOR Flash Register</span></a>.</p>
-<figure class="align-center" id="id17">
+<li><p>选择 <span class="menuselection">Write Command</span> 来写特定寄存器。</p></li>
+<li><p>输入寄存器值。</p></li>
+<li><p>点击 <span class="menuselection">Write</span> 按钮，写入寄存器值。</p></li>
+<li><p>可以回读寄存器值进行验证，请参考 <a class="reference internal" href="#read-nor-flash-register"><span class="std std-ref">读 NOR Flash 寄存器</span></a> 部分。</p>
+<figure class="align-center" id="id32">
 <a class="reference internal image-reference" href="../../_images/imgtool_write_nor_flash_register_operation.png"><img alt="../../_images/imgtool_write_nor_flash_register_operation.png" src="../../_images/imgtool_write_nor_flash_register_operation.png" style="width: 507.6px; height: 309.6px;" /></a>
 <figcaption>
-<p><span class="caption-text">Write NOR Flash register operation</span><a class="headerlink" href="#id17" title="Link to this image"></a></p>
+<p><span class="caption-text">写 NOR Flash 寄存器操作</span><a class="headerlink" href="#id32" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</li>
+</ol>
+</div></div>
+</div><div aria-labelledby="tab-10-10-1" class="sphinx-tabs-panel" hidden="true" id="panel-10-10-1" name="10-1" role="tabpanel" tabindex="0"><p>除了常见预步骤外，点击 <span class="menuselection">Advanced</span> 并选择 <span class="menuselection">NAND Flash Register Access</span> 项，打开 NAND Flash Register 寄存器访问对话框：</p>
+<figure class="align-center" id="id33">
+<a class="reference internal image-reference" href="../../_images/imgtool_nand_flash_register_access_smart.png"><img alt="../../_images/imgtool_nand_flash_register_access_smart.png" src="../../_images/imgtool_nand_flash_register_access_smart.png" style="width: 549.0px; height: 366.3px;" /></a>
+<figcaption>
+<p><span class="caption-text">NAND Flash 寄存器访问对话框</span><a class="headerlink" href="#id33" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-12-12-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-12-12-0" name="12-0" role="tab" tabindex="0">读 NAND Flash 寄存器</button><button aria-controls="panel-12-12-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-12-12-1" name="12-1" role="tab" tabindex="-1">写 NAND Flash 寄存器</button></div><div aria-labelledby="tab-12-12-0" class="sphinx-tabs-panel" id="panel-12-12-0" name="12-0" role="tabpanel" tabindex="0"><p>在完成常见预步骤后，继续下面的步骤来读取 NAND Flash 寄存器：</p>
+<ol class="arabic">
+<li><p>选择 <span class="menuselection">Read Command</span> 来读取特定寄存器。</p></li>
+<li><p>选择 <span class="menuselection">Register Address</span> 。</p></li>
+<li><p>点击 <span class="menuselection">Read</span> 按钮，寄存器值将在寄存器值文本框中显示。</p>
+<figure class="align-center" id="id34">
+<a class="reference internal image-reference" href="../../_images/imgtool_read_nand_flash_register_operation_smart.png"><img alt="../../_images/imgtool_read_nand_flash_register_operation_smart.png" src="../../_images/imgtool_read_nand_flash_register_operation_smart.png" style="width: 549.0px; height: 366.3px;" /></a>
+<figcaption>
+<p><span class="caption-text">读 NAND Flash 寄存器操作</span><a class="headerlink" href="#id34" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</li>
+</ol>
+</div><div aria-labelledby="tab-12-12-1" class="sphinx-tabs-panel" hidden="true" id="panel-12-12-1" name="12-1" role="tabpanel" tabindex="0"><p>在完成常见预步骤后，继续下面的步骤来写 NAND Flash 寄存器：</p>
+<ol class="arabic">
+<li><p>选择 <span class="menuselection">Write Command</span> 来写特定寄存器。</p></li>
+<li><p>选择 <span class="menuselection">Register Address</span> 。</p></li>
+<li><p>输入 <span class="menuselection">Register Value</span> 。</p></li>
+<li><p>点击 <span class="menuselection">Write</span> 按钮，写入寄存器值。</p>
+<figure class="align-center" id="id35">
+<a class="reference internal image-reference" href="../../_images/imgtool_write_nand_flash_register_operation_smart.png"><img alt="../../_images/imgtool_write_nand_flash_register_operation_smart.png" src="../../_images/imgtool_write_nand_flash_register_operation_smart.png" style="width: 549.0px; height: 366.3px;" /></a>
+<figcaption>
+<p><span class="caption-text">写 NAND Flash 寄存器操作</span><a class="headerlink" href="#id35" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</li>
+</ol>
+</div></div>
+</div></div>
+</div></blockquote>
+</section>
+<section id="nand">
+<h2>NAND 坏块管理<a class="headerlink" href="#nand" title="Link to this heading"></a></h2>
+<p>此功能仅供内部使用，用于扫描或标记 NAND 块状态。此功能自版本v2.5.10起开始支持。</p>
+<p>NAND 坏块管理的常见预步骤：</p>
+<ol class="arabic">
+<li><p>确保 Image Tool 已关闭。</p></li>
+<li><p>编辑 <code class="file docutils literal notranslate"><span class="pre">&lt;ImageTool&gt;/Setting.json</span></code> 文件 <cite>ExpertMode</cite> 的值为非零整数（例如 1），进入 <strong>expert mode</strong> 。</p></li>
+<li><p>按上述方式进入下载模式。</p></li>
+<li><p>按上述方式选择相应的设备配置文件。</p></li>
+<li><p>选择对应的串口和波特率。</p></li>
+<li><p>点击 <span class="menuselection">Advanced</span> 并选择 <span class="menuselection">NAND Flash Bad Block Managemen</span> 项，打开 NAND Flash 坏块管理对话框：</p>
+<figure class="align-center" id="id36">
+<a class="reference internal image-reference" href="../../_images/imgtool_nand_flash_bad_block_management_smart.png"><img alt="../../_images/imgtool_nand_flash_bad_block_management_smart.png" src="../../_images/imgtool_nand_flash_bad_block_management_smart.png" style="width: 833.0px; height: 316.5px;" /></a>
+<figcaption>
+<p><span class="caption-text">NAND Flash 坏块管理对话框</span><a class="headerlink" href="#id36" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</li>
+</ol>
+<section id="id10">
+<h3>扫描块状态<a class="headerlink" href="#id10" title="Link to this heading"></a></h3>
+<p>在完成常见预步骤后，继续下面的步骤来扫描块状态：</p>
+<ol class="arabic">
+<li><p>（可选）根据需要勾选 <span class="menuselection">Check Weak Blocks</span> 复选框。</p>
+<ul class="simple">
+<li><p>如果默认未选中，Image Tool 只会扫描每个块的坏标记以获取不良块列表。</p></li>
+<li><p>如果选中，Image Tool 将扫描所有块的状态以及正常块的所有页状态，以获得块和页的详细状态结果，这将比仅扫描坏块花费更多的时间。</p></li>
+</ul>
+</li>
+<li><p>（可选）根据需要勾选 <span class="menuselection">Show Bad/Weak Blocks Only</span> 复选框。</p>
+<ul class="simple">
+<li><p>如果默认未选中，Image Tool 将显示所有块的状态。</p></li>
+<li><p>如果选中，Image Tool 只会显示坏块和弱块的状态。（推荐）</p></li>
+</ul>
+</li>
+<li><p>点击 <span class="menuselection">Scan</span> 按钮。</p>
+<figure class="align-center" id="id37">
+<a class="reference internal image-reference" href="../../_images/imgtool_scan_nand_flash_block_status_operation_smart.png"><img alt="../../_images/imgtool_scan_nand_flash_block_status_operation_smart.png" src="../../_images/imgtool_scan_nand_flash_block_status_operation_smart.png" style="width: 833.0px; height: 316.5px;" /></a>
+<figcaption>
+<p><span class="caption-text">扫描 NAND Flash 块状态操作</span><a class="headerlink" href="#id37" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</li>
+<li><p>扫描结果如下所示：</p>
+<ul>
+<li><p>对于仅坏块扫描结果，坏块会在地址单元中显示为红色背景。</p>
+<blockquote>
+<div><figure class="align-center" id="id38">
+<a class="reference internal image-reference" href="../../_images/imgtool_nand_flash_bad_block_scan_result_smart.png"><img alt="../../_images/imgtool_nand_flash_bad_block_scan_result_smart.png" src="../../_images/imgtool_nand_flash_bad_block_scan_result_smart.png" style="width: 833.0px; height: 316.5px;" /></a>
+<figcaption>
+<p><span class="caption-text">NAND Flash 坏块扫描结果</span><a class="headerlink" href="#id38" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</div></blockquote>
+</li>
+<li><p>对于弱块扫描结果, 块的地址单元和页的单元将用特殊颜色标记：</p>
+<blockquote>
+<div><ul>
+<li><p>对于坏块，块的地址单元将标记为红色，而块的页将不会被标记。</p></li>
+<li><p>对于弱块，块的地址单元将标记为：</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>黄色</strong>: 存在页的位翻转警告</p></li>
+<li><p><strong>橙色</strong>: 存在页的位翻转错误</p></li>
+<li><p><strong>棕色</strong>: 存在严重的页位翻转错误</p></li>
+<li><p><strong>灰色</strong>: 状态扫描导致块的任何页出现其他错误</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>对于弱页，页面的单元将标记为：</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>黄色</strong>: 页面读取导致位翻转警告</p></li>
+<li><p><strong>橙色</strong>: 页面读取导致位翻转错误</p></li>
+<li><p><strong>棕色</strong>: 页面读取导致严重位翻转错误</p></li>
+<li><p><strong>灰色</strong>: 页面读取导致其他错误</p></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+<figure class="align-center" id="id39">
+<a class="reference internal image-reference" href="../../_images/imgtool_nand_flash_weak_block_scan_result_smart.png"><img alt="../../_images/imgtool_nand_flash_weak_block_scan_result_smart.png" src="../../_images/imgtool_nand_flash_weak_block_scan_result_smart.png" style="width: 833.0px; height: 316.5px;" /></a>
+<figcaption>
+<p><span class="caption-text">NAND Flash 弱块扫描结果</span><a class="headerlink" href="#id39" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</div></blockquote>
+</li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="id11">
+<h3>标记块状态<a class="headerlink" href="#id11" title="Link to this heading"></a></h3>
+<p>在执行块扫描操作后，用户可以将指定块的状态标记为良好或损坏。此功能仅用于内部调试目的。</p>
+<div class="admonition caution">
+<p class="admonition-title">小心</p>
+<p>修改块状态时要小心，特别是将坏块标记为良好时。</p>
+</div>
+<ul>
+<li><p>将非坏块的状态标记为坏块：</p>
+<blockquote>
+<div><ol class="arabic">
+<li><p>选择一个或多个非坏块。</p></li>
+<li><p>点击 <span class="menuselection">Mark Bad</span> 按钮并确认操作。</p>
+<figure class="align-center" id="id40">
+<a class="reference internal image-reference" href="../../_images/imgtool_mark_nand_flash_block_status_to_bad_smart.png"><img alt="../../_images/imgtool_mark_nand_flash_block_status_to_bad_smart.png" src="../../_images/imgtool_mark_nand_flash_block_status_to_bad_smart.png" style="width: 999.5999999999999px; height: 379.8px;" /></a>
+<figcaption>
+<p><span class="caption-text">将 NAND Flash 块状态标记为坏块</span><a class="headerlink" href="#id40" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</li>
+</ol>
+</div></blockquote>
+</li>
+<li><p>将坏块的状态标记为良好：</p>
+<blockquote>
+<div><ol class="arabic">
+<li><p>选择一个或多个坏块。</p></li>
+<li><p>点击 <span class="menuselection">Mark Good</span> 按钮并确认操作。</p>
+<figure class="align-center" id="id41">
+<a class="reference internal image-reference" href="../../_images/imgtool_mark_nand_flash_block_status_to_good_smart.png"><img alt="../../_images/imgtool_mark_nand_flash_block_status_to_good_smart.png" src="../../_images/imgtool_mark_nand_flash_block_status_to_good_smart.png" style="width: 999.5999999999999px; height: 379.8px;" /></a>
+<figcaption>
+<p><span class="caption-text">将 NAND Flash 块状态标记为良好</span><a class="headerlink" href="#id41" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</li>
+</ol>
+</div></blockquote>
+</li>
+</ul>
+</section>
+</section>
+<section id="image-tool-flash-block-protection-process">
+<span id="id12"></span><h2>Flash 块保护过程<a class="headerlink" href="#image-tool-flash-block-protection-process" title="Link to this heading"></a></h2>
+<p>在固件下载或flash擦除操作期间，如果在设备上检测到flash块保护配置，Image Tool 将弹出对话框引导用户进行后续操作。</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-13-13-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-13-13-0" name="13-0" role="tab" tabindex="0">NOR Flash</button><button aria-controls="panel-13-13-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-13-13-1" name="13-1" role="tab" tabindex="-1">NAND Flash</button></div><div aria-labelledby="tab-13-13-0" class="sphinx-tabs-panel" id="panel-13-13-0" name="13-0" role="tabpanel" tabindex="0"><p>对于 NOR Flash，只会显示Flash类型和保护寄存器值。</p>
+<figure class="align-center" id="id42">
+<a class="reference internal image-reference" href="../../_images/imgtool_nor.png"><img alt="../../_images/imgtool_nor.png" src="../../_images/imgtool_nor.png" style="width: 746.1px; height: 645.3000000000001px;" /></a>
+<figcaption>
+<p><span class="caption-text">NOR Flash 闪存块保护检测对话框</span><a class="headerlink" href="#id42" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</div><div aria-labelledby="tab-13-13-1" class="sphinx-tabs-panel" hidden="true" id="panel-13-13-1" name="13-1" role="tabpanel" tabindex="0"><p>对于 NAND Flash（仅针对RTL8730E）, 会显示详细的Flash信息。</p>
+<figure class="align-center" id="id43">
+<a class="reference internal image-reference" href="../../_images/imgtool_nand.png"><img alt="../../_images/imgtool_nand.png" src="../../_images/imgtool_nand.png" style="width: 746.1px; height: 645.3000000000001px;" /></a>
+<figcaption>
+<p><span class="caption-text">NAND Flash 闪存块保护检测对话框</span><a class="headerlink" href="#id43" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</div></div>
+<p>系统为用户提供以下后续操作选项：</p>
+<ul class="simple">
+<li><p>尝试在块受保护的情况下进行操作（可能失败）</p></li>
+<li><p>移除保护，并在操作后恢复保护</p></li>
+<li><p>中止操作</p></li>
+</ul>
+<p>此外，用户可以选中 <span class="menuselection">Remember the choice of follow-up action</span> 复选框，以记住进一步操作的选择，并可以取消选中 <span class="menuselection">Option &gt; Remember Flash Protection Process</span> 来清空记住的选择。</p>
+</section>
+<section id="id13">
+<h2>修改设备配置文件<a class="headerlink" href="#id13" title="Link to this heading"></a></h2>
+<p>修改现有设备配置文件的步骤如下：</p>
+<ol class="arabic">
+<li><p>启动设备配置文件编辑器。</p></li>
+<li><p>点击 <span class="guilabel">Open</span> 按钮加载现有设备配置文件。</p></li>
+<li><p>根据需要更改 <code class="docutils literal notranslate"><span class="pre">Flash</span> <span class="pre">Layout</span></code> 配置。</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">Image</span> <span class="pre">Name</span></code>: 由 SDK 编译的固件名称。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Start</span> <span class="pre">Address</span></code>: 十六进制格式的起始地址。对于 NAND Flash，值应与块大小对齐。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">End</span> <span class="pre">Address</span></code>: 十六进制格式的结束地址。对于 NAND Flash，值应与块大小对齐，分区大小应为块大小的倍数，且需分配适当比例的备用块（至少一个）用于坏块管理。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Full</span> <span class="pre">Erase</span></code>: 标识 ImageTool 在固件下载前是否擦除整个分区。</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>选中</strong>: 完全擦除，通常用于文件系统分区；对于 NAND Flash，所有分区将默认选中且不允许取消选中。</p></li>
+<li><p><strong>取消选中</strong>: 不完全擦除，仅擦除固件文件的实际大小，仅适用于 NOR Flash 的非文件系统分区。</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Mandatory</span></code>: 标识 ImageTool 是否默认启用分区进行下载。</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>选中</strong>: 强制分区，默认启用。</p></li>
+<li><p><strong>取消选中</strong>: 可选分区，默认禁用。</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Description</span></code>: 描述文本，用于描述固件，将在鼠标悬停固件时显示此信息。</p></li>
+</ul>
+</li>
+<li><p>点击 <span class="guilabel">Save</span> 按钮以覆盖现有设备配置文件，或点击 <span class="guilabel">Save As</span> 按钮将修改后的设备配置文件保存到新文件中。</p>
+<figure class="align-center" id="id52">
+<a class="reference internal image-reference" href="../../_images/imgtool_edit_an_existing_device_profile.png"><img alt="../../_images/imgtool_edit_an_existing_device_profile.png" src="../../_images/imgtool_edit_an_existing_device_profile.png" style="width: 852.8000000000001px; height: 570.4px;" /></a>
+<figcaption>
+<p><span class="caption-text">编辑现有设备配置文件</span><a class="headerlink" href="#id52" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 </li>
 </ol>
 </section>
-</section>
-</section>
-<section id="flash-block-protection-process">
-<h2>Flash Block Protection Process<a class="headerlink" href="#flash-block-protection-process" title="Link to this heading"></a></h2>
-<p>During image download or Flash Erase operation, if Flash block protection configuration is detected on the device,
-Image Tool will pop up a dialog to guide user for the follow-up actions.</p>
-<p>For NOR Flash, only Flash type and protection register value will be shown.</p>
-<figure class="align-center" id="id28">
-<a class="reference internal image-reference" href="../../_images/imgtool_nor.png"><img alt="../../_images/imgtool_nor.png" src="../../_images/imgtool_nor.png" style="width: 746.1px; height: 645.3000000000001px;" /></a>
-<figcaption>
-<p><span class="caption-text">Flash block protection detected dialog for NOR Flash</span><a class="headerlink" href="#id28" title="Link to this image"></a></p>
-</figcaption>
-</figure>
-<p>The following follow-up actions are provided for users to choose:</p>
-<ul class="simple">
-<li><p>Try operation with block protected (may fail)</p></li>
-<li><p>Remove the protection and restore the protection after operation</p></li>
-<li><p>Abort the operation</p></li>
-</ul>
-<p>Additionally, user can check the <span class="menuselection">Remember the choice of follow-up action</span> check box to remember the choice for further operations, and uncheck <span class="menuselection">Option &gt; Remember Flash Protection Process</span> to forget the remembered choice.</p>
-</section>
-<section id="modifying-device-profile">
-<h2>Modifying Device Profile<a class="headerlink" href="#modifying-device-profile" title="Link to this heading"></a></h2>
-<p>Steps to modify an existing device profile are listed below:</p>
+<section id="id17">
+<h2>固件合成<a class="headerlink" href="#id17" title="Link to this heading"></a></h2>
+<p>该功能支持将多个固件文件根据对应的偏移量合成为一个固件文件。此功能自版本v2.7.10起开始支持。</p>
+<p>固件合成的步骤如下：</p>
 <ol class="arabic">
-<li><p>Launch Device Profile Editor.</p></li>
-<li><p>Click <span class="guilabel">Open</span> button to load an existing device profile.</p></li>
-<li><p>Change the configuration of <code class="docutils literal notranslate"><span class="pre">Flash</span> <span class="pre">Layout</span></code> as required.</p>
-<ul>
-<li><p><code class="docutils literal notranslate"><span class="pre">Image</span> <span class="pre">Name</span></code>: the image name built by SDK</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">Start</span> <span class="pre">Address</span></code>: start address in hex format. For NAND Flash, the value shall be aligned to block size.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">End</span> <span class="pre">Address</span></code>: end address in hex format. For NAND Flash, the value shall be aligned to block size and the partition size shall be a multiple of block size with proper percent of spare blocks (at least one) for bad block management.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">Full</span> <span class="pre">Erase</span></code>: flag indicating ImageTool to erase the entire partition or not before image download</p>
-<blockquote>
-<div><ul class="simple">
-<li><p><strong>Checked</strong>: full erase, normally for file system partitions; for NAND Flash, all the partitions will be checked as default and not allowed to uncheck.</p></li>
-<li><p><strong>Unchecked</strong>: not full erase, only the actual size of the image file will be erased, only for NOR Flash non-file-system partitions.</p></li>
-</ul>
-</div></blockquote>
-</li>
-<li><p><code class="docutils literal notranslate"><span class="pre">Mandatory</span></code>: flag indicating ImageTool to enable the partition to download as default.</p>
-<blockquote>
-<div><ul class="simple">
-<li><p><strong>Checked</strong>: mandatory partition, enabled as default.</p></li>
-<li><p><strong>Unchecked</strong>: optional partition, disabled as default.</p></li>
-</ul>
-</div></blockquote>
-</li>
-<li><p><code class="docutils literal notranslate"><span class="pre">Description</span></code>: the description text to describe the image, this information will be used as mouse hover tips for images.</p></li>
-</ul>
-</li>
-<li><p>Click <span class="guilabel">Save</span> button to overwrite the existing device profile or click <span class="guilabel">Save As</span> button to save the modified device profile to a new file.</p>
-<figure class="align-center" id="id37">
-<a class="reference internal image-reference" href="../../_images/imgtool_edit_an_existing_device_profile.png"><img alt="../../_images/imgtool_edit_an_existing_device_profile.png" src="../../_images/imgtool_edit_an_existing_device_profile.png" style="width: 852.8000000000001px; height: 570.4px;" /></a>
+<li><p>点击 <span class="menuselection">Generate</span> 进入固件合成页面。</p></li>
+<li><p>点击 <span class="menuselection">Browse</span> 依次选择需要合成的固件文件，并保持勾选。</p></li>
+<li><p>在 <span class="menuselection">Offset</span> 栏位填入对应固件的偏移量。</p></li>
+<li><p>点击 <span class="menuselection">Generate</span> 按钮，开始合成。</p></li>
+<li><p>在弹窗内选择合成后固件的保存路径和编辑文件名，点击 <span class="menuselection">保存</span>，合成完毕。</p>
+<figure class="align-center" id="id55">
+<a class="reference internal image-reference" href="../../_images/imgtool_generate_image.png"><img alt="../../_images/imgtool_generate_image.png" src="../../_images/imgtool_generate_image.png" style="width: 684.0px; height: 789.0px;" /></a>
 <figcaption>
-<p><span class="caption-text">Editting an existing device profile</span><a class="headerlink" href="#id37" title="Link to this image"></a></p>
+<p><span class="caption-text">固件合成操作</span><a class="headerlink" href="#id55" title="Link to this image"></a></p>
 </figcaption>
 </figure>
+<figure class="align-center" id="id56">
+<a class="reference internal image-reference" href="../../_images/imgtool_generate_image_save.png"><img alt="../../_images/imgtool_generate_image_save.png" src="../../_images/imgtool_generate_image_save.png" style="width: 604.8000000000001px; height: 386.40000000000003px;" /></a>
+<figcaption>
+<p><span class="caption-text">合成固件路径选择和名称设置</span><a class="headerlink" href="#id56" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</li>
+</ol>
+</section>
+<section id="id18">
+<h2>固件验证<a class="headerlink" href="#id18" title="Link to this heading"></a></h2>
+<p>对于已下载固件的芯片，可以通过该功能验证芯片中的固件和固件文件是否一致。此功能自版本v2.8.3起开始支持。</p>
+<p>固件验证的步骤如下：</p>
+<ol class="arabic">
+<li><p>确保 Image Tool 已关闭。</p></li>
+<li><p>编辑 <code class="file docutils literal notranslate"><span class="pre">&lt;ImageTool&gt;/Setting.json</span></code> 文件 <cite>ExpertMode</cite> 的值为0xbda（或3034），进入 <strong>expert mode</strong> 后，打开Image Tool。</p></li>
+<li><p>按上述方式选择相应的设备配置文件。</p></li>
+<li><p>选择对应的串口和波特率。</p></li>
+<li><p>点击 <span class="menuselection">Browse</span> 选择固件文件。</p></li>
+<li><p>点击 <span class="menuselection">Verify</span> 按钮，开始验证。</p></li>
+<li><p>如果显示 <cite>verified OK</cite> ，则表示芯片中的固件与选择的固件文件内容一致，反之，不一致。</p></li>
+<li><p>该功能会将芯片中的固件内容保存到Image Tool所在文件夹。</p>
+<blockquote>
+<div><figure class="align-center" id="id57">
+<a class="reference internal image-reference" href="../../_images/imgtool_verify_image.png"><img alt="../../_images/imgtool_verify_image.png" src="../../_images/imgtool_verify_image.png" style="width: 1048.5px; height: 748.8000000000001px;" /></a>
+<figcaption>
+<p><span class="caption-text">固件验证操作</span><a class="headerlink" href="#id57" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</div></blockquote>
 </li>
 </ol>
 </section>
@@ -574,6 +2045,78 @@ Image Tool will pop up a dialog to guide user for the follow-up actions.</p>
 
 </footer>
         </div>
+    <!-- 问题反馈按钮和对话框 -->
+    
+        <button id="report-button">Inquire</button>
+    
+    <div id="feedback-dialog" class="feedback-dialog" style="display: none;">
+        <div class="form-group">
+            <label style="font-weight: bold;">Please select the related chapter:</label>
+            <select id="chapter-select">
+                <option value="">Select Chapter</option>
+                <!-- 章节选项将通过JavaScript动态填充 -->
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label style="font-weight: bold;">Post Type</label>
+            <select id="post-type" class="form-control" required>
+                <option value="">-- Select Type --</option>
+                <option value="doc_correction">Document Correction</option>
+                <option value="tech_consult">Technical Consult</option>
+                <option value="tech_summary">Technical Summary</option>
+                <option value="operation_flow">Operation Flow</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label style="font-weight: bold;">Related Paragraph:</label>
+            <textarea
+                id="paragraph-input"
+                placeholder="{{ '你可以先选择有问题的段落或手动输入...' if language == 'zh_CN' else 'You can select text or type directly here...' }}"
+                rows="4"
+            ></textarea>
+        </div>
+
+        <div class="form-group">
+            <label style="font-weight: bold;">Please describe your issue:</label>
+            <textarea
+                id="inquire_input"
+                placeholder="Feature enhancement in progress, please stay tuned...">
+            </textarea>
+        </div>
+
+        <button id="submit-feedback">Submit</button>
+        <button id="cancel-feedback">Cancel</button>
+    </div>
+
+    <style>
+        .form-group {
+            margin: 5px 0;  /* 基础间距 */
+        }
+
+        /* 相邻表单项缩小上方间距 */
+        .form-group + .form-group {
+            margin-top: 10px;
+        }
+
+        /* 段落输入框底部微调 */
+        #paragraph-input, #inquire_input {
+            margin: 2px 0; /* 上下间距 */
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            resize: vertical;
+            min-height: 100px;
+
+            /* 占位符样式 */
+            &::placeholder {
+                color: #999;
+                font-style: italic;
+            }
+        }
+    </style>
 
       </div>
     </section>
@@ -583,8 +2126,8 @@ Image Tool will pop up a dialog to guide user for the follow-up actions.</p>
           SphinxRtdTheme.Navigation.enable(true);
       });
   </script>
- 
-
+     
+    
 
 
 </body>

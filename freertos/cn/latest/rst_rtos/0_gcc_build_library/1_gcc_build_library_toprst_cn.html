@@ -6,13 +6,13 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CMake 架构 &mdash; Ameba IoT Docs  文档</title>
+  <title>Ameba编译系统架构 &mdash; Ameba IoT Docs  文档</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
-      <link rel="stylesheet" type="text/css" href="../../_static/custom_cn.css?v=0d22fac7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=c12c2b39" />
       <link rel="stylesheet" type="text/css" href="../../_static/tabs.css?v=a5c4661c" />
-      <link rel="stylesheet" type="text/css" href="../../_static/_static/custom_cn.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=c12c2b39" />
 
   
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
@@ -26,6 +26,7 @@
         <script src="../../_static/doctools.js?v=9a2dae69"></script>
         <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script src="../../_static/tabs.js?v=3030b3cb"></script>
         <script>let toggleHintShow = 'Click to show';</script>
         <script>let toggleHintHide = 'Click to hide';</script>
@@ -39,13 +40,901 @@
     <link rel="search" title="搜索" href="../../search.html" />
     <link rel="next" title="SDK 示例" href="../0_sdk_example/0_sdk_example_index_cn.html" />
     <link rel="prev" title="GCC 库的编译和使用" href="0_gcc_build_library_index_cn.html" />
-   
-  
-  <script type="text/javascript" src="../../_static/js/selector.js"></script>
+     
 
-  <style>
-    .wy-nav-content {max-width: 1000px;} /* 设置最大宽度 */
-  </style>
+    <!-- NDA文档输入密码的框 -->
+    
+<script>
+// ▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼ 多语言配置 ▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼
+const lang = 'zh';  // 使用 Python 字符串切片
+const i18n = {
+    zh: {
+        title: '访问授权',
+        username: '用户名',
+        password: '密码',
+        confirm: '确认',
+        cancel: '取消',
+        usernameError: '用户名错误',
+        userNotExist: '该用户不存在',
+        passwordError: '密码错误',
+        wrongPassword: '请输入正确的密码',
+        accessDenied: '无访问权限',
+        noPermission: '您无权查看此内容',
+        expiredTitle: '访问已过期',
+        expiredMsg: '您的权限已失效<br>有效期：%s 至 %s',
+        deniedTitle: '⚠️ 无访问权限',
+        contact: '请联系 claire_wang@realsil.com.cn 获取权限'
+    },
+    en: {
+        title: 'Access Required',
+        username: 'Username',
+        password: 'Password',
+        confirm: 'Confirm',
+        cancel: 'Cancel',
+        usernameError: 'Invalid Username',
+        userNotExist: 'User does not exist',
+        passwordError: 'Wrong Password',
+        wrongPassword: 'Please enter correct password',
+        accessDenied: 'Access Denied',
+        noPermission: 'You have no permission to view this content',
+        expiredTitle: 'Authorization Expired',
+        expiredMsg: 'Your access has expired<br>Valid period: %s to %s',
+        deniedTitle: '⚠️ Access Denied',
+        contact: 'Please contact claire_wang@realsil.com.cn for access'
+    }
+};
+// ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲ 多语言配置结束 ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
+</script>
+
+    <!-- 样式模板 -->
+    
+
+<style>
+    .wy-nav-content {
+        max-width: 1100px;
+         
+    }
+    
+    .auth-denied {
+        padding: 20px;
+        background: #f8f9fa;
+        border-radius: 4px;
+        border: 1px solid #dee2e6;
+        text-align: center;
+        color: #721c24;
+        margin-top: 20px;
+    }
+    .auth-denied h3 {
+        margin-bottom: 10px;
+        color: #dc3545;
+    }
+    
+    #report-button {
+        position: fixed;
+        top: 10px;
+        left: 1270px;
+        padding: 1px 15px; /* 调整内边距：1px 为上下，5px 为左右 */
+        height: 30px; /* 设置固定高度 */
+        background-color: #2ecc71;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        z-index: 1000;
+    }
+    #report-button:hover {
+        background-color: #2ecc71;
+    }
+    
+    .feedback-dialog {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        z-index: 1001;
+        width: 600px;
+    }
+    .feedback-dialog textarea {
+        width: 100%;
+        height: 150px;
+        margin-top: 10px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        resize: vertical;
+    }
+    .feedback-dialog button {
+        margin-top: 10px;
+        padding: 8px 16px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    .feedback-dialog button:hover {
+        background-color: #0056b3;
+    }
+
+    
+    
+</style>
+
+
+    <style>
+    /* ====================== 选择器样式 ====================== */
+    /* 选择器容器 */
+    .selector-container {
+        margin: 8px 0;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+    }
+    
+    /* 版本选择器特殊边距 */
+    .version-selector-container {
+        margin-bottom: 8px !important;
+    }
+    
+    /* 选择器标签 */
+    .selector-label {
+        color: white;
+        margin-right: 10px;
+        width: 80px;
+        text-align: right;
+        font-size: 0.9em;
+    }
+    
+    /* 下拉选择框 */
+    .selector-dropdown {
+        width: 120px;
+        border-radius: 2px;
+        padding: 4px 8px;
+        border: 1px solid #405261;
+        background: #2c3e50;
+        color: white;
+        font-size: 0.9em;
+    }
+    
+    /* 下拉选择框悬停效果 */
+    .selector-dropdown:hover {
+        border-color: #3498db;
+        transition: border-color 0.3s;
+    }
+    
+    /* 选择器响应式布局 */
+    @media (max-width: 768px) {
+        .selector-container {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        
+        .selector-label {
+            width: 100%;
+            text-align: left;
+            margin-bottom: 4px;
+        }
+        
+        .selector-dropdown {
+            width: 100%;
+        }
+    }
+</style>
+    <style>
+/* =============== 左上角登录区域  =============== */
+/* ================= 用户面板 ================= */
+.user-panel {
+    padding: 15px;
+    background: #34495e;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.username {
+    color: #fff;
+    font-weight: 500;
+    font-size: 1.1em;
+    text-align: center;
+    margin: 10px 0;
+}
+
+/* ================= 按钮容器 ================= */
+.button-row {
+    display: flex;
+    gap: 8px;
+    width: 100%;
+    margin: 10px 0;
+}
+
+/* 通用按钮样式 */
+.auth-btn, .forum-btn, .official-btn {
+    flex: 1;
+    padding: 8px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: opacity 0.3s;
+    text-align: center;
+    color: white !important;
+}
+
+/* 认证按钮 */
+.auth-btn {
+    background: #3498db;
+}
+
+/* 论坛按钮 */
+.forum-btn {
+    background: #9b59b6; /* 与参考代码的官方按钮同色 */
+}
+
+/* 官网按钮 */
+.official-btn {
+    background: #2ecc71; /* 与参考代码文档按钮同色 */
+}
+/* =============== 左上角登录区域  =============== */
+</style>
+
+    <!-- 注入 TOC 映射和当前页面信息 -->
+    
+
+<!-- TOC 映射和当前文档信息 -->
+<script>
+// 将 Python 字典转换为 JS 对象
+const TOC_TITLE_MAP = {"rst_rtos/0_ameba_product": "\u4ea7\u54c1\u4e2d\u5fc3", "rst_rtos/0_ameba_product/0_ameba_product_center_index_cn": "\u4ea7\u54c1\u4e2d\u5fc3", "rst_rtos/0_ameba_sdk": "Ameba SDK", "rst_rtos/0_ameba_sdk/0_ameba_sdks_index_cn": "Ameba SDK", "rst_rtos/0_ameba_solutions": "\u89e3\u51b3\u65b9\u6848", "rst_rtos/0_ameba_solutions/0_ameba_solutions_index_cn": "\u89e3\u51b3\u65b9\u6848", "rst_rtos/0_at_command": "0.8 AT \u547d\u4ee4\u96c6", "rst_rtos/0_at_command/0_at_command_index_cn": "0.8 AT \u547d\u4ee4\u96c6", "rst_rtos/0_file_system": "0.9 \u865a\u62df\u6587\u4ef6\u7cfb\u7edf", "rst_rtos/0_file_system/0_vfs_index_cn": "0.9 \u865a\u62df\u6587\u4ef6\u7cfb\u7edf", "rst_rtos/0_ftl": "0.a Flash \u8f6c\u6362\u5c42", "rst_rtos/0_ftl/0_ftl_index_cn": "0.a Flash \u8f6c\u6362\u5c42", "rst_rtos/0_gcc_build_environment": "0.1 GCC \u7f16\u8bd1\u73af\u5883", "rst_rtos/0_gcc_build_environment/0_gcc_build_index_cn": "0.1 GCC \u7f16\u8bd1\u73af\u5883", "rst_rtos/0_gcc_build_library": "0.3 GCC \u5e93\u7684\u751f\u6210\u548c\u4f7f\u7528", "rst_rtos/0_gcc_build_library/0_gcc_build_library_index_cn": "0.3 GCC \u5e93\u7684\u751f\u6210\u548c\u4f7f\u7528", "rst_rtos/0_gdb_debug": "0.2 GDB \u8c03\u8bd5", "rst_rtos/0_gdb_debug/0_gdb_debug_index_cn": "0.2 GDB \u8c03\u8bd5", "rst_rtos/0_memory_layout": "0.5 Flash \u548c RAM \u5e03\u5c40", "rst_rtos/0_memory_layout/0_layout_index_cn": "0.5 Flash \u548c RAM \u5e03\u5c40", "rst_rtos/0_sdk_example": "0.4 SDK \u793a\u4f8b", "rst_rtos/0_sdk_example/0_sdk_example_index_cn": "0.4 SDK \u793a\u4f8b", "rst_rtos/0_tools": "0.7 \u5de5\u5177", "rst_rtos/0_tools/0_tools_index_cn": "0.7 \u5de5\u5177", "rst_rtos/0_user_config": "0.6 \u5f00\u53d1\u8005\u914d\u7f6e", "rst_rtos/0_user_config/0_usrcfg_index_cn": "0.6 \u5f00\u53d1\u8005\u914d\u7f6e", "rst_rtos/1_boot_process": "1.1 \u542f\u52a8\u8fc7\u7a0b", "rst_rtos/1_boot_process/0_boot_index_cn": "1.1 \u542f\u52a8\u8fc7\u7a0b", "rst_rtos/1_chipen": "1.4 \u82af\u7247\u4f7f\u80fd", "rst_rtos/1_chipen/0_chipen_index_cn": "1.4 \u82af\u7247\u4f7f\u80fd", "rst_rtos/1_gpio": "1.7 GPIO \u548c\u5f15\u811a\u63a7\u5236", "rst_rtos/1_gpio/0_gpio_index_cn": "1.7 GPIO \u548c\u5f15\u811a\u63a7\u5236", "rst_rtos/1_ipc": "1.5 \u6838\u95f4\u901a\u4fe1", "rst_rtos/1_ipc/0_ipc_index_cn": "1.5 \u6838\u95f4\u901a\u4fe1", "rst_rtos/1_mpu_cache": "1.0 \u5185\u5b58\u4fdd\u62a4\u5355\u5143\u548c\u7f13\u5b58", "rst_rtos/1_mpu_cache/0_mpu_cache_index_cn": "1.0 \u5185\u5b58\u4fdd\u62a4\u5355\u5143\u548c\u7f13\u5b58", "rst_rtos/1_ota": "1.2 \u56fa\u4ef6\u5347\u7ea7\uff08OTA\uff09", "rst_rtos/1_ota/0_ota_index_cn": "1.2 \u56fa\u4ef6\u5347\u7ea7\uff08OTA\uff09", "rst_rtos/1_otpc": "1.3 OTP\u5b58\u50a8\u5668", "rst_rtos/1_otpc/0_otpc_index_cn": "1.3 OTP\u5b58\u50a8\u5668", "rst_rtos/1_pinmux": "1.6 \u5f15\u811a\u590d\u7528", "rst_rtos/1_pinmux/0_pinmux_index_cn": "1.6 \u5f15\u811a\u590d\u7528", "rst_rtos/1_power_save": "1.9 \u4f4e\u529f\u8017\u5f00\u53d1", "rst_rtos/1_power_save/0_ps_index_cn": "1.9 \u4f4e\u529f\u8017\u5f00\u53d1", "rst_rtos/2_whc_fullmac": "2.1 WHC FullMAC", "rst_rtos/2_whc_fullmac/0_fullmac_index_cn": "2.1 WHC FullMAC", "rst_rtos/2_whc_wifi_bridge": "2.0 WHC Bridge", "rst_rtos/2_whc_wifi_bridge/0_wifi_bridge_index_cn": "2.0 WHC Bridge", "rst_rtos/2_wifi_adaptivity_test": "2.4 Wi-Fi Adaptivity \u6d4b\u8bd5\u6307\u5357", "rst_rtos/2_wifi_adaptivity_test/0_wifi_adaptivity_index_cn": "2.4 Wi-Fi Adaptivity \u6d4b\u8bd5\u6307\u5357", "rst_rtos/2_wifi_csi": "2.3 Wi-Fi CSI", "rst_rtos/2_wifi_csi/0_wifi_csi_index_cn": "2.3 Wi-Fi CSI", "rst_rtos/2_wifi_tunnel": "2.2 Wi-Fi R-Mesh", "rst_rtos/2_wifi_tunnel/0_wifi_tunnel_index_cn": "2.2 Wi-Fi R-Mesh", "rst_rtos/3_ap_trustzone": "3.d AP \u5b89\u5168\u670d\u52a1", "rst_rtos/3_ap_trustzone/0_ap_tz_index_cn": "3.d AP \u5b89\u5168\u670d\u52a1", "rst_rtos/3_crypto_engine": "3.9 \u5bf9\u79f0\u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_crypto_engine/0_crypto_engine_index_cn": "3.9 \u5bf9\u79f0\u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_ecdsa_engine": "3.a ECDSA \u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_ecdsa_engine/0_ecdsa_index_cn": "3.a ECDSA \u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_eddsa_engine": "3.b EDDSA \u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_eddsa_engine/0_eddsa_index_cn": "3.b EDDSA \u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_nda_huk_derivation": "3.3 HUK \u751f\u6210 \ud83d\udd12", "rst_rtos/3_nda_huk_derivation/0_huk_derivation_index_nda": "3.3 HUK \u751f\u6210 \ud83d\udd12", "rst_rtos/3_nda_rdp": "3.4 RDP \ud83d\udd12", "rst_rtos/3_nda_rdp/0_rdp_index_nda": "3.4 RDP \ud83d\udd12", "rst_rtos/3_nda_rsip": "3.5 RSIP \ud83d\udd12", "rst_rtos/3_nda_rsip/0_rsip_index_nda": "3.5 RSIP \ud83d\udd12", "rst_rtos/3_nda_secure_boot": "3.6 \u5b89\u5168\u542f\u52a8 \ud83d\udd12", "rst_rtos/3_nda_secure_boot/0_secure_boot_index_nda": "3.6 \u5b89\u5168\u542f\u52a8 \ud83d\udd12", "rst_rtos/3_nda_swd_protection": "3.7 SWD \u4fdd\u62a4 \ud83d\udd12", "rst_rtos/3_nda_swd_protection/0_swd_protection_index_nda": "3.7 SWD \u4fdd\u62a4 \ud83d\udd12", "rst_rtos/3_nda_tfm": "3.8 Trusted Firmware-M (TF-M) \ud83d\udd12", "rst_rtos/3_nda_tfm/0_tfm_index_nda": "3.8 Trusted Firmware-M (TF-M) \ud83d\udd12", "rst_rtos/3_rsa_engine": "3.c RSA \u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_rsa_engine/0_rsa_index_cn": "3.c RSA \u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_security": "3.1 \u5b89\u5168\u4e0e\u52a0\u5bc6", "rst_rtos/3_security/0_security_index_cn": "3.1 \u5b89\u5168\u4e0e\u52a0\u5bc6", "rst_rtos/3_trng": "3.2 \u771f\u968f\u673a\u6570\u53d1\u751f\u5668", "rst_rtos/3_trng/0_trng_index_cn": "3.2 \u771f\u968f\u673a\u6570\u53d1\u751f\u5668", "rst_rtos/4_ai": "4.1 \u4eba\u5de5\u667a\u80fd", "rst_rtos/4_ai/0_ai_index_cn": "4.1 \u4eba\u5de5\u667a\u80fd", "rst_rtos/4_ai_voice": "4.2 \u8bed\u97f3\u8bc6\u522b", "rst_rtos/4_ai_voice/0_ai_voice_index_cn": "4.2 \u8bed\u97f3\u8bc6\u522b", "rst_rtos/4_dsp": "4.4 DSP \u4f7f\u7528\u6307\u5357", "rst_rtos/4_dsp/0_dsp_index_cn": "4.4 DSP \u4f7f\u7528\u6307\u5357", "rst_rtos/4_multimedia": "4.3 \u591a\u5a92\u4f53", "rst_rtos/4_multimedia/0_multimedia_index_cn": "4.3 \u591a\u5a92\u4f53", "rst_rtos/6_mass_production": "6.1 \u6279\u91cf\u751f\u4ea7", "rst_rtos/6_mass_production/0_mp_index_cn": "6.1 \u6279\u91cf\u751f\u4ea7", "rst_rtos/6_mptools": "6.2 \u4ea7\u6d4b\u5de5\u5177", "rst_rtos/6_mptools/0_mptools_index_cn": "6.2 \u4ea7\u6d4b\u5de5\u5177", "rst_rtos/7_usb": "7.1 USB \u4e3b\u673a\u4e0e\u4ece\u673a", "rst_rtos/7_usb/0_usb_index_cn": "7.1 USB \u4e3b\u673a\u4e0e\u4ece\u673a", "rst_rtos/8_adc": "8.4 \u6a21\u6570\u8f6c\u6362\u5668", "rst_rtos/8_adc/0_adc_index_cn": "8.4 \u6a21\u6570\u8f6c\u6362\u5668", "rst_rtos/8_cap_touch": "8.7 Cap-Touch", "rst_rtos/8_cap_touch/0_cap_touch_index_cn": "8.7 Cap-Touch", "rst_rtos/8_dmac": "8.1 DMA \u63a7\u5236\u5668", "rst_rtos/8_dmac/0_dmac_index_cn": "8.1 DMA \u63a7\u5236\u5668", "rst_rtos/8_ir": "8.5 \u7ea2\u5916\u6536\u53d1\u5668", "rst_rtos/8_ir/0_ir_index_cn": "8.5 \u7ea2\u5916\u6536\u53d1\u5668", "rst_rtos/8_key_scan": "8.8 Key-Scan", "rst_rtos/8_key_scan/0_key_scan_index_cn": "8.8 Key-Scan", "rst_rtos/8_lcdc": "8.a LCD \u63a7\u5236\u5668", "rst_rtos/8_lcdc/0_lcdc_index_cn": "8.a LCD \u63a7\u5236\u5668", "rst_rtos/8_ledc": "8.6 LED \u63a7\u5236\u5668", "rst_rtos/8_ledc/0_ledc_index_cn": "8.6 LED \u63a7\u5236\u5668", "rst_rtos/8_psram": "8.2 PSRAM", "rst_rtos/8_psram/0_psram_index_cn": "8.2 PSRAM", "rst_rtos/8_rtc_io": "8.9 RTC-IO", "rst_rtos/8_rtc_io/0_rtc_io_index_cn": "8.9 RTC-IO", "rst_rtos/8_thermal": "8.3 \u6e29\u5ea6\u6d4b\u91cf", "rst_rtos/8_thermal/0_thermal_index_cn": "8.3 \u6e29\u5ea6\u6d4b\u91cf"};
+console.log("TOC_TITLE_MAP:", TOC_TITLE_MAP);
+
+// 获取当前页面的文档名 (例如 'rst_rtos/3_nda_secure_boot/0_secure_boot_index_nda')
+const CURRENT_DOCNAME = 'rst_rtos/0_gcc_build_library/1_gcc_build_library_toprst_cn';
+
+// 动态查找顶级分类函数（定义为全局函数）
+window.findTopLevelChapter = function(docname) {
+    console.log("Attempting to find top-level chapter for:", docname);
+    let bestMatch = "";
+    let bestTitle = "Unknown Chapter";
+
+    // 按路径长度降序排序以确保最长匹配
+    const sortedPaths = Object.keys(TOC_TITLE_MAP).sort((a, b) => b.length - a.length);
+
+    for (const path of sortedPaths) {
+        console.log("Checking path:", path);
+        if (docname === path || docname.startsWith(path + '/')) { // 子页面
+            bestMatch = path;
+            bestTitle = TOC_TITLE_MAP[path];
+            console.log("Matched path:", path, "with title:", bestTitle);
+            break;
+        }
+    }
+
+    // 如果没有找到任何匹配项，则尝试更短的路径
+    if (bestMatch === "") {
+        const pathSegments = docname.split('/');
+        while (pathSegments.length > 1) { // 至少保留根路径
+            const candidate = pathSegments.join('/');
+            console.log("Checking shorter path:", candidate);
+            if (TOC_TITLE_MAP[candidate]) {
+                bestTitle = TOC_TITLE_MAP[candidate];
+                console.log("Matched shorter path:", candidate, "with title:", bestTitle);
+                break;
+            }
+            pathSegments.pop();
+        }
+    }
+
+    console.log("Final top-level chapter:", bestTitle);
+    return bestTitle;
+}
+
+// 初始化时调用
+document.addEventListener('DOMContentLoaded', function() {
+    const topLevelChapter = findTopLevelChapter(CURRENT_DOCNAME);
+    console.log("Top Level Chapter:", topLevelChapter);
+
+    // 将顶级分类插入到DOM中（根据需要）
+    const chapterElement = document.createElement('div');
+    chapterElement.className = 'top-level-chapter';
+    chapterElement.innerHTML = `<strong>Top Level Chapter: </strong>${topLevelChapter}`;
+    document.body.appendChild(chapterElement);
+});
+</script>
+
+    <!-- 问题回报 -->
+    <!-- source/_templates/_layout_issue_report.html -->
+<div id="prompt-box" style="
+    display: none;
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.8);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    z-index: 9999;
+    text-align: center;
+    font-size: 14px;
+"></div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    'use strict'; // 添加严格模式
+
+    // 获取所有DOM元素引用
+    const reportButton = document.getElementById('report-button');
+    const feedbackDialog = document.getElementById('feedback-dialog');
+    const feedbackText = document.getElementById('inquire_input');
+    const submitButton = document.getElementById('submit-feedback');
+    const cancelButton = document.getElementById('cancel-feedback');
+    const promptBox = document.getElementById('prompt-box');
+    const chapterSelect = document.getElementById('chapter-select');
+    const paragraphInput = document.getElementById('paragraph-input');
+    const postTypeSelect = document.getElementById('post-type');
+    console.log('帖子类型(postTypeSelect)DOM元素:', postTypeSelect); // 应输出<select>元素
+
+    // 状态变量
+    let hasUserInput = false; // 跟踪用户是否主动输入
+    let selectedText = '';
+    const language = 'zh-CN'; // 从模板引擎获取语言变量
+
+    // 初始化时设置placeholder
+    paragraphInput.placeholder = language === 'zh_CN' 
+        ? '你可以先选择有问题的段落或手动输入...'
+        : 'You can select text or type directly here...';
+
+    // 获取当前激活的章节
+    function getCurrentChapter() {
+        try {
+            // 通过激活的菜单项获取当前章节
+            const currentLink = document.querySelector('.wy-menu .toctree-l1.current > a');
+            if (currentLink) {
+                return currentLink.textContent.replace('¶', '').trim();
+            }
+
+            // 如果没有找到激活的链接，尝试通过页面标题获取
+            const pageTitle = document.querySelector('h1');
+            if (pageTitle) {
+                return pageTitle.textContent.split('\n')[0].trim();
+            }
+
+            // 如果以上方法都失败，尝试通过URL路径推断章节
+            const pathParts = window.location.pathname.split('/');
+            if (pathParts.length > 2) {
+                return decodeURIComponent(pathParts[pathParts.length - 2]);
+            }
+
+            return null;
+        } catch (error) {
+            console.error('获取当前章节失败:', error);
+            return null;
+        }
+    }
+
+    // 填充章节选择框
+    function populateChapters() {
+        const chapterElements = document.querySelectorAll('.wy-menu .toctree-l1 > a');
+        const chapters = Array.from(chapterElements).map(el => el.textContent.replace('¶', '').trim());
+        const currentChapter = getCurrentChapter();
+
+        console.log('提取全部章节:', chapters);
+        console.log('当前页面章节:', currentChapter);
+
+        if (chapters.length === 0) {
+            console.error('未找到章节链接');
+            return;
+        }
+
+        chapterSelect.innerHTML = '';
+
+        // 添加默认选项
+        const defaultOption = document.createElement('option');
+        defaultOption.value = '';
+        defaultOption.textContent = language === 'zh_CN' ? '-- 请选择章节 --' : '-- Select Chapter --';
+        chapterSelect.appendChild(defaultOption);
+
+        // 添加章节选项
+        chapters.forEach(chapter => {
+            const option = document.createElement('option');
+            option.value = chapter;
+            option.textContent = chapter;
+            if (chapter === currentChapter) {
+                option.selected = true;
+            }
+            chapterSelect.appendChild(option);
+        });
+    }
+
+    // 初始化章节选择框
+    populateChapters();
+
+    // 报告按钮点击事件（处理文本选择）
+    reportButton.addEventListener('click', function() {
+        // 重置所有输入字段，每次重新inquire应该让对话框处于默认状态
+        feedbackText.value = '';          // 清空问题输入框
+        paragraphInput.value = '';        // 清空段落输入框
+        selectedText = '';                // 清除之前选择的文本
+
+        const selection = window.getSelection().toString().trim();
+        if (selection) {
+            paragraphInput.value = selection;
+        } else {
+            // 保持placeholder提示
+            if (!paragraphInput.value.trim()) {
+                paragraphInput.value = '';
+            }
+        }
+        feedbackDialog.style.display = 'block';
+    });
+
+    // 监听输入事件
+    paragraphInput.addEventListener('input', function() {
+        // 标记用户已经输入
+        this.placeholder = '';
+    });
+
+    // 提交按钮点击事件
+    submitButton.addEventListener('click', function() {
+        const userQuestion = feedbackText.value.trim();
+        const selectedChapter = chapterSelect.value;
+        const selectedPostType = postTypeSelect.value;
+        const paragraphContent = paragraphInput.value.trim() || 'null';
+
+        // 在提交事件顶部添加详细日志
+        console.group('=== 提交调试信息 ===');
+        console.log('章节选择值:', chapterSelect.value);
+        console.log('帖子类型postTypeSelect DOM元素:', postTypeSelect);
+        console.log('帖子类型postTypeSelect 选中的选项:', postTypeSelect.options[postTypeSelect.selectedIndex]);
+        console.log('帖子类型postTypeSelect 实际值:', postTypeSelect.value); // 应输出'doc_correction' 对应文档纠错
+          console.groupEnd();
+
+        // 验证输入
+        if (!userQuestion) {
+            alert(language === 'zh_CN' ? '问题描述为空' : 'Issue description cannot be empty');
+            return;
+        }
+        if (!selectedChapter) {
+            alert(language === 'zh_CN' ? '请选择相关章节' : 'Please select a related chapter');
+            return;
+        }
+
+        if (!selectedPostType) {
+            alert(language === 'zh_CN' ? '请选择帖子类型' : 'Please select a post type');
+            return;
+        }
+
+        // 获取用户名
+        const username = localStorage.getItem('username') || 'Anonymous';
+
+        // 构建提交数据
+        const feedbackData = {
+            user: username,
+            chapters: selectedChapter,
+            post_type: selectedPostType,
+            paragraph: paragraphContent,
+            question: userQuestion
+        };
+
+        console.log('完整提交数据:', feedbackData);
+
+        // 发送到后端
+        fetch('http://172.29.57.206:5000/submit', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(feedbackData)
+        })
+        .then(response => {
+            if (!response.ok) throw new Error('Network response was not ok');
+            return response.json();
+        })
+        .then(data => {
+            console.log('提交成功:', data);
+            promptBox.textContent = language === 'zh_CN' ? '问题已成功提交' : 'Issue submitted successfully';
+            promptBox.style.display = 'block';
+            setTimeout(() => promptBox.style.display = 'none', 5000);
+        })
+        .catch(error => {
+            console.error('提交失败:', error);
+            promptBox.textContent = language === 'zh_CN' ? '提交失败，请检查网络连接' : 'Submission failed, check your network';
+            promptBox.style.display = 'block';
+            setTimeout(() => promptBox.style.display = 'none', 5000);
+        });
+
+        // 关闭对话框
+        feedbackDialog.style.display = 'none';
+    });
+
+
+    // 取消按钮点击事件
+    cancelButton.addEventListener('click', function() {
+        feedbackDialog.style.display = 'none';
+    });
+
+    // 初始化检查
+    console.log('问题反馈系统已加载');
+    console.log('当前语言:', language);
+    console.log('检测到章节数量:', chapterSelect.options.length - 1);
+});
+</script>
+
+    <style>
+        /* 隐藏整个搜索栏容器 */
+        .wy-side-nav-search > div[role="search"] {
+            display: none !important;
+        }
+
+        /* 或者更精确地隐藏表单 */
+        form#rtd-search-form {
+            display: none !important;
+        }
+    </style>
+
+    <!-- 引入功能模块 -->
+    
+<script>
+    /* ====================== 嵌入式配置开始 ====================== */
+    const embeddedConfig = {
+        "freertos": {
+            "name": "FreeRTOS",
+            "languages": {
+                "en": ["latest"],
+                "cn": ["latest"]
+            }
+        },
+        "linux": {
+            "name": "Linux",
+            "languages": {
+                "en": ["latest"],
+                "cn": ["latest"]
+            }
+        }
+    };
+    /* ====================== 嵌入式配置结束 ====================== */
+</script>
+    
+<script>
+    // 获取基础URL路径
+    function getBaseURL() {
+        const url = new URL(window.location.href);
+        if (url.protocol === 'file:') {
+            // 本地路径处理
+            const pathParts = url.pathname.split('/').filter(part => part !== '');
+            const index = pathParts.indexOf('build');
+            return `file://${pathParts.slice(0, index + 1).join('/')}/`;
+        } else {
+            // 网络路径处理
+            return `${url.origin}/${url.pathname.split('/').slice(1, 3).join('/')}/`;
+        }
+    }
+
+    // 获取当前URL路径分段
+    function getCurrentSegments() {
+        const url = new URL(window.location.href);
+        let segments = url.pathname.split('/').filter(segment => segment);
+
+        if (url.protocol === 'file:') {
+            // 本地路径处理
+            const index = segments.indexOf('build');
+            segments = segments.slice(index + 1); // 去掉 build 及之前的路径
+        } else {
+            // 网络路径处理
+            segments = segments.slice(3); // 去掉 ameba-iot-docs/
+        }
+
+        return {
+            osKey: segments[0] || 'freertos', // 默认为 freertos
+            language: segments[1] || 'en',   // 默认为 en
+            version: segments[2] || 'latest' // 默认为 latest
+        };
+    }
+</script>
+    
+<script>
+    // 获取OS显示名称列表
+    function getOSNames(data) {
+        return Object.keys(data).map(key => data[key].name);
+    }
+
+    // 获取指定OS的语言列表
+    function getLanguages(data, osKey) {
+        return Object.keys(data[osKey]?.languages || {});
+    }
+
+    // 获取指定OS和语言的版本列表
+    function getVersions(data, osKey, language) {
+        return data[osKey]?.languages?.[language] || ['latest'];
+    }
+
+    // 根据显示名称查找OS键
+    function findOSKey(data, displayName) {
+        return Object.keys(data).find(key => data[key].name === displayName);
+    }
+</script>
+    
+<script>
+    // 验证并修正路径参数
+    function validateSegments(segments) {
+        const currentOSName = embeddedConfig[segments.osKey]?.name;
+
+        // 如果 OS 无效，默认设置为 FreeRTOS
+        if (!currentOSName) {
+            console.warn("Invalid OS key, defaulting to FreeRTOS");
+            segments.osKey = 'freertos';
+        }
+
+        // 如果语言无效，默认设置为 en
+        if (!getLanguages(embeddedConfig, segments.osKey).includes(segments.language)) {
+            console.warn("Invalid language, defaulting to en");
+            segments.language = 'en';
+        }
+
+        return segments;
+    }
+
+    // 生成选择器HTML
+    function generateSelectorsHTML(segments) {
+        return `
+            <div id="custom-selectors" style="padding: 0; background: none; border: none;">
+                <!-- 系统选择器 -->
+                <div class="selector-container">
+                    <label class="selector-label">
+                        ${segments.language === 'cn' ? '系统' : 'OS'}:
+                    </label>
+                    <select id="os-selector" class="selector-dropdown">
+                        ${Object.keys(embeddedConfig).map(key => `
+                            <option value="${key}">${embeddedConfig[key].name}</option>
+                        `).join('')}
+                    </select>
+                </div>
+
+                <!-- 语言选择器 -->
+                <div class="selector-container">
+                    <label class="selector-label">
+                        ${segments.language === 'cn' ? '语言' : 'Language'}:
+                    </label>
+                    <select id="language-selector" class="selector-dropdown">
+                        ${getLanguages(embeddedConfig, segments.osKey).map(lang => `
+                            <option value="${lang}">${lang}</option>
+                        `).join('')}
+                    </select>
+                </div>
+
+                <!-- 版本选择器 -->
+                <div class="selector-container version-selector-container">
+                    <label class="selector-label">
+                        ${segments.language === 'cn' ? '版本' : 'Version'}:
+                    </label>
+                    <select id="version-selector" class="selector-dropdown">
+                        ${getVersions(embeddedConfig, segments.osKey, segments.language).map(ver => `
+                            <option value="${ver}">${ver}</option>
+                        `).join('')}
+                    </select>
+                </div>
+
+                ${generateUserPanelHTML(segments)}
+            </div>`;
+    }
+
+    // 生成用户面板HTML
+    function generateUserPanelHTML(segments) {
+        return `
+            <div class="user-panel">
+                <!-- 用户名显示（登录后可见） -->
+                <div id="user-info" style="display: ${localStorage.getItem('isLoggedIn') ? 'block' : 'none'}">
+                    <span id="username-display" class="username">${localStorage.getItem('username') || ''}</span>
+                </div>
+
+                <!-- 登录注册按钮（未登录时可见） -->
+                <div id="auth-buttons" class="button-row" style="display: ${localStorage.getItem('isLoggedIn') ? 'none' : 'flex'}">
+                    <button class="auth-btn" id="register-button">${segments.language === 'cn' ? '注册' : 'Register'}</button>
+                    <button class="auth-btn" id="login-button">${segments.language === 'cn' ? '登录' : 'Login'}</button>
+                </div>
+
+                <!-- 外链按钮（始终可见） -->
+                <div class="button-row">
+                    <button class="official-btn" onclick="window.open('https://www.realmcu.com/', '_blank')">
+                        ${segments.language === 'cn' ? '官网' : 'Official'}
+                    </button>
+                    <button class="forum-btn" onclick="window.open('http://172.29.57.206:5000/view', '_blank')">
+                        ${segments.language === 'cn' ? '论坛' : 'Forum'}
+                    </button>
+                </div>
+            </div>
+        `;
+    }
+
+    // 设置初始选中值
+    function setInitialValues(segments) {
+        document.getElementById('os-selector').value = segments.osKey;
+        document.getElementById('language-selector').value = segments.language;
+
+        const versionSelector = document.getElementById('version-selector');
+        const availableVersions = getVersions(embeddedConfig, segments.osKey, segments.language);
+        versionSelector.value = availableVersions.includes(segments.version) ? segments.version : availableVersions[0] || 'latest';
+    }
+</script>
+    
+<script>
+    // 绑定事件监听
+    function bindEvents(baseURL, segments) {
+        document.getElementById('os-selector').addEventListener('change', () => {
+            const newOSKey = document.getElementById('os-selector').value;
+            const availableLangs = getLanguages(embeddedConfig, newOSKey);
+            const defaultLang = availableLangs[0] || 'en';
+            const defaultVersion = getVersions(embeddedConfig, newOSKey, defaultLang)[0] || 'latest';
+            redirectTo(`${baseURL}${newOSKey}/${defaultLang}/${defaultVersion}/`);
+        });
+
+        document.getElementById('language-selector').addEventListener('change', () => {
+            const newLang = document.getElementById('language-selector').value;
+            const defaultVersion = getVersions(embeddedConfig, segments.osKey, newLang)[0] || 'latest';
+            redirectTo(`${baseURL}${segments.osKey}/${newLang}/${defaultVersion}/`);
+        });
+
+        document.getElementById('version-selector').addEventListener('change', () => {
+            const newVer = document.getElementById('version-selector').value;
+            redirectTo(`${baseURL}${segments.osKey}/${segments.language}/${newVer}/`);
+        });
+    }
+
+    // 跳转函数
+    function redirectTo(path) {
+        const url = new URL(path, window.location.href);
+        if (url.protocol === 'file:') {
+            url.pathname += 'index.html';
+        }
+        window.location.href = url.href;
+    }
+</script>
+    
+<script>
+    // 初始化认证对话框
+    function initAuthDialogs() {
+        function createAuthDialog(type) {
+            const lang = document.getElementById('language-selector').value === 'cn' ? 'cn' : 'en';
+
+            const dialog = document.createElement('div');
+            dialog.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.5);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 9999;
+            `;
+
+            // 弹窗内容
+            const content = document.createElement('div');
+            content.style.cssText = `
+                background: white;
+                padding: 20px;
+                border-radius: 8px;
+                min-width: 300px;
+            `;
+
+            // 标题
+            const title = document.createElement('h3');
+            title.textContent = type === 'register' 
+                ? (lang === 'cn' ? '注册' : 'Register') 
+                : (lang === 'cn' ? '登录' : 'Login');
+            content.appendChild(title);
+
+            // 用户名输入
+            const usernameLabel = document.createElement('label');
+            usernameLabel.textContent = lang === 'cn' ? '用户名：' : 'Username:';
+            const usernameInput = document.createElement('input');
+            usernameInput.style.cssText = 'width: 100%; margin-bottom: 10px; padding: 5px;';
+            content.appendChild(usernameLabel);
+            content.appendChild(usernameInput);
+
+            // 密码输入
+            const passwordLabel = document.createElement('label');
+            passwordLabel.textContent = lang === 'cn' ? '密码：' : 'Password:';
+            const passwordInput = document.createElement('input');
+            passwordInput.type = 'password';
+            passwordInput.style.cssText = 'width: 100%; margin-bottom: 10px; padding: 5px;';
+            content.appendChild(passwordLabel);
+            content.appendChild(passwordInput);
+
+            // 注册时需要确认密码
+            let confirmPasswordInput;
+            if (type === 'register') {
+                const confirmLabel = document.createElement('label');
+                confirmLabel.textContent = lang === 'cn' ? '确认密码：' : 'Confirm Password:';
+                confirmPasswordInput = document.createElement('input');
+                confirmPasswordInput.type = 'password';
+                confirmPasswordInput.style.cssText = 'width: 100%; margin-bottom: 10px; padding: 5px;';
+                content.appendChild(confirmLabel);
+                content.appendChild(confirmPasswordInput);
+            }
+
+            // 按钮容器
+            const buttonContainer = document.createElement('div');
+            buttonContainer.style.cssText = 'display: flex; gap: 10px; margin-top: 10px;';
+
+            // 确认按钮
+            const confirmBtn = document.createElement('button');
+            confirmBtn.textContent = lang === 'cn' ? '确认' : 'Confirm';
+            confirmBtn.onclick = () => {
+                const username = usernameInput.value.trim();
+                const password = passwordInput.value.trim();
+                const confirmPassword = confirmPasswordInput ? confirmPasswordInput.value.trim() : null;
+
+                // 验证输入
+                if (!username || !password) {
+                    alert(lang === 'cn' ? '用户名和密码不能为空！' : 'Username and password are required!');
+                    return;
+                }
+
+                if (type === 'register' && password !== confirmPassword) {
+                    alert(lang === 'cn' ? '两次输入的密码不一致！' : 'Passwords do not match!');
+                    return;
+                }
+
+                // flask 发送请求
+                fetch('http://172.29.57.206:5000/auth', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        action: type,
+                        username,
+                        password
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert(lang === 'cn' ? '操作成功！' : 'Success!');
+                        // 更新本地存储和UI
+                        localStorage.setItem('isLoggedIn', 'true');
+                        localStorage.setItem('username', username);
+                        // 强制刷新显示状态
+                        document.getElementById('auth-buttons').style.display = 'none';
+                        document.getElementById('user-info').style.display = 'block';
+                        document.getElementById('username-display').textContent = username;
+                        document.body.removeChild(dialog);
+                    } else {
+                        alert(lang === 'cn' ? '失败：' + data.message : 'Failed: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert(lang === 'cn' ? '网络错误' : 'Network error');
+                });
+            };
+
+            // 取消按钮
+            const cancelBtn = document.createElement('button');
+            cancelBtn.textContent = lang === 'cn' ? '取消' : 'Cancel';
+            cancelBtn.onclick = () => document.body.removeChild(dialog);
+
+            buttonContainer.appendChild(confirmBtn);
+            buttonContainer.appendChild(cancelBtn);
+            content.appendChild(buttonContainer);
+            dialog.appendChild(content);
+            document.body.appendChild(dialog);
+        }
+
+        document.getElementById('register-button').addEventListener('click', () => createAuthDialog('register'));
+        document.getElementById('login-button').addEventListener('click', () => createAuthDialog('login'));
+    }
+
+    // 同步登录状态
+    function syncLoginState() {
+        const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+        document.getElementById('auth-buttons').style.display = isLoggedIn ? 'none' : 'flex';
+        document.getElementById('user-info').style.display = isLoggedIn ? 'block' : 'none';
+        if (isLoggedIn) {
+            document.getElementById('username-display').textContent = localStorage.getItem('username') || '';
+        }
+    }
+</script>
 
 </head>
 
@@ -54,6 +943,7 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
+    
 
           
           
@@ -67,71 +957,174 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
+
+    
+    <div id="custom-selectors" style="display: block !important; padding: 0; background: none; border: none;">
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        try {
+            const segments = validateSegments(getCurrentSegments());
+            const baseURL = getBaseURL();
+
+            // 渲染HTML
+            document.getElementById('custom-selectors').innerHTML = generateSelectorsHTML(segments);
+
+            // 设置初始值
+            setInitialValues(segments);
+
+            // 绑定事件
+            bindEvents(baseURL, segments);
+
+            // 初始化认证逻辑
+            initAuthDialogs();
+            syncLoginState();
+        } catch (error) {
+            console.error("Error initializing selectors:", error);
+        }
+    });
+</script>
+
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../0_ameba_product/0_ameba_product_center_index_cn.html">产品中心</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../0_ameba_sdk/0_ameba_sdks_index_cn.html">Ameba SDK</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../0_ameba_solutions/0_ameba_solutions_index_cn.html">解决方案</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../0_gcc_build_environment/0_gcc_build_index_cn.html">0.1 GCC 编译环境</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../0_gdb_debug/0_gdb_debug_index_cn.html">0.2 GDB调试</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_gdb_debug/0_gdb_debug_index_cn.html">0.2 GDB 调试</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="0_gcc_build_library_index_cn.html">0.3 GCC 库的生成和使用</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">CMake 架构</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id1">如何添加自己的CMake</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id2">如何编译库</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id3">如何添加库</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Ameba编译系统架构</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#build-overview">概述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#build-global-compile-config">全局编译配置</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cmakelists-txt">组件编译CMakeLists.txt</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#public">组件public部分</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#private">组件private部分</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">最佳实践</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#build-compile-some-source-and-link-to-image">将我的源文件编译并加入固件</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#build-porting-standalone-code">将有独立维护的代码加入固件</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#build-modify-existing-component-build-config">修改现有组件的编译配置</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id7">调整组件子模块组织关系</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#component">component中新增组件</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#cmake">一些常用的CMake接口和预设常量</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#list">list操作</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#ameba-list-append">ameba_list_append</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ameba-list-append-if">ameba_list_append_if</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ameba-list-append-ifnot">ameba_list_append_ifnot</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ameba-list-append-ifdef">ameba_list_append_ifdef</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#build-cmake-api-add-library">添加库</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#ameba-add-internal-library">ameba_add_internal_library</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ameba-add-exist-library">ameba_add_exist_library</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ameba-add-external-app-library">ameba_add_external_app_library</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#build-cmake-api-add-subdirectory">添加子目录</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#ameba-add-subdirectory">ameba_add_subdirectory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ameba-add-subdirectory-if">ameba_add_subdirectory_if</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ameba-add-subdirectory-ifnot">ameba_add_subdirectory_ifnot</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ameba-add-subdirectory-if-exist">ameba_add_subdirectory_if_exist</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#build-cmake-api-some-const-variable">一些可以直接使用的常量</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id11">通用的常量</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#soc">SOC项目相关的常量</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mcu">MCU项目相关的常量</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id12">组件相关的常量</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id13">常见问题与建议</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#build-check-source-compile-detail">查看某个源文件的详细编译参数</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#undefined-referrence">链接过程中出现 <code class="docutils literal notranslate"><span class="pre">undefined</span> <span class="pre">referrence</span></code> 错误</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#build-some-types-for-logic-process">一些可用于复杂逻辑处理的判断类型</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#build-soc-type">SOC类型</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#build-mcu-type">MCU类型</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#cmakedebug">CMake常见的一些debug方法</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id20">日志</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id21">进阶阅读</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id22">特殊的编译配置</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id23">以源文件为单位设置编译配置</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id24">按源文件类型设置编译选项</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id25">阻止编译警告错误</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id26">配置系统</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#kconfig">Kconfig 介绍</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id27">Kconfig 文件的层级引用</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#conf">conf 文件介绍</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id28">Kconfig 自动检查更新</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../0_sdk_example/0_sdk_example_index_cn.html">0.4 SDK 示例</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../0_memory_layout/0_layout_index_cn.html">0.5 Flash 和 RAM 布局</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../0_user_config/0_usrcfg_index_cn.html">0.6 开发者配置</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../0_tools/0_tools_index_cn.html">0.7 工具</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../0_at_command/0_at_command_index_cn.html">0.8 AT 命令</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_at_command/0_at_command_index_cn.html">0.8 AT 命令集</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../0_file_system/0_vfs_index_cn.html">0.9 虚拟文件系统</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../0_ftl/0_ftl_index_cn.html">0.A Flash 转换层</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_ftl/0_ftl_index_cn.html">0.a Flash 转换层</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../1_mpu_cache/0_mpu_cache_index_cn.html">1.0 内存保护单元和缓存</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../1_boot_process/0_boot_index_cn.html">1.1 启动过程</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../1_ota/0_ota_index_cn.html">1.2 固件在线升级(OTA)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../1_otpc/0_otpc_index.html">1.3 OTP存储器</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../1_chipen/0_chipen_index_cn.html">1.4 CHIP_EN</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_ota/0_ota_index_cn.html">1.2 固件升级（OTA）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_otpc/0_otpc_index_cn.html">1.3 OTP存储器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_chipen/0_chipen_index_cn.html">1.4 芯片使能</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../1_ipc/0_ipc_index_cn.html">1.5 核间通信</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../1_pinmux/0_pinmux_index_cn.html">1.6 PINMUX</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../1_gpio/0_gpio_index_cn.html">1.7 GPIO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_pinmux/0_pinmux_index_cn.html">1.6 引脚复用</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_gpio/0_gpio_index_cn.html">1.7 GPIO 和引脚控制</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../1_power_save/0_ps_index_cn.html">1.9 低功耗开发</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../2_whc_wifi_bridge/0_wifi_bridge_index_cn.html">2.1 WHC Bridge</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../2_whc_fullmac/0_fullmac_index_cn.html">2.2 WHC FullMAC</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../2_wifi_tunnel/0_wifi_tunnel_index_cn.html">2.3 Wi-Fi R-Mesh</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../2_wifi_csi/0_wifi_csi_index_cn.html">2.5 Wi-Fi CSI</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../2_wifi_adaptivity_test/0_wifi_adaptivity_index.html">2.6 Wi-Fi Adaptivity 测试指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_whc_wifi_bridge/0_wifi_bridge_index_cn.html">2.0 WHC Bridge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_whc_fullmac/0_fullmac_index_cn.html">2.1 WHC FullMAC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_wifi_tunnel/0_wifi_tunnel_index_cn.html">2.2 Wi-Fi R-Mesh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_wifi_csi/0_wifi_csi_index_cn.html">2.3 Wi-Fi CSI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_wifi_adaptivity_test/0_wifi_adaptivity_index_cn.html">2.4 Wi-Fi Adaptivity 测试指南</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../3_security/0_security_index_cn.html">3.1 安全与加密</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../3_trng/0_trng_index_cn.html">3.2 真随机数发生器</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../3_nda_huk_derivation/0_huk_derivation_index_nda.html">3.3 HUK Derivation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../3_nda_rdp/0_rdp_index_nda.html">3.4 RDP</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../3_nda_rsip/0_rsip_index_nda.html">3.5 RSIP</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../3_nda_secure_boot/0_secure_boot_index_nda.html">3.6 Secure Boot</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../3_nda_swd_protection/0_swd_protection_index_nda.html">3.7 SWD Protection</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../3_nda_tfm/0_tfm_index_nda.html">3.8 Trusted Firmware-M (TF-M)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_huk_derivation/0_huk_derivation_index_nda.html">3.3 HUK 生成 🔒</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_rdp/0_rdp_index_nda.html">3.4 RDP 🔒</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_rsip/0_rsip_index_nda.html">3.5 RSIP 🔒</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_secure_boot/0_secure_boot_index_nda.html">3.6 安全启动 🔒</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_swd_protection/0_swd_protection_index_nda.html">3.7 SWD 保护 🔒</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_tfm/0_tfm_index_nda.html">3.8 Trusted Firmware-M (TF-M) 🔒</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../3_crypto_engine/0_crypto_engine_index_cn.html">3.9 对称硬件加密引擎</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../3_ecdsa_engine/0_ecdsa_index_cn.html">3.a ECDSA 硬件加密引擎</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../3_eddsa_engine/0_eddsa_index_cn.html">3.b EDDSA 硬件加密引擎</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../3_rsa_engine/0_rsa_index_cn.html">3.c RSA 硬件加密引擎</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_ap_trustzone/0_ap_tz_index_cn.html">3.d AP 安全服务</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../4_ai/0_ai_index_cn.html">4.1 人工智能</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../4_ai_voice/0_ai_voice_index_cn.html">4.2 语音识别</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../4_multimedia/0_multimedia_index_cn.html">4.3 多媒体</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../4_dsp/0_dsp_index_cn.html">4.4 DSP 使用指南</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../6_mass_production/0_mp_index_cn.html">6.1 量产指导</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../6_mp_image/0_mp_image_index_cn.html">6.2 MP 固件</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../6_mptools/0_mptools_index_cn.html">6.3 产测工具</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../6_mass_production/0_mp_index_cn.html">6.1 批量生产</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../6_mptools/0_mptools_index_cn.html">6.2 产测工具</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../7_usb/0_usb_index_cn.html">7.1 USB 主机与从机</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../8_dmac/0_dmac_index_cn.html">8.1 DMA 控制器</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../8_psram/0_psram_index_cn.html">8.2 PSRAM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../8_thermal/0_thermal_index_cn.html">8.3 温度测量</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../8_adc/0_adc_index_cn.html">8.4 模数转换器</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../8_ir/0_ir_index_cn.html">8.5 红外收发器</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../8_ledc/0_ledc_index_cn.html">8.6 LED控制器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_ledc/0_ledc_index_cn.html">8.6 LED 控制器</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../8_cap_touch/0_cap_touch_index_cn.html">8.7 Cap-Touch</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../8_key_scan/0_key_scan_index_cn.html">8.8 Key-Scan</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../8_rtc_io/0_rtc_io_index_cn.html">8.9 RTC-IO</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../8_lcdc/0_lcdc_index_cn.html">8.A LCD控制器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_lcdc/0_lcdc_index_cn.html">8.a LCD 控制器</a></li>
 </ul>
 
         </div>
@@ -144,13 +1137,13 @@
       </nav>
 
       <div class="wy-nav-content">
-
+    
         <div class="rst-content">
           <div role="navigation" aria-label="页面导航">
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="0_gcc_build_library_index_cn.html">GCC 库的编译和使用</a></li>
-      <li class="breadcrumb-item active">CMake 架构</li>
+      <li class="breadcrumb-item active">Ameba编译系统架构</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -196,57 +1189,1200 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 });
-</script><section id="cmake">
-<h1>CMake 架构<a class="headerlink" href="#cmake" title="Link to this heading"></a></h1>
-<div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-0-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-0-0-0" name="0-0" role="tab" tabindex="0">RTL8721Dx</button><button aria-controls="panel-0-0-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-1" name="0-1" role="tab" tabindex="-1">RTL8720E</button><button aria-controls="panel-0-0-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-2" name="0-2" role="tab" tabindex="-1">RTL8726E</button><button aria-controls="panel-0-0-3" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-3" name="0-3" role="tab" tabindex="-1">RTL8730E</button></div><div aria-labelledby="tab-0-0-0" class="sphinx-tabs-panel" id="panel-0-0-0" name="0-0" role="tabpanel" tabindex="0"><p><strong>KM4 cmake</strong></p>
-<p><strong>KM0 cmake</strong></p>
-</div><div aria-labelledby="tab-0-0-1" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-1" name="0-1" role="tabpanel" tabindex="0"><p><strong>KM4 cmake</strong></p>
-<p><strong>KR4 cmake</strong></p>
-</div><div aria-labelledby="tab-0-0-2" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-2" name="0-2" role="tabpanel" tabindex="0"><p><strong>KM4 cmake</strong></p>
-<p><strong>KR4 cmake</strong></p>
-</div><div aria-labelledby="tab-0-0-3" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-3" name="0-3" role="tabpanel" tabindex="0"><p><strong>CA32 cmake</strong></p>
-<p><strong>KM4 cmake</strong></p>
-<p><strong>KM0 cmake</strong></p>
-</div></div>
-</section>
-<section id="id1">
-<h1>如何添加自己的CMake<a class="headerlink" href="#id1" title="Link to this heading"></a></h1>
-<p><strong>TBD</strong></p>
-<div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-1-1-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-1-1-0" name="1-0" role="tab" tabindex="0">RTL8721Dx</button><button aria-controls="panel-1-1-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-1-1-1" name="1-1" role="tab" tabindex="-1">RTL8720E</button><button aria-controls="panel-1-1-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-1-1-2" name="1-2" role="tab" tabindex="-1">RTL8726E</button><button aria-controls="panel-1-1-3" aria-selected="false" class="sphinx-tabs-tab" id="tab-1-1-3" name="1-3" role="tab" tabindex="-1">RTL8730E</button></div><div aria-labelledby="tab-1-1-0" class="sphinx-tabs-panel" id="panel-1-1-0" name="1-0" role="tabpanel" tabindex="0"></div><div aria-labelledby="tab-1-1-1" class="sphinx-tabs-panel" hidden="true" id="panel-1-1-1" name="1-1" role="tabpanel" tabindex="0"></div><div aria-labelledby="tab-1-1-2" class="sphinx-tabs-panel" hidden="true" id="panel-1-1-2" name="1-2" role="tabpanel" tabindex="0"></div><div aria-labelledby="tab-1-1-3" class="sphinx-tabs-panel" hidden="true" id="panel-1-1-3" name="1-3" role="tabpanel" tabindex="0"></div></div>
-</section>
-<section id="id2">
-<h1>如何编译库<a class="headerlink" href="#id2" title="Link to this heading"></a></h1>
-<div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-2-2-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-2-2-0" name="2-0" role="tab" tabindex="0">RTL8721Dx</button><button aria-controls="panel-2-2-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-2-2-1" name="2-1" role="tab" tabindex="-1">RTL8720E</button><button aria-controls="panel-2-2-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-2-2-2" name="2-2" role="tab" tabindex="-1">RTL8726E</button><button aria-controls="panel-2-2-3" aria-selected="false" class="sphinx-tabs-tab" id="tab-2-2-3" name="2-3" role="tab" tabindex="-1">RTL8730E</button></div><div aria-labelledby="tab-2-2-0" class="sphinx-tabs-panel" id="panel-2-2-0" name="2-0" role="tabpanel" tabindex="0"><p>The Makefile in <code class="docutils literal notranslate"><span class="pre">{SDK}\amebadplus_gcc_project\project_km4\asdk\make\project\library</span></code> is an example to show how to
-build user library. As shown below, <code class="docutils literal notranslate"><span class="pre">lib_user.a</span></code> will be generated in
-<code class="docutils literal notranslate"><span class="pre">{SDK}\amebadplus_gcc_project\project_km4\asdk\lib\application</span></code>.</p>
-</div><div aria-labelledby="tab-2-2-1" class="sphinx-tabs-panel" hidden="true" id="panel-2-2-1" name="2-1" role="tabpanel" tabindex="0"><p>The makefile in <code class="docutils literal notranslate"><span class="pre">{SDK}\amebalite_gcc_project\project_km4\asdk\make\project\library</span></code> is an example to show how to
-build user library. As shown below, <code class="docutils literal notranslate"><span class="pre">lib_user.a</span></code> will be generated in
-<code class="docutils literal notranslate"><span class="pre">{SDK}\amebalite_gcc_project\project_km4\asdk\lib\application</span></code>.</p>
-</div><div aria-labelledby="tab-2-2-2" class="sphinx-tabs-panel" hidden="true" id="panel-2-2-2" name="2-2" role="tabpanel" tabindex="0"><p>The makefile in <code class="docutils literal notranslate"><span class="pre">{SDK}\amebalite_gcc_project\project_km4\asdk\make\project\library</span></code> is an example to show how to
-build user library. As shown below, <code class="docutils literal notranslate"><span class="pre">lib_user.a</span></code> will be generated in
-<code class="docutils literal notranslate"><span class="pre">{SDK}\amebalite_gcc_project\project_km4\asdk\lib\application</span></code>.</p>
-</div><div aria-labelledby="tab-2-2-3" class="sphinx-tabs-panel" hidden="true" id="panel-2-2-3" name="2-3" role="tabpanel" tabindex="0"><p>The Makefile in path <code class="docutils literal notranslate"><span class="pre">{SDK}\amebasmart_gcc_project\project_hp\asdk\make\project\library</span></code> is an example to show how to
-build user library. As shown below, <code class="docutils literal notranslate"><span class="pre">lib_user.a</span></code> will be generated in
-<code class="docutils literal notranslate"><span class="pre">{SDK}\amebasmart_gcc_project\project_hp\asdk\lib\application</span></code>.</p>
-</div></div>
-<figure class="align-center">
-<a class="reference internal image-reference" href="../../_images/build_lib.png"><img alt="../../_images/build_lib.png" src="../../_images/build_lib.png" style="width: 517.5px; height: 767.7px;" /></a>
+</script><section id="ameba">
+<h1>Ameba编译系统架构<a class="headerlink" href="#ameba" title="Link to this heading"></a></h1>
+<section id="build-overview">
+<span id="id1"></span><h2>概述<a class="headerlink" href="#build-overview" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>SOC项目：每个SOC项目根目录都包含一个 <code class="file docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> 作为CMake编译入口，其下所有MCU项目都是在这里添加的</p></li>
+<li><p>MCU项目：每个MCU项目使用统一的编译链和配置参数，其下又包括了一个或多个固件的编译</p></li>
+<li><p>固件：主要包括 <code class="file docutils literal notranslate"><span class="pre">image1</span></code>，<code class="file docutils literal notranslate"><span class="pre">image2</span></code>，<code class="file docutils literal notranslate"><span class="pre">image3</span></code>，三者区别如下：</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">image1</span></code>： 定义了MCU系统中引导加载程序(bootloader)和系统闪存布局的通用基础架构，并提供了一个安全引导加载程序，支持便捷的软件升级</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">image2</span></code>： 是该SOC的主应用固件，通常包含实时操作系统(FreeRTOS)和应用程序任务。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">image3</span></code>： 具有高度可配置性，允许用户仅包含所需的安全服务与功能。它受到读保护(RDP)的保护，将在安全引导加载程序中解密，并被加载至由TrustZone技术保护的安全静态随机存储器(SRAM)中。</p></li>
+</ul>
+</li>
+<li><p>组件：组件是在和SOC项目同级的 <code class="file docutils literal notranslate"><span class="pre">component</span></code> 目录下，按照不同的功能划分为不同的子目录，每个组件都有相应的 <code class="file docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> 定义其编译生成及被链接的规则。</p></li>
+<li><p>固件编译：固件的编译 <code class="file docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> 在各自MCU项目下 <code class="file docutils literal notranslate"><span class="pre">[asdk|vsdk]/make/[image1|image2|image3]/CMakeLists.txt</span></code> 中定义并根据需要添加 <code class="file docutils literal notranslate"><span class="pre">component</span></code> 下相应的组件</p></li>
+</ul>
+<p>上述内容的基本结构及调用关系如下图所示：</p>
+<figure class="align-center" id="build-cmake-project-structure">
+<a class="reference internal image-reference" href="../../_images/build_cmake_project_structure.svg"><img alt="../../_images/build_cmake_project_structure.svg" height="951" src="../../_images/build_cmake_project_structure.svg" width="1346" /></a>
 </figure>
+<div class="admonition attention">
+<p class="admonition-title">注意</p>
+<p>在上图中, <code class="file docutils literal notranslate"><span class="pre">image1</span></code>，<code class="file docutils literal notranslate"><span class="pre">image2</span></code>，<code class="file docutils literal notranslate"><span class="pre">image3</span></code> 中 <code class="file docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> 中可以为 <strong>各自固件添加相应的组件，他们是相互独立互不干扰的
+添加的组件最终也只会链接进入对应的固件</strong></p>
+</div>
 </section>
-<section id="id3">
-<h1>如何添加库<a class="headerlink" href="#id3" title="Link to this heading"></a></h1>
-<div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-3-3-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-3-3-0" name="3-0" role="tab" tabindex="0">RTL8721Dx</button><button aria-controls="panel-3-3-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-3-3-1" name="3-1" role="tab" tabindex="-1">RTL8720E</button><button aria-controls="panel-3-3-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-3-3-2" name="3-2" role="tab" tabindex="-1">RTL8726E</button><button aria-controls="panel-3-3-3" aria-selected="false" class="sphinx-tabs-tab" id="tab-3-3-3" name="3-3" role="tab" tabindex="-1">RTL8730E</button></div><div aria-labelledby="tab-3-3-0" class="sphinx-tabs-panel" id="panel-3-3-0" name="3-0" role="tabpanel" tabindex="0"><p>Open the file <code class="docutils literal notranslate"><span class="pre">{SDK}\amebadplus_gcc_project\project_km4\asdk\Makefile</span></code>, and append <code class="docutils literal notranslate"><span class="pre">lib_user.a</span></code> to <code class="docutils literal notranslate"><span class="pre">LINK_APP_LIB</span></code>.</p>
-</div><div aria-labelledby="tab-3-3-1" class="sphinx-tabs-panel" hidden="true" id="panel-3-3-1" name="3-1" role="tabpanel" tabindex="0"><p>Open the file <code class="docutils literal notranslate"><span class="pre">{SDK}\amebalite_gcc_project\project_km4\asdk\Makefile</span></code>, and append <code class="docutils literal notranslate"><span class="pre">lib_user.a</span></code> into <code class="docutils literal notranslate"><span class="pre">LINK_APP_LIB</span></code>.</p>
-</div><div aria-labelledby="tab-3-3-2" class="sphinx-tabs-panel" hidden="true" id="panel-3-3-2" name="3-2" role="tabpanel" tabindex="0"><p>Open the file <code class="docutils literal notranslate"><span class="pre">{SDK}\amebalite_gcc_project\project_km4\asdk\Makefile</span></code>, and append <code class="docutils literal notranslate"><span class="pre">lib_user.a</span></code> into <code class="docutils literal notranslate"><span class="pre">LINK_APP_LIB</span></code>.</p>
-</div><div aria-labelledby="tab-3-3-3" class="sphinx-tabs-panel" hidden="true" id="panel-3-3-3" name="3-3" role="tabpanel" tabindex="0"><p>Open the file <code class="docutils literal notranslate"><span class="pre">{SDK}\amebasmart_gcc_project\project_hp\asdk\Makefile</span></code>, and append <code class="docutils literal notranslate"><span class="pre">lib_user.a</span></code> into <code class="docutils literal notranslate"><span class="pre">LINK_APP_LIB</span></code>.</p>
-</div></div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>LINK_APP_LIB += $(ROOTDIR)/lib/application/lib_user.a
+<section id="build-global-compile-config">
+<span id="id2"></span><h2>全局编译配置<a class="headerlink" href="#build-global-compile-config" title="Link to this heading"></a></h2>
+<p>编译配置主要包括：</p>
+<ul class="simple">
+<li><p><strong>头文件路径</strong> (include directories)</p></li>
+<li><p><strong>编译选项</strong> (compile options)</p></li>
+<li><p><strong>预定义</strong> (definitions)</p></li>
+<li><p><strong>链接选项</strong> (link options)</p></li>
+<li><p><strong>链接库</strong> (link libraries)</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<ul class="simple">
+<li><p><strong>头文件路径，编译选项，预定义</strong> 用于组件编译</p></li>
+<li><p><strong>链接选项</strong> 和 <strong>链接库</strong> 用于固件链接</p></li>
+</ul>
+</div>
+<p><strong>全局编译配置</strong> 的作用域为各MCU项目，如 <code class="docutils literal notranslate"><span class="pre">RTL8721Dx</span></code> 中 <code class="docutils literal notranslate"><span class="pre">km0</span></code> 和 <code class="docutils literal notranslate"><span class="pre">km4</span></code> 各有一套全局配置, <code class="docutils literal notranslate"><span class="pre">RTL8730E</span></code> 中 <code class="docutils literal notranslate"><span class="pre">km0</span></code>, <code class="docutils literal notranslate"><span class="pre">km4</span></code> 及 <code class="docutils literal notranslate"><span class="pre">ca32</span></code> 各有一套全局配置，他们之间相互隔离, <strong>同一MCU项目下的组件编译时使用相同的全局编译配置</strong></p>
+</section>
+<section id="cmakelists-txt">
+<span id="build-component-cmake-structure"></span><h2>组件编译CMakeLists.txt<a class="headerlink" href="#cmakelists-txt" title="Link to this heading"></a></h2>
+<p>由 <a class="reference internal" href="#build-component-cmake-public-part"><span class="std std-ref">组件public部分</span></a> 和 <a class="reference internal" href="#build-component-cmake-private-part"><span class="std std-ref">组件private部分</span></a> 两部分组成，前者描述了该组件向 <a class="reference internal" href="#build-global-compile-config"><span class="std std-ref">全局编译配置</span></a> 中追加的内容，后者描述了该 <strong>组件库文件</strong> 的生成配置</p>
+<section id="public">
+<span id="build-component-cmake-public-part"></span><h3>组件public部分<a class="headerlink" href="#public" title="Link to this heading"></a></h3>
+<p>该部分用于向 <a class="reference internal" href="#build-global-compile-config"><span class="std std-ref">全局编译配置</span></a> 中 <strong>追加</strong> 如下编译配置：</p>
+<ul class="simple">
+<li><p><strong>头文件路径</strong>: 如果其他组件要使用当前组件的头文件，则可以将当前组件头文件目录加入全局</p></li>
+<li><p><strong>预定义</strong>: 如果当前组件被添加编译时，需要同步在全局加入某些预定义(使用场景较少)</p></li>
+<li><p><strong>链接库</strong>: 如果 <strong>当前组件给下游客户时不提供源码，只提供库文件</strong>，则需要将库文件路径加入全局以便链接进入固件，库文件的编译可以在 <a class="reference internal" href="#build-component-cmake-private-part"><span class="std std-ref">组件private部分</span></a> 中调用 <a class="reference internal" href="#build-ameba-add-external-app-library"><span class="std std-ref">ameba_add_external_app_library</span></a> 完成</p></li>
+</ul>
+<p>上述三类配置在如下代码块中分别由 <code class="docutils literal notranslate"><span class="pre">public_includes</span></code>，<code class="docutils literal notranslate"><span class="pre">public_definitions</span></code>，<code class="docutils literal notranslate"><span class="pre">public_libraries</span></code> 三个变量设置，你可以在高亮代码行区域内对其进行更新.
+可以参考模板 <code class="file docutils literal notranslate"><span class="pre">cmake/CMakeLists-template.cmake</span></code> 中的一些用法，一些相关API可参考 <a class="reference internal" href="#build-cmake-api-list"><span class="std std-ref">list操作</span></a>，具体例子可以参考 <a class="reference internal" href="#build-modify-existing-component-build-config"><span class="std std-ref">修改现有组件的编译配置</span></a></p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c">##########################################################################################</span>
+<span class="linenos"> 2</span><span class="c">## * This part defines public part of the component</span>
+<span class="linenos"> 3</span><span class="c">## * Public part will be used as global build configures for all component</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span><span class="nb">set</span><span class="p">(</span><span class="s">public_includes</span><span class="p">)</span><span class="w">                </span><span class="c">#public include directories, NOTE: relative path is OK</span>
+<span class="linenos"> 6</span><span class="nb">set</span><span class="p">(</span><span class="s">public_definitions</span><span class="p">)</span><span class="w">             </span><span class="c">#public definitions</span>
+<span class="linenos"> 7</span><span class="nb">set</span><span class="p">(</span><span class="s">public_libraries</span><span class="p">)</span><span class="w">               </span><span class="c">#public libraries(files), NOTE: linked with whole-archive options</span>
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span><span class="c">#------------------------------------------------------------------#</span>
+<span class="linenos">10</span><span class="c"># Component public part, user config begin(DO NOT remove this line)</span>
+<span class="hll"><span class="linenos">11</span>
+</span><span class="hll"><span class="linenos">12</span><span class="c"># set public_includes, public_definitions, public_libraries in this section</span>
+</span><span class="hll"><span class="linenos">13</span>
+</span><span class="linenos">14</span><span class="c"># Component public part, user config end(DO NOT remove this line)</span>
+<span class="linenos">15</span><span class="c">#------------------------------------------------------------------#</span>
+<span class="linenos">16</span>
+<span class="linenos">17</span><span class="c">#WARNING: Fixed section, DO NOT change!</span>
+<span class="linenos">18</span><span class="nb">ameba_global_include</span><span class="p">(</span><span class="o">${</span><span class="nv">public_includes</span><span class="o">}</span><span class="p">)</span>
+<span class="linenos">19</span><span class="nb">ameba_global_define</span><span class="p">(</span><span class="o">${</span><span class="nv">public_defines</span><span class="o">}</span><span class="p">)</span>
+<span class="linenos">20</span><span class="nb">ameba_global_library</span><span class="p">(</span><span class="o">${</span><span class="nv">public_libraries</span><span class="o">}</span><span class="p">)</span><span class="w"> </span><span class="c">#default: whole-achived</span>
 </pre></div>
 </div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>如果当前组件没有必要对上述三类配置进行更新，上述高亮代码部分可以留空</p>
+</div>
+</section>
+<section id="private">
+<span id="build-component-cmake-private-part"></span><h3>组件private部分<a class="headerlink" href="#private" title="Link to this heading"></a></h3>
+<p>该部分描述了该组件库文件的生成配置，主要包括：</p>
+<ul class="simple">
+<li><p><strong>源文件</strong>: 即将编译的库文件的源文件</p></li>
+<li><p><strong>头文件路径</strong>: 仅对即将编译的库文件有效</p></li>
+<li><p><strong>预定义</strong>: 仅对即将编译的库文件有效</p></li>
+<li><p><strong>编译选项</strong>: 仅对即将编译的库文件有效</p></li>
+</ul>
+<p>上述四类配置在如下代码块中分别由 <code class="docutils literal notranslate"><span class="pre">private_sources</span></code>，<code class="docutils literal notranslate"><span class="pre">private_includes</span></code> ,
+<code class="docutils literal notranslate"><span class="pre">private_definitions</span></code>，<code class="docutils literal notranslate"><span class="pre">private_compile_options</span></code> 四个变量设置，你可以在高亮代码行区域内对其进行更新.
+可以参考模板 <code class="file docutils literal notranslate"><span class="pre">cmake/CMakeLists-template.cmake</span></code> 中的一些用法，一些相关API可参考 <a class="reference internal" href="#build-cmake-api-list"><span class="std std-ref">list操作</span></a></p>
+<div class="admonition attention">
+<p class="admonition-title">注意</p>
+<p>组件最终的编译配置(特别是 <strong>预定义</strong> 和 <strong>头文件路径</strong> )由 <a class="reference internal" href="#build-component-cmake-private-part"><span class="std std-ref">组件private部分</span></a> 和
+<a class="reference internal" href="#build-component-cmake-public-part"><span class="std std-ref">组件public部分</span></a> 组成，且 <strong>前者优先级高于后者</strong>，例如组件实际头文件搜索路径包括：</p>
+<ul class="simple">
+<li><p><strong>当前组件</strong> private部分添加的头文件路径</p></li>
+<li><p><strong>当前组件</strong> 向 <a class="reference internal" href="#build-global-compile-config"><span class="std std-ref">全局编译配置</span></a> 中追加的头文件路径</p></li>
+<li><p><strong>其他组件</strong> 向 <a class="reference internal" href="#build-global-compile-config"><span class="std std-ref">全局编译配置</span></a> 中追加的头文件路径</p></li>
+</ul>
+<p>所以在 <a class="reference internal" href="#build-component-cmake-public-part"><span class="std std-ref">组件public部分</span></a> 已经添加的编译配置就无需在 <a class="reference internal" href="#build-component-cmake-public-part"><span class="std std-ref">组件public部分</span></a> 重复添加</p>
+<p>一般情况下，对于头文件路径是倾向于放在 <a class="reference internal" href="#build-component-cmake-private-part"><span class="std std-ref">组件private部分</span></a> 避免头文件污染,
+除非是比较通用或底层组件，会被很多其他组件用到，此时放在 <a class="reference internal" href="#build-component-cmake-public-part"><span class="std std-ref">组件public部分</span></a> 是一个更好的选择</p>
+</div>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c">##########################################################################################</span>
+<span class="linenos"> 2</span><span class="c">## * This part defines private part of the component</span>
+<span class="linenos"> 3</span><span class="c">## * Private part is used to build target of current component</span>
+<span class="linenos"> 4</span><span class="c">## * NOTE: The build API guarantees the global build configures(mentioned above)</span>
+<span class="linenos"> 5</span><span class="c">## *       applied to the target automatically. So if any configure was already added</span>
+<span class="linenos"> 6</span><span class="c">## *       to public above, it&#39;s unnecessary to add again below.</span>
+<span class="linenos"> 7</span>
+<span class="linenos"> 8</span><span class="c">#NOTE: User defined section, add your private build configures here</span>
+<span class="linenos"> 9</span><span class="c"># You may use if-else condition to set these predefined variable</span>
+<span class="linenos">10</span><span class="c"># They are only for ameba_add_internal_library/ameba_add_external_app_library/ameba_add_external_soc_library</span>
+<span class="linenos">11</span><span class="nb">set</span><span class="p">(</span><span class="s">private_sources</span><span class="p">)</span><span class="w">                 </span><span class="c">#private source files, NOTE: relative path is OK</span>
+<span class="linenos">12</span><span class="nb">set</span><span class="p">(</span><span class="s">private_includes</span><span class="p">)</span><span class="w">                </span><span class="c">#private include directories, NOTE: relative path is OK</span>
+<span class="linenos">13</span><span class="nb">set</span><span class="p">(</span><span class="s">private_definitions</span><span class="p">)</span><span class="w">             </span><span class="c">#private definitions</span>
+<span class="linenos">14</span><span class="nb">set</span><span class="p">(</span><span class="s">private_compile_options</span><span class="p">)</span><span class="w">         </span><span class="c">#private compile_options</span>
+<span class="linenos">15</span>
+<span class="linenos">16</span><span class="c">#------------------------------#</span>
+<span class="linenos">17</span><span class="c"># Component private part, user config begin</span>
+<span class="hll"><span class="linenos">18</span>
+</span><span class="hll"><span class="linenos">19</span><span class="w"> </span><span class="c"># set private_sources, private_includes, private_definitions, private_compile_options in this section</span>
+</span><span class="hll"><span class="linenos">20</span>
+</span><span class="linenos">21</span><span class="c"># Component private part, user config end</span>
+<span class="linenos">22</span><span class="c">#------------------------------#</span>
+<span class="linenos">23</span>
+<span class="linenos">24</span><span class="c">#WARNING: Select right API based on your component&#39;s release/not-release/standalone</span>
+<span class="linenos">25</span>
+<span class="linenos">26</span><span class="c">###NOTE: For open-source component, always build from source</span>
+<span class="hll"><span class="linenos">27</span><span class="nb">ameba_add_internal_library</span><span class="p">(</span><span class="s">foo</span>
+</span><span class="linenos">28</span><span class="w">    </span><span class="s">p_SOURCES</span>
+<span class="linenos">29</span><span class="w">        </span><span class="o">${</span><span class="nv">private_sources</span><span class="o">}</span>
+<span class="linenos">30</span><span class="w">    </span><span class="s">p_INCLUDES</span>
+<span class="linenos">31</span><span class="w">        </span><span class="o">${</span><span class="nv">private_includes</span><span class="o">}</span>
+<span class="linenos">32</span><span class="w">    </span><span class="s">p_DEFINITIONS</span>
+<span class="linenos">33</span><span class="w">        </span><span class="o">${</span><span class="nv">private_definitions</span><span class="o">}</span>
+<span class="linenos">34</span><span class="w">    </span><span class="s">p_COMPILE_OPTIONS</span>
+<span class="linenos">35</span><span class="w">        </span><span class="o">${</span><span class="nv">private_compile_options</span><span class="o">}</span>
+<span class="linenos">36</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<ul class="simple">
+<li><p>上述代码块中使用 <a class="reference internal" href="#build-ameba-add-internal-library"><span class="std std-ref">ameba_add_internal_library</span></a> 生成库文件，此外还可以根据需要选择其他API，详见 <a class="reference internal" href="#build-cmake-api-add-library"><span class="std std-ref">添加库</span></a>，上述高亮代码部分修改可参考 <a class="reference internal" href="#build-modify-existing-component-build-config"><span class="std std-ref">修改现有组件的编译配置</span></a></p></li>
+<li><p>如果组件已经有独立编译脚本的目录，则参考 <a class="reference internal" href="#build-porting-standalone-code"><span class="std std-ref">将有独立维护的代码加入固件</span></a></p></li>
+</ul>
+</div>
+</section>
+</section>
+</section>
+<section id="id3">
+<h1>最佳实践<a class="headerlink" href="#id3" title="Link to this heading"></a></h1>
+<section id="build-compile-some-source-and-link-to-image">
+<span id="id4"></span><h2>将我的源文件编译并加入固件<a class="headerlink" href="#build-compile-some-source-and-link-to-image" title="Link to this heading"></a></h2>
+<p>我有一些源码希望将其编译并加入固件进行测试，可以参考如下步骤：</p>
+<ol class="arabic">
+<li><p>拷贝模板 <code class="file docutils literal notranslate"><span class="pre">cmake/CMakeLists-template.cmake</span></code> 到你的源文件目录下，并改名为 <code class="file docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code></p></li>
+<li><p>参考 <a class="reference internal" href="#build-modify-existing-component-build-config"><span class="std std-ref">修改现有组件的编译配置</span></a> 设置 <a class="reference internal" href="#build-component-cmake-public-part"><span class="std std-ref">组件public部分</span></a> 和 <a class="reference internal" href="#build-component-cmake-private-part"><span class="std std-ref">组件private部分</span></a></p></li>
+<li><p><a class="reference internal" href="#build-component-cmake-private-part"><span class="std std-ref">组件private部分</span></a> 选择 <a class="reference internal" href="#build-ameba-add-internal-library"><span class="std std-ref">ameba_add_internal_library</span></a> 作为编译的api</p></li>
+<li><p>在项目 <a class="reference internal" href="#build-cmake-project-structure"><span class="std std-ref">image2</span></a> 的 <code class="file docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> 中添加你的源文件路径</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">ameba_add_subdirectory</span><span class="p">(</span><span class="s">path/to/your/source</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p>编译，测试</p></li>
+</ol>
+</section>
+<section id="build-porting-standalone-code">
+<span id="id5"></span><h2>将有独立维护的代码加入固件<a class="headerlink" href="#build-porting-standalone-code" title="Link to this heading"></a></h2>
+<p>一个代码组件有独立的编译脚本(比如第三方库，使用了CMake或者makefile)，我们希望在不侵入其编译脚本的前提下实现将其链接进入固件，根据原有编译脚本类型可以参考如下步骤：</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-0-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-0-0-0" name="0-0" role="tab" tabindex="0">CMake</button><button aria-controls="panel-0-0-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-1" name="0-1" role="tab" tabindex="-1">makefile</button></div><div aria-labelledby="tab-0-0-0" class="sphinx-tabs-panel" id="panel-0-0-0" name="0-0" role="tabpanel" tabindex="0"><ol class="arabic">
+<li><p>拷贝模板 <code class="file docutils literal notranslate"><span class="pre">cmake/CMakeLists-template.cmake</span></code> 到一个合适的位置(比如为该代码组件新建一个wrap目录)，并改名为 <code class="file docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code></p></li>
+<li><p>参考 <a class="reference internal" href="#build-modify-existing-component-build-config"><span class="std std-ref">修改现有组件的编译配置</span></a> 设置 <a class="reference internal" href="#build-component-cmake-public-part"><span class="std std-ref">组件public部分</span></a></p></li>
+<li><p><a class="reference internal" href="#build-component-cmake-private-part"><span class="std std-ref">组件private部分</span></a> 选择 <a class="reference internal" href="#build-ameba-add-exist-library"><span class="std std-ref">ameba_add_exist_library</span></a> 作为编译的api：</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">ameba_add_subdirectory</span><span class="p">(</span><span class="s">path/to/your/cmakelists</span><span class="p">)</span><span class="w"> </span><span class="c"># Add the real CMakeLists.txt dir of the wrapped component</span>
+<span class="nb">build_ameba_add_exist_library</span><span class="p">(</span><span class="s">foo</span><span class="p">)</span><span class="w">              </span><span class="c"># Add the real target of the wrapped component to link</span>
+</pre></div>
+</div>
+</li>
+<li><p>在项目 <a class="reference internal" href="#build-cmake-project-structure"><span class="std std-ref">image2</span></a> 的 <code class="file docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> 中添加上述 <code class="file docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> 所在路径</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">ameba_add_subdirectory</span><span class="p">(</span><span class="s">path/to/your/wrap/cmakelists</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p>编译，测试</p></li>
+</ol>
+</div><div aria-labelledby="tab-0-0-1" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-1" name="0-1" role="tabpanel" tabindex="0"><ol class="arabic">
+<li><p>拷贝模板 <code class="file docutils literal notranslate"><span class="pre">cmake/CMakeLists-template.cmake</span></code> 到一个合适的位置(比如为该代码组件新建一个wrap目录)，并改名为 <code class="file docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code></p></li>
+<li><p>参考 <a class="reference internal" href="#build-modify-existing-component-build-config"><span class="std std-ref">修改现有组件的编译配置</span></a> 设置 <a class="reference internal" href="#build-component-cmake-public-part"><span class="std std-ref">组件public部分</span></a></p></li>
+<li><p><a class="reference internal" href="#build-component-cmake-private-part"><span class="std std-ref">组件private部分</span></a> 使用如下代码，注意修改其中的路径或名称：</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">add_custom_target</span><span class="p">(</span><span class="s">foo</span><span class="w"> </span><span class="s">ALL</span><span class="w">                                     </span><span class="c"># Replace foo with new name as you wish</span>
+<span class="w">    </span><span class="s">COMMAND</span><span class="w"> </span><span class="o">${</span><span class="nv">CMAKE_COMMAND</span><span class="o">}</span><span class="w"> </span><span class="s">-E</span><span class="w"> </span><span class="s">echo</span><span class="w"> </span><span class="s2">&quot;Building foo project&quot;</span><span class="w">   </span><span class="c"># Some prompt message while building</span>
+<span class="w">    </span><span class="s">COMMAND</span><span class="w"> </span><span class="s">make</span><span class="w"> </span><span class="s">-j</span><span class="w"> </span><span class="s">-C</span><span class="w"> </span><span class="s">/path/to/your/makefile</span><span class="w"> </span><span class="s">all</span><span class="w">             </span><span class="c"># Set your makefile path</span>
+<span class="w">    </span><span class="s">COMMENT</span><span class="w"> </span><span class="s2">&quot;Building foo project using make&quot;</span>
+<span class="p">)</span>
+
+<span class="nb">ameba_target_depend</span><span class="p">(</span><span class="o">${</span><span class="nv">c_CURRENT_IMAGE</span><span class="o">}</span><span class="w"> </span><span class="s">foo</span><span class="p">)</span><span class="w">                   </span><span class="c"># Add dependency, foo MUST be same as in add_custom_target above</span>
+</pre></div>
+</div>
+</li>
+<li><p>在项目 <a class="reference internal" href="#build-cmake-project-structure"><span class="std std-ref">image2</span></a> 的 <code class="file docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> 中添加上述 <code class="file docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> 所在路径</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">ameba_add_subdirectory</span><span class="p">(</span><span class="s">path/to/your/wrap/cmakelists</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p>编译，测试</p></li>
+</ol>
+</div></div>
+</section>
+<section id="build-modify-existing-component-build-config">
+<span id="id6"></span><h2>修改现有组件的编译配置<a class="headerlink" href="#build-modify-existing-component-build-config" title="Link to this heading"></a></h2>
+<p>可以参考 <a class="reference internal" href="#build-component-cmake-structure"><span class="std std-ref">组件编译CMakeLists.txt</span></a> 相关说明，也可以使用 <a class="reference internal" href="#build-some-types-for-logic-process"><span class="std std-ref">一些可用于复杂逻辑处理的判断类型</span></a>，用到的 <a class="reference internal" href="#build-cmake-api-list"><span class="std std-ref">list操作</span></a> API可以多次调用，如下是一些具体的例子：</p>
+<ul>
+<li><p>添加public头文件路径，建议使用相对路径：</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">ameba_list_append</span><span class="p">(</span><span class="s">public_includes</span>
+<span class="w">    </span><span class="o">${</span><span class="nv">CMAKE_CURRENT_SOURCE_DIR</span><span class="o">}</span><span class="w">        </span><span class="c"># Access current dir by CMAKE_CURRENT_SOURCE_DIR, same as .</span>
+<span class="w">    </span><span class="o">${</span><span class="nv">CMAKE_CURRENT_SOURCE_DIR</span><span class="o">}</span><span class="s">/foo</span><span class="w">    </span><span class="c"># Access sub dir by CMAKE_CURRENT_SOURCE_DIR, same as ./foo</span>
+<span class="w">    </span><span class="s">foo</span><span class="w">                                </span><span class="c"># Access sub dir directly</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p>添加链接库路径：</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">ameba_list_append</span><span class="p">(</span><span class="s">public_libraries</span>
+<span class="w">    </span><span class="o">${</span><span class="nv">c_SDK_LIB_APPLICATION_DIR</span><span class="o">}</span><span class="s">/lib_foo.a</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p>添加源文件，建议使用相对路径：</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">ameba_list_append</span><span class="p">(</span><span class="s">private_sources</span>
+<span class="w">    </span><span class="s">foo/foo.c</span>
+<span class="w">    </span><span class="s">bar/bar.c</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p>添加private头文件路径：</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">ameba_list_append</span><span class="p">(</span><span class="s">private_includes</span>
+<span class="w">    </span><span class="s">../common</span><span class="w">  </span><span class="c"># Access parent dir</span>
+<span class="w">    </span><span class="s">foo</span>
+<span class="w">    </span><span class="s">bar</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p>添加预定义：</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">ameba_list_append</span><span class="p">(</span><span class="s">private_definitions</span>
+<span class="w">    </span><span class="s">__RTOS__</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p>添加编译选项：</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">ameba_list_append</span><span class="p">(</span><span class="s">private_compile_options</span>
+<span class="w">    </span><span class="s">-Wno-unused-parameter</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</section>
+<section id="id7">
+<h2>调整组件子模块组织关系<a class="headerlink" href="#id7" title="Link to this heading"></a></h2>
+<p>当一个组件很复杂，其中包含了多个子组件，此时组件根目录下的 <code class="file docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> 通常用于添加各个子组件的组织关系，注意如下两点：</p>
+<ul>
+<li><p>因为 <strong>项目中原则上不检查开关，直接add组件</strong>，所以组件的开关检查需要在这里完成，例如 <code class="file docutils literal notranslate"><span class="pre">component/bluetooth/CMakeLists.txt</span></code> 开头：</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">if</span><span class="p">(</span><span class="s">NOT</span><span class="w"> </span><span class="s">CONFIG_BT</span><span class="p">)</span>
+<span class="w">    </span><span class="nb">ameba_info</span><span class="p">(</span><span class="s2">&quot;CONFIG_BT is off, bluetooth will not be built&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="nb">return</span><span class="p">()</span>
+<span class="nb">endif</span><span class="p">()</span>
+</pre></div>
+</div>
+</li>
+<li><p>当拆分子组件时，组件根目录下的 <code class="file docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> 要处理好底层子组件的添加逻辑，可以结合 <a class="reference internal" href="#build-some-types-for-logic-process"><span class="std std-ref">一些可用于复杂逻辑处理的判断类型</span></a> 并参考相关API <a class="reference internal" href="#build-cmake-api-add-subdirectory"><span class="std std-ref">添加子目录</span></a>，例如 <code class="file docutils literal notranslate"><span class="pre">component/bluetooth/CMakeLists.txt</span></code>：</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">ameba_add_subdirectory_ifnot</span><span class="p">(</span><span class="s">CONFIG_BT_INIC</span><span class="w"> </span><span class="s">api</span><span class="p">)</span>
+<span class="nb">ameba_add_subdirectory_if</span><span class="p">(</span><span class="s">CONFIG_BT_AUDIO_CODEC_SUPPORT</span><span class="w"> </span><span class="s">bt_audio</span><span class="p">)</span>
+<span class="nb">ameba_add_subdirectory</span><span class="p">(</span><span class="s">bt_mp</span><span class="p">)</span>
+<span class="nb">ameba_add_subdirectory</span><span class="p">(</span><span class="s">driver</span><span class="p">)</span>
+<span class="nb">ameba_add_subdirectory_ifnot</span><span class="p">(</span><span class="s">CONFIG_BT_INIC</span><span class="w"> </span><span class="s">example</span><span class="p">)</span>
+<span class="nb">ameba_add_subdirectory</span><span class="p">(</span><span class="s">osif</span><span class="p">)</span>
+<span class="nb">ameba_add_subdirectory</span><span class="p">(</span><span class="s">rtk_coex</span><span class="p">)</span>
+<span class="nb">if</span><span class="p">(</span><span class="s">CONFIG_BT_ZEPHYR</span><span class="p">)</span>
+<span class="w">    </span><span class="nb">ameba_add_subdirectory</span><span class="p">(</span><span class="s">zephyr</span><span class="p">)</span>
+<span class="nb">elseif</span><span class="p">(</span><span class="s">NOT</span><span class="w"> </span><span class="s">CONFIG_BT_INIC</span><span class="p">)</span>
+<span class="w">    </span><span class="nb">ameba_add_subdirectory</span><span class="p">(</span><span class="s">rtk_stack</span><span class="p">)</span><span class="w">  </span><span class="c"># refer to ble_mesh_stack</span>
+<span class="nb">endif</span><span class="p">()</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</section>
+<section id="component">
+<h2>component中新增组件<a class="headerlink" href="#component" title="Link to this heading"></a></h2>
+<p>新增组件步骤：</p>
+<ol class="arabic">
+<li><p>在 <code class="file docutils literal notranslate"><span class="pre">cmake/global_define.cmake</span></code> 中添加组件的路径变量，参考如下组件：</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">ameba_set</span><span class="p">(</span><span class="s">c_CMPT_WIFI_DIR</span><span class="w">         </span><span class="o">${</span><span class="nv">c_COMPONENT_DIR</span><span class="o">}</span><span class="s">/wifi</span><span class="p">)</span>
+<span class="nb">ameba_set</span><span class="p">(</span><span class="s">c_CMPT_WPAN_DIR</span><span class="w">         </span><span class="o">${</span><span class="nv">c_COMPONENT_DIR</span><span class="o">}</span><span class="s">/wpan</span><span class="p">)</span>
+
+<span class="nb">ameba_set</span><span class="p">(</span><span class="s">c_CMPT_CRASHDUMP_DIR</span><span class="w">    </span><span class="o">${</span><span class="nv">c_COMPONENT_DIR</span><span class="o">}</span><span class="s">/soc/common/crashdump</span><span class="p">)</span>
+<span class="nb">ameba_set</span><span class="p">(</span><span class="s">c_CMPT_LZMA_DIR</span><span class="w">         </span><span class="o">${</span><span class="nv">c_COMPONENT_DIR</span><span class="o">}</span><span class="s">/soc/common/lzma</span><span class="p">)</span>
+
+<span class="nb">ameba_set</span><span class="p">(</span><span class="s">c_CMPT_FOO_DIR</span><span class="w">         </span><span class="o">${</span><span class="nv">c_COMPONENT_DIR</span><span class="o">}</span><span class="s">/foo</span><span class="p">)</span><span class="w">  </span><span class="c"># new component</span>
+</pre></div>
+</div>
+<div class="admonition attention">
+<p class="admonition-title">注意</p>
+<p>如果组件路径与 <a class="reference internal" href="#build-soc-type"><span class="std std-ref">SOC类型</span></a> 或 <a class="reference internal" href="#build-mcu-type"><span class="std std-ref">MCU类型</span></a> 相关，则应将其加入到 <code class="file docutils literal notranslate"><span class="pre">cmake/global_define.cmake</span></code> 的 <code class="xref py py-func docutils literal notranslate"><span class="pre">ameba_reset_global_define()</span></code> 宏中，例如：</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">macro</span><span class="p">(</span><span class="s">ameba_reset_global_define</span><span class="p">)</span>
+<span class="w">    </span><span class="nb">ameba_set</span><span class="p">(</span><span class="s">c_CMPT_USRCFG_DIR</span><span class="w"> </span><span class="o">${</span><span class="nv">c_COMPONENT_DIR</span><span class="o">}</span><span class="s">/soc/usrcfg/</span><span class="o">${</span><span class="nv">c_SOC_TYPE</span><span class="o">}</span><span class="p">)</span>
+<span class="w">    </span><span class="nb">ameba_set</span><span class="p">(</span><span class="s">c_CMPT_BOOTLOADER_DIR</span><span class="w"> </span><span class="o">${</span><span class="nv">c_CMPT_SOC_DIR</span><span class="o">}</span><span class="s">/bootloader</span><span class="p">)</span>
+
+<span class="w">    </span><span class="nb">ameba_set</span><span class="p">(</span><span class="s">c_CMPT_FOO_DIR</span><span class="w"> </span><span class="o">${</span><span class="nv">c_CMPT_SOC_DIR</span><span class="o">}</span><span class="s">/foo</span><span class="p">)</span><span class="w">  </span><span class="c"># new component</span>
+<span class="nb">endmacro</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</li>
+<li><p>在 <code class="file docutils literal notranslate"><span class="pre">component</span></code> 下新建组件目录并参考 <a class="reference internal" href="#build-component-cmake-structure"><span class="std std-ref">组件编译CMakeLists.txt</span></a> 添加相关 <code class="file docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code></p></li>
+<li><p>在项目 <a class="reference internal" href="#build-cmake-project-structure"><span class="std std-ref">相应固件</span></a> 的 <code class="file docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> 中添加组件</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">ameba_add_subdirectory</span><span class="p">(</span><span class="o">${</span><span class="nv">c_CMPT_FOO_DIR</span><span class="o">}</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+</section>
+<section id="cmake">
+<h1>一些常用的CMake接口和预设常量<a class="headerlink" href="#cmake" title="Link to this heading"></a></h1>
+<section id="list">
+<span id="build-cmake-api-list"></span><h2>list操作<a class="headerlink" href="#list" title="Link to this heading"></a></h2>
+<section id="ameba-list-append">
+<h3>ameba_list_append<a class="headerlink" href="#ameba-list-append" title="Link to this heading"></a></h3>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">ameba_list_append</span><span class="p">(</span><span class="s">&lt;list_name&gt;</span><span class="w"> </span><span class="s">[&lt;value&gt;</span><span class="w"> </span><span class="s">...]</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>向list中追加元素，支持追加多个，参数说明：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">list_name</span></code>：list变量名</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">value</span></code>：待追加的值</p></li>
+</ul>
+</section>
+<section id="ameba-list-append-if">
+<h3>ameba_list_append_if<a class="headerlink" href="#ameba-list-append-if" title="Link to this heading"></a></h3>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">ameba_list_append_if</span><span class="p">(</span><span class="s">&lt;condition&gt;</span><span class="w"> </span><span class="s">&lt;list_name&gt;</span><span class="w"> </span><span class="s">[&lt;value&gt;</span><span class="w"> </span><span class="s">...]</span><span class="w"> </span><span class="s">[p_ELSE</span><span class="w"> </span><span class="s">&lt;else</span><span class="w"> </span><span class="s">value&gt;</span><span class="w"> </span><span class="s">...]</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>基于一定的条件向list中追加元素，支持追加多个，参数说明：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">condition</span></code>：判定条件的变量名</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">list_name</span></code>：list变量名</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">value</span></code>：当 <code class="docutils literal notranslate"><span class="pre">condition</span></code> 成立时向list中追加的值</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">p_ELSE</span></code>：用于指定当 <code class="docutils literal notranslate"><span class="pre">condition</span></code> 不成立时向list中追加值</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">else</span> <span class="pre">value</span></code>：当 <code class="docutils literal notranslate"><span class="pre">condition</span></code> 不成立时向list中追加的值</p></li>
+</ul>
+<div class="admonition attention">
+<p class="admonition-title">注意</p>
+<p><code class="docutils literal notranslate"><span class="pre">condition</span></code> 所表示的变量未定义或定义了但值为 <code class="docutils literal notranslate"><span class="pre">FALSE</span></code> 都会被认为不成立</p>
+</div>
+</section>
+<section id="ameba-list-append-ifnot">
+<h3>ameba_list_append_ifnot<a class="headerlink" href="#ameba-list-append-ifnot" title="Link to this heading"></a></h3>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">ameba_list_append_ifnot</span><span class="p">(</span><span class="s">&lt;condition&gt;</span><span class="w"> </span><span class="s">&lt;list_name&gt;</span><span class="w"> </span><span class="s">[&lt;value&gt;</span><span class="w"> </span><span class="s">...]</span><span class="w"> </span><span class="s">[p_ELSE</span><span class="w"> </span><span class="s">&lt;else</span><span class="w"> </span><span class="s">value&gt;</span><span class="w"> </span><span class="s">...]</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>基于一定的条件向list中追加元素，支持追加多个，与 <code class="xref py py-func docutils literal notranslate"><span class="pre">ameba_list_append_if()</span></code> 功能相反，参数说明：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">condition</span></code>：判定条件的变量名</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">list_name</span></code>：list变量名</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">value</span></code>：当 <code class="docutils literal notranslate"><span class="pre">condition</span></code> 不成立时向list中追加的值</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">p_ELSE</span></code>：用于指定当 <code class="docutils literal notranslate"><span class="pre">condition</span></code> 成立时向list中追加值</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">else</span> <span class="pre">value</span></code>：当 <code class="docutils literal notranslate"><span class="pre">condition</span></code> 成立时向list中追加的值</p></li>
+</ul>
+<div class="admonition attention">
+<p class="admonition-title">注意</p>
+<p><code class="docutils literal notranslate"><span class="pre">condition</span></code> 所表示的变量未定义或定义了但值为 <code class="docutils literal notranslate"><span class="pre">FALSE</span></code> 都会被认为不成立</p>
+</div>
+</section>
+<section id="ameba-list-append-ifdef">
+<h3>ameba_list_append_ifdef<a class="headerlink" href="#ameba-list-append-ifdef" title="Link to this heading"></a></h3>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">ameba_list_append_ifdef</span><span class="p">(</span><span class="s">&lt;condition&gt;</span><span class="w"> </span><span class="s">&lt;list_name&gt;</span><span class="w"> </span><span class="s">[&lt;value&gt;</span><span class="w"> </span><span class="s">...]</span><span class="w"> </span><span class="s">[p_ELSE</span><span class="w"> </span><span class="s">&lt;else</span><span class="w"> </span><span class="s">value&gt;</span><span class="w"> </span><span class="s">...]</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>基于一定的条件向list中追加元素，支持追加多个，与 <code class="xref py py-func docutils literal notranslate"><span class="pre">ameba_list_append_if()</span></code> 功能相反，参数说明：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">condition</span></code>：判定条件的变量名</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">list_name</span></code>：list变量名</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">value</span></code>：当 <code class="docutils literal notranslate"><span class="pre">condition</span></code> 被定义时向list中追加的值( <strong>注意</strong>：此时 <code class="docutils literal notranslate"><span class="pre">condition</span></code> 可以是 <code class="docutils literal notranslate"><span class="pre">FALSE</span></code> )</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">p_ELSE</span></code>：用于指定当 <code class="docutils literal notranslate"><span class="pre">condition</span></code> 未定义时向list中追加值</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">else</span> <span class="pre">value</span></code>：当 <code class="docutils literal notranslate"><span class="pre">condition</span></code> 未定义时向list中追加的值</p></li>
+</ul>
+</section>
+</section>
+<section id="build-cmake-api-add-library">
+<span id="id8"></span><h2>添加库<a class="headerlink" href="#build-cmake-api-add-library" title="Link to this heading"></a></h2>
+<p>如下API用于将代码生成为静态库，并自动加入到相应固件的链接</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>这些API他们具有如下特点：</p>
+<ul class="simple">
+<li><p><strong>静态库被哪个固件链接取决于是在哪个固件的 :file:`CMakeLists.txt` 中添加</strong>，例如在 <a class="reference internal" href="#build-cmake-project-structure"><span class="std std-ref">image2/CMakeLists.txt</span></a> 中添加，则相应静态库会被固件 <code class="docutils literal notranslate"><span class="pre">image2</span></code> 链接</p></li>
+<li><p>如下API中的target实际名称是由 <code class="docutils literal notranslate"><span class="pre">name</span></code> 参数及其他信息如 <a class="reference internal" href="#build-cmake-api-some-const-variable"><span class="std std-ref">c_MCU_PROJECT_NAME</span></a>，<a class="reference internal" href="#build-cmake-api-some-const-variable"><span class="std std-ref">c_CURRENT_IMAGE</span></a> 组合而成，你可以在API调用过后使用变量 <code class="docutils literal notranslate"><span class="pre">c_CURRENT_TARGET_NAME</span></code> 来获取真实的target名称</p></li>
+<li><p>这些API内部会自动使用 <a class="reference internal" href="#build-global-compile-config"><span class="std std-ref">全局编译配置</span></a> 来编译当前target</p></li>
+</ul>
+</div>
+<section id="ameba-add-internal-library">
+<span id="build-ameba-add-internal-library"></span><h3>ameba_add_internal_library<a class="headerlink" href="#ameba-add-internal-library" title="Link to this heading"></a></h3>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">ameba_add_internal_library</span><span class="p">(</span><span class="s">&lt;name&gt;</span>
+<span class="w">                           </span><span class="s">[p_SOURCES</span><span class="w"> </span><span class="s">&lt;sources&gt;</span><span class="w"> </span><span class="s">...]</span>
+<span class="w">                           </span><span class="s">[p_INCLUDES</span><span class="w"> </span><span class="s">&lt;include</span><span class="w"> </span><span class="s">dirs&gt;</span><span class="w"> </span><span class="s">...]</span>
+<span class="w">                           </span><span class="s">[p_COMPILE_OPTIONS</span><span class="w"> </span><span class="s">&lt;compile</span><span class="w"> </span><span class="s">options&gt;</span><span class="w"> </span><span class="s">...]</span>
+<span class="w">                           </span><span class="s">[p_DEFINITIONS</span><span class="w"> </span><span class="s">&lt;definitions&gt;</span><span class="w"> </span><span class="s">...]</span>
+<span class="w">                           </span><span class="s">[p_DEPENDENCIES</span><span class="w"> </span><span class="s">&lt;dependencies&gt;</span><span class="w"> </span><span class="s">...]</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>添加一个静态库，执行编译且 <strong>相应target会被自动链接到当前固件</strong>，库文件生成在 <code class="file docutils literal notranslate"><span class="pre">build</span></code> 目录下，参数说明：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code>：target名称，实际完整的库文件为 <code class="docutils literal notranslate"><span class="pre">lib_${name}.a</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">p_SOURCES</span></code>：target源文件</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">p_INCLUDES</span></code>：target头文件路径</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">p_COMPILE_OPTIONS</span></code>：target编译选项</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">p_DEFINITIONS</span></code>：target预定义</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">p_DEPENDENCIES</span></code>：target依赖</p></li>
+</ul>
+<div class="admonition attention">
+<p class="admonition-title">注意</p>
+<p>该API生成的库文件在build目录下，其内部不会检查 <code class="docutils literal notranslate"><span class="pre">CONFIG_AMEBA_RLS</span></code>，始终生效</p>
+</div>
+</section>
+<section id="ameba-add-exist-library">
+<span id="build-ameba-add-exist-library"></span><h3>ameba_add_exist_library<a class="headerlink" href="#ameba-add-exist-library" title="Link to this heading"></a></h3>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">ameba_add_exist_library</span><span class="p">(</span><span class="s">&lt;name&gt;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>将一个 <strong>已有</strong> 静态库target <strong>添加到当前固件的链接</strong> :</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code>：target名称</p></li>
+</ul>
+<div class="admonition tip">
+<p class="admonition-title">小技巧</p>
+<p>特别适用于非侵入性的适配第三方库的 <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code></p>
+</div>
+</section>
+<section id="ameba-add-external-app-library">
+<span id="build-ameba-add-external-app-library"></span><h3>ameba_add_external_app_library<a class="headerlink" href="#ameba-add-external-app-library" title="Link to this heading"></a></h3>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">ameba_add_external_app_library</span><span class="p">(</span><span class="s">&lt;name&gt;</span>
+<span class="w">                               </span><span class="s">[p_SOURCES</span><span class="w"> </span><span class="s">&lt;sources&gt;</span><span class="w"> </span><span class="s">...]</span>
+<span class="w">                               </span><span class="s">[p_INCLUDES</span><span class="w"> </span><span class="s">&lt;include</span><span class="w"> </span><span class="s">dirs&gt;</span><span class="w"> </span><span class="s">...]</span>
+<span class="w">                               </span><span class="s">[p_COMPILE_OPTIONS</span><span class="w"> </span><span class="s">&lt;compile</span><span class="w"> </span><span class="s">options&gt;</span><span class="w"> </span><span class="s">...]</span>
+<span class="w">                               </span><span class="s">[p_DEFINITIONS</span><span class="w"> </span><span class="s">&lt;definitions&gt;</span><span class="w"> </span><span class="s">...]</span>
+<span class="w">                               </span><span class="s">[p_DEPENDENCIES</span><span class="w"> </span><span class="s">&lt;dependencies&gt;</span><span class="w"> </span><span class="s">...]</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>添加一个静态库，执行编译但 <strong>相应target不会被自动链接到当前固件</strong>，需要在 <a class="reference internal" href="#build-component-cmake-public-part"><span class="std std-ref">组件public部分</span></a> 中指定，库文件会被输出到MCU项目下的 <code class="file docutils literal notranslate"><span class="pre">asdk/lib/application</span></code> 目录中，且会执行 <code class="docutils literal notranslate"><span class="pre">objcopy</span> <span class="pre">-g</span> <span class="pre">-D</span></code> 操作，参数说明：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code>：target名称，实际完整的库文件为 <code class="docutils literal notranslate"><span class="pre">lib_${name}.a</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">p_SOURCES</span></code>：target源文件</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">p_INCLUDES</span></code>：target头文件路径</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">p_COMPILE_OPTIONS</span></code>：target编译选项</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">p_DEFINITIONS</span></code>：target预定义</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">p_DEPENDENCIES</span></code>：target依赖</p></li>
+</ul>
+<div class="admonition attention">
+<p class="admonition-title">注意</p>
+<p>当 <code class="docutils literal notranslate"><span class="pre">CONFIG_AMEBA_RLS</span></code> 为 <code class="docutils literal notranslate"><span class="pre">TRUE</span></code> 时该该API什么也不做直接返回</p>
+</div>
+</section>
+</section>
+<section id="build-cmake-api-add-subdirectory">
+<span id="id9"></span><h2>添加子目录<a class="headerlink" href="#build-cmake-api-add-subdirectory" title="Link to this heading"></a></h2>
+<section id="ameba-add-subdirectory">
+<span id="build-ameba-add-subdirectory"></span><h3>ameba_add_subdirectory<a class="headerlink" href="#ameba-add-subdirectory" title="Link to this heading"></a></h3>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">ameba_add_subdirectory</span><span class="p">(</span><span class="s">&lt;dir&gt;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>添加一个目录用于编译，可参考 <a class="reference external" href="https://cmake.org/cmake/help/latest/command/add_subdirectory.html">add_subdirectory</a>，此外，当 <code class="docutils literal notranslate"><span class="pre">dir</span></code> 为外部路径时会取其最后一级目录名作 <code class="docutils literal notranslate"><span class="pre">binary_dir</span></code>，参数说明：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dir</span></code>：要添加编译的目录</p></li>
+</ul>
+</section>
+<section id="ameba-add-subdirectory-if">
+<h3>ameba_add_subdirectory_if<a class="headerlink" href="#ameba-add-subdirectory-if" title="Link to this heading"></a></h3>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">ameba_add_subdirectory_if</span><span class="p">(</span><span class="s">&lt;condition&gt;</span><span class="w"> </span><span class="s">&lt;dir&gt;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>基于一定的条件添加一个目录用于编译，其他同  <a class="reference internal" href="#build-ameba-add-subdirectory"><span class="std std-ref">ameba_add_subdirectory</span></a>，参数说明：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">condition</span></code>：判定条件的变量名</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dir</span></code>：条件成立时要添加编译的目录</p></li>
+</ul>
+</section>
+<section id="ameba-add-subdirectory-ifnot">
+<h3>ameba_add_subdirectory_ifnot<a class="headerlink" href="#ameba-add-subdirectory-ifnot" title="Link to this heading"></a></h3>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">ameba_add_subdirectory_ifnot</span><span class="p">(</span><span class="s">&lt;condition&gt;</span><span class="w"> </span><span class="s">&lt;dir&gt;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>基于一定的条件添加一个目录用于编译，其他同  <a class="reference internal" href="#build-ameba-add-subdirectory"><span class="std std-ref">ameba_add_subdirectory</span></a>，参数说明：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">condition</span></code>：判定条件的变量名</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dir</span></code>：条件不成立时要添加编译的目录</p></li>
+</ul>
+<div class="admonition attention">
+<p class="admonition-title">注意</p>
+<p><code class="docutils literal notranslate"><span class="pre">condition</span></code> 所表示的变量未定义或定义了但值为 <code class="docutils literal notranslate"><span class="pre">FALSE</span></code> 都会被认为不成立</p>
+</div>
+</section>
+<section id="ameba-add-subdirectory-if-exist">
+<h3>ameba_add_subdirectory_if_exist<a class="headerlink" href="#ameba-add-subdirectory-if-exist" title="Link to this heading"></a></h3>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">ameba_add_subdirectory_if_exist</span><span class="p">(</span><span class="s">&lt;dir&gt;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>当 <code class="docutils literal notranslate"><span class="pre">CONFIG_AMEBA_RLS</span></code> 为 <code class="docutils literal notranslate"><span class="pre">TRUE</span></code> 时，如果路径不存在则直接静默返回，否则会报错，其他同  <a class="reference internal" href="#build-ameba-add-subdirectory"><span class="std std-ref">ameba_add_subdirectory</span></a>，参数说明：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dir</span></code>：条件不成立时要添加编译的目录</p></li>
+</ul>
+</section>
+</section>
+<section id="build-cmake-api-some-const-variable">
+<span id="id10"></span><h2>一些可以直接使用的常量<a class="headerlink" href="#build-cmake-api-some-const-variable" title="Link to this heading"></a></h2>
+<p>CMake脚本 <code class="file docutils literal notranslate"><span class="pre">cmake/global_define.cmake</span></code> 中定义了一些常量可以直接用于编写脚本，列举部分如下：</p>
+<section id="id11">
+<h3>通用的常量<a class="headerlink" href="#id11" title="Link to this heading"></a></h3>
+<table class="docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 30.0%" />
+<col style="width: 70.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Variable Name</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">c_BASEDIR</span></code></p></td>
+<td><p>Root dir of the repo</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">c_CMAKE_FILES_DIR</span></code></p></td>
+<td><p><code class="file docutils literal notranslate"><span class="pre">$</span><em><span class="pre">c_BASEDIR</span></em><span class="pre">/cmake</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">c_COMPONENT_DIR</span></code></p></td>
+<td><p><code class="file docutils literal notranslate"><span class="pre">$</span><em><span class="pre">c_BASEDIR</span></em><span class="pre">/component</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">c_EMPTY_C_FILE</span></code></p></td>
+<td><p><code class="file docutils literal notranslate"><span class="pre">$</span><em><span class="pre">c_CMAKE_FILES_DIR</span></em><span class="pre">/empty_file.c</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="soc">
+<h3>SOC项目相关的常量<a class="headerlink" href="#soc" title="Link to this heading"></a></h3>
+<table class="docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 30.0%" />
+<col style="width: 70.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Variable Name</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">c_SOC_TYPE</span></code></p></td>
+<td><p>One of [“amebadplus”, “amebalite”, “amebasmart”]</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">c_SOC_TYPE_UPPER</span></code></p></td>
+<td><p>One of [“AMEBADPLUS”, “AMEBALITE”, “AMEBASMART”]</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">c_SOC_TYPE_CAMEL</span></code></p></td>
+<td><p>One of [“AebaDplus”, “AmebaLite”, “AmebaSmart”]</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">c_SOC_PROJECT_DIR</span></code></p></td>
+<td><p><code class="file docutils literal notranslate"><span class="pre">$</span><em><span class="pre">c_BASEDIR</span></em><span class="pre">/$</span><em><span class="pre">c_SOC_TYPE</span></em><span class="pre">_gcc_project</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="mcu">
+<h3>MCU项目相关的常量<a class="headerlink" href="#mcu" title="Link to this heading"></a></h3>
+<table class="docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 30.0%" />
+<col style="width: 70.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Variable Name</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">c_MCU_TYPE</span></code></p></td>
+<td><p>One of [“km0”, “km4”, “kr4”, “ca32”]</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">c_MCU_PROJECT_NAME</span></code></p></td>
+<td><p>One of [“km0”, “km4”, “kr4”, “ca32”, “ap”, “np”]</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">c_MCU_KCONFIG_FILE</span></code></p></td>
+<td><p>Kconfig file path for current MCU project</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">c_MCU_PROJECT_DIR</span></code></p></td>
+<td><p><code class="file docutils literal notranslate"><span class="pre">$</span><em><span class="pre">c_SOC_PROJECT_DIR</span></em><span class="pre">/project_$</span><em><span class="pre">c_MCU_TYPE</span></em></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">c_SDK_LIB_APP_DIR</span></code></p></td>
+<td><p><code class="file docutils literal notranslate"><span class="pre">$</span><em><span class="pre">c_MCU_PROJECT_DIR</span></em><span class="pre">/[asdk|vsdk]/lib/application</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">c_SDK_LIB_SOC_DIR</span></code></p></td>
+<td><p><code class="file docutils literal notranslate"><span class="pre">$</span><em><span class="pre">c_MCU_PROJECT_DIR</span></em><span class="pre">/[asdk|vsdk]/lib/soc</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id12">
+<h3>组件相关的常量<a class="headerlink" href="#id12" title="Link to this heading"></a></h3>
+<table class="docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 30.0%" />
+<col style="width: 70.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Variable Name</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">c_CMPT_APP_DIR</span></code></p></td>
+<td><p><code class="file docutils literal notranslate"><span class="pre">$</span><em><span class="pre">c_COMPONENT_DIR</span></em><span class="pre">/application</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">c_CMPT_AT_CMD_DIR</span></code></p></td>
+<td><p><code class="file docutils literal notranslate"><span class="pre">$</span><em><span class="pre">c_COMPONENT_DIR</span></em><span class="pre">/at_cmd</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">c_CMPT_AUDIO_DIR</span></code></p></td>
+<td><p><code class="file docutils literal notranslate"><span class="pre">$</span><em><span class="pre">c_COMPONENT_DIR</span></em><span class="pre">/audio</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">c_CMPT_BLUETOOTH_DIR</span></code></p></td>
+<td><p><code class="file docutils literal notranslate"><span class="pre">$</span><em><span class="pre">c_COMPONENT_DIR</span></em><span class="pre">/bluetooth</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">c_CMPT_DYN_APP_DIR</span></code></p></td>
+<td><p><code class="file docutils literal notranslate"><span class="pre">$</span><em><span class="pre">c_COMPONENT_DIR</span></em><span class="pre">/dynamic_app</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">c_CMPT_ETHERNET_DIR</span></code></p></td>
+<td><p><code class="file docutils literal notranslate"><span class="pre">$</span><em><span class="pre">c_COMPONENT_DIR</span></em><span class="pre">/ethernet</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">c_CMPT_EXAMPLE_DIR</span></code></p></td>
+<td><p><code class="file docutils literal notranslate"><span class="pre">$</span><em><span class="pre">c_COMPONENT_DIR</span></em><span class="pre">/example</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">c_CMPT_FILE_SYSTEM_DIR</span></code></p></td>
+<td><p><code class="file docutils literal notranslate"><span class="pre">$</span><em><span class="pre">c_COMPONENT_DIR</span></em><span class="pre">/file_system</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">c_CMPT_LWIP_DIR</span></code></p></td>
+<td><p><code class="file docutils literal notranslate"><span class="pre">$</span><em><span class="pre">c_COMPONENT_DIR</span></em><span class="pre">/lwip</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">c_CMPT_NETWORK_DIR</span></code></p></td>
+<td><p><code class="file docutils literal notranslate"><span class="pre">$</span><em><span class="pre">c_COMPONENT_DIR</span></em><span class="pre">/network</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">c_CMPT_OS_DIR</span></code></p></td>
+<td><p><code class="file docutils literal notranslate"><span class="pre">$</span><em><span class="pre">c_COMPONENT_DIR</span></em><span class="pre">/os</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">c_CMPT_RTK_COEX_DIR</span></code></p></td>
+<td><p><code class="file docutils literal notranslate"><span class="pre">$</span><em><span class="pre">c_COMPONENT_DIR</span></em><span class="pre">/rtk_coex</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">c_CMPT_SDIO_DIR</span></code></p></td>
+<td><p><code class="file docutils literal notranslate"><span class="pre">$</span><em><span class="pre">c_COMPONENT_DIR</span></em><span class="pre">/sdio</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">c_CMPT_SSL_DIR</span></code></p></td>
+<td><p><code class="file docutils literal notranslate"><span class="pre">$</span><em><span class="pre">c_COMPONENT_DIR</span></em><span class="pre">/ssl</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">c_CMPT_UI_DIR</span></code></p></td>
+<td><p><code class="file docutils literal notranslate"><span class="pre">$</span><em><span class="pre">c_COMPONENT_DIR</span></em><span class="pre">/ui</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">c_CMPT_USB_DIR</span></code></p></td>
+<td><p><code class="file docutils literal notranslate"><span class="pre">$</span><em><span class="pre">c_COMPONENT_DIR</span></em><span class="pre">/usb</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">c_CMPT_UTILS_DIR</span></code></p></td>
+<td><p><code class="file docutils literal notranslate"><span class="pre">$</span><em><span class="pre">c_COMPONENT_DIR</span></em><span class="pre">/utils</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">c_CMPT_TFLITE_DIR</span></code></p></td>
+<td><p><code class="file docutils literal notranslate"><span class="pre">$</span><em><span class="pre">c_COMPONENT_DIR</span></em><span class="pre">/tflite_micro</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">c_CMPT_WIFI_DIR</span></code></p></td>
+<td><p><code class="file docutils literal notranslate"><span class="pre">$</span><em><span class="pre">c_COMPONENT_DIR</span></em><span class="pre">/wifi</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">c_CMPT_WPAN_DIR</span></code></p></td>
+<td><p><code class="file docutils literal notranslate"><span class="pre">$</span><em><span class="pre">c_COMPONENT_DIR</span></em><span class="pre">/wpan</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">c_CMPT_CRASHDUMP_DIR</span></code></p></td>
+<td><p><code class="file docutils literal notranslate"><span class="pre">$</span><em><span class="pre">c_COMPONENT_DIR</span></em><span class="pre">/soc/common/crashdump</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">c_CMPT_LZMA_DIR</span></code></p></td>
+<td><p><code class="file docutils literal notranslate"><span class="pre">$</span><em><span class="pre">c_COMPONENT_DIR</span></em><span class="pre">/soc/common/lzma</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">c_CMPT_SOC_DIR</span></code></p></td>
+<td><p><code class="file docutils literal notranslate"><span class="pre">$</span><em><span class="pre">c_COMPONENT_DIR</span></em><span class="pre">/soc/$</span><em><span class="pre">c_SOC_TYPE</span></em></code></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+</section>
+<section id="id13">
+<h1>常见问题与建议<a class="headerlink" href="#id13" title="Link to this heading"></a></h1>
+<section id="build-check-source-compile-detail">
+<span id="id14"></span><h2>查看某个源文件的详细编译参数<a class="headerlink" href="#build-check-source-compile-detail" title="Link to this heading"></a></h2>
+<p>在相应源文件开头加入如下代码或者加入一些语法错误然后进行编译，编译系统会在相应源文件处出错并打印详细编译参数</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="c">#error debug</span>
+</pre></div>
+</div>
+</section>
+<section id="undefined-referrence">
+<span id="build-debug-link-error-undefined-reference"></span><h2>链接过程中出现 <code class="docutils literal notranslate"><span class="pre">undefined</span> <span class="pre">referrence</span></code> 错误<a class="headerlink" href="#undefined-referrence" title="Link to this heading"></a></h2>
+<p>该错误一般是链接生成axf文件时找不到符号的问题，下面以 <code class="docutils literal notranslate"><span class="pre">RTL8721Dx</span></code> 为例，示例一些基本排查思路：</p>
+<p>如下是一个链接错误的输出(这里仅保留了部分信息用于展示):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="hll">[5/42] Linking C executable project_km4/asdk/make/image2/target_img2_km4.axf
+</span><span class="hll">FAILED: project_km4/asdk/make/image2/target_img2_km4.axf
+</span>ccache /opt/rtk-toolchain/asdk-10.3.1-4354/linux/newlib/bin/arm-none-eabi-gcc
+-O2
+-o project_km4/asdk/make/image2/target_img2_km4.axf
+
+-Wl,--whole-archive
+project_km4/asdk/make/image2/at_cmd/lib_at_cmd.a
+<span class="hll">project_km4/asdk/make/image2/swlib/lib_swlib.a
+</span>project_km4/asdk/make/image2/file_system/fatfs/lib_fatfs.a
+project_km4/asdk/make/image2/file_system/littlefs/lib_littlefs.a
+project_km4/asdk/make/image2/file_system/kv/lib_kv.a
+project_km4/asdk/make/image2/file_system/vfs/lib_vfs.a
+project_km4/asdk/make/image2/fwlib/lib_fwlib.a
+project_km4/asdk/make/image2/hal/lib_hal.a
+project_km4/asdk/make/image2/misc/lib_misc.a
+project_km4/asdk/make/image2/lwip/lib_lwip.a
+
+-Wl,--no-whole-archive
+
+-lm
+-O2
+-o project_km4/asdk/make/image2/target_img2_km4.axf
+
+-Wl,--whole-archive
+project_km4/asdk/make/image2/at_cmd/lib_at_cmd.a
+project_km4/asdk/make/image2/cmsis-dsp/lib_cmsis_dsp.a
+
+-Wl,--no-whole-archive
+
+-lm
+-lstdc++
+<span class="hll">ld: amebadplus_gcc_project/project_km4/asdk/lib/soc/lib_chipinfo.a(ameba_rom_patch.o): in function `io_assert_failed&#39;:
+</span><span class="hll">(.text.io_assert_failed+0x12): undefined reference to `rtk_log_write_nano&#39;
+</span></pre></div>
+</div>
+<p>针对上述错误按照如下步骤进行排查：</p>
+<ol class="arabic">
+<li><p>确认基本信息：通过高亮行可以确认是出现链接问题的是 <code class="docutils literal notranslate"><span class="pre">km4</span></code> 这个MCU项目，在生成image2的固件 <code class="file docutils literal notranslate"><span class="pre">target_img2_km4.axf</span></code> 时找不到符号 <code class="docutils literal notranslate"><span class="pre">rtk_log_write_nano</span></code>，进一步确认包含该符号定义的源文件名为 <code class="file docutils literal notranslate"><span class="pre">log.c</span></code>，以及该源文件所属组件 <code class="docutils literal notranslate"><span class="pre">swlib</span></code></p></li>
+<li><p>通过上述错误信息第9行可知组件 <code class="docutils literal notranslate"><span class="pre">swlib</span></code> 对应的库文件 <code class="file docutils literal notranslate"><span class="pre">project_km4/asdk/make/image2/swlib/lib_swlib.a</span></code> 已经被加入了链接，继续下面的步骤，如果没有则需要排查其 <code class="file docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> 文件中的错误</p></li>
+<li><p>进一步排查 <code class="docutils literal notranslate"><span class="pre">swlib</span></code> 库文件中是否包含符号 <code class="docutils literal notranslate"><span class="pre">rtk_log_write_nano</span></code>:</p>
+<ul>
+<li><p>首先找到 <code class="file docutils literal notranslate"><span class="pre">lib_swlib.a</span></code> 库文件，因为该组件是通过 <a class="reference internal" href="#build-ameba-add-internal-library"><span class="std std-ref">ameba_add_internal_library</span></a> 函数生成的，结合上述错误信息第9行内容可知其完整目录为 <code class="file docutils literal notranslate"><span class="pre">build/project_km4/asdk/make/image2/swlib/lib_swlib.a</span></code>，当然你也可以使用如下方法查找其目录：</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-1-1-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-1-1-0" name="1-0" role="tab" tabindex="0">Linux</button><button aria-controls="panel-1-1-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-1-1-1" name="1-1" role="tab" tabindex="-1">Windows</button></div><div aria-labelledby="tab-1-1-0" class="sphinx-tabs-panel" id="panel-1-1-0" name="1-0" role="tabpanel" tabindex="0"><p>执行命令：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>find<span class="w"> </span>build/project_km4<span class="w"> </span>-name<span class="w"> </span>lib_swlib.a
+</pre></div>
+</div>
+<p>结果如下：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">build</span><span class="o">/</span><span class="n">project_km4</span><span class="o">/</span><span class="n">asdk</span><span class="o">/</span><span class="n">make</span><span class="o">/</span><span class="n">image1</span><span class="o">/</span><span class="n">swlib</span><span class="o">/</span><span class="n">lib_swlib</span><span class="o">.</span><span class="n">a</span>
+<span class="hll"><span class="n">build</span><span class="o">/</span><span class="n">project_km4</span><span class="o">/</span><span class="n">asdk</span><span class="o">/</span><span class="n">make</span><span class="o">/</span><span class="n">image2</span><span class="o">/</span><span class="n">swlib</span><span class="o">/</span><span class="n">lib_swlib</span><span class="o">.</span><span class="n">a</span>
+</span></pre></div>
+</div>
+<p>注意识别黄色标记部分才是属于image2的</p>
+</div><div aria-labelledby="tab-1-1-1" class="sphinx-tabs-panel" hidden="true" id="panel-1-1-1" name="1-1" role="tabpanel" tabindex="0"><p>执行命令：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>dir<span class="w"> </span>/s<span class="w"> </span>build<span class="se">\p</span>roject_km4<span class="se">\l</span>ib_swlib.a
+</pre></div>
+</div>
+<p>结果如下：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">C</span><span class="p">:</span>\<span class="n">Users</span>\<span class="n">sdk</span>\<span class="n">amebadplus_gcc_project</span>\<span class="n">build</span>\<span class="n">project_km4</span>\<span class="n">asdk</span>\<span class="n">make</span>\<span class="n">image1</span>\<span class="n">swlib</span> <span class="n">的目录</span>
+
+<span class="mi">2025</span><span class="o">/</span><span class="mi">03</span><span class="o">/</span><span class="mi">12</span>  <span class="mi">14</span><span class="p">:</span><span class="mi">56</span>            <span class="mi">21</span><span class="p">,</span><span class="mi">496</span> <span class="n">lib_swlib</span><span class="o">.</span><span class="n">a</span>
+               <span class="mi">1</span> <span class="n">个文件</span>         <span class="mi">21</span><span class="p">,</span><span class="mi">496</span> <span class="n">字节</span>
+
+<span class="hll"><span class="n">C</span><span class="p">:</span>\<span class="n">Users</span>\<span class="n">sdk</span>\<span class="n">amebadplus_gcc_project</span>\<span class="n">build</span>\<span class="n">project_km4</span>\<span class="n">asdk</span>\<span class="n">make</span>\<span class="n">image2</span>\<span class="n">swlib</span> <span class="n">的目录</span>
+</span><span class="hll">
+</span><span class="hll"><span class="mi">2025</span><span class="o">/</span><span class="mi">03</span><span class="o">/</span><span class="mi">12</span>  <span class="mi">14</span><span class="p">:</span><span class="mi">56</span>            <span class="mi">63</span><span class="p">,</span><span class="mi">986</span> <span class="n">lib_swlib</span><span class="o">.</span><span class="n">a</span>
+</span><span class="hll">              <span class="mi">1</span> <span class="n">个文件</span>         <span class="mi">63</span><span class="p">,</span><span class="mi">986</span> <span class="n">字节</span>
+</span></pre></div>
+</div>
+<p>注意识别黄色标记部分才是属于image2的</p>
+</div></div>
+</li>
+<li><p>查看 <code class="file docutils literal notranslate"><span class="pre">lib_swlib.a</span></code> 中是否包含符号，这里需要用到对应平台的工具链 <code class="docutils literal notranslate"><span class="pre">arm-none-eabi-nm</span></code>，需要根据你的实际环境确定其路径</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-2-2-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-2-2-0" name="2-0" role="tab" tabindex="0">Linux</button><button aria-controls="panel-2-2-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-2-2-1" name="2-1" role="tab" tabindex="-1">Windows</button></div><div aria-labelledby="tab-2-2-0" class="sphinx-tabs-panel" id="panel-2-2-0" name="2-0" role="tabpanel" tabindex="0"><p>执行命令：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>/opt/rtk-toolchain/asdk-10.3.1/linux/newlib/bin//arm-none-eabi-nm<span class="w"> </span>build/project_km4/asdk/make/image2/swlib/lib_swlib.a<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-w<span class="w"> </span>rtk_log_write_nano
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-2-2-1" class="sphinx-tabs-panel" hidden="true" id="panel-2-2-1" name="2-1" role="tabpanel" tabindex="0"><p>执行命令：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>C:<span class="se">\r</span>tk-toolchain<span class="se">\a</span>sdk-10.3.1-4354<span class="se">\m</span>ingw32<span class="se">\n</span>ewlib<span class="se">\b</span>in<span class="se">\a</span>rm-none-eabi-nm.exe<span class="w"> </span>build<span class="se">\p</span>roject_km4<span class="se">\a</span>sdk<span class="se">\m</span>ake<span class="se">\i</span>mage2<span class="se">\s</span>wlib<span class="se">\l</span>ib_swlib.a<span class="w"> </span><span class="p">|</span><span class="w"> </span>findstr<span class="w"> </span>/R<span class="w"> </span><span class="s2">&quot;\&lt;rtk_log_write_nano\&gt;&quot;</span>
+</pre></div>
+</div>
+</div></div>
+<p>如果输出 <strong>不包含</strong> 如下内容(注意其中的 <code class="docutils literal notranslate"><span class="pre">T</span></code>)则表明 <code class="file docutils literal notranslate"><span class="pre">lib_swlib.a</span></code> 未包含符号，此时需要继续下面的步骤，否则需要排查链接顺序等问题</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">00000000</span> <span class="n">T</span> <span class="n">rtk_log_write_nano</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</li>
+<li><p>检查 <code class="file docutils literal notranslate"><span class="pre">log.c</span></code> 是否被编译进入 <code class="file docutils literal notranslate"><span class="pre">lib_swlib.a</span></code>，这里有多种验证方法：</p>
+<ul>
+<li><p>方法一：在CMake的 <code class="file docutils literal notranslate"><span class="pre">build</span></code> 目录中的MCU项目目录 <code class="file docutils literal notranslate"><span class="pre">project_km4</span></code> 查找文件是否存在 <code class="file docutils literal notranslate"><span class="pre">log.o</span></code>：</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-3-3-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-3-3-0" name="3-0" role="tab" tabindex="0">Linux</button><button aria-controls="panel-3-3-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-3-3-1" name="3-1" role="tab" tabindex="-1">Windows</button></div><div aria-labelledby="tab-3-3-0" class="sphinx-tabs-panel" id="panel-3-3-0" name="3-0" role="tabpanel" tabindex="0"><p>执行命令：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>find<span class="w"> </span>build/project_km4<span class="w"> </span>-name<span class="w"> </span>log.o
+</pre></div>
+</div>
+<p>结果如下：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">build</span><span class="o">/</span><span class="n">project_km4</span><span class="o">/</span><span class="n">asdk</span><span class="o">/</span><span class="n">make</span><span class="o">/</span><span class="n">image1</span><span class="o">/</span><span class="n">swlib</span><span class="o">/</span><span class="n">CMakeFiles</span><span class="o">/</span><span class="n">swlib_target_loader_km4</span><span class="o">.</span><span class="n">dir</span><span class="o">/</span><span class="n">log</span><span class="o">.</span><span class="n">o</span>
+<span class="hll"><span class="n">build</span><span class="o">/</span><span class="n">project_km4</span><span class="o">/</span><span class="n">asdk</span><span class="o">/</span><span class="n">make</span><span class="o">/</span><span class="n">image2</span><span class="o">/</span><span class="n">swlib</span><span class="o">/</span><span class="n">CMakeFiles</span><span class="o">/</span><span class="n">swlib_target_img2_km4</span><span class="o">.</span><span class="n">dir</span><span class="o">/</span><span class="n">log</span><span class="o">.</span><span class="n">o</span>
+</span></pre></div>
+</div>
+</div><div aria-labelledby="tab-3-3-1" class="sphinx-tabs-panel" hidden="true" id="panel-3-3-1" name="3-1" role="tabpanel" tabindex="0"><p>执行命令：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>dir<span class="w"> </span>/s<span class="w"> </span>build<span class="se">\p</span>roject_km4<span class="se">\l</span>og.o
+</pre></div>
+</div>
+<p>结果如下：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">C</span><span class="p">:</span>\<span class="n">Users</span>\<span class="n">sdk</span>\<span class="n">amebadplus_gcc_project</span>\<span class="n">build</span>\<span class="n">project_km4</span>\<span class="n">asdk</span>\<span class="n">make</span>\<span class="n">image1</span>\<span class="n">swlib</span>\<span class="n">CMakeFiles</span>\<span class="n">swlib_target_loader_km4</span><span class="o">.</span><span class="n">dir</span> <span class="n">的目录</span>
+
+<span class="mi">2025</span><span class="o">/</span><span class="mi">03</span><span class="o">/</span><span class="mi">12</span>  <span class="mi">14</span><span class="p">:</span><span class="mi">56</span>            <span class="mi">21</span><span class="p">,</span><span class="mi">096</span> <span class="n">log</span><span class="o">.</span><span class="n">o</span>
+              <span class="mi">1</span> <span class="n">个文件</span>         <span class="mi">21</span><span class="p">,</span><span class="mi">096</span> <span class="n">字节</span>
+
+<span class="hll"><span class="n">C</span><span class="p">:</span>\<span class="n">Users</span>\<span class="n">sdk</span>\<span class="n">amebadplus_gcc_project</span>\<span class="n">build</span>\<span class="n">project_km4</span>\<span class="n">asdk</span>\<span class="n">make</span>\<span class="n">image2</span>\<span class="n">swlib</span>\<span class="n">CMakeFiles</span>\<span class="n">swlib_image2_km4</span><span class="o">.</span><span class="n">dir</span> <span class="n">的目录</span>
+</span><span class="hll">
+</span><span class="hll"><span class="mi">2025</span><span class="o">/</span><span class="mi">03</span><span class="o">/</span><span class="mi">12</span>  <span class="mi">14</span><span class="p">:</span><span class="mi">56</span>            <span class="mi">21</span><span class="p">,</span><span class="mi">096</span> <span class="n">log</span><span class="o">.</span><span class="n">o</span>
+</span><span class="hll">              <span class="mi">1</span> <span class="n">个文件</span>         <span class="mi">21</span><span class="p">,</span><span class="mi">096</span> <span class="n">字节</span>
+</span></pre></div>
+</div>
+</div></div>
+<p>注意识别黄色标记部分如果出现表示 <code class="file docutils literal notranslate"><span class="pre">log.c</span></code> 有被加入到image2的组件swlib中编译</p>
+</li>
+<li><p>方法二：在SOC项目的 <code class="file docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> 中注释掉其他MCU项目编译，仅保留 <code class="docutils literal notranslate"><span class="pre">km4</span></code> 参考如下示例，然后在 <code class="file docutils literal notranslate"><span class="pre">log.c</span></code> 随便加一些语法错误，如果编译报错则表明源文件被编译</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="c">###############################################################################</span>
+<span class="c"># Add sub projects</span>
+<span class="nb">add_subdirectory</span><span class="p">(</span><span class="s">project_km4</span><span class="p">)</span>
+<span class="c"># add_subdirectory(project_km0)</span>
+<span class="c">###############################################################################</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p>如果发现 <code class="file docutils literal notranslate"><span class="pre">log.c</span></code> 未被加入编译则需要排查 <code class="docutils literal notranslate"><span class="pre">swlib</span></code> 的 <code class="file docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> 中的问题如： 遗漏源文件，逻辑错误等</p>
+</li>
+<li><p>如果发现 <code class="file docutils literal notranslate"><span class="pre">log.c</span></code> 已被加入编译则需要排查其重定向文件 <code class="file docutils literal notranslate"><span class="pre">log.o</span></code> 中是否包含符号，检查方法参考步骤3，并结合步骤4中找到的 <code class="file docutils literal notranslate"><span class="pre">log.o</span></code> 路径：</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-4-4-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-4-4-0" name="4-0" role="tab" tabindex="0">Linux</button><button aria-controls="panel-4-4-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-4-4-1" name="4-1" role="tab" tabindex="-1">Windows</button></div><div aria-labelledby="tab-4-4-0" class="sphinx-tabs-panel" id="panel-4-4-0" name="4-0" role="tabpanel" tabindex="0"><p>执行命令：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>/opt/rtk-toolchain/asdk-10.3.1/linux/newlib/bin//arm-none-eabi-nm<span class="w"> </span>build/project_km4/asdk/make/image2/swlib/CMakeFiles/swlib_target_img2_km4.dir/log.o<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-w<span class="w"> </span>rtk_log_write_nano
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-4-4-1" class="sphinx-tabs-panel" hidden="true" id="panel-4-4-1" name="4-1" role="tabpanel" tabindex="0"><p>执行命令：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>C:<span class="se">\r</span>tk-toolchain<span class="se">\a</span>sdk-10.3.1-4354<span class="se">\m</span>ingw32<span class="se">\n</span>ewlib<span class="se">\b</span>in<span class="se">\a</span>rm-none-eabi-nm.exe<span class="w"> </span>build<span class="se">\p</span>roject_km4<span class="se">\a</span>sdk<span class="se">\m</span>ake<span class="se">\i</span>mage2<span class="se">\s</span>wlib<span class="se">\C</span>MakeFiles<span class="se">\s</span>wlib_image2_km4.dir<span class="se">\l</span>og.o<span class="w"> </span><span class="p">|</span><span class="w"> </span>findstr<span class="w"> </span>/R<span class="w"> </span><span class="s2">&quot;\&lt;rtk_log_write_nano\&gt;&quot;</span>
+</pre></div>
+</div>
+</div></div>
+<p>如果输出 <strong>不包含</strong> 如下内容(注意其中的 <code class="docutils literal notranslate"><span class="pre">T</span></code>)则表明 <code class="file docutils literal notranslate"><span class="pre">log.a</span></code> 未包含符号，此时需要排查 <code class="file docutils literal notranslate"><span class="pre">log.c</span></code> 中的条件编译是否正确，否则需要排查链接顺序等问题</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">00000000</span> <span class="n">T</span> <span class="n">rtk_log_write_nano</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="build-some-types-for-logic-process">
+<span id="id15"></span><h2>一些可用于复杂逻辑处理的判断类型<a class="headerlink" href="#build-some-types-for-logic-process" title="Link to this heading"></a></h2>
+<section id="build-soc-type">
+<span id="id16"></span><h3>SOC类型<a class="headerlink" href="#build-soc-type" title="Link to this heading"></a></h3>
+<p>SOC类型如 <code class="docutils literal notranslate"><span class="pre">amebadplus</span></code>，<code class="docutils literal notranslate"><span class="pre">amebalite</span></code> 可以通过如下两种方式判断：</p>
+<ul>
+<li><p>使用BOOL类型如： <code class="docutils literal notranslate"><span class="pre">CONFIG_AMEBADPLUS</span></code>，<code class="docutils literal notranslate"><span class="pre">CONFIG_AMEBALITE</span></code>，<code class="docutils literal notranslate"><span class="pre">CONFIG_AMEBASMART</span></code> 判断是否为某类SOC:</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">if</span><span class="p">(</span><span class="s">CONFIG_AMEBADPLUS</span><span class="p">)</span>
+<span class="w">    </span><span class="c"># Add code for amebadplus here</span>
+<span class="nb">elseif</span><span class="p">(</span><span class="s">CONFIG_AMEBALITE</span><span class="p">)</span>
+<span class="w">    </span><span class="c"># Add code for amebalite here</span>
+<span class="nb">elseif</span><span class="p">(</span><span class="s">CONFIG_AMEBASMART</span><span class="p">)</span>
+<span class="w">    </span><span class="c"># Add code for amebasmart here</span>
+<span class="nb">endif</span><span class="p">()</span>
+</pre></div>
+</div>
+</li>
+<li><p>使用STR类型变量 <code class="docutils literal notranslate"><span class="pre">c_SOC_TYPE</span></code>:</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">if</span><span class="p">(</span><span class="o">${</span><span class="nv">c_SOC_TYPE</span><span class="o">}</span><span class="w"> </span><span class="s">STREUQAL</span><span class="w"> </span><span class="s2">&quot;amebadplus&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="c"># Add code for amebadplus here</span>
+<span class="nb">elseif</span><span class="p">(</span><span class="o">${</span><span class="nv">c_SOC_TYPE</span><span class="o">}</span><span class="w"> </span><span class="s">STREUQAL</span><span class="w"> </span><span class="s2">&quot;amebalite&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="c"># Add code for amebalite here</span>
+<span class="nb">elseif</span><span class="p">(</span><span class="o">${</span><span class="nv">c_SOC_TYPE</span><span class="o">}</span><span class="w"> </span><span class="s">STREUQAL</span><span class="w"> </span><span class="s2">&quot;amebasmart&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="c"># Add code for amebasmart here</span>
+<span class="nb">endif</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">小技巧</p>
+<p><code class="docutils literal notranslate"><span class="pre">c_SOC_TYPE</span></code> 特别适用于动态内容，如各SOC的 <code class="docutils literal notranslate"><span class="pre">usrcfg</span></code> 目录可以表示为：<code class="file docutils literal notranslate"><span class="pre">component/soc/usrcfg/$</span><em><span class="pre">c_SOC_TYPE</span></em></code></p>
+</div>
+</li>
+</ul>
+<div class="admonition attention">
+<p class="admonition-title">注意</p>
+<p>SOC类型的区分应当尽可能消除，更好的方法是使用特性之类的配置实现逻辑</p>
+</div>
+</section>
+<section id="build-mcu-type">
+<span id="id17"></span><h3>MCU类型<a class="headerlink" href="#build-mcu-type" title="Link to this heading"></a></h3>
+<p>SOC类型如 <code class="docutils literal notranslate"><span class="pre">km0</span></code>，<code class="docutils literal notranslate"><span class="pre">km4</span></code>，<code class="docutils literal notranslate"><span class="pre">kr4</span></code>，<code class="docutils literal notranslate"><span class="pre">ca32</span></code> 等，可以通过STR类型变量 <code class="docutils literal notranslate"><span class="pre">c_MCU_TYPE</span></code> 获取：</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">if</span><span class="p">(</span><span class="o">${</span><span class="nv">c_MCU_TYPE</span><span class="o">}</span><span class="w"> </span><span class="s">STREUQAL</span><span class="w"> </span><span class="s2">&quot;km0&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="c"># Add code for km0 here</span>
+<span class="nb">elseif</span><span class="p">(</span><span class="o">${</span><span class="nv">c_SOC_TYPE</span><span class="o">}</span><span class="w"> </span><span class="s">STREUQAL</span><span class="w"> </span><span class="s2">&quot;km4&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="c"># Add code for km4 here</span>
+<span class="nb">endif</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="cmakedebug">
+<h2>CMake常见的一些debug方法<a class="headerlink" href="#cmakedebug" title="Link to this heading"></a></h2>
+<section id="id20">
+<h3>日志<a class="headerlink" href="#id20" title="Link to this heading"></a></h3>
+<p>可以使用CMake内置 <code class="xref py py-func docutils literal notranslate"><span class="pre">message()</span></code> 或可读性更好些的 <code class="xref py py-func docutils literal notranslate"><span class="pre">ameba_debug()</span></code>，<code class="xref py py-func docutils literal notranslate"><span class="pre">ameba_info()</span></code>，<code class="xref py py-func docutils literal notranslate"><span class="pre">ameba_warning()</span></code>，<code class="xref py py-func docutils literal notranslate"><span class="pre">ameba_fatal()</span></code></p>
+<p>使用如下方式打印日志, CMake在生成阶段执行到代码处会停止，通常可以用于分析代码执行情况</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">message</span><span class="p">(</span><span class="s">FATAL_ERROR</span><span class="w"> </span><span class="s2">&quot;stop here&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="id21">
+<h1>进阶阅读<a class="headerlink" href="#id21" title="Link to this heading"></a></h1>
+<section id="id22">
+<h2>特殊的编译配置<a class="headerlink" href="#id22" title="Link to this heading"></a></h2>
+<section id="id23">
+<h3>以源文件为单位设置编译配置<a class="headerlink" href="#id23" title="Link to this heading"></a></h3>
+<p>仅对某个或某些源文件设置编译配置，如预定义等，例如为每个源文件添加一个预定义 <code class="docutils literal notranslate"><span class="pre">__FILE_Z_STR__</span></code>，该预定义展开为对应源文件的文件名字符串，实现如下：</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">ameba_list_append</span><span class="p">(</span><span class="s">private_sources</span>
+<span class="w">    </span><span class="s">foo.c</span>
+<span class="w">    </span><span class="s">bar.c</span>
+<span class="p">)</span>
+
+<span class="nb">foreach</span><span class="p">(</span><span class="s">src</span><span class="w"> </span><span class="o">${</span><span class="nv">private_sources</span><span class="o">}</span><span class="p">)</span>
+<span class="w">    </span><span class="nb">cmake_path</span><span class="p">(</span><span class="s">GET</span><span class="w"> </span><span class="s">src</span><span class="w"> </span><span class="s">FILENAME</span><span class="w"> </span><span class="s">filename</span><span class="p">)</span>
+<span class="w">    </span><span class="nb">set_source_files_properties</span><span class="p">(</span><span class="o">${</span><span class="nv">src</span><span class="o">}</span><span class="w"> </span><span class="s">PROPERTIES</span><span class="w"> </span><span class="s">COMPILE_DEFINITIONS</span><span class="w"> </span><span class="s2">&quot;__FILE_Z_STR__=\&quot;</span><span class="o">${</span><span class="nv">filename</span><span class="o">}</span><span class="s">\&quot;&quot;)</span>
+<span class="s">endforeach(</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>使用CMake内置接口 <a class="reference external" href="https://cmake.org/cmake/help/latest/command/set_source_files_properties.html">set_source_files_properties</a> 可以精确对每个源文件设置编译配置</p>
+</section>
+<section id="id24">
+<h3>按源文件类型设置编译选项<a class="headerlink" href="#id24" title="Link to this heading"></a></h3>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">ameba_list_append</span><span class="p">(</span><span class="s">private_compile_options</span>
+<span class="w">    </span><span class="s">-Wno-multichar</span><span class="w">                              </span><span class="c"># for both asm/c/cpp language</span>
+<span class="w">    </span><span class="o">$&lt;</span><span class="nv">$&lt;COMPILE_LANGUAGE:C</span><span class="o">&gt;</span><span class="s">:-Wno-pointer-sign&gt;</span><span class="w">  </span><span class="c"># for c language only</span>
+<span class="w">    </span><span class="o">$&lt;</span><span class="nv">$&lt;COMPILE_LANGUAGE:CXX</span><span class="o">&gt;</span><span class="s">:-Wno-narrowing&gt;</span><span class="w">   </span><span class="c"># for cpp language only</span>
+<span class="w">    </span><span class="o">$&lt;</span><span class="nv">$&lt;COMPILE_LANGUAGE:CXX</span><span class="o">&gt;</span><span class="s">:-std=c++17&gt;</span><span class="w">       </span><span class="c"># for cpp language only</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="id25">
+<h3>阻止编译警告错误<a class="headerlink" href="#id25" title="Link to this heading"></a></h3>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">ameba_list_append</span><span class="p">(</span><span class="s">private_compile_options</span>
+<span class="w">    </span><span class="s">-Wno-error</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition attention">
+<p class="admonition-title">注意</p>
+<p>仅对当前组件有效</p>
+</div>
+</section>
+</section>
+</section>
+<section id="id26">
+<h1>配置系统<a class="headerlink" href="#id26" title="Link to this heading"></a></h1>
+<section id="kconfig">
+<h2>Kconfig 介绍<a class="headerlink" href="#kconfig" title="Link to this heading"></a></h2>
+<p>本项目采用 Kconfig 作为配置工具，下面介绍一些常见的用法和注意事项，关于 Kconfig 更详细的信息可参见： <a class="reference external" href="https://docs.kernel.org/kbuild/kconfig-language.html">https://docs.kernel.org/kbuild/kconfig-language.html</a></p>
+<p><strong>定义 Kconfig 符号</strong></p>
+<blockquote>
+<div><p>定义一个 Kconfig 符号需要遵循下面格式：</p>
+<div class="highlight-ruby notranslate"><div class="highlight"><pre><span></span><span class="n">config</span><span class="w"> </span><span class="no">FOO</span>
+<span class="w">   </span><span class="n">bool</span><span class="w"> </span><span class="s2">&quot;choose FOO&quot;</span>
+<span class="w">   </span><span class="n">default</span><span class="w"> </span><span class="n">n</span>
+</pre></div>
+</div>
+<p>上述 Kconfig 结构定义了一个 bool 类型的 config 符号，该符号被加载到可视化界面中显示为：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span> <span class="p">]</span>  <span class="n">choose</span> <span class="n">FOO</span>
+</pre></div>
+</div>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;choose</span> <span class="pre">FOO&quot;</span></code> 为提示词，其将显示在可视化配置界面中，若删除 <code class="docutils literal notranslate"><span class="pre">&quot;choose</span> <span class="pre">FOO&quot;</span></code> ，那么可视化界面中将不会显示该配置项。除 bool 类型外，还可以定义 string, hex, int 等其他类型的配置项。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">default</span> <span class="pre">n</span></code> 表示 no, 代表该项默认不会被选中， <code class="docutils literal notranslate"><span class="pre">default</span> <span class="pre">n</span></code> 可缺省。注意，通过 <code class="docutils literal notranslate"><span class="pre">default</span></code> 定义的默认值，只有在用户没有设置过该 config 项时才会生效。</p></li>
+<li><p>进一步地，还可以通过条件表达式丰富 Kconfig 的功能，例如下面的写法表示。当 <code class="docutils literal notranslate"><span class="pre">BAR</span></code> 被选中时，菜单中才会显示 <code class="docutils literal notranslate"><span class="pre">FOO</span></code> 项，且当 <code class="docutils literal notranslate"><span class="pre">BAR</span></code> 和 <code class="docutils literal notranslate"><span class="pre">TIZ</span></code> 同时被选中时， <code class="docutils literal notranslate"><span class="pre">FOO</span></code> 的默认值为 y。</p>
+<blockquote>
+<div><div class="highlight-ruby notranslate"><div class="highlight"><pre><span></span><span class="n">config</span><span class="w"> </span><span class="no">FOO</span>
+<span class="w">   </span><span class="n">bool</span><span class="w"> </span><span class="s2">&quot;choose FOO&quot;</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="no">BAR</span>
+<span class="w">   </span><span class="n">default</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="no">BAR</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="no">TIZ</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Kconfig 的依赖</strong></p>
+<blockquote>
+<div><ol class="arabic">
+<li><p>通过 depends on 添加依赖</p>
+<p>通过 <code class="docutils literal notranslate"><span class="pre">depends</span> <span class="pre">on</span></code>，可以为此 config 项下的所有条目都添加依赖，即下面两种写法是等价的</p>
+<div class="highlight-ruby notranslate"><div class="highlight"><pre><span></span><span class="n">config</span><span class="w"> </span><span class="no">FOO</span>
+<span class="w">   </span><span class="n">depends</span><span class="w"> </span><span class="n">on</span><span class="w"> </span><span class="no">BAR</span>
+<span class="w">   </span><span class="n">bool</span><span class="w"> </span><span class="s2">&quot;choose FOO&quot;</span>
+<span class="w">   </span><span class="n">default</span><span class="w"> </span><span class="n">y</span>
+
+<span class="c1">## equal to</span>
+
+<span class="n">config</span><span class="w"> </span><span class="no">FOO</span>
+<span class="w">   </span><span class="n">bool</span><span class="w"> </span><span class="s2">&quot;choose FOO&quot;</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="no">BAR</span>
+<span class="w">   </span><span class="n">default</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="no">BAR</span>
+</pre></div>
+</div>
+</li>
+<li><p>通过 select 添加反向依赖</p>
+<p><code class="docutils literal notranslate"><span class="pre">select</span></code> 可以在一个 config 被选中后，强制指定另一个 config 也被选中，无论这个 config 有没有其他依赖关系。例如下面这个例子，当 <code class="docutils literal notranslate"><span class="pre">BUZZ</span></code> 被选中，无论 <code class="docutils literal notranslate"><span class="pre">BAR</span></code> 为何值， <code class="docutils literal notranslate"><span class="pre">FOO</span></code> 也一定会被选中，也无法通过可视化界面取消。</p>
+<div class="highlight-ruby notranslate"><div class="highlight"><pre><span></span><span class="n">config</span><span class="w"> </span><span class="no">BUZZ</span>
+<span class="w">   </span><span class="n">bool</span><span class="w"> </span><span class="s2">&quot;choose BUZZ&quot;</span>
+<span class="w">   </span><span class="nb">select</span><span class="w"> </span><span class="no">FOO</span>
+
+<span class="n">config</span><span class="w"> </span><span class="no">FOO</span>
+<span class="w">   </span><span class="n">depends</span><span class="w"> </span><span class="n">on</span><span class="w"> </span><span class="no">BAR</span>
+<span class="w">   </span><span class="n">bool</span><span class="w"> </span><span class="s2">&quot;choose FOO&quot;</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">select</span></code> 只能选中 <code class="docutils literal notranslate"><span class="pre">bool</span></code> 型的config。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">select</span></code> 常用于不可见的 config ，或没有依赖的 config。</p></li>
+</ul>
+</div>
+</li>
+</ol>
+</div></blockquote>
+<p><strong>不可见的 config 项</strong></p>
+<blockquote>
+<div><p>当 config 下未定义提示词时，此 config 项是不可见的，意味其不可被用户手动选中或取消，其值一般通过依赖项选中，或通过 <code class="docutils literal notranslate"><span class="pre">default</span></code> 值定义。例如：</p>
+<div class="highlight-ruby notranslate"><div class="highlight"><pre><span></span><span class="n">config</span><span class="w"> </span><span class="no">BAR</span>
+<span class="w">   </span><span class="n">bool</span><span class="w"> </span><span class="s2">&quot;BAR&quot;</span>
+<span class="w">   </span><span class="nb">select</span><span class="w"> </span><span class="no">FOO</span>
+
+<span class="n">config</span><span class="w"> </span><span class="no">FOO</span>
+<span class="w">   </span><span class="n">bool</span>
+<span class="w">   </span><span class="n">default</span><span class="w"> </span><span class="n">n</span>
+
+<span class="c1">##equal to</span>
+
+<span class="n">config</span><span class="w"> </span><span class="no">FOO</span>
+<span class="w">   </span><span class="n">bool</span>
+<span class="w">   </span><span class="n">default</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="no">BAR</span>
+
+<span class="c1">##also equal to</span>
+
+<span class="n">config</span><span class="w"> </span><span class="no">FOO</span>
+<span class="w">   </span><span class="n">depends</span><span class="w"> </span><span class="n">on</span><span class="w"> </span><span class="no">BAR</span>
+<span class="w">   </span><span class="n">bool</span>
+<span class="w">   </span><span class="n">default</span><span class="w"> </span><span class="n">y</span>
+</pre></div>
+</div>
+<p>如果是非 <code class="docutils literal notranslate"><span class="pre">bool</span></code> 类型：</p>
+<div class="highlight-ruby notranslate"><div class="highlight"><pre><span></span><span class="n">config</span><span class="w"> </span><span class="no">NUM</span>
+<span class="w">   </span><span class="n">int</span>
+<span class="w">   </span><span class="n">default</span><span class="w"> </span><span class="mi">255</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="no">BAR</span>
+<span class="w">   </span><span class="n">default</span><span class="w"> </span><span class="mi">65535</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="o">!</span><span class="no">BAR</span>
+</pre></div>
+</div>
+</div></blockquote>
+</section>
+<section id="id27">
+<h2>Kconfig 文件的层级引用<a class="headerlink" href="#id27" title="Link to this heading"></a></h2>
+<p>Kconfig 可以进行多层级的引用，可用的语法有：</p>
+<ol class="arabic">
+<li><p><code class="docutils literal notranslate"><span class="pre">source</span></code> :</p>
+<p><code class="docutils literal notranslate"><span class="pre">source</span></code> 语句可以引用一个相对于顶层 Kconfig 的路径。例如顶层 Kconfig 可以使用如下语句：</p>
+<div class="highlight-ruby notranslate"><div class="highlight"><pre><span></span><span class="n">source</span><span class="w"> </span><span class="s2">&quot;path/Kconfig&quot;</span>
+</pre></div>
+</div>
+<p>这将会把 <code class="docutils literal notranslate"><span class="pre">{top_kconfig_dir}/path/Kconfig</span></code> 文件纳入到顶层 Kconfig 中，但一定要保证 <code class="docutils literal notranslate"><span class="pre">{top_kconfig_dir}/path/Kconfig</span></code> 文件存在，否则会产生错误。</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">osource</span></code> :</p>
+<p><code class="docutils literal notranslate"><span class="pre">osource</span></code> 语句后面引用的文件路径即使不存在，也不会导致报错。</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rsource</span></code> :</p>
+<p>通过 <code class="docutils literal notranslate"><span class="pre">rsource</span></code> 语句引用的路径，是相对于使用该 <code class="docutils literal notranslate"><span class="pre">rsource</span></code> 语句的 Kconfig 文件的路径，而不是相对于顶层 Kconfig 的路径。</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">orsource</span></code> :</p>
+<p>该语句基于 <code class="docutils literal notranslate"><span class="pre">rsource</span></code> ，同时允许后面引用的文件路径不存在。</p>
+</li>
+</ol>
+</section>
+<section id="conf">
+<span id="write-conf-files"></span><h2>conf 文件介绍<a class="headerlink" href="#conf" title="Link to this heading"></a></h2>
+<p><strong>conf 文件格式</strong></p>
+<blockquote>
+<div><p>conf 文件通过将用户需要设置的配置项写入其中，代替 UI 界面的 menuconfig 方式。conf 文件由多行配置项组成，这些配置项遵循以下格式：</p>
+<div class="highlight-ruby notranslate"><div class="highlight"><pre><span></span><span class="no">CONFIG_</span><span class="o">&lt;</span><span class="n">name1</span><span class="o">&gt;=&lt;</span><span class="n">value</span><span class="o">&gt;</span>
+
+<span class="no">CONFIG_</span><span class="o">&lt;</span><span class="n">name2</span><span class="o">&gt;=&lt;</span><span class="n">value</span><span class="o">&gt;</span>
+
+<span class="o">...</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">=</span></code> 号左右不允许有空格。</p>
+</div></blockquote>
+<p><strong>conf 文件写法</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><p>conf 文件的写法基本类似于 <code class="docutils literal notranslate"><span class="pre">.config</span></code> 文件，但需要注意的是， <code class="docutils literal notranslate"><span class="pre">.config</span></code> 文件中包含了所有 config 项，无论其是否对用户可见。但 conf 文件中只允许设置对用户可见的 config 项。</p></li>
+<li><p>和 menuconfig 交互式配置的方式类似，这种直接配置的方式本质上也是选中/取消选中一些 Kconfig 文件中定义的项，只不过用参数输入的方式代替了交互的的输入。</p></li>
+</ul>
+<p>例如有这样的 Kconfig:</p>
+<div class="highlight-ruby notranslate"><div class="highlight"><pre><span></span><span class="n">config</span><span class="w"> </span><span class="no">SUPPORT_ATCMD</span>
+<span class="w">   </span><span class="n">bool</span><span class="w"> </span><span class="s2">&quot;Enable ATCMD&quot;</span>
+<span class="w">   </span><span class="n">default</span><span class="w"> </span><span class="n">n</span>
+<span class="k">if</span><span class="w"> </span><span class="no">SUPPORT_ATCMD</span>
+<span class="w">   </span><span class="n">choice</span>
+<span class="w">      </span><span class="n">default</span><span class="w"> </span><span class="no">ATCMD_MANUAL_TEST</span>
+<span class="w">      </span><span class="n">prompt</span><span class="w"> </span><span class="s2">&quot;ATCMD Mode&quot;</span>
+<span class="w">      </span><span class="n">config</span><span class="w"> </span><span class="no">ATCMD_MANUAL_TEST</span>
+<span class="w">            </span><span class="n">bool</span><span class="w"> </span><span class="s2">&quot;Manual Test Mode&quot;</span>
+<span class="w">      </span><span class="n">config</span><span class="w"> </span><span class="no">ATCMD_HOST_CONTROL</span>
+<span class="w">            </span><span class="n">bool</span><span class="w"> </span><span class="s2">&quot;Host Control Mode&quot;</span>
+<span class="w">   </span><span class="n">endchoice</span>
+<span class="w">   </span><span class="n">config</span><span class="w"> </span><span class="no">ATCMD_NETWORK</span>
+<span class="w">      </span><span class="n">bool</span><span class="w"> </span><span class="s2">&quot;Enable Network&quot;</span>
+<span class="w">      </span><span class="n">default</span><span class="w"> </span><span class="n">n</span>
+<span class="w">   </span><span class="n">config</span><span class="w"> </span><span class="no">ATCMD_SOCKET</span>
+<span class="w">      </span><span class="n">bool</span><span class="w"> </span><span class="s2">&quot;Enable Socket&quot;</span>
+<span class="n">endif</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="o">*</span><span class="p">]</span> <span class="n">Enable</span> <span class="n">ATCMD</span>
+   <span class="n">ATCMD</span> <span class="n">Mode</span> <span class="p">(</span><span class="n">Manual</span> <span class="n">Test</span> <span class="n">Mode</span><span class="p">)</span>  <span class="o">---&gt;</span>
+<span class="p">[</span> <span class="p">]</span>     <span class="n">Enable</span> <span class="n">Longer</span> <span class="n">CMD</span>
+<span class="p">[</span><span class="o">*</span><span class="p">]</span>     <span class="n">Enable</span> <span class="n">Network</span>
+<span class="p">[</span> <span class="p">]</span>     <span class="n">Enable</span> <span class="n">Socket</span>
+</pre></div>
+</div>
+<p>对应的conf文件应该写为：</p>
+<div class="highlight-ruby notranslate"><div class="highlight"><pre><span></span><span class="no">CONFIG_SUPPORT_ATCMD</span><span class="o">=</span><span class="n">y</span>
+
+<span class="no">CONFIG_ATCMD_NETWORK</span><span class="o">=</span><span class="n">y</span>
+</pre></div>
+</div>
+<p>由于 <code class="docutils literal notranslate"><span class="pre">ATCMD_MANUAL_TEST</span></code> 是默认的 choice 值，因此conf文件中可省略 <code class="docutils literal notranslate"><span class="pre">CONFIG_ATCMD_MANUAL_TEST=y</span></code></p>
+<p>在 <code class="docutils literal notranslate"><span class="pre">{SDK}/amebaxxx_gcc_project/utils/confs_daily_build</span></code> 目录下，还提供了各种常见的配置集合文件，用户可参考这些示例创建自己的 conf 文件。</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>用户可直接通过 <code class="docutils literal notranslate"><span class="pre">menuconfig.py</span> <span class="pre">-s</span> <span class="pre">xxx.conf</span></code> 将当前配置自动保存为 conf 文件。</p>
+</div>
+</div></blockquote>
+<p><strong>default.conf</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><p>在 <code class="docutils literal notranslate"><span class="pre">{SDK}/amebaxxx_gcc_project</span></code> 目录下，提供了一个名为 <code class="docutils literal notranslate"><span class="pre">default.conf</span></code> 的配置集合文件，定义了编译本 SOC 项目需要默认打开的配置项。</p></li>
+<li><p>特殊地， <code class="docutils literal notranslate"><span class="pre">menuconfig.py</span> <span class="pre">-f</span></code> 隐含了 <code class="docutils literal notranslate"><span class="pre">menuconfig.py</span> <span class="pre">-f</span> <span class="pre">default.conf</span></code> 的规则，这样用户在编写自己的 conf 文件时，除可省略 Kconfig 中通过 <code class="docutils literal notranslate"><span class="pre">default</span></code> 选中的项之外，还可省略 <code class="docutils literal notranslate"><span class="pre">default.conf</span></code> 文件中已经配置过的配置项，即只需编写 <code class="docutils literal notranslate"><span class="pre">default.conf</span></code> 的增量配置即可。如果需要关闭 <code class="docutils literal notranslate"><span class="pre">default.conf</span></code> 中的某些选项，请将对应的配置项赋值为 <code class="docutils literal notranslate"><span class="pre">n</span></code>。</p></li>
+<li><p>Kconfig 中的 default 值只有在未设定某个配置项时才会生效， 而 <code class="docutils literal notranslate"><span class="pre">default.conf</span></code> 文件相当于一系列默认的输入项，因此 <code class="docutils literal notranslate"><span class="pre">default.conf</span></code> 的优先级要高于 Kconfig 中的 default 值。</p></li>
+</ul>
+</div></blockquote>
+<p><strong>prj.conf</strong></p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">prj.conf</span></code> 存放在 <a class="reference internal" href="../0_sdk_example/1_sdk_example_toprst_cn.html#sdk-example"><span class="std std-ref">example</span></a> 下或用户创建的 <a class="reference internal" href="../0_gcc_build_environment/1_gcc_build_environment_toprst_cn.html#creat-project"><span class="std std-ref">工程路径</span></a> 下，记录此 example 或外部工程需要的配置项。 用户可通过 <code class="docutils literal notranslate"><span class="pre">menuconfig.py</span> <span class="pre">-f</span> <span class="pre">/.../prj.conf</span></code> 对项目进行配置。此外，当用户未通过 UI 配置或指定其他 conf 文件时， <code class="docutils literal notranslate"><span class="pre">prj.conf</span></code> 也会作为 <a class="reference internal" href="../0_gcc_build_environment/1_gcc_build_environment_toprst_cn.html#init-config"><span class="std std-ref">初始值</span></a> 生效。</p>
+</div></blockquote>
+</section>
+<section id="id28">
+<h2>Kconfig 自动检查更新<a class="headerlink" href="#id28" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>有这样一种情况， Kconfig 文件或 <code class="docutils literal notranslate"><span class="pre">default.conf</span></code> 文件更新后（例如从远程仓库中拉取），但 menuconfig 文件夹下的文件仍是基于更新前 Kconfig 生成，这时候直接运行 <code class="docutils literal notranslate"><span class="pre">build.py</span></code> 命令可能会出现预期外的效果。为避免这种情况发生，每次进行编译前都会对 Kconfig 的更新状态进行检查。</p>
+<p>检查的锚定文件为 <code class="docutils literal notranslate"><span class="pre">menuconfig/.config_default</span></code> ，该文件每次编译前都会基于 <code class="docutils literal notranslate"><span class="pre">default.conf</span></code> 生成，内容为该 SOC 的默认配置值。如果某次生成 <code class="docutils literal notranslate"><span class="pre">menuconfig/.config_default</span></code> 后，发现 <code class="docutils literal notranslate"><span class="pre">menuconfig</span></code> 文件夹下已经存在同名文件并且内容和本次生成的内容不一致。控制台将打印两个文件的 diff 差异，并让用户根据差异内容进行选择：</p>
+<ul class="simple">
+<li><p>如果用户判断此次 kconfig 更新可以忽略，那么可以按下 <kbd class="kbd docutils literal notranslate">Enter</kbd>，本次编译将继续使用当前的 .config 配置。</p></li>
+<li><p>如果用户认为忽略此次 kconfig 内容可能会对编译结果造成影响，那么可以按下 <kbd class="kbd compound docutils literal notranslate"><kbd class="kbd docutils literal notranslate">Ctrl</kbd>+<kbd class="kbd docutils literal notranslate">C</kbd></kbd> 退出。退出后，用户可以通过可视化配置或 <code class="docutils literal notranslate"><span class="pre">menuconfig.py</span> <span class="pre">-f</span></code> 的方式重新进行配置，亦或通过 <code class="docutils literal notranslate"><span class="pre">menuconfig.py</span> <span class="pre">-c</span></code> 、 <code class="docutils literal notranslate"><span class="pre">build.py</span> <span class="pre">-p</span></code> 等方式清理 <code class="docutils literal notranslate"><span class="pre">menuconfig</span></code> 文件夹后采用默认配置编译。</p></li>
+</ul>
+</div></blockquote>
+</section>
 </section>
 
 
@@ -270,6 +2406,78 @@ build user library. As shown below, <code class="docutils literal notranslate"><
 
 </footer>
         </div>
+    <!-- 问题反馈按钮和对话框 -->
+    
+        <button id="report-button">Inquire</button>
+    
+    <div id="feedback-dialog" class="feedback-dialog" style="display: none;">
+        <div class="form-group">
+            <label style="font-weight: bold;">Please select the related chapter:</label>
+            <select id="chapter-select">
+                <option value="">Select Chapter</option>
+                <!-- 章节选项将通过JavaScript动态填充 -->
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label style="font-weight: bold;">Post Type</label>
+            <select id="post-type" class="form-control" required>
+                <option value="">-- Select Type --</option>
+                <option value="doc_correction">Document Correction</option>
+                <option value="tech_consult">Technical Consult</option>
+                <option value="tech_summary">Technical Summary</option>
+                <option value="operation_flow">Operation Flow</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label style="font-weight: bold;">Related Paragraph:</label>
+            <textarea
+                id="paragraph-input"
+                placeholder="{{ '你可以先选择有问题的段落或手动输入...' if language == 'zh_CN' else 'You can select text or type directly here...' }}"
+                rows="4"
+            ></textarea>
+        </div>
+
+        <div class="form-group">
+            <label style="font-weight: bold;">Please describe your issue:</label>
+            <textarea
+                id="inquire_input"
+                placeholder="Feature enhancement in progress, please stay tuned...">
+            </textarea>
+        </div>
+
+        <button id="submit-feedback">Submit</button>
+        <button id="cancel-feedback">Cancel</button>
+    </div>
+
+    <style>
+        .form-group {
+            margin: 5px 0;  /* 基础间距 */
+        }
+
+        /* 相邻表单项缩小上方间距 */
+        .form-group + .form-group {
+            margin-top: 10px;
+        }
+
+        /* 段落输入框底部微调 */
+        #paragraph-input, #inquire_input {
+            margin: 2px 0; /* 上下间距 */
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            resize: vertical;
+            min-height: 100px;
+
+            /* 占位符样式 */
+            &::placeholder {
+                color: #999;
+                font-style: italic;
+            }
+        }
+    </style>
 
       </div>
     </section>
@@ -279,8 +2487,8 @@ build user library. As shown below, <code class="docutils literal notranslate"><
           SphinxRtdTheme.Navigation.enable(true);
       });
   </script>
- 
-
+     
+    
 
 
 </body>
