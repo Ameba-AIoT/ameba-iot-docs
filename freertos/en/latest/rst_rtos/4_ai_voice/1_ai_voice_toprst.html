@@ -1,0 +1,1867 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Introduction &mdash; Ameba IoT Docs  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=c12c2b39" />
+      <link rel="stylesheet" type="text/css" href="../../_static/tabs.css?v=a5c4661c" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=c12c2b39" />
+
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="../../_static/tabs.js?v=3030b3cb"></script>
+        <script>let toggleHintShow = 'Click to show';</script>
+        <script>let toggleHintHide = 'Click to hide';</script>
+        <script>let toggleOpenOnPrint = 'true';</script>
+        <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Multimedia" href="../4_multimedia/0_multimedia_index.html" />
+    <link rel="prev" title="AIVoice" href="0_ai_voice_index.html" />
+     
+
+    <!-- NDA文档输入密码的框 -->
+    
+<script>
+// ▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼ 多语言配置 ▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼
+const lang = 'en';  // 使用 Python 字符串切片
+const i18n = {
+    zh: {
+        title: '访问授权',
+        username: '用户名',
+        password: '密码',
+        confirm: '确认',
+        cancel: '取消',
+        usernameError: '用户名错误',
+        userNotExist: '该用户不存在',
+        passwordError: '密码错误',
+        wrongPassword: '请输入正确的密码',
+        accessDenied: '无访问权限',
+        noPermission: '您无权查看此内容',
+        expiredTitle: '访问已过期',
+        expiredMsg: '您的权限已失效<br>有效期：%s 至 %s',
+        deniedTitle: '⚠️ 无访问权限',
+        contact: '请联系 claire_wang@realsil.com.cn 获取权限'
+    },
+    en: {
+        title: 'Access Required',
+        username: 'Username',
+        password: 'Password',
+        confirm: 'Confirm',
+        cancel: 'Cancel',
+        usernameError: 'Invalid Username',
+        userNotExist: 'User does not exist',
+        passwordError: 'Wrong Password',
+        wrongPassword: 'Please enter correct password',
+        accessDenied: 'Access Denied',
+        noPermission: 'You have no permission to view this content',
+        expiredTitle: 'Authorization Expired',
+        expiredMsg: 'Your access has expired<br>Valid period: %s to %s',
+        deniedTitle: '⚠️ Access Denied',
+        contact: 'Please contact claire_wang@realsil.com.cn for access'
+    }
+};
+// ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲ 多语言配置结束 ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
+</script>
+
+    <!-- 样式模板 -->
+    
+
+<style>
+    .wy-nav-content {
+        max-width: 1100px;
+         
+    }
+    
+    .auth-denied {
+        padding: 20px;
+        background: #f8f9fa;
+        border-radius: 4px;
+        border: 1px solid #dee2e6;
+        text-align: center;
+        color: #721c24;
+        margin-top: 20px;
+    }
+    .auth-denied h3 {
+        margin-bottom: 10px;
+        color: #dc3545;
+    }
+    
+    #report-button {
+        position: fixed;
+        top: 10px;
+        left: 1270px;
+        padding: 1px 15px; /* 调整内边距：1px 为上下，5px 为左右 */
+        height: 30px; /* 设置固定高度 */
+        background-color: #2ecc71;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        z-index: 1000;
+    }
+    #report-button:hover {
+        background-color: #2ecc71;
+    }
+    
+    .feedback-dialog {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        z-index: 1001;
+        width: 600px;
+    }
+    .feedback-dialog textarea {
+        width: 100%;
+        height: 150px;
+        margin-top: 10px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        resize: vertical;
+    }
+    .feedback-dialog button {
+        margin-top: 10px;
+        padding: 8px 16px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    .feedback-dialog button:hover {
+        background-color: #0056b3;
+    }
+
+    
+    
+</style>
+
+
+    <style>
+    /* ====================== 选择器样式 ====================== */
+    /* 选择器容器 */
+    .selector-container {
+        margin: 8px 0;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+    }
+    
+    /* 版本选择器特殊边距 */
+    .version-selector-container {
+        margin-bottom: 8px !important;
+    }
+    
+    /* 选择器标签 */
+    .selector-label {
+        color: white;
+        margin-right: 10px;
+        width: 80px;
+        text-align: right;
+        font-size: 0.9em;
+    }
+    
+    /* 下拉选择框 */
+    .selector-dropdown {
+        width: 120px;
+        border-radius: 2px;
+        padding: 4px 8px;
+        border: 1px solid #405261;
+        background: #2c3e50;
+        color: white;
+        font-size: 0.9em;
+    }
+    
+    /* 下拉选择框悬停效果 */
+    .selector-dropdown:hover {
+        border-color: #3498db;
+        transition: border-color 0.3s;
+    }
+    
+    /* 选择器响应式布局 */
+    @media (max-width: 768px) {
+        .selector-container {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        
+        .selector-label {
+            width: 100%;
+            text-align: left;
+            margin-bottom: 4px;
+        }
+        
+        .selector-dropdown {
+            width: 100%;
+        }
+    }
+</style>
+    <style>
+/* =============== 左上角登录区域  =============== */
+/* ================= 用户面板 ================= */
+.user-panel {
+    padding: 15px;
+    background: #34495e;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.username {
+    color: #fff;
+    font-weight: 500;
+    font-size: 1.1em;
+    text-align: center;
+    margin: 10px 0;
+}
+
+/* ================= 按钮容器 ================= */
+.button-row {
+    display: flex;
+    gap: 8px;
+    width: 100%;
+    margin: 10px 0;
+}
+
+/* 通用按钮样式 */
+.auth-btn, .forum-btn, .official-btn {
+    flex: 1;
+    padding: 8px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: opacity 0.3s;
+    text-align: center;
+    color: white !important;
+}
+
+/* 认证按钮 */
+.auth-btn {
+    background: #3498db;
+}
+
+/* 论坛按钮 */
+.forum-btn {
+    background: #9b59b6; /* 与参考代码的官方按钮同色 */
+}
+
+/* 官网按钮 */
+.official-btn {
+    background: #2ecc71; /* 与参考代码文档按钮同色 */
+}
+/* =============== 左上角登录区域  =============== */
+</style>
+
+    <!-- 注入 TOC 映射和当前页面信息 -->
+    
+
+<!-- TOC 映射和当前文档信息 -->
+<script>
+// 将 Python 字典转换为 JS 对象
+const TOC_TITLE_MAP = {"rst_rtos/0_ameba_product": "Products Center", "rst_rtos/0_ameba_product/0_ameba_product_center_index": "Products Center", "rst_rtos/0_ameba_sdk": "Ameba SDK", "rst_rtos/0_ameba_sdk/0_ameba_sdks_index": "Ameba SDK", "rst_rtos/0_ameba_solutions": "Ameba Solutions", "rst_rtos/0_ameba_solutions/0_ameba_solutions_index": "Ameba Solutions", "rst_rtos/0_at_command": "0.8 AT Commands", "rst_rtos/0_at_command/0_at_command_index": "0.8 AT Commands", "rst_rtos/0_file_system": "0.9 Virtual File System", "rst_rtos/0_file_system/0_vfs_index": "0.9 Virtual File System", "rst_rtos/0_ftl": "0.a Flash Translation Layer", "rst_rtos/0_ftl/0_ftl_index": "0.a Flash Translation Layer", "rst_rtos/0_gcc_build_environment": "0.1 GCC Build Environment", "rst_rtos/0_gcc_build_environment/0_gcc_build_index": "0.1 GCC Build Environment", "rst_rtos/0_gcc_build_library": "0.3 GCC Build Library", "rst_rtos/0_gcc_build_library/0_gcc_build_library_index": "0.3 GCC Build Library", "rst_rtos/0_gdb_debug": "0.2 GDB Debug", "rst_rtos/0_gdb_debug/0_gdb_debug_index": "0.2 GDB Debug", "rst_rtos/0_memory_layout": "0.5 Flash \u0026 RAM Layout", "rst_rtos/0_memory_layout/0_layout_index": "0.5 Flash \u0026 RAM Layout", "rst_rtos/0_sdk_example": "0.4 SDK Example", "rst_rtos/0_sdk_example/0_sdk_example_index": "0.4 SDK Example", "rst_rtos/0_tools": "0.7 Tools", "rst_rtos/0_tools/0_tools_index": "0.7 Tools", "rst_rtos/0_user_config": "0.6 User Config", "rst_rtos/0_user_config/0_usrcfg_index": "0.6 User Config", "rst_rtos/10_api_docs": "10.0 API Reference", "rst_rtos/10_api_docs/0_api_index": "10.0 API Reference", "rst_rtos/1_boot_process": "1.1 BOOT Process", "rst_rtos/1_boot_process/0_boot_index": "1.1 BOOT Process", "rst_rtos/1_chipen": "1.4 Chip Enable", "rst_rtos/1_chipen/0_chipen_index": "1.4 Chip Enable", "rst_rtos/1_gpio": "1.7 GPIO \u0026 Pin Control", "rst_rtos/1_gpio/0_gpio_index": "1.7 GPIO \u0026 Pin Control", "rst_rtos/1_ipc": "1.5 Inter Processor Communication", "rst_rtos/1_ipc/0_ipc_index": "1.5 Inter Processor Communication", "rst_rtos/1_mpu_cache": "1.0 MPU and Cache", "rst_rtos/1_mpu_cache/0_mpu_cache_index": "1.0 MPU and Cache", "rst_rtos/1_ota": "1.2 OTA", "rst_rtos/1_ota/0_ota_index": "1.2 OTA", "rst_rtos/1_otpc": "1.3 OTPC", "rst_rtos/1_otpc/0_otpc_index": "1.3 OTPC", "rst_rtos/1_pinmux": "1.6 Pin Multiplexing", "rst_rtos/1_pinmux/0_pinmux_index": "1.6 Pin Multiplexing", "rst_rtos/1_power_save": "1.9 Power Save", "rst_rtos/1_power_save/0_ps_index": "1.9 Power Save", "rst_rtos/2_whc_fullmac": "2.1 WHC FullMAC", "rst_rtos/2_whc_fullmac/0_fullmac_index": "2.1 WHC FullMAC", "rst_rtos/2_whc_wifi_bridge": "2.0 WHC Bridge", "rst_rtos/2_whc_wifi_bridge/0_wifi_bridge_index": "2.0 WHC Bridge", "rst_rtos/2_wifi_adaptivity_test": "2.4 Wi-Fi Adaptivity Test", "rst_rtos/2_wifi_adaptivity_test/0_wifi_adaptivity_index": "2.4 Wi-Fi Adaptivity Test", "rst_rtos/2_wifi_csi": "2.3 Wi-Fi CSI", "rst_rtos/2_wifi_csi/0_wifi_csi_index": "2.3 Wi-Fi CSI", "rst_rtos/2_wifi_tunnel": "2.2 Wi-Fi R-Mesh", "rst_rtos/2_wifi_tunnel/0_wifi_tunnel_index": "2.2 Wi-Fi R-Mesh", "rst_rtos/3_ap_trustzone": "3.d AP Secure Service", "rst_rtos/3_ap_trustzone/0_ap_tz_index": "3.d AP Secure Service", "rst_rtos/3_crypto_engine": "3.9 Crypto Engine", "rst_rtos/3_crypto_engine/0_crypto_engine_index": "3.9 Crypto Engine", "rst_rtos/3_ecdsa_engine": "3.a ECDSA Engine", "rst_rtos/3_ecdsa_engine/0_ecdsa_index": "3.a ECDSA Engine", "rst_rtos/3_eddsa_engine": "3.b EDDSA Engine", "rst_rtos/3_eddsa_engine/0_eddsa_index": "3.b EDDSA Engine", "rst_rtos/3_rsa_engine": "3.c RSA Engine", "rst_rtos/3_rsa_engine/0_rsa_index": "3.c RSA Engine", "rst_rtos/3_security": "3.1 Security \u0026 Encryption", "rst_rtos/3_security/0_security_index": "3.1 Security \u0026 Encryption", "rst_rtos/3_trng": "3.2 True Random Number Generator", "rst_rtos/3_trng/0_trng_index": "3.2 True Random Number Generator", "rst_rtos/4_ai": "4.1 AI", "rst_rtos/4_ai/0_ai_index": "4.1 AI", "rst_rtos/4_ai_voice": "4.2 AIVoice", "rst_rtos/4_ai_voice/0_ai_voice_index": "4.2 AIVoice", "rst_rtos/4_dsp": "4.4 DSP", "rst_rtos/4_dsp/0_dsp_index": "4.4 DSP", "rst_rtos/4_multimedia": "4.3 Multimedia", "rst_rtos/4_multimedia/0_multimedia_index": "4.3 Multimedia", "rst_rtos/6_mass_production": "6.1 Mass Production", "rst_rtos/6_mass_production/0_mp_index": "6.1 Mass Production", "rst_rtos/6_mptools": "6.2 MP Tools", "rst_rtos/6_mptools/0_mptools_index": "6.2 MP Tools", "rst_rtos/7_usb": "7.1 USB Host \u0026 Device", "rst_rtos/7_usb/0_usb_index": "7.1 USB Host \u0026 Device", "rst_rtos/8_adc": "8.4 ADC", "rst_rtos/8_adc/0_adc_index": "8.4 ADC", "rst_rtos/8_cap_touch": "8.7 Cap-Touch", "rst_rtos/8_cap_touch/0_cap_touch_index": "8.7 Cap-Touch", "rst_rtos/8_dmac": "8.1 DMA Controller", "rst_rtos/8_dmac/0_dmac_index": "8.1 DMA Controller", "rst_rtos/8_ir": "8.5 IR", "rst_rtos/8_ir/0_ir_index": "8.5 IR", "rst_rtos/8_key_scan": "8.8 Key-Scan", "rst_rtos/8_key_scan/0_key_scan_index": "8.8 Key-Scan", "rst_rtos/8_lcdc": "8.a LCD Controller", "rst_rtos/8_lcdc/0_lcdc_index": "8.a LCD Controller", "rst_rtos/8_ledc": "8.6 LED Controller", "rst_rtos/8_ledc/0_ledc_index": "8.6 LED Controller", "rst_rtos/8_psram": "8.2 PSRAM", "rst_rtos/8_psram/0_psram_index": "8.2 PSRAM", "rst_rtos/8_rtc_io": "8.9 RTC-IO", "rst_rtos/8_rtc_io/0_rtc_io_index": "8.9 RTC-IO", "rst_rtos/8_thermal": "8.3 Thermal Meter", "rst_rtos/8_thermal/0_thermal_index": "8.3 Thermal Meter"};
+console.log("TOC_TITLE_MAP:", TOC_TITLE_MAP);
+
+// 获取当前页面的文档名 (例如 'rst_rtos/3_nda_secure_boot/0_secure_boot_index_nda')
+const CURRENT_DOCNAME = 'rst_rtos/4_ai_voice/1_ai_voice_toprst';
+
+// 动态查找顶级分类函数（定义为全局函数）
+window.findTopLevelChapter = function(docname) {
+    console.log("Attempting to find top-level chapter for:", docname);
+    let bestMatch = "";
+    let bestTitle = "Unknown Chapter";
+
+    // 按路径长度降序排序以确保最长匹配
+    const sortedPaths = Object.keys(TOC_TITLE_MAP).sort((a, b) => b.length - a.length);
+
+    for (const path of sortedPaths) {
+        console.log("Checking path:", path);
+        if (docname === path || docname.startsWith(path + '/')) { // 子页面
+            bestMatch = path;
+            bestTitle = TOC_TITLE_MAP[path];
+            console.log("Matched path:", path, "with title:", bestTitle);
+            break;
+        }
+    }
+
+    // 如果没有找到任何匹配项，则尝试更短的路径
+    if (bestMatch === "") {
+        const pathSegments = docname.split('/');
+        while (pathSegments.length > 1) { // 至少保留根路径
+            const candidate = pathSegments.join('/');
+            console.log("Checking shorter path:", candidate);
+            if (TOC_TITLE_MAP[candidate]) {
+                bestTitle = TOC_TITLE_MAP[candidate];
+                console.log("Matched shorter path:", candidate, "with title:", bestTitle);
+                break;
+            }
+            pathSegments.pop();
+        }
+    }
+
+    console.log("Final top-level chapter:", bestTitle);
+    return bestTitle;
+}
+
+// 初始化时调用
+document.addEventListener('DOMContentLoaded', function() {
+    const topLevelChapter = findTopLevelChapter(CURRENT_DOCNAME);
+    console.log("Top Level Chapter:", topLevelChapter);
+
+    // 将顶级分类插入到DOM中（根据需要）
+    const chapterElement = document.createElement('div');
+    chapterElement.className = 'top-level-chapter';
+    chapterElement.innerHTML = `<strong>Top Level Chapter: </strong>${topLevelChapter}`;
+    document.body.appendChild(chapterElement);
+});
+</script>
+
+    <!-- 问题回报 -->
+    <!-- source/_templates/_layout_issue_report.html -->
+<div id="prompt-box" style="
+    display: none;
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.8);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    z-index: 9999;
+    text-align: center;
+    font-size: 14px;
+"></div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    'use strict'; // 添加严格模式
+
+    // 获取所有DOM元素引用
+    const reportButton = document.getElementById('report-button');
+    const feedbackDialog = document.getElementById('feedback-dialog');
+    const feedbackText = document.getElementById('inquire_input');
+    const submitButton = document.getElementById('submit-feedback');
+    const cancelButton = document.getElementById('cancel-feedback');
+    const promptBox = document.getElementById('prompt-box');
+    const chapterSelect = document.getElementById('chapter-select');
+    const paragraphInput = document.getElementById('paragraph-input');
+    const postTypeSelect = document.getElementById('post-type');
+    console.log('帖子类型(postTypeSelect)DOM元素:', postTypeSelect); // 应输出<select>元素
+
+    // 状态变量
+    let hasUserInput = false; // 跟踪用户是否主动输入
+    let selectedText = '';
+    const language = 'en'; // 从模板引擎获取语言变量
+
+    // 初始化时设置placeholder
+    paragraphInput.placeholder = language === 'zh_CN' 
+        ? '你可以先选择有问题的段落或手动输入...'
+        : 'You can select text or type directly here...';
+
+    // 获取当前激活的章节
+    function getCurrentChapter() {
+        try {
+            // 通过激活的菜单项获取当前章节
+            const currentLink = document.querySelector('.wy-menu .toctree-l1.current > a');
+            if (currentLink) {
+                return currentLink.textContent.replace('¶', '').trim();
+            }
+
+            // 如果没有找到激活的链接，尝试通过页面标题获取
+            const pageTitle = document.querySelector('h1');
+            if (pageTitle) {
+                return pageTitle.textContent.split('\n')[0].trim();
+            }
+
+            // 如果以上方法都失败，尝试通过URL路径推断章节
+            const pathParts = window.location.pathname.split('/');
+            if (pathParts.length > 2) {
+                return decodeURIComponent(pathParts[pathParts.length - 2]);
+            }
+
+            return null;
+        } catch (error) {
+            console.error('获取当前章节失败:', error);
+            return null;
+        }
+    }
+
+    // 填充章节选择框
+    function populateChapters() {
+        const chapterElements = document.querySelectorAll('.wy-menu .toctree-l1 > a');
+        const chapters = Array.from(chapterElements).map(el => el.textContent.replace('¶', '').trim());
+        const currentChapter = getCurrentChapter();
+
+        console.log('提取全部章节:', chapters);
+        console.log('当前页面章节:', currentChapter);
+
+        if (chapters.length === 0) {
+            console.error('未找到章节链接');
+            return;
+        }
+
+        chapterSelect.innerHTML = '';
+
+        // 添加默认选项
+        const defaultOption = document.createElement('option');
+        defaultOption.value = '';
+        defaultOption.textContent = language === 'zh_CN' ? '-- 请选择章节 --' : '-- Select Chapter --';
+        chapterSelect.appendChild(defaultOption);
+
+        // 添加章节选项
+        chapters.forEach(chapter => {
+            const option = document.createElement('option');
+            option.value = chapter;
+            option.textContent = chapter;
+            if (chapter === currentChapter) {
+                option.selected = true;
+            }
+            chapterSelect.appendChild(option);
+        });
+    }
+
+    // 初始化章节选择框
+    populateChapters();
+
+    // 报告按钮点击事件（处理文本选择）
+    reportButton.addEventListener('click', function() {
+        // 重置所有输入字段，每次重新inquire应该让对话框处于默认状态
+        feedbackText.value = '';          // 清空问题输入框
+        paragraphInput.value = '';        // 清空段落输入框
+        selectedText = '';                // 清除之前选择的文本
+
+        const selection = window.getSelection().toString().trim();
+        if (selection) {
+            paragraphInput.value = selection;
+        } else {
+            // 保持placeholder提示
+            if (!paragraphInput.value.trim()) {
+                paragraphInput.value = '';
+            }
+        }
+        feedbackDialog.style.display = 'block';
+    });
+
+    // 监听输入事件
+    paragraphInput.addEventListener('input', function() {
+        // 标记用户已经输入
+        this.placeholder = '';
+    });
+
+    // 提交按钮点击事件
+    submitButton.addEventListener('click', function() {
+        const userQuestion = feedbackText.value.trim();
+        const selectedChapter = chapterSelect.value;
+        const selectedPostType = postTypeSelect.value;
+        const paragraphContent = paragraphInput.value.trim() || 'null';
+
+        // 在提交事件顶部添加详细日志
+        console.group('=== 提交调试信息 ===');
+        console.log('章节选择值:', chapterSelect.value);
+        console.log('帖子类型postTypeSelect DOM元素:', postTypeSelect);
+        console.log('帖子类型postTypeSelect 选中的选项:', postTypeSelect.options[postTypeSelect.selectedIndex]);
+        console.log('帖子类型postTypeSelect 实际值:', postTypeSelect.value); // 应输出'doc_correction' 对应文档纠错
+          console.groupEnd();
+
+        // 验证输入
+        if (!userQuestion) {
+            alert(language === 'zh_CN' ? '问题描述为空' : 'Issue description cannot be empty');
+            return;
+        }
+        if (!selectedChapter) {
+            alert(language === 'zh_CN' ? '请选择相关章节' : 'Please select a related chapter');
+            return;
+        }
+
+        if (!selectedPostType) {
+            alert(language === 'zh_CN' ? '请选择帖子类型' : 'Please select a post type');
+            return;
+        }
+
+        // 获取用户名
+        const username = localStorage.getItem('username') || 'Anonymous';
+
+        // 构建提交数据
+        const feedbackData = {
+            user: username,
+            chapters: selectedChapter,
+            post_type: selectedPostType,
+            paragraph: paragraphContent,
+            question: userQuestion
+        };
+
+        console.log('完整提交数据:', feedbackData);
+
+        // 发送到后端
+        fetch('http://172.29.57.206:5000/submit', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(feedbackData)
+        })
+        .then(response => {
+            if (!response.ok) throw new Error('Network response was not ok');
+            return response.json();
+        })
+        .then(data => {
+            console.log('提交成功:', data);
+            promptBox.textContent = language === 'zh_CN' ? '问题已成功提交' : 'Issue submitted successfully';
+            promptBox.style.display = 'block';
+            setTimeout(() => promptBox.style.display = 'none', 5000);
+        })
+        .catch(error => {
+            console.error('提交失败:', error);
+            promptBox.textContent = language === 'zh_CN' ? '提交失败，请检查网络连接' : 'Submission failed, check your network';
+            promptBox.style.display = 'block';
+            setTimeout(() => promptBox.style.display = 'none', 5000);
+        });
+
+        // 关闭对话框
+        feedbackDialog.style.display = 'none';
+    });
+
+
+    // 取消按钮点击事件
+    cancelButton.addEventListener('click', function() {
+        feedbackDialog.style.display = 'none';
+    });
+
+    // 初始化检查
+    console.log('问题反馈系统已加载');
+    console.log('当前语言:', language);
+    console.log('检测到章节数量:', chapterSelect.options.length - 1);
+});
+</script>
+
+    <style>
+        /* 隐藏整个搜索栏容器 */
+        .wy-side-nav-search > div[role="search"] {
+            display: none !important;
+        }
+
+        /* 或者更精确地隐藏表单 */
+        form#rtd-search-form {
+            display: none !important;
+        }
+    </style>
+
+    <!-- 引入功能模块 -->
+    
+<script>
+    /* ====================== 嵌入式配置开始 ====================== */
+    const embeddedConfig = {
+        "freertos": {
+            "name": "FreeRTOS",
+            "languages": {
+                "en": ["latest"],
+                "cn": ["latest"]
+            }
+        },
+        "linux": {
+            "name": "Linux",
+            "languages": {
+                "en": ["latest"],
+                "cn": ["latest"]
+            }
+        }
+    };
+    /* ====================== 嵌入式配置结束 ====================== */
+</script>
+    
+<script>
+    // 获取基础URL路径
+    function getBaseURL() {
+        const url = new URL(window.location.href);
+        if (url.protocol === 'file:') {
+            // 本地路径处理
+            const pathParts = url.pathname.split('/').filter(part => part !== '');
+            const index = pathParts.indexOf('build');
+            return `file://${pathParts.slice(0, index + 1).join('/')}/`;
+        } else {
+            // 网络路径处理
+            return `${url.origin}/${url.pathname.split('/').slice(1, 3).join('/')}/`;
+        }
+    }
+
+    // 获取当前URL路径分段
+    function getCurrentSegments() {
+        const url = new URL(window.location.href);
+        let segments = url.pathname.split('/').filter(segment => segment);
+
+        if (url.protocol === 'file:') {
+            // 本地路径处理
+            const index = segments.indexOf('build');
+            segments = segments.slice(index + 1); // 去掉 build 及之前的路径
+        } else {
+            // 网络路径处理
+            segments = segments.slice(3); // 去掉 ameba-iot-docs/
+        }
+
+        return {
+            osKey: segments[0] || 'freertos', // 默认为 freertos
+            language: segments[1] || 'en',   // 默认为 en
+            version: segments[2] || 'latest' // 默认为 latest
+        };
+    }
+</script>
+    
+<script>
+    // 获取OS显示名称列表
+    function getOSNames(data) {
+        return Object.keys(data).map(key => data[key].name);
+    }
+
+    // 获取指定OS的语言列表
+    function getLanguages(data, osKey) {
+        return Object.keys(data[osKey]?.languages || {});
+    }
+
+    // 获取指定OS和语言的版本列表
+    function getVersions(data, osKey, language) {
+        return data[osKey]?.languages?.[language] || ['latest'];
+    }
+
+    // 根据显示名称查找OS键
+    function findOSKey(data, displayName) {
+        return Object.keys(data).find(key => data[key].name === displayName);
+    }
+</script>
+    
+<script>
+    // 验证并修正路径参数
+    function validateSegments(segments) {
+        const currentOSName = embeddedConfig[segments.osKey]?.name;
+
+        // 如果 OS 无效，默认设置为 FreeRTOS
+        if (!currentOSName) {
+            console.warn("Invalid OS key, defaulting to FreeRTOS");
+            segments.osKey = 'freertos';
+        }
+
+        // 如果语言无效，默认设置为 en
+        if (!getLanguages(embeddedConfig, segments.osKey).includes(segments.language)) {
+            console.warn("Invalid language, defaulting to en");
+            segments.language = 'en';
+        }
+
+        return segments;
+    }
+
+    // 生成选择器HTML
+    function generateSelectorsHTML(segments) {
+        return `
+            <div id="custom-selectors" style="padding: 0; background: none; border: none;">
+                <!-- 系统选择器 -->
+                <div class="selector-container">
+                    <label class="selector-label">
+                        ${segments.language === 'cn' ? '系统' : 'OS'}:
+                    </label>
+                    <select id="os-selector" class="selector-dropdown">
+                        ${Object.keys(embeddedConfig).map(key => `
+                            <option value="${key}">${embeddedConfig[key].name}</option>
+                        `).join('')}
+                    </select>
+                </div>
+
+                <!-- 语言选择器 -->
+                <div class="selector-container">
+                    <label class="selector-label">
+                        ${segments.language === 'cn' ? '语言' : 'Language'}:
+                    </label>
+                    <select id="language-selector" class="selector-dropdown">
+                        ${getLanguages(embeddedConfig, segments.osKey).map(lang => `
+                            <option value="${lang}">${lang}</option>
+                        `).join('')}
+                    </select>
+                </div>
+
+                <!-- 版本选择器 -->
+                <div class="selector-container version-selector-container">
+                    <label class="selector-label">
+                        ${segments.language === 'cn' ? '版本' : 'Version'}:
+                    </label>
+                    <select id="version-selector" class="selector-dropdown">
+                        ${getVersions(embeddedConfig, segments.osKey, segments.language).map(ver => `
+                            <option value="${ver}">${ver}</option>
+                        `).join('')}
+                    </select>
+                </div>
+
+                ${generateUserPanelHTML(segments)}
+            </div>`;
+    }
+
+    // 生成用户面板HTML
+    function generateUserPanelHTML(segments) {
+        return `
+            <div class="user-panel">
+                <!-- 用户名显示（登录后可见） -->
+                <div id="user-info" style="display: ${localStorage.getItem('isLoggedIn') ? 'block' : 'none'}">
+                    <span id="username-display" class="username">${localStorage.getItem('username') || ''}</span>
+                </div>
+
+                <!-- 登录注册按钮（未登录时可见） -->
+                <div id="auth-buttons" class="button-row" style="display: ${localStorage.getItem('isLoggedIn') ? 'none' : 'flex'}">
+                    <button class="auth-btn" id="register-button">${segments.language === 'cn' ? '注册' : 'Register'}</button>
+                    <button class="auth-btn" id="login-button">${segments.language === 'cn' ? '登录' : 'Login'}</button>
+                </div>
+
+                <!-- 外链按钮（始终可见） -->
+                <div class="button-row">
+                    <button class="official-btn" onclick="window.open('https://www.realmcu.com/', '_blank')">
+                        ${segments.language === 'cn' ? '官网' : 'Official'}
+                    </button>
+                    <button class="forum-btn" onclick="window.open('http://172.29.57.206:5000/view', '_blank')">
+                        ${segments.language === 'cn' ? '论坛' : 'Forum'}
+                    </button>
+                </div>
+            </div>
+        `;
+    }
+
+    // 设置初始选中值
+    function setInitialValues(segments) {
+        document.getElementById('os-selector').value = segments.osKey;
+        document.getElementById('language-selector').value = segments.language;
+
+        const versionSelector = document.getElementById('version-selector');
+        const availableVersions = getVersions(embeddedConfig, segments.osKey, segments.language);
+        versionSelector.value = availableVersions.includes(segments.version) ? segments.version : availableVersions[0] || 'latest';
+    }
+</script>
+    
+<script>
+    // 绑定事件监听
+    function bindEvents(baseURL, segments) {
+        document.getElementById('os-selector').addEventListener('change', () => {
+            const newOSKey = document.getElementById('os-selector').value;
+            const availableLangs = getLanguages(embeddedConfig, newOSKey);
+            const defaultLang = availableLangs[0] || 'en';
+            const defaultVersion = getVersions(embeddedConfig, newOSKey, defaultLang)[0] || 'latest';
+            redirectTo(`${baseURL}${newOSKey}/${defaultLang}/${defaultVersion}/`);
+        });
+
+        document.getElementById('language-selector').addEventListener('change', () => {
+            const newLang = document.getElementById('language-selector').value;
+            const defaultVersion = getVersions(embeddedConfig, segments.osKey, newLang)[0] || 'latest';
+            redirectTo(`${baseURL}${segments.osKey}/${newLang}/${defaultVersion}/`);
+        });
+
+        document.getElementById('version-selector').addEventListener('change', () => {
+            const newVer = document.getElementById('version-selector').value;
+            redirectTo(`${baseURL}${segments.osKey}/${segments.language}/${newVer}/`);
+        });
+    }
+
+    // 跳转函数
+    function redirectTo(path) {
+        const url = new URL(path, window.location.href);
+        if (url.protocol === 'file:') {
+            url.pathname += 'index.html';
+        }
+        window.location.href = url.href;
+    }
+</script>
+    
+<script>
+    // 初始化认证对话框
+    function initAuthDialogs() {
+        function createAuthDialog(type) {
+            const lang = document.getElementById('language-selector').value === 'cn' ? 'cn' : 'en';
+
+            const dialog = document.createElement('div');
+            dialog.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.5);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 9999;
+            `;
+
+            // 弹窗内容
+            const content = document.createElement('div');
+            content.style.cssText = `
+                background: white;
+                padding: 20px;
+                border-radius: 8px;
+                min-width: 300px;
+            `;
+
+            // 标题
+            const title = document.createElement('h3');
+            title.textContent = type === 'register' 
+                ? (lang === 'cn' ? '注册' : 'Register') 
+                : (lang === 'cn' ? '登录' : 'Login');
+            content.appendChild(title);
+
+            // 用户名输入
+            const usernameLabel = document.createElement('label');
+            usernameLabel.textContent = lang === 'cn' ? '用户名：' : 'Username:';
+            const usernameInput = document.createElement('input');
+            usernameInput.style.cssText = 'width: 100%; margin-bottom: 10px; padding: 5px;';
+            content.appendChild(usernameLabel);
+            content.appendChild(usernameInput);
+
+            // 密码输入
+            const passwordLabel = document.createElement('label');
+            passwordLabel.textContent = lang === 'cn' ? '密码：' : 'Password:';
+            const passwordInput = document.createElement('input');
+            passwordInput.type = 'password';
+            passwordInput.style.cssText = 'width: 100%; margin-bottom: 10px; padding: 5px;';
+            content.appendChild(passwordLabel);
+            content.appendChild(passwordInput);
+
+            // 注册时需要确认密码
+            let confirmPasswordInput;
+            if (type === 'register') {
+                const confirmLabel = document.createElement('label');
+                confirmLabel.textContent = lang === 'cn' ? '确认密码：' : 'Confirm Password:';
+                confirmPasswordInput = document.createElement('input');
+                confirmPasswordInput.type = 'password';
+                confirmPasswordInput.style.cssText = 'width: 100%; margin-bottom: 10px; padding: 5px;';
+                content.appendChild(confirmLabel);
+                content.appendChild(confirmPasswordInput);
+            }
+
+            // 按钮容器
+            const buttonContainer = document.createElement('div');
+            buttonContainer.style.cssText = 'display: flex; gap: 10px; margin-top: 10px;';
+
+            // 确认按钮
+            const confirmBtn = document.createElement('button');
+            confirmBtn.textContent = lang === 'cn' ? '确认' : 'Confirm';
+            confirmBtn.onclick = () => {
+                const username = usernameInput.value.trim();
+                const password = passwordInput.value.trim();
+                const confirmPassword = confirmPasswordInput ? confirmPasswordInput.value.trim() : null;
+
+                // 验证输入
+                if (!username || !password) {
+                    alert(lang === 'cn' ? '用户名和密码不能为空！' : 'Username and password are required!');
+                    return;
+                }
+
+                if (type === 'register' && password !== confirmPassword) {
+                    alert(lang === 'cn' ? '两次输入的密码不一致！' : 'Passwords do not match!');
+                    return;
+                }
+
+                // flask 发送请求
+                fetch('http://172.29.57.206:5000/auth', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        action: type,
+                        username,
+                        password
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert(lang === 'cn' ? '操作成功！' : 'Success!');
+                        // 更新本地存储和UI
+                        localStorage.setItem('isLoggedIn', 'true');
+                        localStorage.setItem('username', username);
+                        // 强制刷新显示状态
+                        document.getElementById('auth-buttons').style.display = 'none';
+                        document.getElementById('user-info').style.display = 'block';
+                        document.getElementById('username-display').textContent = username;
+                        document.body.removeChild(dialog);
+                    } else {
+                        alert(lang === 'cn' ? '失败：' + data.message : 'Failed: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert(lang === 'cn' ? '网络错误' : 'Network error');
+                });
+            };
+
+            // 取消按钮
+            const cancelBtn = document.createElement('button');
+            cancelBtn.textContent = lang === 'cn' ? '取消' : 'Cancel';
+            cancelBtn.onclick = () => document.body.removeChild(dialog);
+
+            buttonContainer.appendChild(confirmBtn);
+            buttonContainer.appendChild(cancelBtn);
+            content.appendChild(buttonContainer);
+            dialog.appendChild(content);
+            document.body.appendChild(dialog);
+        }
+
+        document.getElementById('register-button').addEventListener('click', () => createAuthDialog('register'));
+        document.getElementById('login-button').addEventListener('click', () => createAuthDialog('login'));
+    }
+
+    // 同步登录状态
+    function syncLoginState() {
+        const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+        document.getElementById('auth-buttons').style.display = isLoggedIn ? 'none' : 'flex';
+        document.getElementById('user-info').style.display = isLoggedIn ? 'block' : 'none';
+        if (isLoggedIn) {
+            document.getElementById('username-display').textContent = localStorage.getItem('username') || '';
+        }
+    }
+</script>
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+    
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Ameba IoT Docs
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+    
+    <div id="custom-selectors" style="display: block !important; padding: 0; background: none; border: none;">
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        try {
+            const segments = validateSegments(getCurrentSegments());
+            const baseURL = getBaseURL();
+
+            // 渲染HTML
+            document.getElementById('custom-selectors').innerHTML = generateSelectorsHTML(segments);
+
+            // 设置初始值
+            setInitialValues(segments);
+
+            // 绑定事件
+            bindEvents(baseURL, segments);
+
+            // 初始化认证逻辑
+            initAuthDialogs();
+            syncLoginState();
+        } catch (error) {
+            console.error("Error initializing selectors:", error);
+        }
+    });
+</script>
+
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../0_ameba_product/0_ameba_product_center_index.html">Products Center</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_ameba_sdk/0_ameba_sdks_index.html">Ameba SDK</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_ameba_solutions/0_ameba_solutions_index.html">Ameba Solutions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_gcc_build_environment/0_gcc_build_index.html">0.1 GCC Build Environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_gdb_debug/0_gdb_debug_index.html">0.2 GDB Debug</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_gcc_build_library/0_gcc_build_library_index.html">0.3 GCC Build Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_sdk_example/0_sdk_example_index.html">0.4 SDK Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_memory_layout/0_layout_index.html">0.5 Flash &amp; RAM Layout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_user_config/0_usrcfg_index.html">0.6 User Config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_tools/0_tools_index.html">0.7 Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_at_command/0_at_command_index.html">0.8 AT Commands</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_file_system/0_vfs_index.html">0.9 Virtual File System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_ftl/0_ftl_index.html">0.a Flash Translation Layer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_mpu_cache/0_mpu_cache_index.html">1.0 MPU and Cache</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_boot_process/0_boot_index.html">1.1 BOOT Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_ota/0_ota_index.html">1.2 OTA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_otpc/0_otpc_index.html">1.3 OTPC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_chipen/0_chipen_index.html">1.4 Chip Enable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_ipc/0_ipc_index.html">1.5 Inter Processor Communication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_pinmux/0_pinmux_index.html">1.6 Pin Multiplexing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_gpio/0_gpio_index.html">1.7 GPIO &amp; Pin Control</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_power_save/0_ps_index.html">1.9 Power Save</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_whc_wifi_bridge/0_wifi_bridge_index.html">2.0 WHC Bridge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_whc_fullmac/0_fullmac_index.html">2.1 WHC FullMAC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_wifi_tunnel/0_wifi_tunnel_index.html">2.2 Wi-Fi R-Mesh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_wifi_csi/0_wifi_csi_index.html">2.3 Wi-Fi CSI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_wifi_adaptivity_test/0_wifi_adaptivity_index.html">2.4 Wi-Fi Adaptivity Test</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_security/0_security_index.html">3.1 Security &amp; Encryption</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_trng/0_trng_index.html">3.2 True Random Number Generator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_crypto_engine/0_crypto_engine_index.html">3.9 Crypto Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_ecdsa_engine/0_ecdsa_index.html">3.a ECDSA Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_eddsa_engine/0_eddsa_index.html">3.b EDDSA Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_rsa_engine/0_rsa_index.html">3.c RSA Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_ap_trustzone/0_ap_tz_index.html">3.d AP Secure Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../4_ai/0_ai_index.html">4.1 AI</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="0_ai_voice_index.html">4.2 AIVoice</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Introduction</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#applications">Applications</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#supported-realtek-ameba-socs">Supported Realtek Ameba SoCs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#modules">Modules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#flows">Flows</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#afe-audio-front-end">AFE (Audio Front End)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#configurations">Configurations</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#kws-keyword-spotting">KWS (Keyword Spotting)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id2">Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">Configurations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#kws-mode">KWS Mode</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#vad-voice-activity-detection">VAD (Voice Activity Detection)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id4">Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">Configurations</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#asr-automatic-speech-recognition">ASR (Automatic Speech Recognition)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id6">Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id7">Configurations</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#interfaces">Interfaces</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#flow-and-module-interfaces">Flow and Module Interfaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#event-and-callback-message">Event and Callback Message</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#afe-event-definition">AFE Event Definition</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vad-event-definition">VAD Event Definition</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#common-configurations">Common Configurations</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#examples">Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#aivoice-full-flow-offline-example">AIVoice Full Flow Offline Example</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#steps-of-using-aivoice">Steps of Using AIVoice</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#build-example">Build Example</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#glossary">Glossary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../4_multimedia/0_multimedia_index.html">4.3 Multimedia</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../4_dsp/0_dsp_index.html">4.4 DSP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../6_mass_production/0_mp_index.html">6.1 Mass Production</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../6_mptools/0_mptools_index.html">6.2 MP Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../7_usb/0_usb_index.html">7.1 USB Host &amp; Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_dmac/0_dmac_index.html">8.1 DMA Controller</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_psram/0_psram_index.html">8.2 PSRAM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_thermal/0_thermal_index.html">8.3 Thermal Meter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_adc/0_adc_index.html">8.4 ADC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_ir/0_ir_index.html">8.5 IR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_ledc/0_ledc_index.html">8.6 LED Controller</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_cap_touch/0_cap_touch_index.html">8.7 Cap-Touch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_key_scan/0_key_scan_index.html">8.8 Key-Scan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_rtc_io/0_rtc_io_index.html">8.9 RTC-IO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_lcdc/0_lcdc_index.html">8.a LCD Controller</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../10_api_docs/0_api_index.html">10.0 API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Ameba IoT Docs</a>
+      </nav>
+
+      <div class="wy-nav-content">
+    
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="0_ai_voice_index.html">AIVoice</a></li>
+      <li class="breadcrumb-item active">Introduction</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="introduction">
+<span id="ai-voice"></span><h1>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h1>
+<p>AIVoice is an offline AI solution developped by Realtek, including local algorithm modules like Audio Front End (Signal Processing), Keyword Spotting, Voice Activity Detection, Speech Recognition etc. It can be used to build voice related applications on Realtek Ameba SoCs.</p>
+<p>AIVoice can be used as a purely offline solution on its own, or it can be combined with cloud systems such as voice recognition, LLMs to create a hybrid online and offline voice interaction solution.</p>
+<section id="applications">
+<h2>Applications<a class="headerlink" href="#applications" title="Link to this heading"></a></h2>
+<p>The smart voice system is widely applied in various fields and products, enhancing the efficiency and convenience of human-computer interaction. The applications including:</p>
+<ul class="simple">
+<li><p><strong>Smart Home</strong>: Smart speakers like Amazon Echo and Google Nest, or home appliances with built-in voice control features, allow users to control home lighting, temperature, and other smart devices through voice commands, enhancing convenience and comfort in living.</p></li>
+<li><p><strong>Smart Toys</strong>: Intelligent voice systems are being integrated into interactive toys (like AI story machines and voice-enabled educational robots, companion robots). These toys can engage in natural conversations with users, answering endless questions, telling personalized stories, or providing bilingual education.</p></li>
+<li><p><strong>In-Car Systems</strong>: Many modern vehicles are equipped with voice recognition systems that enable drivers to navigate, make calls, and play music using voice commands, ensuring driving safety and also making the driving experience more enjoyable.</p></li>
+<li><p><strong>Wearable Products</strong>: Many products include smartwatches, smart headphones, and health monitoring devices come equipped with voice assistants. User can use voice control to check and send messages, control music player, answer calls etc, enhancing user experience and interaction methods.</p></li>
+<li><p><strong>Meeting Scenarios</strong>: Voice recognition technology can transcribe meeting content in real-time, helping participants better record and review discussion points.</p></li>
+</ul>
+</section>
+<section id="supported-realtek-ameba-socs">
+<h2>Supported Realtek Ameba SoCs<a class="headerlink" href="#supported-realtek-ameba-socs" title="Link to this heading"></a></h2>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Chip</p></th>
+<th class="head"><p>OS</p></th>
+<th class="head"><p>Processor</p></th>
+<th class="head"><p>aivoice_lib_dir</p></th>
+<th class="head"><p>aivoice_example_dir</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td rowspan="2"><p>RTL8730E</p></td>
+<td><p>Linux</p></td>
+<td rowspan="2"><p>CA32</p></td>
+<td><p>{LINUXSDK}/apps/aivoice</p></td>
+<td><p>{LINUXSDK}/apps/aivoice/example</p></td>
+</tr>
+<tr class="row-odd"><td><p>FreeRTOS</p></td>
+<td><p>{RTOSSDK}/component/aivoice</p></td>
+<td><p>{RTOSSDK}/component/example/aivoice</p></td>
+</tr>
+<tr class="row-even"><td><p>RTL8713EC,RTL8726EA</p></td>
+<td><p>FreeRTOS</p></td>
+<td><p>HiFi5 DSP</p></td>
+<td><p>{DSPSDK}/lib/aivoice</p></td>
+<td><p>{DSPSDK}/example/aivoice</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="modules">
+<h2>Modules<a class="headerlink" href="#modules" title="Link to this heading"></a></h2>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Modules</p></th>
+<th class="head"><p>Functions</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>AFE (Audio Front End)</p></td>
+<td><p>Enhancing speech signals and reducing noise</p></td>
+</tr>
+<tr class="row-odd"><td><p>KWS (Keyword Spotting)</p></td>
+<td><p>Detecting specific wakeup words to trigger voice assistants, such as “Hey siri”, “Alexa”</p></td>
+</tr>
+<tr class="row-even"><td><p>VAD (Voice Activity Detection)</p></td>
+<td><p>Detecting speech segments or noise segments</p></td>
+</tr>
+<tr class="row-odd"><td><p>ASR (Automatic Speech Recognition)</p></td>
+<td><p>Detecting offline voice control commands</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="flows">
+<h2>Flows<a class="headerlink" href="#flows" title="Link to this heading"></a></h2>
+<p>Some algorithm flows have been implemented to facilitate user development.</p>
+<dl class="field-list simple">
+<dt class="field-odd">- Full Flow<span class="colon">:</span></dt>
+<dd class="field-odd"><p>An offline full flow including AFE, KWS and ASR. AFE and KWS are always-on, ASR turns on and supports continuous recognition when KWS detects the keyword. ASR exits after timeout.</p>
+</dd>
+<dt class="field-even">- AFE+KWS<span class="colon">:</span></dt>
+<dd class="field-even"><p>Offline flow including AFE and KWS, always-on.</p>
+</dd>
+</dl>
+</section>
+</section>
+<section id="afe-audio-front-end">
+<h1>AFE (Audio Front End)<a class="headerlink" href="#afe-audio-front-end" title="Link to this heading"></a></h1>
+<section id="id1">
+<h2>Introduction<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<p>AFE is audio signal processing module for enhancing speech signals. It can improve robustness of speech recognition system or improve signal quality of communication system.</p>
+<p>In AIVoice, AFE includes submodules:</p>
+<ul class="simple">
+<li><p>AEC (Acoustic Echo Cancellation)</p></li>
+<li><p>BF (Beamforming)</p></li>
+<li><p>NS (Noise Suppression)</p></li>
+<li><p>AGC (Automatic Gain Control)</p></li>
+</ul>
+<p>Currently SDK provides libraries for four microphone arrays:</p>
+<ul class="simple">
+<li><p>1mic</p></li>
+<li><p>2mic_30mm</p></li>
+<li><p>2mic_50mm</p></li>
+<li><p>2mic_70mm</p></li>
+</ul>
+<p>Other microphone arrays or performance optimizations can be provided through customized services.</p>
+</section>
+<section id="configurations">
+<h2>Configurations<a class="headerlink" href="#configurations" title="Link to this heading"></a></h2>
+<p>AFE configuration includes microphone array, working mode, submodule switches, etc.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">afe_config</span><span class="p">{</span>
+
+<span class="w">    </span><span class="c1">// AFE common parameter</span>
+<span class="w">    </span><span class="n">afe_mic_geometry_e</span><span class="w">  </span><span class="n">mic_array</span><span class="p">;</span><span class="w">          </span><span class="c1">// microphone array. Make sure to choose the matched resource library</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">ref_num</span><span class="p">;</span><span class="w">                            </span><span class="c1">// reference channel number, must be 0 or 1. AEC will be disabled if ref_num=0.</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">sample_rate</span><span class="p">;</span><span class="w">                        </span><span class="c1">// sampling rate(Hz), must be 16000</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">frame_size</span><span class="p">;</span><span class="w">                         </span><span class="c1">// frame length(samples), must be 256</span>
+
+<span class="w">    </span><span class="n">afe_mode_e</span><span class="w"> </span><span class="n">afe_mode</span><span class="p">;</span><span class="w">                    </span><span class="c1">// AFE mode, for ASR or voice communication. Only support AFE for ASR in current version.</span>
+<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">enable_aec</span><span class="p">;</span><span class="w">                        </span><span class="c1">// AEC(Acoustic Echo Cancellation) module switch</span>
+<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">enable_ns</span><span class="p">;</span><span class="w">                         </span><span class="c1">// NS(Noise Suppression) module switch</span>
+<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">enable_agc</span><span class="p">;</span><span class="w">                        </span><span class="c1">// AGC(Automation Gain Control) module switch</span>
+<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">enable_ssl</span><span class="p">;</span><span class="w">                        </span><span class="c1">// SSL(Sound Source Localization) module switch. SSL is not supported in current version.</span>
+
+<span class="w">    </span><span class="c1">// AEC module parameter</span>
+<span class="w">    </span><span class="n">afe_aec_mode_e</span><span class="w"> </span><span class="n">aec_mode</span><span class="p">;</span><span class="w">                </span><span class="c1">// AEC mode, signal process or NN method. NN method is not supported in current version.</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">aec_enable_threshold</span><span class="p">;</span><span class="w">               </span><span class="c1">// ref signal amplitude threshold for AEC, the value should be in [0, 100].</span>
+<span class="w">                                            </span><span class="c1">// larger value means the minimum echo to be cancelled will be larger.</span>
+<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">enable_res</span><span class="p">;</span><span class="w">                        </span><span class="c1">// AEC residual echo suppression module switch</span>
+<span class="w">    </span><span class="n">afe_aec_filter_tap_e</span><span class="w"> </span><span class="n">aec_cost</span><span class="p">;</span><span class="w">          </span><span class="c1">// higher cost means longer filter length and more echo reduction</span>
+<span class="w">    </span><span class="n">afe_aec_res_aggressive_mode_e</span><span class="w"> </span><span class="n">res_aggressive_mode</span><span class="p">;</span><span class="w">  </span><span class="c1">// higher mode means more residual echo suppression but more distortion</span>
+
+<span class="w">    </span><span class="c1">// NS module parameter</span>
+<span class="w">    </span><span class="n">afe_ns_mode_e</span><span class="w"> </span><span class="n">ns_mode</span><span class="p">;</span><span class="w">                  </span><span class="c1">// NS mode, signal process or NN method. NN method is not supported in current version.</span>
+<span class="w">    </span><span class="n">afe_ns_aggressive_mode_e</span><span class="w"> </span><span class="n">ns_aggressive_mode</span><span class="p">;</span><span class="w">        </span><span class="c1">// higher mode means more stationary noise suppression but more distortion</span>
+
+<span class="w">    </span><span class="c1">// AGC module parameter</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">agc_fixed_gain</span><span class="p">;</span><span class="w">                     </span><span class="c1">// AGC fixed gain(dB) applied on AFE output, the value should be in [0, 18].</span>
+<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">enable_adaptive_agc</span><span class="p">;</span><span class="w">               </span><span class="c1">// adaptive AGC switch. Not supported in current version.</span>
+
+<span class="w">    </span><span class="c1">// SSL module parameter</span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">ssl_resolution</span><span class="p">;</span><span class="w">                   </span><span class="c1">// SSL solution(degree)</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">ssl_min_hz</span><span class="p">;</span><span class="w">                         </span><span class="c1">// minimum frequency(Hz) of SSL module.</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">ssl_max_hz</span><span class="p">;</span><span class="w">                         </span><span class="c1">// maximum frequency(Hz) of SSL module.</span>
+<span class="p">}</span><span class="w"> </span><span class="n">afe_config_t</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>If you need to change mic_array, both configuration and afe resource library should change accordingly.</p>
+<p>Please refer to <code class="docutils literal notranslate"><span class="pre">${aivoice_lib_dir}/include/aivoice_afe_config.h</span></code> for details.</p>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>Please make sure the mic_array and ref_num in configuration match AFE input audio.</p>
+</div>
+</section>
+</section>
+<section id="kws-keyword-spotting">
+<h1>KWS (Keyword Spotting)<a class="headerlink" href="#kws-keyword-spotting" title="Link to this heading"></a></h1>
+<section id="id2">
+<h2>Introduction<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+<p>KWS is the module to detect specific wakeup words from audio. It is usually the first step in a voice interaction system. The device will enter the state of waiting voice commands after detecting the keyword.</p>
+<p>In AIVoice, two solutions of KWS are available:</p>
+<table class="docutils align-default" style="width: 100%">
+<tbody>
+<tr class="row-odd"><td><p>Solution</p></td>
+<td><p>Training Data</p></td>
+<td><p>Available Keywords</p></td>
+<td><p>Feature</p></td>
+</tr>
+<tr class="row-even"><td><p>Fixed Keyword</p></td>
+<td><p>specific keywords</p></td>
+<td><p>keywords same as training data</p></td>
+<td><p>better performance; smaller model</p></td>
+</tr>
+<tr class="row-odd"><td><p>Customized Keyword</p></td>
+<td><p>common data</p></td>
+<td><p>customized keyword of the same language as training data</p></td>
+<td><p>more flexible</p></td>
+</tr>
+</tbody>
+</table>
+<p>Currently SDK provides a fixed keyword model library of Chinese keyword “xiao-qiang-xiao-qiang” or “ni-hao-xiao-qiang”. Other keywords or performance optimizations can be provided through customized services.</p>
+</section>
+<section id="id3">
+<h2>Configurations<a class="headerlink" href="#id3" title="Link to this heading"></a></h2>
+<p>KWS configurable parameters:</p>
+<dl class="field-list simple">
+<dt class="field-odd">- keywords<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Keywords for wake up, and <strong>available keywords depend on KWS model</strong>. If the KWS model is a fixed keyword solution, keywords can only be chosen from the trained words. For customized solution, keywords can be customized with any combinations of same language unit(such as pinyin for Chinese). Example: “xiao-qiang-xiao-qiang”.</p>
+</dd>
+<dt class="field-even">- thresholds<span class="colon">:</span></dt>
+<dd class="field-even"><p>Threshold for wake up, range [0, 1]. The higher, less false alarm, but harder to wake up. Set to 0 to use sensitivity with predefined thresholds.</p>
+</dd>
+<dt class="field-odd">- sensitivity<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Three levels of sensitivity are provided with predefined thresholds. The higher, easier to wake up but also more false alarm. <strong>ONLY works when thresholds set to 0.</strong></p>
+</dd>
+</dl>
+<p>Please refer to <code class="docutils literal notranslate"><span class="pre">${aivoice_lib_dir}/include/aivoice_kws_config.h</span></code> for details.</p>
+</section>
+<section id="kws-mode">
+<h2>KWS Mode<a class="headerlink" href="#kws-mode" title="Link to this heading"></a></h2>
+<p>Two KWS modes are provided for different use cases. Multi mode improves KWS and ASR accuracy compared to single mode, while also increases computation consumption and heap.</p>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>KWS Mode</p></th>
+<th class="head"><p>Function</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>single mode</p></td>
+<td><p>void rtk_aivoice_set_single_kws_mode(void)</p></td>
+<td><p>less computation consumption and less heap used</p></td>
+</tr>
+<tr class="row-odd"><td><p>multi mode</p></td>
+<td><p>void rtk_aivoice_set_multi_kws_mode(void)</p></td>
+<td><p>better kws and asr accuracy</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>KWS mode MUST set before create instance in these flows:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>aivoice_iface_full_flow_v1</p></li>
+<li><p>aivoice_iface_afe_kws_v1</p></li>
+</ul>
+</div></blockquote>
+</div>
+</section>
+</section>
+<section id="vad-voice-activity-detection">
+<h1>VAD (Voice Activity Detection)<a class="headerlink" href="#vad-voice-activity-detection" title="Link to this heading"></a></h1>
+<section id="id4">
+<h2>Introduction<a class="headerlink" href="#id4" title="Link to this heading"></a></h2>
+<p>VAD is the module to detect the presence of human speech in audio.</p>
+<p>In AIVoice, a neural network based VAD is provided and can be used in speech enhancement, ASR system etc.</p>
+</section>
+<section id="id5">
+<h2>Configurations<a class="headerlink" href="#id5" title="Link to this heading"></a></h2>
+<p>VAD configurable parameters:</p>
+<dl class="field-list simple">
+<dt class="field-odd">- sensitivity<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Three levels of sensitivity are provided with predefined thresholds. The higher, easier to detect speech but also more false alarm.</p>
+</dd>
+<dt class="field-even">- left_margin<span class="colon">:</span></dt>
+<dd class="field-even"><p>Time margin added to the start of speech segment, which makes the start offset earlier than raw prediction. Only affects offset_ms of VAD output, it won’t affect the event trigger time of status 1.</p>
+</dd>
+<dt class="field-odd">- right_margin<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Time margin added to the end of speech segment, which makes the end offset later than raw prediction. Affects both offset_ms of VAD output and event time of status 0.</p>
+</dd>
+</dl>
+<p>Please refer to <code class="docutils literal notranslate"><span class="pre">${aivoice_lib_dir}/include/aivoice_vad_config.h</span></code> for details.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>left_margin only affects offset_ms returned by VAD, it won’t affect the VAD event trigger time. If you need get the audio during left_margin, please implement a buffer to keep audio.</p>
+</div>
+</section>
+</section>
+<section id="asr-automatic-speech-recognition">
+<h1>ASR (Automatic Speech Recognition)<a class="headerlink" href="#asr-automatic-speech-recognition" title="Link to this heading"></a></h1>
+<section id="id6">
+<h2>Introduction<a class="headerlink" href="#id6" title="Link to this heading"></a></h2>
+<p>ASR is the module to recognize speech to text.</p>
+<p>In AIVoice, ASR supports recognition of Chinese speech command words offline.</p>
+<p>Currently SDK provides libraries for 40 air-conditioning related command words, including “打开空调” and “关闭空调” etc. Other command words or performance optimizations can be provided through customized services.</p>
+</section>
+<section id="id7">
+<h2>Configurations<a class="headerlink" href="#id7" title="Link to this heading"></a></h2>
+<p>ASR configurable parameters:</p>
+<dl class="field-list simple">
+<dt class="field-odd">- sensitivity<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Three levels of sensitivity are provided with predefined internal parameters.The higher, easier to detect commands but also more false alarm.</p>
+</dd>
+</dl>
+<p>Please refer to <code class="docutils literal notranslate"><span class="pre">${aivoice_lib_dir}/include/aivoice_asr_config.h</span></code> for details.</p>
+</section>
+</section>
+<section id="interfaces">
+<h1>Interfaces<a class="headerlink" href="#interfaces" title="Link to this heading"></a></h1>
+<section id="flow-and-module-interfaces">
+<h2>Flow and Module Interfaces<a class="headerlink" href="#flow-and-module-interfaces" title="Link to this heading"></a></h2>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Interface</p></th>
+<th class="head"><p>flow/module</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>aivoice_iface_full_flow_v1</p></td>
+<td><p>AFE+KWS+ASR</p></td>
+</tr>
+<tr class="row-odd"><td><p>aivoice_iface_afe_kws_v1</p></td>
+<td><p>AFE+KWS</p></td>
+</tr>
+<tr class="row-even"><td><p>aivoice_iface_afe_v1</p></td>
+<td><p>AFE</p></td>
+</tr>
+<tr class="row-odd"><td><p>aivoice_iface_vad_v1</p></td>
+<td><p>VAD</p></td>
+</tr>
+<tr class="row-even"><td><p>aivoice_iface_kws_v1</p></td>
+<td><p>KWS</p></td>
+</tr>
+<tr class="row-odd"><td><p>aivoice_iface_asr_v1</p></td>
+<td><p>ASR</p></td>
+</tr>
+</tbody>
+</table>
+<p>All interfaces support below functions:</p>
+<ul class="simple">
+<li><p>create()</p></li>
+<li><p>destroy()</p></li>
+<li><p>reset()</p></li>
+<li><p>feed()</p></li>
+</ul>
+<p>Please refer to <code class="docutils literal notranslate"><span class="pre">${aivoice_lib_dir}/include/aivoice_interface.h</span></code> for details.</p>
+</section>
+<section id="event-and-callback-message">
+<h2>Event and Callback Message<a class="headerlink" href="#event-and-callback-message" title="Link to this heading"></a></h2>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>aivoice_out_event_type</p></th>
+<th class="head"><p>Event Trigger Time</p></th>
+<th class="head"><p>Callback Message</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>AIVOICE_EVOUT_VAD</p></td>
+<td><p>when VAD detects start or end point of a speech segment</p></td>
+<td><p>struct includes VAD status, offset.</p></td>
+</tr>
+<tr class="row-odd"><td><p>AIVOICE_EVOUT_WAKEUP</p></td>
+<td><p>when KWS detects keyword</p></td>
+<td><p>json string includes id, keyword, and score. Example: {“id”:2,”keyword”:”ni-hao-xiao-qiang”,”score”:0.9}</p></td>
+</tr>
+<tr class="row-even"><td><p>AIVOICE_EVOUT_ASR_RESULT</p></td>
+<td><p>when ASR detects command word</p></td>
+<td><p>json string includes fst type, commands and id. Example: {“type”:0,”commands”:[{“rec”:”play music”,”id”:14}]}</p></td>
+</tr>
+<tr class="row-odd"><td><p>AIVOICE_EVOUT_AFE</p></td>
+<td><p>every frame when AFE got input</p></td>
+<td><p>struct includes AFE output data, channel number, etc.</p></td>
+</tr>
+<tr class="row-even"><td><p>AIVOICE_EVOUT_ASR_REC_TIMEOUT</p></td>
+<td><p>when no command word detected during a given timeout duration</p></td>
+<td><p>NULL</p></td>
+</tr>
+</tbody>
+</table>
+<section id="afe-event-definition">
+<h3>AFE Event Definition<a class="headerlink" href="#afe-event-definition" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">aivoice_evout_afe</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w">     </span><span class="n">ch_num</span><span class="p">;</span><span class="w">                       </span><span class="cm">/* channel number of output audio signal, default: 1 */</span>
+<span class="w">    </span><span class="kt">short</span><span class="o">*</span><span class="w">  </span><span class="n">data</span><span class="p">;</span><span class="w">                         </span><span class="cm">/* enhanced audio signal samples */</span>
+<span class="w">    </span><span class="kt">char</span><span class="o">*</span><span class="w">   </span><span class="n">out_others_json</span><span class="p">;</span><span class="w">              </span><span class="cm">/* reserved for other output data, like flags, key: value */</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</section>
+<section id="vad-event-definition">
+<h3>VAD Event Definition<a class="headerlink" href="#vad-event-definition" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">aivoice_evout_vad</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">status</span><span class="p">;</span><span class="w">                     </span><span class="cm">/*  0: vad is changed from speech to silence,</span>
+<span class="cm">                                           indicating the end point of a speech segment</span>
+<span class="cm">                                        1: vad is changed from silence to speech,</span>
+<span class="cm">                                           indicating the start point of a speech segment */</span>
+<span class="w">    </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">offset_ms</span><span class="p">;</span><span class="w">         </span><span class="cm">/* time offset relative to reset point. */</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="common-configurations">
+<h2>Common Configurations<a class="headerlink" href="#common-configurations" title="Link to this heading"></a></h2>
+<p>AIVoice configurable parameters:</p>
+<dl class="field-list simple">
+<dt class="field-odd">- no_cmd_timeout<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ASR exits when no command word detected during this duration. <strong>ONLY used in full flow.</strong></p>
+</dd>
+<dt class="field-even">- memory_alloc_mode<span class="colon">:</span></dt>
+<dd class="field-even"><p>Default mode uses SDK default heap. SRAM mode uses SDK default heap while also allocate space from SRAM for memory critical data. <strong>SRAM mode is ONLY available on RTL8713EC and RTL8726EA DSP now.</strong></p>
+</dd>
+</dl>
+<p>Please refer to <code class="docutils literal notranslate"><span class="pre">${aivoice_lib_dir}/include/aivoice_sdk_config.h</span></code> for details.</p>
+</section>
+</section>
+<section id="examples">
+<h1>Examples<a class="headerlink" href="#examples" title="Link to this heading"></a></h1>
+<section id="aivoice-full-flow-offline-example">
+<h2>AIVoice Full Flow Offline Example<a class="headerlink" href="#aivoice-full-flow-offline-example" title="Link to this heading"></a></h2>
+<p>This example shows how to use AIVoice full flow with a pre-recorded 3 channel audio and will run only once after EVB reset. <strong>Audio functions such as recording and playback are not integrated.</strong></p>
+<section id="steps-of-using-aivoice">
+<h3>Steps of Using AIVoice<a class="headerlink" href="#steps-of-using-aivoice" title="Link to this heading"></a></h3>
+<ol class="arabic">
+<li><p>Select aivoice flow or modules needed. Set KWS mode to multi or single if using full flow or afe_kws flow.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* step 1:</span>
+<span class="cm"> * Select the aivoice flow you want to use.</span>
+<span class="cm"> * Refer to the end of aivoice_interface.h to see which flows are supported.</span>
+<span class="cm"> */</span>
+<span class="k">const</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">rtk_aivoice_iface</span><span class="w"> </span><span class="o">*</span><span class="n">aivoice</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">aivoice_iface_full_flow_v1</span><span class="p">;</span>
+<span class="n">rtk_aivoice_set_multi_kws_mode</span><span class="p">();</span>
+</pre></div>
+</div>
+</li>
+<li><p>Build configuration.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* step 2:</span>
+<span class="cm"> * Modify the default configure if needed.</span>
+<span class="cm"> * You can modify 0 or more configures of afe/vad/kws/...</span>
+<span class="cm"> */</span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">aivoice_config</span><span class="w"> </span><span class="n">config</span><span class="p">;</span>
+<span class="n">memset</span><span class="p">(</span><span class="o">&amp;</span><span class="n">config</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">config</span><span class="p">));</span>
+
+<span class="cm">/*</span>
+<span class="cm"> * here we use afe_res_2mic50mm for example.</span>
+<span class="cm"> * you can change these configuratons according the afe resource you used.</span>
+<span class="cm"> * refer to aivoce_afe_config.h for details;</span>
+<span class="cm"> *</span>
+<span class="cm"> * afe_config.mic_array MUST match the afe resource you linked.</span>
+
+<span class="cm"> */</span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">afe_config</span><span class="w"> </span><span class="n">afe_param</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AFE_CONFIG_ASR_DEFAULT</span><span class="p">();</span>
+<span class="n">afe_param</span><span class="p">.</span><span class="n">mic_array</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AFE_LINEAR_2MIC_50MM</span><span class="p">;</span><span class="w">  </span><span class="c1">// change this according to the linked afe resource.</span>
+<span class="n">config</span><span class="p">.</span><span class="n">afe</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">afe_param</span><span class="p">;</span>
+
+<span class="cm">/*</span>
+<span class="cm"> * ONLY turn on these settings when you are sure about what you are doing.</span>
+<span class="cm"> * it is recommend to use the default configure,</span>
+<span class="cm"> * if you do not know the meaning of these configure parameters.</span>
+
+<span class="cm"> */</span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">vad_config</span><span class="w"> </span><span class="n">vad_param</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">VAD_CONFIG_DEFAULT</span><span class="p">();</span>
+<span class="n">vad_param</span><span class="p">.</span><span class="n">left_margin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">300</span><span class="p">;</span><span class="w"> </span><span class="c1">// you can change the configure if needed</span>
+<span class="n">config</span><span class="p">.</span><span class="n">vad</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">vad_param</span><span class="p">;</span><span class="w">    </span><span class="c1">// can be NULL</span>
+
+<span class="k">struct</span><span class="w"> </span><span class="nc">kws_config</span><span class="w"> </span><span class="n">kws_param</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">KWS_CONFIG_DEFAULT</span><span class="p">();</span>
+<span class="n">config</span><span class="p">.</span><span class="n">kws</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">kws_param</span><span class="p">;</span><span class="w">    </span><span class="c1">// can be NULL</span>
+
+<span class="k">struct</span><span class="w"> </span><span class="nc">asr_config</span><span class="w"> </span><span class="n">asr_param</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ASR_CONFIG_DEFAULT</span><span class="p">();</span>
+<span class="n">config</span><span class="p">.</span><span class="n">asr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">asr_param</span><span class="p">;</span><span class="w">    </span><span class="c1">// can be NULL</span>
+
+<span class="k">struct</span><span class="w"> </span><span class="nc">aivoice_sdk_config</span><span class="w"> </span><span class="n">aivoice_param</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AIVOICE_SDK_CONFIG_DEFAULT</span><span class="p">();</span>
+<span class="n">aivoice_param</span><span class="p">.</span><span class="n">no_cmd_timeout</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
+<span class="n">config</span><span class="p">.</span><span class="n">common</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">aivoice_param</span><span class="p">;</span><span class="w"> </span><span class="c1">// can be NULL</span>
+</pre></div>
+</div>
+</li>
+<li><p>Use <code class="xref py py-func docutils literal notranslate"><span class="pre">create()</span></code> to create and initialize aivoice instance with given configuration.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* step 3:</span>
+<span class="cm"> * Create the aivoice instance.</span>
+<span class="cm"> */</span>
+<span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">handle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">aivoice</span><span class="o">-&gt;</span><span class="n">create</span><span class="p">(</span><span class="o">&amp;</span><span class="n">config</span><span class="p">);</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">handle</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><p>Register callback function.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* step 4:</span>
+<span class="cm"> * Register a callback function.</span>
+<span class="cm"> * You may only receive some of the aivoice_out_event_type in this example,</span>
+<span class="cm"> * depending on the flow you use.</span>
+<span class="cm"> * */</span>
+
+<span class="n">rtk_aivoice_register_callback</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span><span class="w"> </span><span class="n">aivoice_callback_process</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>The callback function can be modified according to user cases:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">aivoice_callback_process</span><span class="p">(</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">userdata</span><span class="p">,</span>
+<span class="w">                                    </span><span class="k">enum</span><span class="w"> </span><span class="n">aivoice_out_event_type</span><span class="w"> </span><span class="n">event_type</span><span class="p">,</span>
+<span class="w">                                    </span><span class="k">const</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">msg</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">len</span><span class="p">)</span>
+<span class="p">{</span>
+
+<span class="w">    </span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">userdata</span><span class="p">;</span>
+<span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">aivoice_evout_vad</span><span class="w"> </span><span class="o">*</span><span class="n">vad_out</span><span class="p">;</span>
+<span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">aivoice_evout_afe</span><span class="w"> </span><span class="o">*</span><span class="n">afe_out</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">event_type</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">AIVOICE_EVOUT_VAD</span><span class="p">:</span>
+<span class="w">            </span><span class="n">vad_out</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">aivoice_evout_vad</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">msg</span><span class="p">;</span>
+<span class="w">            </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;[user] vad. status = %d, offset = %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">vad_out</span><span class="o">-&gt;</span><span class="n">status</span><span class="p">,</span><span class="w"> </span><span class="n">vad_out</span><span class="o">-&gt;</span><span class="n">offset_ms</span><span class="p">);</span>
+<span class="w">            </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">AIVOICE_EVOUT_WAKEUP</span><span class="p">:</span>
+<span class="w">            </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;[user] wakeup. %.*s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">len</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">msg</span><span class="p">);</span>
+<span class="w">            </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">AIVOICE_EVOUT_ASR_RESULT</span><span class="p">:</span>
+<span class="w">            </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;[user] asr. %.*s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">len</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">msg</span><span class="p">);</span>
+<span class="w">            </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">AIVOICE_EVOUT_ASR_REC_TIMEOUT</span><span class="p">:</span>
+<span class="w">            </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;[user] asr timeout</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="w">            </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">AIVOICE_EVOUT_AFE</span><span class="p">:</span>
+<span class="w">            </span><span class="n">afe_out</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">aivoice_evout_afe</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">msg</span><span class="p">;</span>
+
+<span class="w">            </span><span class="c1">// afe will output audio each frame.</span>
+<span class="w">            </span><span class="c1">// in this example, we only print it once to make log clear</span>
+<span class="w">            </span><span class="k">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">afe_out_printed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">afe_out_printed</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                    </span><span class="n">afe_out_printed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">                    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;[user] afe output %d channels raw audio, others: %s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span>
+<span class="w">                               </span><span class="n">afe_out</span><span class="o">-&gt;</span><span class="n">ch_num</span><span class="p">,</span><span class="w"> </span><span class="n">afe_out</span><span class="o">-&gt;</span><span class="n">out_others_json</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">afe_out</span><span class="o">-&gt;</span><span class="n">out_others_json</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s">&quot;null&quot;</span><span class="p">);</span>
+<span class="w">            </span><span class="p">}</span>
+
+<span class="w">            </span><span class="c1">// process afe output raw audio as needed</span>
+<span class="w">            </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">default</span><span class="o">:</span>
+<span class="w">            </span><span class="k">break</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><p>Use <code class="xref py py-func docutils literal notranslate"><span class="pre">feed()</span></code> to input audio data to aivoice.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* when run on chips, we get online audio stream,</span>
+
+<span class="cm"> * here we use a fix audio.</span>
+<span class="cm"> * */</span>
+
+<span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">audio</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">get_test_wav</span><span class="p">();</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">len</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_test_wav_len</span><span class="p">();</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">audio_offset</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">44</span><span class="p">;</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">mics_num</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">afe_frame_bytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">mics_num</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">afe_param</span><span class="p">.</span><span class="n">ref_num</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">afe_param</span><span class="p">.</span><span class="n">frame_size</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="kt">short</span><span class="p">);</span>
+<span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">audio_offset</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">len</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">afe_frame_bytes</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="cm">/* step 5:</span>
+<span class="cm">         * Feed the audio to the aivoice instance.</span>
+<span class="cm">         * */</span>
+
+<span class="w">        </span><span class="n">aivoice</span><span class="o">-&gt;</span><span class="n">feed</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span>
+<span class="w">                      </span><span class="p">(</span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">audio</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">audio_offset</span><span class="p">,</span>
+<span class="w">                      </span><span class="n">afe_frame_bytes</span><span class="p">);</span>
+
+<span class="w">        </span><span class="n">audio_offset</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">afe_frame_bytes</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><p>(Optional) If need reset status, use <code class="xref py py-func docutils literal notranslate"><span class="pre">reset()</span></code>.</p></li>
+<li><p>If aivoice no longer needed, use <code class="xref py py-func docutils literal notranslate"><span class="pre">destroy()</span></code> to destroy the instance.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* step 6:</span>
+<span class="cm">* Destroy the aivoice instance */</span>
+
+<span class="n">aivoice</span><span class="o">-&gt;</span><span class="n">destroy</span><span class="p">(</span><span class="n">handle</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<p>Please refer to <code class="docutils literal notranslate"><span class="pre">${aivoice_example_dir}/full_flow_offline</span></code> for more details.</p>
+</section>
+<section id="build-example">
+<h3>Build Example<a class="headerlink" href="#build-example" title="Link to this heading"></a></h3>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-0-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-0-0-0" name="0-0" role="tab" tabindex="0">RTL8726E</button><button aria-controls="panel-0-0-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-1" name="0-1" role="tab" tabindex="-1">RTL8730E</button></div><div aria-labelledby="tab-0-0-0" class="sphinx-tabs-panel" id="panel-0-0-0" name="0-0" role="tabpanel" tabindex="0"><ol class="arabic">
+<li><p>Build Tensorflow Lite Micro Library for DSP, refer to <a class="reference internal" href="../4_ai/1_ai_tflm_toprst.html#build-tflm-lib"><span class="std std-ref">Build Tensorflow Lite Micro Library</span></a>.</p>
+<p>Or use the prebuilt Tensorflow Lite Micro Library in {DSPSDK}/lib/aivoice/prebuilts.</p>
+</li>
+<li><p>Import <code class="docutils literal notranslate"><span class="pre">{DSPSDK}/example/aivoice/full_flow_offline</span></code> source in Xtensa Xplorer.</p></li>
+<li><p>Set software configurations and modify libraries such as AFE resource, KWS resource if needed.</p>
+<ul>
+<li><p>add include path (-I)</p>
+<p>${workspace_loc}/../lib/aivoice/include</p>
+</li>
+<li><p>add library search path (-L)</p>
+<p>${workspace_loc}/../lib/aivoice/prebuilts/$(TARGET_CONFIG)
+${workspace_loc}/../lib/xa_nnlib/v1.8.1/bin/$(TARGET_CONFIG)/Release
+${workspace_loc}/../lib/lib_hifi5/project/hifi5_library/bin/$(TARGET_CONFIG)/Release
+${workspace_loc}/../lib/tflite_micro/project/bin/$(TARGET_CONFIG)/Release</p>
+</li>
+<li><p>add libraries (-l)</p>
+<p>-laivoice -lafe_kernel -lafe_res_2mic50mm -lkernel -lvad -lkws -lasr -lfst -lcJSON -ltomlc99 -ltflite_micro -lxa_nnlib -lhifi5_dsp</p>
+</li>
+</ul>
+</li>
+<li><p>Build image, please follow steps in <a class="reference internal" href="../4_dsp/dsp_build_environment.html#build-environment-for-dsp"><span class="std std-ref">dsp_build</span></a>.</p></li>
+</ol>
+</div><div aria-labelledby="tab-0-0-1" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-1" name="0-1" role="tabpanel" tabindex="0"><p><strong>FreeRTOS</strong></p>
+<ol class="arabic">
+<li><p>Enable Tensorflow Lite Micro Library in menuconfig, please refer to <a class="reference internal" href="../4_ai/1_ai_tflm_toprst.html#build-tflm-lib"><span class="std std-ref">Build Tensorflow Lite Micro Library</span></a>.</p></li>
+<li><p>Enable AIVoice in menuconfig</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/menuconfig_enable_aivoice.png"><img alt="../../_images/menuconfig_enable_aivoice.png" src="../../_images/menuconfig_enable_aivoice.png" style="width: 517.0px; height: 93.0px;" /></a>
+</figure>
+</li>
+<li><p>Select AFE Resource</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/menuconfig_select_afe_res.png"><img alt="../../_images/menuconfig_select_afe_res.png" src="../../_images/menuconfig_select_afe_res.png" style="width: 699.0px; height: 108.0px;" /></a>
+</figure>
+</li>
+<li><p>Build image</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">build</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span><span class="n">a</span> <span class="n">full_flow_offline</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<p><strong>Linux</strong></p>
+<ol class="arabic">
+<li><p>(Optional) Modify yocto recipe <code class="docutils literal notranslate"><span class="pre">{LINUXSDK}/yocto/meta-realtek/meta-sdk/recipes-rtk/aivoice/rtk-aivoice-algo_1.2.bb.</span></code> to change library such as AFE resource, KWS resource if needed.</p></li>
+<li><p>Compile the aivoice algo image using bitbake:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">bitbake</span> <span class="n">rtk</span><span class="o">-</span><span class="n">aivoice</span><span class="o">-</span><span class="n">algo</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</div></div>
+</section>
+</section>
+</section>
+<section id="glossary">
+<h1>Glossary<a class="headerlink" href="#glossary" title="Link to this heading"></a></h1>
+<dl class="simple glossary">
+<dt id="term-AEC">AEC<a class="headerlink" href="#term-AEC" title="Link to this term"></a></dt><dd><p>Acoustic Echo Cancellation, or echo cancellation, refers to removing the echo signal from the input signal. The echo signal is generated by a sound played through the speaker of the device then captured by the microphone.</p>
+</dd>
+<dt id="term-AFE">AFE<a class="headerlink" href="#term-AFE" title="Link to this term"></a></dt><dd><p>Audio Front End, refers to a combination of modules for preprocessing raw audio signals. It’s usually performed to improve the quality of speech signal before the voice interaction, including several speech enhancement algorithms.</p>
+</dd>
+<dt id="term-AGC">AGC<a class="headerlink" href="#term-AGC" title="Link to this term"></a></dt><dd><p>Automatic Gain Control, an algorithm that dynamically controls the gain of a signal and automatically adjust the amplitude to maintain an optimal signal strength.</p>
+</dd>
+<dt id="term-ASR">ASR<a class="headerlink" href="#term-ASR" title="Link to this term"></a></dt><dd><p>Automatic Speech Recognition, or Speech-to-Text, refers to recognition of spoken language from audio into text. It can be used to build voice-user interface to enable spoken human interaction with AI devices.</p>
+</dd>
+<dt id="term-BF">BF<a class="headerlink" href="#term-BF" title="Link to this term"></a></dt><dd><p>BeamForming, refers to a spatial filter designed for a microphone array to enhance the signal from a specific direction and attenuate signals from other directions.</p>
+</dd>
+<dt id="term-KWS">KWS<a class="headerlink" href="#term-KWS" title="Link to this term"></a></dt><dd><p>Keyword Spotting, or wakeup word detection, refers to identifying specific keywords from audio. It is usually the first step in a voice interaction system. The device will enter the state of waiting voice commands after detecting the keyword.</p>
+</dd>
+<dt id="term-NN">NN<a class="headerlink" href="#term-NN" title="Link to this term"></a></dt><dd><p>Neural Network, is a machine learning model used for various task in artificial intelligence. Neural networks rely on training data to learn and improve their accuracy.</p>
+</dd>
+<dt id="term-NS">NS<a class="headerlink" href="#term-NS" title="Link to this term"></a></dt><dd><p>Noise Suppression, or noise reduction, refers to suppressing ambient noises in the signal to enhance the speech signal, especially stationary noises.</p>
+</dd>
+<dt id="term-RES">RES<a class="headerlink" href="#term-RES" title="Link to this term"></a></dt><dd><p>Residual Echo Suppression, refers to suppressing the remained echo signal after AEC processing. It is a postfilter for AEC.</p>
+</dd>
+<dt id="term-SSL">SSL<a class="headerlink" href="#term-SSL" title="Link to this term"></a></dt><dd><p>Sound Source Localization, or direction of arrival(DOA), refers to estimating the spatial location of a sound source using a microphone array.</p>
+</dd>
+<dt id="term-TTS">TTS<a class="headerlink" href="#term-TTS" title="Link to this term"></a></dt><dd><p>Text-To-Speech, or speech synthesis, is a technology that converts text into spoken audio. It can be used in any speech-enabled application that requires converting text to speech imitating human voice.</p>
+</dd>
+<dt id="term-VAD">VAD<a class="headerlink" href="#term-VAD" title="Link to this term"></a></dt><dd><p>Voice Activity Detection, or speech activity detection, is a binary classifier to detect the presence or absence of human speech. It is widely used in speech enhancement, ASR system etc, and can also be used to deactivate some processes during non-speech section of an audio session, saving on computation or bandwidth.</p>
+</dd>
+</dl>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="0_ai_voice_index.html" class="btn btn-neutral float-left" title="AIVoice" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../4_multimedia/0_multimedia_index.html" class="btn btn-neutral float-right" title="Multimedia" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Realsil.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+    <!-- 问题反馈按钮和对话框 -->
+    
+        <button id="report-button">Inquire</button>
+    
+    <div id="feedback-dialog" class="feedback-dialog" style="display: none;">
+        <div class="form-group">
+            <label style="font-weight: bold;">Please select the related chapter:</label>
+            <select id="chapter-select">
+                <option value="">Select Chapter</option>
+                <!-- 章节选项将通过JavaScript动态填充 -->
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label style="font-weight: bold;">Post Type</label>
+            <select id="post-type" class="form-control" required>
+                <option value="">-- Select Type --</option>
+                <option value="doc_correction">Document Correction</option>
+                <option value="tech_consult">Technical Consult</option>
+                <option value="tech_summary">Technical Summary</option>
+                <option value="operation_flow">Operation Flow</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label style="font-weight: bold;">Related Paragraph:</label>
+            <textarea
+                id="paragraph-input"
+                placeholder="{{ '你可以先选择有问题的段落或手动输入...' if language == 'zh_CN' else 'You can select text or type directly here...' }}"
+                rows="4"
+            ></textarea>
+        </div>
+
+        <div class="form-group">
+            <label style="font-weight: bold;">Please describe your issue:</label>
+            <textarea
+                id="inquire_input"
+                placeholder="Feature enhancement in progress, please stay tuned...">
+            </textarea>
+        </div>
+
+        <button id="submit-feedback">Submit</button>
+        <button id="cancel-feedback">Cancel</button>
+    </div>
+
+    <style>
+        .form-group {
+            margin: 5px 0;  /* 基础间距 */
+        }
+
+        /* 相邻表单项缩小上方间距 */
+        .form-group + .form-group {
+            margin-top: 10px;
+        }
+
+        /* 段落输入框底部微调 */
+        #paragraph-input, #inquire_input {
+            margin: 2px 0; /* 上下间距 */
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            resize: vertical;
+            min-height: 100px;
+
+            /* 占位符样式 */
+            &::placeholder {
+                color: #999;
+                font-style: italic;
+            }
+        }
+    </style>
+
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+     
+    
+
+
+</body>
+</html>
