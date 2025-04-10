@@ -8,12 +8,13 @@
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
-      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=b0e775ca" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=b947ea82" />
       <link rel="stylesheet" type="text/css" href="_static/tabs.css?v=a5c4661c" />
-      <link rel="stylesheet" type="text/css" href="_static/_static/custom.css" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=b947ea82" />
 
   
     <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="canonical" href="http://172.29.57.206:5000/docs/genindex.html" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -35,13 +36,1409 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="#" />
     <link rel="search" title="Search" href="search.html" />
-   
-  
-  <script type="text/javascript" src="_static/js/selector.js"></script>
+     
 
-  <style>
-    .wy-nav-content {max-width: 1000px;} /* 设置最大宽度 */
-  </style>
+    
+        
+        <script>
+        // 配置豁免路径（需要与后端路由完全匹配）
+        const EXEMPT_PATHS = [
+            '/_',                     // Sphinx生成路径
+            '/_static',               // 静态资源路径
+            '/_images',               // 图片资源
+            '/auth',                  // 认证端点
+            '/login',                 // 登录页面
+            '/logout',                // 登出端点
+            '/check_session',         // 会话检查
+            '/nda_restricted'         // 无权限提示页
+        ];
+
+        // 增强型路径检查
+        function isExemptPath(targetPath = window.location.pathname) {
+            const path = targetPath.toLowerCase();
+            const fullExemptPaths = EXEMPT_PATHS.concat(
+                EXEMPT_PATHS.map(p => `/en${p}`),  // 英文路径
+                EXEMPT_PATHS.map(p => `/zh_CN${p}`) // 中文路径
+            );
+
+            return fullExemptPaths.some(exempt => {
+                // 精确匹配或前缀匹配
+                return path === exempt.toLowerCase() || 
+                    path.startsWith(exempt.toLowerCase() + '/');
+            });
+        }
+        </script>
+    
+
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+
+    <!-- NDA文档输入密码的框 -->
+    
+<script>
+// ▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼ 多语言配置 ▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼
+const lang = 'en';  // 使用 Python 字符串切片
+const i18n = {
+    zh: {
+        title: '访问授权',
+        username: '用户名',
+        password: '密码',
+        confirm: '确认',
+        cancel: '取消',
+        usernameError: '用户名错误',
+        userNotExist: '该用户不存在',
+        passwordError: '密码错误',
+        wrongPassword: '请输入正确的密码',
+        accessDenied: '无访问权限',
+        noPermission: '您无权查看此内容',
+        expiredTitle: '访问已过期',
+        expiredMsg: '您的权限已失效<br>有效期：%s 至 %s',
+        deniedTitle: '⚠️ 无访问权限',
+        contact: '请联系 claire_wang@realsil.com.cn 获取权限'
+    },
+    en: {
+        title: 'Access Required',
+        username: 'Username',
+        password: 'Password',
+        confirm: 'Confirm',
+        cancel: 'Cancel',
+        usernameError: 'Invalid Username',
+        userNotExist: 'User does not exist',
+        passwordError: 'Wrong Password',
+        wrongPassword: 'Please enter correct password',
+        accessDenied: 'Access Denied',
+        noPermission: 'You have no permission to view this content',
+        expiredTitle: 'Authorization Expired',
+        expiredMsg: 'Your access has expired<br>Valid period: %s to %s',
+        deniedTitle: '⚠️ Access Denied',
+        contact: 'Please contact claire_wang@realsil.com.cn for access'
+    }
+};
+// ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲ 多语言配置结束 ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
+</script>
+
+    <!-- 样式模板 -->
+    
+
+<style>
+    .wy-nav-content {
+        max-width: 1100px;
+         
+    }
+    
+    .auth-denied {
+        padding: 20px;
+        background: #f8f9fa;
+        border-radius: 4px;
+        border: 1px solid #dee2e6;
+        text-align: center;
+        color: #721c24;
+        margin-top: 20px;
+    }
+    .auth-denied h3 {
+        margin-bottom: 10px;
+        color: #dc3545;
+    }
+    
+    #report-button {
+        position: fixed;
+        top: 10px;
+        left: 1270px;
+        padding: 1px 15px; /* 调整内边距：1px 为上下，5px 为左右 */
+        height: 30px; /* 设置固定高度 */
+        background-color: #2ecc71;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        z-index: 1000;
+    }
+    #report-button:hover {
+        background-color: #2ecc71;
+    }
+    
+    .feedback-dialog {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        z-index: 1001;
+        width: 600px;
+    }
+    .feedback-dialog textarea {
+        width: 100%;
+        height: 150px;
+        margin-top: 10px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        resize: vertical;
+    }
+    .feedback-dialog button {
+        margin-top: 10px;
+        padding: 8px 16px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    .feedback-dialog button:hover {
+        background-color: #0056b3;
+    }
+
+    
+    
+</style>
+
+
+
+    <!-- 注入 TOC 映射和当前页面信息 -->
+    
+
+<!-- TOC 映射和当前文档信息 -->
+<script>
+// 将 Python 字典转换为 JS 对象
+const TOC_TITLE_MAP = {"rst_rtos/0_ameba_product": "Products Center", "rst_rtos/0_ameba_product/0_ameba_product_center_index": "Products Center", "rst_rtos/0_ameba_sdk": "Ameba SDK", "rst_rtos/0_ameba_sdk/0_ameba_sdks_index": "Ameba SDK", "rst_rtos/0_ameba_solutions": "Ameba Solutions", "rst_rtos/0_ameba_solutions/0_ameba_solutions_index": "Ameba Solutions", "rst_rtos/0_at_command": "0.8 AT Commands", "rst_rtos/0_at_command/0_at_command_index": "0.8 AT Commands", "rst_rtos/0_build_system": "0.3 Build System", "rst_rtos/0_build_system/0_build_system_index": "0.3 Build System", "rst_rtos/0_file_system": "0.9 Virtual File System", "rst_rtos/0_file_system/0_vfs_index": "0.9 Virtual File System", "rst_rtos/0_ftl": "0.a Flash Translation Layer", "rst_rtos/0_ftl/0_ftl_index": "0.a Flash Translation Layer", "rst_rtos/0_gcc_build_environment": "0.1 GCC Build Environment", "rst_rtos/0_gcc_build_environment/0_gcc_build_index": "0.1 GCC Build Environment", "rst_rtos/0_gdb_debug": "0.2 GDB Debug", "rst_rtos/0_gdb_debug/0_gdb_debug_index": "0.2 GDB Debug", "rst_rtos/0_memory_layout": "0.5 Flash \u0026 RAM Layout", "rst_rtos/0_memory_layout/0_layout_index": "0.5 Flash \u0026 RAM Layout", "rst_rtos/0_sdk_example": "0.4 SDK Example", "rst_rtos/0_sdk_example/0_sdk_example_index": "0.4 SDK Example", "rst_rtos/0_tools": "0.7 Tools", "rst_rtos/0_tools/0_tools_index": "0.7 Tools", "rst_rtos/0_user_config": "0.6 User Config", "rst_rtos/0_user_config/0_usrcfg_index": "0.6 User Config", "rst_rtos/10_api_docs": "10.0 API Reference", "rst_rtos/10_api_docs/0_api_index": "10.0 API Reference", "rst_rtos/1_boot_process": "1.1 Boot Process", "rst_rtos/1_boot_process/0_boot_index": "1.1 Boot Process", "rst_rtos/1_chipen": "1.4 Chip Enable", "rst_rtos/1_chipen/0_chipen_index": "1.4 Chip Enable", "rst_rtos/1_gpio": "1.7 GPIO \u0026 Pin Control", "rst_rtos/1_gpio/0_gpio_index": "1.7 GPIO \u0026 Pin Control", "rst_rtos/1_ipc": "1.5 Inter Processor Communication", "rst_rtos/1_ipc/0_ipc_index": "1.5 Inter Processor Communication", "rst_rtos/1_mpu_cache": "1.0 MPU and Cache", "rst_rtos/1_mpu_cache/0_mpu_cache_index": "1.0 MPU and Cache", "rst_rtos/1_ota": "1.2 OTA", "rst_rtos/1_ota/0_ota_index": "1.2 OTA", "rst_rtos/1_otpc": "1.3 OTPC", "rst_rtos/1_otpc/0_otpc_index": "1.3 OTPC", "rst_rtos/1_pinmux": "1.6 Pin Multiplexing", "rst_rtos/1_pinmux/0_pinmux_index": "1.6 Pin Multiplexing", "rst_rtos/1_power_save": "1.9 Power Save", "rst_rtos/1_power_save/0_ps_index": "1.9 Power Save", "rst_rtos/2_whc_fullmac": "2.1 WHC FullMAC", "rst_rtos/2_whc_fullmac/0_fullmac_index": "2.1 WHC FullMAC", "rst_rtos/2_whc_wifi_bridge": "2.0 WHC Bridge", "rst_rtos/2_whc_wifi_bridge/0_wifi_bridge_index": "2.0 WHC Bridge", "rst_rtos/2_wifi_adaptivity_test": "2.4 Wi-Fi Adaptivity Test", "rst_rtos/2_wifi_adaptivity_test/0_wifi_adaptivity_index": "2.4 Wi-Fi Adaptivity Test", "rst_rtos/2_wifi_csi": "2.3 Wi-Fi CSI", "rst_rtos/2_wifi_csi/0_wifi_csi_index": "2.3 Wi-Fi CSI", "rst_rtos/2_wifi_tunnel": "2.2 Wi-Fi R-Mesh", "rst_rtos/2_wifi_tunnel/0_wifi_tunnel_index": "2.2 Wi-Fi R-Mesh", "rst_rtos/3_ap_trustzone": "3.d AP Secure Service", "rst_rtos/3_ap_trustzone/0_ap_tz_index": "3.d AP Secure Service", "rst_rtos/3_crypto_engine": "3.9 Crypto Engine", "rst_rtos/3_crypto_engine/0_crypto_engine_index": "3.9 Crypto Engine", "rst_rtos/3_ecdsa_engine": "3.a ECDSA Engine", "rst_rtos/3_ecdsa_engine/0_ecdsa_index": "3.a ECDSA Engine", "rst_rtos/3_eddsa_engine": "3.b EDDSA Engine", "rst_rtos/3_eddsa_engine/0_eddsa_index": "3.b EDDSA Engine", "rst_rtos/3_rsa_engine": "3.c RSA Engine", "rst_rtos/3_rsa_engine/0_rsa_index": "3.c RSA Engine", "rst_rtos/3_security": "3.1 Security \u0026 Encryption", "rst_rtos/3_security/0_security_index": "3.1 Security \u0026 Encryption", "rst_rtos/3_trng": "3.2 True Random Number Generator", "rst_rtos/3_trng/0_trng_index": "3.2 True Random Number Generator", "rst_rtos/4_ai": "4.1 AI", "rst_rtos/4_ai/0_ai_index": "4.1 AI", "rst_rtos/4_ai_voice": "4.2 AIVoice", "rst_rtos/4_ai_voice/0_ai_voice_index": "4.2 AIVoice", "rst_rtos/4_dsp": "4.4 DSP", "rst_rtos/4_dsp/0_dsp_index": "4.4 DSP", "rst_rtos/4_multimedia": "4.3 Multimedia", "rst_rtos/4_multimedia/0_multimedia_index": "4.3 Multimedia", "rst_rtos/6_mass_production": "6.1 Mass Production", "rst_rtos/6_mass_production/0_mp_index": "6.1 Mass Production", "rst_rtos/6_mptools": "6.2 MP Tools", "rst_rtos/6_mptools/0_mptools_index": "6.2 MP Tools", "rst_rtos/7_usb": "7.1 USB Host \u0026 Device", "rst_rtos/7_usb/0_usb_index": "7.1 USB Host \u0026 Device", "rst_rtos/8_adc": "8.4 ADC", "rst_rtos/8_adc/0_adc_index": "8.4 ADC", "rst_rtos/8_cap_touch": "8.7 Cap-Touch", "rst_rtos/8_cap_touch/0_cap_touch_index": "8.7 Cap-Touch", "rst_rtos/8_dmac": "8.1 DMA Controller", "rst_rtos/8_dmac/0_dmac_index": "8.1 DMA Controller", "rst_rtos/8_ir": "8.5 IR", "rst_rtos/8_ir/0_ir_index": "8.5 IR", "rst_rtos/8_key_scan": "8.8 Key-Scan", "rst_rtos/8_key_scan/0_key_scan_index": "8.8 Key-Scan", "rst_rtos/8_lcdc": "8.a LCD Controller", "rst_rtos/8_lcdc/0_lcdc_index": "8.a LCD Controller", "rst_rtos/8_ledc": "8.6 LED Controller", "rst_rtos/8_ledc/0_ledc_index": "8.6 LED Controller", "rst_rtos/8_psram": "8.2 PSRAM", "rst_rtos/8_psram/0_psram_index": "8.2 PSRAM", "rst_rtos/8_rtc_io": "8.9 RTC-IO", "rst_rtos/8_rtc_io/0_rtc_io_index": "8.9 RTC-IO", "rst_rtos/8_thermal": "8.3 Thermal Meter", "rst_rtos/8_thermal/0_thermal_index": "8.3 Thermal Meter"};
+console.log("TOC_TITLE_MAP:", TOC_TITLE_MAP);
+
+// 获取当前页面的文档名 (例如 'rst_rtos/3_nda_secure_boot/0_secure_boot_index_nda')
+const CURRENT_DOCNAME = 'genindex';
+
+// 动态查找顶级分类函数（定义为全局函数）
+window.findTopLevelChapter = function(docname) {
+    console.log("Attempting to find top-level chapter for:", docname);
+    let bestMatch = "";
+    let bestTitle = "Unknown Chapter";
+
+    // 按路径长度降序排序以确保最长匹配
+    const sortedPaths = Object.keys(TOC_TITLE_MAP).sort((a, b) => b.length - a.length);
+
+    for (const path of sortedPaths) {
+        console.log("Checking path:", path);
+        if (docname === path || docname.startsWith(path + '/')) { // 子页面
+            bestMatch = path;
+            bestTitle = TOC_TITLE_MAP[path];
+            console.log("Matched path:", path, "with title:", bestTitle);
+            break;
+        }
+    }
+
+    // 如果没有找到任何匹配项，则尝试更短的路径
+    if (bestMatch === "") {
+        const pathSegments = docname.split('/');
+        while (pathSegments.length > 1) { // 至少保留根路径
+            const candidate = pathSegments.join('/');
+            console.log("Checking shorter path:", candidate);
+            if (TOC_TITLE_MAP[candidate]) {
+                bestTitle = TOC_TITLE_MAP[candidate];
+                console.log("Matched shorter path:", candidate, "with title:", bestTitle);
+                break;
+            }
+            pathSegments.pop();
+        }
+    }
+
+    console.log("Final top-level chapter:", bestTitle);
+    return bestTitle;
+}
+
+// 初始化时调用
+document.addEventListener('DOMContentLoaded', function() {
+    const topLevelChapter = findTopLevelChapter(CURRENT_DOCNAME);
+    console.log("Top Level Chapter:", topLevelChapter);
+
+    // 将顶级分类插入到DOM中（根据需要）
+    const chapterElement = document.createElement('div');
+    chapterElement.className = 'top-level-chapter';
+    chapterElement.innerHTML = `<strong>Top Level Chapter: </strong>${topLevelChapter}`;
+    document.body.appendChild(chapterElement);
+});
+</script>
+
+    <style>
+        /* ====================== 紧凑型选择器 ====================== */
+        #topleft-panel {
+            background: rgba(40, 58, 73, 0.9);
+            border-radius: 8px;
+            padding: 4px;
+            margin: 4px 0;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+            backdrop-filter: blur(4px);
+        }
+
+        .selectors-grid {
+            display: grid;
+            gap: 4px;
+        }
+
+        .dual-selector-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* 两列等宽 */
+            gap: 4px; /* 列间距 */
+        }
+
+        .selector-group {
+            position: relative;
+        }
+
+        .selector-label {
+            display: block;
+            color: #a0b3c6;
+            font-size: 0.85em;
+            margin-bottom: 4px;
+            padding-left: 4px;
+        }
+
+        .selector-dropdown {
+            width: 100%;
+            padding: 4px 4px;
+            border: 1px solid rgba(64, 82, 97, 0.8);
+            border-radius: 6px;
+            background: rgba(44, 62, 80, 0.9);
+            color: #ecf0f1;
+            font-size: 0.95em;
+            transition: all 0.2s ease;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23a0b3c6'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            background-size: 16px;
+        }
+
+        .selector-dropdown:hover {
+            border-color: #4a6a8b;
+            background-color: rgba(44, 62, 80, 1);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+
+        .selector-dropdown:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+        }
+
+        /* 移动端优化 */
+        @media (max-width: 768px) {
+            #topleft-panel {
+                margin: 8px 0;
+                padding: 10px;
+            }
+
+            .selectors-grid {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            .selector-dropdown {
+                padding: 10px 12px;
+            }
+
+            .dual-selector-group {
+                grid-template-columns: 1fr; /* 小屏幕下堆叠显示 */
+            }
+        }
+    </style>
+
+    
+        
+
+<style>
+    /* ================= 用户面板 ================= */
+    .user-panel {
+        /* background: rgba(255,255,255,0.1); */
+        background: rgba(255, 255, 255, 0.05); /* 更暗的背景 */
+        border-radius: 4px;
+        padding: 4px 4px; /* 上下间距减少 */
+        margin: 4px 0px; /* 左右各10px边距 */
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+
+        width: calc(100% - 4px); /* 宽度占满父容器减去20px（左右边距总和） */
+        max-width: 280px; /* 设置最大宽度，防止过宽 */
+        box-sizing: border-box; /* 确保padding和border不影响总宽度 */
+    }
+
+    #user-info {
+        display: flex;
+        gap: 4px;
+        align-items: center;
+        padding: 4px 0;
+        width: 100%;
+    }
+
+    .username-btn, .logout-btn, .link-btn, .auth-btn {
+        flex: 1; /* 均分剩余空间 */
+        margin: 3px 0;           /* 减少外链按钮间距 */
+        padding: 4px 6px;       /* 减少内边距 */
+        background: rgba(255,255,255,0.05);
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 6px;
+        color: white;
+        display: flex;
+        align-items: center;
+        transition: all 0.3s ease;
+    }
+
+    .username-btn:hover {
+        background: #92b5bb;
+    }
+
+    #username-display {
+        font-size: 0.95em;
+        color: #ecf0f1;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        text-align: left;
+    }
+
+    .logout-btn:hover {
+        background: #c0392b;
+    }
+
+    /* ================= 按钮容器 ================= */
+    .button-row {
+        display: flex;
+        gap: 4px;
+        width: 100%;
+        margin: 4px 0;
+    }
+
+    .auth-btn:hover {
+        background: #2980b9;
+        transform: translateY(-1px);
+    }
+
+    /* 外链按钮 */
+    .external-links {
+        display: flex;       /* 新增Flex布局 */
+        gap: 4px;           /* 按钮间距 */
+        width: 100%;        /* 确保容器宽度填满父级 */
+    }
+
+    .link-btn:hover {
+        background: rgba(255,255,255,0.1);
+        transform: translateY(-1px);
+    }
+
+    .btn-text {
+        font-size: 0.95em;
+    }
+
+    .panel-divider {
+        height: 1px;
+        background: rgba(255,255,255,0.1);
+        margin: 6px 0;          /* 减少分隔线间距 */
+    }
+
+    /* 桌面端悬停效果 */
+    @media (hover: hover) {
+        .username-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 6px rgba(255,255,255,0.15);
+        }
+
+        .logout-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 6px rgba(231, 76, 60, 0.3);
+        }
+    }
+
+    /* 响应式调整 */
+    @media (max-width: 768px) {
+        .user-panel {
+            padding: 4px 6px;
+        }
+
+        .auth-btn {
+            padding: 4px 68px;
+            font-size: 0.9em;
+        }
+
+        .external-links {
+            flex-direction: column; /* 移动端垂直排列 */
+            gap: 6px;              /* 调整间距 */
+        }
+        .link-btn {
+            width: 100%;          /* 移动端填满宽度 */
+            flex: none;           /* 禁用flex缩放 */
+        }
+
+        .btn-text {
+            font-size: 0.9em;
+        }
+
+        #user-info {
+            flex-direction: row; /* 保持行排列 */
+            gap: 6px;
+        }
+
+        .username-btn {
+            flex: 1 1 60%;
+            padding: 6px 8px;
+        }
+
+        .logout-btn {
+            flex: 1 1 40%;
+            text-align: center;
+        }
+    }
+</style>
+
+<style>
+    .auth-dialog {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+        backdrop-filter: blur(3px);
+    }
+
+    .auth-content {
+        background: #ffffff;
+        padding: 2rem;
+        border-radius: 12px;
+        min-width: 380px;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        transform: translateY(-20px);
+        opacity: 0;
+        animation: dialogEnter 0.3s ease forwards;
+    }
+
+    @keyframes dialogEnter {
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+
+    .auth-title {
+        color: #2c3e50;
+        font-size: 1.5rem;
+        margin: 0 0 1.5rem;
+        font-weight: 600;
+        text-align: center;
+    }
+
+    .auth-input-group {
+        margin-bottom: 1.2rem;
+    }
+
+    .auth-label {
+        display: block;
+        color: #7f8c8d;
+        font-size: 0.9rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .auth-input {
+        width: 100%;
+        padding: 0.8rem;
+        border: 2px solid #ecf0f1;
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+
+    .auth-input:focus {
+        border-color: #3498db;
+        box-shadow: 0 0 0 3px rgba(52,152,219,0.1);
+        outline: none;
+    }
+
+    .auth-button-group {
+        display: flex;
+        gap: 1rem;
+        margin-top: 1.5rem;
+    }
+
+    .auth-button {
+        flex: 1;
+        padding: 0.8rem 1.2rem;
+        border: none;
+        border-radius: 8px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .auth-button.confirm {
+        background: #3498db;
+        color: white;
+    }
+
+    .auth-button.confirm:hover {
+        background: #2980b9;
+        transform: translateY(-1px);
+    }
+
+    .auth-button.cancel {
+        background: #f1f2f6;
+        color: #2c3e50;
+    }
+
+    .auth-button.cancel:hover {
+        background: #dfe4ea;
+    }
+
+    @media (max-width: 480px) {
+        .auth-content {
+            min-width: 90%;
+            padding: 1.2rem;
+        }
+
+        .auth-input-group {
+            margin-bottom: 0.8rem;
+        }
+
+        .auth-input {
+            padding: 0.7rem;
+            font-size: 0.9rem;
+        }
+    }
+</style>
+        <!-- source/_templates/_layout_issue_report.html -->
+<div id="prompt-box" style="
+    display: none;
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.8);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    z-index: 9999;
+    text-align: center;
+    font-size: 14px;
+"></div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    'use strict'; // 添加严格模式
+
+    // 获取所有DOM元素引用
+    const reportButton = document.getElementById('report-button');
+    const feedbackDialog = document.getElementById('feedback-dialog');
+    const feedbackText = document.getElementById('inquire_input');
+    const submitButton = document.getElementById('submit-feedback');
+    const cancelButton = document.getElementById('cancel-feedback');
+    const promptBox = document.getElementById('prompt-box');
+    const chapterSelect = document.getElementById('chapter-select');
+    const paragraphInput = document.getElementById('paragraph-input');
+    const postTypeSelect = document.getElementById('post-type');
+    console.log('帖子类型(postTypeSelect)DOM元素:', postTypeSelect); // 应输出<select>元素
+
+    // 状态变量
+    let hasUserInput = false; // 跟踪用户是否主动输入
+    let selectedText = '';
+    const language = 'en'; // 从模板引擎获取语言变量
+
+    // 初始化时设置placeholder
+    paragraphInput.placeholder = language === 'zh_CN' 
+        ? '你可以先选择有问题的段落或手动输入...'
+        : 'You can select text or type directly here...';
+
+    // 获取当前激活的章节
+    function getCurrentChapter() {
+        try {
+            // 通过激活的菜单项获取当前章节
+            const currentLink = document.querySelector('.wy-menu .toctree-l1.current > a');
+            if (currentLink) {
+                return currentLink.textContent.replace('¶', '').trim();
+            }
+
+            // 如果没有找到激活的链接，尝试通过页面标题获取
+            const pageTitle = document.querySelector('h1');
+            if (pageTitle) {
+                return pageTitle.textContent.split('\n')[0].trim();
+            }
+
+            // 如果以上方法都失败，尝试通过URL路径推断章节
+            const pathParts = window.location.pathname.split('/');
+            if (pathParts.length > 2) {
+                return decodeURIComponent(pathParts[pathParts.length - 2]);
+            }
+
+            return null;
+        } catch (error) {
+            console.error('获取当前章节失败:', error);
+            return null;
+        }
+    }
+
+    // 填充章节选择框
+    function populateChapters() {
+        const chapterElements = document.querySelectorAll('.wy-menu .toctree-l1 > a');
+        const chapters = Array.from(chapterElements).map(el => el.textContent.replace('¶', '').trim());
+        const currentChapter = getCurrentChapter();
+
+        console.log('提取全部章节:', chapters);
+        console.log('当前页面章节:', currentChapter);
+
+        if (chapters.length === 0) {
+            console.error('未找到章节链接');
+            return;
+        }
+
+        chapterSelect.innerHTML = '';
+
+        // 添加默认选项
+        const defaultOption = document.createElement('option');
+        defaultOption.value = '';
+        defaultOption.textContent = language === 'zh_CN' ? '-- 请选择章节 --' : '-- Select Chapter --';
+        chapterSelect.appendChild(defaultOption);
+
+        // 添加章节选项
+        chapters.forEach(chapter => {
+            const option = document.createElement('option');
+            option.value = chapter;
+            option.textContent = chapter;
+            if (chapter === currentChapter) {
+                option.selected = true;
+            }
+            chapterSelect.appendChild(option);
+        });
+    }
+
+    // 初始化章节选择框
+    populateChapters();
+
+    // 报告按钮点击事件（处理文本选择）
+    reportButton.addEventListener('click', function() {
+        // 重置所有输入字段，每次重新inquire应该让对话框处于默认状态
+        feedbackText.value = '';          // 清空问题输入框
+        paragraphInput.value = '';        // 清空段落输入框
+        selectedText = '';                // 清除之前选择的文本
+
+        const selection = window.getSelection().toString().trim();
+        if (selection) {
+            paragraphInput.value = selection;
+        } else {
+            // 保持placeholder提示
+            if (!paragraphInput.value.trim()) {
+                paragraphInput.value = '';
+            }
+        }
+        feedbackDialog.style.display = 'block';
+    });
+
+    // 监听输入事件
+    paragraphInput.addEventListener('input', function() {
+        // 标记用户已经输入
+        this.placeholder = '';
+    });
+
+    // 提交按钮点击事件
+    submitButton.addEventListener('click', function() {
+        const userQuestion = feedbackText.value.trim();
+        const selectedChapter = chapterSelect.value;
+        const selectedPostType = postTypeSelect.value;
+        const paragraphContent = paragraphInput.value.trim() || 'null';
+
+        // 在提交事件顶部添加详细日志
+        console.group('=== 提交调试信息 ===');
+        console.log('章节选择值:', chapterSelect.value);
+        console.log('帖子类型postTypeSelect DOM元素:', postTypeSelect);
+        console.log('帖子类型postTypeSelect 选中的选项:', postTypeSelect.options[postTypeSelect.selectedIndex]);
+        console.log('帖子类型postTypeSelect 实际值:', postTypeSelect.value); // 应输出'doc_correction' 对应文档纠错
+          console.groupEnd();
+
+        // 验证输入
+        if (!userQuestion) {
+            alert(language === 'zh_CN' ? '问题描述为空' : 'Issue description cannot be empty');
+            return;
+        }
+        if (!selectedChapter) {
+            alert(language === 'zh_CN' ? '请选择相关章节' : 'Please select a related chapter');
+            return;
+        }
+
+        if (!selectedPostType) {
+            alert(language === 'zh_CN' ? '请选择帖子类型' : 'Please select a post type');
+            return;
+        }
+
+        // 获取用户名
+        const username = localStorage.getItem('username') || 'Anonymous';
+
+        // 构建提交数据
+        const feedbackData = {
+            user: username,
+            chapters: selectedChapter,
+            post_type: selectedPostType,
+            paragraph: paragraphContent,
+            question: userQuestion
+        };
+
+        console.log('完整提交数据:', feedbackData);
+
+        // 发送到后端
+        fetch('http://172.29.57.206:5000/submit', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(feedbackData)
+        })
+        .then(response => {
+            if (!response.ok) throw new Error('Network response was not ok');
+            return response.json();
+        })
+        .then(data => {
+            console.log('提交成功:', data);
+            promptBox.textContent = language === 'zh_CN' ? '问题已成功提交' : 'Issue submitted successfully';
+            promptBox.style.display = 'block';
+            setTimeout(() => promptBox.style.display = 'none', 5000);
+        })
+        .catch(error => {
+            console.error('提交失败:', error);
+            promptBox.textContent = language === 'zh_CN' ? '提交失败，请检查网络连接' : 'Submission failed, check your network';
+            promptBox.style.display = 'block';
+            setTimeout(() => promptBox.style.display = 'none', 5000);
+        });
+
+        // 关闭对话框
+        feedbackDialog.style.display = 'none';
+    });
+
+
+    // 取消按钮点击事件
+    cancelButton.addEventListener('click', function() {
+        feedbackDialog.style.display = 'none';
+    });
+
+    // 初始化检查
+    console.log('问题反馈系统已加载');
+    console.log('当前语言:', language);
+    console.log('检测到章节数量:', chapterSelect.options.length - 1);
+});
+</script> <!-- 问题回报 -->
+    
+
+    <style>
+        /* 隐藏整个搜索栏容器 */
+        .wy-side-nav-search > div[role="search"] {
+            display: none !important;
+        }
+
+        /* 或者更精确地隐藏表单 */
+        form#rtd-search-form {
+            display: none !important;
+        }
+    </style>
+
+    <style>
+        .extension-container {
+            position: fixed;
+            left: 10px;
+            bottom: 10px;
+            z-index: 1000;
+        }
+
+        .extension-button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 8px 15px;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .extension-button:hover {
+            background-color: #2980b9;
+        }
+    </style>
+
+    <style>
+        /* 保留bottomleft-panel作为用户面板容器 */
+        .bottomleft-panel {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 300px;
+            height: auto;
+            background: #2d2d2d;
+            border-top: 1px solid #404040;
+            box-shadow: 0 -2px 12px rgba(0,0,0,0.2);
+            z-index: 1001;
+        }
+
+        /* 新增userpanel-container的flex定义 */
+        .userpanel-container {
+            padding: 10px;
+            width: 100%;
+        }
+        /* 增加字体配置 */
+        .material-symbols-outlined {
+            font-family: 'Material Symbols Outlined' !important;
+            font-weight: 400 !important;
+            font-style: normal !important;
+            line-height: 1 !important;
+            letter-spacing: normal !important;
+            text-transform: none !important;
+        }
+
+        /* 调整父容器定位方式 */
+        .userpanel-container {
+            position: relative; /* 新增定位上下文 */
+        }
+    </style>
+
+    <!-- 左上角标题距离控制：Ameba IoT Docs -->
+    <style>
+        /* 隐藏整个搜索栏容器 */
+        .wy-side-nav-search > div[role="search"] {
+            display: none !important;
+        }
+
+        /* 新增的标题间距调整样式（添加在此处） */
+        div[role="navigation"] > div[role="search"] {
+            margin-bottom: 4px !important;
+        }
+
+        a.icon.icon-home {
+            display: inline-block;
+            margin-bottom: 2px !important;
+        }
+    </style>
+
+    <!-- 引入功能模块 -->
+    
+        
+<script>
+    // 初始化认证对话框
+    window.initAuthDialogs = function() {
+        function createAuthDialog(type) {
+            const lang = document.getElementById('language-selector').value === 'cn' ? 'cn' : 'en';
+
+            // 对话框容器
+            const dialog = document.createElement('div');
+            dialog.className = 'auth-dialog';  // 使用CSS类替代内联样式
+
+            // 内容容器
+            const content = document.createElement('div');
+            content.className = 'auth-content';
+
+            // 标题
+            const title = document.createElement('h3');
+            title.className = 'auth-title';
+            title.textContent = type === 'register' 
+                ? (lang === 'cn' ? '注册' : 'Register') 
+                : (lang === 'cn' ? '登录' : 'Login');
+
+            // 输入字段创建函数
+            const createInput = (labelText, inputType) => {
+                const container = document.createElement('div');
+                container.className = 'auth-input-group';
+
+                const label = document.createElement('label');
+                label.textContent = labelText;
+
+                const input = document.createElement('input');
+                input.type = inputType;
+                input.className = 'auth-input';
+
+                container.appendChild(label);
+                container.appendChild(input);
+                return { container, input };
+            };
+
+            // 用户名输入
+            const username = createInput(
+                lang === 'cn' ? '用户名：' : 'Username:', 
+                'text'
+            );
+            content.appendChild(username.container);
+
+            // 密码输入
+            const password = createInput(
+                lang === 'cn' ? '密码：' : 'Password:', 
+                'password'
+            );
+            content.appendChild(password.container);
+
+            // Enter键支持
+            const handleKeyPress = (e) => {
+                if (e.key === 'Enter') confirmBtn.click();
+            };
+
+            // 确认密码（仅注册）
+            let confirmPassword;
+            let companyInput, productInput, emailInput;
+            if (type === 'register') {
+                confirmPassword = createInput(
+                    lang === 'cn' ? '确认密码：' : 'Confirm Password:', 
+                    'password'
+                );
+                content.appendChild(confirmPassword.container);
+
+                // 工作单位
+                const company = createInput(
+                    lang === 'cn' ? '工作单位：' : 'Company:', 
+                    'text'
+                );
+                content.appendChild(company.container);
+                companyInput = company.input;
+
+                // 产品信息 
+                const product = createInput(
+                    lang === 'cn' ? '产品信息：' : 'Product:', 
+                    'text'
+                );
+                content.appendChild(product.container);
+                productInput = product.input;
+
+                // 工作邮箱
+                const email = createInput(
+                    lang === 'cn' ? '工作邮箱：' : 'Email:', 
+                    'email'
+                );
+                email.input.autocomplete = 'email'; // ➕ 添加自动完成类型
+
+                content.appendChild(email.container);
+                emailInput = email.input;
+
+                // 添加Enter键支持到新字段
+                [companyInput, productInput, emailInput].forEach(input => {
+                    input.addEventListener('keypress', handleKeyPress);
+                });
+            }
+
+            // 按钮容器
+            const buttonContainer = document.createElement('div');
+            buttonContainer.className = 'auth-button-group';
+
+            // 确认按钮
+            const confirmBtn = document.createElement('button');
+            confirmBtn.className = 'auth-confirm-btn';
+            confirmBtn.textContent = lang === 'cn' ? '确认' : 'Confirm';
+
+            username.input.addEventListener('keypress', handleKeyPress);
+            password.input.addEventListener('keypress', handleKeyPress);
+            if (confirmPassword) confirmPassword.input.addEventListener('keypress', handleKeyPress);
+
+            // 确认按钮逻辑
+            confirmBtn.onclick = () => {
+                const usernameVal = username.input.value.trim();
+                const passwordVal = password.input.value.trim();
+                const companyVal = companyInput?.value.trim() || '';
+                const productVal = productInput?.value.trim() || '';
+                const emailVal = emailInput?.value.trim() || '';
+                const confirmVal = confirmPassword ? confirmPassword.input.value.trim() : null;
+
+                // 基础邮箱格式验证
+                if (type === 'register' && emailVal) {
+                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    if (!emailRegex.test(emailVal)) {
+                        alert(lang === 'cn' 
+                            ? '请输入有效邮箱地址' 
+                            : 'Please enter a valid email address');
+                        return;
+                    }
+                }
+
+                // 验证逻辑
+                if (!usernameVal || !passwordVal) {
+                    alert(lang === 'cn' ? '用户名和密码不能为空！' : 'Username and password are required!');
+                    return;
+                }
+
+                if (type === 'register' && passwordVal !== confirmVal) {
+                    alert(lang === 'cn' ? '两次输入的密码不一致！' : 'Passwords do not match!');
+                    return;
+                }
+
+                // fetch请求
+                fetch('http://172.29.57.206:5000/auth', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': window.getCSRFToken()
+                    },
+                    body: JSON.stringify({
+                        action: type, 
+                        username: usernameVal, 
+                        password: passwordVal,
+                        company: companyVal,
+                        product: productVal,
+                        email: emailVal
+                    }),
+                    credentials: 'include'
+                })
+                .then(response => {
+                    console.log('[DEBUG] 完整响应头:', [...response.headers.entries()]);
+                    console.log('Access-Control-Allow-Origin:', response.headers.get('Access-Control-Allow-Origin'));
+                    console.log('Access-Control-Allow-Credentials:', response.headers.get('Access-Control-Allow-Credentials'));
+                    console.log('登录响应 Cookies:', response.headers.get('Set-Cookie'));
+                    return response.json();
+                })
+                .then(async (data) => {
+                    // 成功处理逻辑
+                    if (data.success) {
+                        console.log('initAuthDialogs 登录成功，当前 Cookies:', document.cookie);
+                        console.log('initAuthDialogs CSRF Token:', window.getCSRFToken());
+
+                        localStorage.setItem('auth_session', JSON.stringify({
+                            username: data.username, 
+                            expires: Date.now() + 3600000
+                        }));
+
+                        localStorage.setItem('isLoggedIn', 'true');
+                        localStorage.setItem('username', usernameVal);
+                        
+                        document.getElementById('auth-buttons').style.display = 'none';
+                        document.getElementById('user-info').style.display = 'flex';
+                        document.getElementById('username-display').textContent = localStorage.getItem('username') || '';
+                        document.body.removeChild(dialog);
+
+                        Swal.fire({
+                            icon: 'success',
+                            title: lang === 'cn' ? '登录成功' : 'Logged In',
+                            showConfirmButton: false,
+                            timer: 500
+                        });
+                    } else {
+                        document.body.removeChild(dialog);
+                        window.syncLoginState();
+                        Swal.fire({
+                            icon: 'fail',
+                            title: lang === 'cn' ? '登录失败' : 'Logged In Fail',
+                            showConfirmButton: false,
+                            timer: 500
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert(lang === 'cn' ? '网络错误' : 'Network error');
+                });
+            };
+
+            // 取消按钮
+            const cancelBtn = document.createElement('button');
+            cancelBtn.className = 'auth-cancel-btn';
+            cancelBtn.textContent = lang === 'cn' ? '取消' : 'Cancel';
+            cancelBtn.onclick = () => document.body.removeChild(dialog);
+
+            // 组装元素
+            buttonContainer.appendChild(confirmBtn);
+            buttonContainer.appendChild(cancelBtn);
+            content.appendChild(buttonContainer);
+            dialog.appendChild(content);
+            document.body.appendChild(dialog);
+
+            // 点击外部关闭
+            dialog.addEventListener('click', (e) => {
+                if (e.target === dialog) document.body.removeChild(dialog);
+            });
+        }
+
+        // 事件绑定
+        document.getElementById('register-button').addEventListener('click', () => createAuthDialog('register'));
+        document.getElementById('login-button').addEventListener('click', () => createAuthDialog('login'));
+    }
+
+    // 注销功能
+    async function handleLogout() {
+        try {
+            const lang = (window.location.pathname.includes('/zh_CN') || 
+                        document.documentElement.lang === 'zh_CN') ? 'cn' : 'en';
+
+            // 更新本地存储和UI
+            //localStorage.removeItem('isLoggedIn');
+            localStorage.setItem('isLoggedIn', 'false');
+            localStorage.removeItem('username');
+
+            // 强制刷新显示状态
+            document.getElementById('auth-buttons').style.display = 'flex';
+            document.getElementById('user-info').style.display = 'none';
+            document.getElementById('username-display').textContent = localStorage.getItem('username') || '';
+
+            const response = await fetch('http://172.29.57.206:5000/logout', {
+                method: 'GET',
+                headers: {
+                    'X-CSRFToken': window.getCSRFToken(),
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include'
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            await Swal.fire({
+                icon: 'success',
+                title: lang === 'cn' ? '登出成功' : 'Logged Out',
+                timer: 1500
+            });
+        } catch (error) {
+            console.error('登出流程异常:', error);
+            Swal.fire({
+                icon: 'error',
+                title: lang === 'cn' ? '登出异常' : 'Logout Failed',
+                text: lang === 'cn' ? '请尝试清除浏览器缓存' : 'Please clear browser cache'
+            });
+        }
+    }
+
+    // 同步登录状态
+    window.syncLoginState = function() {
+        const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+        document.getElementById('auth-buttons').style.display = isLoggedIn ? 'none' : 'flex';
+        document.getElementById('user-info').style.display = isLoggedIn ? 'flex' : 'none';
+        if (isLoggedIn) {
+            document.getElementById('username-display').textContent = localStorage.getItem('username') || '';
+        } else {
+
+        }
+    }
+
+</script>
+    
+    
+<script>
+    /* ====================== 嵌入式配置开始 ====================== */
+    const embeddedConfig = {
+        "freertos": {
+            "name": "FreeRTOS",
+            "languages": {
+                "en": ["latest"],
+                "cn": ["latest"]
+            }
+        },
+        "linux": {
+            "name": "Linux",
+            "languages": {
+                "en": ["latest"],
+                "cn": ["latest"]
+            }
+        }
+    };
+    /* ====================== 嵌入式配置结束 ====================== */
+</script>
+    
+<script>
+    // 获取基础URL路径
+    function getBaseURL() {
+        const url = new URL(window.location.href);
+        console.log('[DEBUG] getBaseURL:');
+
+        if (url.protocol === 'file:') {
+            // 本地路径处理
+            const pathParts = url.pathname.split('/').filter(part => part !== '');
+            const index = pathParts.indexOf('build');
+            console.log('[DEBUG] getBaseURL0:', pathParts.slice(0, index + 1).join('/'));
+            return `file://${pathParts.slice(0, index + 1).join('/')}/`;
+        } else {
+            // 网络路径处理
+            const basePath = url.pathname.split('/')[1]; // 直接取第一个有效路径段
+            console.log('[DEBUG] getBaseURL:', url.origin, basePath);
+            return `${url.origin}/${basePath}/`;
+        }
+    }
+
+    // 获取当前URL路径分段
+    function getCurrentSegments() {
+        const url = new URL(window.location.href);
+        let segments = url.pathname.split('/').filter(segment => segment);
+
+        console.log('[DEBUG] getCurrentSegments:');
+
+        if (url.protocol === 'file:') {
+            // 本地路径处理
+            const index = segments.indexOf('build');
+            segments = segments.slice(index + 1); // 去掉 build 及之前的路径
+            console.log('[DEBUG] getCurrentSegments0:', segments);
+        } else {
+            // 网络路径处理
+            segments = segments.slice(3); // 去掉 ameba-iot-docs/
+            console.log('[DEBUG] getCurrentSegments:', segments);
+        }
+
+        return {
+            osKey: segments[0] || 'freertos', // 默认为 freertos
+            language: segments[1] || 'en',   // 默认为 en
+            version: segments[2] || 'latest' // 默认为 latest
+        };
+    }
+</script>
+    
+<script>
+    // 获取OS显示名称列表
+    function getOSNames(data) {
+        return Object.keys(data).map(key => data[key].name);
+    }
+
+    // 获取指定OS的语言列表
+    function getLanguages(data, osKey) {
+        return Object.keys(data[osKey]?.languages || {});
+    }
+
+    // 获取指定OS和语言的版本列表
+    function getVersions(data, osKey, language) {
+        return data[osKey]?.languages?.[language] || ['latest'];
+    }
+
+    // 根据显示名称查找OS键
+    function findOSKey(data, displayName) {
+        return Object.keys(data).find(key => data[key].name === displayName);
+    }
+</script>
+    
+<script>
+    // 验证并修正路径参数
+    function validateSegments(segments) {
+        const currentOSName = embeddedConfig[segments.osKey]?.name;
+
+        // 如果 OS 无效，默认设置为 FreeRTOS
+        if (!currentOSName) {
+            console.warn("Invalid OS key, defaulting to FreeRTOS");
+            segments.osKey = 'freertos';
+        }
+
+        // 如果语言无效，默认设置为 en
+        if (!getLanguages(embeddedConfig, segments.osKey).includes(segments.language)) {
+            console.warn("Invalid language, defaulting to en");
+            segments.language = 'en';
+        }
+
+        return segments;
+    }
+
+    // 生成选择器HTML
+    function generateSelectorsHTML(segments) {
+        return `
+        <div class="selectors-grid">
+            <!-- 系统选择器 -->
+            <div class="selector-group">
+                <select id="os-selector" class="selector-dropdown">
+                    ${Object.keys(embeddedConfig).map(key => `
+                        <option value="${key}">${embeddedConfig[key].name}</option>
+                    `).join('')}
+                </select>
+            </div>
+
+            <!-- 语言和版本组合（修正类名） -->
+            <div class="dual-selector-group"> <!-- 修改此处 -->
+                <div class="selector-group">
+                    <select id="language-selector" class="selector-dropdown">
+                        ${getLanguages(embeddedConfig, segments.osKey).map(lang => `
+                            <option value="${lang}">${lang}</option>
+                        `).join('')}
+                    </select>
+                </div>
+
+                <div class="selector-group">
+                    <select id="version-selector" class="selector-dropdown">
+                        ${getVersions(embeddedConfig, segments.osKey, segments.language).map(ver => `
+                            <option value="${ver}">${ver}</option>
+                        `).join('')}
+                    </select>
+                </div>
+            </div>
+        </div>
+        ${generateUserPanelHTML(segments)}`;
+    }
+
+    // 生成用户面板HTML
+    function generateUserPanelHTML(segments) {
+        return `
+            <div class="user-panel">
+                <!-- 用户名显示（登录后可见） -->
+                <div id="user-info" style="display: ${localStorage.getItem('isLoggedIn') ? 'flex' : 'none'}">
+                    <button class="username-btn")">
+                        <span class="btn-icon">👤</span>
+                        <span id="username-display">${localStorage.getItem('username') || ''}</span>
+                    </button>
+                    <button class="logout-btn" onclick="handleLogout()")">
+                        <span class="btn-icon">🚪</span>
+                        <span id="btn-text">${segments.language === 'cn' ? '注销' : 'Logout'}</span>
+                    </button>
+                </div>
+
+                <!-- 登录注册按钮（未登录时可见） -->
+                <div id="auth-buttons" class="button-row" style="display: ${localStorage.getItem('isLoggedIn') ? 'none' : 'flex'}">
+                    <button class="auth-btn" id="login-button">
+                        <span class="btn-icon">🔓</span> <!-- 登录图标 -->
+                        ${segments.language === 'cn' ? '登录' : 'Login'}
+                    </button>
+                    <button class="auth-btn" id="register-button">
+                        <span class="btn-icon">✍️</span> <!-- 注册图标 -->
+                        ${segments.language === 'cn' ? '注册' : 'Register'}
+                    </button>
+                </div>
+
+                <!-- 分隔线 -->
+                <div class="panel-divider"></div>
+
+                <!-- 外链按钮 -->
+                <div class="external-links">
+                    <button class="link-btn official" onclick="window.open('https://www.realmcu.com/', '_blank')">
+                        <span class="btn-icon">🌐</span>
+                        <span class="btn-text">${segments.language === 'cn' ? '官网' : 'Official'}</span>
+                    </button>
+                    <button class="link-btn forum" onclick="window.open('http://172.29.57.206:5000/view', '_blank')">
+                        <span class="btn-icon">💬</span>
+                        <span class="btn-text">${segments.language === 'cn' ? '论坛' : 'Forum'}</span>
+                    </button>
+                </div>
+            </div>
+        `;
+    }
+
+    // 设置初始选中值
+    function setInitialValues(segments) {
+        document.getElementById('os-selector').value = segments.osKey;
+        document.getElementById('language-selector').value = segments.language;
+
+        const versionSelector = document.getElementById('version-selector');
+        const availableVersions = getVersions(embeddedConfig, segments.osKey, segments.language);
+        versionSelector.value = availableVersions.includes(segments.version) ? segments.version : availableVersions[0] || 'latest';
+    }
+</script>
+    
+<script>
+    // 绑定事件监听
+    function bindEvents(baseURL, segments) {
+        document.getElementById('os-selector').addEventListener('change', () => {
+            const newOSKey = document.getElementById('os-selector').value;
+            const availableLangs = getLanguages(embeddedConfig, newOSKey);
+            const defaultLang = availableLangs[0] || 'en';
+            const defaultVersion = getVersions(embeddedConfig, newOSKey, defaultLang)[0] || 'latest';
+            redirectTo(`${baseURL}${newOSKey}/${defaultLang}/${defaultVersion}/`);
+        });
+
+        document.getElementById('language-selector').addEventListener('change', () => {
+            const newLang = document.getElementById('language-selector').value;
+            const defaultVersion = getVersions(embeddedConfig, segments.osKey, newLang)[0] || 'latest';
+            redirectTo(`${baseURL}${segments.osKey}/${newLang}/${defaultVersion}/`);
+        });
+
+        document.getElementById('version-selector').addEventListener('change', () => {
+            const newVer = document.getElementById('version-selector').value;
+            redirectTo(`${baseURL}${segments.osKey}/${segments.language}/${newVer}/`);
+        });
+    }
+
+    // 跳转函数
+    function redirectTo(path) {
+        const url = new URL(path, window.location.href);
+        if (url.protocol === 'file:') {
+            url.pathname += 'index.html';
+        }
+        window.location.href = url.href;
+    }
+</script>
 
 </head>
 
@@ -50,6 +1447,7 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
+    
 
           
           
@@ -63,6 +1461,50 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
+
+    
+    <div id="topleft-panel" style="display: block !important; padding: 0; background: none; border: none;"></div>
+
+    
+        
+        <div class="bottomleft-panel">
+            <div class="userpanel-container"></div>
+        </div>
+    
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            try {
+                const segments = validateSegments(getCurrentSegments());
+                const baseURL = getBaseURL();
+
+                // 渲染HTML
+                document.getElementById('topleft-panel').innerHTML = generateSelectorsHTML(segments);
+
+                // 设置初始值
+                setInitialValues(segments);
+
+                // 绑定事件
+                bindEvents(baseURL, segments);
+
+                // 初始化认证逻辑
+                
+                    window.initAuthDialogs();
+                    window.syncLoginState();
+
+                    // 将 user-panel 移动到 bottomleft-panel 内
+                    const userPanel = document.querySelector('.user-panel');
+                    const settingsContainer = document.querySelector('.userpanel-container');
+                    if (userPanel && settingsContainer) {
+                        settingsContainer.appendChild(userPanel); // 直接添加为子元素
+                    }
+                
+            } catch (error) {
+                console.error("Error initializing selectors:", error);
+            }
+        });
+    </script>
+
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="rst_rtos/0_ameba_product/0_ameba_product_center_index.html">Products Center</a></li>
@@ -70,57 +1512,53 @@
 <li class="toctree-l1"><a class="reference internal" href="rst_rtos/0_ameba_solutions/0_ameba_solutions_index.html">Ameba Solutions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rst_rtos/0_gcc_build_environment/0_gcc_build_index.html">0.1 GCC Build Environment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rst_rtos/0_gdb_debug/0_gdb_debug_index.html">0.2 GDB Debug</a></li>
-<li class="toctree-l1"><a class="reference internal" href="rst_rtos/0_gcc_build_library/0_gcc_build_library_index.html">0.3 GCC Build Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rst_rtos/0_build_system/0_build_system_index.html">0.3 Build System</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rst_rtos/0_sdk_example/0_sdk_example_index.html">0.4 SDK Example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rst_rtos/0_memory_layout/0_layout_index.html">0.5 Flash &amp; RAM Layout</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rst_rtos/0_user_config/0_usrcfg_index.html">0.6 User Config</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rst_rtos/0_tools/0_tools_index.html">0.7 Tools</a></li>
-<li class="toctree-l1"><a class="reference internal" href="rst_rtos/0_at_command/0_at_command_index.html">0.8 AT Command</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rst_rtos/0_at_command/0_at_command_index.html">0.8 AT Commands</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rst_rtos/0_file_system/0_vfs_index.html">0.9 Virtual File System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rst_rtos/0_ftl/0_ftl_index.html">0.a Flash Translation Layer</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rst_rtos/1_mpu_cache/0_mpu_cache_index.html">1.0 MPU and Cache</a></li>
-<li class="toctree-l1"><a class="reference internal" href="rst_rtos/1_boot_process/0_boot_index.html">1.1 BOOT Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rst_rtos/1_boot_process/0_boot_index.html">1.1 Boot Process</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rst_rtos/1_ota/0_ota_index.html">1.2 OTA</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rst_rtos/1_otpc/0_otpc_index.html">1.3 OTPC</a></li>
-<li class="toctree-l1"><a class="reference internal" href="rst_rtos/1_chipen/0_chipen_index.html">1.4 CHIPEN</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rst_rtos/1_chipen/0_chipen_index.html">1.4 Chip Enable</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rst_rtos/1_ipc/0_ipc_index.html">1.5 Inter Processor Communication</a></li>
-<li class="toctree-l1"><a class="reference internal" href="rst_rtos/1_pinmux/0_pinmux_index.html">1.6 PINMUX</a></li>
-<li class="toctree-l1"><a class="reference internal" href="rst_rtos/1_gpio/0_gpio_index.html">1.7 GPIO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rst_rtos/1_pinmux/0_pinmux_index.html">1.6 Pin Multiplexing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rst_rtos/1_gpio/0_gpio_index.html">1.7 GPIO &amp; Pin Control</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rst_rtos/1_power_save/0_ps_index.html">1.9 Power Save</a></li>
-<li class="toctree-l1"><a class="reference internal" href="rst_rtos/2_whc_wifi_bridge/0_wifi_bridge_index.html">2.1 WHC Bridge</a></li>
-<li class="toctree-l1"><a class="reference internal" href="rst_rtos/2_whc_fullmac/0_fullmac_index.html">2.2 WHC FullMAC</a></li>
-<li class="toctree-l1"><a class="reference internal" href="rst_rtos/2_wifi_tunnel/0_wifi_tunnel_index.html">2.3 Wi-Fi R-Mesh</a></li>
-<li class="toctree-l1"><a class="reference internal" href="rst_rtos/2_wifi_csi/0_wifi_csi_index.html">2.5 Wi-Fi CSI</a></li>
-<li class="toctree-l1"><a class="reference internal" href="rst_rtos/2_wifi_adaptivity_test/0_wifi_adaptivity_index.html">2.6 Wi-Fi Adaptivity Test</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rst_rtos/2_whc_wifi_bridge/0_wifi_bridge_index.html">2.0 WHC Bridge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rst_rtos/2_whc_fullmac/0_fullmac_index.html">2.1 WHC FullMAC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rst_rtos/2_wifi_tunnel/0_wifi_tunnel_index.html">2.2 Wi-Fi R-Mesh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rst_rtos/2_wifi_csi/0_wifi_csi_index.html">2.3 Wi-Fi CSI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rst_rtos/2_wifi_adaptivity_test/0_wifi_adaptivity_index.html">2.4 Wi-Fi Adaptivity Test</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rst_rtos/3_security/0_security_index.html">3.1 Security &amp; Encryption</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rst_rtos/3_trng/0_trng_index.html">3.2 True Random Number Generator</a></li>
-<li class="toctree-l1"><a class="reference internal" href="rst_rtos/3_nda_huk_derivation/0_huk_derivation_index_nda.html">3.3 HUK Derivation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="rst_rtos/3_nda_rdp/0_rdp_index_nda.html">3.4 RDP</a></li>
-<li class="toctree-l1"><a class="reference internal" href="rst_rtos/3_nda_rsip/0_rsip_index_nda.html">3.5 RSIP</a></li>
-<li class="toctree-l1"><a class="reference internal" href="rst_rtos/3_nda_secure_boot/0_secure_boot_index_nda.html">3.6 Secure Boot</a></li>
-<li class="toctree-l1"><a class="reference internal" href="rst_rtos/3_nda_swd_protection/0_swd_protection_index_nda.html">3.7 SWD Protection</a></li>
-<li class="toctree-l1"><a class="reference internal" href="rst_rtos/3_nda_tfm/0_tfm_index_nda.html">3.8 Trusted Firmware-M (TF-M)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rst_rtos/3_crypto_engine/0_crypto_engine_index.html">3.9 Crypto Engine</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rst_rtos/3_ecdsa_engine/0_ecdsa_index.html">3.a ECDSA Engine</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rst_rtos/3_eddsa_engine/0_eddsa_index.html">3.b EDDSA Engine</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rst_rtos/3_rsa_engine/0_rsa_index.html">3.c RSA Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rst_rtos/3_ap_trustzone/0_ap_tz_index.html">3.d AP Secure Service</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rst_rtos/4_ai/0_ai_index.html">4.1 AI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rst_rtos/4_ai_voice/0_ai_voice_index.html">4.2 AIVoice</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rst_rtos/4_multimedia/0_multimedia_index.html">4.3 Multimedia</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rst_rtos/4_dsp/0_dsp_index.html">4.4 DSP</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rst_rtos/6_mass_production/0_mp_index.html">6.1 Mass Production</a></li>
-<li class="toctree-l1"><a class="reference internal" href="rst_rtos/6_mp_image/0_mp_image_index.html">6.2 MP Image</a></li>
-<li class="toctree-l1"><a class="reference internal" href="rst_rtos/6_mptools/0_mptools_index.html">6.3 MP Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rst_rtos/6_mptools/0_mptools_index.html">6.2 MP Tools</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rst_rtos/7_usb/0_usb_index.html">7.1 USB Host &amp; Device</a></li>
-<li class="toctree-l1"><a class="reference internal" href="rst_rtos/8_dmac/0_dmac_index.html">8.1 DMA Controllor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rst_rtos/8_dmac/0_dmac_index.html">8.1 DMA Controller</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rst_rtos/8_psram/0_psram_index.html">8.2 PSRAM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rst_rtos/8_thermal/0_thermal_index.html">8.3 Thermal Meter</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rst_rtos/8_adc/0_adc_index.html">8.4 ADC</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rst_rtos/8_ir/0_ir_index.html">8.5 IR</a></li>
-<li class="toctree-l1"><a class="reference internal" href="rst_rtos/8_ledc/0_ledc_index.html">8.6 LEDC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rst_rtos/8_ledc/0_ledc_index.html">8.6 LED Controller</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rst_rtos/8_cap_touch/0_cap_touch_index.html">8.7 Cap-Touch</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rst_rtos/8_key_scan/0_key_scan_index.html">8.8 Key-Scan</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rst_rtos/8_rtc_io/0_rtc_io_index.html">8.9 RTC-IO</a></li>
-<li class="toctree-l1"><a class="reference internal" href="rst_rtos/8_lcdc/0_lcdc_index.html">8.A LCDC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rst_rtos/8_lcdc/0_lcdc_index.html">8.a LCD Controller</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rst_rtos/10_api_docs/0_api_index.html">10.0 API Reference</a></li>
 </ul>
 
         </div>
@@ -133,7 +1571,7 @@
       </nav>
 
       <div class="wy-nav-content">
-
+    
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
@@ -151,25 +1589,470 @@
 <h1 id="index">Index</h1>
 
 <div class="genindex-jumpbox">
- <a href="#A"><strong>A</strong></a>
+ <a href="#Symbols"><strong>Symbols</strong></a>
+ | <a href="#_"><strong>_</strong></a>
+ | <a href="#A"><strong>A</strong></a>
  | <a href="#B"><strong>B</strong></a>
+ | <a href="#C"><strong>C</strong></a>
+ | <a href="#D"><strong>D</strong></a>
+ | <a href="#I"><strong>I</strong></a>
  | <a href="#K"><strong>K</strong></a>
  | <a href="#N"><strong>N</strong></a>
+ | <a href="#P"><strong>P</strong></a>
  | <a href="#R"><strong>R</strong></a>
  | <a href="#S"><strong>S</strong></a>
  | <a href="#T"><strong>T</strong></a>
  | <a href="#V"><strong>V</strong></a>
+ | <a href="#W"><strong>W</strong></a>
  
 </div>
+<h2 id="Symbols">Symbols</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4Ut1_0">[anonymous] (C++ enum)</a>, <a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4Ut1_1">[1]</a>, <a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4Ut1_2">[2]</a>, <a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4Ut1_3">[3]</a>, <a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4Ut1_4">[4]</a>, <a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4Ut1_5">[5]</a>, <a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4Ut1_6">[6]</a>, <a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4Ut1_7">[7]</a>, <a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4Ut1_8">[8]</a>, <a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4Ut1_9">[9]</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4NUt1_79ASSOC_REQE">[anonymous]::ASSOC_REQ (C++ enumerator)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4NUt1_76BEACONE">[anonymous]::BEACON (C++ enumerator)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4NUt1_920BYPASS_DRIVER_HANDLEE">[anonymous]::BYPASS_DRIVER_HANDLE (C++ enumerator)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4NUt1_918NEED_DRIVER_HANDLEE">[anonymous]::NEED_DRIVER_HANDLE (C++ enumerator)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4NUt1_59PMKSA_DELE">[anonymous]::PMKSA_DEL (C++ enumerator)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4NUt1_511PMKSA_FLUSHE">[anonymous]::PMKSA_FLUSH (C++ enumerator)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4NUt1_59PMKSA_SETE">[anonymous]::PMKSA_SET (C++ enumerator)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4NUt1_79PROBE_REQE">[anonymous]::PROBE_REQ (C++ enumerator)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4NUt1_79PROBE_RSPE">[anonymous]::PROBE_RSP (C++ enumerator)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4NUt1_811RCR_ALL_PKTE">[anonymous]::RCR_ALL_PKT (C++ enumerator)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4NUt1_810RCR_AP_ALLE">[anonymous]::RCR_AP_ALL (C++ enumerator)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4NUt1_310RTW_BADARGE">[anonymous]::RTW_BADARG (C++ enumerator)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4NUt1_38RTW_BUSYE">[anonymous]::RTW_BUSY (C++ enumerator)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4NUt1_331RTW_CONNECT_4WAY_HANDSHAKE_FAILE">[anonymous]::RTW_CONNECT_4WAY_HANDSHAKE_FAIL (C++ enumerator)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4NUt1_331RTW_CONNECT_4WAY_PASSWORD_WRONGE">[anonymous]::RTW_CONNECT_4WAY_PASSWORD_WRONG (C++ enumerator)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4NUt1_322RTW_CONNECT_ASSOC_FAILE">[anonymous]::RTW_CONNECT_ASSOC_FAIL (C++ enumerator)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4NUt1_321RTW_CONNECT_AUTH_FAILE">[anonymous]::RTW_CONNECT_AUTH_FAIL (C++ enumerator)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4NUt1_331RTW_CONNECT_AUTH_PASSWORD_WRONGE">[anonymous]::RTW_CONNECT_AUTH_PASSWORD_WRONG (C++ enumerator)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4NUt1_323RTW_CONNECT_INVALID_KEYE">[anonymous]::RTW_CONNECT_INVALID_KEY (C++ enumerator)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4NUt1_321RTW_CONNECT_SCAN_FAILE">[anonymous]::RTW_CONNECT_SCAN_FAIL (C++ enumerator)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4NUt1_39RTW_ERRORE">[anonymous]::RTW_ERROR (C++ enumerator)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4NUt1_134RTW_JOINSTATUS_4WAY_HANDSHAKE_DONEE">[anonymous]::RTW_JOINSTATUS_4WAY_HANDSHAKE_DONE (C++ enumerator)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4NUt1_131RTW_JOINSTATUS_4WAY_HANDSHAKINGE">[anonymous]::RTW_JOINSTATUS_4WAY_HANDSHAKING (C++ enumerator)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4NUt1_125RTW_JOINSTATUS_ASSOCIATEDE">[anonymous]::RTW_JOINSTATUS_ASSOCIATED (C++ enumerator)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4NUt1_126RTW_JOINSTATUS_ASSOCIATINGE">[anonymous]::RTW_JOINSTATUS_ASSOCIATING (C++ enumerator)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4NUt1_128RTW_JOINSTATUS_AUTHENTICATEDE">[anonymous]::RTW_JOINSTATUS_AUTHENTICATED (C++ enumerator)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4NUt1_129RTW_JOINSTATUS_AUTHENTICATINGE">[anonymous]::RTW_JOINSTATUS_AUTHENTICATING (C++ enumerator)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4NUt1_125RTW_JOINSTATUS_DISCONNECTE">[anonymous]::RTW_JOINSTATUS_DISCONNECT (C++ enumerator)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4NUt1_119RTW_JOINSTATUS_FAILE">[anonymous]::RTW_JOINSTATUS_FAIL (C++ enumerator)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4NUt1_123RTW_JOINSTATUS_SCANNINGE">[anonymous]::RTW_JOINSTATUS_SCANNING (C++ enumerator)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4NUt1_123RTW_JOINSTATUS_STARTINGE">[anonymous]::RTW_JOINSTATUS_STARTING (C++ enumerator)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4NUt1_122RTW_JOINSTATUS_SUCCESSE">[anonymous]::RTW_JOINSTATUS_SUCCESS (C++ enumerator)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4NUt1_122RTW_JOINSTATUS_UNKNOWNE">[anonymous]::RTW_JOINSTATUS_UNKNOWN (C++ enumerator)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4NUt1_39RTW_NOMEME">[anonymous]::RTW_NOMEM (C++ enumerator)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4NUt1_311RTW_SUCCESSE">[anonymous]::RTW_SUCCESS (C++ enumerator)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4NUt1_311RTW_TIMEOUTE">[anonymous]::RTW_TIMEOUT (C++ enumerator)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4NUt1_616SPEAKER_SET_INITE">[anonymous]::SPEAKER_SET_INIT (C++ enumerator)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4NUt1_627SPEAKER_SET_LATCH_I2S_COUNTE">[anonymous]::SPEAKER_SET_LATCH_I2S_COUNT (C++ enumerator)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4NUt1_621SPEAKER_SET_TSF_TIMERE">[anonymous]::SPEAKER_SET_TSF_TIMER (C++ enumerator)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4NUt1_219WIFI_EVENT_CSI_DONEE">[anonymous]::WIFI_EVENT_CSI_DONE (C++ enumerator)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4NUt1_222WIFI_EVENT_JOIN_STATUSE">[anonymous]::WIFI_EVENT_JOIN_STATUS (C++ enumerator)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4NUt1_214WIFI_EVENT_MAXE">[anonymous]::WIFI_EVENT_MAX (C++ enumerator)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4NUt1_220WIFI_EVENT_STA_ASSOCE">[anonymous]::WIFI_EVENT_STA_ASSOC (C++ enumerator)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4NUt1_223WIFI_EVENT_STA_DISASSOCE">[anonymous]::WIFI_EVENT_STA_DISASSOC (C++ enumerator)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4NUt1_226WIFI_EVENT_WPA_EAPOL_RECVDE">[anonymous]::WIFI_EVENT_WPA_EAPOL_RECVD (C++ enumerator)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4NUt1_226WIFI_EVENT_WPA_EAPOL_STARTE">[anonymous]::WIFI_EVENT_WPA_EAPOL_START (C++ enumerator)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4NUt1_228WIFI_EVENT_WPA_STA_WPS_STARTE">[anonymous]::WIFI_EVENT_WPA_STA_WPS_START (C++ enumerator)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4NUt1_225WIFI_EVENT_WPA_WPS_FINISHE">[anonymous]::WIFI_EVENT_WPA_WPS_FINISH (C++ enumerator)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4NUt1_412WL_BAND_2_4GE">[anonymous]::WL_BAND_2_4G (C++ enumerator)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4NUt1_420WL_BAND_2_4G_5G_BOTHE">[anonymous]::WL_BAND_2_4G_5G_BOTH (C++ enumerator)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4NUt1_410WL_BAND_5GE">[anonymous]::WL_BAND_5G (C++ enumerator)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4NUt1_410WL_BANDMAXE">[anonymous]::WL_BANDMAX (C++ enumerator)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4NUt1_034WLAN_REASON_4WAY_HANDSHAKE_TIMEOUTE">[anonymous]::WLAN_REASON_4WAY_HANDSHAKE_TIMEOUT (C++ enumerator)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4NUt1_026WLAN_REASON_AKMP_NOT_VALIDE">[anonymous]::WLAN_REASON_AKMP_NOT_VALID (C++ enumerator)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4NUt1_020WLAN_REASON_APP_BASEE">[anonymous]::WLAN_REASON_APP_BASE (C++ enumerator)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4NUt1_024WLAN_REASON_APP_BASE_ENDE">[anonymous]::WLAN_REASON_APP_BASE_END (C++ enumerator)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4NUt1_036WLAN_REASON_APP_CONN_WITHOUT_DISCONNE">[anonymous]::WLAN_REASON_APP_CONN_WITHOUT_DISCONN (C++ enumerator)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4NUt1_023WLAN_REASON_APP_DISCONNE">[anonymous]::WLAN_REASON_APP_DISCONN (C++ enumerator)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4NUt1_033WLAN_REASON_CIPHER_SUITE_REJECTEDE">[anonymous]::WLAN_REASON_CIPHER_SUITE_REJECTED (C++ enumerator)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4NUt1_041WLAN_REASON_CLASS2_FRAME_FROM_NONAUTH_STAE">[anonymous]::WLAN_REASON_CLASS2_FRAME_FROM_NONAUTH_STA (C++ enumerator)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4NUt1_042WLAN_REASON_CLASS3_FRAME_FROM_NONASSOC_STAE">[anonymous]::WLAN_REASON_CLASS3_FRAME_FROM_NONASSOC_STA (C++ enumerator)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4NUt1_026WLAN_REASON_DEAUTH_LEAVINGE">[anonymous]::WLAN_REASON_DEAUTH_LEAVING (C++ enumerator)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4NUt1_028WLAN_REASON_DISASSOC_AP_BUSYE">[anonymous]::WLAN_REASON_DISASSOC_AP_BUSY (C++ enumerator)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4NUt1_038WLAN_REASON_DISASSOC_DUE_TO_INACTIVITYE">[anonymous]::WLAN_REASON_DISASSOC_DUE_TO_INACTIVITY (C++ enumerator)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4NUt1_033WLAN_REASON_DISASSOC_STA_HAS_LEFTE">[anonymous]::WLAN_REASON_DISASSOC_STA_HAS_LEFT (C++ enumerator)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4NUt1_025WLAN_REASON_DRV_AP_CHANGEE">[anonymous]::WLAN_REASON_DRV_AP_CHANGE (C++ enumerator)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4NUt1_023WLAN_REASON_DRV_AP_LOSSE">[anonymous]::WLAN_REASON_DRV_AP_LOSS (C++ enumerator)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4NUt1_020WLAN_REASON_DRV_BASEE">[anonymous]::WLAN_REASON_DRV_BASE (C++ enumerator)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4NUt1_024WLAN_REASON_DRV_BASE_ENDE">[anonymous]::WLAN_REASON_DRV_BASE_END (C++ enumerator)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4NUt1_034WLAN_REASON_GROUP_CIPHER_NOT_VALIDE">[anonymous]::WLAN_REASON_GROUP_CIPHER_NOT_VALID (C++ enumerator)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4NUt1_036WLAN_REASON_GROUP_KEY_UPDATE_TIMEOUTE">[anonymous]::WLAN_REASON_GROUP_KEY_UPDATE_TIMEOUT (C++ enumerator)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4NUt1_030WLAN_REASON_IE_IN_4WAY_DIFFERSE">[anonymous]::WLAN_REASON_IE_IN_4WAY_DIFFERS (C++ enumerator)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4NUt1_035WLAN_REASON_IEEE_802_1X_AUTH_FAILEDE">[anonymous]::WLAN_REASON_IEEE_802_1X_AUTH_FAILED (C++ enumerator)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4NUt1_022WLAN_REASON_INVALID_IEE">[anonymous]::WLAN_REASON_INVALID_IE (C++ enumerator)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4NUt1_032WLAN_REASON_INVALID_RSN_IE_CAPABE">[anonymous]::WLAN_REASON_INVALID_RSN_IE_CAPAB (C++ enumerator)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4NUt1_015WLAN_REASON_MAXE">[anonymous]::WLAN_REASON_MAX (C++ enumerator)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4NUt1_031WLAN_REASON_MICHAEL_MIC_FAILUREE">[anonymous]::WLAN_REASON_MICHAEL_MIC_FAILURE (C++ enumerator)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4NUt1_037WLAN_REASON_PAIRWISE_CIPHER_NOT_VALIDE">[anonymous]::WLAN_REASON_PAIRWISE_CIPHER_NOT_VALID (C++ enumerator)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4NUt1_031WLAN_REASON_PREV_AUTH_NOT_VALIDE">[anonymous]::WLAN_REASON_PREV_AUTH_NOT_VALID (C++ enumerator)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4NUt1_036WLAN_REASON_PWR_CAPABILITY_NOT_VALIDE">[anonymous]::WLAN_REASON_PWR_CAPABILITY_NOT_VALID (C++ enumerator)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4NUt1_038WLAN_REASON_STA_REQ_ASSOC_WITHOUT_AUTHE">[anonymous]::WLAN_REASON_STA_REQ_ASSOC_WITHOUT_AUTH (C++ enumerator)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4NUt1_039WLAN_REASON_SUPPORTED_CHANNEL_NOT_VALIDE">[anonymous]::WLAN_REASON_SUPPORTED_CHANNEL_NOT_VALID (C++ enumerator)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4NUt1_023WLAN_REASON_UNSPECIFIEDE">[anonymous]::WLAN_REASON_UNSPECIFIED (C++ enumerator)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4NUt1_038WLAN_REASON_UNSUPPORTED_RSN_IE_VERSIONE">[anonymous]::WLAN_REASON_UNSUPPORTED_RSN_IE_VERSION (C++ enumerator)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="_">_</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv415_promisc_para_t">_promisc_para_t (C++ struct)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N15_promisc_para_t8callbackE">_promisc_para_t::callback (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N15_promisc_para_t11filter_modeE">_promisc_para_t::filter_mode (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv419_pwr_lmt_regu_remap">_pwr_lmt_regu_remap (C++ struct)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N19_pwr_lmt_regu_remap11domain_codeE">_pwr_lmt_regu_remap::domain_code (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N19_pwr_lmt_regu_remap13PwrLmtRegu_2gE">_pwr_lmt_regu_remap::PwrLmtRegu_2g (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N19_pwr_lmt_regu_remap13PwrLmtRegu_5gE">_pwr_lmt_regu_remap::PwrLmtRegu_5g (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv416_raw_data_desc_t">_raw_data_desc_t (C++ struct)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N16_raw_data_desc_t3bufE">_raw_data_desc_t::buf (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N16_raw_data_desc_t7buf_lenE">_raw_data_desc_t::buf_len (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N16_raw_data_desc_t5flagsE">_raw_data_desc_t::flags (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N16_raw_data_desc_t8wlan_idxE">_raw_data_desc_t::wlan_idx (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv412_Rltk_wlan_t">_Rltk_wlan_t (C++ struct)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N12_Rltk_wlan_t3devE">_Rltk_wlan_t::dev (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N12_Rltk_wlan_t6enableE">_Rltk_wlan_t::enable (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N12_Rltk_wlan_t13netif_rx_semaE">_Rltk_wlan_t::netif_rx_sema (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N12_Rltk_wlan_t7rx_busyE">_Rltk_wlan_t::rx_busy (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N12_Rltk_wlan_t3skbE">_Rltk_wlan_t::skb (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N12_Rltk_wlan_t7tx_busyE">_Rltk_wlan_t::tx_busy (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv424_rtw_channel_scan_time_t">_rtw_channel_scan_time_t (C++ struct)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N24_rtw_channel_scan_time_t16active_scan_timeE">_rtw_channel_scan_time_t::active_scan_time (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N24_rtw_channel_scan_time_t17passive_scan_timeE">_rtw_channel_scan_time_t::passive_scan_time (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv418_rtw_client_list_t">_rtw_client_list_t (C++ struct)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N18_rtw_client_list_t5countE">_rtw_client_list_t::count (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N18_rtw_client_list_t8mac_listE">_rtw_client_list_t::mac_list (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N18_rtw_client_list_t10macid_listE">_rtw_client_list_t::macid_list (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N18_rtw_client_list_t9rssi_listE">_rtw_client_list_t::rssi_list (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv415_rtw_csa_parm_t">_rtw_csa_parm_t (C++ struct)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N15_rtw_csa_parm_t11action_typeE">_rtw_csa_parm_t::action_type (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N15_rtw_csa_parm_t13bc_action_cntE">_rtw_csa_parm_t::bc_action_cnt (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N15_rtw_csa_parm_t8callbackE">_rtw_csa_parm_t::callback (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N15_rtw_csa_parm_t14chl_switch_cntE">_rtw_csa_parm_t::chl_switch_cnt (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N15_rtw_csa_parm_t7new_chlE">_rtw_csa_parm_t::new_chl (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv422_rtw_csi_action_parm_t">_rtw_csi_action_parm_t (C++ struct)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N22_rtw_csi_action_parm_t8accuracyE">_rtw_csi_action_parm_t::accuracy (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N22_rtw_csi_action_parm_t3actE">_rtw_csi_action_parm_t::act (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N22_rtw_csi_action_parm_t7alg_optE">_rtw_csi_action_parm_t::alg_opt (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N22_rtw_csi_action_parm_t6ch_optE">_rtw_csi_action_parm_t::ch_opt (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N22_rtw_csi_action_parm_t8csi_roleE">_rtw_csi_action_parm_t::csi_role (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N22_rtw_csi_action_parm_t7data_bwE">_rtw_csi_action_parm_t::data_bw (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N22_rtw_csi_action_parm_t9data_rateE">_rtw_csi_action_parm_t::data_rate (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N22_rtw_csi_action_parm_t6enableE">_rtw_csi_action_parm_t::enable (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N22_rtw_csi_action_parm_t9group_numE">_rtw_csi_action_parm_t::group_num (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N22_rtw_csi_action_parm_t8mac_addrE">_rtw_csi_action_parm_t::mac_addr (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N22_rtw_csi_action_parm_t4modeE">_rtw_csi_action_parm_t::mode (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N22_rtw_csi_action_parm_t10multi_typeE">_rtw_csi_action_parm_t::multi_type (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N22_rtw_csi_action_parm_t9trig_flagE">_rtw_csi_action_parm_t::trig_flag (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N22_rtw_csi_action_parm_t15trig_frame_ctrlE">_rtw_csi_action_parm_t::trig_frame_ctrl (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N22_rtw_csi_action_parm_t15trig_frame_dataE">_rtw_csi_action_parm_t::trig_frame_data (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N22_rtw_csi_action_parm_t15trig_frame_mgntE">_rtw_csi_action_parm_t::trig_frame_mgnt (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N22_rtw_csi_action_parm_t11trig_periodE">_rtw_csi_action_parm_t::trig_period (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv410_rtw_mac_t">_rtw_mac_t (C++ struct)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N10_rtw_mac_t5octetE">_rtw_mac_t::octet (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv419_rtw_network_info_t">_rtw_network_info_t (C++ struct)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N19_rtw_network_info_t5bssidE">_rtw_network_info_t::bssid (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N19_rtw_network_info_t9by_reconnE">_rtw_network_info_t::by_reconn (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N19_rtw_network_info_t7channelE">_rtw_network_info_t::channel (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N19_rtw_network_info_t14is_wps_triggerE">_rtw_network_info_t::is_wps_trigger (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N19_rtw_network_info_t6key_idE">_rtw_network_info_t::key_id (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N19_rtw_network_info_t8passwordE">_rtw_network_info_t::password (C++ member)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N19_rtw_network_info_t12password_lenE">_rtw_network_info_t::password_len (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N19_rtw_network_info_t10prev_bssidE">_rtw_network_info_t::prev_bssid (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N19_rtw_network_info_t12pscan_optionE">_rtw_network_info_t::pscan_option (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N19_rtw_network_info_t8rom_rsvdE">_rtw_network_info_t::rom_rsvd (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N19_rtw_network_info_t13security_typeE">_rtw_network_info_t::security_type (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N19_rtw_network_info_t4ssidE">_rtw_network_info_t::ssid (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N19_rtw_network_info_t8wpa_suppE">_rtw_network_info_t::wpa_supp (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv421_rtw_phy_statistics_t">_rtw_phy_statistics_t (C++ struct)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N21_rtw_phy_statistics_t11beacon_rssiE">_rtw_phy_statistics_t::beacon_rssi (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N21_rtw_phy_statistics_t7cca_clmE">_rtw_phy_statistics_t::cca_clm (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N21_rtw_phy_statistics_t11clm_channelE">_rtw_phy_statistics_t::clm_channel (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N21_rtw_phy_statistics_t16cur_rx_data_rateE">_rtw_phy_statistics_t::cur_rx_data_rate (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N21_rtw_phy_statistics_t16cur_tx_data_rateE">_rtw_phy_statistics_t::cur_tx_data_rate (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N21_rtw_phy_statistics_t9data_rssiE">_rtw_phy_statistics_t::data_rssi (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N21_rtw_phy_statistics_t9edcca_clmE">_rtw_phy_statistics_t::edcca_clm (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N21_rtw_phy_statistics_t4rssiE">_rtw_phy_statistics_t::rssi (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N21_rtw_phy_statistics_t7rx_dropE">_rtw_phy_statistics_t::rx_drop (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N21_rtw_phy_statistics_t3snrE">_rtw_phy_statistics_t::snr (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N21_rtw_phy_statistics_t7tx_dropE">_rtw_phy_statistics_t::tx_drop (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N21_rtw_phy_statistics_t8tx_retryE">_rtw_phy_statistics_t::tx_retry (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv417_rtw_scan_param_t">_rtw_scan_param_t (C++ struct)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N17_rtw_scan_param_t14chan_scan_timeE">_rtw_scan_param_t::chan_scan_time (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N17_rtw_scan_param_t12channel_listE">_rtw_scan_param_t::channel_list (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N17_rtw_scan_param_t16channel_list_numE">_rtw_scan_param_t::channel_list_num (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N17_rtw_scan_param_t17max_ap_record_numE">_rtw_scan_param_t::max_ap_record_num (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N17_rtw_scan_param_t7optionsE">_rtw_scan_param_t::options (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N17_rtw_scan_param_t29scan_report_acs_user_callbackE">_rtw_scan_param_t::scan_report_acs_user_callback (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N17_rtw_scan_param_t35scan_report_each_mode_user_callbackE">_rtw_scan_param_t::scan_report_each_mode_user_callback (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N17_rtw_scan_param_t18scan_user_callbackE">_rtw_scan_param_t::scan_user_callback (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N17_rtw_scan_param_t14scan_user_dataE">_rtw_scan_param_t::scan_user_data (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N17_rtw_scan_param_t4ssidE">_rtw_scan_param_t::ssid (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv418_rtw_softap_info_t">_rtw_softap_info_t (C++ struct)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N18_rtw_softap_info_t7channelE">_rtw_softap_info_t::channel (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N18_rtw_softap_info_t11hidden_ssidE">_rtw_softap_info_t::hidden_ssid (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N18_rtw_softap_info_t8passwordE">_rtw_softap_info_t::password (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N18_rtw_softap_info_t12password_lenE">_rtw_softap_info_t::password_len (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N18_rtw_softap_info_t13security_typeE">_rtw_softap_info_t::security_type (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N18_rtw_softap_info_t4ssidE">_rtw_softap_info_t::ssid (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv411_rtw_ssid_t">_rtw_ssid_t (C++ struct)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N11_rtw_ssid_t3lenE">_rtw_ssid_t::len (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N11_rtw_ssid_t3valE">_rtw_ssid_t::val (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv420_rtw_sw_statistics_t">_rtw_sw_statistics_t (C++ struct)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N20_rtw_sw_statistics_t22max_skbbuf_used_numberE">_rtw_sw_statistics_t::max_skbbuf_used_number (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N20_rtw_sw_statistics_t18skbbuf_used_numberE">_rtw_sw_statistics_t::skbbuf_used_number (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv419_rtw_wifi_setting_t">_rtw_wifi_setting_t (C++ struct)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N19_rtw_wifi_setting_t3algE">_rtw_wifi_setting_t::alg (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N19_rtw_wifi_setting_t9auth_typeE">_rtw_wifi_setting_t::auth_type (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N19_rtw_wifi_setting_t5bssidE">_rtw_wifi_setting_t::bssid (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N19_rtw_wifi_setting_t7channelE">_rtw_wifi_setting_t::channel (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N19_rtw_wifi_setting_t14is_wps_triggerE">_rtw_wifi_setting_t::is_wps_trigger (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N19_rtw_wifi_setting_t7key_idxE">_rtw_wifi_setting_t::key_idx (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N19_rtw_wifi_setting_t4modeE">_rtw_wifi_setting_t::mode (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N19_rtw_wifi_setting_t8passwordE">_rtw_wifi_setting_t::password (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N19_rtw_wifi_setting_t8rom_rsvdE">_rtw_wifi_setting_t::rom_rsvd (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N19_rtw_wifi_setting_t13security_typeE">_rtw_wifi_setting_t::security_type (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N19_rtw_wifi_setting_t4ssidE">_rtw_wifi_setting_t::ssid (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv423_rtw_wpa_supp_connect_t">_rtw_wpa_supp_connect_t (C++ struct)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N23_rtw_wpa_supp_connect_t8rsnxe_ieE">_rtw_wpa_supp_connect_t::rsnxe_ie (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv412_wifi_off_apv">_wifi_off_ap (C++ function)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv411_wifi_on_apv">_wifi_on_ap (C++ function)</a>
+</li>
+  </ul></td>
+</tr></table>
+
 <h2 id="A">A</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv412acs_mntr_rpt">acs_mntr_rpt (C++ struct)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N12acs_mntr_rpt9busy_timeE">acs_mntr_rpt::busy_time (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N12acs_mntr_rpt7channelE">acs_mntr_rpt::channel (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N12acs_mntr_rpt9meas_timeE">acs_mntr_rpt::meas_time (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N12acs_mntr_rpt5noiseE">acs_mntr_rpt::noise (C++ member)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N12acs_mntr_rpt7tx_timeE">acs_mntr_rpt::tx_time (C++ member)</a>
+</li>
       <li><a href="rst_rtos/4_ai_voice/1_ai_voice_toprst.html#term-AEC"><strong>AEC</strong></a>
 </li>
       <li><a href="rst_rtos/4_ai_voice/1_ai_voice_toprst.html#term-AFE"><strong>AFE</strong></a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="rst_rtos/4_ai_voice/1_ai_voice_toprst.html#term-AGC"><strong>AGC</strong></a>
 </li>
       <li><a href="rst_rtos/4_ai_voice/1_ai_voice_toprst.html#term-ASR"><strong>ASR</strong></a>
@@ -185,6 +2068,52 @@
   </ul></td>
 </tr></table>
 
+<h2 id="C">C</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv420country_code_table_t">country_code_table_t (C++ struct)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N20country_code_table_t12channel_planE">country_code_table_t::channel_plan (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N20country_code_table_t5char2E">country_code_table_t::char2 (C++ member)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N20country_code_table_t7pwr_lmtE">country_code_table_t::pwr_lmt (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv49custom_ie">custom_ie (C++ struct)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N9custom_ie2ieE">custom_ie::ie (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N9custom_ie4typeE">custom_ie::type (C++ member)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="D">D</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#c.DIS_DPK">DIS_DPK (C macro)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="I">I</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv425internal_join_block_param">internal_join_block_param (C++ struct)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N25internal_join_block_param5blockE">internal_join_block_param::block (C++ member)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N25internal_join_block_param9join_semaE">internal_join_block_param::join_sema (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N25internal_join_block_param12join_timeoutE">internal_join_block_param::join_timeout (C++ member)</a>
+</li>
+  </ul></td>
+</tr></table>
+
 <h2 id="K">K</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
@@ -196,11 +2125,29 @@
 <h2 id="N">N</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="rst_rtos/4_ai_voice/1_ai_voice_toprst.html#term-NN"><strong>NN</strong></a>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv410net_device">net_device (C++ struct)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N10net_device8dev_addrE">net_device::dev_addr (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N10net_device10iface_typeE">net_device::iface_type (C++ member)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N10net_device4privE">net_device::priv (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#c.netdev_priv">netdev_priv (C macro)</a>
+</li>
+      <li><a href="rst_rtos/4_ai_voice/1_ai_voice_toprst.html#term-NN"><strong>NN</strong></a>
+</li>
       <li><a href="rst_rtos/4_ai_voice/1_ai_voice_toprst.html#term-NS"><strong>NS</strong></a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="P">P</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#c.PSCAN_FAST_SURVEY">PSCAN_FAST_SURVEY (C macro)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -208,7 +2155,205 @@
 <h2 id="R">R</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv416raw_frame_desc_t">raw_frame_desc_t (C++ struct)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N16raw_frame_desc_t8ac_queueE">raw_frame_desc_t::ac_queue (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N16raw_frame_desc_t6agg_enE">raw_frame_desc_t::agg_en (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N16raw_frame_desc_t3bufE">raw_frame_desc_t::buf (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N16raw_frame_desc_t7buf_lenE">raw_frame_desc_t::buf_len (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N16raw_frame_desc_t9device_idE">raw_frame_desc_t::device_id (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N16raw_frame_desc_t11retry_limitE">raw_frame_desc_t::retry_limit (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N16raw_frame_desc_t3sgiE">raw_frame_desc_t::sgi (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N16raw_frame_desc_t7tx_rateE">raw_frame_desc_t::tx_rate (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N16raw_frame_desc_t8wlan_idxE">raw_frame_desc_t::wlan_idx (C++ member)</a>
+</li>
       <li><a href="rst_rtos/4_ai_voice/1_ai_voice_toprst.html#term-RES"><strong>RES</strong></a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv421rtw_conn_step_retries">rtw_conn_step_retries (C++ struct)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N21rtw_conn_step_retries21eapol_key_rsend_limitE">rtw_conn_step_retries::eapol_key_rsend_limit (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N21rtw_conn_step_retries13reassoc_limitE">rtw_conn_step_retries::reassoc_limit (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N21rtw_conn_step_retries12reauth_limitE">rtw_conn_step_retries::reauth_limit (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N21rtw_conn_step_retries16sae_reauth_limitE">rtw_conn_step_retries::sae_reauth_limit (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv414rtw_crypt_info">rtw_crypt_info (C++ struct)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N14rtw_crypt_info9device_idE">rtw_crypt_info::device_id (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N14rtw_crypt_info13driver_cipherE">rtw_crypt_info::driver_cipher (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N14rtw_crypt_info15force_cam_entryE">rtw_crypt_info::force_cam_entry (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N14rtw_crypt_info3keyE">rtw_crypt_info::key (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N14rtw_crypt_info7key_idxE">rtw_crypt_info::key_idx (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N14rtw_crypt_info7key_lenE">rtw_crypt_info::key_len (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N14rtw_crypt_info8mac_addrE">rtw_crypt_info::mac_addr (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N14rtw_crypt_info8pairwiseE">rtw_crypt_info::pairwise (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N14rtw_crypt_info8rpt_modeE">rtw_crypt_info::rpt_mode (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N14rtw_crypt_info25transition_disable_bitmapE">rtw_crypt_info::transition_disable_bitmap (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N14rtw_crypt_info24transition_disable_existE">rtw_crypt_info::transition_disable_exist (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N14rtw_crypt_info8wlan_idxE">rtw_crypt_info::wlan_idx (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv414rtw_csi_header">rtw_csi_header (C++ struct)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N14rtw_csi_header9bandwidthE">rtw_csi_header::bandwidth (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N14rtw_csi_header7channelE">rtw_csi_header::channel (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N14rtw_csi_header15csi_data_lengthE">rtw_csi_header::csi_data_length (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N14rtw_csi_header12csi_sequenceE">rtw_csi_header::csi_sequence (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N14rtw_csi_header13csi_signatureE">rtw_csi_header::csi_signature (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N14rtw_csi_header9csi_validE">rtw_csi_header::csi_valid (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N14rtw_csi_header3evmE">rtw_csi_header::evm (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N14rtw_csi_header7hdr_lenE">rtw_csi_header::hdr_len (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N14rtw_csi_header21hw_assigned_timestampE">rtw_csi_header::hw_assigned_timestamp (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N14rtw_csi_header8mac_addrE">rtw_csi_header::mac_addr (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N14rtw_csi_header4n_rxE">rtw_csi_header::n_rx (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N14rtw_csi_header5n_stsE">rtw_csi_header::n_sts (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N14rtw_csi_header16num_bit_per_toneE">rtw_csi_header::num_bit_per_tone (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N14rtw_csi_header15num_sub_carrierE">rtw_csi_header::num_sub_carrier (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N14rtw_csi_header13protocol_modeE">rtw_csi_header::protocol_mode (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N14rtw_csi_header4rssiE">rtw_csi_header::rssi (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N14rtw_csi_header4rsvdE">rtw_csi_header::rsvd (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N14rtw_csi_header7rx_rateE">rtw_csi_header::rx_rate (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N14rtw_csi_header4rxscE">rtw_csi_header::rxsc (C++ member)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N14rtw_csi_header9trig_addrE">rtw_csi_header::trig_addr (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N14rtw_csi_header9trig_flagE">rtw_csi_header::trig_flag (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv424rtw_event_disconn_info_t">rtw_event_disconn_info_t (C++ struct)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N24rtw_event_disconn_info_t5bssidE">rtw_event_disconn_info_t::bssid (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N24rtw_event_disconn_info_t14disconn_reasonE">rtw_event_disconn_info_t::disconn_reason (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv426rtw_event_join_fail_info_t">rtw_event_join_fail_info_t (C++ struct)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N26rtw_event_join_fail_info_t5bssidE">rtw_event_join_fail_info_t::bssid (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N26rtw_event_join_fail_info_t11fail_reasonE">rtw_event_join_fail_info_t::fail_reason (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N26rtw_event_join_fail_info_t21reason_or_status_codeE">rtw_event_join_fail_info_t::reason_or_status_code (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#c.rtw_get_netdev">rtw_get_netdev (C macro)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#c.rtw_is_netdev_enable">rtw_is_netdev_enable (C macro)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv415rtw_kvr_param_t">rtw_kvr_param_t (C++ struct)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv415rtw_owe_param_t">rtw_owe_param_t (C++ struct)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N15rtw_owe_param_t5groupE">rtw_owe_param_t::group (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N15rtw_owe_param_t8peer_macE">rtw_owe_param_t::peer_mac (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N15rtw_owe_param_t7pub_keyE">rtw_owe_param_t::pub_key (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N15rtw_owe_param_t11pub_key_lenE">rtw_owe_param_t::pub_key_len (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv415rtw_pmksa_ops_t">rtw_pmksa_ops_t (C++ struct)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N15rtw_pmksa_ops_t8mac_addrE">rtw_pmksa_ops_t::mac_addr (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N15rtw_pmksa_ops_t6ops_idE">rtw_pmksa_ops_t::ops_id (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N15rtw_pmksa_ops_t3pmkE">rtw_pmksa_ops_t::pmk (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N15rtw_pmksa_ops_t5pmkidE">rtw_pmksa_ops_t::pmkid (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N15rtw_pmksa_ops_t8wlan_idxE">rtw_pmksa_ops_t::wlan_idx (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv415rtw_scan_result">rtw_scan_result (C++ struct)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N15rtw_scan_result4bandE">rtw_scan_result::band (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N15rtw_scan_result8bss_typeE">rtw_scan_result::bss_type (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N15rtw_scan_result5BSSIDE">rtw_scan_result::BSSID (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N15rtw_scan_result7channelE">rtw_scan_result::channel (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N15rtw_scan_result12country_codeE">rtw_scan_result::country_code (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N15rtw_scan_result8rom_rsvdE">rtw_scan_result::rom_rsvd (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N15rtw_scan_result8securityE">rtw_scan_result::security (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N15rtw_scan_result15signal_strengthE">rtw_scan_result::signal_strength (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N15rtw_scan_result4SSIDE">rtw_scan_result::SSID (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N15rtw_scan_result13wireless_modeE">rtw_scan_result::wireless_mode (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N15rtw_scan_result8wps_typeE">rtw_scan_result::wps_type (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv423rtw_tx_power_ctl_info_t">rtw_tx_power_ctl_info_t (C++ struct)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N23rtw_tx_power_ctl_info_t21b_tx_pwr_force_enbaleE">rtw_tx_power_ctl_info_t::b_tx_pwr_force_enbale (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N23rtw_tx_power_ctl_info_t12tx_pwr_forceE">rtw_tx_power_ctl_info_t::tx_pwr_force (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv419rtw_wpa_4way_status">rtw_wpa_4way_status (C++ struct)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N19rtw_wpa_4way_status16is_grpkey_updateE">rtw_wpa_4way_status::is_grpkey_update (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N19rtw_wpa_4way_status8is_startE">rtw_wpa_4way_status::is_start (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N19rtw_wpa_4way_status10is_successE">rtw_wpa_4way_status::is_success (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N19rtw_wpa_4way_status8mac_addrE">rtw_wpa_4way_status::mac_addr (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N19rtw_wpa_4way_status8wlan_idxE">rtw_wpa_4way_status::wlan_idx (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv411rx_pkt_info">rx_pkt_info (C++ struct)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N11rx_pkt_info3bufE">rx_pkt_info::buf (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N11rx_pkt_info7channelE">rx_pkt_info::channel (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N11rx_pkt_info9data_rateE">rx_pkt_info::data_rate (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N11rx_pkt_info3lenE">rx_pkt_info::len (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N11rx_pkt_info17recv_signal_powerE">rx_pkt_info::recv_signal_power (C++ member)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -216,6 +2361,32 @@
 <h2 id="S">S</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#c.SCAN_LONGEST_WAIT_TIME">SCAN_LONGEST_WAIT_TIME (C macro)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv411speaker_set">speaker_set (C++ union)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N11speaker_set6enableE">speaker_set::enable (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N11speaker_set4initE">speaker_set::init (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N11speaker_set15latch_i2s_countE">speaker_set::latch_i2s_count (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N11speaker_set12latch_periodE">speaker_set::latch_period (C++ member)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N11speaker_set4modeE">speaker_set::mode (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N11speaker_set10nav_threshE">speaker_set::nav_thresh (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N11speaker_set4portE">speaker_set::port (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N11speaker_set8relay_enE">speaker_set::relay_en (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N11speaker_set9tsf_timerE">speaker_set::tsf_timer (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N11speaker_set4tsftE">speaker_set::tsft (C++ member)</a>
+</li>
       <li><a href="rst_rtos/4_ai_voice/1_ai_voice_toprst.html#term-SSL"><strong>SSL</strong></a>
 </li>
   </ul></td>
@@ -233,6 +2404,230 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="rst_rtos/4_ai_voice/1_ai_voice_toprst.html#term-VAD"><strong>VAD</strong></a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="W">W</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#c.WHC_MAX_SSID_LENGTH">WHC_MAX_SSID_LENGTH (C macro)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv418wifi_add_custom_ieP9custom_iei">wifi_add_custom_ie (C++ function)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv421wifi_ap_set_invisible2u8">wifi_ap_set_invisible (C++ function)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv429wifi_ap_switch_chl_and_informP15_rtw_csa_parm_t">wifi_ap_switch_chl_and_inform (C++ function)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv425wifi_config_autoreconnect2u8">wifi_config_autoreconnect (C++ function)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv412wifi_connectP19_rtw_network_info_th">wifi_connect (C++ function)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv415wifi_csi_configP22_rtw_csi_action_parm_t">wifi_csi_config (C++ function)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv415wifi_csi_report3u32P2u8P3u32">wifi_csi_report (C++ function)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv418wifi_del_custom_ieh">wifi_del_custom_ie (C++ function)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv416wifi_del_stationPh">wifi_del_station (C++ function)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv415wifi_disconnectv">wifi_disconnect (C++ function)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv417wifi_driver_is_mpv">wifi_driver_is_mp (C++ function)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv420wifi_get_antdiv_infoPhPh">wifi_get_antdiv_info (C++ function)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv431wifi_get_associated_client_listP18_rtw_client_list_t">wifi_get_associated_client_list (C++ function)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv422wifi_get_autoreconnectP2u8">wifi_get_autoreconnect (C++ function)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv418wifi_get_band_typev">wifi_get_band_type (C++ function)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv417wifi_get_ccmp_key2u8P2u8PhPh">wifi_get_ccmp_key (C++ function)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv420wifi_get_join_statusv">wifi_get_join_status (C++ function)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv420wifi_get_mac_addressiP10_rtw_mac_t2u8">wifi_get_mac_address (C++ function)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv421wifi_get_network_modev">wifi_get_network_mode (C++ function)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv422wifi_get_phy_statisticP21_rtw_phy_statistics_t">wifi_get_phy_statistic (C++ function)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv421wifi_get_scan_recordsPjPc">wifi_get_scan_records (C++ function)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv416wifi_get_settinghP19_rtw_wifi_setting_t">wifi_get_setting (C++ function)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv421wifi_get_sw_statistichP20_rtw_sw_statistics_t">wifi_get_sw_statistic (C++ function)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv412wifi_get_tsfh">wifi_get_tsf (C++ function)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv417wifi_get_tx_power2u8P2s8">wifi_get_tx_power (C++ function)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv422wifi_get_txbuf_pkt_numv">wifi_get_txbuf_pkt_num (C++ function)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv415wifi_is_runningh">wifi_is_running (C++ function)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv47wifi_on2u8">wifi_on (C++ function)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv419wifi_promisc_enable3u32P15_promisc_para_t">wifi_promisc_enable (C++ function)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv422wifi_reg_event_handlerjPFvPciiPvEPv">wifi_reg_event_handler (C++ function)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv415wifi_scan_abort2u8">wifi_scan_abort (C++ function)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv418wifi_scan_networksP17_rtw_scan_param_th">wifi_scan_networks (C++ function)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv419wifi_send_raw_frameP16raw_frame_desc_t">wifi_send_raw_frame (C++ function)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv416wifi_set_channelh2u8">wifi_set_channel (C++ function)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv428wifi_set_conn_step_try_limitP21rtw_conn_step_retries">wifi_set_conn_step_try_limit (C++ function)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv420wifi_set_countrycodePc">wifi_set_countrycode (C++ function)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv435wifi_set_cts2self_duration_and_sendht">wifi_set_cts2self_duration_and_send (C++ function)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv419wifi_set_EDCA_paramj">wifi_set_EDCA_param (C++ function)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv415wifi_set_gen_iehPc3u163u16">wifi_set_gen_ie (C++ function)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv419wifi_set_lps_enable2u8">wifi_set_lps_enable (C++ function)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv428wifi_set_lps_listen_interval2u8">wifi_set_lps_listen_interval (C++ function)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv421wifi_set_network_mode3u32">wifi_set_network_mode (C++ function)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv415wifi_set_TX_CCAh">wifi_set_TX_CCA (C++ function)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv417wifi_set_tx_powerP23rtw_tx_power_ctl_info_t">wifi_set_tx_power (C++ function)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv423wifi_set_tx_rate_by_ToShhh">wifi_set_tx_rate_by_ToS (C++ function)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv420wifi_speaker_setting2u8P11speaker_set">wifi_speaker_setting (C++ function)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv413wifi_start_apP18_rtw_softap_info_t">wifi_start_ap (C++ function)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv412wifi_stop_apv">wifi_stop_ap (C++ function)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv424wifi_unreg_event_handlerjPFvPciiPvE">wifi_unreg_event_handler (C++ function)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv421wifi_update_custom_ieP9custom_iei">wifi_update_custom_ie (C++ function)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv414wifi_user_conf">wifi_user_conf (C++ struct)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N14wifi_user_conf6acs_enE">wifi_user_conf::acs_en (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N14wifi_user_conf15ampdu_rx_enableE">wifi_user_conf::ampdu_rx_enable (C++ member)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N14wifi_user_conf15ampdu_tx_enableE">wifi_user_conf::ampdu_tx_enable (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N14wifi_user_conf11antdiv_modeE">wifi_user_conf::antdiv_mode (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N14wifi_user_conf23ap_compatibilty_enabledE">wifi_user_conf::ap_compatibilty_enabled (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N14wifi_user_conf14ap_polling_staE">wifi_user_conf::ap_polling_sta (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N14wifi_user_conf10ap_sta_numE">wifi_user_conf::ap_sta_num (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N14wifi_user_conf20auto_reconnect_countE">wifi_user_conf::auto_reconnect_count (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N14wifi_user_conf23auto_reconnect_intervalE">wifi_user_conf::auto_reconnect_interval (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N14wifi_user_conf17bCheckDestAddressE">wifi_user_conf::bCheckDestAddress (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N14wifi_user_conf12bw_40_enableE">wifi_user_conf::bw_40_enable (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N14wifi_user_conf8cfg80211E">wifi_user_conf::cfg80211 (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N14wifi_user_conf18concurrent_enabledE">wifi_user_conf::concurrent_enabled (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N14wifi_user_conf12country_codeE">wifi_user_conf::country_code (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N14wifi_user_conf14dpk_peak_limitE">wifi_user_conf::dpk_peak_limit (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N14wifi_user_conf6en_mccE">wifi_user_conf::en_mcc (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N14wifi_user_conf14force_cts2selfE">wifi_user_conf::force_cts2self (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N14wifi_user_conf15ips_ctrl_by_usrE">wifi_user_conf::ips_ctrl_by_usr (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N14wifi_user_conf10ips_enableE">wifi_user_conf::ips_enable (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N14wifi_user_conf9ips_levelE">wifi_user_conf::ips_level (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N14wifi_user_conf18keepalive_intervalE">wifi_user_conf::keepalive_interval (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N14wifi_user_conf25legacy_ps_listen_intervalE">wifi_user_conf::legacy_ps_listen_interval (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N14wifi_user_conf10lps_enableE">wifi_user_conf::lps_enable (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N14wifi_user_conf8lps_modeE">wifi_user_conf::lps_mode (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N14wifi_user_conf17max_roaming_timesE">wifi_user_conf::max_roaming_times (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N14wifi_user_conf25no_beacon_disconnect_timeE">wifi_user_conf::no_beacon_disconnect_time (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N14wifi_user_conf22rf_calibration_disableE">wifi_user_conf::rf_calibration_disable (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N14wifi_user_conf14rtw_802_11d_enE">wifi_user_conf::rtw_802_11d_en (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N14wifi_user_conf14rtw_edcca_modeE">wifi_user_conf::rtw_edcca_mode (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N14wifi_user_conf19rtw_trp_tis_cert_enE">wifi_user_conf::rtw_trp_tis_cert_en (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N14wifi_user_conf18rtw_tx_pwr_by_rateE">wifi_user_conf::rtw_tx_pwr_by_rate (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N14wifi_user_conf21rtw_tx_pwr_lmt_enableE">wifi_user_conf::rtw_tx_pwr_lmt_enable (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N14wifi_user_conf12rx_ampdu_numE">wifi_user_conf::rx_ampdu_num (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N14wifi_user_conf18rx_shortcut_enableE">wifi_user_conf::rx_shortcut_enable (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N14wifi_user_conf22set_channel_api_do_rfkE">wifi_user_conf::set_channel_api_do_rfk (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N14wifi_user_conf12skb_buf_sizeE">wifi_user_conf::skb_buf_size (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N14wifi_user_conf10skb_num_apE">wifi_user_conf::skb_num_ap (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N14wifi_user_conf10skb_num_npE">wifi_user_conf::skb_num_np (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N14wifi_user_conf22softap_addr_offset_idxE">wifi_user_conf::softap_addr_offset_idx (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N14wifi_user_conf15tdma_dig_enableE">wifi_user_conf::tdma_dig_enable (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N14wifi_user_conf18tx_shortcut_enableE">wifi_user_conf::tx_shortcut_enable (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N14wifi_user_conf15uapsd_ac_enableE">wifi_user_conf::uapsd_ac_enable (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N14wifi_user_conf16uapsd_max_sp_lenE">wifi_user_conf::uapsd_max_sp_len (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N14wifi_user_conf20wifi_speaker_featureE">wifi_user_conf::wifi_speaker_feature (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N14wifi_user_conf19wifi_wpa_mode_forceE">wifi_user_conf::wifi_wpa_mode_force (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N14wifi_user_conf15wps_retry_countE">wifi_user_conf::wps_retry_count (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N14wifi_user_conf18wps_retry_intervalE">wifi_user_conf::wps_retry_interval (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N14wifi_user_conf25wtn_child_refresh_timeoutE">wifi_user_conf::wtn_child_refresh_timeout (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N14wifi_user_conf26wtn_father_refresh_timeoutE">wifi_user_conf::wtn_father_refresh_timeout (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N14wifi_user_conf11wtn_rnat_enE">wifi_user_conf::wtn_rnat_en (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N14wifi_user_conf22wtn_strong_rssi_threshE">wifi_user_conf::wtn_strong_rssi_thresh (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv415wpa_sae_param_t">wpa_sae_param_t (C++ struct)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N15wpa_sae_param_t3h2eE">wpa_sae_param_t::h2e (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N15wpa_sae_param_t8peer_macE">wpa_sae_param_t::peer_mac (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N15wpa_sae_param_t16sae_reauth_limitE">wpa_sae_param_t::sae_reauth_limit (C++ member)</a>
+</li>
+      <li><a href="rst_rtos/10_api_docs/1_api_toprst.html#_CPPv4N15wpa_sae_param_t8self_macE">wpa_sae_param_t::self_mac (C++ member)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -256,6 +2651,78 @@
 
 </footer>
         </div>
+    <!-- 问题反馈按钮和对话框 -->
+    
+        <button id="report-button">Inquire</button>
+    
+    <div id="feedback-dialog" class="feedback-dialog" style="display: none;">
+        <div class="form-group">
+            <label style="font-weight: bold;">Please select the related chapter:</label>
+            <select id="chapter-select">
+                <option value="">Select Chapter</option>
+                <!-- 章节选项将通过JavaScript动态填充 -->
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label style="font-weight: bold;">Post Type</label>
+            <select id="post-type" class="form-control" required>
+                <option value="">-- Select Type --</option>
+                <option value="doc_correction">Document Correction</option>
+                <option value="tech_consult">Technical Consult</option>
+                <option value="tech_summary">Technical Summary</option>
+                <option value="operation_flow">Operation Flow</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label style="font-weight: bold;">Related Paragraph:</label>
+            <textarea
+                id="paragraph-input"
+                placeholder="{{ '你可以先选择有问题的段落或手动输入...' if language == 'zh_CN' else 'You can select text or type directly here...' }}"
+                rows="4"
+            ></textarea>
+        </div>
+
+        <div class="form-group">
+            <label style="font-weight: bold;">Please describe your issue:</label>
+            <textarea
+                id="inquire_input"
+                placeholder="Feature enhancement in progress, please stay tuned...">
+            </textarea>
+        </div>
+
+        <button id="submit-feedback">Submit</button>
+        <button id="cancel-feedback">Cancel</button>
+    </div>
+
+    <style>
+        .form-group {
+            margin: 5px 0;  /* 基础间距 */
+        }
+
+        /* 相邻表单项缩小上方间距 */
+        .form-group + .form-group {
+            margin-top: 10px;
+        }
+
+        /* 段落输入框底部微调 */
+        #paragraph-input, #inquire_input {
+            margin: 2px 0; /* 上下间距 */
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            resize: vertical;
+            min-height: 100px;
+
+            /* 占位符样式 */
+            &::placeholder {
+                color: #999;
+                font-style: italic;
+            }
+        }
+    </style>
 
       </div>
     </section>
@@ -265,8 +2732,118 @@
           SphinxRtdTheme.Navigation.enable(true);
       });
   </script>
- 
+     
 
+    
+        
+        <script>
+            // 路由守卫配置
+            const ROUTER_CONFIG = {
+                baseUrl: 'http://172.29.57.206:5000',
+                checkInterval: 30000 // 30秒检查一次
+            };
+
+            window.getStoredUsername = function() {
+                try {
+                    const session = localStorage.getItem('auth_session');
+                    if (!session) return null;
+                    const { username, expires } = JSON.parse(session);
+                    if (Date.now() > expires) {
+                        localStorage.removeItem('auth_session');
+                        return null;
+                    }
+                    return username;
+                } catch (e) {
+                    console.error('读取存储会话失败:', e);
+                    return null;
+                }
+            }
+
+            // 增强型路由守卫
+            function setupRouteGuard() {
+                const originalPushState = history.pushState;
+                const originalReplaceState = history.replaceState;
+            
+                function wrappedHistoryMethod(method) {
+                    return function(state, title, url) {
+                        if (url) {
+                            const urlObj = new URL(url, window.location.origin);
+                            verifyNavigation(urlObj.pathname).then(allowed => {
+                                if (allowed) {
+                                    method.apply(history, [state, title, url]);
+                                }
+                            });
+                        } else {
+                            method.apply(history, [state, title, url]);
+                        }
+                    };
+                }
+
+                history.pushState = wrappedHistoryMethod(originalPushState);
+                history.replaceState = wrappedHistoryMethod(originalReplaceState);
+
+                window.addEventListener('popstate', () => {
+                    verifyNavigation(window.location.pathname);
+                });
+            }
+
+            // CSRF Token处理：获取CSRF令牌
+            window.getCSRFToken = function() {
+                // 从 Cookie 中获取 CSRF Token
+                const cookieValue = document.cookie
+                    .split('; ')
+                    .find(row => row.startsWith('csrf_token='))
+                    ?.split('=')[1];
+                return cookieValue || '';
+            }
+
+            // 统一验证逻辑
+            function verifyNavigation(path, isBackgroundCheck = false) {
+                console.log('[NDA Auth] verifyNavigation fetch check_nda_access ...');
+
+                if (isExemptPath(path)) return Promise.resolve(true);
+
+                const page = new URL(path, window.location.origin).pathname.split('/').pop();
+                console.log('[DEBUG] 提取的页面名称:', page);
+
+                return fetch('http://172.29.57.206:5000/check_nda_access', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': window.getCSRFToken()
+                    },
+                    body: JSON.stringify({
+                        path: page,
+                        username: window.getStoredUsername() || 'null' //  注意：后端从 session 取用户名，此处不需要传 username
+                    }),
+                    credentials: 'include'
+                })
+                .then(response => {
+                    // 关键：先检查状态码再解析 JSON
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json(); // 显式解析 JSON
+                })
+                .then(data => {
+                    console.log('[DEBUG] data.access:', data.access);
+                    return data.access ?? false;
+                })
+                .catch(error => {
+                    console.error('[ERROR] 验证失败:', error);
+                    return false;
+                });
+            }
+
+            // 初始化
+            document.addEventListener('DOMContentLoaded', () => {
+                verifyNavigation(window.location.pathname);
+                setupRouteGuard();
+            });
+        </script>
+    
+
+    
 
 
 </body>

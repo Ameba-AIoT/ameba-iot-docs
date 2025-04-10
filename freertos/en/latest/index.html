@@ -16,6 +16,7 @@
 
   
     <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="canonical" href="http://172.29.57.206:5000/docs/index.html" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -40,6 +41,36 @@
     <link rel="next" title="Products Center" href="rst_rtos/0_ameba_product/0_ameba_product_center_index.html" />
      
 
+    
+        
+        <script>
+        // 配置豁免路径（需要与后端路由完全匹配）
+        const EXEMPT_PATHS = [
+            '/_',                     // Sphinx生成路径
+            '/_static',               // 静态资源路径
+            '/_images',               // 图片资源
+            '/auth',                  // 认证端点
+            '/login',                 // 登录页面
+            '/logout',                // 登出端点
+            '/check_session',         // 会话检查
+            '/nda_restricted'         // 无权限提示页
+        ];
+
+        // 增强型路径检查
+        function isExemptPath(targetPath = window.location.pathname) {
+            const path = targetPath.toLowerCase();
+            const fullExemptPaths = EXEMPT_PATHS.concat(
+                EXEMPT_PATHS.map(p => `/en${p}`),  // 英文路径
+                EXEMPT_PATHS.map(p => `/zh_CN${p}`) // 中文路径
+            );
+
+            return fullExemptPaths.some(exempt => {
+                // 精确匹配或前缀匹配
+                return path === exempt.toLowerCase() || 
+                    path.startsWith(exempt.toLowerCase() + '/');
+            });
+        }
+        </script>
     
 
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
@@ -174,7 +205,7 @@ const i18n = {
 <!-- TOC 映射和当前文档信息 -->
 <script>
 // 将 Python 字典转换为 JS 对象
-const TOC_TITLE_MAP = {"rst_rtos/0_ameba_product": "Products Center", "rst_rtos/0_ameba_product/0_ameba_product_center_index": "Products Center", "rst_rtos/0_ameba_sdk": "Ameba SDK", "rst_rtos/0_ameba_sdk/0_ameba_sdks_index": "Ameba SDK", "rst_rtos/0_ameba_solutions": "Ameba Solutions", "rst_rtos/0_ameba_solutions/0_ameba_solutions_index": "Ameba Solutions", "rst_rtos/0_at_command": "0.8 AT Commands", "rst_rtos/0_at_command/0_at_command_index": "0.8 AT Commands", "rst_rtos/0_file_system": "0.9 Virtual File System", "rst_rtos/0_file_system/0_vfs_index": "0.9 Virtual File System", "rst_rtos/0_ftl": "0.a Flash Translation Layer", "rst_rtos/0_ftl/0_ftl_index": "0.a Flash Translation Layer", "rst_rtos/0_gcc_build_environment": "0.1 GCC Build Environment", "rst_rtos/0_gcc_build_environment/0_gcc_build_index": "0.1 GCC Build Environment", "rst_rtos/0_gcc_build_library": "0.3 GCC Build Library", "rst_rtos/0_gcc_build_library/0_gcc_build_library_index": "0.3 GCC Build Library", "rst_rtos/0_gdb_debug": "0.2 GDB Debug", "rst_rtos/0_gdb_debug/0_gdb_debug_index": "0.2 GDB Debug", "rst_rtos/0_memory_layout": "0.5 Flash \u0026 RAM Layout", "rst_rtos/0_memory_layout/0_layout_index": "0.5 Flash \u0026 RAM Layout", "rst_rtos/0_sdk_example": "0.4 SDK Example", "rst_rtos/0_sdk_example/0_sdk_example_index": "0.4 SDK Example", "rst_rtos/0_tools": "0.7 Tools", "rst_rtos/0_tools/0_tools_index": "0.7 Tools", "rst_rtos/0_user_config": "0.6 User Config", "rst_rtos/0_user_config/0_usrcfg_index": "0.6 User Config", "rst_rtos/10_api_docs": "10.0 API Reference", "rst_rtos/10_api_docs/0_api_index": "10.0 API Reference", "rst_rtos/1_boot_process": "1.1 BOOT Process", "rst_rtos/1_boot_process/0_boot_index": "1.1 BOOT Process", "rst_rtos/1_chipen": "1.4 Chip Enable", "rst_rtos/1_chipen/0_chipen_index": "1.4 Chip Enable", "rst_rtos/1_gpio": "1.7 GPIO \u0026 Pin Control", "rst_rtos/1_gpio/0_gpio_index": "1.7 GPIO \u0026 Pin Control", "rst_rtos/1_ipc": "1.5 Inter Processor Communication", "rst_rtos/1_ipc/0_ipc_index": "1.5 Inter Processor Communication", "rst_rtos/1_mpu_cache": "1.0 MPU and Cache", "rst_rtos/1_mpu_cache/0_mpu_cache_index": "1.0 MPU and Cache", "rst_rtos/1_ota": "1.2 OTA", "rst_rtos/1_ota/0_ota_index": "1.2 OTA", "rst_rtos/1_otpc": "1.3 OTPC", "rst_rtos/1_otpc/0_otpc_index": "1.3 OTPC", "rst_rtos/1_pinmux": "1.6 Pin Multiplexing", "rst_rtos/1_pinmux/0_pinmux_index": "1.6 Pin Multiplexing", "rst_rtos/1_power_save": "1.9 Power Save", "rst_rtos/1_power_save/0_ps_index": "1.9 Power Save", "rst_rtos/2_whc_fullmac": "2.1 WHC FullMAC", "rst_rtos/2_whc_fullmac/0_fullmac_index": "2.1 WHC FullMAC", "rst_rtos/2_whc_wifi_bridge": "2.0 WHC Bridge", "rst_rtos/2_whc_wifi_bridge/0_wifi_bridge_index": "2.0 WHC Bridge", "rst_rtos/2_wifi_adaptivity_test": "2.4 Wi-Fi Adaptivity Test", "rst_rtos/2_wifi_adaptivity_test/0_wifi_adaptivity_index": "2.4 Wi-Fi Adaptivity Test", "rst_rtos/2_wifi_csi": "2.3 Wi-Fi CSI", "rst_rtos/2_wifi_csi/0_wifi_csi_index": "2.3 Wi-Fi CSI", "rst_rtos/2_wifi_tunnel": "2.2 Wi-Fi R-Mesh", "rst_rtos/2_wifi_tunnel/0_wifi_tunnel_index": "2.2 Wi-Fi R-Mesh", "rst_rtos/3_ap_trustzone": "3.d AP Secure Service", "rst_rtos/3_ap_trustzone/0_ap_tz_index": "3.d AP Secure Service", "rst_rtos/3_crypto_engine": "3.9 Crypto Engine", "rst_rtos/3_crypto_engine/0_crypto_engine_index": "3.9 Crypto Engine", "rst_rtos/3_ecdsa_engine": "3.a ECDSA Engine", "rst_rtos/3_ecdsa_engine/0_ecdsa_index": "3.a ECDSA Engine", "rst_rtos/3_eddsa_engine": "3.b EDDSA Engine", "rst_rtos/3_eddsa_engine/0_eddsa_index": "3.b EDDSA Engine", "rst_rtos/3_rsa_engine": "3.c RSA Engine", "rst_rtos/3_rsa_engine/0_rsa_index": "3.c RSA Engine", "rst_rtos/3_security": "3.1 Security \u0026 Encryption", "rst_rtos/3_security/0_security_index": "3.1 Security \u0026 Encryption", "rst_rtos/3_trng": "3.2 True Random Number Generator", "rst_rtos/3_trng/0_trng_index": "3.2 True Random Number Generator", "rst_rtos/4_ai": "4.1 AI", "rst_rtos/4_ai/0_ai_index": "4.1 AI", "rst_rtos/4_ai_voice": "4.2 AIVoice", "rst_rtos/4_ai_voice/0_ai_voice_index": "4.2 AIVoice", "rst_rtos/4_dsp": "4.4 DSP", "rst_rtos/4_dsp/0_dsp_index": "4.4 DSP", "rst_rtos/4_multimedia": "4.3 Multimedia", "rst_rtos/4_multimedia/0_multimedia_index": "4.3 Multimedia", "rst_rtos/6_mass_production": "6.1 Mass Production", "rst_rtos/6_mass_production/0_mp_index": "6.1 Mass Production", "rst_rtos/6_mptools": "6.2 MP Tools", "rst_rtos/6_mptools/0_mptools_index": "6.2 MP Tools", "rst_rtos/7_usb": "7.1 USB Host \u0026 Device", "rst_rtos/7_usb/0_usb_index": "7.1 USB Host \u0026 Device", "rst_rtos/8_adc": "8.4 ADC", "rst_rtos/8_adc/0_adc_index": "8.4 ADC", "rst_rtos/8_cap_touch": "8.7 Cap-Touch", "rst_rtos/8_cap_touch/0_cap_touch_index": "8.7 Cap-Touch", "rst_rtos/8_dmac": "8.1 DMA Controller", "rst_rtos/8_dmac/0_dmac_index": "8.1 DMA Controller", "rst_rtos/8_ir": "8.5 IR", "rst_rtos/8_ir/0_ir_index": "8.5 IR", "rst_rtos/8_key_scan": "8.8 Key-Scan", "rst_rtos/8_key_scan/0_key_scan_index": "8.8 Key-Scan", "rst_rtos/8_lcdc": "8.a LCD Controller", "rst_rtos/8_lcdc/0_lcdc_index": "8.a LCD Controller", "rst_rtos/8_ledc": "8.6 LED Controller", "rst_rtos/8_ledc/0_ledc_index": "8.6 LED Controller", "rst_rtos/8_psram": "8.2 PSRAM", "rst_rtos/8_psram/0_psram_index": "8.2 PSRAM", "rst_rtos/8_rtc_io": "8.9 RTC-IO", "rst_rtos/8_rtc_io/0_rtc_io_index": "8.9 RTC-IO", "rst_rtos/8_thermal": "8.3 Thermal Meter", "rst_rtos/8_thermal/0_thermal_index": "8.3 Thermal Meter"};
+const TOC_TITLE_MAP = {"rst_rtos/0_ameba_product": "Products Center", "rst_rtos/0_ameba_product/0_ameba_product_center_index": "Products Center", "rst_rtos/0_ameba_sdk": "Ameba SDK", "rst_rtos/0_ameba_sdk/0_ameba_sdks_index": "Ameba SDK", "rst_rtos/0_ameba_solutions": "Ameba Solutions", "rst_rtos/0_ameba_solutions/0_ameba_solutions_index": "Ameba Solutions", "rst_rtos/0_at_command": "0.8 AT Commands", "rst_rtos/0_at_command/0_at_command_index": "0.8 AT Commands", "rst_rtos/0_build_system": "0.3 Build System", "rst_rtos/0_build_system/0_build_system_index": "0.3 Build System", "rst_rtos/0_file_system": "0.9 Virtual File System", "rst_rtos/0_file_system/0_vfs_index": "0.9 Virtual File System", "rst_rtos/0_ftl": "0.a Flash Translation Layer", "rst_rtos/0_ftl/0_ftl_index": "0.a Flash Translation Layer", "rst_rtos/0_gcc_build_environment": "0.1 GCC Build Environment", "rst_rtos/0_gcc_build_environment/0_gcc_build_index": "0.1 GCC Build Environment", "rst_rtos/0_gdb_debug": "0.2 GDB Debug", "rst_rtos/0_gdb_debug/0_gdb_debug_index": "0.2 GDB Debug", "rst_rtos/0_memory_layout": "0.5 Flash \u0026 RAM Layout", "rst_rtos/0_memory_layout/0_layout_index": "0.5 Flash \u0026 RAM Layout", "rst_rtos/0_sdk_example": "0.4 SDK Example", "rst_rtos/0_sdk_example/0_sdk_example_index": "0.4 SDK Example", "rst_rtos/0_tools": "0.7 Tools", "rst_rtos/0_tools/0_tools_index": "0.7 Tools", "rst_rtos/0_user_config": "0.6 User Config", "rst_rtos/0_user_config/0_usrcfg_index": "0.6 User Config", "rst_rtos/10_api_docs": "10.0 API Reference", "rst_rtos/10_api_docs/0_api_index": "10.0 API Reference", "rst_rtos/1_boot_process": "1.1 Boot Process", "rst_rtos/1_boot_process/0_boot_index": "1.1 Boot Process", "rst_rtos/1_chipen": "1.4 Chip Enable", "rst_rtos/1_chipen/0_chipen_index": "1.4 Chip Enable", "rst_rtos/1_gpio": "1.7 GPIO \u0026 Pin Control", "rst_rtos/1_gpio/0_gpio_index": "1.7 GPIO \u0026 Pin Control", "rst_rtos/1_ipc": "1.5 Inter Processor Communication", "rst_rtos/1_ipc/0_ipc_index": "1.5 Inter Processor Communication", "rst_rtos/1_mpu_cache": "1.0 MPU and Cache", "rst_rtos/1_mpu_cache/0_mpu_cache_index": "1.0 MPU and Cache", "rst_rtos/1_ota": "1.2 OTA", "rst_rtos/1_ota/0_ota_index": "1.2 OTA", "rst_rtos/1_otpc": "1.3 OTPC", "rst_rtos/1_otpc/0_otpc_index": "1.3 OTPC", "rst_rtos/1_pinmux": "1.6 Pin Multiplexing", "rst_rtos/1_pinmux/0_pinmux_index": "1.6 Pin Multiplexing", "rst_rtos/1_power_save": "1.9 Power Save", "rst_rtos/1_power_save/0_ps_index": "1.9 Power Save", "rst_rtos/2_whc_fullmac": "2.1 WHC FullMAC", "rst_rtos/2_whc_fullmac/0_fullmac_index": "2.1 WHC FullMAC", "rst_rtos/2_whc_wifi_bridge": "2.0 WHC Bridge", "rst_rtos/2_whc_wifi_bridge/0_wifi_bridge_index": "2.0 WHC Bridge", "rst_rtos/2_wifi_adaptivity_test": "2.4 Wi-Fi Adaptivity Test", "rst_rtos/2_wifi_adaptivity_test/0_wifi_adaptivity_index": "2.4 Wi-Fi Adaptivity Test", "rst_rtos/2_wifi_csi": "2.3 Wi-Fi CSI", "rst_rtos/2_wifi_csi/0_wifi_csi_index": "2.3 Wi-Fi CSI", "rst_rtos/2_wifi_tunnel": "2.2 Wi-Fi R-Mesh", "rst_rtos/2_wifi_tunnel/0_wifi_tunnel_index": "2.2 Wi-Fi R-Mesh", "rst_rtos/3_ap_trustzone": "3.d AP Secure Service", "rst_rtos/3_ap_trustzone/0_ap_tz_index": "3.d AP Secure Service", "rst_rtos/3_crypto_engine": "3.9 Crypto Engine", "rst_rtos/3_crypto_engine/0_crypto_engine_index": "3.9 Crypto Engine", "rst_rtos/3_ecdsa_engine": "3.a ECDSA Engine", "rst_rtos/3_ecdsa_engine/0_ecdsa_index": "3.a ECDSA Engine", "rst_rtos/3_eddsa_engine": "3.b EDDSA Engine", "rst_rtos/3_eddsa_engine/0_eddsa_index": "3.b EDDSA Engine", "rst_rtos/3_rsa_engine": "3.c RSA Engine", "rst_rtos/3_rsa_engine/0_rsa_index": "3.c RSA Engine", "rst_rtos/3_security": "3.1 Security \u0026 Encryption", "rst_rtos/3_security/0_security_index": "3.1 Security \u0026 Encryption", "rst_rtos/3_trng": "3.2 True Random Number Generator", "rst_rtos/3_trng/0_trng_index": "3.2 True Random Number Generator", "rst_rtos/4_ai": "4.1 AI", "rst_rtos/4_ai/0_ai_index": "4.1 AI", "rst_rtos/4_ai_voice": "4.2 AIVoice", "rst_rtos/4_ai_voice/0_ai_voice_index": "4.2 AIVoice", "rst_rtos/4_dsp": "4.4 DSP", "rst_rtos/4_dsp/0_dsp_index": "4.4 DSP", "rst_rtos/4_multimedia": "4.3 Multimedia", "rst_rtos/4_multimedia/0_multimedia_index": "4.3 Multimedia", "rst_rtos/6_mass_production": "6.1 Mass Production", "rst_rtos/6_mass_production/0_mp_index": "6.1 Mass Production", "rst_rtos/6_mptools": "6.2 MP Tools", "rst_rtos/6_mptools/0_mptools_index": "6.2 MP Tools", "rst_rtos/7_usb": "7.1 USB Host \u0026 Device", "rst_rtos/7_usb/0_usb_index": "7.1 USB Host \u0026 Device", "rst_rtos/8_adc": "8.4 ADC", "rst_rtos/8_adc/0_adc_index": "8.4 ADC", "rst_rtos/8_cap_touch": "8.7 Cap-Touch", "rst_rtos/8_cap_touch/0_cap_touch_index": "8.7 Cap-Touch", "rst_rtos/8_dmac": "8.1 DMA Controller", "rst_rtos/8_dmac/0_dmac_index": "8.1 DMA Controller", "rst_rtos/8_ir": "8.5 IR", "rst_rtos/8_ir/0_ir_index": "8.5 IR", "rst_rtos/8_key_scan": "8.8 Key-Scan", "rst_rtos/8_key_scan/0_key_scan_index": "8.8 Key-Scan", "rst_rtos/8_lcdc": "8.a LCD Controller", "rst_rtos/8_lcdc/0_lcdc_index": "8.a LCD Controller", "rst_rtos/8_ledc": "8.6 LED Controller", "rst_rtos/8_ledc/0_ledc_index": "8.6 LED Controller", "rst_rtos/8_psram": "8.2 PSRAM", "rst_rtos/8_psram/0_psram_index": "8.2 PSRAM", "rst_rtos/8_rtc_io": "8.9 RTC-IO", "rst_rtos/8_rtc_io/0_rtc_io_index": "8.9 RTC-IO", "rst_rtos/8_thermal": "8.3 Thermal Meter", "rst_rtos/8_thermal/0_thermal_index": "8.3 Thermal Meter"};
 console.log("TOC_TITLE_MAP:", TOC_TITLE_MAP);
 
 // 获取当前页面的文档名 (例如 'rst_rtos/3_nda_secure_boot/0_secure_boot_index_nda')
@@ -230,245 +261,569 @@ document.addEventListener('DOMContentLoaded', function() {
     document.body.appendChild(chapterElement);
 });
 </script>
+
     <style>
-        /* ====================== 选择器样式 ====================== */
-        /* 选择器容器 */
-        .selector-container {
-            margin: 8px 0;
-            display: flex;
-            justify-content: flex-start;
-            align-items: center;
-        }
-        
-        /* 版本选择器特殊边距 */
-        .version-selector-container {
-            margin-bottom: 8px !important;
-        }
-        
-        /* 选择器标签 */
-        .selector-label {
-            color: white;
-            margin-right: 10px;
-            width: 80px;
-            text-align: right;
-            font-size: 0.9em;
-        }
-        
-        /* 下拉选择框 */
-        .selector-dropdown {
-            width: 120px;
-            border-radius: 2px;
-            padding: 4px 8px;
-            border: 1px solid #405261;
-            background: #2c3e50;
-            color: white;
-            font-size: 0.9em;
-        }
-        
-        /* 下拉选择框悬停效果 */
-        .selector-dropdown:hover {
-            border-color: #3498db;
-            transition: border-color 0.3s;
-        }
-        
-        /* 选择器响应式布局 */
-        @media (max-width: 768px) {
-            .selector-container {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            
-            .selector-label {
-                width: 100%;
-                text-align: left;
-                margin-bottom: 4px;
-            }
-            
-            .selector-dropdown {
-                width: 100%;
-            }
-        }
-    </style>
-    
-    <style>
-        /* ====================== 注销按钮样式 ====================== */
-        .logout-btn {
-            background: #e74c3c;
-            color: white;
-            padding: 4px 10px;
-            border: none;
-            border-radius: 3px;
-            cursor: pointer;
-            transition: background 0.3s ease;
-            font-size: 0.85em;
-            margin-left: 10px;
-        }
-    
-        .logout-btn:hover {
-            background: #c0392b;
-        }
-    
-        .username {
-            font-weight: 600;
-            color: #ecf0f1;
-        }
-    
-        @media (max-width: 768px) {
-            .logout-btn {
-                margin-left: 0;
-                margin-top: 5px;
-                width: 100%;
-            }
-            
-            #user-info {
-                display: flex !important;
-                flex-direction: column;
-                align-items: flex-start;
-            }
-        }
-    </style>
-    <style>
-        /* =============== 左上角登录区域  =============== */
-        /* ================= 用户面板 ================= */
-        .user-panel {
-            background: rgba(255,255,255,0.1);
+        /* ====================== 紧凑型选择器 ====================== */
+        #topleft-panel {
+            background: rgba(40, 58, 73, 0.9);
             border-radius: 8px;
-            padding: 4px 6px; /* 上下间距减少 */
-            margin: 4px 0;     /* 外间距减小 */
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            padding: 4px;
+            margin: 4px 0;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+            backdrop-filter: blur(4px);
         }
-    
-        .username {
-            font-size: 1.1em;
+
+        .selectors-grid {
+            display: grid;
+            gap: 4px;
+        }
+
+        .dual-selector-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* 两列等宽 */
+            gap: 4px; /* 列间距 */
+        }
+
+        .selector-group {
+            position: relative;
+        }
+
+        .selector-label {
+            display: block;
+            color: #a0b3c6;
+            font-size: 0.85em;
+            margin-bottom: 4px;
+            padding-left: 4px;
+        }
+
+        .selector-dropdown {
+            width: 100%;
+            padding: 4px 4px;
+            border: 1px solid rgba(64, 82, 97, 0.8);
+            border-radius: 6px;
+            background: rgba(44, 62, 80, 0.9);
             color: #ecf0f1;
-            font-weight: 500;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            text-align: center;      /* 确保文本居中 */
-            max-width: 100%;         /* 允许完全展开 */
-            display: block;          /* 确保居中效果 */
-        }
-    
-        .user-info-top {
-            display: flex;
-            justify-content: center; /* 新增居中属性 */
-            margin-bottom: 4px;      /* 减少下边距 */
-            width: 100%;
-        }
-    
-        .user-icon {
-            font-size: 1.2em;
-            margin-right: 10px;
-        }
-    
-        /* ================= 按钮容器 ================= */
-        .button-row {
-            display: flex;
-            gap: 8px;
-            width: 100%;
-            margin: 10px 0;
-        }
-    
-        /* 通用按钮样式 */
-        .auth-btn {
-            flex: 1;
-            margin: 3px;             /* 减少按钮间距 */
-            padding: 4px 6px;       /* 减少按钮内边距 */
-            border-radius: 6px;
-            border: none;
-            background: #3498db;
-            color: white;
-            transition: all 0.3s ease;
             font-size: 0.95em;
+            transition: all 0.2s ease;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23a0b3c6'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            background-size: 16px;
         }
-    
-        .auth-btn:hover {
-            background: #2980b9;
-            transform: translateY(-1px);
+
+        .selector-dropdown:hover {
+            border-color: #4a6a8b;
+            background-color: rgba(44, 62, 80, 1);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
         }
-    
-        /* 外链按钮 */
-        .link-btn {
-            width: 100%;
-            margin: 3px 0;           /* 减少外链按钮间距 */
-            padding: 4px 6px;       /* 减少内边距 */
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 6px;
-            color: white;
-            display: flex;
-            align-items: center;
-            transition: all 0.3s ease;
+
+        .selector-dropdown:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
         }
-    
-        .link-btn:hover {
-            background: rgba(255,255,255,0.1);
-            transform: translateY(-1px);
-        }
-    
-        .link-icon {
-            margin-right: 10px;
-            font-size: 1.2em;
-        }
-    
-        .link-text {
-            font-size: 0.95em;
-        }
-    
-        .panel-divider {
-            height: 1px;
-            background: rgba(255,255,255,0.1);
-            margin: 6px 0;          /* 减少分隔线间距 */
-        }
-    
-        /* 响应式调整 */
+
+        /* 移动端优化 */
         @media (max-width: 768px) {
-            .user-panel {
-                padding: 4px 6px;
+            #topleft-panel {
+                margin: 8px 0;
+                padding: 10px;
             }
-            
-            .auth-btn {
-                padding: 4px 68px;
-                font-size: 0.9em;
+
+            .selectors-grid {
+                grid-template-columns: 1fr;
+                gap: 10px;
             }
-            
-            .link-text {
-                font-size: 0.9em;
+
+            .selector-dropdown {
+                padding: 10px 12px;
+            }
+
+            .dual-selector-group {
+                grid-template-columns: 1fr; /* 小屏幕下堆叠显示 */
             }
         }
-    /* =============== 左上角登录区域  =============== */
-    </style>
-    
-    <style>
-        /* ====================== logout用户面板样式 ====================== */
-        .logout-container {
-            border-top: 1px solid rgba(255,255,255,0.2);
-            padding-top: 12px;
-        }
-    
-        .logout-btn {
-            width: 100%;
-            margin: 3px 0;           /* 减少外链按钮间距 */
-            padding: 4px 6px;       /* 减少内边距 */
-            background: linear-gradient(145deg, #e74c3c, #c0392b);
-            border-radius: 6px;
-            font-size: 0.95em;
-            transition: all 0.3s ease;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding-top: 3px;        /* 减少顶部间距 */
-        }
-    
-        .logout-btn:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 3px 8px rgba(231, 76, 60, 0.3);
-        }
-    
     </style>
 
-    <!-- 问题回报 -->
+    
+        
+
+<style>
+    /* ================= 用户面板 ================= */
+    .user-panel {
+        /* background: rgba(255,255,255,0.1); */
+        background: rgba(255, 255, 255, 0.05); /* 更暗的背景 */
+        border-radius: 4px;
+        padding: 4px 4px; /* 上下间距减少 */
+        margin: 4px 0px; /* 左右各10px边距 */
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+
+        width: calc(100% - 4px); /* 宽度占满父容器减去20px（左右边距总和） */
+        max-width: 280px; /* 设置最大宽度，防止过宽 */
+        box-sizing: border-box; /* 确保padding和border不影响总宽度 */
+    }
+
+    #user-info {
+        display: flex;
+        gap: 4px;
+        align-items: center;
+        padding: 4px 0;
+        width: 100%;
+    }
+
+    .username-btn, .logout-btn, .link-btn, .auth-btn {
+        flex: 1; /* 均分剩余空间 */
+        margin: 3px 0;           /* 减少外链按钮间距 */
+        padding: 4px 6px;       /* 减少内边距 */
+        background: rgba(255,255,255,0.05);
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 6px;
+        color: white;
+        display: flex;
+        align-items: center;
+        transition: all 0.3s ease;
+    }
+
+    .username-btn:hover {
+        background: #92b5bb;
+    }
+
+    #username-display {
+        font-size: 0.95em;
+        color: #ecf0f1;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        text-align: left;
+    }
+
+    .logout-btn:hover {
+        background: #c0392b;
+    }
+
+    /* ================= 按钮容器 ================= */
+    .button-row {
+        display: flex;
+        gap: 4px;
+        width: 100%;
+        margin: 4px 0;
+    }
+
+    .auth-btn:hover {
+        background: #2980b9;
+        transform: translateY(-1px);
+    }
+
+    /* 外链按钮 */
+    .external-links {
+        display: flex;       /* 新增Flex布局 */
+        gap: 4px;           /* 按钮间距 */
+        width: 100%;        /* 确保容器宽度填满父级 */
+    }
+
+    .link-btn:hover {
+        background: rgba(255,255,255,0.1);
+        transform: translateY(-1px);
+    }
+
+    .btn-text {
+        font-size: 0.95em;
+    }
+
+    .panel-divider {
+        height: 1px;
+        background: rgba(255,255,255,0.1);
+        margin: 6px 0;          /* 减少分隔线间距 */
+    }
+
+    /* 桌面端悬停效果 */
+    @media (hover: hover) {
+        .username-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 6px rgba(255,255,255,0.15);
+        }
+
+        .logout-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 6px rgba(231, 76, 60, 0.3);
+        }
+    }
+
+    /* 响应式调整 */
+    @media (max-width: 768px) {
+        .user-panel {
+            padding: 4px 6px;
+        }
+
+        .auth-btn {
+            padding: 4px 68px;
+            font-size: 0.9em;
+        }
+
+        .external-links {
+            flex-direction: column; /* 移动端垂直排列 */
+            gap: 6px;              /* 调整间距 */
+        }
+        .link-btn {
+            width: 100%;          /* 移动端填满宽度 */
+            flex: none;           /* 禁用flex缩放 */
+        }
+
+        .btn-text {
+            font-size: 0.9em;
+        }
+
+        #user-info {
+            flex-direction: row; /* 保持行排列 */
+            gap: 6px;
+        }
+
+        .username-btn {
+            flex: 1 1 60%;
+            padding: 6px 8px;
+        }
+
+        .logout-btn {
+            flex: 1 1 40%;
+            text-align: center;
+        }
+    }
+</style>
+
+<style>
+    .auth-dialog {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+        backdrop-filter: blur(3px);
+    }
+
+    .auth-content {
+        background: #ffffff;
+        padding: 2rem;
+        border-radius: 12px;
+        min-width: 380px;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        transform: translateY(-20px);
+        opacity: 0;
+        animation: dialogEnter 0.3s ease forwards;
+    }
+
+    @keyframes dialogEnter {
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+
+    .auth-title {
+        color: #2c3e50;
+        font-size: 1.5rem;
+        margin: 0 0 1.5rem;
+        font-weight: 600;
+        text-align: center;
+    }
+
+    .auth-input-group {
+        margin-bottom: 1.2rem;
+    }
+
+    .auth-label {
+        display: block;
+        color: #7f8c8d;
+        font-size: 0.9rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .auth-input {
+        width: 100%;
+        padding: 0.8rem;
+        border: 2px solid #ecf0f1;
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+
+    .auth-input:focus {
+        border-color: #3498db;
+        box-shadow: 0 0 0 3px rgba(52,152,219,0.1);
+        outline: none;
+    }
+
+    .auth-button-group {
+        display: flex;
+        gap: 1rem;
+        margin-top: 1.5rem;
+    }
+
+    .auth-button {
+        flex: 1;
+        padding: 0.8rem 1.2rem;
+        border: none;
+        border-radius: 8px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .auth-button.confirm {
+        background: #3498db;
+        color: white;
+    }
+
+    .auth-button.confirm:hover {
+        background: #2980b9;
+        transform: translateY(-1px);
+    }
+
+    .auth-button.cancel {
+        background: #f1f2f6;
+        color: #2c3e50;
+    }
+
+    .auth-button.cancel:hover {
+        background: #dfe4ea;
+    }
+
+    @media (max-width: 480px) {
+        .auth-content {
+            min-width: 90%;
+            padding: 1.2rem;
+        }
+
+        .auth-input-group {
+            margin-bottom: 0.8rem;
+        }
+
+        .auth-input {
+            padding: 0.7rem;
+            font-size: 0.9rem;
+        }
+    }
+</style>
+        <!-- source/_templates/_layout_issue_report.html -->
+<div id="prompt-box" style="
+    display: none;
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.8);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    z-index: 9999;
+    text-align: center;
+    font-size: 14px;
+"></div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    'use strict'; // 添加严格模式
+
+    // 获取所有DOM元素引用
+    const reportButton = document.getElementById('report-button');
+    const feedbackDialog = document.getElementById('feedback-dialog');
+    const feedbackText = document.getElementById('inquire_input');
+    const submitButton = document.getElementById('submit-feedback');
+    const cancelButton = document.getElementById('cancel-feedback');
+    const promptBox = document.getElementById('prompt-box');
+    const chapterSelect = document.getElementById('chapter-select');
+    const paragraphInput = document.getElementById('paragraph-input');
+    const postTypeSelect = document.getElementById('post-type');
+    console.log('帖子类型(postTypeSelect)DOM元素:', postTypeSelect); // 应输出<select>元素
+
+    // 状态变量
+    let hasUserInput = false; // 跟踪用户是否主动输入
+    let selectedText = '';
+    const language = 'en'; // 从模板引擎获取语言变量
+
+    // 初始化时设置placeholder
+    paragraphInput.placeholder = language === 'zh_CN' 
+        ? '你可以先选择有问题的段落或手动输入...'
+        : 'You can select text or type directly here...';
+
+    // 获取当前激活的章节
+    function getCurrentChapter() {
+        try {
+            // 通过激活的菜单项获取当前章节
+            const currentLink = document.querySelector('.wy-menu .toctree-l1.current > a');
+            if (currentLink) {
+                return currentLink.textContent.replace('¶', '').trim();
+            }
+
+            // 如果没有找到激活的链接，尝试通过页面标题获取
+            const pageTitle = document.querySelector('h1');
+            if (pageTitle) {
+                return pageTitle.textContent.split('\n')[0].trim();
+            }
+
+            // 如果以上方法都失败，尝试通过URL路径推断章节
+            const pathParts = window.location.pathname.split('/');
+            if (pathParts.length > 2) {
+                return decodeURIComponent(pathParts[pathParts.length - 2]);
+            }
+
+            return null;
+        } catch (error) {
+            console.error('获取当前章节失败:', error);
+            return null;
+        }
+    }
+
+    // 填充章节选择框
+    function populateChapters() {
+        const chapterElements = document.querySelectorAll('.wy-menu .toctree-l1 > a');
+        const chapters = Array.from(chapterElements).map(el => el.textContent.replace('¶', '').trim());
+        const currentChapter = getCurrentChapter();
+
+        console.log('提取全部章节:', chapters);
+        console.log('当前页面章节:', currentChapter);
+
+        if (chapters.length === 0) {
+            console.error('未找到章节链接');
+            return;
+        }
+
+        chapterSelect.innerHTML = '';
+
+        // 添加默认选项
+        const defaultOption = document.createElement('option');
+        defaultOption.value = '';
+        defaultOption.textContent = language === 'zh_CN' ? '-- 请选择章节 --' : '-- Select Chapter --';
+        chapterSelect.appendChild(defaultOption);
+
+        // 添加章节选项
+        chapters.forEach(chapter => {
+            const option = document.createElement('option');
+            option.value = chapter;
+            option.textContent = chapter;
+            if (chapter === currentChapter) {
+                option.selected = true;
+            }
+            chapterSelect.appendChild(option);
+        });
+    }
+
+    // 初始化章节选择框
+    populateChapters();
+
+    // 报告按钮点击事件（处理文本选择）
+    reportButton.addEventListener('click', function() {
+        // 重置所有输入字段，每次重新inquire应该让对话框处于默认状态
+        feedbackText.value = '';          // 清空问题输入框
+        paragraphInput.value = '';        // 清空段落输入框
+        selectedText = '';                // 清除之前选择的文本
+
+        const selection = window.getSelection().toString().trim();
+        if (selection) {
+            paragraphInput.value = selection;
+        } else {
+            // 保持placeholder提示
+            if (!paragraphInput.value.trim()) {
+                paragraphInput.value = '';
+            }
+        }
+        feedbackDialog.style.display = 'block';
+    });
+
+    // 监听输入事件
+    paragraphInput.addEventListener('input', function() {
+        // 标记用户已经输入
+        this.placeholder = '';
+    });
+
+    // 提交按钮点击事件
+    submitButton.addEventListener('click', function() {
+        const userQuestion = feedbackText.value.trim();
+        const selectedChapter = chapterSelect.value;
+        const selectedPostType = postTypeSelect.value;
+        const paragraphContent = paragraphInput.value.trim() || 'null';
+
+        // 在提交事件顶部添加详细日志
+        console.group('=== 提交调试信息 ===');
+        console.log('章节选择值:', chapterSelect.value);
+        console.log('帖子类型postTypeSelect DOM元素:', postTypeSelect);
+        console.log('帖子类型postTypeSelect 选中的选项:', postTypeSelect.options[postTypeSelect.selectedIndex]);
+        console.log('帖子类型postTypeSelect 实际值:', postTypeSelect.value); // 应输出'doc_correction' 对应文档纠错
+          console.groupEnd();
+
+        // 验证输入
+        if (!userQuestion) {
+            alert(language === 'zh_CN' ? '问题描述为空' : 'Issue description cannot be empty');
+            return;
+        }
+        if (!selectedChapter) {
+            alert(language === 'zh_CN' ? '请选择相关章节' : 'Please select a related chapter');
+            return;
+        }
+
+        if (!selectedPostType) {
+            alert(language === 'zh_CN' ? '请选择帖子类型' : 'Please select a post type');
+            return;
+        }
+
+        // 获取用户名
+        const username = localStorage.getItem('username') || 'Anonymous';
+
+        // 构建提交数据
+        const feedbackData = {
+            user: username,
+            chapters: selectedChapter,
+            post_type: selectedPostType,
+            paragraph: paragraphContent,
+            question: userQuestion
+        };
+
+        console.log('完整提交数据:', feedbackData);
+
+        // 发送到后端
+        fetch('http://172.29.57.206:5000/submit', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(feedbackData)
+        })
+        .then(response => {
+            if (!response.ok) throw new Error('Network response was not ok');
+            return response.json();
+        })
+        .then(data => {
+            console.log('提交成功:', data);
+            promptBox.textContent = language === 'zh_CN' ? '问题已成功提交' : 'Issue submitted successfully';
+            promptBox.style.display = 'block';
+            setTimeout(() => promptBox.style.display = 'none', 5000);
+        })
+        .catch(error => {
+            console.error('提交失败:', error);
+            promptBox.textContent = language === 'zh_CN' ? '提交失败，请检查网络连接' : 'Submission failed, check your network';
+            promptBox.style.display = 'block';
+            setTimeout(() => promptBox.style.display = 'none', 5000);
+        });
+
+        // 关闭对话框
+        feedbackDialog.style.display = 'none';
+    });
+
+
+    // 取消按钮点击事件
+    cancelButton.addEventListener('click', function() {
+        feedbackDialog.style.display = 'none';
+    });
+
+    // 初始化检查
+    console.log('问题反馈系统已加载');
+    console.log('当前语言:', language);
+    console.log('检测到章节数量:', chapterSelect.options.length - 1);
+});
+</script> <!-- 问题回报 -->
     
 
     <style>
@@ -507,41 +862,23 @@ document.addEventListener('DOMContentLoaded', function() {
     </style>
 
     <style>
-        /* 保持settings-panel原有样式不变 */
-        .settings-panel {
+        /* 保留bottomleft-panel作为用户面板容器 */
+        .bottomleft-panel {
             position: fixed;
             left: 0;
             bottom: 0;
             width: 300px;
-            height: 60px;
+            height: auto;
             background: #2d2d2d;
             border-top: 1px solid #404040;
             box-shadow: 0 -2px 12px rgba(0,0,0,0.2);
             z-index: 1001;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
         }
 
-        /* 新增settings-container的flex定义 */
-        .settings-container {
-            display: flex;
+        /* 新增userpanel-container的flex定义 */
+        .userpanel-container {
+            padding: 10px;
             width: 100%;
-            height: 100%;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .settings-icon {
-            font-size: 32px !important; /* 控制图标大小 */
-            color: #888 !important; /* 默认颜色 */
-            transition: all 0.3s ease !important;
-        }
-
-        .settings-icon:hover {
-            color: #fff !important; /* 悬停颜色 */
-            transform: rotate(90deg) !important;
         }
         /* 增加字体配置 */
         .material-symbols-outlined {
@@ -553,69 +890,324 @@ document.addEventListener('DOMContentLoaded', function() {
             text-transform: none !important;
         }
 
-    </style>
-
-    <style>
-        /* 新增下拉菜单样式 */
-        .settings-dropdown {
-            position: absolute;
-            right: -10px; /* 根据图标位置微调 */
-            top: 50%;
-            transform: translateY(-50%);
-            background: #3a3a3a;
-            border-radius: 6px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
-            display: none;
-            min-width: 180px;
-            z-index: 2000;
-            overflow: hidden;
-            opacity: 0;
-            transition: opacity 0.2s ease;
-        }
-
-        .settings-dropdown::before {
-            content: '';
-            position: absolute;
-            right: 14px;
-            top: -8px;
-            border-left: 8px solid transparent;
-            border-right: 8px solid transparent;
-            border-bottom: 8px solid #3a3a3a;
-        }
-
-        .settings-dropdown.show {
-            display: block;
-            opacity: 1;
-        }
-
-        .settings-dropdown-item {
-            padding: 12px 20px;
-            color: #ddd;
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            position: relative;
-            display: block;
-            text-decoration: none;
-        }
-
-        .settings-dropdown-item:hover {
-            background: #444;
-            color: #fff;
-            padding-left: 25px;
-        }
-
-        .settings-dropdown-item:not(:last-child) {
-            border-bottom: 1px solid #4a4a4a;
-        }
-
         /* 调整父容器定位方式 */
-        .settings-container {
+        .userpanel-container {
             position: relative; /* 新增定位上下文 */
         }
     </style>
 
+    <!-- 左上角标题距离控制：Ameba IoT Docs -->
+    <style>
+        /* 隐藏整个搜索栏容器 */
+        .wy-side-nav-search > div[role="search"] {
+            display: none !important;
+        }
+
+        /* 新增的标题间距调整样式（添加在此处） */
+        div[role="navigation"] > div[role="search"] {
+            margin-bottom: 4px !important;
+        }
+
+        a.icon.icon-home {
+            display: inline-block;
+            margin-bottom: 2px !important;
+        }
+    </style>
+
     <!-- 引入功能模块 -->
+    
+        
+<script>
+    // 初始化认证对话框
+    window.initAuthDialogs = function() {
+        function createAuthDialog(type) {
+            const lang = document.getElementById('language-selector').value === 'cn' ? 'cn' : 'en';
+
+            // 对话框容器
+            const dialog = document.createElement('div');
+            dialog.className = 'auth-dialog';  // 使用CSS类替代内联样式
+
+            // 内容容器
+            const content = document.createElement('div');
+            content.className = 'auth-content';
+
+            // 标题
+            const title = document.createElement('h3');
+            title.className = 'auth-title';
+            title.textContent = type === 'register' 
+                ? (lang === 'cn' ? '注册' : 'Register') 
+                : (lang === 'cn' ? '登录' : 'Login');
+
+            // 输入字段创建函数
+            const createInput = (labelText, inputType) => {
+                const container = document.createElement('div');
+                container.className = 'auth-input-group';
+
+                const label = document.createElement('label');
+                label.textContent = labelText;
+
+                const input = document.createElement('input');
+                input.type = inputType;
+                input.className = 'auth-input';
+
+                container.appendChild(label);
+                container.appendChild(input);
+                return { container, input };
+            };
+
+            // 用户名输入
+            const username = createInput(
+                lang === 'cn' ? '用户名：' : 'Username:', 
+                'text'
+            );
+            content.appendChild(username.container);
+
+            // 密码输入
+            const password = createInput(
+                lang === 'cn' ? '密码：' : 'Password:', 
+                'password'
+            );
+            content.appendChild(password.container);
+
+            // Enter键支持
+            const handleKeyPress = (e) => {
+                if (e.key === 'Enter') confirmBtn.click();
+            };
+
+            // 确认密码（仅注册）
+            let confirmPassword;
+            let companyInput, productInput, emailInput;
+            if (type === 'register') {
+                confirmPassword = createInput(
+                    lang === 'cn' ? '确认密码：' : 'Confirm Password:', 
+                    'password'
+                );
+                content.appendChild(confirmPassword.container);
+
+                // 工作单位
+                const company = createInput(
+                    lang === 'cn' ? '工作单位：' : 'Company:', 
+                    'text'
+                );
+                content.appendChild(company.container);
+                companyInput = company.input;
+
+                // 产品信息 
+                const product = createInput(
+                    lang === 'cn' ? '产品信息：' : 'Product:', 
+                    'text'
+                );
+                content.appendChild(product.container);
+                productInput = product.input;
+
+                // 工作邮箱
+                const email = createInput(
+                    lang === 'cn' ? '工作邮箱：' : 'Email:', 
+                    'email'
+                );
+                email.input.autocomplete = 'email'; // ➕ 添加自动完成类型
+
+                content.appendChild(email.container);
+                emailInput = email.input;
+
+                // 添加Enter键支持到新字段
+                [companyInput, productInput, emailInput].forEach(input => {
+                    input.addEventListener('keypress', handleKeyPress);
+                });
+            }
+
+            // 按钮容器
+            const buttonContainer = document.createElement('div');
+            buttonContainer.className = 'auth-button-group';
+
+            // 确认按钮
+            const confirmBtn = document.createElement('button');
+            confirmBtn.className = 'auth-confirm-btn';
+            confirmBtn.textContent = lang === 'cn' ? '确认' : 'Confirm';
+
+            username.input.addEventListener('keypress', handleKeyPress);
+            password.input.addEventListener('keypress', handleKeyPress);
+            if (confirmPassword) confirmPassword.input.addEventListener('keypress', handleKeyPress);
+
+            // 确认按钮逻辑
+            confirmBtn.onclick = () => {
+                const usernameVal = username.input.value.trim();
+                const passwordVal = password.input.value.trim();
+                const companyVal = companyInput?.value.trim() || '';
+                const productVal = productInput?.value.trim() || '';
+                const emailVal = emailInput?.value.trim() || '';
+                const confirmVal = confirmPassword ? confirmPassword.input.value.trim() : null;
+
+                // 基础邮箱格式验证
+                if (type === 'register' && emailVal) {
+                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    if (!emailRegex.test(emailVal)) {
+                        alert(lang === 'cn' 
+                            ? '请输入有效邮箱地址' 
+                            : 'Please enter a valid email address');
+                        return;
+                    }
+                }
+
+                // 验证逻辑
+                if (!usernameVal || !passwordVal) {
+                    alert(lang === 'cn' ? '用户名和密码不能为空！' : 'Username and password are required!');
+                    return;
+                }
+
+                if (type === 'register' && passwordVal !== confirmVal) {
+                    alert(lang === 'cn' ? '两次输入的密码不一致！' : 'Passwords do not match!');
+                    return;
+                }
+
+                // fetch请求
+                fetch('http://172.29.57.206:5000/auth', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': window.getCSRFToken()
+                    },
+                    body: JSON.stringify({
+                        action: type, 
+                        username: usernameVal, 
+                        password: passwordVal,
+                        company: companyVal,
+                        product: productVal,
+                        email: emailVal
+                    }),
+                    credentials: 'include'
+                })
+                .then(response => {
+                    console.log('[DEBUG] 完整响应头:', [...response.headers.entries()]);
+                    console.log('Access-Control-Allow-Origin:', response.headers.get('Access-Control-Allow-Origin'));
+                    console.log('Access-Control-Allow-Credentials:', response.headers.get('Access-Control-Allow-Credentials'));
+                    console.log('登录响应 Cookies:', response.headers.get('Set-Cookie'));
+                    return response.json();
+                })
+                .then(async (data) => {
+                    // 成功处理逻辑
+                    if (data.success) {
+                        console.log('initAuthDialogs 登录成功，当前 Cookies:', document.cookie);
+                        console.log('initAuthDialogs CSRF Token:', window.getCSRFToken());
+
+                        localStorage.setItem('auth_session', JSON.stringify({
+                            username: data.username, 
+                            expires: Date.now() + 3600000
+                        }));
+
+                        localStorage.setItem('isLoggedIn', 'true');
+                        localStorage.setItem('username', usernameVal);
+                        
+                        document.getElementById('auth-buttons').style.display = 'none';
+                        document.getElementById('user-info').style.display = 'flex';
+                        document.getElementById('username-display').textContent = localStorage.getItem('username') || '';
+                        document.body.removeChild(dialog);
+
+                        Swal.fire({
+                            icon: 'success',
+                            title: lang === 'cn' ? '登录成功' : 'Logged In',
+                            showConfirmButton: false,
+                            timer: 500
+                        });
+                    } else {
+                        document.body.removeChild(dialog);
+                        window.syncLoginState();
+                        Swal.fire({
+                            icon: 'fail',
+                            title: lang === 'cn' ? '登录失败' : 'Logged In Fail',
+                            showConfirmButton: false,
+                            timer: 500
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert(lang === 'cn' ? '网络错误' : 'Network error');
+                });
+            };
+
+            // 取消按钮
+            const cancelBtn = document.createElement('button');
+            cancelBtn.className = 'auth-cancel-btn';
+            cancelBtn.textContent = lang === 'cn' ? '取消' : 'Cancel';
+            cancelBtn.onclick = () => document.body.removeChild(dialog);
+
+            // 组装元素
+            buttonContainer.appendChild(confirmBtn);
+            buttonContainer.appendChild(cancelBtn);
+            content.appendChild(buttonContainer);
+            dialog.appendChild(content);
+            document.body.appendChild(dialog);
+
+            // 点击外部关闭
+            dialog.addEventListener('click', (e) => {
+                if (e.target === dialog) document.body.removeChild(dialog);
+            });
+        }
+
+        // 事件绑定
+        document.getElementById('register-button').addEventListener('click', () => createAuthDialog('register'));
+        document.getElementById('login-button').addEventListener('click', () => createAuthDialog('login'));
+    }
+
+    // 注销功能
+    async function handleLogout() {
+        try {
+            const lang = (window.location.pathname.includes('/zh_CN') || 
+                        document.documentElement.lang === 'zh_CN') ? 'cn' : 'en';
+
+            // 更新本地存储和UI
+            //localStorage.removeItem('isLoggedIn');
+            localStorage.setItem('isLoggedIn', 'false');
+            localStorage.removeItem('username');
+
+            // 强制刷新显示状态
+            document.getElementById('auth-buttons').style.display = 'flex';
+            document.getElementById('user-info').style.display = 'none';
+            document.getElementById('username-display').textContent = localStorage.getItem('username') || '';
+
+            const response = await fetch('http://172.29.57.206:5000/logout', {
+                method: 'GET',
+                headers: {
+                    'X-CSRFToken': window.getCSRFToken(),
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include'
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            await Swal.fire({
+                icon: 'success',
+                title: lang === 'cn' ? '登出成功' : 'Logged Out',
+                timer: 1500
+            });
+        } catch (error) {
+            console.error('登出流程异常:', error);
+            Swal.fire({
+                icon: 'error',
+                title: lang === 'cn' ? '登出异常' : 'Logout Failed',
+                text: lang === 'cn' ? '请尝试清除浏览器缓存' : 'Please clear browser cache'
+            });
+        }
+    }
+
+    // 同步登录状态
+    window.syncLoginState = function() {
+        const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+        document.getElementById('auth-buttons').style.display = isLoggedIn ? 'none' : 'flex';
+        document.getElementById('user-info').style.display = isLoggedIn ? 'flex' : 'none';
+        if (isLoggedIn) {
+            document.getElementById('username-display').textContent = localStorage.getItem('username') || '';
+        } else {
+
+        }
+    }
+
+</script>
+    
     
 <script>
     /* ====================== 嵌入式配置开始 ====================== */
@@ -642,14 +1234,19 @@ document.addEventListener('DOMContentLoaded', function() {
     // 获取基础URL路径
     function getBaseURL() {
         const url = new URL(window.location.href);
+        console.log('[DEBUG] getBaseURL:');
+
         if (url.protocol === 'file:') {
             // 本地路径处理
             const pathParts = url.pathname.split('/').filter(part => part !== '');
             const index = pathParts.indexOf('build');
+            console.log('[DEBUG] getBaseURL0:', pathParts.slice(0, index + 1).join('/'));
             return `file://${pathParts.slice(0, index + 1).join('/')}/`;
         } else {
             // 网络路径处理
-            return `${url.origin}/${url.pathname.split('/').slice(1, 3).join('/')}/`;
+            const basePath = url.pathname.split('/')[1]; // 直接取第一个有效路径段
+            console.log('[DEBUG] getBaseURL:', url.origin, basePath);
+            return `${url.origin}/${basePath}/`;
         }
     }
 
@@ -658,13 +1255,17 @@ document.addEventListener('DOMContentLoaded', function() {
         const url = new URL(window.location.href);
         let segments = url.pathname.split('/').filter(segment => segment);
 
+        console.log('[DEBUG] getCurrentSegments:');
+
         if (url.protocol === 'file:') {
             // 本地路径处理
             const index = segments.indexOf('build');
             segments = segments.slice(index + 1); // 去掉 build 及之前的路径
+            console.log('[DEBUG] getCurrentSegments0:', segments);
         } else {
             // 网络路径处理
             segments = segments.slice(3); // 去掉 ameba-iot-docs/
+            console.log('[DEBUG] getCurrentSegments:', segments);
         }
 
         return {
@@ -720,24 +1321,19 @@ document.addEventListener('DOMContentLoaded', function() {
     // 生成选择器HTML
     function generateSelectorsHTML(segments) {
         return `
-            <div id="custom-selectors" style="padding: 0; background: none; border: none;">
-                <!-- 系统选择器 -->
-                <div class="selector-container">
-                    <label class="selector-label">
-                        ${segments.language === 'cn' ? '系统' : 'OS'}:
-                    </label>
-                    <select id="os-selector" class="selector-dropdown">
-                        ${Object.keys(embeddedConfig).map(key => `
-                            <option value="${key}">${embeddedConfig[key].name}</option>
-                        `).join('')}
-                    </select>
-                </div>
+        <div class="selectors-grid">
+            <!-- 系统选择器 -->
+            <div class="selector-group">
+                <select id="os-selector" class="selector-dropdown">
+                    ${Object.keys(embeddedConfig).map(key => `
+                        <option value="${key}">${embeddedConfig[key].name}</option>
+                    `).join('')}
+                </select>
+            </div>
 
-                <!-- 语言选择器 -->
-                <div class="selector-container">
-                    <label class="selector-label">
-                        ${segments.language === 'cn' ? '语言' : 'Language'}:
-                    </label>
+            <!-- 语言和版本组合（修正类名） -->
+            <div class="dual-selector-group"> <!-- 修改此处 -->
+                <div class="selector-group">
                     <select id="language-selector" class="selector-dropdown">
                         ${getLanguages(embeddedConfig, segments.osKey).map(lang => `
                             <option value="${lang}">${lang}</option>
@@ -745,25 +1341,62 @@ document.addEventListener('DOMContentLoaded', function() {
                     </select>
                 </div>
 
-                <!-- 版本选择器 -->
-                <div class="selector-container version-selector-container">
-                    <label class="selector-label">
-                        ${segments.language === 'cn' ? '版本' : 'Version'}:
-                    </label>
+                <div class="selector-group">
                     <select id="version-selector" class="selector-dropdown">
                         ${getVersions(embeddedConfig, segments.osKey, segments.language).map(ver => `
                             <option value="${ver}">${ver}</option>
                         `).join('')}
                     </select>
                 </div>
-
-                ${generateUserPanelHTML(segments)}
-            </div>`;
+            </div>
+        </div>
+        ${generateUserPanelHTML(segments)}`;
     }
 
     // 生成用户面板HTML
     function generateUserPanelHTML(segments) {
-        return ``;
+        return `
+            <div class="user-panel">
+                <!-- 用户名显示（登录后可见） -->
+                <div id="user-info" style="display: ${localStorage.getItem('isLoggedIn') ? 'flex' : 'none'}">
+                    <button class="username-btn")">
+                        <span class="btn-icon">👤</span>
+                        <span id="username-display">${localStorage.getItem('username') || ''}</span>
+                    </button>
+                    <button class="logout-btn" onclick="handleLogout()")">
+                        <span class="btn-icon">🚪</span>
+                        <span id="btn-text">${segments.language === 'cn' ? '注销' : 'Logout'}</span>
+                    </button>
+                </div>
+
+                <!-- 登录注册按钮（未登录时可见） -->
+                <div id="auth-buttons" class="button-row" style="display: ${localStorage.getItem('isLoggedIn') ? 'none' : 'flex'}">
+                    <button class="auth-btn" id="login-button">
+                        <span class="btn-icon">🔓</span> <!-- 登录图标 -->
+                        ${segments.language === 'cn' ? '登录' : 'Login'}
+                    </button>
+                    <button class="auth-btn" id="register-button">
+                        <span class="btn-icon">✍️</span> <!-- 注册图标 -->
+                        ${segments.language === 'cn' ? '注册' : 'Register'}
+                    </button>
+                </div>
+
+                <!-- 分隔线 -->
+                <div class="panel-divider"></div>
+
+                <!-- 外链按钮 -->
+                <div class="external-links">
+                    <button class="link-btn official" onclick="window.open('https://www.realmcu.com/', '_blank')">
+                        <span class="btn-icon">🌐</span>
+                        <span class="btn-text">${segments.language === 'cn' ? '官网' : 'Official'}</span>
+                    </button>
+                    <button class="link-btn forum" onclick="window.open('http://172.29.57.206:5000/view', '_blank')">
+                        <span class="btn-icon">💬</span>
+                        <span class="btn-text">${segments.language === 'cn' ? '论坛' : 'Forum'}</span>
+                    </button>
+                </div>
+            </div>
+        `;
     }
 
     // 设置初始选中值
@@ -809,7 +1442,6 @@ document.addEventListener('DOMContentLoaded', function() {
         window.location.href = url.href;
     }
 </script>
-    
 
 </head>
 
@@ -834,33 +1466,47 @@ document.addEventListener('DOMContentLoaded', function() {
 </div>
 
     
-    <div id="custom-selectors" style="display: block !important; padding: 0; background: none; border: none;"></div>
+    <div id="topleft-panel" style="display: block !important; padding: 0; background: none; border: none;"></div>
 
+    
+        
+        <div class="bottomleft-panel">
+            <div class="userpanel-container"></div>
+        </div>
     
 
     <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        try {
-            const segments = validateSegments(getCurrentSegments());
-            const baseURL = getBaseURL();
+        document.addEventListener('DOMContentLoaded', () => {
+            try {
+                const segments = validateSegments(getCurrentSegments());
+                const baseURL = getBaseURL();
 
-            // 渲染HTML
-            document.getElementById('custom-selectors').innerHTML = generateSelectorsHTML(segments);
+                // 渲染HTML
+                document.getElementById('topleft-panel').innerHTML = generateSelectorsHTML(segments);
 
-            // 设置初始值
-            setInitialValues(segments);
+                // 设置初始值
+                setInitialValues(segments);
 
-            // 绑定事件
-            bindEvents(baseURL, segments);
+                // 绑定事件
+                bindEvents(baseURL, segments);
 
-            // 初始化认证逻辑
+                // 初始化认证逻辑
+                
+                    window.initAuthDialogs();
+                    window.syncLoginState();
 
-            
-        } catch (error) {
-            console.error("Error initializing selectors:", error);
-        }
-    });
-</script>
+                    // 将 user-panel 移动到 bottomleft-panel 内
+                    const userPanel = document.querySelector('.user-panel');
+                    const settingsContainer = document.querySelector('.userpanel-container');
+                    if (userPanel && settingsContainer) {
+                        settingsContainer.appendChild(userPanel); // 直接添加为子元素
+                    }
+                
+            } catch (error) {
+                console.error("Error initializing selectors:", error);
+            }
+        });
+    </script>
 
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul>
@@ -869,7 +1515,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <li class="toctree-l1"><a class="reference internal" href="rst_rtos/0_ameba_solutions/0_ameba_solutions_index.html">Ameba Solutions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rst_rtos/0_gcc_build_environment/0_gcc_build_index.html">0.1 GCC Build Environment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rst_rtos/0_gdb_debug/0_gdb_debug_index.html">0.2 GDB Debug</a></li>
-<li class="toctree-l1"><a class="reference internal" href="rst_rtos/0_gcc_build_library/0_gcc_build_library_index.html">0.3 GCC Build Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rst_rtos/0_build_system/0_build_system_index.html">0.3 Build System</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rst_rtos/0_sdk_example/0_sdk_example_index.html">0.4 SDK Example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rst_rtos/0_memory_layout/0_layout_index.html">0.5 Flash &amp; RAM Layout</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rst_rtos/0_user_config/0_usrcfg_index.html">0.6 User Config</a></li>
@@ -878,7 +1524,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <li class="toctree-l1"><a class="reference internal" href="rst_rtos/0_file_system/0_vfs_index.html">0.9 Virtual File System</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rst_rtos/0_ftl/0_ftl_index.html">0.a Flash Translation Layer</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rst_rtos/1_mpu_cache/0_mpu_cache_index.html">1.0 MPU and Cache</a></li>
-<li class="toctree-l1"><a class="reference internal" href="rst_rtos/1_boot_process/0_boot_index.html">1.1 BOOT Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rst_rtos/1_boot_process/0_boot_index.html">1.1 Boot Process</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rst_rtos/1_ota/0_ota_index.html">1.2 OTA</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rst_rtos/1_otpc/0_otpc_index.html">1.3 OTPC</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rst_rtos/1_chipen/0_chipen_index.html">1.4 Chip Enable</a></li>
@@ -970,9 +1616,13 @@ document.addEventListener('DOMContentLoaded', function() {
 <li class="toctree-l2"><a class="reference internal" href="rst_rtos/0_gdb_debug/1_gdb_debug_toprst.html#gdb-debugger-guide">GDB Debugger Guide</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="rst_rtos/0_gcc_build_library/0_gcc_build_library_index.html">0.3 GCC Build Library</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="rst_rtos/0_gcc_build_library/1_gcc_build_library_toprst.html">Ameba Build System Architecture</a></li>
-<li class="toctree-l2"><a class="reference internal" href="rst_rtos/0_gcc_build_library/1_gcc_build_library_toprst.html#configuration-system">Configuration System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rst_rtos/0_build_system/0_build_system_index.html">0.3 Build System</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="rst_rtos/0_build_system/1_build_system_toprst.html">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rst_rtos/0_build_system/1_build_system_toprst.html#best-practices">Best Practices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rst_rtos/0_build_system/1_build_system_toprst.html#commonly-used-cmake-interfaces-and-preset-constants">Commonly Used CMake Interfaces and Preset Constants</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rst_rtos/0_build_system/1_build_system_toprst.html#frequently-asked-questions-suggestions">Frequently Asked Questions &amp; Suggestions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rst_rtos/0_build_system/1_build_system_toprst.html#advanced-learning-readings">Advanced Learning Readings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rst_rtos/0_build_system/1_build_system_toprst.html#kconfig-system">Kconfig System</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="rst_rtos/0_sdk_example/0_sdk_example_index.html">0.4 SDK Example</a><ul>
@@ -1037,7 +1687,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <li class="toctree-l2"><a class="reference internal" href="rst_rtos/1_mpu_cache/1_cache_toprst.html">Cache</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="rst_rtos/1_boot_process/0_boot_index.html">1.1 BOOT Process</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="rst_rtos/1_boot_process/0_boot_index.html">1.1 Boot Process</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="rst_rtos/1_boot_process/1_boot_process_toprst.html">Features</a></li>
 <li class="toctree-l2"><a class="reference internal" href="rst_rtos/1_boot_process/1_boot_process_toprst.html#boot-address">Boot Address</a></li>
 <li class="toctree-l2"><a class="reference internal" href="rst_rtos/1_boot_process/1_boot_process_toprst.html#pin-description">Pin Description</a></li>
@@ -1115,6 +1765,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <li class="toctree-l2"><a class="reference internal" href="rst_rtos/2_whc_wifi_bridge/1_wifi_bridge_toprst.html#wifi-bridge-api">WiFi Bridge API</a></li>
 <li class="toctree-l2"><a class="reference internal" href="rst_rtos/2_whc_wifi_bridge/1_wifi_bridge_toprst.html#wifi-bridge-linux-test">WiFi Bridge Linux Test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="rst_rtos/2_whc_wifi_bridge/1_wifi_bridge_toprst.html#wifi-bridge-throughput">WiFi Bridge Throughput</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rst_rtos/2_whc_wifi_bridge/1_wifi_bridge_toprst.html#wifi-bridge-mp-flow">WiFi Bridge MP flow</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="rst_rtos/2_whc_fullmac/0_fullmac_index.html">2.1 WHC FullMAC</a><ul>
@@ -1142,7 +1793,10 @@ document.addEventListener('DOMContentLoaded', function() {
 <li class="toctree-l2"><a class="reference internal" href="rst_rtos/2_wifi_tunnel/1_wifi_tunnel_toprst.html#wi-fi-r-mesh-throughput">Wi-Fi R-Mesh Throughput</a></li>
 <li class="toctree-l2"><a class="reference internal" href="rst_rtos/2_wifi_tunnel/1_wifi_tunnel_toprst.html#wi-fi-r-mesh-rtt">Wi-Fi R-Mesh RTT</a></li>
 <li class="toctree-l2"><a class="reference internal" href="rst_rtos/2_wifi_tunnel/1_wifi_tunnel_toprst.html#wi-fi-r-mesh-demo-tool">Wi-Fi R-Mesh Demo Tool</a></li>
-<li class="toctree-l2"><a class="reference internal" href="rst_rtos/2_wifi_tunnel/1_wifi_tunnel_toprst.html#wi-fi-r-mesh-user-configuration">Wi-Fi R-Mesh User Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rst_rtos/2_wifi_tunnel/1_wifi_tunnel_toprst.html#wi-fi-r-mesh-parameter-configuration">Wi-Fi R-Mesh Parameter Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rst_rtos/2_wifi_tunnel/1_wifi_tunnel_toprst.html#wi-fi-r-mesh-nat-parameter-configuration">Wi-Fi R-Mesh NAT Parameter Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rst_rtos/2_wifi_tunnel/1_wifi_tunnel_toprst.html#wi-fi-r-mesh-sdk-obtain-and-compile">Wi-Fi R-Mesh SDK obtain and compile</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rst_rtos/2_wifi_tunnel/1_wifi_tunnel_toprst.html#r-mesh-memory-usage">R-Mesh Memory Usage</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="rst_rtos/2_wifi_csi/0_wifi_csi_index.html">2.3 Wi-Fi CSI</a><ul>
@@ -1191,7 +1845,6 @@ document.addEventListener('DOMContentLoaded', function() {
 <li class="toctree-l1"><a class="reference internal" href="rst_rtos/3_eddsa_engine/0_eddsa_index.html">3.b EDDSA Engine</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="rst_rtos/3_eddsa_engine/1_eddsa_toprst.html">Supported ICs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="rst_rtos/3_eddsa_engine/1_eddsa_toprst.html#introduction">Introduction</a></li>
-<li class="toctree-l2"><a class="reference internal" href="rst_rtos/3_eddsa_engine/1_eddsa_toprst.html#apis">APIs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="rst_rtos/3_eddsa_engine/1_eddsa_toprst.html#usage">Usage</a></li>
 </ul>
 </li>
@@ -1281,9 +1934,10 @@ document.addEventListener('DOMContentLoaded', function() {
 </li>
 <li class="toctree-l1"><a class="reference internal" href="rst_rtos/8_adc/0_adc_index.html">8.4 ADC</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="rst_rtos/8_adc/1_adc_toprst.html">Introduction</a></li>
-<li class="toctree-l2"><a class="reference internal" href="rst_rtos/8_adc/1_adc_toprst.html#auto-mode">Auto Mode</a></li>
-<li class="toctree-l2"><a class="reference internal" href="rst_rtos/8_adc/1_adc_toprst.html#software-trigger-mode">Software-trigger Mode</a></li>
-<li class="toctree-l2"><a class="reference internal" href="rst_rtos/8_adc/1_adc_toprst.html#timer-trigger-mode">Timer-trigger Mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rst_rtos/8_adc/1_adc_toprst.html#adc-sample-mode">ADC Sample Mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rst_rtos/8_adc/1_adc_toprst.html#adc-calibration">ADC Calibration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rst_rtos/8_adc/1_adc_toprst.html#adc-digital-comparator">ADC Digital Comparator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rst_rtos/8_adc/1_adc_toprst.html#adc-troubleshooting">ADC Troubleshooting</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="rst_rtos/8_ir/0_ir_index.html">8.5 IR</a><ul>
@@ -1354,6 +2008,8 @@ document.addEventListener('DOMContentLoaded', function() {
 </footer>
         </div>
     <!-- 问题反馈按钮和对话框 -->
+    
+        <button id="report-button">Inquire</button>
     
     <div id="feedback-dialog" class="feedback-dialog" style="display: none;">
         <div class="form-group">
@@ -1434,6 +2090,113 @@ document.addEventListener('DOMContentLoaded', function() {
   </script>
      
 
+    
+        
+        <script>
+            // 路由守卫配置
+            const ROUTER_CONFIG = {
+                baseUrl: 'http://172.29.57.206:5000',
+                checkInterval: 30000 // 30秒检查一次
+            };
+
+            window.getStoredUsername = function() {
+                try {
+                    const session = localStorage.getItem('auth_session');
+                    if (!session) return null;
+                    const { username, expires } = JSON.parse(session);
+                    if (Date.now() > expires) {
+                        localStorage.removeItem('auth_session');
+                        return null;
+                    }
+                    return username;
+                } catch (e) {
+                    console.error('读取存储会话失败:', e);
+                    return null;
+                }
+            }
+
+            // 增强型路由守卫
+            function setupRouteGuard() {
+                const originalPushState = history.pushState;
+                const originalReplaceState = history.replaceState;
+            
+                function wrappedHistoryMethod(method) {
+                    return function(state, title, url) {
+                        if (url) {
+                            const urlObj = new URL(url, window.location.origin);
+                            verifyNavigation(urlObj.pathname).then(allowed => {
+                                if (allowed) {
+                                    method.apply(history, [state, title, url]);
+                                }
+                            });
+                        } else {
+                            method.apply(history, [state, title, url]);
+                        }
+                    };
+                }
+
+                history.pushState = wrappedHistoryMethod(originalPushState);
+                history.replaceState = wrappedHistoryMethod(originalReplaceState);
+
+                window.addEventListener('popstate', () => {
+                    verifyNavigation(window.location.pathname);
+                });
+            }
+
+            // CSRF Token处理：获取CSRF令牌
+            window.getCSRFToken = function() {
+                // 从 Cookie 中获取 CSRF Token
+                const cookieValue = document.cookie
+                    .split('; ')
+                    .find(row => row.startsWith('csrf_token='))
+                    ?.split('=')[1];
+                return cookieValue || '';
+            }
+
+            // 统一验证逻辑
+            function verifyNavigation(path, isBackgroundCheck = false) {
+                console.log('[NDA Auth] verifyNavigation fetch check_nda_access ...');
+
+                if (isExemptPath(path)) return Promise.resolve(true);
+
+                const page = new URL(path, window.location.origin).pathname.split('/').pop();
+                console.log('[DEBUG] 提取的页面名称:', page);
+
+                return fetch('http://172.29.57.206:5000/check_nda_access', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': window.getCSRFToken()
+                    },
+                    body: JSON.stringify({
+                        path: page,
+                        username: window.getStoredUsername() || 'null' //  注意：后端从 session 取用户名，此处不需要传 username
+                    }),
+                    credentials: 'include'
+                })
+                .then(response => {
+                    // 关键：先检查状态码再解析 JSON
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json(); // 显式解析 JSON
+                })
+                .then(data => {
+                    console.log('[DEBUG] data.access:', data.access);
+                    return data.access ?? false;
+                })
+                .catch(error => {
+                    console.error('[ERROR] 验证失败:', error);
+                    return false;
+                });
+            }
+
+            // 初始化
+            document.addEventListener('DOMContentLoaded', () => {
+                verifyNavigation(window.location.pathname);
+                setupRouteGuard();
+            });
+        </script>
     
 
     
