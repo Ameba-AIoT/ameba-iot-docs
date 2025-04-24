@@ -1,0 +1,3145 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HUK Derivation &mdash; Ameba IoT Docs  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=dcc6a489" />
+      <link rel="stylesheet" type="text/css" href="../../_static/tabs.css?v=a5c4661c" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=dcc6a489" />
+
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="canonical" href="http://172.29.57.206:5000/docs/rst_rtos/3_nda_huk_derivation/0_huk_derivation_index_nda.html" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>let toggleHintShow = 'Click to show';</script>
+        <script>let toggleHintHide = 'Click to hide';</script>
+        <script>let toggleOpenOnPrint = 'true';</script>
+        <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+        <script src="../../_static/tabs.js?v=3030b3cb"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Read Protection (RDP)" href="../3_nda_rdp/0_rdp_index_nda.html" />
+    <link rel="prev" title="Supported ICs" href="../3_trng/1_trng_toprst.html" />
+     
+
+    
+        
+        <script>
+        // 配置豁免路径（需要与后端路由完全匹配）
+        const EXEMPT_PATHS = [
+            '/_',                     // Sphinx生成路径
+            '/_static',               // 静态资源路径
+            '/_images',               // 图片资源
+            '/register',              // 注册
+            '/login',                 // 登录页面
+            '/logout',                // 登出端点
+            '/check_session',         // 会话检查
+        ];
+
+        // 增强型路径检查
+        function isExemptPath(targetPath = window.location.pathname) {
+            const path = targetPath.toLowerCase();
+            const fullExemptPaths = EXEMPT_PATHS.concat(
+                EXEMPT_PATHS.map(p => `/en${p}`),  // 英文路径
+                EXEMPT_PATHS.map(p => `/zh_CN${p}`) // 中文路径
+            );
+
+            return fullExemptPaths.some(exempt => {
+                // 精确匹配或前缀匹配
+                return path === exempt.toLowerCase() || 
+                    path.startsWith(exempt.toLowerCase() + '/');
+            });
+        }
+        </script>
+    
+
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <!-- 样式模板 -->
+    <style>
+        .wy-nav-content {
+            max-width: 1100px;
+             
+        }
+
+        .wy-nav-content {
+            transition: margin 0.3s ease; /* 添加过渡效果 */
+            margin-left: 0px !important; /* 侧边栏展开时的偏移 */
+            max-width: calc(100% - 0px) !important; /* 调整最大宽度，使其与侧边栏宽度相关 */
+        }
+
+        .wy-nav-content.expanded {
+            margin-left: 0 !important; /* 侧边栏收缩时内容区域回归左边 */
+            max-width: 100% !important; /* 内容区域最大宽度调整 */
+        }
+
+        #sidebar-toggle-button {
+            position: fixed;
+            left: 290px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            border: none;
+            border-color: rgb(228, 224, 224);
+            background-color: white;
+            color: rgb(135, 125, 125);
+            font-size: 20px;
+            cursor: pointer;
+            z-index: 1000;
+            transition: left 0.3s ease;
+    
+            /* 新增flex布局 */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0; /* 清除默认内边距 */
+            font-size: 12px;  /* 缩小符号尺寸 */
+            line-height: 1;   /* 清除行高影响 */
+        }
+    </style>
+
+    <!-- 注入 TOC 映射和当前页面信息 -->
+    
+
+<!-- TOC 映射和当前文档信息 -->
+<script>
+// 将 Python 字典转换为 JS 对象
+const TOC_TITLE_MAP = {"rst_rtos/0_ameba_product": "Products Center", "rst_rtos/0_ameba_product/0_ameba_product_center_index": "Products Center", "rst_rtos/0_ameba_sdk": "Ameba SDK", "rst_rtos/0_ameba_sdk/0_ameba_sdks_index": "Ameba SDK", "rst_rtos/0_ameba_solutions": "Ameba Solutions", "rst_rtos/0_ameba_solutions/0_ameba_solutions_index": "Ameba Solutions", "rst_rtos/0_at_command": "0.8 AT Commands", "rst_rtos/0_at_command/0_at_command_index": "0.8 AT Commands", "rst_rtos/0_build_system": "0.3 Build System", "rst_rtos/0_build_system/0_build_system_index": "0.3 Build System", "rst_rtos/0_file_system": "0.9 Virtual File System", "rst_rtos/0_file_system/0_vfs_index": "0.9 Virtual File System", "rst_rtos/0_ftl": "0.a Flash Translation Layer", "rst_rtos/0_ftl/0_ftl_index": "0.a Flash Translation Layer", "rst_rtos/0_gcc_build_environment": "0.1 GCC Build Environment", "rst_rtos/0_gcc_build_environment/0_gcc_build_index": "0.1 GCC Build Environment", "rst_rtos/0_gdb_debug": "0.2 GDB Debug", "rst_rtos/0_gdb_debug/0_gdb_debug_index": "0.2 GDB Debug", "rst_rtos/0_memory_layout": "0.5 Flash \u0026 RAM Layout", "rst_rtos/0_memory_layout/0_layout_index": "0.5 Flash \u0026 RAM Layout", "rst_rtos/0_sdk_example": "0.4 SDK Example", "rst_rtos/0_sdk_example/0_sdk_example_index": "0.4 SDK Example", "rst_rtos/0_tools": "0.7 Tools", "rst_rtos/0_tools/0_tools_index": "0.7 Tools", "rst_rtos/0_user_config": "0.6 User Config", "rst_rtos/0_user_config/0_usrcfg_index": "0.6 User Config", "rst_rtos/10_api_docs": "2.6 Wi-Fi API Reference", "rst_rtos/10_api_docs/0_api_index": "2.6 Wi-Fi API Reference", "rst_rtos/1_boot_process": "1.1 Boot Process", "rst_rtos/1_boot_process/0_boot_index": "1.1 Boot Process", "rst_rtos/1_chipen": "1.4 Chip Enable", "rst_rtos/1_chipen/0_chipen_index": "1.4 Chip Enable", "rst_rtos/1_gpio": "1.7 GPIO \u0026 Pin Control", "rst_rtos/1_gpio/0_gpio_index": "1.7 GPIO \u0026 Pin Control", "rst_rtos/1_ipc": "1.5 Inter Processor Communication", "rst_rtos/1_ipc/0_ipc_index": "1.5 Inter Processor Communication", "rst_rtos/1_mpu_cache": "1.0 Memory Management \u0026 Cache", "rst_rtos/1_mpu_cache/0_mpu_cache_index": "1.0 Memory Management \u0026 Cache", "rst_rtos/1_ota": "1.2 OTA", "rst_rtos/1_ota/0_ota_index": "1.2 OTA", "rst_rtos/1_otpc": "1.3 OTPC", "rst_rtos/1_otpc/0_otpc_index": "1.3 OTPC", "rst_rtos/1_pinmux": "1.6 Pin Multiplexing", "rst_rtos/1_pinmux/0_pinmux_index": "1.6 Pin Multiplexing", "rst_rtos/1_power_save": "1.9 Power Saving", "rst_rtos/1_power_save/0_ps_index": "1.9 Power Saving", "rst_rtos/2_whc_fullmac": "2.2 WHC FullMAC", "rst_rtos/2_whc_fullmac/0_fullmac_index": "2.2 WHC FullMAC", "rst_rtos/2_whc_wifi_bridge": "2.1 WHC Bridge", "rst_rtos/2_whc_wifi_bridge/0_wifi_bridge_index": "2.1 WHC Bridge", "rst_rtos/2_wifi_adaptivity_test": "2.5 Wi-Fi Adaptivity Test", "rst_rtos/2_wifi_adaptivity_test/0_wifi_adaptivity_index": "2.5 Wi-Fi Adaptivity Test", "rst_rtos/2_wifi_basic": "2.0 Wi-Fi Basic Mode", "rst_rtos/2_wifi_basic/0_wifi_basic_index": "2.0 Wi-Fi Basic Mode", "rst_rtos/2_wifi_csi": "2.4 Wi-Fi CSI", "rst_rtos/2_wifi_csi/0_wifi_csi_index": "2.4 Wi-Fi CSI", "rst_rtos/2_wifi_tunnel": "2.3 Wi-Fi R-Mesh", "rst_rtos/2_wifi_tunnel/0_wifi_tunnel_index": "2.3 Wi-Fi R-Mesh", "rst_rtos/3_ap_trustzone": "3.d AP Secure Service", "rst_rtos/3_ap_trustzone/0_ap_tz_index": "3.d AP Secure Service", "rst_rtos/3_crypto_engine": "3.9 Crypto Engine", "rst_rtos/3_crypto_engine/0_crypto_engine_index": "3.9 Crypto Engine", "rst_rtos/3_ecdsa_engine": "3.a ECDSA Engine", "rst_rtos/3_ecdsa_engine/0_ecdsa_index": "3.a ECDSA Engine", "rst_rtos/3_eddsa_engine": "3.b EDDSA Engine", "rst_rtos/3_eddsa_engine/0_eddsa_index": "3.b EDDSA Engine", "rst_rtos/3_nda_huk_derivation": "3.3 HUK Derivation \ud83d\udd12", "rst_rtos/3_nda_huk_derivation/0_huk_derivation_index_nda": "3.3 HUK Derivation \ud83d\udd12", "rst_rtos/3_nda_rdp": "3.4 RDP \ud83d\udd12", "rst_rtos/3_nda_rdp/0_rdp_index_nda": "3.4 RDP \ud83d\udd12", "rst_rtos/3_nda_rsip": "3.5 RSIP \ud83d\udd12", "rst_rtos/3_nda_rsip/0_rsip_index_nda": "3.5 RSIP \ud83d\udd12", "rst_rtos/3_nda_secure_boot": "3.6 Secure Boot \ud83d\udd12", "rst_rtos/3_nda_secure_boot/0_secure_boot_index_nda": "3.6 Secure Boot \ud83d\udd12", "rst_rtos/3_nda_swd_protection": "3.7 SWD Protection \ud83d\udd12", "rst_rtos/3_nda_swd_protection/0_swd_protection_index_nda": "3.7 SWD Protection \ud83d\udd12", "rst_rtos/3_nda_tfm": "3.8 Trusted Firmware-M (TF-M) \ud83d\udd12", "rst_rtos/3_nda_tfm/0_tfm_index_nda": "3.8 Trusted Firmware-M (TF-M) \ud83d\udd12", "rst_rtos/3_rsa_engine": "3.c RSA Engine", "rst_rtos/3_rsa_engine/0_rsa_index": "3.c RSA Engine", "rst_rtos/3_security": "3.1 Security \u0026 Encryption", "rst_rtos/3_security/0_security_index": "3.1 Security \u0026 Encryption", "rst_rtos/3_trng": "3.2 True Random Number Generator", "rst_rtos/3_trng/0_trng_index": "3.2 True Random Number Generator", "rst_rtos/4_ai": "4.1 AI", "rst_rtos/4_ai/0_ai_index": "4.1 AI", "rst_rtos/4_ai_voice": "4.2 AIVoice", "rst_rtos/4_ai_voice/0_ai_voice_index": "4.2 AIVoice", "rst_rtos/4_dsp": "4.4 DSP", "rst_rtos/4_dsp/0_dsp_index": "4.4 DSP", "rst_rtos/4_multimedia": "4.3 Multimedia", "rst_rtos/4_multimedia/0_multimedia_index": "4.3 Multimedia", "rst_rtos/6_mass_production": "6.1 Mass Production", "rst_rtos/6_mass_production/0_mp_index": "6.1 Mass Production", "rst_rtos/6_mptools": "6.2 MP Tools", "rst_rtos/6_mptools/0_mptools_index": "6.2 MP Tools", "rst_rtos/7_usb": "7.1 USB Host \u0026 Device", "rst_rtos/7_usb/0_usb_index": "7.1 USB Host \u0026 Device", "rst_rtos/8_adc": "8.4 ADC", "rst_rtos/8_adc/0_adc_index": "8.4 ADC", "rst_rtos/8_cap_touch": "8.7 Cap-Touch", "rst_rtos/8_cap_touch/0_cap_touch_index": "8.7 Cap-Touch", "rst_rtos/8_dmac": "8.1 DMA Controller", "rst_rtos/8_dmac/0_dmac_index": "8.1 DMA Controller", "rst_rtos/8_ir": "8.5 IR", "rst_rtos/8_ir/0_ir_index": "8.5 IR", "rst_rtos/8_key_scan": "8.8 Key-Scan", "rst_rtos/8_key_scan/0_key_scan_index": "8.8 Key-Scan", "rst_rtos/8_lcdc": "8.a LCD Controller", "rst_rtos/8_lcdc/0_lcdc_index": "8.a LCD Controller", "rst_rtos/8_ledc": "8.6 LED Controller", "rst_rtos/8_ledc/0_ledc_index": "8.6 LED Controller", "rst_rtos/8_psram": "8.2 PSRAM", "rst_rtos/8_psram/0_psram_index": "8.2 PSRAM", "rst_rtos/8_rtc_io": "8.9 RTC-IO", "rst_rtos/8_rtc_io/0_rtc_io_index": "8.9 RTC-IO", "rst_rtos/8_thermal": "8.3 Thermal Meter", "rst_rtos/8_thermal/0_thermal_index": "8.3 Thermal Meter"};
+console.log("TOC_TITLE_MAP:", TOC_TITLE_MAP);
+
+// 获取当前页面的文档名 (例如 'rst_rtos/3_nda_secure_boot/0_secure_boot_index_nda')
+const CURRENT_DOCNAME = 'rst_rtos/3_nda_huk_derivation/0_huk_derivation_index_nda';
+
+// 动态查找顶级分类函数（定义为全局函数）
+window.findTopLevelChapter = function(docname) {
+    console.log("Attempting to find top-level chapter for:", docname);
+    let bestMatch = "";
+    let bestTitle = "Unknown Chapter";
+
+    // 按路径长度降序排序以确保最长匹配
+    const sortedPaths = Object.keys(TOC_TITLE_MAP).sort((a, b) => b.length - a.length);
+
+    for (const path of sortedPaths) {
+        console.log("Checking path:", path);
+        if (docname === path || docname.startsWith(path + '/')) { // 子页面
+            bestMatch = path;
+            bestTitle = TOC_TITLE_MAP[path];
+            console.log("Matched path:", path, "with title:", bestTitle);
+            break;
+        }
+    }
+
+    // 如果没有找到任何匹配项，则尝试更短的路径
+    if (bestMatch === "") {
+        const pathSegments = docname.split('/');
+        while (pathSegments.length > 1) { // 至少保留根路径
+            const candidate = pathSegments.join('/');
+            console.log("Checking shorter path:", candidate);
+            if (TOC_TITLE_MAP[candidate]) {
+                bestTitle = TOC_TITLE_MAP[candidate];
+                console.log("Matched shorter path:", candidate, "with title:", bestTitle);
+                break;
+            }
+            pathSegments.pop();
+        }
+    }
+
+    console.log("Final top-level chapter:", bestTitle);
+    return bestTitle;
+}
+
+// 初始化时调用
+document.addEventListener('DOMContentLoaded', function() {
+    const topLevelChapter = findTopLevelChapter(CURRENT_DOCNAME);
+    console.log("Top Level Chapter:", topLevelChapter);
+
+    // 将顶级分类插入到DOM中（根据需要）
+    const chapterElement = document.createElement('div');
+    chapterElement.className = 'top-level-chapter';
+    chapterElement.innerHTML = `<strong>Top Level Chapter: </strong>${topLevelChapter}`;
+    document.body.appendChild(chapterElement);
+});
+</script>
+
+    <style>
+        /* ====================== 紧凑型选择器 ====================== */
+        #topleft-panel {
+            background: rgba(40, 58, 73, 0.9);
+            border-radius: 4px;
+            padding: 4px;
+            margin: 4px 0;
+            box-shadow: 0 4px 4px rgba(0,0,0,0.15);
+            backdrop-filter: blur(4px);
+        }
+
+        /* 移动端优化 */
+        @media (max-width: 768px) {
+            #topleft-panel {
+                margin: 8px 0;
+                padding: 10px;
+            }
+        }
+    </style>
+
+    
+        <!-- source/_templates/help_button.html -->
+<style>
+    
+    #help-button {
+        position: fixed;
+        bottom: 10px;
+        left: 60%;
+        transform: translateX(-50%);
+
+        width: 40px;  /* 增加尺寸以便容纳双圆环 */
+        height: 40px;
+        border-radius: 50%;  /* 保持圆形 */
+        border: none;
+        background: transparent;  /* 背景透明 */
+        cursor: pointer;
+        z-index: 1000;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    #help-button::before, #help-button::after {
+        content: "";
+        position: absolute;
+        border-radius: 50%;
+        border: 2px solid;
+        background: transparent;
+        animation: gradient-shift 8s ease infinite;
+    }
+
+    #help-button::before {
+        width: 40px; /* 外圈直径 */
+        height: 40px;
+        background: linear-gradient(45deg, #ff0066, #f7ff00, #00fff0); /* 渐变颜色效果 */
+        border-radius: 50%;
+        z-index: 0;
+        box-shadow: 0 0 15px rgba(255, 0, 102, 0.5), 0 0 25px rgba(247, 255, 0, 0.5), 0 0 35px rgba(0, 255, 240, 0.5);
+    }
+
+    #help-button::after {
+        width: 30px; /* 内圈直径 */
+        height: 30px;
+        background: white;
+        border-radius: 50%;
+        z-index: 0;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    }
+
+    #help-button i {
+        font-size: 20px; /* 内部图标大小 */
+        color: rgb(71, 74, 71);
+        position: relative;
+        z-index: 1; /* 确保图标在圆环上层展示 */
+    }
+
+
+    /* 幻彩渐变（未来感） */
+    @keyframes gradient-shift {
+        0% { border-color: #ff6b6b; }
+        20% { border-color: #ff9f43; }
+        40% { border-color: #f6e58d; }
+        60% { border-color: #7bed9f; }
+        80% { border-color: #70a1ff; }
+        100% { border-color: #5352ed; }
+    }
+
+    /* 悬停效果 */
+    #help-button:hover::before,
+    #help-button:hover::after {
+        transform: scale(1.05) rotate(3deg);
+        filter: saturate(150%);
+        animation-play-state: paused;
+        box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+    }
+
+    /* 点击效果 */
+    #help-button:active::before,
+    #help-button:active::after {
+        transform: scale(0.95) rotate(-2deg);
+        transition: transform 0.1s;
+    }
+</style>
+
+<style>
+    
+    .feedback-dialog {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: #fffaf0; /* 淡暖色调 */
+        padding: 20px;
+        border-radius: 16px; /* 增加圆角 */
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); /* 更柔和的阴影 */
+        z-index: 1001;
+        width: 800px;
+        height: 600px;
+        font-family: 'Arial', sans-serif; /* 使用更清晰的字体 */
+    }
+
+    .feedback-dialog textarea {
+        width: 100%;
+        height: 150px;
+        margin-top: 10px;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        resize: vertical;
+        font-size: 16px; /* 增大字体 */
+    }
+
+    .feedback-dialog button {
+        margin-top: 10px;
+        padding: 8px 16px;
+        background-color: #ff7f50; /* 柔和的橙色 */
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s; /* 添加过渡效果 */
+    }
+
+    .feedback-dialog button:hover {
+        background-color: #ff6243; /* 悬停状态的颜色 */
+    }
+
+    .feedback-dialog button:active {
+        background-color: #db5538; /* 点击状态的颜色 */
+    }
+
+    .feedback-dialog .form-group {
+        margin: 10px 0; /* 增加间距 */
+    }
+
+    .feedback-dialog label {
+        font-weight: bold;
+        font-size: 14px; /* 增大标签字体 */
+        color: #333; /* 深色字体 */
+    }
+
+    .feedback-dialog select .feedback-dialog textarea {
+        background-color: #fff8e1; /* 提交区域的背景色 */
+    }
+
+    
+    
+</style>
+
+<div id="prompt-box" style="
+    display: none;
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.8);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    z-index: 9999;
+    text-align: center;
+    font-size: 14px;
+"></div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    'use strict'; // 添加严格模式
+
+    // 获取所有DOM元素引用
+    const reportButton = document.getElementById('help-button');
+    const feedbackDialog = document.getElementById('feedback-dialog');
+    const feedbackText = document.getElementById('inquire_input');
+    const submitButton = document.getElementById('submit-feedback');
+    const cancelButton = document.getElementById('cancel-feedback');
+    const promptBox = document.getElementById('prompt-box');
+    const chapterSelect = document.getElementById('chapter-select');
+    const paragraphInput = document.getElementById('paragraph-input');
+    const postTypeSelect = document.getElementById('post-type');
+    console.log('帖子类型(postTypeSelect)DOM元素:', postTypeSelect); // 应输出<select>元素
+
+    // 状态变量
+    let hasUserInput = false; // 跟踪用户是否主动输入
+    let selectedText = '';
+    const language = 'en'; // 从模板引擎获取语言变量
+
+    // 初始化时设置placeholder
+    paragraphInput.placeholder = language === 'zh_CN' 
+        ? '你可以先选择有问题的段落或手动输入...'
+        : 'You can select/paste text or type directly here...';
+
+    // 获取当前激活的章节
+    function getCurrentChapter() {
+        try {
+            // 通过激活的菜单项获取当前章节
+            const currentLink = document.querySelector('.wy-menu .toctree-l1.current > a');
+            if (currentLink) {
+                return currentLink.textContent.replace('¶', '').trim();
+            }
+
+            // 如果没有找到激活的链接，尝试通过页面标题获取
+            const pageTitle = document.querySelector('h1');
+            if (pageTitle) {
+                return pageTitle.textContent.split('\n')[0].trim();
+            }
+
+            // 如果以上方法都失败，尝试通过URL路径推断章节
+            const pathParts = window.location.pathname.split('/');
+            if (pathParts.length > 2) {
+                return decodeURIComponent(pathParts[pathParts.length - 2]);
+            }
+
+            return null;
+        } catch (error) {
+            console.error('获取当前章节失败:', error);
+            return null;
+        }
+    }
+
+    // 填充章节选择框
+    function populateChapters() {
+        const chapterElements = document.querySelectorAll('.wy-menu .toctree-l1 > a');
+        const chapters = Array.from(chapterElements).map(el => el.textContent.replace('¶', '').trim());
+        const currentChapter = getCurrentChapter();
+
+        console.log('提取全部章节:', chapters);
+        console.log('当前页面章节:', currentChapter);
+
+        if (chapters.length === 0) {
+            console.error('未找到章节链接');
+            return;
+        }
+
+        chapterSelect.innerHTML = '';
+
+        // 添加默认选项
+        const defaultOption = document.createElement('option');
+        defaultOption.value = '';
+        defaultOption.textContent = language === 'zh_CN' ? '-- 请选择章节 --' : '-- Select Chapter --';
+        chapterSelect.appendChild(defaultOption);
+
+        // 添加章节选项
+        chapters.forEach(chapter => {
+            const option = document.createElement('option');
+            option.value = chapter;
+            option.textContent = chapter;
+            if (chapter === currentChapter) {
+                option.selected = true;
+            }
+            chapterSelect.appendChild(option);
+        });
+    }
+
+    // 初始化章节选择框
+    populateChapters();
+
+    window.reportButtonClick = function() {
+        // 重置所有输入字段，每次重新inquire应该让对话框处于默认状态
+        feedbackText.value = '';          // 清空问题输入框
+        paragraphInput.value = '';        // 清空段落输入框
+        selectedText = '';                // 清除之前选择的文本
+
+        const selection = window.getSelection().toString().trim();
+        if (selection) {
+            paragraphInput.value = selection;
+        } else {
+            // 保持placeholder提示
+            if (!paragraphInput.value.trim()) {
+                paragraphInput.value = '';
+            }
+        }
+        feedbackDialog.style.display = 'block';
+    };
+
+    // 报告按钮点击事件（处理文本选择）
+    reportButton.addEventListener('click', function() {
+        window.reportButtonClick();
+    });
+
+    // 监听输入事件
+    paragraphInput.addEventListener('input', function() {
+        // 标记用户已经输入
+        this.placeholder = '';
+    });
+
+    // 提交按钮点击事件
+    submitButton.addEventListener('click', function() {
+        const userQuestion = feedbackText.value.trim();
+        const selectedChapter = chapterSelect.value;
+        const selectedPostType = postTypeSelect.value;
+        const paragraphContent = paragraphInput.value.trim() || 'null';
+
+        // 在提交事件顶部添加详细日志
+        console.group('=== 提交调试信息 ===');
+        console.log('章节选择值:', chapterSelect.value);
+        console.log('帖子类型postTypeSelect DOM元素:', postTypeSelect);
+        console.log('帖子类型postTypeSelect 选中的选项:', postTypeSelect.options[postTypeSelect.selectedIndex]);
+        console.log('帖子类型postTypeSelect 实际值:', postTypeSelect.value); // 应输出'doc_correction' 对应文档纠错
+          console.groupEnd();
+
+        // 验证输入
+        if (!userQuestion) {
+            alert(language === 'zh_CN' ? '问题描述为空' : 'Issue description cannot be empty');
+            return;
+        }
+        if (!selectedChapter) {
+            alert(language === 'zh_CN' ? '请选择相关章节' : 'Please select a related chapter');
+            return;
+        }
+
+        if (!selectedPostType) {
+            alert(language === 'zh_CN' ? '请选择帖子类型' : 'Please select a post type');
+            return;
+        }
+
+        // 获取用户名
+        const username = localStorage.getItem('username') || 'Anonymous';
+
+        // 构建提交数据
+        const feedbackData = {
+            user: username,
+            chapters: selectedChapter,
+            post_type: selectedPostType,
+            paragraph: paragraphContent,
+            question: userQuestion
+        };
+
+        console.log('完整提交数据:', feedbackData);
+
+        // 发送到后端
+        fetch('http://172.29.57.206:5000/submit', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(feedbackData)
+        })
+        .then(response => {
+            if (!response.ok) throw new Error('Network response was not ok');
+            return response.json();
+        })
+        .then(data => {
+            console.log('提交成功:', data);
+            promptBox.textContent = language === 'zh_CN' ? '问题已成功提交' : 'Issue submitted successfully';
+            promptBox.style.display = 'block';
+            setTimeout(() => promptBox.style.display = 'none', 5000);
+        })
+        .catch(error => {
+            console.error('提交失败:', error);
+            promptBox.textContent = language === 'zh_CN' ? '提交失败，请检查网络连接' : 'Submission failed, check your network';
+            promptBox.style.display = 'block';
+            setTimeout(() => promptBox.style.display = 'none', 5000);
+        });
+
+        // 关闭对话框
+        feedbackDialog.style.display = 'none';
+    });
+
+
+    // 取消按钮点击事件
+    cancelButton.addEventListener('click', function() {
+        feedbackDialog.style.display = 'none';
+    });
+
+    // 初始化检查
+    console.log('问题反馈系统已加载');
+    console.log('当前语言:', language);
+    console.log('检测到章节数量:', chapterSelect.options.length - 1);
+});
+</script> <!-- 问题回报 -->
+    
+
+    <style>
+        .extension-container {
+            position: fixed;
+            left: 10px;
+            bottom: 10px;
+            z-index: 1000;
+        }
+
+        .extension-button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 8px 15px;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .extension-button:hover {
+            background-color: #2980b9;
+        }
+    </style>
+
+    <style>
+        /* 增加字体配置 */
+        .material-symbols-outlined {
+            font-family: 'Material Symbols Outlined' !important;
+            font-weight: 400 !important;
+            font-style: normal !important;
+            line-height: 1 !important;
+            letter-spacing: normal !important;
+            text-transform: none !important;
+        }
+    </style>
+
+    <!-- 左上角标题距离控制：Ameba IoT Docs -->
+    <style>
+        /* 新增的标题间距调整样式（添加在此处） */
+        div[role="navigation"] > div[role="search"] {
+            margin-bottom: 4px !important;
+        }
+
+        a.icon.icon-home {
+            display: inline-block;
+            margin-bottom: 2px !important;
+        }
+    </style>
+
+    <!-- 引入功能模块 -->
+    
+        <!-- templates/sidebar_user_panel_script.html -->
+
+<script>
+    function checkLoginStatus() {
+        fetch('/check_session')
+            .then(response => response.json())
+            .then(data => {
+                const authButtons = document.getElementById('auth-buttons');
+                const userActions = document.querySelector('.user-actions');
+                const logoutBtn = document.getElementById('logout-btn');
+                const usernameDisplay = document.getElementById('username-text');
+
+                if (data.logged_in) {
+                    // 已登录状态
+                    usernameDisplay.innerHTML = `
+                        <i class="fas fa-user"></i>
+                        <span class="username-text">${data.username}</span>
+                    `;
+                    authButtons.style.display = 'none';
+                    userActions.style.display = 'flex'; // 显示用户操作容器
+                    logoutBtn.style.display = 'block';
+                    window.updateAdminLink(data.role === 'admin'); // 动态更新管理链接
+                    localStorage.setItem('isLoggedIn', 'true');
+                } else {
+                    // 未登录状态
+                    authButtons.style.display = 'flex';
+                    userActions.style.display = 'none'; // 隐藏用户操作容器
+                    logoutBtn.style.display = 'none';
+                    usernameDisplay.textContent = '';
+                    window.updateAdminLink(false);
+                    localStorage.setItem('isLoggedIn', 'false');
+                }
+
+                // 控制设置按钮可见性
+                const settingsWrapper = document.querySelector('.settings-wrapper');
+                if (settingsWrapper) {
+                    if (data.role === 'admin') {
+                        settingsWrapper.style.display = 'block';
+                    } else {
+                        settingsWrapper.style.display = 'none';
+                    }
+                }
+            });
+    }
+
+    // 登出功能
+    function handleLogout() {
+        fetch('/logout')
+            .then(() => {
+                //location.reload();  // 刷新页面应用新状态
+                checkLoginStatus(); // 仅更新状态不刷新页面
+                window.dispatchEvent(new Event('session-change')); // 触发全局事件
+            });
+    }
+
+    // 认证状态管理
+    let currentAction = 'login';
+    function showAuthModal(action) {
+        currentAction = action;
+        const modal = document.getElementById('auth-modal');
+        const title = document.getElementById('modal-title');
+        const btn = document.getElementById('auth-action-btn');
+        const email = document.getElementById('auth-email').parentElement;
+        const company = document.getElementById('auth-company').parentElement;
+        const product = document.getElementById('auth-product').parentElement;
+
+        title.textContent = action === 'login' ? '登录' : '注册';
+        btn.textContent = action === 'login' ? '登录' : '注册';
+        email.style.display = action === 'register' ? 'block' : 'none';
+        company.style.display = action === 'register' ? 'block' : 'none';
+        product.style.display = action === 'register' ? 'block' : 'none';
+        modal.style.display = 'flex';
+
+        // 切换输入框必填属性
+        document.getElementById('auth-email').required = action === 'register';
+        document.getElementById('auth-company').required = action === 'register';
+        document.getElementById('auth-product').required = action === 'register';
+    }
+
+    function closeAuthModal() {
+        document.getElementById('auth-modal').style.display = 'none';
+    }
+
+    function handleAuth() {
+        if (event) event.preventDefault(); // 阻止表单默认提交
+
+        const lang = document.documentElement.lang || 'cn'; // 语言定义
+        const username = document.getElementById('auth-username').value;
+        const password = document.getElementById('auth-password').value;
+        const email = document.getElementById('auth-email').value;
+        const company = document.getElementById('auth-company').value;
+        const product = document.getElementById('auth-product').value;
+
+        let url = '';
+        let bodyData = {};
+        if (currentAction === 'register') {
+            url = '/register';
+            bodyData = {
+                username: username,
+                password: password,
+                company: company,
+                product: product,
+                email: email
+            };
+        } else {
+            url = '/login';
+            bodyData = {
+                username: username,
+                password: password
+            };
+        }
+
+        fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(bodyData)
+        })
+        .then(async response => {
+            const data = await response.json();
+
+            // HTTP 状态码非 2xx 时处理为错误
+            if (!response.ok) {
+                throw new Error(data.message || '请求失败');
+            }
+            return data;
+        })
+        .then(data => {
+            if (data.success) {
+                closeAuthModal();
+                checkLoginStatus(); // 更新侧边栏状态
+
+                // 登录成功静默处理，不显示提示
+                const successConfig = {
+                    icon: 'success',
+                    title: lang === 'cn' ? '操作成功' : 'Success',
+                    showConfirmButton: false,
+                    timer: 500,
+                    timerProgressBar: true,
+                    didClose: () => {
+                        window.dispatchEvent(new Event('session-change'));
+                    }
+                };
+
+                // 注册成功需要显示提示
+                if (currentAction === 'register') {
+                    Swal.fire({
+                        ...successConfig,
+                        title: lang === 'cn' ? '注册成功' : 'Registration Successful',
+                        timer: 1000
+                    });
+                } else {
+                    Swal.fire({
+                        ...successConfig,
+                        title: lang === 'cn' ? '登录成功' : 'Login Successful',
+                        timer: 1000
+                    });
+                }
+            } else {
+                // 失败提示（带错误信息）
+                Swal.fire({
+                    icon: 'error',  // 正确图标类型
+                    title: lang === 'cn' ? '操作失败' : 'Operation Failed',
+                    text: data.message || (lang === 'cn' ? '未知错误' : 'Unknown error'),
+                    confirmButtonColor: '#dc3545',
+                    confirmButtonText: lang === 'cn' ? '确定' : 'OK'
+                });
+            }
+        })
+        .catch(error => {
+            // 网络错误处理
+            Swal.fire({
+                icon: 'error',
+                title: lang === 'cn' ? '请求异常' : 'Request Failed',
+                text: error.message,
+                confirmButtonColor: '#dc3545',
+                confirmButtonText: lang === 'cn' ? '确定' : 'OK'
+            });
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        // 监听 Enter 键
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && document.getElementById('auth-modal').style.display === 'flex') {
+                handleAuth();
+            }
+        });
+    });
+
+    // 添加全局会话监听
+    window.addEventListener('session-change', () => {
+        // 通知所有需要更新的组件
+        document.querySelectorAll('[data-session-aware]').forEach(el => {
+            el.dispatchEvent(new CustomEvent('session-update'));
+        });
+    });
+
+    // 初始化时绑定一次
+    document.addEventListener('DOMContentLoaded', () => {
+        checkLoginStatus();
+        // 示例：侧边栏分类列表会话感知
+        const categoryList = document.getElementById('category-list');
+        if (categoryList) {
+            document.getElementById('category-list').setAttribute('data-session-aware', '');
+        }
+    });
+    // 点击模态框外部关闭
+    window.onclick = function(event) {
+        const modal = document.getElementById('auth-modal');
+        if (event.target === modal) {
+            closeAuthModal();
+        }
+    }
+</script>
+        <!-- templates/sidebar_user_panel_script_admin.html -->
+
+<script>
+    // 新增设置按钮点击处理
+    function toggleSettingsMenu(event) {
+    }
+
+    // 点击页面其他区域关闭菜单
+    document.addEventListener('click', (e) => {
+    });
+
+    // 智能管理链接更新
+    window.updateAdminLink = function(isAdmin) {
+    }
+</script>
+        <!-- templates/sidebar_user_panel_style.html -->
+
+<style>
+    /* 保留bottomleft-panel作为用户面板容器 */
+    .bottomleft-panel {
+        position: fixed;
+        padding: 1px 1px; /* 上下间距减少 */
+        left: 0;
+        bottom: 0;
+        width: 300px;
+        height: auto;
+        background: #2d2d2d;
+        border-top: 1px solid #404040;
+        box-shadow: 0 -2px 12px rgba(0,0,0,0.2);
+        z-index: 1001;
+        transition: left 0.3s ease; /* 为位移动画添加过渡效果 */
+
+        margin-top: var(--root-margin-top, 4px);
+        margin-bottom: var(--root-margin-bottom, 0px);
+    }
+
+    .bottomleft-panel.collapsed {
+        left: 60px; /* 收缩后的位置 */
+    }
+</style>
+
+<style>
+    .user-panel-container {
+        position: relative;
+        margin-top: var(--root-margin-top, 4px);
+        margin-bottom: var(--root-margin-bottom, 0px);
+
+        flex-shrink: 0;
+        padding: 1px 1px;
+        height: auto;
+        max-height: 50vh;   /* 最大高度不超过视口一半 */
+        border-top: 1px solid #40556b;
+        background: linear-gradient(to bottom, #34495e, #2c3e50);
+        display: flex;       /* 新增：启用弹性布局 */
+        flex-direction: column;
+    }
+    /* 响应式调整 */
+    @media (max-width: 768px) {
+        .user-panel-container {
+            height: auto;
+            max-height: 40vh; /* 移动端适当降低最大高度 */
+        }
+    }
+    .user-panel {
+        flex: 1;            /* 占据可用空间 */
+        overflow-y: visible;   /* 内容超出时 */
+        position: relative;  /* 新增定位上下文 */
+        margin-top: 0px;
+        margin-bottom: 0px;
+    }
+    .user-info {
+        display: flex;
+        flex-direction: column;
+        margin-top: 0px;
+        margin-bottom: 0px;
+    }
+    .username {
+        color: #fff;
+        font-weight: 500;
+        font-size: 1.1em;
+        text-align: center;  /* 新增：文本居中 */
+        width: 100%;         /* 新增：撑满容器宽度 */
+        display: block;      /* 新增：改为块级元素 */
+        margin: 4px 0;       /* 新增：添加垂直间距 */
+    }
+    /* 外链按钮容器 */
+    .external-links {
+        display: flex;
+        gap: 4px;
+        width: 100%;
+        margin-top: var(--root-margin-top, 4px);
+        margin-bottom: var(--root-margin-bottom, 0px);
+    }
+    /* 统一按钮基础样式 */
+    .auth-btn,
+    .docs-btn,
+    .official-btn,
+    .user-btn,
+    #logout-btn {
+        width: 100%;
+        padding: 4px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: opacity 0.3s;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+
+        height: 28px;
+        margin-top: var(--root-margin-top, 4px);
+        margin-bottom: var(--root-margin-bottom, 0px);
+    }
+    .auth-buttons {
+        display: flex;
+        gap: 4px;
+        width: 100%;
+        margin-top: var(--root-margin-top, 4px);
+        margin-bottom: var(--root-margin-bottom, 0px);
+    }
+
+    .auth-btn,
+    .user-btn {
+        background: #3498db !important;
+        color: white !important;
+    }
+    .docs-btn {
+        background: #2ecc71 !important; /* 保持原有绿色 */
+        color: white !important;
+    }
+    .official-btn {
+        background: #9b59b6 !important;  /* 紫色系 */
+        color: white !important;
+    }
+
+    /* 登出按钮调整 */
+    #logout-btn {
+        background: #e74c3c !important; /* 登出按钮颜色 */
+        color: white !important;
+        border: none;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+
+    /* 用户操作按钮容器 */
+    .user-actions {
+        display: flex;
+        gap: 4px;
+        width: 100%;
+        margin-top: var(--root-margin-top, 4px);
+        margin-bottom: var(--root-margin-bottom, 0px);
+        align-items: center; /* 垂直居中 */
+    }
+
+    /* 用户名按钮样式 */
+    .user-btn,
+    #logout-btn {
+        flex: 1; /* 等分剩余空间 */
+        min-width: 0; /* 允许内容压缩 */
+    }
+
+    #logout-btn:hover {
+        background: #c0392b;
+    }
+
+    /* 外链按钮 */
+    .external-links {
+        display: flex;       /* 新增Flex布局 */
+        gap: 4px;           /* 按钮间距 */
+        width: 100%;        /* 确保容器宽度填满父级 */
+    }
+
+    .btn-text {
+        font-size: 0.95em;
+    }
+
+    #username-text {
+        font-size: 0.95em;
+        color: white !important; /* 白色文字 */
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+
+        flex: 1;
+        text-align: center;
+    }
+
+    /* 移动端适配 */
+    @media (max-width: 768px) {
+        .settings-btn {
+            width: 28px;
+            height: 28px;
+        }
+        .user-actions {
+            flex-wrap: nowrap; /* 保持单行显示 */
+        }
+        .user-btn,
+        #logout-btn {
+            flex: 1 1 auto;
+        }
+
+        .external-links {
+            flex-direction: column; /* 移动端垂直排列 */
+            gap: 6px;              /* 调整间距 */
+        }
+    }
+</style>
+
+<style>
+    #auth-username, #auth-password, #auth-product, #auth-company, #auth-email {
+        width: 100%;
+        padding: 0px;
+        margin: 8px 0;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        height: 35px;
+    }
+
+    .auth-submit {
+        width: 100%;
+        padding: 14px;
+        background: linear-gradient(135deg, #3498db, #2980b9);
+        border: none;
+        border-radius: 8px;
+        color: white;
+        font-size: 1.1em;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .auth-submit:hover {
+        background: linear-gradient(135deg, #3ca0e6, #3498db);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(52,152,219,0.3);
+    }
+
+    /* 管理员链接样式 */
+    #admin-link {
+        position: relative;
+        padding-left: 4px;
+    }
+    #admin-link i {
+        position: absolute;
+        left: 4px;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+</style>
+
+<style>
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    /* 错误提示样式 */
+    .swal2-popup {
+        background: #2c3e50 !important;
+        color: #fff !important;
+        border-radius: 12px !important;
+    }
+
+    .swal2-title {
+        color: #fff !important;
+    }
+</style>
+
+<style>
+    /* 新增模态框样式: 跳出框 */
+    .modal {
+        display: flex;
+        justify-content: center !important;
+        align-items: center !important;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.6);
+        backdrop-filter: blur(3px); /* 添加磨砂效果 */
+        z-index: 2000;
+        animation: fadeIn 0.3s ease;
+    }
+
+    .modal-content {
+        background: linear-gradient(145deg, #34495e, #2c3e50);
+        padding: 30px;
+        width: 380px;
+        border-radius: 16px;
+        position: relative;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+        border: 1px solid rgba(255,255,255,0.1);
+
+        /* 添加居中动画 */
+        animation: modalZoomIn 0.3s ease forwards !important;
+    }
+
+    /* 居中动画 */
+    @keyframes modalZoomIn {
+        from {
+            opacity: 0;
+            transform: scale(0.9);
+        }
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+
+    .close {
+        color: rgba(255,255,255,0.8);
+        font-size: 28px;
+        transition: all 0.3s ease;
+    }
+
+    .close:hover {
+        color: #fff;
+        transform: rotate(90deg);
+    }
+
+    .modal-header {
+        margin-bottom: 24px;
+        text-align: center;
+    }
+
+    .modal-title {
+        color: #fff;
+        font-size: 1.8em;
+        font-weight: 600;
+        letter-spacing: 1px;
+        margin: 0;
+        position: relative;
+        padding-bottom: 8px;
+    }
+
+    .modal-title::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 50px;
+        height: 2px;
+        background: #3498db;
+    }
+
+    /* 统一新样式 */
+    .modern-input {
+        width: 100%;
+        height: 52px; /* 与注册字段相同高度 */
+        padding: 16px 20px 16px 52px; /* 匹配注册字段间距 */
+        border: 2px solid rgba(255,255,255,0.15);
+        border-radius: 10px; /* 更柔和的圆角 */
+        background: rgba(255,255,255,0.05);
+        color: #fff;
+        font-size: 16px;
+        font-family: 'Inter', sans-serif;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        backdrop-filter: blur(8px); /* 新增玻璃质感 */
+    }
+
+    /* 统一聚焦状态 */
+    .modern-input:focus {
+        border-color: #3e9eff;
+        box-shadow: 0 4px 15px rgba(62,158,255,0.25);
+        background: rgba(255,255,255,0.08);
+    }
+
+    .modern-input:focus + i {
+        color: #3e9eff !important; /* 图标同步变色 */
+    }
+
+    .input-group {
+        position: relative;
+        margin-bottom: 15px;
+        animation: slideDown 0.3s ease;
+    }
+
+    /* 同步图标样式 */
+    .input-group i {
+        left: 20px; /* 增大左侧间距 */
+        font-size: 1.3em;
+        color: rgba(255,255,255,0.5);
+        transition: color 0.3s;
+    }
+
+    @keyframes slideDown {
+        from { opacity: 0; transform: translateY(-10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .input-group input[type="email"] {
+        padding-left: 48px;
+        background-image: url('data:image/svg+xml,<svg ...></svg>'); /* 添加邮箱图标 */
+    }
+
+    .input-group input[type="password"] {
+        padding-left: 48px; /* 保持与其它输入框一致的左侧内边距 */
+        background-image: none; /* 移除可能存在的冲突背景图 */
+    }
+
+    .input-group input {
+        width: 100%;
+        padding: 14px 14px 14px 48px;
+        border: 2px solid rgba(255,255,255,0.1);
+        border-radius: 8px;
+        background: rgba(0,0,0,0.2);
+        color: #fff;
+        font-size: 1em;
+        transition: all 0.3s ease;
+    }
+
+    .input-group input:focus {
+        border-color: #3498db;
+        outline: none;
+        box-shadow: 0 0 8px rgba(52,152,219,0.3);
+    }
+</style>
+
+<style>
+    /* 齿轮按钮样式 */
+    .settings-btn {
+        position: relative; /* 新增：为下拉菜单定位准备 */
+        width: 32px;
+        height: 32px;
+        border: none;
+        border-radius: 6px;
+        background: #34495e;
+        color: white;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s;
+        flex-shrink: 0;
+    }
+
+    .settings-btn:hover {
+        background: #3b536b;
+        transform: rotate(90deg);
+    }
+
+    /* 新增下拉菜单样式 */
+    .settings-dropdown {
+        position: absolute;
+        bottom: calc(100%);
+        right: -10px;  /* 基础偏移量 */
+        transform: translateX(100%); /* 100%向右偏移 */
+        background: #2c3e50;
+        border-radius: 6px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        display: none;
+        min-width: 160px;
+        z-index: 2100;
+    }
+
+    /* 箭头动态定位 */
+    .settings-dropdown::before {
+        content: '';
+        position: absolute;
+        bottom: -6px;
+        right: 14px;  /* 固定像素值确保精准对齐 */
+        width: 0;
+        height: 0;
+        border-left: 6px solid transparent;
+        border-right: 6px solid transparent;
+        border-top: 6px solid #2c3e50;
+    }
+
+    /* 移动端特殊适配 */
+    @media (max-width: 768px) {
+        .settings-dropdown {
+            right: -24px !important;  /* 移动端双倍偏移 */
+            transform: translateX(60%) !important;  /* 额外偏移量 */
+        }
+        .settings-dropdown::before {
+            right: 20px;  /* 移动端箭头微调 */
+        }
+    }
+
+    /* 父容器最终调整 */
+    .settings-wrapper {
+        position: static; /* 改为 static 使下拉菜单基于视口定位 */
+        display: inline-block;
+        margin-left: 8px;  /* 增加按钮间距 */
+        vertical-align: middle;
+        flex-shrink: 0; /* 禁止压缩 */
+        margin: 0 2px; /* 微调间距 */
+    }
+
+    .settings-dropdown.active {
+        display: block;
+    }
+
+    .settings-dropdown a {
+        display: block;
+        padding: 10px 16px;
+        color: white;
+        text-decoration: none;
+        font-size: 0.9em;
+        transition: background 0.2s;
+    }
+
+    .settings-dropdown a:hover {
+        background: #34495e;
+        border-radius: 4px;
+    }
+
+    .settings-dropdown a:first-child {
+        border-radius: 6px 6px 0 0;
+    }
+
+    .settings-dropdown a:last-child {
+        border-radius: 0 0 6px 6px;
+    }
+</style>
+    
+    
+<script>
+    /* ====================== 嵌入式配置开始 ====================== */
+    const embeddedConfig = {
+        "freertos": {
+            "name": "FreeRTOS",
+            "languages": {
+                "en": ["latest"],
+                "cn": ["latest"]
+            }
+        },
+        "linux": {
+            "name": "Linux",
+            "languages": {
+                "en": ["latest"],
+                "cn": ["latest"]
+            }
+        }
+    };
+    /* ====================== 嵌入式配置结束 ====================== */
+</script>
+
+<script>
+    // 获取OS显示名称列表
+    function getOSNames(data) {
+        return Object.keys(data).map(key => data[key].name);
+    }
+
+    // 获取指定OS的语言列表
+    function getLanguages(data, osKey) {
+        return Object.keys(data[osKey]?.languages || {});
+    }
+
+    // 获取指定OS和语言的版本列表
+    function getVersions(data, osKey, language) {
+        return data[osKey]?.languages?.[language] || ['latest'];
+    }
+
+    // 根据显示名称查找OS键
+    function findOSKey(data, displayName) {
+        return Object.keys(data).find(key => data[key].name === displayName);
+    }
+
+    // 获取基础URL路径
+    function getBaseURL() {
+        const url = new URL(window.location.href);
+        console.log('[DEBUG] getBaseURL:');
+
+        if (url.protocol === 'file:') {
+            // 本地路径处理
+            const pathParts = url.pathname.split('/').filter(part => part !== '');
+            const index = pathParts.indexOf('build');
+            console.log('[DEBUG] getBaseURL0:', pathParts.slice(0, index + 1).join('/'));
+            return `file://${pathParts.slice(0, index + 1).join('/')}/`;
+        } else {
+            // 网络路径处理
+            const basePath = url.pathname.split('/')[1]; // 直接取第一个有效路径段
+            console.log('[DEBUG] getBaseURL:', url.origin, basePath);
+            return `${url.origin}/${basePath}/`;
+        }
+    }
+
+    // 获取当前URL路径分段
+    function getCurrentSegments() {
+        const url = new URL(window.location.href);
+        let segments = url.pathname.split('/').filter(segment => segment);
+
+
+        console.log('[DEBUG] getCurrentSegments:');
+
+        if (url.protocol === 'file:') {
+            // 本地路径处理
+            const index = segments.indexOf('build');
+            segments = segments.slice(index + 1); // 去掉 build 及之前的路径
+            console.log('[DEBUG] getCurrentSegments0:', segments);
+        } else {
+            // 网络路径处理
+            segments = segments.slice(1); // 去掉 ameba-iot-docs/
+            console.log('[DEBUG] getCurrentSegments:', segments);
+        }
+
+        return {
+            osKey: segments[0] || 'freertos', // 默认为 freertos
+            language: segments[1] || 'en',   // 默认为 en
+            version: segments[2] || 'latest' // 默认为 latest
+        };
+    }
+
+    // 绑定事件监听
+    function bindEvents(baseURL, segments) {
+        document.getElementById('os-selector').addEventListener('change', () => {
+            const newOSKey = document.getElementById('os-selector').value;
+            const availableLangs = getLanguages(embeddedConfig, newOSKey);
+            const defaultLang = availableLangs[0] || 'en';
+            const defaultVersion = getVersions(embeddedConfig, newOSKey, defaultLang)[0] || 'latest';
+            console.log('OS Changed:', {newOSKey, defaultLang, defaultVersion});
+            redirectTo(`${baseURL}${newOSKey}/${defaultLang}/${defaultVersion}/`);
+        });
+
+        document.getElementById('language-selector').addEventListener('change', () => {
+            const newLang = document.getElementById('language-selector').value;
+            const defaultVersion = getVersions(embeddedConfig, segments.osKey, newLang)[0] || 'latest';
+            console.log('Language Changed:', {newLang, defaultVersion});
+            redirectTo(`${baseURL}${segments.osKey}/${newLang}/${defaultVersion}/`);
+        });
+
+        document.getElementById('version-selector').addEventListener('change', () => {
+            const newVer = document.getElementById('version-selector').value;
+            console.log('Version Changed:', {newVer});
+            redirectTo(`${baseURL}${segments.osKey}/${segments.language}/${newVer}/`);
+        });
+    }
+
+    // 跳转函数
+    function redirectTo(path) {
+        const url = new URL(path, window.location.href);
+        if (url.protocol === 'file:') {
+            url.pathname += 'index.html';
+        }
+        console.log('Redirecting to:', url.href);
+        window.location.href = url.href;
+    }
+</script>
+
+<script>
+    // 验证并修正路径参数
+    function validateSegments(segments) {
+        const currentOSName = embeddedConfig[segments.osKey]?.name;
+
+        // 如果 OS 无效，默认设置为 FreeRTOS
+        if (!currentOSName) {
+            console.warn("Invalid OS key, defaulting to FreeRTOS");
+            segments.osKey = 'freertos';
+        }
+
+        // 如果语言无效，默认设置为 en
+        if (!getLanguages(embeddedConfig, segments.osKey).includes(segments.language)) {
+            console.warn("Invalid language, defaulting to en");
+            segments.language = 'en';
+        }
+
+        return segments;
+    }
+
+    // 设置初始选中值
+    function setInitialValues(segments) {
+        document.getElementById('os-selector').value = segments.osKey;
+        document.getElementById('language-selector').value = segments.language;
+
+        const versionSelector = document.getElementById('version-selector');
+        const availableVersions = getVersions(embeddedConfig, segments.osKey, segments.language);
+        versionSelector.value = availableVersions.includes(segments.version) ? segments.version : availableVersions[0] || 'latest';
+    }
+</script>
+
+<style>
+    .selectors-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr); /* 三列等宽 */
+        gap: 4px;
+        padding: 1px 1px;
+
+        margin-top: var(--root-margin-top, 4px);
+        margin-bottom: var(--root-margin-bottom, 0px);
+    }
+
+    .dual-selector-group {
+        display: grid;
+        grid-template-columns: 1fr 1fr; /* 两列等宽 */
+        gap: 4px; /* 列间距 */
+    }
+
+    .selector-group {
+        position: relative;
+        width: 100%; /* 确保填满网格列 */
+    }
+
+    .selector-label {
+        display: block;
+        color: #a0b3c6;
+        font-size: 0.85em;
+        margin-bottom: 4px;
+        padding-left: 4px;
+    }
+
+    .selector-dropdown {
+        width: 100%;
+        margin-top: var(--root-margin-top, 4px);
+        margin-bottom: var(--root-margin-bottom, 0px);
+        padding: 4px 6px;
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 6px;
+        background: #f39d1276 !important;
+        color: white;
+        font-size: 0.95em;
+        transition: all 0.3s ease;
+        appearance: none;
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23a0b3c6'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right 10px center;
+        background-size: 16px;
+        display: flex;
+        height: 30px;
+
+        box-shadow: none !important; /* 不要边框阴影 */
+        outline: none !important; /* 不要边框阴影 */
+    }
+
+    .selector-dropdown:hover {
+        border-color: #4a6a8b;
+        background-color: rgba(44, 62, 80, 1);
+        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    .selector-dropdown:focus {
+        outline: none;
+        border-color: #3498db;
+        box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+    }
+
+    /* 移动端优化 */
+    @media (max-width: 768px) {
+        .selectors-grid {
+            grid-template-columns: 1fr; /* 小屏幕下堆叠显示 */
+            gap: 10px;
+        }
+
+        .selector-dropdown {
+            padding: 10px 12px;
+        }
+
+        .dual-selector-group {
+            grid-template-columns: 1fr; /* 小屏幕下堆叠显示 */
+        }
+    }
+</style>
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+    
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Ameba IoT Docs
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+    
+    <div id="topleft-panel" style="display: block !important; padding: 0; background: none; border: none;"></div>
+
+    
+    <div class="bottomleft-panel"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            try {
+                const segments = validateSegments(getCurrentSegments());
+                const baseURL = getBaseURL();
+
+                // 渲染HTML
+                document.getElementById('topleft-panel').innerHTML = `
+<!-- templates/sidebar_user_panel_div.html -->
+
+<div class="user-panel-container">
+    <div class="user-panel">
+        
+<!-- templates/sidebar_user_panel_div_docselect.html -->
+
+<div class="selectors-grid">
+    <!-- 系统选择器 -->
+    <div class="selector-group">
+        <select id="os-selector" class="selector-dropdown">
+            ${Object.keys(embeddedConfig).map(key => `
+                <option value="${key}">${embeddedConfig[key].name}</option>
+            `).join('')}
+        </select>
+    </div>
+
+    <!-- 语言选择器 -->
+    <div class="selector-group">
+        <select id="language-selector" class="selector-dropdown">
+            ${getLanguages(embeddedConfig, segments.osKey).map(lang => `
+                <option value="${lang}">${lang === 'en' ? 'en' : 'cn'}</option>
+            `).join('')}
+        </select>
+    </div>
+
+    <!-- 版本选择器 -->
+    <div class="selector-group">
+        <select id="version-selector" class="selector-dropdown">
+            ${getVersions(embeddedConfig, segments.osKey, segments.language).map(ver => `
+                <option value="${ver}">${ver}</option>
+            `).join('')}
+        </select>
+    </div>
+</div>
+
+        
+            
+<!-- templates/sidebar_user_panel_div_userinfo.html -->
+
+<!-- 用户功能区 -->
+<div class="user-info">
+    <div class="user-actions">
+        <button id="username-text" class="user-btn">
+            <i class="fas fa-user-circle"></i>
+            <span class="username-text">用户名</span>
+        </button>
+
+        <button class="auth-btn" id="logout-btn" onclick="handleLogout()" style="display: none;">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Logout</span>
+        </button>
+    </div>
+    <div class="auth-buttons" id="auth-buttons">
+        <button class="auth-btn" onclick="showAuthModal('register')">
+            <i class="fas fa-user-plus"></i>
+            <span>Register</span>
+        </button>
+        <button class="auth-btn" onclick="showAuthModal('login')">
+            <i class="fas fa-sign-in-alt"></i>
+            <span>Login</span>
+        </button>
+    </div>
+</div>
+            
+<!-- templates/sidebar_user_panel_div_extlink.html -->
+
+<div class="external-links">
+    <button class="official-btn" onclick="window.open('https://www.realmcu.com/', '_blank')">
+        <i class="fas fa-globe-asia"></i>
+        <span>Official</span>
+    </button>
+
+    <button class="docs-btn"  onclick="window.open('http://172.29.57.206:5000/forum', '_blank')">
+        <span class="btn-icon">💬</span>
+        <span class="btn-text">Forum</span>
+    </button>
+
+    <button class="auth-btn" onclick="window.reportButtonClick()">
+        <i class="fas fa-pen-alt"></i>
+        <span>Post</span>
+    </button>
+</div>
+            
+<!-- templates/sidebar_user_panel_div_authmodal.html -->
+
+<!-- 认证模态框 -->
+<div id="auth-modal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <span class="close" onclick="closeAuthModal()">&times;</span>
+        <div class="modal-header">
+            <h3 class="modal-title" id="modal-title">用户登录</h3>
+        </div>
+
+        <!-- 注册字段 -->
+        <div class="input-group">
+            <i class="fas fa-envelope"></i>
+            <input type="email" id="auth-email" placeholder="工作邮箱" class="modern-input" form="auth-form">
+        </div>
+        <div class="input-group">
+            <i class="fas fa-building"></i>
+            <input type="text" id="auth-company" placeholder="工作单位" class="modern-input" form="auth-form">
+        </div>
+        <div class="input-group">
+            <i class="fas fa-cube"></i>
+            <input type="text" id="auth-product" placeholder="产品信息" class="modern-input" form="auth-form">
+        </div>
+
+        <!-- 用户名和密码 -->
+        <div class="input-group">
+            <i class="fas fa-user"></i>
+            <input type="text" id="auth-username" placeholder="用户名" class="modern-input" form="auth-form">
+        </div>
+        <div class="input-group">
+            <i class="fas fa-lock"></i>
+            <input type="password" id="auth-password" placeholder="密码" class="modern-input" form="auth-form">
+        </div>
+
+        <!-- 添加 form 标签包裹按钮 -->
+        <form id="auth-form" onsubmit="handleAuth(); return false;">
+            <button type="submit" id="auth-action-btn" class="auth-submit">登录</button>
+        </form>
+    </div>
+</div>
+        
+
+    </div>
+</div>`;
+
+                // 设置初始值
+                setInitialValues(segments);
+
+                // 绑定事件
+                bindEvents(baseURL, segments);
+
+                // 将 user-panel 移动到 bottomleft-panel 内
+                const userPanel = document.querySelector('.user-panel');
+                const bottomleftPanel = document.querySelector('.bottomleft-panel');
+                if (userPanel && bottomleftPanel) {
+                    //bottomleftPanel.appendChild(userPanel); // 直接添加为子元素
+                }
+            } catch (error) {
+                console.error("Error initializing selectors:", error);
+            }
+        });
+    </script>
+
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../0_ameba_product/0_ameba_product_center_index.html">Products Center</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_ameba_sdk/0_ameba_sdks_index.html">Ameba SDK</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_ameba_solutions/0_ameba_solutions_index.html">Ameba Solutions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_gcc_build_environment/0_gcc_build_index.html">0.1 GCC Build Environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_gdb_debug/0_gdb_debug_index.html">0.2 GDB Debug</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_build_system/0_build_system_index.html">0.3 Build System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_sdk_example/0_sdk_example_index.html">0.4 SDK Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_memory_layout/0_layout_index.html">0.5 Flash &amp; RAM Layout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_user_config/0_usrcfg_index.html">0.6 User Config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_tools/0_tools_index.html">0.7 Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_at_command/0_at_command_index.html">0.8 AT Commands</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_file_system/0_vfs_index.html">0.9 Virtual File System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_ftl/0_ftl_index.html">0.a Flash Translation Layer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_mpu_cache/0_mpu_cache_index.html">1.0 Memory Management &amp; Cache</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_boot_process/0_boot_index.html">1.1 Boot Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_ota/0_ota_index.html">1.2 OTA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_otpc/0_otpc_index.html">1.3 OTPC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_chipen/0_chipen_index.html">1.4 Chip Enable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_ipc/0_ipc_index.html">1.5 Inter Processor Communication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_pinmux/0_pinmux_index.html">1.6 Pin Multiplexing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_gpio/0_gpio_index.html">1.7 GPIO &amp; Pin Control</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_power_save/0_ps_index.html">1.9 Power Saving</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_wifi_basic/0_wifi_basic_index.html">2.0 Wi-Fi Basic Mode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_whc_wifi_bridge/0_wifi_bridge_index.html">2.1 WHC Bridge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_whc_fullmac/0_fullmac_index.html">2.2 WHC FullMAC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_wifi_tunnel/0_wifi_tunnel_index.html">2.3 Wi-Fi R-Mesh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_wifi_csi/0_wifi_csi_index.html">2.4 Wi-Fi CSI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_wifi_adaptivity_test/0_wifi_adaptivity_index.html">2.5 Wi-Fi Adaptivity Test</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../10_api_docs/0_api_index.html">2.6 Wi-Fi API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_security/0_security_index.html">3.1 Security &amp; Encryption</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_trng/0_trng_index.html">3.2 True Random Number Generator</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">3.3 HUK Derivation 🔒</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#supported-ics">Supported ICs</a></li>
+<li><a class="reference internal" href="#introduction">Introduction</a></li>
+<li><a class="reference internal" href="#key-derivation-process">Key Derivation Process</a></li>
+<li><a class="reference internal" href="#sticky-register-bit">Sticky Register Bit</a></li>
+<li><a class="reference internal" href="#huk-otp">HUK OTP</a></li>
+<li><a class="reference internal" href="#how-to-use-derivation">How to Use Derivation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_rdp/0_rdp_index_nda.html">3.4 RDP 🔒</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_rsip/0_rsip_index_nda.html">3.5 RSIP 🔒</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_secure_boot/0_secure_boot_index_nda.html">3.6 Secure Boot 🔒</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_swd_protection/0_swd_protection_index_nda.html">3.7 SWD Protection 🔒</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_tfm/0_tfm_index_nda.html">3.8 Trusted Firmware-M (TF-M) 🔒</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_crypto_engine/0_crypto_engine_index.html">3.9 Crypto Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_ecdsa_engine/0_ecdsa_index.html">3.a ECDSA Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_eddsa_engine/0_eddsa_index.html">3.b EDDSA Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_rsa_engine/0_rsa_index.html">3.c RSA Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_ap_trustzone/0_ap_tz_index.html">3.d AP Secure Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../4_ai/0_ai_index.html">4.1 AI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../4_ai_voice/0_ai_voice_index.html">4.2 AIVoice</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../4_multimedia/0_multimedia_index.html">4.3 Multimedia</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../4_dsp/0_dsp_index.html">4.4 DSP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../6_mass_production/0_mp_index.html">6.1 Mass Production</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../6_mptools/0_mptools_index.html">6.2 MP Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../7_usb/0_usb_index.html">7.1 USB Host &amp; Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_dmac/0_dmac_index.html">8.1 DMA Controller</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_psram/0_psram_index.html">8.2 PSRAM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_thermal/0_thermal_index.html">8.3 Thermal Meter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_adc/0_adc_index.html">8.4 ADC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_ir/0_ir_index.html">8.5 IR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_ledc/0_ledc_index.html">8.6 LED Controller</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_cap_touch/0_cap_touch_index.html">8.7 Cap-Touch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_key_scan/0_key_scan_index.html">8.8 Key-Scan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_rtc_io/0_rtc_io_index.html">8.9 RTC-IO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_lcdc/0_lcdc_index.html">8.a LCD Controller</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Ameba IoT Docs</a>
+      </nav>
+
+      <div class="wy-nav-content">
+    
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">HUK Derivation</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="huk-derivation">
+<span id="id1"></span><h1>HUK Derivation<a class="headerlink" href="#huk-derivation" title="Link to this heading"></a></h1>
+<section id="supported-ics">
+<h2>Supported ICs<a class="headerlink" href="#supported-ics" title="Link to this heading"></a></h2>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Ameba SoC</p></th>
+<th class="head"><p>RTL8721Dx</p></th>
+<th class="head"><p>RTL8726E</p></th>
+<th class="head"><p>RTL8720E</p></th>
+<th class="head"><p>RTL8730E</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Supported</p></td>
+<td><p>Y</p></td>
+<td><p>Y</p></td>
+<td><p>Y</p></td>
+<td><p>Y</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
+<p>The HUK (Hardware Unique Key) refers to a hardware unique key, similar to a human fingerprint, which is unique to hardware. The boot ROM (immutable root of trust) is the only device software able to access root parameters.</p>
+</section>
+<section id="key-derivation-process">
+<h2>Key Derivation Process<a class="headerlink" href="#key-derivation-process" title="Link to this heading"></a></h2>
+<p>To ensure that application-level keys, credentials, and other secret or sensitive data is uniquely accessible to a specific device when in a specific state, we support unique binding with KDF.</p>
+<p>To prevent the re-derivation of previously used keys, only trusted code can access to all of the source material.</p>
+<figure class="align-center" id="id2">
+<a class="reference internal image-reference" href="../../_images/huk_derivation_device_binding.svg"><img alt="../../_images/huk_derivation_device_binding.svg" height="191" src="../../_images/huk_derivation_device_binding.svg" width="549" /></a>
+<figcaption>
+<p><span class="caption-text">Device binding</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p>In the process of the secret key derivation, HUK will be protected as follows to avoid its leakage:</p>
+<ul class="simple">
+<li><p>Different keys are derived from different lifecycles.</p></li>
+</ul>
+<p>Because reading HUK returns full <code class="docutils literal notranslate"><span class="pre">F</span></code> in RMA state, it is unable to read the HUK preset by the customer, which can well protect the data encrypted by the derived temporary secret key from being leaked in the RMA state.</p>
+<ul class="simple">
+<li><p>When the customer’s derived temporary secret keys are leaked, it means that the data associated with these keys are at risk of being exposed. The customers can update the security epoch to re-derive a new secret key and migrate the data with the new key.</p></li>
+<li><p>Only KM4 boot ROM can obtain the HUK, and later stages cannot get it.</p></li>
+</ul>
+<p>All other KDF inputs except HUK are known. If HUK is obtained at a certain stage, the whole key derivation process can be replicated, and all temporary secret keys will be exposed.</p>
+</section>
+<section id="sticky-register-bit">
+<h2>Sticky Register Bit<a class="headerlink" href="#sticky-register-bit" title="Link to this heading"></a></h2>
+<p>Software writes <code class="docutils literal notranslate"><span class="pre">1</span></code> to the sticky register bit before exiting the KM4 boot ROM, to set the HUK unreadable and prevent the HUK from being read in the subsequent boot stages.</p>
+<p>The sticky register bit can only be written to <code class="docutils literal notranslate"><span class="pre">1</span></code> but not <code class="docutils literal notranslate"><span class="pre">0</span></code>, and will only be cleared to <code class="docutils literal notranslate"><span class="pre">0</span></code> when the system is reset or wakes up from deep-sleep.</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-0-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-0-0-0" name="0-0" role="tab" tabindex="0">RTL8721Dx</button><button aria-controls="panel-0-0-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-1" name="0-1" role="tab" tabindex="-1">RTL8720E</button><button aria-controls="panel-0-0-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-2" name="0-2" role="tab" tabindex="-1">RTL8726E</button><button aria-controls="panel-0-0-3" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-3" name="0-3" role="tab" tabindex="-1">RTL8730E</button></div><div aria-labelledby="tab-0-0-0" class="sphinx-tabs-panel" id="panel-0-0-0" name="0-0" role="tabpanel" tabindex="0"><table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Address</p></th>
+<th class="head"><p>Length</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>HUK_PROTECTION</p></td>
+<td><p>0x41008230[0]</p></td>
+<td><p>1 bit</p></td>
+<td><p>HUK protection sticky bit.</p></td>
+</tr>
+</tbody>
+</table>
+</div><div aria-labelledby="tab-0-0-1" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-1" name="0-1" role="tabpanel" tabindex="0"></div><table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Address</p></th>
+<th class="head"><p>Length</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>HUK_PROTECTION</p></td>
+<td><p>0x4100C230[0]</p></td>
+<td><p>1 bit</p></td>
+<td><p>HUK protection sticky bit.</p></td>
+</tr>
+</tbody>
+</table>
+<div aria-labelledby="tab-0-0-2" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-2" name="0-2" role="tabpanel" tabindex="0"></div><table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Address</p></th>
+<th class="head"><p>Length</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>HUK_PROTECTION</p></td>
+<td><p>0x4100C230[0]</p></td>
+<td><p>1 bit</p></td>
+<td><p>HUK protection sticky bit.</p></td>
+</tr>
+</tbody>
+</table>
+<div aria-labelledby="tab-0-0-3" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-3" name="0-3" role="tabpanel" tabindex="0"><table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Address</p></th>
+<th class="head"><p>Length</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>HUK_PROTECTION</p></td>
+<td><p>0x42008240[0]</p></td>
+<td><p>1 bit</p></td>
+<td><p>HUK protection sticky bit.</p></td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<p>KM4 Boot ROM determines whether to enable HUK derivation by the <code class="docutils literal notranslate"><span class="pre">HUK_DERIV_EN</span></code> (physical 0x369[2]) bit in OTP.</p>
+<ul class="simple">
+<li><p>The HUK derivation is disabled by default, and the sticky register bit will not be written when boot, so you can read the key back immediately after programming keys in mass production (MP) to confirm if the programming key is correct. We suggest verifying that the HUK has been programmed correctly, and then programming the <code class="docutils literal notranslate"><span class="pre">HUK_DERIV_EN</span></code> bit to <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p></li>
+<li><p>After re-powering, the HUK derivation is detected enabled, the sticky register bit will be written in the boot ROM stage so that the original HUK cannot be read out after the KM4 boot ROM stage.</p></li>
+</ul>
+</section>
+<section id="huk-otp">
+<h2>HUK OTP<a class="headerlink" href="#huk-otp" title="Link to this heading"></a></h2>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>OTP address</p></th>
+<th class="head"><p>Length</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>HUK</p></td>
+<td><p>0x310~0x31F</p></td>
+<td><p>16 bytes</p></td>
+<td><div class="line-block">
+<div class="line">Random seed programmed once at device manufacture.</div>
+<div class="line">Used for deriving all other secrets and identifiers at the boot stage.</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p>HUK_W_Forbidden_EN</p></td>
+<td><p>0x364[7]</p></td>
+<td><p>1 bit</p></td>
+<td><p>When programmed, HUK cannot be modified any more.</p></td>
+</tr>
+<tr class="row-even"><td><p>HUK_DERIV_EN</p></td>
+<td><p>Physical 0x369[2]</p></td>
+<td><p>1 bit</p></td>
+<td><p>HUK derivation enable</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="how-to-use-derivation">
+<h2>How to Use Derivation<a class="headerlink" href="#how-to-use-derivation" title="Link to this heading"></a></h2>
+<p>The following steps illustrate how to use HUK derivation:</p>
+<ol class="arabic">
+<li><p>Set <code class="docutils literal notranslate"><span class="pre">SEC_EPOCH</span></code> in <code class="docutils literal notranslate"><span class="pre">{SDK}\amebaxxx_gcc_project\manifest.json</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">&quot;IMG_ID&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0&quot;</span><span class="p">,</span>
+<span class="nt">&quot;IMG_VER_MAJOR&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="nt">&quot;IMG_VER_MINOR&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="nt">&quot;SEC_EPOCH&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+</pre></div>
+</div>
+<p>Users can update the security epoch to re-derive a new secret key if needed.</p>
+</li>
+<li><p>Program HUK-related OTP bits:</p>
+<ol class="loweralpha">
+<li><p>Generate a Random seed and program into <code class="docutils literal notranslate"><span class="pre">OTP</span> <span class="pre">0x310~0x31F</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">efuse</span> <span class="n">wraw</span> <span class="mh">0x310</span> <span class="mi">10</span> <span class="n">xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</span>
+</pre></div>
+</div>
+<p>Users can read the key back immediately after programming keys in mass production (MP) to confirm if the programming key is correct. If the HUK is programmed correctly, the <code class="docutils literal notranslate"><span class="pre">HUK_DERIV_EN</span></code> bit will be written to <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p>
+</li>
+<li><p>Set HUK Derivation enable bit and set <code class="docutils literal notranslate"><span class="pre">HUK_W_Forbidden_EN</span></code> to <code class="docutils literal notranslate"><span class="pre">0</span></code> after HUK check:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">efuse</span> <span class="n">wraw</span> <span class="mh">0x369</span> <span class="mi">1</span> <span class="n">xx</span>    <span class="o">//</span> <span class="n">enable</span> <span class="n">HUK</span> <span class="n">derivation</span> <span class="ow">in</span> <span class="n">rom</span>
+<span class="n">efuse</span> <span class="n">wraw</span> <span class="mh">0x364</span> <span class="mi">1</span> <span class="n">xx</span>    <span class="o">//</span> <span class="n">HUK</span> <span class="n">cannot</span> <span class="n">be</span> <span class="n">modified</span> <span class="n">anymore</span> <span class="n">after</span> <span class="nb">set</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</li>
+<li><p>Reset the device</p></li>
+<li><p>Get the DerivedKey</p></li>
+</ol>
+<p>The DerivedKey can only be accessed in trusted code by reading DerivedKey. Users can use their own KDF or function <code class="docutils literal notranslate"><span class="pre">BOOT_ROM_KeyDeriveFunc</span></code> to derivate keys for application, and all the materials needed by KDF can never be accessed by untrusted code on safety grounds.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../3_trng/1_trng_toprst.html" class="btn btn-neutral float-left" title="Supported ICs" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../3_nda_rdp/0_rdp_index_nda.html" class="btn btn-neutral float-right" title="Read Protection (RDP)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Realsil.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+
+    <!-- 侧边栏收缩按钮 -->
+    <button id="sidebar-toggle-button">&lt;</button>
+
+    <!-- 问题反馈按钮和对话框 -->
+        
+        <button id="help-button">
+            <i class="fas fa-question-circle"></i> <!-- 问号图标 -->
+        </button>
+    
+
+    <div id="feedback-dialog" class="feedback-dialog" style="display: none;">
+        <div class="form-group">
+            <label style="font-weight: bold;">Please select the related chapter:</label>
+            <select id="chapter-select">
+                <option value="">Select Chapter</option>
+                <!-- 章节选项将通过JavaScript动态填充 -->
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label style="font-weight: bold;">Post Type</label>
+            <select id="post-type" class="form-control" required>
+                <option value="">-- Select Type --</option>
+                <option value="doc_correction">Document Correction</option>
+                <option value="tech_consult">Technical Consult</option>
+                <option value="tech_summary">Technical Summary</option>
+                <option value="operation_flow">Operation Flow</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label style="font-weight: bold;">Related Paragraph:</label>
+            <textarea
+                id="paragraph-input"
+                placeholder="{{ '你可以先选择有问题的段落或手动输入...' if language == 'zh_CN' else 'You can select text or type directly here...' }}"
+                rows="4"
+            ></textarea>
+        </div>
+
+        <div class="form-group">
+            <label style="font-weight: bold;">Please describe your issue:</label>
+            <textarea
+                id="inquire_input"
+                placeholder="Feature enhancement in progress, please stay tuned...">
+            </textarea>
+        </div>
+
+        <button id="submit-feedback">Submit</button>
+        <button id="cancel-feedback">Cancel</button>
+    </div>
+
+    <style>
+        .form-group {
+            margin: 5px 0;  /* 基础间距 */
+        }
+
+        /* 相邻表单项缩小上方间距 */
+        .form-group + .form-group {
+            margin-top: 10px;
+        }
+
+        /* 段落输入框底部微调 */
+        #paragraph-input, #inquire_input {
+            margin: 2px 0; /* 上下间距 */
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            resize: vertical;
+            min-height: 100px;
+
+            /* 占位符样式 */
+            &::placeholder {
+                color: #999;
+                font-style: italic;
+            }
+        }
+    </style>
+
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+     
+
+    <script>
+        function sidebarToggleButton() {
+            const sidebar = document.querySelector('.wy-nav-side');
+            const contentArea = document.querySelector('.wy-nav-content');
+            const contentAreaWrap = document.querySelector('.wy-nav-content-wrap');
+            const bottomLeftPanel = document.querySelector('.bottomleft-panel');
+            const toggleButton = document.getElementById('sidebar-toggle-button');
+
+            console.log('Sidebar:', sidebar);
+            console.log('Content Area:', contentArea);
+            console.log('Toggle Button:', toggleButton);
+
+            if (!sidebar || !contentArea || !toggleButton) {
+                console.error('One or more elements not found');
+                return;
+            }
+
+            let isSidebarCollapsed = false;
+
+            toggleButton.addEventListener('click', function() {
+                if (isSidebarCollapsed) {
+                    sidebar.style.marginLeft = '0px';
+                    bottomLeftPanel.style.marginLeft = '0px';
+                    contentAreaWrap.style.marginLeft = '280px';
+                    contentArea.classList.remove('expanded');
+
+                    toggleButton.innerHTML = '&lt;';
+                    toggleButton.style.left = '290px';
+                } else {
+                    sidebar.style.marginLeft = '-280px';
+                    bottomLeftPanel.style.marginLeft = '-280px';
+                    contentAreaWrap.style.marginLeft = '0px';
+                    contentArea.classList.add('expanded');
+
+                    toggleButton.innerHTML = '&gt;';
+                    toggleButton.style.left = '15px';
+                }
+                isSidebarCollapsed = !isSidebarCollapsed;
+            });
+        }
+
+        sidebarToggleButton();
+    </script>
+
+    
+        <!-- source/_templates/page_access_nda_check.html -->
+
+<!-- 文档列表 -->
+<style>
+    #document-list {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px; /* 上下间隔 */
+    }
+
+    #document-list > div {
+        display: flex;
+        align-items: center;
+        width: 100%;
+    }
+
+    #document-list label {
+        margin: 0;
+        text-align: left;
+        display: inline-flex; /* 在同一行展示内容 */
+        align-items: center; /* 垂直对齐 */
+        gap: 8px; /* 确保无间隙 */
+    }
+
+    #document-list input {
+        margin: 0;
+    }
+
+    /* 文档列表外框 */
+    .input-frame {
+        width: 100%;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 7px;
+        margin-bottom: 10px;
+        background: white;
+    }
+
+    /* 调整文档列表内部布局 */
+    #document-list {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        max-height: 200px;
+        overflow-y: auto;
+    }
+
+    #document-list label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 4px;
+        transition: background 0.2s;
+    }
+
+    #document-list label:hover {
+        background: #f8f9fa;
+    }
+
+</style>
+
+<style>
+    .nda_request_modal {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: #5a6c75; /* 淡蓝色背景 */
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        z-index: 1001;
+        width: 400px;
+    }
+
+    .nda_request_modal-content {
+        position: relative;
+    }
+
+    .nda_request_modal-close {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        font-size: 20px;
+        cursor: pointer;
+        color: white !important;
+        text-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+    }
+
+    .nda_request_modal .form-group {
+        margin: 10px 0;
+    }
+
+    .nda_request_modal label {
+        font-weight: bold;
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    /* 标签文字颜色 */
+    .nda_request_modal .form-group label {
+        color: white !important; /* 白色文字 */
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3); /* 增加可读性 */
+    }
+
+    .nda_request_modal input,
+    .nda_request_modal textarea,
+    .nda_request_modal select,
+    .input-frame {
+        width: 100%;
+        padding: 7px;
+        border-radius: 4px;
+        margin-bottom: 10px;
+        border: 2px solid white !important; /* 白色边框 */
+        background: #25292b !important; /* 深蓝色背景 */
+    }
+
+    .nda_request_modal button {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        width: 100%;
+    }
+
+    .nda_request_modal button:hover {
+        background-color: #0056b3;
+    }
+
+    /* 标题样式调整 */
+    .nda_request_modal h4 {
+        color: white !important; /* 白色文字 */
+        text-align: center; /* 居中 */
+        text-decoration: underline; /* 下划线 */
+        margin: 0 0 20px 0; /* 调整间距 */
+        padding: 15px 0 10px 0; /* 上间距加大 */
+        background: #5a6c75; /* 淡蓝色背景 */
+        border-radius: 4px 4px 0 0; /* 顶部圆角 */
+        position: relative;
+        top: -30px; /* 向上移动 */
+        left: -30px;
+        width: calc(100% + 60px); /* 扩展宽度 */
+    }
+
+    /* 统一输入元素样式 */
+    .nda_request_modal input, 
+    .nda_request_modal textarea,
+    .input-frame {
+        border: 2px solid white !important; /* 白色边框 */
+        border-radius: 4px;
+        transition: border-color 0.2s;
+        color: white;
+    }
+
+    /* 加强输入框聚焦效果 */
+    .nda_request_modal input:focus,
+    .nda_request_modal textarea:focus,
+    .input-frame:focus-within {
+        border-color: #003366 !important;
+        box-shadow: 0 0 0 3px rgba(0, 86, 179, 0.25);
+        outline: none;
+    }
+
+    .nda_request_modal,
+    .nda_request_modal h4 {
+        background: #5a6c75; /* 淡蓝色背景 */
+    }
+
+</style>
+
+<style>
+    /* 保持原有样式并新增 */
+    .auth-denied {
+        padding: 2rem;
+        max-width: 600px;
+        margin: 2rem auto;
+        background: #fff3f3;
+        border-radius: 8px;
+        text-align: center;
+    }
+
+    .auth-denied h3 {
+        color: #dc3545;
+        margin-bottom: 1rem;
+    }
+
+    
+    .auth-denied {
+        padding: 20px;
+        background: #f8f9fa;
+        border-radius: 4px;
+        border: 1px solid #dee2e6;
+        text-align: center;
+        color: #721c24;
+        margin-top: 20px;
+    }
+    .auth-denied h3 {
+        margin-bottom: 10px;
+        color: #dc3545;
+    }
+
+    .action-buttons {
+        margin-top: 1.5rem;
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+    }
+
+    button {
+        padding: 0.5rem 1.5rem;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: opacity 0.2s;
+    }
+
+    button:hover {
+        opacity: 0.9;
+    }
+
+    button:first-child {
+        background: #3498db;
+        color: white;
+    }
+
+    button:last-child {
+        background: #6c757d;
+        color: white;
+    }
+
+    .service-unavailable {
+        background: #fff9e6;
+    }
+
+    .service-unavailable h3 {
+        color: #ffc107;
+    }
+</style>
+
+<script>
+    var NDA_PROTECTED_PAGES = ["3_nda_rdp/0_rdp_index_nda_cn", "3_nda_rsip/0_rsip_index_nda_cn", "3_nda_swd_protection/0_swd_protection_index_nda", "3_nda_rdp/0_rdp_index_nda", "3_nda_secure_boot/0_secure_boot_index_nda", "3_nda_tfm/0_tfm_index_nda_cn", "3_nda_tfm/0_tfm_index_nda", "3_nda_rsip/0_rsip_index_nda", "3_nda_huk_derivation/0_huk_derivation_index_nda"];
+    var NON_LOGIN_PAGES = ["index.html", "0_ameba_product_center_index.html", "0_ameba_sdks_index.html", "0_ameba_solutions_index.html", "0_ameba_product_center_index_cn.html", "0_ameba_sdks_index_cn.html", "0_ameba_solutions_index_cn.html"];
+
+    // 路由守卫配置
+    const ROUTER_CONFIG = {
+        baseUrl: 'http://172.29.57.206:5000',
+        checkInterval: 30000 // 30秒检查一次
+    };
+
+    window.getStoredUsername = function() {
+        try {
+            const session = localStorage.getItem('auth_session');
+            if (!session) return null;
+            const { username, expires } = JSON.parse(session);
+            if (Date.now() > expires) {
+                localStorage.removeItem('auth_session');
+                return null;
+            }
+            return username;
+        } catch (e) {
+            console.error('读取存储会话失败:', e);
+            return null;
+        }
+    }
+
+    // 增强型路由守卫
+    function setupRouteGuard() {
+        const originalPushState = history.pushState;
+        const originalReplaceState = history.replaceState;
+    
+        function wrappedHistoryMethod(method) {
+            return function(state, title, url) {
+                if (url) {
+                    const urlObj = new URL(url, window.location.origin);
+                    checkNdaProtectPage(urlObj.pathname).then(allowed => {
+                        if (allowed) {
+                            method.apply(history, [state, title, url]);
+                        }
+                    });
+                } else {
+                    method.apply(history, [state, title, url]);
+                }
+            };
+        }
+
+        history.pushState = wrappedHistoryMethod(originalPushState);
+        history.replaceState = wrappedHistoryMethod(originalReplaceState);
+
+        window.addEventListener('popstate', () => {
+            checkNdaProtectPage(window.location.pathname);
+        });
+    }
+
+    // CSRF Token处理：获取CSRF令牌
+    window.getCSRFToken = function() {
+        // 从 Cookie 中获取 CSRF Token
+        const cookieValue = document.cookie
+            .split('; ')
+            .find(row => row.startsWith('csrf_token='))
+            ?.split('=')[1];
+        return cookieValue || '';
+    }
+
+    // 检测当前页面是否是nda文件
+    function isProtectedPage(page_name) {
+        return page_name.toLowerCase().includes('nda');
+    }
+
+    // 定义获取最后路径段的函数
+    function getLastPathSegment(url) {
+        const parts = url.split('/');
+        return parts.pop() || parts.pop();  // 使用双 pop 处理可能的尾部斜线
+    }
+
+    // 显示服务不可用
+    window.NdaPageAccessDenied = function() {
+        document.querySelector('.wy-nav-content').innerHTML = `
+            <div class="auth-denied service-unavailable">
+                <h3>${document.documentElement.lang === 'zh_CN' ? '访问被拒绝' : 'Access Denied'}</h3>
+                <p>${document.documentElement.lang === 'zh_CN' 
+                    ? '你首先要注册用户，并通过页面下方的帮助按钮申请文档访问权限.' 
+                    : 'You should first register as a user and then request document access permissions use the same register email.'}
+                </p>
+                <button id="request-access-btn">
+                    ${document.documentElement.lang === 'zh_CN' ? '访问权限申请' : 'Request Access'}
+                </button>
+            </div>
+
+            <!-- 模态框 -->
+            <div id="access-request-modal" class="nda_request_modal" style="display:none;">
+                <div class="nda_request_modal-content">
+                    <span class="nda_request_modal-close">&times;</span>
+                    <h4>${document.documentElement.lang === 'zh_CN' ? '申请访问权限' : 'Request Access Permission'}</h4>
+
+                    <div class="form-group">
+                        <label>${document.documentElement.lang === 'zh_CN' ? '文档选择' : 'Select Documents'}</label>
+                        <!-- 新增外框容器 -->
+                        <div class="input-frame">
+                            <div id="document-list">
+                                ${Array.from(NDA_PROTECTED_PAGES).map(page => {
+                                    const lastSegment = page.substring(page.lastIndexOf('/') + 1);
+                                    return `<div>
+                                                <label for="${page}">
+                                                    <input type="checkbox" value="${page}" id="${page}"> ${lastSegment}
+                                                </label>
+                                            </div>`;
+                                }).join('')}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>${document.documentElement.lang === 'zh_CN' ? '工作邮箱' : 'Work Email'}</label>
+                        <input type="email" id="work-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label>${document.documentElement.lang === 'zh_CN' ? '工作单位' : 'Work Unit'}</label>
+                        <input type="text" id="work-unit" required>
+                    </div>
+                    <div class="form-group">
+                        <label>${document.documentElement.lang === 'zh_CN' ? '产品信息' : 'Product Information'}</label>
+                        <textarea id="product-info"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>${document.documentElement.lang === 'zh_CN' ? '联系电话' : 'Contact Number'}</label>
+                        <input type="tel" id="contact-number" required>
+                    </div>
+                    <button id="nda_access_request_button">
+                        ${document.documentElement.lang === 'zh_CN' ? '提交申请' : 'Submit Request'}
+                    </button>
+                </div>
+            </div>
+        `;
+    };
+
+    // 统一验证逻辑
+    function checkNdaProtectPage(path, isBackgroundCheck = false) {
+        const page_name = getLastPathSegment(path);
+        console.log('checkNdaProtectPage ', page_name);
+
+        // 非NDA 则直接允许
+        if (!isProtectedPage(page_name)) {
+            console.log('checkNdaProtectPage normal page');
+
+            return Promise.resolve(true);
+        }
+
+        const wyNavContent = document.querySelector('.wy-nav-content');
+        let originalContent = wyNavContent.innerHTML; // 缓存原始内容
+
+        // 豁免路径快速通过
+        if (isExemptPath()) {
+            console.log('checkNdaProtectPage Exempt path, bypass check');
+            wyNavContent.style.display = 'block';
+            return Promise.resolve(true);
+        }
+
+        // 显示加载状态
+        wyNavContent.innerHTML = `
+            <div class="auth-loading">
+                <div class="spinner"></div>
+                <p>${document.documentElement.lang === 'zh_CN' ? '权限验证中...' : 'Checking permissions...'}</p>
+            </div>
+        `;
+
+        const page = new URL(path, window.location.origin).pathname.split('/').pop();
+        console.log('checkNdaProtectPage 提取的页面名称:', page);
+
+        return fetch('http://172.29.57.206:5000/check_nda_access', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': window.getCSRFToken()
+            },
+            body: JSON.stringify({
+                path: page,
+                username: window.getStoredUsername() || 'null' //  注意：后端从 session 取用户名，此处不需要传 username
+            }),
+            credentials: 'include'
+        })
+
+        .then(response => {
+            // 关键：先检查状态码再解析 JSON
+            if (!response.ok) {
+                console.log('checkNdaProtectPage Access denied');
+                NdaPageAccessDenied();
+            }
+            return response.json(); // 显式解析 JSON
+        })
+        .then(data => {
+            console.log('checkNdaProtectPage data.access:', data.access);
+
+            if (data.access) {
+                console.log('checkNdaProtectPage Access granted');
+                wyNavContent.innerHTML = originalContent; // 恢复原始内容
+                document.querySelector('.wy-nav-content').style.display = 'block';
+            } else {
+                console.log('checkNdaProtectPage Access denied');
+                NdaPageAccessDenied();
+            }
+
+            return data.access ?? false;
+        })
+        .catch(error => {
+            console.error('checkNdaProtectPage 验证失败:', error);
+            return false;
+        });
+    }
+
+    function requestNdaAccessRight() {
+        // 访问权限申请按钮点击事件
+        document.body.addEventListener('click', function(event) {
+            if (event.target.id === 'request-access-btn') {
+                document.getElementById('access-request-modal').style.display = 'block';
+            }
+        });
+
+        // 模态框关闭事件
+        document.body.addEventListener('click', function(event) {
+            if (event.target.classList.contains('nda_request_modal-close')) {
+                document.getElementById('access-request-modal').style.display = 'none';
+            }
+        });
+
+        // 提交申请按钮点击事件
+        document.body.addEventListener('click', function(event) {
+            if (event.target.id === 'nda_access_request_button') {
+                const documents = Array.from(document.querySelectorAll('#document-list input[type="checkbox"]:checked')).map(checkbox => checkbox.value);
+                const email = document.getElementById('work-email').value;
+                const unit = document.getElementById('work-unit').value;
+                const productInfo = document.getElementById('product-info').value;
+                const contactNumber = document.getElementById('contact-number').value;
+
+                if (!documents.length) {
+                    alert('must select one page');
+                    return;
+                }
+
+                // 数据验证和提交
+                if (!email || !unit || !contactNumber) {
+                    alert('Please fill in all required fields.');
+                    return;
+                }
+
+                const ndaAaccessRequestData = {
+                    username: window.getStoredUsername() || 'null',
+                    documents: documents,
+                    email: email,
+                    unit: unit,               // 保持前端字段名不变
+                    productInfo: productInfo, // 保持前端字段名不变 
+                    contactNumber: contactNumber // 改为驼峰命名
+                };
+
+                console.log('Request Data:', ndaAaccessRequestData);
+
+                // 发送请求到后端处理（替换为实际后端服务路径）
+                fetch('/nda_access_request_submit', {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': window.getCSRFToken()  // 添加CSRF令牌
+                    },
+                    body: JSON.stringify(ndaAaccessRequestData)
+                })
+                .then(async response => {
+                    const data = await response.json();
+                    if (!response.ok) {
+                        throw new Error(data.error || 'server response error');
+                    }
+
+                    console.log('Request successful:', data);
+                    alert('Access request submitted successfully.');
+                    document.getElementById('access-request-modal').style.display = 'none'; // 关闭模态框
+
+                    return data;
+                })
+                .catch(error => {
+                    console.error('Submit failed:', error);
+
+                    // 构建详细错误信息
+                    let errorMsg = `Submit failed: ${error.message}`;
+                    if (error.message.includes('Missing required fields')) {
+                        errorMsg += ', please check all required fields';
+                    }
+
+                    alert(errorMsg);
+                    document.getElementById('access-request-modal').style.display = 'block'; // 保持表单数据
+                });
+            }
+        });
+    }
+</script>
+        <!-- source/_templates/page_access_login_check.html -->
+
+<style>
+    /* 中文版式优化 */
+    .swal2-popup.chinese-content {
+        font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+        font-size: 15px;
+        line-height: 1.7;
+    }
+
+    /* 英文版式优化 */
+    .swal2-popup.english-content {
+        font-family: "Segoe UI", Roboto, sans-serif;
+        font-size: 16px;
+        line-height: 1.6;
+    }
+
+    /* 用户名密码高亮 */
+    .swal2-popup strong {
+        color: #2c3e50;
+        font-weight: 600;
+    }
+</style>
+
+<script>
+    window.checkLoginPage = function(path, isBackgroundCheck = false) {
+        const contentArea = document.querySelector('.wy-nav-content');
+        const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+        const page_name = getLastPathSegment(path);
+        console.log('checkLoginPage NON_LOGIN_PAGES:', NON_LOGIN_PAGES);
+        console.log('checkLoginPage page_name: ', page_name);
+        console.log('checkLoginPage isLoggedIn: ', isLoggedIn);
+
+        // 如果当前页面在免登录白名单列中直接放行
+        if (NON_LOGIN_PAGES.includes(page_name)) {
+            console.log('checkLoginPage this page not need login');
+            return Promise.resolve(true);
+        }
+
+        if (isLoggedIn) {
+            return Promise.resolve(true);
+        }
+
+        // 未登录，隐藏页面内容, 但保留侧边栏
+        if (contentArea) contentArea.style.display = 'none';
+
+        const pageLang = document.documentElement.lang || 'zh_CN';
+        const isChinese = pageLang.startsWith('zh');
+
+        // 多语言配置
+        const i18n = {
+            title: isChinese ? '访问受限' : 'Access Restricted',
+            content: isChinese 
+                ? '您需要登录才能查看此内容，请返回主页注册登录。<br><br>当前阶段请统一使用：<br><br><span style="color:red">用户名：usernda</span><br><br><span style="color:red">密码：126000</span>'
+                : 'You need to log in to view this content. Please return to the homepage to register or log in. <br><br><span style="color:red">Username: usernda</span><br><br><span style="color:red">Password: 126000</span>',
+            cancelBtn: isChinese ? '返回首页' : 'Back to Home'
+        };
+
+        // 弹出登录框
+        Swal.fire({
+            title: i18n.title,
+            html: i18n.content,
+            icon: 'info',
+            showCancelButton: true,     // 显示取消按钮
+            cancelButtonText: i18n.cancelBtn, // 按钮文字修改
+            showConfirmButton: false,   // 关键配置：隐藏确认按钮
+            allowOutsideClick: false,   // 禁止点击外围关闭
+            allowEscapeKey: false,       // 禁止ESC键关闭
+            customClass: {
+                popup: 'i18n-swal', // 添加多语言样式钩子
+                content: isChinese ? 'chinese-content' : 'english-content'
+            }
+        }).then(() => {
+            const currentUrl = window.location.href;
+            const latestIndex = currentUrl.indexOf('/latest/');
+            console.log('checkLoginPage homeUrl: ', currentUrl, latestIndex);
+
+            const baseUrl = currentUrl.substring(0, latestIndex + '/latest/'.length);
+            const homeUrl = baseUrl + 'index.html';
+
+            console.log('checkLoginPage homeUrl: ', baseUrl, homeUrl);
+            window.location.href = homeUrl;
+        });
+
+    }
+</script>
+        <!-- source/_templates/page_access_statistic.html -->
+<script>
+    class PageAnalytics {
+        formatDuration(timestamp) {
+            if (!timestamp) return '00:00:00:000';
+            const date = new Date(timestamp);
+            return [
+                date.getHours().toString().padStart(2, '0'),
+                date.getMinutes().toString().padStart(2, '0'),
+                date.getSeconds().toString().padStart(2, '0'),
+                date.getMilliseconds().toString().padStart(3, '0')
+            ].join(':');
+        }
+
+        constructor() {
+            this.STAT_EXEMPT_PATTERNS = [
+                /^\/_/,
+                /\/login(\/|$)/,
+                /\/logout(\/|$)/,
+                /\/register(\/|$)/,
+                /\/check_session(\/|$)/,
+                /\.(js|css|png|jpg)$/i
+            ];
+
+            // 状态管理
+            this.totalTrackedTime = 0;      // 累计有效时间（毫秒）
+            this.lastResumeTime = null;     // 最后恢复时间戳
+            this.inactivityTimer = null;    // 无活动定时器
+            this.visibilityTimer = null;    // 后台超时定时器
+            this.isTracking = false;        // 是否正在统计
+            this.isPaused = false;          // 是否处于暂停状态
+
+            // 配置参数（单位：毫秒）
+            this.inactiveTimeout = 120 * 1000; // 120秒无活动暂停
+            this.accessValidTime = 60 * 1000; // 60秒有效时长
+            this.backgroundTimeout = 30 * 60 * 1000; // 5分钟后台超时
+
+            // 测试配置参数（单位：毫秒）
+            //this.inactiveTimeout = 20 * 1000; // 120秒无活动暂停
+            //this.accessValidTime = 10 * 1000; // 60秒有效时长
+            //this.backgroundTimeout = 1 * 30 * 1000; // 5分钟后台超时
+        }
+
+        init() {
+            if (this.shouldExempt()) return;
+            this.setupEventListeners();
+            this.startNewSession();
+        }
+
+        shouldExempt() {
+            return this.STAT_EXEMPT_PATTERNS.some(regex => 
+                regex.test(window.location.pathname)
+            );
+        }
+
+        setupEventListeners() {
+            const activityEvents = ['mousemove', 'click', 'scroll', 'keypress'];
+            activityEvents.forEach(event => {
+                document.addEventListener(event, this.handleUserActivity.bind(this), {passive: true});
+            });
+
+            document.addEventListener('visibilitychange', this.handleVisibilityChange.bind(this));
+            window.addEventListener('beforeunload', this.handlePageUnload.bind(this));
+            console.info(`[Analytics] 事件监听器已初始化`);
+        }
+
+        handleUserActivity() {
+            if (!this.isTracking) return;
+
+            if (this.isPaused) {
+                this.resumeTracking();
+            } else {
+                this.lastActiveTime = Date.now();
+                this.resetInactivityTimer();
+            }
+        }
+
+        // 后台(hidden)超时保护方法
+        startBackgroundTimeout() {
+            console.info(`[Analytics] 启动后台超时保护（${this.backgroundTimeout/1000}秒）`);
+
+            this.visibilityTimer = setTimeout(() => {
+                console.warn(`[Analytics] 后台停留超时 总时长：${this.calculateCurrentDurationSecond()} `);
+                //this.sendAnalytics('background_timeout');
+            }, this.backgroundTimeout);
+        }
+
+        handleVisibilityChange() {
+            if (document.visibilityState === 'hidden') {
+                console.info(`[Analytics] 页面进入后台状态 总时长：${this.calculateCurrentDurationSecond()} `);
+                this.pauseTracking(); // 仅暂停不发送
+                this.startBackgroundTimeout(); // 启动保护计时
+            } else {
+                console.info(`[Analytics] 页面回到前台 总时长：${this.calculateCurrentDurationSecond()} `);
+                clearTimeout(this.visibilityTimer);
+                this.resumeTracking();
+            }
+        }
+
+        // 页面真正离开时发送
+        handlePageUnload() {
+            this.sendAnalytics('page_unload');
+        }
+
+        startNewSession() {
+            this.pageEntryTime = Date.now();
+            this.lastResumeTime = Date.now();
+            this.totalTrackedTime = 0;
+            this.isTracking = true;
+            this.isPaused = false;
+            this.resetInactivityTimer();
+            console.info(`[Analytics] 新会话开始于：${this.formatDuration(Date.now())}`);
+        }
+
+        pauseTracking() {
+            if (!this.isTracking || this.isPaused) return;
+
+            // 保存有效时长
+            this.totalTrackedTime += Date.now() - this.lastResumeTime;
+            this.isPaused = true;
+            clearTimeout(this.inactivityTimer);
+
+            console.info(`[Analytics] 会话暂停计时于：${this.formatDuration(Date.now())}, 总时长：${this.calculateCurrentDurationSecond()}`);
+        }
+
+        resumeTracking() {
+            if (!this.isPaused || !this.isTracking) return;
+
+            // 恢复计时时更新恢复时间
+            this.lastResumeTime = Date.now();
+            this.isPaused = false;
+            this.resetInactivityTimer();
+            console.info(`[Analytics] 会话恢复计时于：${this.formatDuration(Date.now())}, 总时长：${this.calculateCurrentDurationSecond()}`);
+        }
+
+        resetInactivityTimer() {
+            clearTimeout(this.inactivityTimer);
+            this.inactivityTimer = setTimeout(() => {
+                this.pauseTracking();  // 仅暂停不发送
+            }, this.inactiveTimeout);
+        }
+
+        calculateCurrentDurationSecond() {
+            return (this.totalTrackedTime)/1000;
+        }
+
+        calculateFinalDuration() {
+            if (this.isPaused) {
+                return this.totalTrackedTime;
+            }
+            return this.totalTrackedTime + (Date.now() - this.lastResumeTime);
+        }
+
+        cleanupSession() {
+            // 仅重置控制状态，保留时长用于恢复
+            this.isTracking = false;
+            this.isPaused = false;
+            clearTimeout(this.inactivityTimer);
+            clearTimeout(this.visibilityTimer);
+            console.info(`[Analytics] 会话结束：${this.formatDuration(Date.now())}`);
+        }
+
+        async sendAnalytics(triggerType) {
+            if (!this.isTracking) return;
+
+             // 计算最终有效时长
+            const finalDuration = this.calculateFinalDuration();
+            console.info(`[Analytics] 会话发送于：${this.formatDuration(Date.now())}，总时长：${finalDuration/1000}s, triggerType:${triggerType}`);
+
+            // 清理后台超时定时器
+            clearTimeout(this.visibilityTimer);
+
+            if (finalDuration < this.accessValidTime) {
+                console.info(`[Analytics] 时长不足 ${this.accessValidTime/1000}s 不发送`);
+                return this.cleanupSession();
+            }
+
+            const convertLocalPathToWeb = (localPath) => {
+                try {
+                    // 匹配 "file:///" 开头和首次出现的 /build/ 后的部分
+                    const basePattern = /^file:\/\/\/[^\/]+\/build\//i;
+                    const baseUrl = 'http://172.29.57.206:5000/ameba-iot-docs/';
+
+                    // 检查路径是否匹配预期模式
+                    if (!basePattern.test(localPath)) {
+                        console.warn('无法识别的路径格式:', localPath);
+                        return null;
+                    }
+
+                    // 替换并确保路径仅被替换一次
+                    const webPath = localPath.replace(basePattern, baseUrl);
+
+                    // 返回处理后的路径，确保移除多余斜杠和末尾斜杠
+                    return webPath.replace(/\/+/g, '/').replace(/\/$/, '');
+                } catch (e) {
+                    console.error('路径转换错误:', e);
+                    return null;
+                }
+            };
+
+            // 增强型referrer获取
+            const getEnhancedReferrer = () => {
+                // 非本地环境直接返回原始referrer
+                if (window.location.protocol !== 'file:') {
+                    return document.referrer;
+                }
+
+                // 本地环境特殊处理
+                try {
+                    // 转换当前页面对应的网络路径
+                    const currentWebPath = convertLocalPathToWeb(window.location.pathname);
+
+                    // 当直接访问首页时referrer为空
+                    if (!document.referrer && !currentWebPath) return 'direct_entry';
+
+                    // 转换referrer路径（如果存在）
+                    const referrerWebPath = document.referrer 
+                        ? convertLocalPathToWeb(new URL(document.referrer).pathname)
+                        : null;
+
+                    return referrerWebPath || currentWebPath || 'unknown_source';
+                } catch (e) {
+                    console.warn('Referrer转换失败:', e);
+                    return 'conversion_failed';
+                }
+            };
+
+            const payload = {
+                page: new URL(window.location.pathname, window.location.origin).pathname.split('/').pop(),
+                duration: Math.floor(finalDuration / 1000),
+                trigger: triggerType,
+                referrer: getEnhancedReferrer(), // 使用增强后的referrer
+                viewport: `${window.innerWidth}x${window.innerHeight}`,
+                lang: document.documentElement.lang || 'en',
+                username: window.getStoredUsername() || 'anonymous',
+                timestamp: Date.now()
+            };
+            console.info(`[Analytics] 统计发送准备`, payload);
+
+            try {
+                const response = await fetch('http://172.29.57.206:5000/page_access_statistic', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': window.getCSRFToken()
+                    },
+                    body: JSON.stringify(payload),
+                    credentials: 'include'
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP错误 ${response.status}`);
+                }
+                console.info(`[Analytics] 统计发送成功`, payload);
+            } catch (error) {
+                console.error(`[Analytics] 统计发送失败:`, error);
+            } finally {
+                this.cleanupSession();
+            }
+        }
+    }
+
+    // 初始化方法
+    window.initPageAccessStats = function(path, isBackgroundCheck = false) {
+        try {
+            new PageAnalytics().init();
+            console.info(`[Analytics] 统计系统已启动`);
+        } catch (error) {
+            console.error(`[Analytics] 初始化失败:`, error);
+        }
+    }
+</script>
+    
+
+    <script>
+        // 初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            
+                
+                    window.checkLoginPage(window.location.pathname);
+                
+
+                checkNdaProtectPage(window.location.pathname);
+                setupRouteGuard();
+                requestNdaAccessRight();
+
+                window.initPageAccessStats(window.location.pathname);
+            
+        });
+
+
+    </script>
+
+
+
+</body>
+</html>

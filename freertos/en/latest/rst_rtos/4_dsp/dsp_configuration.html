@@ -49,7 +49,7 @@
             '/_',                     // Sphinx生成路径
             '/_static',               // 静态资源路径
             '/_images',               // 图片资源
-            '/auth',                  // 认证端点
+            '/register',              // 注册
             '/login',                 // 登录页面
             '/logout',                // 登出端点
             '/check_session',         // 会话检查
@@ -74,6 +74,7 @@
     
 
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
     <!-- NDA文档输入密码的框 -->
     
@@ -124,9 +125,51 @@ const i18n = {
 
 <style>
     .wy-nav-content {
+        transition: margin 0.3s ease; /* 添加过渡效果 */
+        margin-left: 0px !important; /* 侧边栏展开时的偏移 */
+        max-width: calc(100% - 0px) !important; /* 调整最大宽度，使其与侧边栏宽度相关 */
+         
+    }
+
+    .wy-nav-content.expanded {
+        margin-left: 0 !important; /* 侧边栏收缩时内容区域回归左边 */
+        max-width: 100% !important; /* 内容区域最大宽度调整 */
+    }
+</style>
+    
+
+<style>
+    .wy-nav-content {
         max-width: 1100px;
          
     }
+
+    #sidebar-toggle-button {
+        position: fixed;
+        left: 290px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        border: none;
+        border-color: rgb(228, 224, 224);
+        background-color: white;
+        color: rgb(135, 125, 125);
+        font-size: 20px;
+        cursor: pointer;
+        z-index: 1000;
+        transition: left 0.3s ease;
+
+        /* 新增flex布局 */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0; /* 清除默认内边距 */
+        font-size: 12px;  /* 缩小符号尺寸 */
+        line-height: 1;   /* 清除行高影响 */
+    }
+
     
     .auth-denied {
         padding: 20px;
@@ -141,61 +184,8 @@ const i18n = {
         margin-bottom: 10px;
         color: #dc3545;
     }
-    
-    #report-button {
-        position: fixed;
-        top: 10px;
-        left: 1270px;
-        padding: 1px 15px; /* 调整内边距：1px 为上下，5px 为左右 */
-        height: 30px; /* 设置固定高度 */
-        background-color: #2ecc71;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        z-index: 1000;
-    }
-    #report-button:hover {
-        background-color: #2ecc71;
-    }
-    
-    .feedback-dialog {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background: white;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-        z-index: 1001;
-        width: 600px;
-    }
-    .feedback-dialog textarea {
-        width: 100%;
-        height: 150px;
-        margin-top: 10px;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        resize: vertical;
-    }
-    .feedback-dialog button {
-        margin-top: 10px;
-        padding: 8px 16px;
-        background-color: #007bff;
-        color: white;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-    }
-    .feedback-dialog button:hover {
-        background-color: #0056b3;
-    }
-
-    
-    
 </style>
+
 
 
 
@@ -205,7 +195,7 @@ const i18n = {
 <!-- TOC 映射和当前文档信息 -->
 <script>
 // 将 Python 字典转换为 JS 对象
-const TOC_TITLE_MAP = {"rst_rtos/0_ameba_product": "Products Center", "rst_rtos/0_ameba_product/0_ameba_product_center_index": "Products Center", "rst_rtos/0_ameba_sdk": "Ameba SDK", "rst_rtos/0_ameba_sdk/0_ameba_sdks_index": "Ameba SDK", "rst_rtos/0_ameba_solutions": "Ameba Solutions", "rst_rtos/0_ameba_solutions/0_ameba_solutions_index": "Ameba Solutions", "rst_rtos/0_at_command": "0.8 AT Commands", "rst_rtos/0_at_command/0_at_command_index": "0.8 AT Commands", "rst_rtos/0_build_system": "0.3 Build System", "rst_rtos/0_build_system/0_build_system_index": "0.3 Build System", "rst_rtos/0_file_system": "0.9 Virtual File System", "rst_rtos/0_file_system/0_vfs_index": "0.9 Virtual File System", "rst_rtos/0_ftl": "0.a Flash Translation Layer", "rst_rtos/0_ftl/0_ftl_index": "0.a Flash Translation Layer", "rst_rtos/0_gcc_build_environment": "0.1 GCC Build Environment", "rst_rtos/0_gcc_build_environment/0_gcc_build_index": "0.1 GCC Build Environment", "rst_rtos/0_gdb_debug": "0.2 GDB Debug", "rst_rtos/0_gdb_debug/0_gdb_debug_index": "0.2 GDB Debug", "rst_rtos/0_memory_layout": "0.5 Flash \u0026 RAM Layout", "rst_rtos/0_memory_layout/0_layout_index": "0.5 Flash \u0026 RAM Layout", "rst_rtos/0_sdk_example": "0.4 SDK Example", "rst_rtos/0_sdk_example/0_sdk_example_index": "0.4 SDK Example", "rst_rtos/0_tools": "0.7 Tools", "rst_rtos/0_tools/0_tools_index": "0.7 Tools", "rst_rtos/0_user_config": "0.6 User Config", "rst_rtos/0_user_config/0_usrcfg_index": "0.6 User Config", "rst_rtos/10_api_docs": "10.0 API Reference", "rst_rtos/10_api_docs/0_api_index": "10.0 API Reference", "rst_rtos/1_boot_process": "1.1 Boot Process", "rst_rtos/1_boot_process/0_boot_index": "1.1 Boot Process", "rst_rtos/1_chipen": "1.4 Chip Enable", "rst_rtos/1_chipen/0_chipen_index": "1.4 Chip Enable", "rst_rtos/1_gpio": "1.7 GPIO \u0026 Pin Control", "rst_rtos/1_gpio/0_gpio_index": "1.7 GPIO \u0026 Pin Control", "rst_rtos/1_ipc": "1.5 Inter Processor Communication", "rst_rtos/1_ipc/0_ipc_index": "1.5 Inter Processor Communication", "rst_rtos/1_mpu_cache": "1.0 MPU and Cache", "rst_rtos/1_mpu_cache/0_mpu_cache_index": "1.0 MPU and Cache", "rst_rtos/1_ota": "1.2 OTA", "rst_rtos/1_ota/0_ota_index": "1.2 OTA", "rst_rtos/1_otpc": "1.3 OTPC", "rst_rtos/1_otpc/0_otpc_index": "1.3 OTPC", "rst_rtos/1_pinmux": "1.6 Pin Multiplexing", "rst_rtos/1_pinmux/0_pinmux_index": "1.6 Pin Multiplexing", "rst_rtos/1_power_save": "1.9 Power Save", "rst_rtos/1_power_save/0_ps_index": "1.9 Power Save", "rst_rtos/2_whc_fullmac": "2.1 WHC FullMAC", "rst_rtos/2_whc_fullmac/0_fullmac_index": "2.1 WHC FullMAC", "rst_rtos/2_whc_wifi_bridge": "2.0 WHC Bridge", "rst_rtos/2_whc_wifi_bridge/0_wifi_bridge_index": "2.0 WHC Bridge", "rst_rtos/2_wifi_adaptivity_test": "2.4 Wi-Fi Adaptivity Test", "rst_rtos/2_wifi_adaptivity_test/0_wifi_adaptivity_index": "2.4 Wi-Fi Adaptivity Test", "rst_rtos/2_wifi_csi": "2.3 Wi-Fi CSI", "rst_rtos/2_wifi_csi/0_wifi_csi_index": "2.3 Wi-Fi CSI", "rst_rtos/2_wifi_tunnel": "2.2 Wi-Fi R-Mesh", "rst_rtos/2_wifi_tunnel/0_wifi_tunnel_index": "2.2 Wi-Fi R-Mesh", "rst_rtos/3_ap_trustzone": "3.d AP Secure Service", "rst_rtos/3_ap_trustzone/0_ap_tz_index": "3.d AP Secure Service", "rst_rtos/3_crypto_engine": "3.9 Crypto Engine", "rst_rtos/3_crypto_engine/0_crypto_engine_index": "3.9 Crypto Engine", "rst_rtos/3_ecdsa_engine": "3.a ECDSA Engine", "rst_rtos/3_ecdsa_engine/0_ecdsa_index": "3.a ECDSA Engine", "rst_rtos/3_eddsa_engine": "3.b EDDSA Engine", "rst_rtos/3_eddsa_engine/0_eddsa_index": "3.b EDDSA Engine", "rst_rtos/3_rsa_engine": "3.c RSA Engine", "rst_rtos/3_rsa_engine/0_rsa_index": "3.c RSA Engine", "rst_rtos/3_security": "3.1 Security \u0026 Encryption", "rst_rtos/3_security/0_security_index": "3.1 Security \u0026 Encryption", "rst_rtos/3_trng": "3.2 True Random Number Generator", "rst_rtos/3_trng/0_trng_index": "3.2 True Random Number Generator", "rst_rtos/4_ai": "4.1 AI", "rst_rtos/4_ai/0_ai_index": "4.1 AI", "rst_rtos/4_ai_voice": "4.2 AIVoice", "rst_rtos/4_ai_voice/0_ai_voice_index": "4.2 AIVoice", "rst_rtos/4_dsp": "4.4 DSP", "rst_rtos/4_dsp/0_dsp_index": "4.4 DSP", "rst_rtos/4_multimedia": "4.3 Multimedia", "rst_rtos/4_multimedia/0_multimedia_index": "4.3 Multimedia", "rst_rtos/6_mass_production": "6.1 Mass Production", "rst_rtos/6_mass_production/0_mp_index": "6.1 Mass Production", "rst_rtos/6_mptools": "6.2 MP Tools", "rst_rtos/6_mptools/0_mptools_index": "6.2 MP Tools", "rst_rtos/7_usb": "7.1 USB Host \u0026 Device", "rst_rtos/7_usb/0_usb_index": "7.1 USB Host \u0026 Device", "rst_rtos/8_adc": "8.4 ADC", "rst_rtos/8_adc/0_adc_index": "8.4 ADC", "rst_rtos/8_cap_touch": "8.7 Cap-Touch", "rst_rtos/8_cap_touch/0_cap_touch_index": "8.7 Cap-Touch", "rst_rtos/8_dmac": "8.1 DMA Controller", "rst_rtos/8_dmac/0_dmac_index": "8.1 DMA Controller", "rst_rtos/8_ir": "8.5 IR", "rst_rtos/8_ir/0_ir_index": "8.5 IR", "rst_rtos/8_key_scan": "8.8 Key-Scan", "rst_rtos/8_key_scan/0_key_scan_index": "8.8 Key-Scan", "rst_rtos/8_lcdc": "8.a LCD Controller", "rst_rtos/8_lcdc/0_lcdc_index": "8.a LCD Controller", "rst_rtos/8_ledc": "8.6 LED Controller", "rst_rtos/8_ledc/0_ledc_index": "8.6 LED Controller", "rst_rtos/8_psram": "8.2 PSRAM", "rst_rtos/8_psram/0_psram_index": "8.2 PSRAM", "rst_rtos/8_rtc_io": "8.9 RTC-IO", "rst_rtos/8_rtc_io/0_rtc_io_index": "8.9 RTC-IO", "rst_rtos/8_thermal": "8.3 Thermal Meter", "rst_rtos/8_thermal/0_thermal_index": "8.3 Thermal Meter"};
+const TOC_TITLE_MAP = {"rst_rtos/0_ameba_product": "Products Center", "rst_rtos/0_ameba_product/0_ameba_product_center_index": "Products Center", "rst_rtos/0_ameba_sdk": "Ameba SDK", "rst_rtos/0_ameba_sdk/0_ameba_sdks_index": "Ameba SDK", "rst_rtos/0_ameba_solutions": "Ameba Solutions", "rst_rtos/0_ameba_solutions/0_ameba_solutions_index": "Ameba Solutions", "rst_rtos/0_at_command": "0.8 AT Commands", "rst_rtos/0_at_command/0_at_command_index": "0.8 AT Commands", "rst_rtos/0_build_system": "0.3 Build System", "rst_rtos/0_build_system/0_build_system_index": "0.3 Build System", "rst_rtos/0_file_system": "0.9 Virtual File System", "rst_rtos/0_file_system/0_vfs_index": "0.9 Virtual File System", "rst_rtos/0_ftl": "0.a Flash Translation Layer", "rst_rtos/0_ftl/0_ftl_index": "0.a Flash Translation Layer", "rst_rtos/0_gcc_build_environment": "0.1 GCC Build Environment", "rst_rtos/0_gcc_build_environment/0_gcc_build_index": "0.1 GCC Build Environment", "rst_rtos/0_gdb_debug": "0.2 GDB Debug", "rst_rtos/0_gdb_debug/0_gdb_debug_index": "0.2 GDB Debug", "rst_rtos/0_memory_layout": "0.5 Flash \u0026 RAM Layout", "rst_rtos/0_memory_layout/0_layout_index": "0.5 Flash \u0026 RAM Layout", "rst_rtos/0_sdk_example": "0.4 SDK Example", "rst_rtos/0_sdk_example/0_sdk_example_index": "0.4 SDK Example", "rst_rtos/0_tools": "0.7 Tools", "rst_rtos/0_tools/0_tools_index": "0.7 Tools", "rst_rtos/0_user_config": "0.6 User Config", "rst_rtos/0_user_config/0_usrcfg_index": "0.6 User Config", "rst_rtos/10_api_docs": "2.5 Wi-Fi API Reference", "rst_rtos/10_api_docs/0_api_index": "2.5 Wi-Fi API Reference", "rst_rtos/1_boot_process": "1.1 Boot Process", "rst_rtos/1_boot_process/0_boot_index": "1.1 Boot Process", "rst_rtos/1_chipen": "1.4 Chip Enable", "rst_rtos/1_chipen/0_chipen_index": "1.4 Chip Enable", "rst_rtos/1_gpio": "1.7 GPIO \u0026 Pin Control", "rst_rtos/1_gpio/0_gpio_index": "1.7 GPIO \u0026 Pin Control", "rst_rtos/1_ipc": "1.5 Inter Processor Communication", "rst_rtos/1_ipc/0_ipc_index": "1.5 Inter Processor Communication", "rst_rtos/1_mpu_cache": "1.0 MPU and Cache", "rst_rtos/1_mpu_cache/0_mpu_cache_index": "1.0 MPU and Cache", "rst_rtos/1_ota": "1.2 OTA", "rst_rtos/1_ota/0_ota_index": "1.2 OTA", "rst_rtos/1_otpc": "1.3 OTPC", "rst_rtos/1_otpc/0_otpc_index": "1.3 OTPC", "rst_rtos/1_pinmux": "1.6 Pin Multiplexing", "rst_rtos/1_pinmux/0_pinmux_index": "1.6 Pin Multiplexing", "rst_rtos/1_power_save": "1.9 Power Save", "rst_rtos/1_power_save/0_ps_index": "1.9 Power Save", "rst_rtos/2_whc_fullmac": "2.1 WHC FullMAC", "rst_rtos/2_whc_fullmac/0_fullmac_index": "2.1 WHC FullMAC", "rst_rtos/2_whc_wifi_bridge": "2.0 WHC Bridge", "rst_rtos/2_whc_wifi_bridge/0_wifi_bridge_index": "2.0 WHC Bridge", "rst_rtos/2_wifi_adaptivity_test": "2.4 Wi-Fi Adaptivity Test", "rst_rtos/2_wifi_adaptivity_test/0_wifi_adaptivity_index": "2.4 Wi-Fi Adaptivity Test", "rst_rtos/2_wifi_csi": "2.3 Wi-Fi CSI", "rst_rtos/2_wifi_csi/0_wifi_csi_index": "2.3 Wi-Fi CSI", "rst_rtos/2_wifi_tunnel": "2.2 Wi-Fi R-Mesh", "rst_rtos/2_wifi_tunnel/0_wifi_tunnel_index": "2.2 Wi-Fi R-Mesh", "rst_rtos/3_ap_trustzone": "3.d AP Secure Service", "rst_rtos/3_ap_trustzone/0_ap_tz_index": "3.d AP Secure Service", "rst_rtos/3_crypto_engine": "3.9 Crypto Engine", "rst_rtos/3_crypto_engine/0_crypto_engine_index": "3.9 Crypto Engine", "rst_rtos/3_ecdsa_engine": "3.a ECDSA Engine", "rst_rtos/3_ecdsa_engine/0_ecdsa_index": "3.a ECDSA Engine", "rst_rtos/3_eddsa_engine": "3.b EDDSA Engine", "rst_rtos/3_eddsa_engine/0_eddsa_index": "3.b EDDSA Engine", "rst_rtos/3_nda_huk_derivation": "3.3 HUK Derivation \ud83d\udd12", "rst_rtos/3_nda_huk_derivation/0_huk_derivation_index_nda": "3.3 HUK Derivation \ud83d\udd12", "rst_rtos/3_nda_rdp": "3.4 RDP \ud83d\udd12", "rst_rtos/3_nda_rdp/0_rdp_index_nda": "3.4 RDP \ud83d\udd12", "rst_rtos/3_nda_rsip": "3.5 RSIP \ud83d\udd12", "rst_rtos/3_nda_rsip/0_rsip_index_nda": "3.5 RSIP \ud83d\udd12", "rst_rtos/3_nda_secure_boot": "3.6 Secure Boot \ud83d\udd12", "rst_rtos/3_nda_secure_boot/0_secure_boot_index_nda": "3.6 Secure Boot \ud83d\udd12", "rst_rtos/3_nda_swd_protection": "3.7 SWD Protection \ud83d\udd12", "rst_rtos/3_nda_swd_protection/0_swd_protection_index_nda": "3.7 SWD Protection \ud83d\udd12", "rst_rtos/3_nda_tfm": "3.8 Trusted Firmware-M (TF-M) \ud83d\udd12", "rst_rtos/3_nda_tfm/0_tfm_index_nda": "3.8 Trusted Firmware-M (TF-M) \ud83d\udd12", "rst_rtos/3_rsa_engine": "3.c RSA Engine", "rst_rtos/3_rsa_engine/0_rsa_index": "3.c RSA Engine", "rst_rtos/3_security": "3.1 Security \u0026 Encryption", "rst_rtos/3_security/0_security_index": "3.1 Security \u0026 Encryption", "rst_rtos/3_trng": "3.2 True Random Number Generator", "rst_rtos/3_trng/0_trng_index": "3.2 True Random Number Generator", "rst_rtos/4_ai": "4.1 AI", "rst_rtos/4_ai/0_ai_index": "4.1 AI", "rst_rtos/4_ai_voice": "4.2 AIVoice", "rst_rtos/4_ai_voice/0_ai_voice_index": "4.2 AIVoice", "rst_rtos/4_dsp": "4.4 DSP", "rst_rtos/4_dsp/0_dsp_index": "4.4 DSP", "rst_rtos/4_multimedia": "4.3 Multimedia", "rst_rtos/4_multimedia/0_multimedia_index": "4.3 Multimedia", "rst_rtos/6_mass_production": "6.1 Mass Production", "rst_rtos/6_mass_production/0_mp_index": "6.1 Mass Production", "rst_rtos/6_mptools": "6.2 MP Tools", "rst_rtos/6_mptools/0_mptools_index": "6.2 MP Tools", "rst_rtos/7_usb": "7.1 USB Host \u0026 Device", "rst_rtos/7_usb/0_usb_index": "7.1 USB Host \u0026 Device", "rst_rtos/8_adc": "8.4 ADC", "rst_rtos/8_adc/0_adc_index": "8.4 ADC", "rst_rtos/8_cap_touch": "8.7 Cap-Touch", "rst_rtos/8_cap_touch/0_cap_touch_index": "8.7 Cap-Touch", "rst_rtos/8_dmac": "8.1 DMA Controller", "rst_rtos/8_dmac/0_dmac_index": "8.1 DMA Controller", "rst_rtos/8_ir": "8.5 IR", "rst_rtos/8_ir/0_ir_index": "8.5 IR", "rst_rtos/8_key_scan": "8.8 Key-Scan", "rst_rtos/8_key_scan/0_key_scan_index": "8.8 Key-Scan", "rst_rtos/8_lcdc": "8.a LCD Controller", "rst_rtos/8_lcdc/0_lcdc_index": "8.a LCD Controller", "rst_rtos/8_ledc": "8.6 LED Controller", "rst_rtos/8_ledc/0_ledc_index": "8.6 LED Controller", "rst_rtos/8_psram": "8.2 PSRAM", "rst_rtos/8_psram/0_psram_index": "8.2 PSRAM", "rst_rtos/8_rtc_io": "8.9 RTC-IO", "rst_rtos/8_rtc_io/0_rtc_io_index": "8.9 RTC-IO", "rst_rtos/8_thermal": "8.3 Thermal Meter", "rst_rtos/8_thermal/0_thermal_index": "8.3 Thermal Meter"};
 console.log("TOC_TITLE_MAP:", TOC_TITLE_MAP);
 
 // 获取当前页面的文档名 (例如 'rst_rtos/3_nda_secure_boot/0_secure_boot_index_nda')
@@ -266,16 +256,18 @@ document.addEventListener('DOMContentLoaded', function() {
         /* ====================== 紧凑型选择器 ====================== */
         #topleft-panel {
             background: rgba(40, 58, 73, 0.9);
-            border-radius: 8px;
+            border-radius: 4px;
             padding: 4px;
             margin: 4px 0;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+            box-shadow: 0 4px 4px rgba(0,0,0,0.15);
             backdrop-filter: blur(4px);
         }
 
         .selectors-grid {
             display: grid;
+            grid-template-columns: repeat(3, 1fr); /* 三列等宽 */
             gap: 4px;
+            padding: 1px 1px;
         }
 
         .dual-selector-group {
@@ -286,6 +278,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         .selector-group {
             position: relative;
+            width: 100%; /* 确保填满网格列 */
         }
 
         .selector-label {
@@ -298,13 +291,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
         .selector-dropdown {
             width: 100%;
-            padding: 4px 4px;
-            border: 1px solid rgba(64, 82, 97, 0.8);
+            margin: 3px 0;
+            padding: 4px 6px;
+            border: 1px solid rgba(255,255,255,0.1);
             border-radius: 6px;
-            background: rgba(44, 62, 80, 0.9);
-            color: #ecf0f1;
+            background: rgba(255,255,255,0.05);
+            color: white;
             font-size: 0.95em;
-            transition: all 0.2s ease;
+            transition: all 0.3s ease;
             appearance: none;
             background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23a0b3c6'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
             background-repeat: no-repeat;
@@ -332,7 +326,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             .selectors-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: 1fr; /* 小屏幕下堆叠显示 */
                 gap: 10px;
             }
 
@@ -347,7 +341,6 @@ document.addEventListener('DOMContentLoaded', function() {
     </style>
 
     
-        
 
 <style>
     /* ================= 用户面板 ================= */
@@ -355,7 +348,7 @@ document.addEventListener('DOMContentLoaded', function() {
         /* background: rgba(255,255,255,0.1); */
         background: rgba(255, 255, 255, 0.05); /* 更暗的背景 */
         border-radius: 4px;
-        padding: 4px 4px; /* 上下间距减少 */
+        padding: 1px 1px; /* 上下间距减少 */
         margin: 4px 0px; /* 左右各10px边距 */
         box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 
@@ -434,7 +427,7 @@ document.addEventListener('DOMContentLoaded', function() {
     .panel-divider {
         height: 1px;
         background: rgba(255,255,255,0.1);
-        margin: 6px 0;          /* 减少分隔线间距 */
+        margin: 2px 0;          /* 减少分隔线间距 */
     }
 
     /* 桌面端悬停效果 */
@@ -533,7 +526,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     .auth-input-group {
-        margin-bottom: 1.2rem;
+        margin-bottom: 0.71rem;
     }
 
     .auth-label {
@@ -593,10 +586,38 @@ document.addEventListener('DOMContentLoaded', function() {
         background: #dfe4ea;
     }
 
+    .edit-indicator {
+        color: #3498db;
+        margin-left: 5px;
+        font-size: 0.8em;
+        vertical-align: super;
+    }
+
+    /* 保存状态提示 */
+    .saving-status {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: rgba(0,0,0,0.8);
+        color: white;
+        padding: 8px 15px;
+        border-radius: 4px;
+        display: none;
+    }
+
+    /* 响应式调整 */
+    @media (max-width: 768px) {
+        .saving-status {
+            bottom: 10px;
+            right: 10px;
+            font-size: 0.9em;
+        }
+    }
+
     @media (max-width: 480px) {
         .auth-content {
             min-width: 90%;
-            padding: 1.2rem;
+            padding: 1.5rem;
         }
 
         .auth-input-group {
@@ -605,11 +626,161 @@ document.addEventListener('DOMContentLoaded', function() {
 
         .auth-input {
             padding: 0.7rem;
-            font-size: 0.9rem;
         }
     }
 </style>
+
+    
         <!-- source/_templates/_layout_issue_report.html -->
+<style>
+    
+    #report-button {
+        position: fixed;
+        bottom: 10px;
+        left: 60%;
+        transform: translateX(-50%);
+
+        width: 40px;  /* 增加尺寸以便容纳双圆环 */
+        height: 40px;
+        border-radius: 50%;  /* 保持圆形 */
+        border: none;
+        background: transparent;  /* 背景透明 */
+        cursor: pointer;
+        z-index: 1000;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    #report-button::before, #report-button::after {
+        content: "";
+        position: absolute;
+        border-radius: 50%;
+        border: 2px solid;
+        background: transparent;
+        animation: gradient-shift 8s ease infinite;
+    }
+
+    #report-button::before {
+        width: 40px; /* 外圈直径 */
+        height: 40px;
+        background: linear-gradient(45deg, #ff0066, #f7ff00, #00fff0); /* 渐变颜色效果 */
+        border-radius: 50%;
+        z-index: 0;
+        box-shadow: 0 0 15px rgba(255, 0, 102, 0.5), 0 0 25px rgba(247, 255, 0, 0.5), 0 0 35px rgba(0, 255, 240, 0.5);
+    }
+
+    #report-button::after {
+        width: 30px; /* 内圈直径 */
+        height: 30px;
+        background: white;
+        border-radius: 50%;
+        z-index: 0;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    }
+
+    #report-button i {
+        font-size: 20px; /* 内部图标大小 */
+        color: rgb(71, 74, 71);
+        position: relative;
+        z-index: 1; /* 确保图标在圆环上层展示 */
+    }
+
+
+    /* 幻彩渐变（未来感） */
+    @keyframes gradient-shift {
+        0% { border-color: #ff6b6b; }
+        20% { border-color: #ff9f43; }
+        40% { border-color: #f6e58d; }
+        60% { border-color: #7bed9f; }
+        80% { border-color: #70a1ff; }
+        100% { border-color: #5352ed; }
+    }
+
+    /* 悬停效果 */
+    #report-button:hover::before,
+    #report-button:hover::after {
+        transform: scale(1.05) rotate(3deg);
+        filter: saturate(150%);
+        animation-play-state: paused;
+        box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+    }
+
+    /* 点击效果 */
+    #report-button:active::before,
+    #report-button:active::after {
+        transform: scale(0.95) rotate(-2deg);
+        transition: transform 0.1s;
+    }
+</style>
+
+<style>
+    
+    .feedback-dialog {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: #fffaf0; /* 淡暖色调 */
+        padding: 20px;
+        border-radius: 16px; /* 增加圆角 */
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); /* 更柔和的阴影 */
+        z-index: 1001;
+        width: 800px;
+        height: 600px;
+        font-family: 'Arial', sans-serif; /* 使用更清晰的字体 */
+    }
+
+    .feedback-dialog textarea {
+        width: 100%;
+        height: 150px;
+        margin-top: 10px;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        resize: vertical;
+        font-size: 16px; /* 增大字体 */
+    }
+
+    .feedback-dialog button {
+        margin-top: 10px;
+        padding: 8px 16px;
+        background-color: #ff7f50; /* 柔和的橙色 */
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s; /* 添加过渡效果 */
+    }
+
+    .feedback-dialog button:hover {
+        background-color: #ff6243; /* 悬停状态的颜色 */
+    }
+
+    .feedback-dialog button:active {
+        background-color: #db5538; /* 点击状态的颜色 */
+    }
+
+    .feedback-dialog .form-group {
+        margin: 10px 0; /* 增加间距 */
+    }
+
+    .feedback-dialog label {
+        font-weight: bold;
+        font-size: 14px; /* 增大标签字体 */
+        color: #333; /* 深色字体 */
+    }
+
+    .feedback-dialog select .feedback-dialog textarea {
+        background-color: #fff8e1; /* 提交区域的背景色 */
+    }
+
+    
+    
+</style>
+
 <div id="prompt-box" style="
     display: none;
     position: fixed;
@@ -649,7 +820,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // 初始化时设置placeholder
     paragraphInput.placeholder = language === 'zh_CN' 
         ? '你可以先选择有问题的段落或手动输入...'
-        : 'You can select text or type directly here...';
+        : 'You can select/paste text or type directly here...';
 
     // 获取当前激活的章节
     function getCurrentChapter() {
@@ -865,6 +1036,7 @@ document.addEventListener('DOMContentLoaded', function() {
         /* 保留bottomleft-panel作为用户面板容器 */
         .bottomleft-panel {
             position: fixed;
+            padding: 1px 1px; /* 上下间距减少 */
             left: 0;
             bottom: 0;
             width: 300px;
@@ -873,8 +1045,12 @@ document.addEventListener('DOMContentLoaded', function() {
             border-top: 1px solid #404040;
             box-shadow: 0 -2px 12px rgba(0,0,0,0.2);
             z-index: 1001;
+            transition: left 0.3s ease; /* 为位移动画添加过渡效果 */
         }
 
+        .bottomleft-panel.collapsed {
+            left: 60px; /* 收缩后的位置 */
+        }
         /* 新增userpanel-container的flex定义 */
         .userpanel-container {
             padding: 10px;
@@ -978,6 +1154,8 @@ document.addEventListener('DOMContentLoaded', function() {
             let confirmPassword;
             let companyInput, productInput, emailInput;
             if (type === 'register') {
+                const savedData = JSON.parse(sessionStorage.getItem('registerFormData') || '{}');
+
                 confirmPassword = createInput(
                     lang === 'cn' ? '确认密码：' : 'Confirm Password:', 
                     'password'
@@ -1010,10 +1188,47 @@ document.addEventListener('DOMContentLoaded', function() {
                 content.appendChild(email.container);
                 emailInput = email.input;
 
+                // 原有字段初始化后添加数据恢复
+                username.input.value = savedData.username || '';
+                password.input.value = savedData.password || '';
+                confirmPassword.input.value = savedData.confirmPassword || '';
+                companyInput.value = savedData.company || '';
+                productInput.value = savedData.product || '';
+                emailInput.value = savedData.email || '';
+
                 // 添加Enter键支持到新字段
                 [companyInput, productInput, emailInput].forEach(input => {
                     input.addEventListener('keypress', handleKeyPress);
                 });
+
+                // 新增代码：实时保存输入数据
+                const saveFormData = () => {
+                    const formData = {
+                        username: username.input.value,
+                        password: password.input.value,
+                        confirmPassword: confirmPassword.input.value,
+                        company: companyInput.value,
+                        product: productInput.value,
+                        email: emailInput.value
+                    };
+                    sessionStorage.setItem('registerFormData', JSON.stringify(formData));
+                };
+
+                // 为所有输入字段添加事件监听
+                const inputs = [
+                    username.input, 
+                    password.input, 
+                    confirmPassword.input,
+                    companyInput,
+                    productInput,
+                    emailInput
+                ];
+
+                inputs.forEach(input => {
+                    input.addEventListener('input', saveFormData);
+                    input.addEventListener('change', saveFormData);
+                });
+
             }
 
             // 按钮容器
@@ -1061,22 +1276,34 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
 
                 // fetch请求
-                fetch('http://172.29.57.206:5000/auth', {
+                let url = '';
+                let bodyData = {};
+                if (type === 'register') {
+                    url = 'http://172.29.57.206:5000/register';
+                    bodyData = {
+                        username: usernameVal,
+                        password: passwordVal,
+                        company: companyVal,
+                        product: productVal,
+                        email: emailVal
+                    };
+                } else if (type === 'login') {
+                    url = 'http://172.29.57.206:5000/login';
+                    bodyData = {
+                        username: usernameVal,
+                        password: passwordVal
+                    };
+                }
+                fetch(url, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                         'X-CSRFToken': window.getCSRFToken()
                     },
-                    body: JSON.stringify({
-                        action: type, 
-                        username: usernameVal, 
-                        password: passwordVal,
-                        company: companyVal,
-                        product: productVal,
-                        email: emailVal
-                    }),
+                    body: JSON.stringify(bodyData),
                     credentials: 'include'
                 })
+
                 .then(response => {
                     console.log('[DEBUG] 完整响应头:', [...response.headers.entries()]);
                     console.log('Access-Control-Allow-Origin:', response.headers.get('Access-Control-Allow-Origin'));
@@ -1087,6 +1314,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 .then(async (data) => {
                     // 成功处理逻辑
                     if (data.success) {
+                        sessionStorage.removeItem('registerFormData'); //注册成功时清除数据
                         console.log('initAuthDialogs 登录成功，当前 Cookies:', document.cookie);
                         console.log('initAuthDialogs CSRF Token:', window.getCSRFToken());
 
@@ -1229,8 +1457,28 @@ document.addEventListener('DOMContentLoaded', function() {
     };
     /* ====================== 嵌入式配置结束 ====================== */
 </script>
-    
+
 <script>
+    // 获取OS显示名称列表
+    function getOSNames(data) {
+        return Object.keys(data).map(key => data[key].name);
+    }
+
+    // 获取指定OS的语言列表
+    function getLanguages(data, osKey) {
+        return Object.keys(data[osKey]?.languages || {});
+    }
+
+    // 获取指定OS和语言的版本列表
+    function getVersions(data, osKey, language) {
+        return data[osKey]?.languages?.[language] || ['latest'];
+    }
+
+    // 根据显示名称查找OS键
+    function findOSKey(data, displayName) {
+        return Object.keys(data).find(key => data[key].name === displayName);
+    }
+
     // 获取基础URL路径
     function getBaseURL() {
         const url = new URL(window.location.href);
@@ -1255,6 +1503,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const url = new URL(window.location.href);
         let segments = url.pathname.split('/').filter(segment => segment);
 
+
         console.log('[DEBUG] getCurrentSegments:');
 
         if (url.protocol === 'file:') {
@@ -1264,7 +1513,7 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log('[DEBUG] getCurrentSegments0:', segments);
         } else {
             // 网络路径处理
-            segments = segments.slice(3); // 去掉 ameba-iot-docs/
+            segments = segments.slice(1); // 去掉 ameba-iot-docs/
             console.log('[DEBUG] getCurrentSegments:', segments);
         }
 
@@ -1274,30 +1523,43 @@ document.addEventListener('DOMContentLoaded', function() {
             version: segments[2] || 'latest' // 默认为 latest
         };
     }
+
+    // 绑定事件监听
+    function bindEvents(baseURL, segments) {
+        document.getElementById('os-selector').addEventListener('change', () => {
+            const newOSKey = document.getElementById('os-selector').value;
+            const availableLangs = getLanguages(embeddedConfig, newOSKey);
+            const defaultLang = availableLangs[0] || 'en';
+            const defaultVersion = getVersions(embeddedConfig, newOSKey, defaultLang)[0] || 'latest';
+            console.log('OS Changed:', {newOSKey, defaultLang, defaultVersion});
+            redirectTo(`${baseURL}${newOSKey}/${defaultLang}/${defaultVersion}/`);
+        });
+
+        document.getElementById('language-selector').addEventListener('change', () => {
+            const newLang = document.getElementById('language-selector').value;
+            const defaultVersion = getVersions(embeddedConfig, segments.osKey, newLang)[0] || 'latest';
+            console.log('Language Changed:', {newLang, defaultVersion});
+            redirectTo(`${baseURL}${segments.osKey}/${newLang}/${defaultVersion}/`);
+        });
+
+        document.getElementById('version-selector').addEventListener('change', () => {
+            const newVer = document.getElementById('version-selector').value;
+            console.log('Version Changed:', {newVer});
+            redirectTo(`${baseURL}${segments.osKey}/${segments.language}/${newVer}/`);
+        });
+    }
+
+    // 跳转函数
+    function redirectTo(path) {
+        const url = new URL(path, window.location.href);
+        if (url.protocol === 'file:') {
+            url.pathname += 'index.html';
+        }
+        console.log('Redirecting to:', url.href);
+        window.location.href = url.href;
+    }
 </script>
-    
-<script>
-    // 获取OS显示名称列表
-    function getOSNames(data) {
-        return Object.keys(data).map(key => data[key].name);
-    }
 
-    // 获取指定OS的语言列表
-    function getLanguages(data, osKey) {
-        return Object.keys(data[osKey]?.languages || {});
-    }
-
-    // 获取指定OS和语言的版本列表
-    function getVersions(data, osKey, language) {
-        return data[osKey]?.languages?.[language] || ['latest'];
-    }
-
-    // 根据显示名称查找OS键
-    function findOSKey(data, displayName) {
-        return Object.keys(data).find(key => data[key].name === displayName);
-    }
-</script>
-    
 <script>
     // 验证并修正路径参数
     function validateSegments(segments) {
@@ -1321,35 +1583,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // 生成选择器HTML
     function generateSelectorsHTML(segments) {
         return `
-        <div class="selectors-grid">
-            <!-- 系统选择器 -->
-            <div class="selector-group">
-                <select id="os-selector" class="selector-dropdown">
-                    ${Object.keys(embeddedConfig).map(key => `
-                        <option value="${key}">${embeddedConfig[key].name}</option>
-                    `).join('')}
-                </select>
-            </div>
-
-            <!-- 语言和版本组合（修正类名） -->
-            <div class="dual-selector-group"> <!-- 修改此处 -->
-                <div class="selector-group">
-                    <select id="language-selector" class="selector-dropdown">
-                        ${getLanguages(embeddedConfig, segments.osKey).map(lang => `
-                            <option value="${lang}">${lang}</option>
-                        `).join('')}
-                    </select>
-                </div>
-
-                <div class="selector-group">
-                    <select id="version-selector" class="selector-dropdown">
-                        ${getVersions(embeddedConfig, segments.osKey, segments.language).map(ver => `
-                            <option value="${ver}">${ver}</option>
-                        `).join('')}
-                    </select>
-                </div>
-            </div>
-        </div>
         ${generateUserPanelHTML(segments)}`;
     }
 
@@ -1357,46 +1590,79 @@ document.addEventListener('DOMContentLoaded', function() {
     function generateUserPanelHTML(segments) {
         return `
             <div class="user-panel">
-                <!-- 用户名显示（登录后可见） -->
-                <div id="user-info" style="display: ${localStorage.getItem('isLoggedIn') ? 'flex' : 'none'}">
-                    <button class="username-btn")">
-                        <span class="btn-icon">👤</span>
-                        <span id="username-display">${localStorage.getItem('username') || ''}</span>
-                    </button>
-                    <button class="logout-btn" onclick="handleLogout()")">
-                        <span class="btn-icon">🚪</span>
-                        <span id="btn-text">${segments.language === 'cn' ? '注销' : 'Logout'}</span>
-                    </button>
+                <div class="selectors-grid">
+                    <!-- 系统选择器 -->
+                    <div class="selector-group">
+                        <select id="os-selector" class="selector-dropdown">
+                            ${Object.keys(embeddedConfig).map(key => `
+                                <option value="${key}">${embeddedConfig[key].name}</option>
+                            `).join('')}
+                        </select>
+                    </div>
+
+                    <!-- 语言选择器 -->
+                    <div class="selector-group">
+                        <select id="language-selector" class="selector-dropdown">
+                            ${getLanguages(embeddedConfig, segments.osKey).map(lang => `
+                                <option value="${lang}">${lang === 'en' ? 'en' : 'cn'}</option>
+                            `).join('')}
+                        </select>
+                    </div>
+
+                    <!-- 版本选择器 -->
+                    <div class="selector-group">
+                        <select id="version-selector" class="selector-dropdown">
+                            ${getVersions(embeddedConfig, segments.osKey, segments.language).map(ver => `
+                                <option value="${ver}">${ver}</option>
+                            `).join('')}
+                        </select>
+                    </div>
                 </div>
 
-                <!-- 登录注册按钮（未登录时可见） -->
-                <div id="auth-buttons" class="button-row" style="display: ${localStorage.getItem('isLoggedIn') ? 'none' : 'flex'}">
-                    <button class="auth-btn" id="login-button">
-                        <span class="btn-icon">🔓</span> <!-- 登录图标 -->
-                        ${segments.language === 'cn' ? '登录' : 'Login'}
-                    </button>
-                    <button class="auth-btn" id="register-button">
-                        <span class="btn-icon">✍️</span> <!-- 注册图标 -->
-                        ${segments.language === 'cn' ? '注册' : 'Register'}
-                    </button>
-                </div>
+                
+                    <!-- 分隔线 -->
+                    <div class="panel-divider"></div>
 
-                <!-- 分隔线 -->
-                <div class="panel-divider"></div>
+                    <!-- 用户名显示（登录后可见） -->
+                    <div id="user-info" style="display: ${localStorage.getItem('isLoggedIn') ? 'flex' : 'none'}">
+                        <button class="username-btn")">
+                            <span class="btn-icon">👤</span>
+                            <span id="username-display">${localStorage.getItem('username') || ''}</span>
+                        </button>
+                        <button class="logout-btn" onclick="handleLogout()")">
+                            <span class="btn-icon">🚪</span>
+                            <span id="btn-text">${segments.language === 'cn' ? '注销' : 'Logout'}</span>
+                        </button>
+                    </div>
 
-                <!-- 外链按钮 -->
-                <div class="external-links">
-                    <button class="link-btn official" onclick="window.open('https://www.realmcu.com/', '_blank')">
-                        <span class="btn-icon">🌐</span>
-                        <span class="btn-text">${segments.language === 'cn' ? '官网' : 'Official'}</span>
-                    </button>
-                    <button class="link-btn forum" onclick="window.open('http://172.29.57.206:5000/view', '_blank')">
-                        <span class="btn-icon">💬</span>
-                        <span class="btn-text">${segments.language === 'cn' ? '论坛' : 'Forum'}</span>
-                    </button>
-                </div>
-            </div>
-        `;
+                    <!-- 登录注册按钮（未登录时可见） -->
+                    <div id="auth-buttons" class="button-row" style="display: ${localStorage.getItem('isLoggedIn') ? 'none' : 'flex'}">
+                        <button class="auth-btn" id="login-button">
+                            <span class="btn-icon">🔓</span> <!-- 登录图标 -->
+                            ${segments.language === 'cn' ? '登录' : 'Login'}
+                        </button>
+                        <button class="auth-btn" id="register-button">
+                            <span class="btn-icon">✍️</span> <!-- 注册图标 -->
+                            ${segments.language === 'cn' ? '注册' : 'Register'}
+                        </button>
+                    </div>
+
+                    <!-- 分隔线 -->
+                    <div class="panel-divider"></div>
+
+                    <!-- 外链按钮 -->
+                    <div class="external-links">
+                        <button class="link-btn official" onclick="window.open('https://www.realmcu.com/', '_blank')">
+                            <span class="btn-icon">🌐</span>
+                            <span class="btn-text">${segments.language === 'cn' ? '官网' : 'Official'}</span>
+                        </button>
+                        <button class="link-btn forum" onclick="window.open('http://172.29.57.206:5000/forum', '_blank')">
+                            <span class="btn-icon">💬</span>
+                            <span class="btn-text">${segments.language === 'cn' ? '论坛' : 'Forum'}</span>
+                        </button>
+                    </div>
+                
+            </div>`;
     }
 
     // 设置初始选中值
@@ -1407,39 +1673,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const versionSelector = document.getElementById('version-selector');
         const availableVersions = getVersions(embeddedConfig, segments.osKey, segments.language);
         versionSelector.value = availableVersions.includes(segments.version) ? segments.version : availableVersions[0] || 'latest';
-    }
-</script>
-    
-<script>
-    // 绑定事件监听
-    function bindEvents(baseURL, segments) {
-        document.getElementById('os-selector').addEventListener('change', () => {
-            const newOSKey = document.getElementById('os-selector').value;
-            const availableLangs = getLanguages(embeddedConfig, newOSKey);
-            const defaultLang = availableLangs[0] || 'en';
-            const defaultVersion = getVersions(embeddedConfig, newOSKey, defaultLang)[0] || 'latest';
-            redirectTo(`${baseURL}${newOSKey}/${defaultLang}/${defaultVersion}/`);
-        });
-
-        document.getElementById('language-selector').addEventListener('change', () => {
-            const newLang = document.getElementById('language-selector').value;
-            const defaultVersion = getVersions(embeddedConfig, segments.osKey, newLang)[0] || 'latest';
-            redirectTo(`${baseURL}${segments.osKey}/${newLang}/${defaultVersion}/`);
-        });
-
-        document.getElementById('version-selector').addEventListener('change', () => {
-            const newVer = document.getElementById('version-selector').value;
-            redirectTo(`${baseURL}${segments.osKey}/${segments.language}/${newVer}/`);
-        });
-    }
-
-    // 跳转函数
-    function redirectTo(path) {
-        const url = new URL(path, window.location.href);
-        if (url.protocol === 'file:') {
-            url.pathname += 'index.html';
-        }
-        window.location.href = url.href;
     }
 </script>
 
@@ -1469,11 +1702,7 @@ document.addEventListener('DOMContentLoaded', function() {
     <div id="topleft-panel" style="display: block !important; padding: 0; background: none; border: none;"></div>
 
     
-        
-        <div class="bottomleft-panel">
-            <div class="userpanel-container"></div>
-        </div>
-    
+    <div class="bottomleft-panel"><div class="userpanel-container"></div></div>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -1494,14 +1723,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                     window.initAuthDialogs();
                     window.syncLoginState();
-
-                    // 将 user-panel 移动到 bottomleft-panel 内
-                    const userPanel = document.querySelector('.user-panel');
-                    const settingsContainer = document.querySelector('.userpanel-container');
-                    if (userPanel && settingsContainer) {
-                        settingsContainer.appendChild(userPanel); // 直接添加为子元素
-                    }
                 
+
+                // 将 user-panel 移动到 bottomleft-panel 内
+                const userPanel = document.querySelector('.user-panel');
+                const settingsContainer = document.querySelector('.userpanel-container');
+                if (userPanel && settingsContainer) {
+                    settingsContainer.appendChild(userPanel); // 直接添加为子元素
+                }
             } catch (error) {
                 console.error("Error initializing selectors:", error);
             }
@@ -1537,8 +1766,15 @@ document.addEventListener('DOMContentLoaded', function() {
 <li class="toctree-l1"><a class="reference internal" href="../2_wifi_tunnel/0_wifi_tunnel_index.html">2.2 Wi-Fi R-Mesh</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../2_wifi_csi/0_wifi_csi_index.html">2.3 Wi-Fi CSI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../2_wifi_adaptivity_test/0_wifi_adaptivity_index.html">2.4 Wi-Fi Adaptivity Test</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../10_api_docs/0_api_index.html">2.5 Wi-Fi API Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../3_security/0_security_index.html">3.1 Security &amp; Encryption</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../3_trng/0_trng_index.html">3.2 True Random Number Generator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_huk_derivation/0_huk_derivation_index_nda.html">3.3 HUK Derivation 🔒</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_rdp/0_rdp_index_nda.html">3.4 RDP 🔒</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_rsip/0_rsip_index_nda.html">3.5 RSIP 🔒</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_secure_boot/0_secure_boot_index_nda.html">3.6 Secure Boot 🔒</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_swd_protection/0_swd_protection_index_nda.html">3.7 SWD Protection 🔒</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_nda_tfm/0_tfm_index_nda.html">3.8 Trusted Firmware-M (TF-M) 🔒</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../3_crypto_engine/0_crypto_engine_index.html">3.9 Crypto Engine</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../3_ecdsa_engine/0_ecdsa_index.html">3.a ECDSA Engine</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../3_eddsa_engine/0_eddsa_index.html">3.b EDDSA Engine</a></li>
@@ -1587,7 +1823,6 @@ document.addEventListener('DOMContentLoaded', function() {
 <li class="toctree-l1"><a class="reference internal" href="../8_key_scan/0_key_scan_index.html">8.8 Key-Scan</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../8_rtc_io/0_rtc_io_index.html">8.9 RTC-IO</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../8_lcdc/0_lcdc_index.html">8.a LCD Controller</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../10_api_docs/0_api_index.html">10.0 API Reference</a></li>
 </ul>
 
         </div>
@@ -1901,10 +2136,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
 </footer>
         </div>
+
+    <!-- 侧边栏收缩按钮 -->
+    <button id="sidebar-toggle-button">&lt;</button>
+
     <!-- 问题反馈按钮和对话框 -->
+        
+        <button id="report-button">
+            <i class="fas fa-question-circle"></i> <!-- 问号图标 -->
+        </button>
     
-        <button id="report-button">Inquire</button>
-    
+
     <div id="feedback-dialog" class="feedback-dialog" style="display: none;">
         <div class="form-group">
             <label style="font-weight: bold;">Please select the related chapter:</label>
@@ -1984,114 +2226,536 @@ document.addEventListener('DOMContentLoaded', function() {
   </script>
      
 
-    
-        
-        <script>
-            // 路由守卫配置
-            const ROUTER_CONFIG = {
-                baseUrl: 'http://172.29.57.206:5000',
-                checkInterval: 30000 // 30秒检查一次
-            };
+    <script>
+        function sidebarToggleButton() {
+            const sidebar = document.querySelector('.wy-nav-side');
+            const contentArea = document.querySelector('.wy-nav-content');
+            const contentAreaWrap = document.querySelector('.wy-nav-content-wrap');
+            const bottomLeftPanel = document.querySelector('.bottomleft-panel');
+            const toggleButton = document.getElementById('sidebar-toggle-button');
 
-            window.getStoredUsername = function() {
-                try {
-                    const session = localStorage.getItem('auth_session');
-                    if (!session) return null;
-                    const { username, expires } = JSON.parse(session);
-                    if (Date.now() > expires) {
-                        localStorage.removeItem('auth_session');
-                        return null;
-                    }
-                    return username;
-                } catch (e) {
-                    console.error('读取存储会话失败:', e);
-                    return null;
-                }
+            console.log('Sidebar:', sidebar);
+            console.log('Content Area:', contentArea);
+            console.log('Toggle Button:', toggleButton);
+
+            if (!sidebar || !contentArea || !toggleButton) {
+                console.error('One or more elements not found');
+                return;
             }
 
-            // 增强型路由守卫
-            function setupRouteGuard() {
-                const originalPushState = history.pushState;
-                const originalReplaceState = history.replaceState;
-            
-                function wrappedHistoryMethod(method) {
-                    return function(state, title, url) {
-                        if (url) {
-                            const urlObj = new URL(url, window.location.origin);
-                            verifyNavigation(urlObj.pathname).then(allowed => {
-                                if (allowed) {
-                                    method.apply(history, [state, title, url]);
-                                }
-                            });
-                        } else {
+            let isSidebarCollapsed = false;
+
+            toggleButton.addEventListener('click', function() {
+                if (isSidebarCollapsed) {
+                    sidebar.style.marginLeft = '0px';
+                    bottomLeftPanel.style.marginLeft = '0px';
+                    contentAreaWrap.style.marginLeft = '280px';
+                    contentArea.classList.remove('expanded');
+
+                    toggleButton.innerHTML = '&lt;';
+                    toggleButton.style.left = '290px';
+                } else {
+                    sidebar.style.marginLeft = '-280px';
+                    bottomLeftPanel.style.marginLeft = '-280px';
+                    contentAreaWrap.style.marginLeft = '0px';
+                    contentArea.classList.add('expanded');
+
+                    toggleButton.innerHTML = '&gt;';
+                    toggleButton.style.left = '15px';
+                }
+                isSidebarCollapsed = !isSidebarCollapsed;
+            });
+        }
+
+        sidebarToggleButton();
+    </script>
+
+
+    
+    <!-- source/_templates/layout_nda_access.html -->
+
+<!-- 文档列表 -->
+<style>
+    #document-list {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px; /* 上下间隔 */
+    }
+
+    #document-list > div {
+        display: flex;
+        align-items: center;
+        width: 100%;
+    }
+
+    #document-list label {
+        margin: 0;
+        text-align: left;
+        display: inline-flex; /* 在同一行展示内容 */
+        align-items: center; /* 垂直对齐 */
+        gap: 8px; /* 确保无间隙 */
+    }
+
+    #document-list input {
+        margin: 0;
+    }
+
+    /* 文档列表外框 */
+    .input-frame {
+        width: 100%;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 7px;
+        margin-bottom: 10px;
+        background: white;
+    }
+
+    /* 调整文档列表内部布局 */
+    #document-list {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        max-height: 200px;
+        overflow-y: auto;
+    }
+
+    #document-list label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 4px;
+        transition: background 0.2s;
+    }
+
+    #document-list label:hover {
+        background: #f8f9fa;
+    }
+
+</style>
+
+<style>
+    .nda_request_modal {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: #5a6c75; /* 淡蓝色背景 */
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        z-index: 1001;
+        width: 400px;
+    }
+
+    .nda_request_modal-content {
+        position: relative;
+    }
+
+    .nda_request_modal-close {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        font-size: 20px;
+        cursor: pointer;
+        color: white !important;
+        text-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+    }
+
+    .nda_request_modal .form-group {
+        margin: 10px 0;
+    }
+
+    .nda_request_modal label {
+        font-weight: bold;
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    /* 标签文字颜色 */
+    .nda_request_modal .form-group label {
+        color: white !important; /* 白色文字 */
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3); /* 增加可读性 */
+    }
+
+    .nda_request_modal input,
+    .nda_request_modal textarea,
+    .nda_request_modal select,
+    .input-frame {
+        width: 100%;
+        padding: 7px;
+        border-radius: 4px;
+        margin-bottom: 10px;
+        border: 2px solid white !important; /* 白色边框 */
+        background: #25292b !important; /* 深蓝色背景 */
+    }
+
+    .nda_request_modal button {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        width: 100%;
+    }
+
+    .nda_request_modal button:hover {
+        background-color: #0056b3;
+    }
+
+    /* 标题样式调整 */
+    .nda_request_modal h4 {
+        color: white !important; /* 白色文字 */
+        text-align: center; /* 居中 */
+        text-decoration: underline; /* 下划线 */
+        margin: 0 0 20px 0; /* 调整间距 */
+        padding: 15px 0 10px 0; /* 上间距加大 */
+        background: #5a6c75; /* 淡蓝色背景 */
+        border-radius: 4px 4px 0 0; /* 顶部圆角 */
+        position: relative;
+        top: -30px; /* 向上移动 */
+        left: -30px;
+        width: calc(100% + 60px); /* 扩展宽度 */
+    }
+
+    /* 统一输入元素样式 */
+    .nda_request_modal input, 
+    .nda_request_modal textarea,
+    .input-frame {
+        border: 2px solid white !important; /* 白色边框 */
+        border-radius: 4px;
+        transition: border-color 0.2s;
+        color: white;
+    }
+
+    /* 加强输入框聚焦效果 */
+    .nda_request_modal input:focus,
+    .nda_request_modal textarea:focus,
+    .input-frame:focus-within {
+        border-color: #003366 !important;
+        box-shadow: 0 0 0 3px rgba(0, 86, 179, 0.25);
+        outline: none;
+    }
+
+    .nda_request_modal,
+    .nda_request_modal h4 {
+        background: #5a6c75; /* 淡蓝色背景 */
+    }
+
+</style>
+
+
+
+<script>
+    var PROTECTED_PAGES = ["3_nda_tfm/0_tfm_index_nda_cn", "3_nda_swd_protection/0_swd_protection_index_nda", "3_nda_secure_boot/0_secure_boot_index_nda", "3_nda_rdp/0_rdp_index_nda_cn", "3_nda_rdp/0_rdp_index_nda", "3_nda_tfm/0_tfm_index_nda", "3_nda_huk_derivation/0_huk_derivation_index_nda", "3_nda_rsip/0_rsip_index_nda", "3_nda_rsip/0_rsip_index_nda_cn"];
+
+    // 路由守卫配置
+    const ROUTER_CONFIG = {
+        baseUrl: 'http://172.29.57.206:5000',
+        checkInterval: 30000 // 30秒检查一次
+    };
+
+    window.getStoredUsername = function() {
+        try {
+            const session = localStorage.getItem('auth_session');
+            if (!session) return null;
+            const { username, expires } = JSON.parse(session);
+            if (Date.now() > expires) {
+                localStorage.removeItem('auth_session');
+                return null;
+            }
+            return username;
+        } catch (e) {
+            console.error('读取存储会话失败:', e);
+            return null;
+        }
+    }
+
+    // 增强型路由守卫
+    function setupRouteGuard() {
+        const originalPushState = history.pushState;
+        const originalReplaceState = history.replaceState;
+    
+        function wrappedHistoryMethod(method) {
+            return function(state, title, url) {
+                if (url) {
+                    const urlObj = new URL(url, window.location.origin);
+                    checkNdaProtect(urlObj.pathname).then(allowed => {
+                        if (allowed) {
                             method.apply(history, [state, title, url]);
                         }
-                    };
+                    });
+                } else {
+                    method.apply(history, [state, title, url]);
+                }
+            };
+        }
+
+        history.pushState = wrappedHistoryMethod(originalPushState);
+        history.replaceState = wrappedHistoryMethod(originalReplaceState);
+
+        window.addEventListener('popstate', () => {
+            checkNdaProtect(window.location.pathname);
+        });
+    }
+
+    // CSRF Token处理：获取CSRF令牌
+    window.getCSRFToken = function() {
+        // 从 Cookie 中获取 CSRF Token
+        const cookieValue = document.cookie
+            .split('; ')
+            .find(row => row.startsWith('csrf_token='))
+            ?.split('=')[1];
+        return cookieValue || '';
+    }
+
+    // 检测当前页面是否是nda文件
+    function isProtectedPage(page_name) {
+        return page_name.toLowerCase().includes('nda');
+    }
+
+    // 定义获取最后路径段的函数
+    function getLastPathSegment(url) {
+        const parts = url.split('/');
+        return parts.pop() || parts.pop();  // 使用双 pop 处理可能的尾部斜线
+    }
+
+    // 显示服务不可用
+    window.NdaPageAccessDenied = function() {
+        document.querySelector('.wy-nav-content').innerHTML = `
+            <div class="auth-denied service-unavailable">
+                <h3>${document.documentElement.lang === 'zh_CN' ? '访问被拒绝' : 'Access Denied'}</h3>
+                <p>${document.documentElement.lang === 'zh_CN' 
+                    ? '你首先要注册用户，并通过页面下方的帮助按钮申请文档访问权限.' 
+                    : 'You should first register as a user and then request document access permissions use the same register email.'}
+                </p>
+                <button id="request-access-btn">
+                    ${document.documentElement.lang === 'zh_CN' ? '访问权限申请' : 'Request Access'}
+                </button>
+            </div>
+
+            <!-- 模态框 -->
+            <div id="access-request-modal" class="nda_request_modal" style="display:none;">
+                <div class="nda_request_modal-content">
+                    <span class="nda_request_modal-close">&times;</span>
+                    <h4>${document.documentElement.lang === 'zh_CN' ? '申请访问权限' : 'Request Access Permission'}</h4>
+
+                    <div class="form-group">
+                        <label>${document.documentElement.lang === 'zh_CN' ? '文档选择' : 'Select Documents'}</label>
+                        <!-- 新增外框容器 -->
+                        <div class="input-frame">
+                            <div id="document-list">
+                                ${Array.from(PROTECTED_PAGES).map(page => {
+                                    const lastSegment = page.substring(page.lastIndexOf('/') + 1);
+                                    return `<div>
+                                                <label for="${page}">
+                                                    <input type="checkbox" value="${page}" id="${page}"> ${lastSegment}
+                                                </label>
+                                            </div>`;
+                                }).join('')}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>${document.documentElement.lang === 'zh_CN' ? '工作邮箱' : 'Work Email'}</label>
+                        <input type="email" id="work-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label>${document.documentElement.lang === 'zh_CN' ? '工作单位' : 'Work Unit'}</label>
+                        <input type="text" id="work-unit" required>
+                    </div>
+                    <div class="form-group">
+                        <label>${document.documentElement.lang === 'zh_CN' ? '产品信息' : 'Product Information'}</label>
+                        <textarea id="product-info"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>${document.documentElement.lang === 'zh_CN' ? '联系电话' : 'Contact Number'}</label>
+                        <input type="tel" id="contact-number" required>
+                    </div>
+                    <button id="nda_access_request_button">
+                        ${document.documentElement.lang === 'zh_CN' ? '提交申请' : 'Submit Request'}
+                    </button>
+                </div>
+            </div>
+        `;
+    };
+
+    // 统一验证逻辑
+    function checkNdaProtect(path, isBackgroundCheck = false) {
+        const page_name = getLastPathSegment(path);
+        console.log('checkNdaProtect ', page_name);
+
+        // 非NDA 则直接允许
+        if (!isProtectedPage(page_name)) {
+            console.log('checkNdaProtect normal page');
+
+            return Promise.resolve(true);
+        }
+
+        const wyNavContent = document.querySelector('.wy-nav-content');
+        let originalContent = wyNavContent.innerHTML; // 缓存原始内容
+
+        // 豁免路径快速通过
+        if (isExemptPath()) {
+            console.log('checkNdaProtect Exempt path, bypass check');
+            wyNavContent.style.display = 'block';
+            return Promise.resolve(true);
+        }
+
+        // 显示加载状态
+        wyNavContent.innerHTML = `
+            <div class="auth-loading">
+                <div class="spinner"></div>
+                <p>${document.documentElement.lang === 'zh_CN' ? '权限验证中...' : 'Checking permissions...'}</p>
+            </div>
+        `;
+
+        const page = new URL(path, window.location.origin).pathname.split('/').pop();
+        console.log('checkNdaProtect 提取的页面名称:', page);
+
+        return fetch('http://172.29.57.206:5000/check_nda_access', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': window.getCSRFToken()
+            },
+            body: JSON.stringify({
+                path: page,
+                username: window.getStoredUsername() || 'null' //  注意：后端从 session 取用户名，此处不需要传 username
+            }),
+            credentials: 'include'
+        })
+
+        .then(response => {
+            // 关键：先检查状态码再解析 JSON
+            if (!response.ok) {
+                console.log('checkNdaProtect Access denied');
+                NdaPageAccessDenied();
+            }
+            return response.json(); // 显式解析 JSON
+        })
+        .then(data => {
+            console.log('checkNdaProtect data.access:', data.access);
+
+            if (data.access) {
+                console.log('checkNdaProtect Access granted');
+                wyNavContent.innerHTML = originalContent; // 恢复原始内容
+                document.querySelector('.wy-nav-content').style.display = 'block';
+            } else {
+                console.log('checkNdaProtect Access denied');
+                NdaPageAccessDenied();
+            }
+
+            return data.access ?? false;
+        })
+        .catch(error => {
+            console.error('checkNdaProtect 验证失败:', error);
+            return false;
+        });
+    }
+
+    function requestNdaAccessRight() {
+        // 访问权限申请按钮点击事件
+        document.body.addEventListener('click', function(event) {
+            if (event.target.id === 'request-access-btn') {
+                document.getElementById('access-request-modal').style.display = 'block';
+            }
+        });
+
+        // 模态框关闭事件
+        document.body.addEventListener('click', function(event) {
+            if (event.target.classList.contains('nda_request_modal-close')) {
+                document.getElementById('access-request-modal').style.display = 'none';
+            }
+        });
+
+        // 提交申请按钮点击事件
+        document.body.addEventListener('click', function(event) {
+            if (event.target.id === 'nda_access_request_button') {
+                const documents = Array.from(document.querySelectorAll('#document-list input[type="checkbox"]:checked')).map(checkbox => checkbox.value);
+                const email = document.getElementById('work-email').value;
+                const unit = document.getElementById('work-unit').value;
+                const productInfo = document.getElementById('product-info').value;
+                const contactNumber = document.getElementById('contact-number').value;
+
+                if (!documents.length) {
+                    alert('must select one page');
+                    return;
                 }
 
-                history.pushState = wrappedHistoryMethod(originalPushState);
-                history.replaceState = wrappedHistoryMethod(originalReplaceState);
+                // 数据验证和提交
+                if (!email || !unit || !contactNumber) {
+                    alert('Please fill in all required fields.');
+                    return;
+                }
 
-                window.addEventListener('popstate', () => {
-                    verifyNavigation(window.location.pathname);
-                });
-            }
+                const ndaAaccessRequestData = {
+                    username: window.getStoredUsername() || 'null',
+                    documents: documents,
+                    email: email,
+                    unit: unit,               // 保持前端字段名不变
+                    productInfo: productInfo, // 保持前端字段名不变 
+                    contactNumber: contactNumber // 改为驼峰命名
+                };
 
-            // CSRF Token处理：获取CSRF令牌
-            window.getCSRFToken = function() {
-                // 从 Cookie 中获取 CSRF Token
-                const cookieValue = document.cookie
-                    .split('; ')
-                    .find(row => row.startsWith('csrf_token='))
-                    ?.split('=')[1];
-                return cookieValue || '';
-            }
+                console.log('Request Data:', ndaAaccessRequestData);
 
-            // 统一验证逻辑
-            function verifyNavigation(path, isBackgroundCheck = false) {
-                console.log('[NDA Auth] verifyNavigation fetch check_nda_access ...');
-
-                if (isExemptPath(path)) return Promise.resolve(true);
-
-                const page = new URL(path, window.location.origin).pathname.split('/').pop();
-                console.log('[DEBUG] 提取的页面名称:', page);
-
-                return fetch('http://172.29.57.206:5000/check_nda_access', {
+                // 发送请求到后端处理（替换为实际后端服务路径）
+                fetch('/nda_access_request_submit', {
                     method: 'POST',
-                    headers: {
+                    headers: { 
                         'Content-Type': 'application/json',
-                        'X-CSRFToken': window.getCSRFToken()
+                        'X-CSRFToken': window.getCSRFToken()  // 添加CSRF令牌
                     },
-                    body: JSON.stringify({
-                        path: page,
-                        username: window.getStoredUsername() || 'null' //  注意：后端从 session 取用户名，此处不需要传 username
-                    }),
-                    credentials: 'include'
+                    body: JSON.stringify(ndaAaccessRequestData)
                 })
-                .then(response => {
-                    // 关键：先检查状态码再解析 JSON
+                .then(async response => {
+                    const data = await response.json();
                     if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
+                        throw new Error(data.error || 'server response error');
                     }
-                    return response.json(); // 显式解析 JSON
-                })
-                .then(data => {
-                    console.log('[DEBUG] data.access:', data.access);
-                    return data.access ?? false;
+
+                    console.log('Request successful:', data);
+                    alert('Access request submitted successfully.');
+                    document.getElementById('access-request-modal').style.display = 'none'; // 关闭模态框
+
+                    return data;
                 })
                 .catch(error => {
-                    console.error('[ERROR] 验证失败:', error);
-                    return false;
+                    console.error('Submit failed:', error);
+
+                    // 构建详细错误信息
+                    let errorMsg = `Submit failed: ${error.message}`;
+                    if (error.message.includes('Missing required fields')) {
+                        errorMsg += ', please check all required fields';
+                    }
+
+                    alert(errorMsg);
+                    document.getElementById('access-request-modal').style.display = 'block'; // 保持表单数据
                 });
             }
-
-            // 初始化
-            document.addEventListener('DOMContentLoaded', () => {
-                verifyNavigation(window.location.pathname);
-                setupRouteGuard();
-            });
-        </script>
+        });
+    }
+</script>
     
+
+    <script>
+        // 初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            
+                checkNdaProtect(window.location.pathname);
+                setupRouteGuard();
+                requestNdaAccessRight();
+            
+        });
+
+
+    </script>
+
+
+
 
     
 

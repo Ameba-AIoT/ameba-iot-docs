@@ -8,9 +8,8 @@
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
-      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=b947ea82" />
-      <link rel="stylesheet" type="text/css" href="_static/tabs.css?v=a5c4661c" />
-      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=b947ea82" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=dcc6a489" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=dcc6a489" />
 
   
     <link rel="shortcut icon" href="_static/favicon.ico"/>
@@ -27,7 +26,6 @@
         <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
         <script src="_static/toggleprompt.js?v=d7ede5d2"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-        <script src="_static/tabs.js?v=3030b3cb"></script>
         <script>let toggleHintShow = 'Click to show';</script>
         <script>let toggleHintHide = 'Click to hide';</script>
         <script>let toggleOpenOnPrint = 'true';</script>
@@ -44,130 +42,26 @@
     
 
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
-
-    <!-- NDA文档输入密码的框 -->
-    
-<script>
-// ▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼ 多语言配置 ▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼
-const lang = 'en';  // 使用 Python 字符串切片
-const i18n = {
-    zh: {
-        title: '访问授权',
-        username: '用户名',
-        password: '密码',
-        confirm: '确认',
-        cancel: '取消',
-        usernameError: '用户名错误',
-        userNotExist: '该用户不存在',
-        passwordError: '密码错误',
-        wrongPassword: '请输入正确的密码',
-        accessDenied: '无访问权限',
-        noPermission: '您无权查看此内容',
-        expiredTitle: '访问已过期',
-        expiredMsg: '您的权限已失效<br>有效期：%s 至 %s',
-        deniedTitle: '⚠️ 无访问权限',
-        contact: '请联系 claire_wang@realsil.com.cn 获取权限'
-    },
-    en: {
-        title: 'Access Required',
-        username: 'Username',
-        password: 'Password',
-        confirm: 'Confirm',
-        cancel: 'Cancel',
-        usernameError: 'Invalid Username',
-        userNotExist: 'User does not exist',
-        passwordError: 'Wrong Password',
-        wrongPassword: 'Please enter correct password',
-        accessDenied: 'Access Denied',
-        noPermission: 'You have no permission to view this content',
-        expiredTitle: 'Authorization Expired',
-        expiredMsg: 'Your access has expired<br>Valid period: %s to %s',
-        deniedTitle: '⚠️ Access Denied',
-        contact: 'Please contact claire_wang@realsil.com.cn for access'
-    }
-};
-// ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲ 多语言配置结束 ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
-</script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
     <!-- 样式模板 -->
-    
+    <style>
+        .wy-nav-content {
+            max-width: 1100px;
+             
+        }
 
-<style>
-    .wy-nav-content {
-        max-width: 1100px;
-         
-    }
-    
-    .auth-denied {
-        padding: 20px;
-        background: #f8f9fa;
-        border-radius: 4px;
-        border: 1px solid #dee2e6;
-        text-align: center;
-        color: #721c24;
-        margin-top: 20px;
-    }
-    .auth-denied h3 {
-        margin-bottom: 10px;
-        color: #dc3545;
-    }
-    
-    #report-button {
-        position: fixed;
-        top: 10px;
-        left: 1270px;
-        padding: 1px 15px; /* 调整内边距：1px 为上下，5px 为左右 */
-        height: 30px; /* 设置固定高度 */
-        background-color: #2ecc71;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        z-index: 1000;
-    }
-    #report-button:hover {
-        background-color: #2ecc71;
-    }
-    
-    .feedback-dialog {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background: white;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-        z-index: 1001;
-        width: 600px;
-    }
-    .feedback-dialog textarea {
-        width: 100%;
-        height: 150px;
-        margin-top: 10px;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        resize: vertical;
-    }
-    .feedback-dialog button {
-        margin-top: 10px;
-        padding: 8px 16px;
-        background-color: #007bff;
-        color: white;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-    }
-    .feedback-dialog button:hover {
-        background-color: #0056b3;
-    }
+        .wy-nav-content {
+            transition: margin 0.3s ease; /* 添加过渡效果 */
+            margin-left: 0px !important; /* 侧边栏展开时的偏移 */
+            max-width: calc(100% - 0px) !important; /* 调整最大宽度，使其与侧边栏宽度相关 */
+        }
 
-    
-    
-</style>
-
-
+        .wy-nav-content.expanded {
+            margin-left: 0 !important; /* 侧边栏收缩时内容区域回归左边 */
+            max-width: 100% !important; /* 内容区域最大宽度调整 */
+        }
+    </style>
 
     <!-- 注入 TOC 映射和当前页面信息 -->
     
@@ -175,7 +69,7 @@ const i18n = {
 <!-- TOC 映射和当前文档信息 -->
 <script>
 // 将 Python 字典转换为 JS 对象
-const TOC_TITLE_MAP = {"rst_rtos/0_ameba_product": "Products Center", "rst_rtos/0_ameba_product/0_ameba_product_center_index": "Products Center", "rst_rtos/0_ameba_sdk": "Ameba SDK", "rst_rtos/0_ameba_sdk/0_ameba_sdks_index": "Ameba SDK", "rst_rtos/0_ameba_solutions": "Ameba Solutions", "rst_rtos/0_ameba_solutions/0_ameba_solutions_index": "Ameba Solutions", "rst_rtos/0_at_command": "0.8 AT Commands", "rst_rtos/0_at_command/0_at_command_index": "0.8 AT Commands", "rst_rtos/0_build_system": "0.3 Build System", "rst_rtos/0_build_system/0_build_system_index": "0.3 Build System", "rst_rtos/0_file_system": "0.9 Virtual File System", "rst_rtos/0_file_system/0_vfs_index": "0.9 Virtual File System", "rst_rtos/0_ftl": "0.a Flash Translation Layer", "rst_rtos/0_ftl/0_ftl_index": "0.a Flash Translation Layer", "rst_rtos/0_gcc_build_environment": "0.1 GCC Build Environment", "rst_rtos/0_gcc_build_environment/0_gcc_build_index": "0.1 GCC Build Environment", "rst_rtos/0_gdb_debug": "0.2 GDB Debug", "rst_rtos/0_gdb_debug/0_gdb_debug_index": "0.2 GDB Debug", "rst_rtos/0_memory_layout": "0.5 Flash \u0026 RAM Layout", "rst_rtos/0_memory_layout/0_layout_index": "0.5 Flash \u0026 RAM Layout", "rst_rtos/0_sdk_example": "0.4 SDK Example", "rst_rtos/0_sdk_example/0_sdk_example_index": "0.4 SDK Example", "rst_rtos/0_tools": "0.7 Tools", "rst_rtos/0_tools/0_tools_index": "0.7 Tools", "rst_rtos/0_user_config": "0.6 User Config", "rst_rtos/0_user_config/0_usrcfg_index": "0.6 User Config", "rst_rtos/10_api_docs": "10.0 API Reference", "rst_rtos/10_api_docs/0_api_index": "10.0 API Reference", "rst_rtos/1_boot_process": "1.1 Boot Process", "rst_rtos/1_boot_process/0_boot_index": "1.1 Boot Process", "rst_rtos/1_chipen": "1.4 Chip Enable", "rst_rtos/1_chipen/0_chipen_index": "1.4 Chip Enable", "rst_rtos/1_gpio": "1.7 GPIO \u0026 Pin Control", "rst_rtos/1_gpio/0_gpio_index": "1.7 GPIO \u0026 Pin Control", "rst_rtos/1_ipc": "1.5 Inter Processor Communication", "rst_rtos/1_ipc/0_ipc_index": "1.5 Inter Processor Communication", "rst_rtos/1_mpu_cache": "1.0 MPU and Cache", "rst_rtos/1_mpu_cache/0_mpu_cache_index": "1.0 MPU and Cache", "rst_rtos/1_ota": "1.2 OTA", "rst_rtos/1_ota/0_ota_index": "1.2 OTA", "rst_rtos/1_otpc": "1.3 OTPC", "rst_rtos/1_otpc/0_otpc_index": "1.3 OTPC", "rst_rtos/1_pinmux": "1.6 Pin Multiplexing", "rst_rtos/1_pinmux/0_pinmux_index": "1.6 Pin Multiplexing", "rst_rtos/1_power_save": "1.9 Power Save", "rst_rtos/1_power_save/0_ps_index": "1.9 Power Save", "rst_rtos/2_whc_fullmac": "2.1 WHC FullMAC", "rst_rtos/2_whc_fullmac/0_fullmac_index": "2.1 WHC FullMAC", "rst_rtos/2_whc_wifi_bridge": "2.0 WHC Bridge", "rst_rtos/2_whc_wifi_bridge/0_wifi_bridge_index": "2.0 WHC Bridge", "rst_rtos/2_wifi_adaptivity_test": "2.4 Wi-Fi Adaptivity Test", "rst_rtos/2_wifi_adaptivity_test/0_wifi_adaptivity_index": "2.4 Wi-Fi Adaptivity Test", "rst_rtos/2_wifi_csi": "2.3 Wi-Fi CSI", "rst_rtos/2_wifi_csi/0_wifi_csi_index": "2.3 Wi-Fi CSI", "rst_rtos/2_wifi_tunnel": "2.2 Wi-Fi R-Mesh", "rst_rtos/2_wifi_tunnel/0_wifi_tunnel_index": "2.2 Wi-Fi R-Mesh", "rst_rtos/3_ap_trustzone": "3.d AP Secure Service", "rst_rtos/3_ap_trustzone/0_ap_tz_index": "3.d AP Secure Service", "rst_rtos/3_crypto_engine": "3.9 Crypto Engine", "rst_rtos/3_crypto_engine/0_crypto_engine_index": "3.9 Crypto Engine", "rst_rtos/3_ecdsa_engine": "3.a ECDSA Engine", "rst_rtos/3_ecdsa_engine/0_ecdsa_index": "3.a ECDSA Engine", "rst_rtos/3_eddsa_engine": "3.b EDDSA Engine", "rst_rtos/3_eddsa_engine/0_eddsa_index": "3.b EDDSA Engine", "rst_rtos/3_rsa_engine": "3.c RSA Engine", "rst_rtos/3_rsa_engine/0_rsa_index": "3.c RSA Engine", "rst_rtos/3_security": "3.1 Security \u0026 Encryption", "rst_rtos/3_security/0_security_index": "3.1 Security \u0026 Encryption", "rst_rtos/3_trng": "3.2 True Random Number Generator", "rst_rtos/3_trng/0_trng_index": "3.2 True Random Number Generator", "rst_rtos/4_ai": "4.1 AI", "rst_rtos/4_ai/0_ai_index": "4.1 AI", "rst_rtos/4_ai_voice": "4.2 AIVoice", "rst_rtos/4_ai_voice/0_ai_voice_index": "4.2 AIVoice", "rst_rtos/4_dsp": "4.4 DSP", "rst_rtos/4_dsp/0_dsp_index": "4.4 DSP", "rst_rtos/4_multimedia": "4.3 Multimedia", "rst_rtos/4_multimedia/0_multimedia_index": "4.3 Multimedia", "rst_rtos/6_mass_production": "6.1 Mass Production", "rst_rtos/6_mass_production/0_mp_index": "6.1 Mass Production", "rst_rtos/6_mptools": "6.2 MP Tools", "rst_rtos/6_mptools/0_mptools_index": "6.2 MP Tools", "rst_rtos/7_usb": "7.1 USB Host \u0026 Device", "rst_rtos/7_usb/0_usb_index": "7.1 USB Host \u0026 Device", "rst_rtos/8_adc": "8.4 ADC", "rst_rtos/8_adc/0_adc_index": "8.4 ADC", "rst_rtos/8_cap_touch": "8.7 Cap-Touch", "rst_rtos/8_cap_touch/0_cap_touch_index": "8.7 Cap-Touch", "rst_rtos/8_dmac": "8.1 DMA Controller", "rst_rtos/8_dmac/0_dmac_index": "8.1 DMA Controller", "rst_rtos/8_ir": "8.5 IR", "rst_rtos/8_ir/0_ir_index": "8.5 IR", "rst_rtos/8_key_scan": "8.8 Key-Scan", "rst_rtos/8_key_scan/0_key_scan_index": "8.8 Key-Scan", "rst_rtos/8_lcdc": "8.a LCD Controller", "rst_rtos/8_lcdc/0_lcdc_index": "8.a LCD Controller", "rst_rtos/8_ledc": "8.6 LED Controller", "rst_rtos/8_ledc/0_ledc_index": "8.6 LED Controller", "rst_rtos/8_psram": "8.2 PSRAM", "rst_rtos/8_psram/0_psram_index": "8.2 PSRAM", "rst_rtos/8_rtc_io": "8.9 RTC-IO", "rst_rtos/8_rtc_io/0_rtc_io_index": "8.9 RTC-IO", "rst_rtos/8_thermal": "8.3 Thermal Meter", "rst_rtos/8_thermal/0_thermal_index": "8.3 Thermal Meter"};
+const TOC_TITLE_MAP = {"rst_rtos/0_ameba_product": "Products Center", "rst_rtos/0_ameba_product/0_ameba_product_center_index": "Products Center", "rst_rtos/0_ameba_sdk": "Ameba SDK", "rst_rtos/0_ameba_sdk/0_ameba_sdks_index": "Ameba SDK", "rst_rtos/0_ameba_solutions": "Ameba Solutions", "rst_rtos/0_ameba_solutions/0_ameba_solutions_index": "Ameba Solutions", "rst_rtos/0_at_command": "0.8 AT Commands", "rst_rtos/0_at_command/0_at_command_index": "0.8 AT Commands", "rst_rtos/0_build_system": "0.3 Build System", "rst_rtos/0_build_system/0_build_system_index": "0.3 Build System", "rst_rtos/0_file_system": "0.9 Virtual File System", "rst_rtos/0_file_system/0_vfs_index": "0.9 Virtual File System", "rst_rtos/0_ftl": "0.a Flash Translation Layer", "rst_rtos/0_ftl/0_ftl_index": "0.a Flash Translation Layer", "rst_rtos/0_gcc_build_environment": "0.1 GCC Build Environment", "rst_rtos/0_gcc_build_environment/0_gcc_build_index": "0.1 GCC Build Environment", "rst_rtos/0_gdb_debug": "0.2 GDB Debug", "rst_rtos/0_gdb_debug/0_gdb_debug_index": "0.2 GDB Debug", "rst_rtos/0_memory_layout": "0.5 Flash \u0026 RAM Layout", "rst_rtos/0_memory_layout/0_layout_index": "0.5 Flash \u0026 RAM Layout", "rst_rtos/0_sdk_example": "0.4 SDK Example", "rst_rtos/0_sdk_example/0_sdk_example_index": "0.4 SDK Example", "rst_rtos/0_tools": "0.7 Tools", "rst_rtos/0_tools/0_tools_index": "0.7 Tools", "rst_rtos/0_user_config": "0.6 User Config", "rst_rtos/0_user_config/0_usrcfg_index": "0.6 User Config", "rst_rtos/10_api_docs": "2.6 Wi-Fi API Reference", "rst_rtos/10_api_docs/0_api_index": "2.6 Wi-Fi API Reference", "rst_rtos/1_boot_process": "1.1 Boot Process", "rst_rtos/1_boot_process/0_boot_index": "1.1 Boot Process", "rst_rtos/1_chipen": "1.4 Chip Enable", "rst_rtos/1_chipen/0_chipen_index": "1.4 Chip Enable", "rst_rtos/1_gpio": "1.7 GPIO \u0026 Pin Control", "rst_rtos/1_gpio/0_gpio_index": "1.7 GPIO \u0026 Pin Control", "rst_rtos/1_ipc": "1.5 Inter Processor Communication", "rst_rtos/1_ipc/0_ipc_index": "1.5 Inter Processor Communication", "rst_rtos/1_mpu_cache": "1.0 Memory Management \u0026 Cache", "rst_rtos/1_mpu_cache/0_mpu_cache_index": "1.0 Memory Management \u0026 Cache", "rst_rtos/1_ota": "1.2 OTA", "rst_rtos/1_ota/0_ota_index": "1.2 OTA", "rst_rtos/1_otpc": "1.3 OTPC", "rst_rtos/1_otpc/0_otpc_index": "1.3 OTPC", "rst_rtos/1_pinmux": "1.6 Pin Multiplexing", "rst_rtos/1_pinmux/0_pinmux_index": "1.6 Pin Multiplexing", "rst_rtos/1_power_save": "1.9 Power Saving", "rst_rtos/1_power_save/0_ps_index": "1.9 Power Saving", "rst_rtos/2_whc_fullmac": "2.2 WHC FullMAC", "rst_rtos/2_whc_fullmac/0_fullmac_index": "2.2 WHC FullMAC", "rst_rtos/2_whc_wifi_bridge": "2.1 WHC Bridge", "rst_rtos/2_whc_wifi_bridge/0_wifi_bridge_index": "2.1 WHC Bridge", "rst_rtos/2_wifi_adaptivity_test": "2.5 Wi-Fi Adaptivity Test", "rst_rtos/2_wifi_adaptivity_test/0_wifi_adaptivity_index": "2.5 Wi-Fi Adaptivity Test", "rst_rtos/2_wifi_basic": "2.0 Wi-Fi Basic Mode", "rst_rtos/2_wifi_basic/0_wifi_basic_index": "2.0 Wi-Fi Basic Mode", "rst_rtos/2_wifi_csi": "2.4 Wi-Fi CSI", "rst_rtos/2_wifi_csi/0_wifi_csi_index": "2.4 Wi-Fi CSI", "rst_rtos/2_wifi_tunnel": "2.3 Wi-Fi R-Mesh", "rst_rtos/2_wifi_tunnel/0_wifi_tunnel_index": "2.3 Wi-Fi R-Mesh", "rst_rtos/3_ap_trustzone": "3.d AP Secure Service", "rst_rtos/3_ap_trustzone/0_ap_tz_index": "3.d AP Secure Service", "rst_rtos/3_crypto_engine": "3.9 Crypto Engine", "rst_rtos/3_crypto_engine/0_crypto_engine_index": "3.9 Crypto Engine", "rst_rtos/3_ecdsa_engine": "3.a ECDSA Engine", "rst_rtos/3_ecdsa_engine/0_ecdsa_index": "3.a ECDSA Engine", "rst_rtos/3_eddsa_engine": "3.b EDDSA Engine", "rst_rtos/3_eddsa_engine/0_eddsa_index": "3.b EDDSA Engine", "rst_rtos/3_rsa_engine": "3.c RSA Engine", "rst_rtos/3_rsa_engine/0_rsa_index": "3.c RSA Engine", "rst_rtos/3_security": "3.1 Security \u0026 Encryption", "rst_rtos/3_security/0_security_index": "3.1 Security \u0026 Encryption", "rst_rtos/3_trng": "3.2 True Random Number Generator", "rst_rtos/3_trng/0_trng_index": "3.2 True Random Number Generator", "rst_rtos/4_ai": "4.1 AI", "rst_rtos/4_ai/0_ai_index": "4.1 AI", "rst_rtos/4_ai_voice": "4.2 AIVoice", "rst_rtos/4_ai_voice/0_ai_voice_index": "4.2 AIVoice", "rst_rtos/4_dsp": "4.4 DSP", "rst_rtos/4_dsp/0_dsp_index": "4.4 DSP", "rst_rtos/4_multimedia": "4.3 Multimedia", "rst_rtos/4_multimedia/0_multimedia_index": "4.3 Multimedia", "rst_rtos/6_mass_production": "6.1 Mass Production", "rst_rtos/6_mass_production/0_mp_index": "6.1 Mass Production", "rst_rtos/6_mptools": "6.2 MP Tools", "rst_rtos/6_mptools/0_mptools_index": "6.2 MP Tools", "rst_rtos/7_usb": "7.1 USB Host \u0026 Device", "rst_rtos/7_usb/0_usb_index": "7.1 USB Host \u0026 Device", "rst_rtos/8_adc": "8.4 ADC", "rst_rtos/8_adc/0_adc_index": "8.4 ADC", "rst_rtos/8_cap_touch": "8.7 Cap-Touch", "rst_rtos/8_cap_touch/0_cap_touch_index": "8.7 Cap-Touch", "rst_rtos/8_dmac": "8.1 DMA Controller", "rst_rtos/8_dmac/0_dmac_index": "8.1 DMA Controller", "rst_rtos/8_ir": "8.5 IR", "rst_rtos/8_ir/0_ir_index": "8.5 IR", "rst_rtos/8_key_scan": "8.8 Key-Scan", "rst_rtos/8_key_scan/0_key_scan_index": "8.8 Key-Scan", "rst_rtos/8_lcdc": "8.a LCD Controller", "rst_rtos/8_lcdc/0_lcdc_index": "8.a LCD Controller", "rst_rtos/8_ledc": "8.6 LED Controller", "rst_rtos/8_ledc/0_ledc_index": "8.6 LED Controller", "rst_rtos/8_psram": "8.2 PSRAM", "rst_rtos/8_psram/0_psram_index": "8.2 PSRAM", "rst_rtos/8_rtc_io": "8.9 RTC-IO", "rst_rtos/8_rtc_io/0_rtc_io_index": "8.9 RTC-IO", "rst_rtos/8_thermal": "8.3 Thermal Meter", "rst_rtos/8_thermal/0_thermal_index": "8.3 Thermal Meter"};
 console.log("TOC_TITLE_MAP:", TOC_TITLE_MAP);
 
 // 获取当前页面的文档名 (例如 'rst_rtos/3_nda_secure_boot/0_secure_boot_index_nda')
@@ -232,169 +126,10 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
-    <style>
-        /* ====================== 紧凑型选择器 ====================== */
-        #topleft-panel {
-            background: rgba(40, 58, 73, 0.9);
-            border-radius: 8px;
-            padding: 4px;
-            margin: 4px 0;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-            backdrop-filter: blur(4px);
-        }
-
-        .selectors-grid {
-            display: grid;
-            gap: 4px;
-        }
-
-        .dual-selector-group {
-            display: grid;
-            grid-template-columns: 1fr 1fr; /* 两列等宽 */
-            gap: 4px; /* 列间距 */
-        }
-
-        .selector-group {
-            position: relative;
-        }
-
-        .selector-label {
-            display: block;
-            color: #a0b3c6;
-            font-size: 0.85em;
-            margin-bottom: 4px;
-            padding-left: 4px;
-        }
-
-        .selector-dropdown {
-            width: 100%;
-            padding: 4px 4px;
-            border: 1px solid rgba(64, 82, 97, 0.8);
-            border-radius: 6px;
-            background: rgba(44, 62, 80, 0.9);
-            color: #ecf0f1;
-            font-size: 0.95em;
-            transition: all 0.2s ease;
-            appearance: none;
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23a0b3c6'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
-            background-repeat: no-repeat;
-            background-position: right 10px center;
-            background-size: 16px;
-        }
-
-        .selector-dropdown:hover {
-            border-color: #4a6a8b;
-            background-color: rgba(44, 62, 80, 1);
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-        }
-
-        .selector-dropdown:focus {
-            outline: none;
-            border-color: #3498db;
-            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
-        }
-
-        /* 移动端优化 */
-        @media (max-width: 768px) {
-            #topleft-panel {
-                margin: 8px 0;
-                padding: 10px;
-            }
-
-            .selectors-grid {
-                grid-template-columns: 1fr;
-                gap: 10px;
-            }
-
-            .selector-dropdown {
-                padding: 10px 12px;
-            }
-
-            .dual-selector-group {
-                grid-template-columns: 1fr; /* 小屏幕下堆叠显示 */
-            }
-        }
-    </style>
-
     
-
-    <style>
-        /* 隐藏整个搜索栏容器 */
-        .wy-side-nav-search > div[role="search"] {
-            display: none !important;
-        }
-
-        /* 或者更精确地隐藏表单 */
-        form#rtd-search-form {
-            display: none !important;
-        }
-    </style>
-
-    <style>
-        .extension-container {
-            position: fixed;
-            left: 10px;
-            bottom: 10px;
-            z-index: 1000;
-        }
-
-        .extension-button {
-            background-color: #3498db;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            padding: 8px 15px;
-            cursor: pointer;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        }
-
-        .extension-button:hover {
-            background-color: #2980b9;
-        }
-    </style>
-
-    <style>
-        /* 保留bottomleft-panel作为用户面板容器 */
-        .bottomleft-panel {
-            position: fixed;
-            left: 0;
-            bottom: 0;
-            width: 300px;
-            height: auto;
-            background: #2d2d2d;
-            border-top: 1px solid #404040;
-            box-shadow: 0 -2px 12px rgba(0,0,0,0.2);
-            z-index: 1001;
-        }
-
-        /* 新增userpanel-container的flex定义 */
-        .userpanel-container {
-            padding: 10px;
-            width: 100%;
-        }
-        /* 增加字体配置 */
-        .material-symbols-outlined {
-            font-family: 'Material Symbols Outlined' !important;
-            font-weight: 400 !important;
-            font-style: normal !important;
-            line-height: 1 !important;
-            letter-spacing: normal !important;
-            text-transform: none !important;
-        }
-
-        /* 调整父容器定位方式 */
-        .userpanel-container {
-            position: relative; /* 新增定位上下文 */
-        }
-    </style>
 
     <!-- 左上角标题距离控制：Ameba IoT Docs -->
     <style>
-        /* 隐藏整个搜索栏容器 */
-        .wy-side-nav-search > div[role="search"] {
-            display: none !important;
-        }
-
         /* 新增的标题间距调整样式（添加在此处） */
         div[role="navigation"] > div[role="search"] {
             margin-bottom: 4px !important;
@@ -429,8 +164,28 @@ document.addEventListener('DOMContentLoaded', function() {
     };
     /* ====================== 嵌入式配置结束 ====================== */
 </script>
-    
+
 <script>
+    // 获取OS显示名称列表
+    function getOSNames(data) {
+        return Object.keys(data).map(key => data[key].name);
+    }
+
+    // 获取指定OS的语言列表
+    function getLanguages(data, osKey) {
+        return Object.keys(data[osKey]?.languages || {});
+    }
+
+    // 获取指定OS和语言的版本列表
+    function getVersions(data, osKey, language) {
+        return data[osKey]?.languages?.[language] || ['latest'];
+    }
+
+    // 根据显示名称查找OS键
+    function findOSKey(data, displayName) {
+        return Object.keys(data).find(key => data[key].name === displayName);
+    }
+
     // 获取基础URL路径
     function getBaseURL() {
         const url = new URL(window.location.href);
@@ -455,6 +210,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const url = new URL(window.location.href);
         let segments = url.pathname.split('/').filter(segment => segment);
 
+
         console.log('[DEBUG] getCurrentSegments:');
 
         if (url.protocol === 'file:') {
@@ -464,7 +220,7 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log('[DEBUG] getCurrentSegments0:', segments);
         } else {
             // 网络路径处理
-            segments = segments.slice(3); // 去掉 ameba-iot-docs/
+            segments = segments.slice(1); // 去掉 ameba-iot-docs/
             console.log('[DEBUG] getCurrentSegments:', segments);
         }
 
@@ -474,30 +230,43 @@ document.addEventListener('DOMContentLoaded', function() {
             version: segments[2] || 'latest' // 默认为 latest
         };
     }
+
+    // 绑定事件监听
+    function bindEvents(baseURL, segments) {
+        document.getElementById('os-selector').addEventListener('change', () => {
+            const newOSKey = document.getElementById('os-selector').value;
+            const availableLangs = getLanguages(embeddedConfig, newOSKey);
+            const defaultLang = availableLangs[0] || 'en';
+            const defaultVersion = getVersions(embeddedConfig, newOSKey, defaultLang)[0] || 'latest';
+            console.log('OS Changed:', {newOSKey, defaultLang, defaultVersion});
+            redirectTo(`${baseURL}${newOSKey}/${defaultLang}/${defaultVersion}/`);
+        });
+
+        document.getElementById('language-selector').addEventListener('change', () => {
+            const newLang = document.getElementById('language-selector').value;
+            const defaultVersion = getVersions(embeddedConfig, segments.osKey, newLang)[0] || 'latest';
+            console.log('Language Changed:', {newLang, defaultVersion});
+            redirectTo(`${baseURL}${segments.osKey}/${newLang}/${defaultVersion}/`);
+        });
+
+        document.getElementById('version-selector').addEventListener('change', () => {
+            const newVer = document.getElementById('version-selector').value;
+            console.log('Version Changed:', {newVer});
+            redirectTo(`${baseURL}${segments.osKey}/${segments.language}/${newVer}/`);
+        });
+    }
+
+    // 跳转函数
+    function redirectTo(path) {
+        const url = new URL(path, window.location.href);
+        if (url.protocol === 'file:') {
+            url.pathname += 'index.html';
+        }
+        console.log('Redirecting to:', url.href);
+        window.location.href = url.href;
+    }
 </script>
-    
-<script>
-    // 获取OS显示名称列表
-    function getOSNames(data) {
-        return Object.keys(data).map(key => data[key].name);
-    }
 
-    // 获取指定OS的语言列表
-    function getLanguages(data, osKey) {
-        return Object.keys(data[osKey]?.languages || {});
-    }
-
-    // 获取指定OS和语言的版本列表
-    function getVersions(data, osKey, language) {
-        return data[osKey]?.languages?.[language] || ['latest'];
-    }
-
-    // 根据显示名称查找OS键
-    function findOSKey(data, displayName) {
-        return Object.keys(data).find(key => data[key].name === displayName);
-    }
-</script>
-    
 <script>
     // 验证并修正路径参数
     function validateSegments(segments) {
@@ -518,46 +287,6 @@ document.addEventListener('DOMContentLoaded', function() {
         return segments;
     }
 
-    // 生成选择器HTML
-    function generateSelectorsHTML(segments) {
-        return `
-        <div class="selectors-grid">
-            <!-- 系统选择器 -->
-            <div class="selector-group">
-                <select id="os-selector" class="selector-dropdown">
-                    ${Object.keys(embeddedConfig).map(key => `
-                        <option value="${key}">${embeddedConfig[key].name}</option>
-                    `).join('')}
-                </select>
-            </div>
-
-            <!-- 语言和版本组合（修正类名） -->
-            <div class="dual-selector-group"> <!-- 修改此处 -->
-                <div class="selector-group">
-                    <select id="language-selector" class="selector-dropdown">
-                        ${getLanguages(embeddedConfig, segments.osKey).map(lang => `
-                            <option value="${lang}">${lang}</option>
-                        `).join('')}
-                    </select>
-                </div>
-
-                <div class="selector-group">
-                    <select id="version-selector" class="selector-dropdown">
-                        ${getVersions(embeddedConfig, segments.osKey, segments.language).map(ver => `
-                            <option value="${ver}">${ver}</option>
-                        `).join('')}
-                    </select>
-                </div>
-            </div>
-        </div>
-        ${generateUserPanelHTML(segments)}`;
-    }
-
-    // 生成用户面板HTML
-    function generateUserPanelHTML(segments) {
-        return ``;
-    }
-
     // 设置初始选中值
     function setInitialValues(segments) {
         document.getElementById('os-selector').value = segments.osKey;
@@ -568,39 +297,88 @@ document.addEventListener('DOMContentLoaded', function() {
         versionSelector.value = availableVersions.includes(segments.version) ? segments.version : availableVersions[0] || 'latest';
     }
 </script>
-    
-<script>
-    // 绑定事件监听
-    function bindEvents(baseURL, segments) {
-        document.getElementById('os-selector').addEventListener('change', () => {
-            const newOSKey = document.getElementById('os-selector').value;
-            const availableLangs = getLanguages(embeddedConfig, newOSKey);
-            const defaultLang = availableLangs[0] || 'en';
-            const defaultVersion = getVersions(embeddedConfig, newOSKey, defaultLang)[0] || 'latest';
-            redirectTo(`${baseURL}${newOSKey}/${defaultLang}/${defaultVersion}/`);
-        });
 
-        document.getElementById('language-selector').addEventListener('change', () => {
-            const newLang = document.getElementById('language-selector').value;
-            const defaultVersion = getVersions(embeddedConfig, segments.osKey, newLang)[0] || 'latest';
-            redirectTo(`${baseURL}${segments.osKey}/${newLang}/${defaultVersion}/`);
-        });
+<style>
+    .selectors-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr); /* 三列等宽 */
+        gap: 4px;
+        padding: 1px 1px;
 
-        document.getElementById('version-selector').addEventListener('change', () => {
-            const newVer = document.getElementById('version-selector').value;
-            redirectTo(`${baseURL}${segments.osKey}/${segments.language}/${newVer}/`);
-        });
+        margin-top: var(--root-margin-top, 4px);
+        margin-bottom: var(--root-margin-bottom, 0px);
     }
 
-    // 跳转函数
-    function redirectTo(path) {
-        const url = new URL(path, window.location.href);
-        if (url.protocol === 'file:') {
-            url.pathname += 'index.html';
+    .dual-selector-group {
+        display: grid;
+        grid-template-columns: 1fr 1fr; /* 两列等宽 */
+        gap: 4px; /* 列间距 */
+    }
+
+    .selector-group {
+        position: relative;
+        width: 100%; /* 确保填满网格列 */
+    }
+
+    .selector-label {
+        display: block;
+        color: #a0b3c6;
+        font-size: 0.85em;
+        margin-bottom: 4px;
+        padding-left: 4px;
+    }
+
+    .selector-dropdown {
+        width: 100%;
+        margin-top: var(--root-margin-top, 4px);
+        margin-bottom: var(--root-margin-bottom, 0px);
+        padding: 2px 2px;
+        border: 2px white !important;
+        border-radius: 6px !important;
+        background: #627078 !important;
+        color: white;
+        font-size: 0.95em;
+        transition: all 0.3s ease;
+        appearance: none;
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23a0b3c6'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right 10px center;
+        background-size: 16px;
+        display: flex;
+        height: 30px;
+
+        box-shadow: none !important; /* 不要边框阴影 */
+        outline: none !important; /* 不要边框阴影 */
+    }
+
+    .selector-dropdown:hover {
+        border-color: #4a6a8b;
+        background-color: rgba(44, 62, 80, 1);
+        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    .selector-dropdown:focus {
+        outline: none;
+        border-color: #3498db;
+        box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+    }
+
+    /* 移动端优化 */
+    @media (max-width: 768px) {
+        .selectors-grid {
+            grid-template-columns: 1fr; /* 小屏幕下堆叠显示 */
+            gap: 10px;
         }
-        window.location.href = url.href;
+
+        .selector-dropdown {
+            padding: 10px 12px;
+        }
+
+        .dual-selector-group {
+            grid-template-columns: 1fr; /* 小屏幕下堆叠显示 */
+        }
     }
-</script>
+</style>
 
 </head>
 
@@ -624,33 +402,99 @@ document.addEventListener('DOMContentLoaded', function() {
   </form>
 </div>
 
-    
-    <div id="topleft-panel" style="display: block !important; padding: 0; background: none; border: none;"></div>
+    <!-- templates/sidebar_toggle.html -->
 
-    
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            try {
-                const segments = validateSegments(getCurrentSegments());
-                const baseURL = getBaseURL();
+<div id="topleft-panel" style="display: block !important; padding: 0; background: none; border: none;"></div>
 
-                // 渲染HTML
-                document.getElementById('topleft-panel').innerHTML = generateSelectorsHTML(segments);
 
-                // 设置初始值
-                setInitialValues(segments);
+<div class="bottomleft-panel"></div>
 
-                // 绑定事件
-                bindEvents(baseURL, segments);
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        try {
+            const segments = validateSegments(getCurrentSegments());
+            const baseURL = getBaseURL();
 
-                // 初始化认证逻辑
-                
-            } catch (error) {
-                console.error("Error initializing selectors:", error);
+            // 渲染HTML
+            document.getElementById('topleft-panel').innerHTML = `
+<!-- templates/sidebar_user_panel_div.html -->
+
+
+<!-- templates/sidebar_user_panel_div_docselect.html -->
+
+<div class="selectors-grid">
+    <!-- 系统选择器 -->
+    <div class="selector-group">
+        <select id="os-selector" class="selector-dropdown">
+            ${Object.keys(embeddedConfig).map(key => `
+                <option value="${key}">${embeddedConfig[key].name}</option>
+            `).join('')}
+        </select>
+    </div>
+
+    <!-- 语言选择器 -->
+    <div class="selector-group">
+        <select id="language-selector" class="selector-dropdown">
+            ${getLanguages(embeddedConfig, segments.osKey).map(lang => `
+                <option value="${lang}">${lang === 'en' ? 'en' : 'cn'}</option>
+            `).join('')}
+        </select>
+    </div>
+
+    <!-- 版本选择器 -->
+    <div class="selector-group">
+        <select id="version-selector" class="selector-dropdown">
+            ${getVersions(embeddedConfig, segments.osKey, segments.language).map(ver => `
+                <option value="${ver}">${ver}</option>
+            `).join('')}
+        </select>
+    </div>
+</div>
+
+<div class="user-panel-container">
+    <div class="user-panel">
+        
+
+    </div>
+</div>`;
+
+            // 设置初始值
+            setInitialValues(segments);
+
+            // 绑定事件
+            bindEvents(baseURL, segments);
+
+            // 将 user-panel 移动到 bottomleft-panel 内
+            const userPanel = document.querySelector('.user-panel');
+            const bottomleftPanel = document.querySelector('.bottomleft-panel');
+            if (userPanel && bottomleftPanel) {
+                bottomleftPanel.appendChild(userPanel); // 直接添加为子元素
             }
-        });
-    </script>
+        } catch (error) {
+            console.error("Error initializing selectors:", error);
+        }
+    });
+</script>
+
+<style>
+    #topleft-panel {
+        background: rgba(40, 58, 73, 0.9);
+        border-radius: 4px;
+        padding: 4px;
+        margin: 4px 0;
+        box-shadow: 0 4px 4px rgba(0,0,0,0.15);
+        backdrop-filter: blur(4px);
+    }
+
+    /* 移动端优化 */
+    @media (max-width: 768px) {
+        #topleft-panel {
+            margin: 8px 0;
+            padding: 10px;
+        }
+    }
+</style>
 
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul>
@@ -667,7 +511,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <li class="toctree-l1"><a class="reference internal" href="rst_rtos/0_at_command/0_at_command_index.html">0.8 AT Commands</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rst_rtos/0_file_system/0_vfs_index.html">0.9 Virtual File System</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rst_rtos/0_ftl/0_ftl_index.html">0.a Flash Translation Layer</a></li>
-<li class="toctree-l1"><a class="reference internal" href="rst_rtos/1_mpu_cache/0_mpu_cache_index.html">1.0 MPU and Cache</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rst_rtos/1_mpu_cache/0_mpu_cache_index.html">1.0 Memory Management &amp; Cache</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rst_rtos/1_boot_process/0_boot_index.html">1.1 Boot Process</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rst_rtos/1_ota/0_ota_index.html">1.2 OTA</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rst_rtos/1_otpc/0_otpc_index.html">1.3 OTPC</a></li>
@@ -675,12 +519,14 @@ document.addEventListener('DOMContentLoaded', function() {
 <li class="toctree-l1"><a class="reference internal" href="rst_rtos/1_ipc/0_ipc_index.html">1.5 Inter Processor Communication</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rst_rtos/1_pinmux/0_pinmux_index.html">1.6 Pin Multiplexing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rst_rtos/1_gpio/0_gpio_index.html">1.7 GPIO &amp; Pin Control</a></li>
-<li class="toctree-l1"><a class="reference internal" href="rst_rtos/1_power_save/0_ps_index.html">1.9 Power Save</a></li>
-<li class="toctree-l1"><a class="reference internal" href="rst_rtos/2_whc_wifi_bridge/0_wifi_bridge_index.html">2.0 WHC Bridge</a></li>
-<li class="toctree-l1"><a class="reference internal" href="rst_rtos/2_whc_fullmac/0_fullmac_index.html">2.1 WHC FullMAC</a></li>
-<li class="toctree-l1"><a class="reference internal" href="rst_rtos/2_wifi_tunnel/0_wifi_tunnel_index.html">2.2 Wi-Fi R-Mesh</a></li>
-<li class="toctree-l1"><a class="reference internal" href="rst_rtos/2_wifi_csi/0_wifi_csi_index.html">2.3 Wi-Fi CSI</a></li>
-<li class="toctree-l1"><a class="reference internal" href="rst_rtos/2_wifi_adaptivity_test/0_wifi_adaptivity_index.html">2.4 Wi-Fi Adaptivity Test</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rst_rtos/1_power_save/0_ps_index.html">1.9 Power Saving</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rst_rtos/2_wifi_basic/0_wifi_basic_index.html">2.0 Wi-Fi Basic Mode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rst_rtos/2_whc_wifi_bridge/0_wifi_bridge_index.html">2.1 WHC Bridge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rst_rtos/2_whc_fullmac/0_fullmac_index.html">2.2 WHC FullMAC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rst_rtos/2_wifi_tunnel/0_wifi_tunnel_index.html">2.3 Wi-Fi R-Mesh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rst_rtos/2_wifi_csi/0_wifi_csi_index.html">2.4 Wi-Fi CSI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rst_rtos/2_wifi_adaptivity_test/0_wifi_adaptivity_index.html">2.5 Wi-Fi Adaptivity Test</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rst_rtos/10_api_docs/0_api_index.html">2.6 Wi-Fi API Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rst_rtos/3_security/0_security_index.html">3.1 Security &amp; Encryption</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rst_rtos/3_trng/0_trng_index.html">3.2 True Random Number Generator</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rst_rtos/3_crypto_engine/0_crypto_engine_index.html">3.9 Crypto Engine</a></li>
@@ -705,7 +551,6 @@ document.addEventListener('DOMContentLoaded', function() {
 <li class="toctree-l1"><a class="reference internal" href="rst_rtos/8_key_scan/0_key_scan_index.html">8.8 Key-Scan</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rst_rtos/8_rtc_io/0_rtc_io_index.html">8.9 RTC-IO</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rst_rtos/8_lcdc/0_lcdc_index.html">8.a LCD Controller</a></li>
-<li class="toctree-l1"><a class="reference internal" href="rst_rtos/10_api_docs/0_api_index.html">10.0 API Reference</a></li>
 </ul>
 
         </div>
@@ -762,76 +607,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
 </footer>
         </div>
+
     <!-- 问题反馈按钮和对话框 -->
     
-    <div id="feedback-dialog" class="feedback-dialog" style="display: none;">
-        <div class="form-group">
-            <label style="font-weight: bold;">Please select the related chapter:</label>
-            <select id="chapter-select">
-                <option value="">Select Chapter</option>
-                <!-- 章节选项将通过JavaScript动态填充 -->
-            </select>
-        </div>
-
-        <div class="form-group">
-            <label style="font-weight: bold;">Post Type</label>
-            <select id="post-type" class="form-control" required>
-                <option value="">-- Select Type --</option>
-                <option value="doc_correction">Document Correction</option>
-                <option value="tech_consult">Technical Consult</option>
-                <option value="tech_summary">Technical Summary</option>
-                <option value="operation_flow">Operation Flow</option>
-            </select>
-        </div>
-
-        <div class="form-group">
-            <label style="font-weight: bold;">Related Paragraph:</label>
-            <textarea
-                id="paragraph-input"
-                placeholder="{{ '你可以先选择有问题的段落或手动输入...' if language == 'zh_CN' else 'You can select text or type directly here...' }}"
-                rows="4"
-            ></textarea>
-        </div>
-
-        <div class="form-group">
-            <label style="font-weight: bold;">Please describe your issue:</label>
-            <textarea
-                id="inquire_input"
-                placeholder="Feature enhancement in progress, please stay tuned...">
-            </textarea>
-        </div>
-
-        <button id="submit-feedback">Submit</button>
-        <button id="cancel-feedback">Cancel</button>
-    </div>
-
-    <style>
-        .form-group {
-            margin: 5px 0;  /* 基础间距 */
-        }
-
-        /* 相邻表单项缩小上方间距 */
-        .form-group + .form-group {
-            margin-top: 10px;
-        }
-
-        /* 段落输入框底部微调 */
-        #paragraph-input, #inquire_input {
-            margin: 2px 0; /* 上下间距 */
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            resize: vertical;
-            min-height: 100px;
-
-            /* 占位符样式 */
-            &::placeholder {
-                color: #999;
-                font-style: italic;
-            }
-        }
-    </style>
 
       </div>
     </section>
@@ -849,9 +627,214 @@ document.addEventListener('DOMContentLoaded', function() {
   
      
 
-    
+    <!-- templates/sidebar_toggle.html -->
+
+<button id="sidebar-toggle-button" aria-label="Toggle sidebar"></button>
+
+<script>
+    function sidebarToggleButton() {
+        const sidebar = document.querySelector('.wy-nav-side');
+        const contentArea = document.querySelector('.wy-nav-content');
+        const contentAreaWrap = document.querySelector('.wy-nav-content-wrap');
+        const sidebarToggleButton = document.getElementById('sidebar-toggle-button');
+
+        console.log('Sidebar:', sidebar);
+        console.log('Content Area:', contentArea);
+        console.log('Toggle Button:', sidebarToggleButton);
+
+        if (!sidebar || !contentArea || !sidebarToggleButton) {
+            console.error('One or more elements not found');
+            return;
+        }
+
+        let isSidebarCollapsed = false;
+
+        sidebarToggleButton.addEventListener('click', function() {
+            document.documentElement.classList.add('sidebar-transitioning');// 添加过渡类
+
+            if (isSidebarCollapsed) {
+                document.documentElement.classList.remove('sidebar-collapsed'); // 改为使用CSS类控制
+
+                sidebar.style.marginLeft = '0px';
+                contentAreaWrap.style.marginLeft = '300px';
+                contentArea.classList.remove('expanded');
+
+                sidebarToggleButton.style.left = '300px';
+            } else {
+                document.documentElement.classList.add('sidebar-collapsed');
+
+                sidebar.style.marginLeft = '-300px';
+                contentAreaWrap.style.marginLeft = '0px';
+                contentArea.classList.add('expanded');
+
+                sidebarToggleButton.style.left = '0px';
+            }
+
+            // 同步状态
+            isSidebarCollapsed = !isSidebarCollapsed;
+
+            // 过渡结束后移除标记
+            setTimeout(() => {
+                document.documentElement.classList.remove('sidebar-transitioning');
+            }, 300); // 必须与过渡时间匹配
+        });
+    }
+</script>
+
+<style>
+    #sidebar-toggle-button {
+        position: fixed;
+        left: 300px;
+        top: 0;
+        z-index: 1002;
+
+        width: 4px;  /* 竖线宽度 */
+        /* 增加热区 */
+        padding: 0 15px; /* 左右各扩展12px点击区域 */
+        margin: 0 -15px; /* 抵消padding带来的位置偏移 */
+        clip-path: inset(0 -15px); /* 保持视觉宽度4px */
+
+        height: 100vh; /* 竖线高度 */
+        background: #2d2d2d;
+        border: none;
+        border-radius: 2px;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        transform: none;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+
+        /* 隐藏原始文字 */
+        color: transparent;
+        font-size: 0;
+
+        /* 修正交互区域 */
+        padding: 0;
+        margin: 0;
+
+        /* 新增：防止内容溢出 */
+        overflow: visible;
+
+        /* 调整箭头定位 */
+        &::before {
+            top: 50vh; /* 改为视口中点定位 */
+            transform: translateY(-50%);
+        }
+
+        &::after {
+            top: 50vh;
+            transform: translateY(-50%) rotate(45deg);
+        }
+    }
+
+    /* 动态箭头指示器 */
+    #sidebar-toggle-button::before {
+        content: '‹';
+        position: absolute;
+        left: 6px;
+        top: 50%;
+        width: 24px;
+        height: 24px;
+        background: #3498db;
+        color: white;
+        font-size: 18px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transform: translateY(-50%);
+        opacity: 0;
+        transition: all 0.3s ease;
+        pointer-events: none;
+    }
+
+    #sidebar-toggle-button::after {
+        content: '';
+        position: absolute;
+
+        left: -15px;  /* 向左扩展12px */
+        right: -15px; /* 向右扩展12px */
+
+        top: 50%;
+        width: 8px;
+        height: 8px;
+        border: 2px solid white;
+        border-width: 2px 2px 0 0;
+        transform: translateY(-50%) rotate(45deg);
+        opacity: 0;
+        transition: all 0.3s ease;
+    }
+
+    /* 悬停效果 */
+    #sidebar-toggle-button:hover {
+        width: 10px;
+        background: #2980b9;
+    }
+
+    /* 点击动画 */
+    #sidebar-toggle-button:active {
+        transform: translateY(-50%) scale(0.9);
+    }
+</style>
+
+<!-- 统一移动速度 -->
+<style>
+    /* 统一过渡参数 */
+    :root {
+        --sidebar-transition: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .wy-nav-side,
+    .wy-nav-content-wrap,
+    #sidebar-toggle-button {
+        transition: all var(--sidebar-transition) !important;
+    }
+
+    /* 按钮样式调整 */
+    #sidebar-toggle-button {
+        left: 300px;
+        transition: left var(--sidebar-transition),
+                    width 150ms ease, /* 悬停效果保持独立 */
+                    background 150ms ease;
+    }
+
+    /* 折叠状态 */
+    .sidebar-collapsed {
+        .wy-nav-side {
+            margin-left: -300px !important;
+        }
+
+        .wy-nav-content-wrap {
+            margin-left: 0 !important;
+        }
+
+        #sidebar-toggle-button {
+            left: 0 !important;
+        }
+    }
+
+    /* 禁用点击时的过渡 */
+    .sidebar-transitioning {
+        .wy-nav-side,
+        .wy-nav-content-wrap,
+        #sidebar-toggle-button {
+            transition: none !important;
+        }
+    }
+</style>
 
     
+
+    <script>
+        // 初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            
+
+            sidebarToggleButton();
+        });
+
+
+    </script>
+
 
 
 

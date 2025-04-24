@@ -1,0 +1,2462 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>电源管理架构 &mdash; Ameba IoT Docs  文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=dcc6a489" />
+      <link rel="stylesheet" type="text/css" href="../../_static/tabs.css?v=a5c4661c" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=dcc6a489" />
+
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=7d86a446"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>let toggleHintShow = 'Click to show';</script>
+        <script>let toggleHintHide = 'Click to hide';</script>
+        <script>let toggleOpenOnPrint = 'true';</script>
+        <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+        <script src="../../_static/translations.js?v=beaddf03"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+        <script src="../../_static/tabs.js?v=3030b3cb"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="Wi-Fi 基础模式" href="../2_wifi_basic/0_wifi_basic_index_cn.html" />
+    <link rel="prev" title="低功耗开发" href="0_ps_index_cn.html" />
+     
+
+    
+
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <!-- 样式模板 -->
+    <style>
+        .wy-nav-content {
+            max-width: 1100px;
+             
+        }
+
+        .wy-nav-content {
+            transition: margin 0.3s ease; /* 添加过渡效果 */
+            margin-left: 0px !important; /* 侧边栏展开时的偏移 */
+            max-width: calc(100% - 0px) !important; /* 调整最大宽度，使其与侧边栏宽度相关 */
+        }
+
+        .wy-nav-content.expanded {
+            margin-left: 0 !important; /* 侧边栏收缩时内容区域回归左边 */
+            max-width: 100% !important; /* 内容区域最大宽度调整 */
+        }
+    </style>
+
+    <!-- 注入 TOC 映射和当前页面信息 -->
+    
+
+<!-- TOC 映射和当前文档信息 -->
+<script>
+// 将 Python 字典转换为 JS 对象
+const TOC_TITLE_MAP = {"rst_rtos/0_ameba_product": "\u4ea7\u54c1\u4e2d\u5fc3", "rst_rtos/0_ameba_product/0_ameba_product_center_index_cn": "\u4ea7\u54c1\u4e2d\u5fc3", "rst_rtos/0_ameba_sdk": "Ameba SDK", "rst_rtos/0_ameba_sdk/0_ameba_sdks_index_cn": "Ameba SDK", "rst_rtos/0_ameba_solutions": "\u89e3\u51b3\u65b9\u6848", "rst_rtos/0_ameba_solutions/0_ameba_solutions_index_cn": "\u89e3\u51b3\u65b9\u6848", "rst_rtos/0_at_command": "0.8 AT \u547d\u4ee4\u96c6", "rst_rtos/0_at_command/0_at_command_index_cn": "0.8 AT \u547d\u4ee4\u96c6", "rst_rtos/0_build_system": "0.3 \u6784\u5efa\u7cfb\u7edf", "rst_rtos/0_build_system/0_build_system_index_cn": "0.3 \u6784\u5efa\u7cfb\u7edf", "rst_rtos/0_file_system": "0.9 \u865a\u62df\u6587\u4ef6\u7cfb\u7edf", "rst_rtos/0_file_system/0_vfs_index_cn": "0.9 \u865a\u62df\u6587\u4ef6\u7cfb\u7edf", "rst_rtos/0_ftl": "0.a Flash \u8f6c\u6362\u5c42", "rst_rtos/0_ftl/0_ftl_index_cn": "0.a Flash \u8f6c\u6362\u5c42", "rst_rtos/0_gcc_build_environment": "0.1 GCC \u7f16\u8bd1\u73af\u5883", "rst_rtos/0_gcc_build_environment/0_gcc_build_index_cn": "0.1 GCC \u7f16\u8bd1\u73af\u5883", "rst_rtos/0_gdb_debug": "0.2 GDB \u8c03\u8bd5", "rst_rtos/0_gdb_debug/0_gdb_debug_index_cn": "0.2 GDB \u8c03\u8bd5", "rst_rtos/0_memory_layout": "0.5 Flash \u548c RAM \u5e03\u5c40", "rst_rtos/0_memory_layout/0_layout_index_cn": "0.5 Flash \u548c RAM \u5e03\u5c40", "rst_rtos/0_sdk_example": "0.4 SDK \u793a\u4f8b", "rst_rtos/0_sdk_example/0_sdk_example_index_cn": "0.4 SDK \u793a\u4f8b", "rst_rtos/0_tools": "0.7 \u5de5\u5177", "rst_rtos/0_tools/0_tools_index_cn": "0.7 \u5de5\u5177", "rst_rtos/0_user_config": "0.6 \u5f00\u53d1\u8005\u914d\u7f6e", "rst_rtos/0_user_config/0_usrcfg_index_cn": "0.6 \u5f00\u53d1\u8005\u914d\u7f6e", "rst_rtos/10_api_docs": "2.6 Wi-Fi API \u53c2\u8003", "rst_rtos/10_api_docs/0_api_index_cn": "2.6 Wi-Fi API \u53c2\u8003", "rst_rtos/1_boot_process": "1.1 \u542f\u52a8\u8fc7\u7a0b", "rst_rtos/1_boot_process/0_boot_index_cn": "1.1 \u542f\u52a8\u8fc7\u7a0b", "rst_rtos/1_chipen": "1.4 \u82af\u7247\u4f7f\u80fd", "rst_rtos/1_chipen/0_chipen_index_cn": "1.4 \u82af\u7247\u4f7f\u80fd", "rst_rtos/1_gpio": "1.7 GPIO \u548c\u5f15\u811a\u63a7\u5236", "rst_rtos/1_gpio/0_gpio_index_cn": "1.7 GPIO \u548c\u5f15\u811a\u63a7\u5236", "rst_rtos/1_ipc": "1.5 \u6838\u95f4\u901a\u4fe1", "rst_rtos/1_ipc/0_ipc_index_cn": "1.5 \u6838\u95f4\u901a\u4fe1", "rst_rtos/1_mpu_cache": "1.0 \u5185\u5b58\u7ba1\u7406\u548c\u7f13\u5b58", "rst_rtos/1_mpu_cache/0_mpu_cache_index_cn": "1.0 \u5185\u5b58\u7ba1\u7406\u548c\u7f13\u5b58", "rst_rtos/1_ota": "1.2 \u56fa\u4ef6\u5347\u7ea7\uff08OTA\uff09", "rst_rtos/1_ota/0_ota_index_cn": "1.2 \u56fa\u4ef6\u5347\u7ea7\uff08OTA\uff09", "rst_rtos/1_otpc": "1.3 OTP\u5b58\u50a8\u5668", "rst_rtos/1_otpc/0_otpc_index_cn": "1.3 OTP\u5b58\u50a8\u5668", "rst_rtos/1_pinmux": "1.6 \u5f15\u811a\u590d\u7528", "rst_rtos/1_pinmux/0_pinmux_index_cn": "1.6 \u5f15\u811a\u590d\u7528", "rst_rtos/1_power_save": "1.9 \u4f4e\u529f\u8017\u5f00\u53d1", "rst_rtos/1_power_save/0_ps_index_cn": "1.9 \u4f4e\u529f\u8017\u5f00\u53d1", "rst_rtos/2_whc_fullmac": "2.2 WHC FullMAC", "rst_rtos/2_whc_fullmac/0_fullmac_index_cn": "2.2 WHC FullMAC", "rst_rtos/2_whc_wifi_bridge": "2.1 WHC Bridge", "rst_rtos/2_whc_wifi_bridge/0_wifi_bridge_index_cn": "2.1 WHC Bridge", "rst_rtos/2_wifi_adaptivity_test": "2.5 Wi-Fi Adaptivity \u6d4b\u8bd5\u6307\u5357", "rst_rtos/2_wifi_adaptivity_test/0_wifi_adaptivity_index_cn": "2.5 Wi-Fi Adaptivity \u6d4b\u8bd5\u6307\u5357", "rst_rtos/2_wifi_basic": "2.0 Wi-Fi \u57fa\u7840\u6a21\u5f0f", "rst_rtos/2_wifi_basic/0_wifi_basic_index_cn": "2.0 Wi-Fi \u57fa\u7840\u6a21\u5f0f", "rst_rtos/2_wifi_csi": "2.4 Wi-Fi CSI", "rst_rtos/2_wifi_csi/0_wifi_csi_index_cn": "2.4 Wi-Fi CSI", "rst_rtos/2_wifi_tunnel": "2.3 Wi-Fi R-Mesh", "rst_rtos/2_wifi_tunnel/0_wifi_tunnel_index_cn": "2.3 Wi-Fi R-Mesh", "rst_rtos/3_ap_trustzone": "3.d AP \u5b89\u5168\u670d\u52a1", "rst_rtos/3_ap_trustzone/0_ap_tz_index_cn": "3.d AP \u5b89\u5168\u670d\u52a1", "rst_rtos/3_crypto_engine": "3.9 \u5bf9\u79f0\u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_crypto_engine/0_crypto_engine_index_cn": "3.9 \u5bf9\u79f0\u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_ecdsa_engine": "3.a ECDSA \u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_ecdsa_engine/0_ecdsa_index_cn": "3.a ECDSA \u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_eddsa_engine": "3.b EDDSA \u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_eddsa_engine/0_eddsa_index_cn": "3.b EDDSA \u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_rsa_engine": "3.c RSA \u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_rsa_engine/0_rsa_index_cn": "3.c RSA \u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_security": "3.1 \u5b89\u5168\u4e0e\u52a0\u5bc6", "rst_rtos/3_security/0_security_index_cn": "3.1 \u5b89\u5168\u4e0e\u52a0\u5bc6", "rst_rtos/3_trng": "3.2 \u771f\u968f\u673a\u6570\u53d1\u751f\u5668", "rst_rtos/3_trng/0_trng_index_cn": "3.2 \u771f\u968f\u673a\u6570\u53d1\u751f\u5668", "rst_rtos/4_ai": "4.1 \u4eba\u5de5\u667a\u80fd", "rst_rtos/4_ai/0_ai_index_cn": "4.1 \u4eba\u5de5\u667a\u80fd", "rst_rtos/4_ai_voice": "4.2 \u8bed\u97f3\u8bc6\u522b", "rst_rtos/4_ai_voice/0_ai_voice_index_cn": "4.2 \u8bed\u97f3\u8bc6\u522b", "rst_rtos/4_dsp": "4.4 DSP \u4f7f\u7528\u6307\u5357", "rst_rtos/4_dsp/0_dsp_index_cn": "4.4 DSP \u4f7f\u7528\u6307\u5357", "rst_rtos/4_multimedia": "4.3 \u591a\u5a92\u4f53", "rst_rtos/4_multimedia/0_multimedia_index_cn": "4.3 \u591a\u5a92\u4f53", "rst_rtos/6_mass_production": "6.1 \u6279\u91cf\u751f\u4ea7", "rst_rtos/6_mass_production/0_mp_index_cn": "6.1 \u6279\u91cf\u751f\u4ea7", "rst_rtos/6_mptools": "6.2 \u4ea7\u6d4b\u5de5\u5177", "rst_rtos/6_mptools/0_mptools_index_cn": "6.2 \u4ea7\u6d4b\u5de5\u5177", "rst_rtos/7_usb": "7.1 USB \u4e3b\u673a\u4e0e\u8bbe\u5907", "rst_rtos/7_usb/0_usb_index_cn": "7.1 USB \u4e3b\u673a\u4e0e\u8bbe\u5907", "rst_rtos/8_adc": "8.4 \u6a21\u6570\u8f6c\u6362\u5668", "rst_rtos/8_adc/0_adc_index_cn": "8.4 \u6a21\u6570\u8f6c\u6362\u5668", "rst_rtos/8_cap_touch": "8.7 Cap-Touch", "rst_rtos/8_cap_touch/0_cap_touch_index_cn": "8.7 Cap-Touch", "rst_rtos/8_dmac": "8.1 DMA \u63a7\u5236\u5668", "rst_rtos/8_dmac/0_dmac_index_cn": "8.1 DMA \u63a7\u5236\u5668", "rst_rtos/8_ir": "8.5 \u7ea2\u5916\u6536\u53d1\u5668", "rst_rtos/8_ir/0_ir_index_cn": "8.5 \u7ea2\u5916\u6536\u53d1\u5668", "rst_rtos/8_key_scan": "8.8 Key-Scan", "rst_rtos/8_key_scan/0_key_scan_index_cn": "8.8 Key-Scan", "rst_rtos/8_lcdc": "8.a LCD \u63a7\u5236\u5668", "rst_rtos/8_lcdc/0_lcdc_index_cn": "8.a LCD \u63a7\u5236\u5668", "rst_rtos/8_ledc": "8.6 LED \u63a7\u5236\u5668", "rst_rtos/8_ledc/0_ledc_index_cn": "8.6 LED \u63a7\u5236\u5668", "rst_rtos/8_psram": "8.2 PSRAM", "rst_rtos/8_psram/0_psram_index_cn": "8.2 PSRAM", "rst_rtos/8_rtc_io": "8.9 RTC-IO", "rst_rtos/8_rtc_io/0_rtc_io_index_cn": "8.9 RTC-IO", "rst_rtos/8_thermal": "8.3 \u6e29\u5ea6\u6d4b\u91cf", "rst_rtos/8_thermal/0_thermal_index_cn": "8.3 \u6e29\u5ea6\u6d4b\u91cf"};
+console.log("TOC_TITLE_MAP:", TOC_TITLE_MAP);
+
+// 获取当前页面的文档名 (例如 'rst_rtos/3_nda_secure_boot/0_secure_boot_index_nda')
+const CURRENT_DOCNAME = 'rst_rtos/1_power_save/1_ps_toprst_cn';
+
+// 动态查找顶级分类函数（定义为全局函数）
+window.findTopLevelChapter = function(docname) {
+    console.log("Attempting to find top-level chapter for:", docname);
+    let bestMatch = "";
+    let bestTitle = "Unknown Chapter";
+
+    // 按路径长度降序排序以确保最长匹配
+    const sortedPaths = Object.keys(TOC_TITLE_MAP).sort((a, b) => b.length - a.length);
+
+    for (const path of sortedPaths) {
+        console.log("Checking path:", path);
+        if (docname === path || docname.startsWith(path + '/')) { // 子页面
+            bestMatch = path;
+            bestTitle = TOC_TITLE_MAP[path];
+            console.log("Matched path:", path, "with title:", bestTitle);
+            break;
+        }
+    }
+
+    // 如果没有找到任何匹配项，则尝试更短的路径
+    if (bestMatch === "") {
+        const pathSegments = docname.split('/');
+        while (pathSegments.length > 1) { // 至少保留根路径
+            const candidate = pathSegments.join('/');
+            console.log("Checking shorter path:", candidate);
+            if (TOC_TITLE_MAP[candidate]) {
+                bestTitle = TOC_TITLE_MAP[candidate];
+                console.log("Matched shorter path:", candidate, "with title:", bestTitle);
+                break;
+            }
+            pathSegments.pop();
+        }
+    }
+
+    console.log("Final top-level chapter:", bestTitle);
+    return bestTitle;
+}
+
+// 初始化时调用
+document.addEventListener('DOMContentLoaded', function() {
+    const topLevelChapter = findTopLevelChapter(CURRENT_DOCNAME);
+    console.log("Top Level Chapter:", topLevelChapter);
+
+    // 将顶级分类插入到DOM中（根据需要）
+    const chapterElement = document.createElement('div');
+    chapterElement.className = 'top-level-chapter';
+    chapterElement.innerHTML = `<strong>Top Level Chapter: </strong>${topLevelChapter}`;
+    document.body.appendChild(chapterElement);
+});
+</script>
+
+    
+
+    <!-- 左上角标题距离控制：Ameba IoT Docs -->
+    <style>
+        /* 新增的标题间距调整样式（添加在此处） */
+        div[role="navigation"] > div[role="search"] {
+            margin-bottom: 4px !important;
+        }
+
+        a.icon.icon-home {
+            display: inline-block;
+            margin-bottom: 2px !important;
+        }
+    </style>
+
+    <!-- 引入功能模块 -->
+    
+    
+<script>
+    /* ====================== 嵌入式配置开始 ====================== */
+    const embeddedConfig = {
+        "freertos": {
+            "name": "FreeRTOS",
+            "languages": {
+                "en": ["latest"],
+                "cn": ["latest"]
+            }
+        },
+        "linux": {
+            "name": "Linux",
+            "languages": {
+                "en": ["latest"],
+                "cn": ["latest"]
+            }
+        }
+    };
+    /* ====================== 嵌入式配置结束 ====================== */
+</script>
+
+<script>
+    // 获取OS显示名称列表
+    function getOSNames(data) {
+        return Object.keys(data).map(key => data[key].name);
+    }
+
+    // 获取指定OS的语言列表
+    function getLanguages(data, osKey) {
+        return Object.keys(data[osKey]?.languages || {});
+    }
+
+    // 获取指定OS和语言的版本列表
+    function getVersions(data, osKey, language) {
+        return data[osKey]?.languages?.[language] || ['latest'];
+    }
+
+    // 根据显示名称查找OS键
+    function findOSKey(data, displayName) {
+        return Object.keys(data).find(key => data[key].name === displayName);
+    }
+
+    // 获取基础URL路径
+    function getBaseURL() {
+        const url = new URL(window.location.href);
+        console.log('[DEBUG] getBaseURL:');
+
+        if (url.protocol === 'file:') {
+            // 本地路径处理
+            const pathParts = url.pathname.split('/').filter(part => part !== '');
+            const index = pathParts.indexOf('build');
+            console.log('[DEBUG] getBaseURL0:', pathParts.slice(0, index + 1).join('/'));
+            return `file://${pathParts.slice(0, index + 1).join('/')}/`;
+        } else {
+            // 网络路径处理
+            const basePath = url.pathname.split('/')[1]; // 直接取第一个有效路径段
+            console.log('[DEBUG] getBaseURL:', url.origin, basePath);
+            return `${url.origin}/${basePath}/`;
+        }
+    }
+
+    // 获取当前URL路径分段
+    function getCurrentSegments() {
+        const url = new URL(window.location.href);
+        let segments = url.pathname.split('/').filter(segment => segment);
+
+
+        console.log('[DEBUG] getCurrentSegments:');
+
+        if (url.protocol === 'file:') {
+            // 本地路径处理
+            const index = segments.indexOf('build');
+            segments = segments.slice(index + 1); // 去掉 build 及之前的路径
+            console.log('[DEBUG] getCurrentSegments0:', segments);
+        } else {
+            // 网络路径处理
+            segments = segments.slice(1); // 去掉 ameba-iot-docs/
+            console.log('[DEBUG] getCurrentSegments:', segments);
+        }
+
+        return {
+            osKey: segments[0] || 'freertos', // 默认为 freertos
+            language: segments[1] || 'en',   // 默认为 en
+            version: segments[2] || 'latest' // 默认为 latest
+        };
+    }
+
+    // 绑定事件监听
+    function bindEvents(baseURL, segments) {
+        document.getElementById('os-selector').addEventListener('change', () => {
+            const newOSKey = document.getElementById('os-selector').value;
+            const availableLangs = getLanguages(embeddedConfig, newOSKey);
+            const defaultLang = availableLangs[0] || 'en';
+            const defaultVersion = getVersions(embeddedConfig, newOSKey, defaultLang)[0] || 'latest';
+            console.log('OS Changed:', {newOSKey, defaultLang, defaultVersion});
+            redirectTo(`${baseURL}${newOSKey}/${defaultLang}/${defaultVersion}/`);
+        });
+
+        document.getElementById('language-selector').addEventListener('change', () => {
+            const newLang = document.getElementById('language-selector').value;
+            const defaultVersion = getVersions(embeddedConfig, segments.osKey, newLang)[0] || 'latest';
+            console.log('Language Changed:', {newLang, defaultVersion});
+            redirectTo(`${baseURL}${segments.osKey}/${newLang}/${defaultVersion}/`);
+        });
+
+        document.getElementById('version-selector').addEventListener('change', () => {
+            const newVer = document.getElementById('version-selector').value;
+            console.log('Version Changed:', {newVer});
+            redirectTo(`${baseURL}${segments.osKey}/${segments.language}/${newVer}/`);
+        });
+    }
+
+    // 跳转函数
+    function redirectTo(path) {
+        const url = new URL(path, window.location.href);
+        if (url.protocol === 'file:') {
+            url.pathname += 'index.html';
+        }
+        console.log('Redirecting to:', url.href);
+        window.location.href = url.href;
+    }
+</script>
+
+<script>
+    // 验证并修正路径参数
+    function validateSegments(segments) {
+        const currentOSName = embeddedConfig[segments.osKey]?.name;
+
+        // 如果 OS 无效，默认设置为 FreeRTOS
+        if (!currentOSName) {
+            console.warn("Invalid OS key, defaulting to FreeRTOS");
+            segments.osKey = 'freertos';
+        }
+
+        // 如果语言无效，默认设置为 en
+        if (!getLanguages(embeddedConfig, segments.osKey).includes(segments.language)) {
+            console.warn("Invalid language, defaulting to en");
+            segments.language = 'en';
+        }
+
+        return segments;
+    }
+
+    // 设置初始选中值
+    function setInitialValues(segments) {
+        document.getElementById('os-selector').value = segments.osKey;
+        document.getElementById('language-selector').value = segments.language;
+
+        const versionSelector = document.getElementById('version-selector');
+        const availableVersions = getVersions(embeddedConfig, segments.osKey, segments.language);
+        versionSelector.value = availableVersions.includes(segments.version) ? segments.version : availableVersions[0] || 'latest';
+    }
+</script>
+
+<style>
+    .selectors-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr); /* 三列等宽 */
+        gap: 4px;
+        padding: 1px 1px;
+
+        margin-top: var(--root-margin-top, 4px);
+        margin-bottom: var(--root-margin-bottom, 0px);
+    }
+
+    .dual-selector-group {
+        display: grid;
+        grid-template-columns: 1fr 1fr; /* 两列等宽 */
+        gap: 4px; /* 列间距 */
+    }
+
+    .selector-group {
+        position: relative;
+        width: 100%; /* 确保填满网格列 */
+    }
+
+    .selector-label {
+        display: block;
+        color: #a0b3c6;
+        font-size: 0.85em;
+        margin-bottom: 4px;
+        padding-left: 4px;
+    }
+
+    .selector-dropdown {
+        width: 100%;
+        margin-top: var(--root-margin-top, 4px);
+        margin-bottom: var(--root-margin-bottom, 0px);
+        padding: 2px 2px;
+        border: 2px white !important;
+        border-radius: 6px !important;
+        background: #627078 !important;
+        color: white;
+        font-size: 0.95em;
+        transition: all 0.3s ease;
+        appearance: none;
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23a0b3c6'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right 10px center;
+        background-size: 16px;
+        display: flex;
+        height: 30px;
+
+        box-shadow: none !important; /* 不要边框阴影 */
+        outline: none !important; /* 不要边框阴影 */
+    }
+
+    .selector-dropdown:hover {
+        border-color: #4a6a8b;
+        background-color: rgba(44, 62, 80, 1);
+        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    .selector-dropdown:focus {
+        outline: none;
+        border-color: #3498db;
+        box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+    }
+
+    /* 移动端优化 */
+    @media (max-width: 768px) {
+        .selectors-grid {
+            grid-template-columns: 1fr; /* 小屏幕下堆叠显示 */
+            gap: 10px;
+        }
+
+        .selector-dropdown {
+            padding: 10px 12px;
+        }
+
+        .dual-selector-group {
+            grid-template-columns: 1fr; /* 小屏幕下堆叠显示 */
+        }
+    }
+</style>
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+    
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Ameba IoT Docs
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+    <!-- templates/sidebar_toggle.html -->
+
+
+<div id="topleft-panel" style="display: block !important; padding: 0; background: none; border: none;"></div>
+
+
+<div class="bottomleft-panel"></div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        try {
+            const segments = validateSegments(getCurrentSegments());
+            const baseURL = getBaseURL();
+
+            // 渲染HTML
+            document.getElementById('topleft-panel').innerHTML = `
+<!-- templates/sidebar_user_panel_div.html -->
+
+
+<!-- templates/sidebar_user_panel_div_docselect.html -->
+
+<div class="selectors-grid">
+    <!-- 系统选择器 -->
+    <div class="selector-group">
+        <select id="os-selector" class="selector-dropdown">
+            ${Object.keys(embeddedConfig).map(key => `
+                <option value="${key}">${embeddedConfig[key].name}</option>
+            `).join('')}
+        </select>
+    </div>
+
+    <!-- 语言选择器 -->
+    <div class="selector-group">
+        <select id="language-selector" class="selector-dropdown">
+            ${getLanguages(embeddedConfig, segments.osKey).map(lang => `
+                <option value="${lang}">${lang === 'en' ? 'en' : 'cn'}</option>
+            `).join('')}
+        </select>
+    </div>
+
+    <!-- 版本选择器 -->
+    <div class="selector-group">
+        <select id="version-selector" class="selector-dropdown">
+            ${getVersions(embeddedConfig, segments.osKey, segments.language).map(ver => `
+                <option value="${ver}">${ver}</option>
+            `).join('')}
+        </select>
+    </div>
+</div>
+
+<div class="user-panel-container">
+    <div class="user-panel">
+        
+
+    </div>
+</div>`;
+
+            // 设置初始值
+            setInitialValues(segments);
+
+            // 绑定事件
+            bindEvents(baseURL, segments);
+
+            // 将 user-panel 移动到 bottomleft-panel 内
+            const userPanel = document.querySelector('.user-panel');
+            const bottomleftPanel = document.querySelector('.bottomleft-panel');
+            if (userPanel && bottomleftPanel) {
+                bottomleftPanel.appendChild(userPanel); // 直接添加为子元素
+            }
+        } catch (error) {
+            console.error("Error initializing selectors:", error);
+        }
+    });
+</script>
+
+<style>
+    #topleft-panel {
+        background: rgba(40, 58, 73, 0.9);
+        border-radius: 4px;
+        padding: 4px;
+        margin: 4px 0;
+        box-shadow: 0 4px 4px rgba(0,0,0,0.15);
+        backdrop-filter: blur(4px);
+    }
+
+    /* 移动端优化 */
+    @media (max-width: 768px) {
+        #topleft-panel {
+            margin: 8px 0;
+            padding: 10px;
+        }
+    }
+</style>
+
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../0_ameba_product/0_ameba_product_center_index_cn.html">产品中心</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_ameba_sdk/0_ameba_sdks_index_cn.html">Ameba SDK</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_ameba_solutions/0_ameba_solutions_index_cn.html">解决方案</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_gcc_build_environment/0_gcc_build_index_cn.html">0.1 GCC 编译环境</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_gdb_debug/0_gdb_debug_index_cn.html">0.2 GDB 调试</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_build_system/0_build_system_index_cn.html">0.3 构建系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_sdk_example/0_sdk_example_index_cn.html">0.4 SDK 示例</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_memory_layout/0_layout_index_cn.html">0.5 Flash 和 RAM 布局</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_user_config/0_usrcfg_index_cn.html">0.6 开发者配置</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_tools/0_tools_index_cn.html">0.7 工具</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_at_command/0_at_command_index_cn.html">0.8 AT 命令集</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_file_system/0_vfs_index_cn.html">0.9 虚拟文件系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../0_ftl/0_ftl_index_cn.html">0.a Flash 转换层</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_mpu_cache/0_mpu_cache_index_cn.html">1.0 内存管理和缓存</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_boot_process/0_boot_index_cn.html">1.1 启动过程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_ota/0_ota_index_cn.html">1.2 固件升级（OTA）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_otpc/0_otpc_index_cn.html">1.3 OTP存储器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_chipen/0_chipen_index_cn.html">1.4 芯片使能</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_ipc/0_ipc_index_cn.html">1.5 核间通信</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_pinmux/0_pinmux_index_cn.html">1.6 引脚复用</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_gpio/0_gpio_index_cn.html">1.7 GPIO 和引脚控制</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="0_ps_index_cn.html">1.9 低功耗开发</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">电源管理架构</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">低功耗模式</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#freertos-tickless">FreeRTOS Tickless</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#wi-fi">Wi-Fi 低功耗</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">唤醒源</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sleep">进入 Sleep 模式</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#deep-sleep">进入 Deep-Sleep 模式</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id4">低功耗配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#api">低功耗相关 API</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#power-saving-wakelock-apis">唤醒锁 API</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pmu-acquire-wakelock">pmu_acquire_wakelock</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pmu-release-wakelock">pmu_release_wakelock</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pmu-acquire-deepwakelock">pmu_acquire_deepwakelock</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pmu-release-deepwakelock">pmu_release_deepwakelock</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#pmu-set-sysactive-time">pmu_set_sysactive_time</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id7">睡眠/唤醒回调 API</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pmu-register-sleep-callback">pmu_register_sleep_callback</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pmu-unregister-sleep-callback">pmu_unregister_sleep_callback</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#pmu-set-max-sleep-time">pmu_set_max_sleep_time</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id8">唤醒原因 API</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id9">唤醒时间</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#uart-loguart">UART 和 LOGUART</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../2_wifi_basic/0_wifi_basic_index_cn.html">2.0 Wi-Fi 基础模式</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_whc_wifi_bridge/0_wifi_bridge_index_cn.html">2.1 WHC Bridge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_whc_fullmac/0_fullmac_index_cn.html">2.2 WHC FullMAC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_wifi_tunnel/0_wifi_tunnel_index_cn.html">2.3 Wi-Fi R-Mesh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_wifi_csi/0_wifi_csi_index_cn.html">2.4 Wi-Fi CSI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_wifi_adaptivity_test/0_wifi_adaptivity_index_cn.html">2.5 Wi-Fi Adaptivity 测试指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../10_api_docs/0_api_index_cn.html">2.6 Wi-Fi API 参考</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_security/0_security_index_cn.html">3.1 安全与加密</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_trng/0_trng_index_cn.html">3.2 真随机数发生器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_crypto_engine/0_crypto_engine_index_cn.html">3.9 对称硬件加密引擎</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_ecdsa_engine/0_ecdsa_index_cn.html">3.a ECDSA 硬件加密引擎</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_eddsa_engine/0_eddsa_index_cn.html">3.b EDDSA 硬件加密引擎</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_rsa_engine/0_rsa_index_cn.html">3.c RSA 硬件加密引擎</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_ap_trustzone/0_ap_tz_index_cn.html">3.d AP 安全服务</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../4_ai/0_ai_index_cn.html">4.1 人工智能</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../4_ai_voice/0_ai_voice_index_cn.html">4.2 语音识别</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../4_multimedia/0_multimedia_index_cn.html">4.3 多媒体</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../4_dsp/0_dsp_index_cn.html">4.4 DSP 使用指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../6_mass_production/0_mp_index_cn.html">6.1 批量生产</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../6_mptools/0_mptools_index_cn.html">6.2 产测工具</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../7_usb/0_usb_index_cn.html">7.1 USB 主机与设备</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_dmac/0_dmac_index_cn.html">8.1 DMA 控制器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_psram/0_psram_index_cn.html">8.2 PSRAM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_thermal/0_thermal_index_cn.html">8.3 温度测量</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_adc/0_adc_index_cn.html">8.4 模数转换器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_ir/0_ir_index_cn.html">8.5 红外收发器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_ledc/0_ledc_index_cn.html">8.6 LED 控制器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_cap_touch/0_cap_touch_index_cn.html">8.7 Cap-Touch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_key_scan/0_key_scan_index_cn.html">8.8 Key-Scan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_rtc_io/0_rtc_io_index_cn.html">8.9 RTC-IO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../8_lcdc/0_lcdc_index_cn.html">8.a LCD 控制器</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Ameba IoT Docs</a>
+      </nav>
+
+      <div class="wy-nav-content">
+    
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="0_ps_index_cn.html">低功耗开发</a></li>
+      <li class="breadcrumb-item active">电源管理架构</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <span class="target" id="power-saving"></span><!-- 下拉菜单 -->
+<div style="margin: 20px 0; text-align: left;">
+    <div style="display: flex; align-items: center; gap: 10px;">
+        <span style="font-size: 14px;">IC: </span>
+        <select class="tab-selector" style="height: 22px; padding: 2px 8px; font-size: 13px;">
+            <option value="RTL8721Dx">RTL8721Dx</option>
+            <option value="RTL8720E">RTL8720E</option>
+            <option value="RTL8726E">RTL8726E</option>
+            <option value="RTL8730E">RTL8730E</option>
+        </select>
+    </div>
+</div>
+
+<!-- 修复后的 JavaScript -->
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const selector = document.querySelector('.tab-selector');
+
+    selector.addEventListener('change', function() {
+        const targetTab = this.value;
+        const tabs = document.querySelectorAll('.sphinx-tabs-tab');
+        let found = false;
+
+        tabs.forEach(tab => {
+            const tabText = tab.textContent.trim();
+            if (tabText === targetTab) {
+                tab.click();
+                window.dispatchEvent(new Event('resize')); // 触发插件更新
+                found = true;
+            }
+        });
+
+        if (!found) {
+            console.error("未找到选项卡:", targetTab);
+        }
+    });
+});
+</script><section id="id1">
+<h1>电源管理架构<a class="headerlink" href="#id1" title="Link to this heading"></a></h1>
+<p>SoC 搭载了先进的电源管理控制器（Power Management Controller，PMC），可灵活控制芯片不同电源域的上电时序，实现性能与功耗的最佳平衡。</p>
+<p>SoC 的数字系统中包含三个核心电源域：AON 域、SYSON 域和 SOC 域。不同省电模式下，各电源域的关断策略存在差异。</p>
+<p>Ameba 系列 SoC 的电源域和唤醒源如下所示：</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-0-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-0-0-0" name="0-0" role="tab" tabindex="0">RTL8721Dx</button><button aria-controls="panel-0-0-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-1" name="0-1" role="tab" tabindex="-1">RTL8726E</button><button aria-controls="panel-0-0-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-2" name="0-2" role="tab" tabindex="-1">RTL8720E</button><button aria-controls="panel-0-0-3" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-3" name="0-3" role="tab" tabindex="-1">RTL8730E</button></div><div aria-labelledby="tab-0-0-0" class="sphinx-tabs-panel" id="panel-0-0-0" name="0-0" role="tabpanel" tabindex="0"><figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/power_domains_and_wakeup_sources.svg"><img alt="../../_images/power_domains_and_wakeup_sources.svg" height="327" src="../../_images/power_domains_and_wakeup_sources.svg" width="967" /></a>
+</figure>
+</div><div aria-labelledby="tab-0-0-1" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-1" name="0-1" role="tabpanel" tabindex="0"><figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/lite_power_domains_and_wakeup_sources_dsp.svg"><img alt="../../_images/lite_power_domains_and_wakeup_sources_dsp.svg" height="291" src="../../_images/lite_power_domains_and_wakeup_sources_dsp.svg" width="993" /></a>
+</figure>
+</div><div aria-labelledby="tab-0-0-2" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-2" name="0-2" role="tabpanel" tabindex="0"><figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/lite_power_domains_and_wakeup_sources.svg"><img alt="../../_images/lite_power_domains_and_wakeup_sources.svg" height="291" src="../../_images/lite_power_domains_and_wakeup_sources.svg" width="993" /></a>
+</figure>
+</div><div aria-labelledby="tab-0-0-3" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-3" name="0-3" role="tabpanel" tabindex="0"><figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/smart_power_domains_and_wakeup_sources.svg"><img alt="../../_images/smart_power_domains_and_wakeup_sources.svg" height="327" src="../../_images/smart_power_domains_and_wakeup_sources.svg" width="967" /></a>
+</figure>
+</div></div>
+</section>
+<section id="id2">
+<h1>低功耗模式<a class="headerlink" href="#id2" title="Link to this heading"></a></h1>
+<p>Ameba SoC 支持两种低功耗模式：睡眠（Sleep）模式与深度睡眠（Deep-Sleep）模式。深度睡眠模式比睡眠模式关闭更多电源域，因此功耗更低。</p>
+<p>Tickless 是 FreeRTOS 的低功耗功能，当系统空闲时会暂停 CPU（不关闭时钟或电源）。睡眠模式流程和深度睡眠模式流程均基于 Tickless 实现。</p>
+<p>下表详细解释了省电相关术语：</p>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>模式</p></th>
+<th class="head"><p>AON 域</p></th>
+<th class="head"><p>SYSON 域</p></th>
+<th class="head"><p>SOC 域</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Tickless</p></td>
+<td><p>ON</p></td>
+<td><p>ON</p></td>
+<td><p>ON</p></td>
+<td><ul class="simple">
+<li><p>FreeRTOS 低功耗功能</p></li>
+<li><p>CPU 周期性进入 WFI 指令休眠，发生中断时唤醒</p></li>
+<li><p>射频状态可配置为关闭/周期性开启/持续开启（具体由应用场景决定）</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>Sleep</p></td>
+<td><p>ON</p></td>
+<td><p>ON</p></td>
+<td><p>时钟门控（CG）或电源门控（PG）</p></td>
+<td><ul class="simple">
+<li><p>芯片级省电模式，包含时钟门控与电源门控两种子模式</p></li>
+<li><p>退出睡眠模式时可恢复 CPU 堆栈状态</p></li>
+<li><p>系统 RAM 保持供电，数据不会丢失</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>Deep-Sleep</p></td>
+<td><p>ON</p></td>
+<td><p>OFF</p></td>
+<td><p>OFF</p></td>
+<td><ul class="simple">
+<li><p>芯片级深度省电模式</p></li>
+<li><p>退出深度睡眠模式时无法恢复 CPU 堆栈状态，需执行完整重启流程</p></li>
+<li><p>系统 RAM 供电被切断，数据不保留</p></li>
+<li><p>备份（retention）SRAM 保持供电</p></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="freertos-tickless">
+<h1>FreeRTOS Tickless<a class="headerlink" href="#freertos-tickless" title="Link to this heading"></a></h1>
+<p>FreeRTOS 的 <strong>Tickless</strong> 低功耗特性通过优先级最低的空闲任务实现，即当系统没有其他运行任务时触发。</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>与原生 FreeRTOS 不同，不依赖 <cite>xExpectedIdleTime</cite> 进行唤醒。</p>
+</div>
+<figure class="align-center" id="id10">
+<a class="reference internal image-reference" href="../../_images/freertos_tickless_in_an_idle_task.svg"><img alt="../../_images/freertos_tickless_in_an_idle_task.svg" height="327" src="../../_images/freertos_tickless_in_an_idle_task.svg" width="830" /></a>
+<figcaption>
+<p><span class="caption-text">空闲任务中的 FreeRTOS Tickless</span><a class="headerlink" href="#id10" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p>上图展示了空闲任务的代码流程。在空闲任务中，系统会检查睡眠条件（包括唤醒锁状态、系统活跃时间等，详见章节 <a class="reference internal" href="#power-saving-wakelock-apis"><span class="std std-ref">唤醒锁 API</span></a> 和 <a class="reference internal" href="#pmu-set-sysactive-time"><span class="std std-ref">pmu_set_sysactive_time</span></a>），以决定是否进入睡眠模式。</p>
+<ul class="simple">
+<li><p>当条件不满足时：CPU 执行 ARM <strong>WFI</strong> （等待中断）指令，使处理器挂起直至中断触发。通常由 SysTick 中断恢复运行，此模式称为 <strong>软件 Tickless</strong>。</p></li>
+<li><p>当条件满足时：执行函数 <code class="xref py py-func docutils literal notranslate"><span class="pre">freertos_pre_sleep_processing()</span></code> 进入睡眠模式或深度睡眠模式</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<ul class="simple">
+<li><p>即使设置了 FreeRTOS 时间控制机制（如软件定时器或 <cite>vTaskDelay</cite>），只要空闲任务被执行且满足条件，系统仍会进入睡眠模式。</p></li>
+<li><p>低功耗应用必须启用 <cite>configUSE_TICKLESS_IDLE</cite> 配置项，因为睡眠模式基于 Tickless 机制实现。</p></li>
+</ul>
+</div>
+</section>
+<section id="wi-fi">
+<h1>Wi-Fi 低功耗<a class="headerlink" href="#wi-fi" title="Link to this heading"></a></h1>
+<p>IEEE 802.11 省电管理允许站点自主进入睡眠状态，其核心规则为：</p>
+<ul class="simple">
+<li><p>站点必须在特定时间戳保持唤醒状态，其余时间可进入睡眠状态</p></li>
+<li><p>WLAN 驱动通过获取唤醒锁（Wakelock）阻止系统在需保持活跃时进入睡眠模式</p></li>
+<li><p>当允许休眠时，WLAN 驱动释放唤醒锁</p></li>
+</ul>
+<p>站点休眠期间无法接收任何数据帧，因此 AP 需缓存待传数据帧，站点需周期性唤醒检测信标帧。</p>
+<figure class="align-center" id="id11">
+<a class="reference internal image-reference" href="../../_images/timeline_of_power_saving.png"><img alt="../../_images/timeline_of_power_saving.png" src="../../_images/timeline_of_power_saving.png" style="width: 741.0px; height: 256.0px;" /></a>
+<figcaption>
+<p><span class="caption-text">省电模式时序图</span><a class="headerlink" href="#id11" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p>SDK中的实现模式如下：</p>
+<p>IEEE 802.11 power management is called LPS, and if NP enters sleep mode when Wi-Fi is in LPS mode, we call it WoWLAN mode.</p>
+<p>In WoWLAN mode, a timer with a period of about 102ms will be set in the suspend function.
+And LP will wake up every 102ms to receive the beacon to maintain the connection.</p>
+<p>Except for LPS and WoWLAN, we also have IPS, which can be used when Wi-Fi is not connected.
+The following tables list all three power-saving modes for Wi-Fi and the relationship between the system power mode and Wi-Fi power mode.</p>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>模式</p></th>
+<th class="head"><p>Wi-Fi 状态</p></th>
+<th class="head"><p>描述</p></th>
+<th class="head"><p>SDK</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>IPS</p></td>
+<td><p>未关联：</p>
+<ul class="simple">
+<li><p>RF/BB/MAC 全关闭</p></li>
+</ul>
+</td>
+<td><p>Wi-Fi 驱动自动关闭 Wi-Fi 模块</p></td>
+<td><p>默认启用 IPS 模式，强烈不建议禁用</p></td>
+</tr>
+<tr class="row-odd"><td><p>LPS</p></td>
+<td><p>已关联：</p>
+<ul class="simple">
+<li><p>RF 周期性开关</p></li>
+<li><p>MAC/BB 保持常开</p></li>
+</ul>
+</td>
+<td><p>LPS 模式用于实现 IEEE 802.11 省电管理</p>
+<p>NP 基于信标的 TSF 和 TIM IE 控制射频的开关</p>
+</td>
+<td><p>默认启用 LPS 模式，可通过 API</p>
+<p><code class="xref py py-func docutils literal notranslate"><span class="pre">wifi_set_lps_enable()</span></code> 禁用</p>
+</td>
+</tr>
+<tr class="row-even"><td><p>WoWLAN</p></td>
+<td><p>已关联：</p>
+<ul class="simple">
+<li><p>RF/BB 周期性开关</p></li>
+<li><p>MAC 周期性进入/退出 CG/PG</p></li>
+</ul>
+</td>
+<td><p>NP 在每次信标提前中断时被唤醒，以接收来自关联 AP 的信标帧</p>
+<p>当接收到数据包时，NP 将触发 AP 唤醒流程</p>
+</td>
+<td><p>默认启用 WoWLAN 模式</p></td>
+</tr>
+</tbody>
+</table>
+<p>系统功耗模式和 Wi-Fi 功耗模式之间的关系如下表所示：</p>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>系统功耗模式</p></th>
+<th class="head"><p>Wi-Fi 功耗模式</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td rowspan="2"><p>Active</p></td>
+<td><p>IPS</p></td>
+<td><p>Wi-Fi 已开启但未建立连接</p></td>
+</tr>
+<tr class="row-odd"><td><p>LPS</p></td>
+<td><p>Wi-Fi 已连接并进入 IEEE 802.11 省电管理模式</p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><p>Sleep</p></td>
+<td><p>Wi-Fi 关闭/IPS</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>WoWLAN</p></td>
+<td><p>Wi-Fi 保持关联状态</p></td>
+</tr>
+<tr class="row-even"><td><p>Deep-Sleep</p></td>
+<td><p>Wi-Fi 关闭</p></td>
+<td><p>需保持 Wi-Fi 持续在线或关联的场景，不推荐使用 Deep-Sleep 模式</p></td>
+</tr>
+</tbody>
+</table>
+<p>启用/禁用 LPS 的 API 如下：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">wifi_set_lps_enable</span><span class="p">(</span><span class="n">u8</span><span class="w"> </span><span class="n">enable</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>参数说明：</p>
+<dl class="field-list simple">
+<dt class="field-odd">TRUE<span class="colon">:</span></dt>
+<dd class="field-odd"><p>启用 LPS</p>
+</dd>
+<dt class="field-even">FALSE<span class="colon">:</span></dt>
+<dd class="field-even"><p>禁用 LPS</p>
+</dd>
+</dl>
+<p>当 Wi-Fi 已连接且系统进入睡眠模式时，将周期性进入 WoWLAN 模式。此模式下，KM0 以固定周期唤醒来接收信标帧维持连接，这会导致一定的功耗。</p>
+<p>若需进一步降低睡眠模式下的系统功耗，且应用中无须 Wi-Fi 功能，建议关闭 Wi-Fi 模块或者选择 Wi-Fi IPS 模式。</p>
+</section>
+<section id="id3">
+<h1>唤醒源<a class="headerlink" href="#id3" title="Link to this heading"></a></h1>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-1-1-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-1-1-0" name="1-0" role="tab" tabindex="0">RTL8721Dx</button><button aria-controls="panel-1-1-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-1-1-1" name="1-1" role="tab" tabindex="-1">RTL8726E</button><button aria-controls="panel-1-1-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-1-1-2" name="1-2" role="tab" tabindex="-1">RTL8720E</button><button aria-controls="panel-1-1-3" aria-selected="false" class="sphinx-tabs-tab" id="tab-1-1-3" name="1-3" role="tab" tabindex="-1">RTL8730E</button></div><div aria-labelledby="tab-1-1-0" class="sphinx-tabs-panel" id="panel-1-1-0" name="1-0" role="tabpanel" tabindex="0"><p>在不同低功耗模式下，可用于唤醒系统的唤醒源如下表所示：</p>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>唤醒源</p></th>
+<th class="head"><p>Sleep CG</p></th>
+<th class="head"><p>Sleep PG</p></th>
+<th class="head"><p>Deep-Sleep</p></th>
+<th class="head"><p>限制</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>WLAN</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p>X</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>BT</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p>X</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>IPC</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p>X</p></td>
+<td><p>仅 KM0 可通过 IPC 唤醒 KM4</p></td>
+</tr>
+<tr class="row-odd"><td><p>Basic Timer4~7</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p>X</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>PMC Timer</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p>X</p></td>
+<td><p>仅内部使用</p></td>
+</tr>
+<tr class="row-odd"><td><p>UART0~2</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p>X</p></td>
+<td><p>当使用 UART 作为唤醒源时：</p>
+<ul class="simple">
+<li><p>Rx 的时钟源只能是 OSC2M，且在睡眠期间禁止关闭 OSC4M</p></li>
+<li><p>当波特率大于 115200bps 时，不建议使用 UART 作为唤醒源</p></li>
+<li><p>当唤醒指令超过 64 字节 FIFO 深度时，超出的部分会丢失</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>LOGUART</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p>X</p></td>
+<td><p>当使用 LOGUART 作为唤醒源时：</p>
+<ul class="simple">
+<li><p>如果 Rx 的时钟源是 XTAL40M，在睡眠期间禁止关闭 XTAL 或 OSC4M</p></li>
+<li><p>如果 Rx 的时钟源是 OSC2M，在睡眠期间禁止关闭 OSC4M</p></li>
+<li><p>当唤醒指令超过 16 字节 FIFO 深度时，超出的部分会丢失</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>GPIO</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p>X</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>I2C</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p>X</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>CAP_TOUCH</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p>X</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>ADC</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p>X</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>SDIO</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p>X</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>Key-Scan</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p>X</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>BOR</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>PWR_DOWN</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>AON_TIMER</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>AON_WAKEPIN</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>RTC</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div><div aria-labelledby="tab-1-1-1" class="sphinx-tabs-panel" hidden="true" id="panel-1-1-1" name="1-1" role="tabpanel" tabindex="0"><p>A hardware SYSON power management control module (SYSON PMC) is designed to control the clock and power of NP, and then NP controls the clock and power of AP.
+When the system enters sleep mode, CPUs can select to enter clock-gating (CG) or power-gating (PG) mode, while SYSON PMC maintained active to wake up NP when wakeup sources are triggered.</p>
+<p>Sleep and wakeup flow of sleep mode can be described as:</p>
+<ul class="simple">
+<li><p>In terms of sleep flow, NP helps close the clock or power of AP and DSP, and SYSON PMC helps close the clock or power of NP.</p></li>
+<li><p>In terms of wakeup flow, SYSON PMC helps open the clock or power of NP, and NP helps open the power or clock of AP and DSP.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<ul class="simple">
+<li><p>Both KM4 and KR4 can be configured as NP. If KR4 is configured as NP, KM4 is considered as AP.</p></li>
+<li><p>The mode of memory is configurable when the system enters sleep mode. The retention mode is recommended for the balance between power saving and data retention.</p></li>
+</ul>
+</div>
+<p>In deep-sleep mode, only the memory in AON domain can be maintained, while memory in other domains will be shut down. So CPU cannot restore the stack status.</p>
+<p>Various wakeup sources are provided and every wakeup source can be configured to wake up NP or AP according to user’s requirement.
+AON is special because it is mater switch that manages all the wake-up sources in AON domain. Only wakeup sources in AON domain can wake up the system from deep-sleep mode.</p>
+<p>The following table lists the wakeup sources that can be used to wake up the system under different power modes.</p>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Wakeup source</p></th>
+<th class="head"><p>Sleep CG</p></th>
+<th class="head"><p>Sleep PG</p></th>
+<th class="head"><p>Deep-Sleep</p></th>
+<th class="head"><p>Restriction</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>WLAN</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p>X</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>BT</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p>X</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>IWDG</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p>X</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>IPC</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p>X</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>Basic Timer</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p>X</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>UART</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p>X</p></td>
+<td><ul class="simple">
+<li><p>When using UART as a wakeup source, if the Rx clock source is XTAL40M, do not turn off XTAL during sleep.</p></li>
+<li><p>The portion of the command used to wake up that exceeds the FIFO depth (64B) will be lost.</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>LOGUART</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p>X</p></td>
+<td><ul class="simple">
+<li><p>When using LOGUART as a wakeup source, if the Rx clock source is XTAL40M, do not turn off XTAL during sleep.</p></li>
+<li><p>The portion of the command used to wake up that exceeds the FIFO depth (16B) will be lost.</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>GPIO</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p>X</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>SPI</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p>X</p></td>
+<td><ul class="simple">
+<li><p>When using SPI as a wakeup source, do not turn off the power and clock of SOC domain.</p></li>
+<li><p>Only when the NP core is active and AP core is sleep, NP can use the SPI to wake up AP.</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>CAP_TOUCH</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p>X</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>ADC</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p>X</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>VAD</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p>X</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>BOR</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>PWR_DOWN</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>AON_TIMER</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>AON_WAKEPIN</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>RTC</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div><div aria-labelledby="tab-1-1-2" class="sphinx-tabs-panel" hidden="true" id="panel-1-1-2" name="1-2" role="tabpanel" tabindex="0"><p>A hardware SYSON power management control module (SYSON PMC) is designed to control the clock and power of NP, and then NP controls the clock and power of AP.
+When the system enters sleep mode, CPUs can select to enter clock-gating (CG) or power-gating (PG) mode, while SYSON PMC maintained active to wake up NP when wakeup sources are triggered.</p>
+<p>Sleep and wakeup flow of sleep mode can be described as:</p>
+<ul class="simple">
+<li><p>In terms of sleep flow, NP helps close the clock or power of AP, and SYSON PMC helps close the clock or power of NP.</p></li>
+<li><p>In terms of wakeup flow, SYSON PMC helps open the clock or power of NP, and NP helps open the power or clock of AP.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<ul class="simple">
+<li><p>Both KM4 and KR4 can be configured as NP. If KR4 is configured as NP, KM4 is considered as AP.</p></li>
+<li><p>The mode of memory is configurable when the system enters sleep mode. The retention mode is recommended for the balance between power saving and data retention.</p></li>
+</ul>
+</div>
+<p>In deep-sleep mode, only the memory in AON domain can be maintained, while memory in other domains will be shut down. So CPU cannot restore the stack status.</p>
+<p>Various wakeup sources are provided and every wakeup source can be configured to wake up NP or AP according to user’s requirement.
+AON is special because it is mater switch that manages all the wake-up sources in AON domain. Only wakeup sources in AON domain can wake up the system from deep-sleep mode.</p>
+<p>The following table lists the wakeup sources that can be used to wake up the system under different power modes.</p>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Wakeup source</p></th>
+<th class="head"><p>Sleep CG</p></th>
+<th class="head"><p>Sleep PG</p></th>
+<th class="head"><p>Deep-Sleep</p></th>
+<th class="head"><p>Restriction</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>WLAN</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p>X</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>BT</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p>X</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>IWDG</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p>X</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>IPC</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p>X</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>Basic Timer</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p>X</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>UART</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p>X</p></td>
+<td><ul class="simple">
+<li><p>When using UART as a wakeup source, if the Rx clock source is XTAL40M, do not turn off XTAL during sleep.</p></li>
+<li><p>The portion of the command used to wake up that exceeds the FIFO depth (64B) will be lost.</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>LOGUART</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p>X</p></td>
+<td><ul class="simple">
+<li><p>When using LOGUART as a wakeup source, if the Rx clock source is XTAL40M, do not turn off XTAL during sleep.</p></li>
+<li><p>The portion of the command used to wake up that exceeds the FIFO depth (16B) will be lost.</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>GPIO</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p>X</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>SPI</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p>X</p></td>
+<td><ul class="simple">
+<li><p>When using SPI as a wakeup source, do not turn off the power and clock of SOC domain.</p></li>
+<li><p>Only when the NP core is active and AP core is sleep, NP can use the SPI to wake up AP.</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>CAP_TOUCH</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p>X</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>ADC</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p>X</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>VAD</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p>X</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>BOR</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>PWR_DOWN</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>AON_TIMER</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>AON_WAKEPIN</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>RTC</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div><div aria-labelledby="tab-1-1-3" class="sphinx-tabs-panel" hidden="true" id="panel-1-1-3" name="1-3" role="tabpanel" tabindex="0"><p>在不同低功耗模式下，可用于唤醒系统的唤醒源如下表所示：</p>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>唤醒源</p></th>
+<th class="head"><p>Sleep CG</p></th>
+<th class="head"><p>Sleep PG</p></th>
+<th class="head"><p>Deep-Sleep</p></th>
+<th class="head"><p>限制</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>WLAN</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p>X</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>BT</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p>X</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>AON_WAKEPIN</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>UART</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p>X</p></td>
+<td><p>当使用 UART 作为唤醒源时：</p>
+<ul class="simple">
+<li><p>如果 Rx 的时钟源是 XTAL40M，在睡眠期间禁止关闭 XTAL</p></li>
+<li><p>如果 Rx 的时钟源是 OSC2M，在睡眠期间禁止关闭 OSC4M</p></li>
+<li><p>当唤醒指令超过 64 字节 FIFO 深度时，超出的部分会丢失</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>IPC</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p>X</p></td>
+<td><p>IPC 只能唤醒 CA32 和 KM4，不能唤醒 KM0</p></td>
+</tr>
+<tr class="row-odd"><td><p>SPI</p></td>
+<td><p>√</p></td>
+<td><p>X</p></td>
+<td><p>X</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>VAD</p></td>
+<td><p>√</p></td>
+<td><p>X</p></td>
+<td><p>X</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>BOR</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>PWR_DOWN</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>CAP_TOUCH</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p>X</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>ADC</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p>X</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>RTC</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>GPIO</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p>X</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>LOGUART</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p>X</p></td>
+<td><p>当使用 LOGUART 作为唤醒源时：</p>
+<ul class="simple">
+<li><p>如果 Rx 的时钟源是 XTAL40M，在睡眠期间禁止关闭 XTAL</p></li>
+<li><p>如果 Rx 的时钟源是 OSC2M，在睡眠期间禁止关闭 OSC4M</p></li>
+<li><p>当唤醒指令超过 16 字节 FIFO 深度时，超出的部分会丢失</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>Basic Timer</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p>X</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>IWDG</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p>X</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>AON_TIMER</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>SYSON 电源管理控制器（SYSON PMC）用于控制 LP 的时钟和电源，之后 LP 控制 NP 和 AP 的时钟和电源。</p>
+<p>当系统进入睡眠时，CPU 可以选择进入 CG 或 PG 模式，此时 SYSON PMC 保持全功能运行，当有唤醒源触发时负责唤醒 LP。</p>
+</div></div>
+</section>
+<section id="sleep">
+<h1>进入 Sleep 模式<a class="headerlink" href="#sleep" title="Link to this heading"></a></h1>
+<p>睡眠模式基于FreeRTOS Tickless 模式实现，因此推荐通过释放唤醒锁（Wakelock） 的方式进入睡眠模式。</p>
+<ol class="arabic simple">
+<li><p>初始化目标外设</p></li>
+<li><p>启用和注册外设中断</p></li>
+<li><p>设置 <code class="file docutils literal notranslate"><span class="pre">ambea_sleepcfg.c</span></code> 文件中的 <code class="docutils literal notranslate"><span class="pre">sleep_wevent_config[]</span></code>，确保中断注册在 <code class="docutils literal notranslate"><span class="pre">sleep_wevent_config[]</span></code> 选择的相同的 CPU 上</p></li>
+<li><p>对于需要特殊时钟配置的外设，在 <code class="file docutils literal notranslate"><span class="pre">ameba_sleepcfg.c</span></code> 文件中设置 <code class="docutils literal notranslate"><span class="pre">ps_config[]</span></code></p></li>
+<li><p>根据需要注册睡眠/唤醒回调函数</p></li>
+<li><p>通过释放 AP 的唤醒锁进入睡眠模式（启动时 <cite>PMU_OS</cite> 默认被占用，需在进入睡眠模式前释放）</p></li>
+<li><p>在系统唤醒后，及时清除外设中断</p></li>
+</ol>
+</section>
+<section id="deep-sleep">
+<h1>进入 Deep-Sleep 模式<a class="headerlink" href="#deep-sleep" title="Link to this heading"></a></h1>
+<p>通过 FreeRTOS Tickless 流程同样可以进入深度睡眠模式。</p>
+<p>当系统启动时，应用处理器（AP）自动持有深度唤醒锁 <cite>PMU_OS</cite>，导致 <code class="xref py py-func docutils literal notranslate"><span class="pre">freertos_ready_to_dsleep()</span></code> 校验失败，系统默认不在空闲任务中进入深度睡眠模式。</p>
+<p>只有当 <code class="xref py py-func docutils literal notranslate"><span class="pre">freertos_ready_to_sleep()</span></code> 校验通过，才会校验 <code class="xref py py-func docutils literal notranslate"><span class="pre">freertos_ready_to_dsleep()</span></code>，因此需同时释放唤醒锁和深度唤醒锁方可进入深度睡眠模式。</p>
+<p><strong>配置:</strong></p>
+<ol class="arabic simple">
+<li><p>初始化目标外设并启用中断</p></li>
+<li><p>在 <code class="file docutils literal notranslate"><span class="pre">ameba_sleepcfg.c</span></code> 文件中设置 <code class="docutils literal notranslate"><span class="pre">sleep_wakepin_config[]</span></code>，使用 AON 唤醒引脚作为唤醒源</p></li>
+<li><p>通过释放 AP 的唤醒锁和深度唤醒锁进入深度睡眠模式</p></li>
+</ol>
+</section>
+<section id="id4">
+<h1>低功耗配置<a class="headerlink" href="#id4" title="Link to this heading"></a></h1>
+<p>Please reference User Config chapter for detail information.</p>
+</section>
+<section id="api">
+<h1>低功耗相关 API<a class="headerlink" href="#api" title="Link to this heading"></a></h1>
+<section id="power-saving-wakelock-apis">
+<span id="id5"></span><h2>唤醒锁 API<a class="headerlink" href="#power-saving-wakelock-apis" title="Link to this heading"></a></h2>
+<p>在某些情况下，系统需要保持清醒以接收特定事件，在睡眠模式下可能会错过这些事件。因此，引入了唤醒锁（Wakelock）的概念：如果某个模块持有唤醒锁，系统将无法进入睡眠模式。</p>
+<p>唤醒锁是一个 32 位的映射。每个模块在唤醒锁位图中都有其对应的位（参见枚举 <cite>PMU_DEVICE</cite>）。用户也可以在枚举中添加唤醒锁。</p>
+<ul class="simple">
+<li><p>如果唤醒锁位图等于零，表示没有模块持有唤醒锁。</p></li>
+<li><p>如果唤醒锁位图大于零，表示有模块正持有唤醒锁，系统不允许进入睡眠模式。</p></li>
+</ul>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-2-2-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-2-2-0" name="2-0" role="tab" tabindex="0">RTL8721Dx</button><button aria-controls="panel-2-2-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-2-2-1" name="2-1" role="tab" tabindex="-1">RTL8720E</button><button aria-controls="panel-2-2-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-2-2-2" name="2-2" role="tab" tabindex="-1">RTL8726E</button><button aria-controls="panel-2-2-3" aria-selected="false" class="sphinx-tabs-tab" id="tab-2-2-3" name="2-3" role="tab" tabindex="-1">RTL8730E</button></div><div aria-labelledby="tab-2-2-0" class="sphinx-tabs-panel" id="panel-2-2-0" name="2-0" role="tabpanel" tabindex="0"><p>Wakelock is a judging condition in the function <code class="xref py py-func docutils literal notranslate"><span class="pre">freertos_ready_to_sleep()</span></code>.
+When the system boots, application core(AP) holds the wakelock <cite>PMU_OS</cite>, and network core(NP) holds the wakelock <cite>PMU_OS</cite> and <cite>PMU_KM4_RUN</cite> or <cite>PMU_AP_RUN</cite>.
+Only if all wakelocks are released, AP or NP is permitted to enter sleep mode. The function <code class="xref py py-func docutils literal notranslate"><span class="pre">freertos_ready_to_sleep()</span></code> will judge the value of wakelock.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">enum</span><span class="w"> </span><span class="n">PMU_DEVICE</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="n">PMU_OS</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">   </span><span class="n">PMU_WLAN_DEVICE</span><span class="p">,</span>
+<span class="w">   </span><span class="n">PMU_KM4_RUN</span><span class="p">,</span>
+<span class="w">   </span><span class="n">PMU_WLAN_FW_DEVICE</span><span class="p">,</span>
+<span class="w">   </span><span class="n">PMU_BT_DEVICE</span><span class="p">,</span>
+<span class="w">   </span><span class="n">PMU_DEV_USER_BASE</span><span class="p">,</span>
+<span class="w">   </span><span class="n">PMU_MAX</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>It is recommended to enter sleep mode by releasing the wakelock.
+After the wakelock <cite>PMU_OS</cite> of AP is released, AP will enter sleep mode in idle task and send IPC to NP.
+NP will power-gate or clock-gate AP and then release <cite>PMU_OS</cite> and <cite>PMU_KM4_RUN</cite> or <cite>PMU_AP_RUN</cite>.</p>
+<p>When the system wakes, it will enter sleep mode again quickly unless it acquires the wakelock.</p>
+<p>Similar to the wakelock for sleep mode, there is a 32-bit deepwakelock map for deep-sleep mode.
+If the deepwakelock bit map is larger than zero, it means that some modules are holding the deepwakelock, and the system is not allowed to enter deep-sleep mode.
+When the system boots, application core holds the deepwakelock <cite>PMU_OS</cite>.</p>
+<p>Deepwakelock is a judging condition in the function <code class="xref py py-func docutils literal notranslate"><span class="pre">freertos_ready_to_dsleep()</span></code>.
+After the deepwakelock <cite>PMU_OS</cite> of AP is released, and all wakelocks of AP are released, AP will be allowed to enter deep-sleep mode and send IPC to NP in idle task.
+NP will send a deep-sleep request and let the chip finally enter deep-sleep mode.</p>
+</div><div aria-labelledby="tab-2-2-1" class="sphinx-tabs-panel" hidden="true" id="panel-2-2-1" name="2-1" role="tabpanel" tabindex="0"><p>Wakelock is a judging condition in the function <code class="xref py py-func docutils literal notranslate"><span class="pre">freertos_ready_to_sleep()</span></code>.
+When the system boots, application core(AP) holds the wakelock <cite>PMU_OS</cite>, and network core(NP) holds the wakelock <cite>PMU_OS</cite> and <cite>PMU_KM4_RUN</cite> or <cite>PMU_AP_RUN</cite>.
+Only if all wakelocks are released, AP or NP is permitted to enter sleep mode. The function <code class="xref py py-func docutils literal notranslate"><span class="pre">freertos_ready_to_sleep()</span></code> will judge the value of wakelock.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">enum</span><span class="w"> </span><span class="n">PMU_DEVICE</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="n">PMU_OS</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">   </span><span class="n">PMU_WLAN_DEVICE</span><span class="p">,</span>
+<span class="w">   </span><span class="n">PMU_KM4_RUN</span><span class="p">,</span>
+<span class="w">   </span><span class="n">PMU_KR4_RUN</span><span class="p">,</span>
+<span class="w">   </span><span class="n">PMU_DSP_RUN</span><span class="p">,</span>
+<span class="w">   </span><span class="n">PMU_WLAN_FW_DEVICE</span><span class="p">,</span>
+<span class="w">   </span><span class="n">PMU_BT_DEVICE</span><span class="p">,</span>
+<span class="w">   </span><span class="n">PMU_DEV_USER_BASE</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="mi">7</span><span class="p">,</span><span class="w"> </span><span class="cm">/*number 7 ~ 31 is reserved for customer use*/</span>
+<span class="w">   </span><span class="n">PMU_MAX</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="mi">31</span><span class="p">,</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>It is recommended to enter sleep mode by releasing the wakelock.
+After the wakelock <cite>PMU_OS</cite> of AP is released, AP will enter sleep mode in idle task and send IPC to NP.
+NP will power-gate or clock-gate AP and then release <cite>PMU_OS</cite> and <cite>PMU_KM4_RUN</cite> or <cite>PMU_AP_RUN</cite>.</p>
+<p>When the system wakes, it will enter sleep mode again quickly unless it acquires the wakelock.</p>
+<p>Similar to the wakelock for sleep mode, there is a 32-bit deepwakelock map for deep-sleep mode.
+If the deepwakelock bit map is larger than zero, it means that some modules are holding the deepwakelock, and the system is not allowed to enter deep-sleep mode.
+When the system boots, application core holds the deepwakelock <cite>PMU_OS</cite>.</p>
+<p>Deepwakelock is a judging condition in the function <code class="xref py py-func docutils literal notranslate"><span class="pre">freertos_ready_to_dsleep()</span></code>.
+After the deepwakelock <cite>PMU_OS</cite> of AP is released, and all wakelocks of AP are released, AP will be allowed to enter deep-sleep mode and send IPC to NP in idle task.
+NP will send a deep-sleep request and let the chip finally enter deep-sleep mode.</p>
+</div><div aria-labelledby="tab-2-2-2" class="sphinx-tabs-panel" hidden="true" id="panel-2-2-2" name="2-2" role="tabpanel" tabindex="0"><p>Wakelock is a judging condition in the function <code class="xref py py-func docutils literal notranslate"><span class="pre">freertos_ready_to_sleep()</span></code>.
+When the system boots, application core(AP) holds the wakelock <cite>PMU_OS</cite>, and network core(NP) holds the wakelock <cite>PMU_OS</cite> and <cite>PMU_KM4_RUN</cite> or <cite>PMU_AP_RUN</cite>.
+Only if all wakelocks are released, AP or NP is permitted to enter sleep mode. The function <code class="xref py py-func docutils literal notranslate"><span class="pre">freertos_ready_to_sleep()</span></code> will judge the value of wakelock.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">enum</span><span class="w"> </span><span class="n">PMU_DEVICE</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="n">PMU_OS</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">   </span><span class="n">PMU_WLAN_DEVICE</span><span class="p">,</span>
+<span class="w">   </span><span class="n">PMU_KM4_RUN</span><span class="p">,</span>
+<span class="w">   </span><span class="n">PMU_KR4_RUN</span><span class="p">,</span>
+<span class="w">   </span><span class="n">PMU_DSP_RUN</span><span class="p">,</span>
+<span class="w">   </span><span class="n">PMU_WLAN_FW_DEVICE</span><span class="p">,</span>
+<span class="w">   </span><span class="n">PMU_BT_DEVICE</span><span class="p">,</span>
+<span class="w">   </span><span class="n">PMU_DEV_USER_BASE</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="mi">7</span><span class="p">,</span><span class="w"> </span><span class="cm">/*number 7 ~ 31 is reserved for customer use*/</span>
+<span class="w">   </span><span class="n">PMU_MAX</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="mi">31</span><span class="p">,</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>It is recommended to enter sleep mode by releasing the wakelock.
+After the wakelock <cite>PMU_OS</cite> of AP is released, AP will enter sleep mode in idle task and send IPC to NP.
+NP will power-gate or clock-gate AP and then release <cite>PMU_OS</cite> and <cite>PMU_KM4_RUN</cite> or <cite>PMU_AP_RUN</cite>.</p>
+<p>When the system wakes, it will enter sleep mode again quickly unless it acquires the wakelock.</p>
+<p>Similar to the wakelock for sleep mode, there is a 32-bit deepwakelock map for deep-sleep mode.
+If the deepwakelock bit map is larger than zero, it means that some modules are holding the deepwakelock, and the system is not allowed to enter deep-sleep mode.
+When the system boots, application core holds the deepwakelock <cite>PMU_OS</cite>.</p>
+<p>Deepwakelock is a judging condition in the function <code class="xref py py-func docutils literal notranslate"><span class="pre">freertos_ready_to_dsleep()</span></code>.
+After the deepwakelock <cite>PMU_OS</cite> of AP is released, and all wakelocks of AP are released, AP will be allowed to enter deep-sleep mode and send IPC to NP in idle task.
+NP will send a deep-sleep request and let the chip finally enter deep-sleep mode.</p>
+</div><div aria-labelledby="tab-2-2-3" class="sphinx-tabs-panel" hidden="true" id="panel-2-2-3" name="2-3" role="tabpanel" tabindex="0"><p>Wakelock is a judging condition in the function <code class="xref py py-func docutils literal notranslate"><span class="pre">freertos_ready_to_sleep()</span></code>.
+When the system boots, CA32/KM4 holds the wakelock PMU_OS, and KM0 holds the wakelock <cite>PMU_OS</cite>, <cite>PMU_KM4_RUN</cite> and <cite>PMU_AP_RUN</cite>.
+Only if all wakelocks are released, CPU is permitted to enter sleep mode. The function <code class="xref py py-func docutils literal notranslate"><span class="pre">freertos_ready_to_sleep()</span></code> will judge the value of wakelock.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="k">enum</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="n">PMU_OS</span><span class="w">          </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">   </span><span class="n">PMU_WLAN_DEVICE</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">   </span><span class="n">PMU_LOGUART_DEVICE</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+<span class="w">   </span><span class="n">PMU_KM4_RUN</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span>
+<span class="w">   </span><span class="n">PMU_UART0_DEVICE</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span>
+<span class="w">   </span><span class="n">PMU_UART1_DEVICE</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span>
+<span class="w">   </span><span class="n">PMU_I2C0_DEVICE</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span>
+<span class="w">   </span><span class="n">PMU_TOUCH_DEVICE</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="mi">7</span><span class="p">,</span>
+<span class="w">   </span><span class="n">PMU_USOC_DEVICE</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span>
+<span class="w">   </span><span class="n">PMU_DONGLE_DEVICE</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mi">9</span><span class="p">,</span>
+<span class="w">   </span><span class="n">PMU_RTC_DEVICE</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span>
+<span class="w">   </span><span class="n">PMU_CONSOL_DEVICE</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mi">11</span><span class="p">,</span>
+<span class="w">   </span><span class="n">PMU_ADC_DEVICE</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mi">12</span><span class="p">,</span>
+<span class="w">   </span><span class="n">PMU_WAKWLOCK_TIMEOUT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">13</span><span class="p">,</span>
+<span class="w">   </span><span class="n">PMU_AP_RUN</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mi">14</span><span class="p">,</span>
+<span class="w">   </span><span class="n">PMU_PSRAM_DEVICE</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mi">15</span><span class="p">,</span>
+<span class="w">   </span><span class="n">PMU_DEV_USER_BASE</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mi">16</span><span class="p">,</span><span class="w"> </span><span class="cm">/*number 16 ~ 31 is reserved for customer use*/</span>
+<span class="w">   </span><span class="n">PMU_BT_DEVICE</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mi">17</span><span class="p">,</span>
+<span class="w">   </span><span class="n">PMU_VAD_DEVICE</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mi">18</span><span class="p">,</span>
+<span class="w">   </span><span class="n">PMU_MAX</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="mi">31</span>
+<span class="p">}</span><span class="w"> </span><span class="n">PMU_DEVICE</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>It is recommended to enter sleep mode by releasing the wakelock.
+After the wakelock <cite>PMU_OS</cite> of CA32 is released, CA32 will enter sleep mode in idle task and send IPC to KM0.
+KM0 will gate CA32 clock/power first and then release <cite>PMU_AP_RUN</cite>, and then KM4 will release <cite>PMU_OS</cite> in idle task if found CA32 entered sleep mode already,
+and send IPC to KM0, KM0 will gate KM4 clock/power first and then release <cite>PMU_OS</cite> and <cite>PMU_KM4_RUN</cite>.</p>
+<p>When the system wakes, it will enter sleep mode again quickly unless it acquires the wakelock.</p>
+<p>Similar to the wakelock for sleep mode, there is a 32-bit deepwakelock map for deep-sleep mode.
+If the deepwakelock bit map is larger than zero, it means that some modules are holding the deepwakelock, and the system is not allowed to enter deep-sleep mode.
+When the system boots, CA32 holds the deepwakelock <cite>PMU_OS</cite>.</p>
+<p>Deepwakelock is a judging condition in the function <code class="xref py py-func docutils literal notranslate"><span class="pre">freertos_ready_to_dsleep()</span></code>.
+After the deepwakelock <cite>PMU_OS</cite> of CA32 is released, and all wakelocks of CA32 are released, CA32 will be allowed to enter deep-sleep mode and send IPC to KM0 in idle task.
+KM0 will send a deep-sleep request and let the chip finally enter deep-sleep mode.</p>
+</div></div>
+<p>下文列示了用于控制唤醒锁或深度唤醒锁的 API。</p>
+<section id="pmu-acquire-wakelock">
+<h3>pmu_acquire_wakelock<a class="headerlink" href="#pmu-acquire-wakelock" title="Link to this heading"></a></h3>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>项目</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>功能</p></td>
+<td><p>为某个模块获取唤醒锁</p></td>
+</tr>
+<tr class="row-odd"><td><p>参数</p></td>
+<td><p><cite>nDeviceId</cite>：对应模块的设备 ID</p></td>
+</tr>
+<tr class="row-even"><td><p>返回值</p></td>
+<td><p>无</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="pmu-release-wakelock">
+<h3>pmu_release_wakelock<a class="headerlink" href="#pmu-release-wakelock" title="Link to this heading"></a></h3>
+<table class="docutils align-center" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>项目</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>功能</p></td>
+<td><p>释放某个模块的唤醒锁</p></td>
+</tr>
+<tr class="row-odd"><td><p>参数</p></td>
+<td><p><cite>nDeviceId</cite>：对应模块的设备 ID</p></td>
+</tr>
+<tr class="row-even"><td><p>返回值</p></td>
+<td><p>无</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="pmu-acquire-deepwakelock">
+<h3>pmu_acquire_deepwakelock<a class="headerlink" href="#pmu-acquire-deepwakelock" title="Link to this heading"></a></h3>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>项目</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>功能</p></td>
+<td><p>为某个模块获取深度唤醒锁</p></td>
+</tr>
+<tr class="row-odd"><td><p>参数</p></td>
+<td><p><cite>nDeviceId</cite>：对应模块的设备 ID</p></td>
+</tr>
+<tr class="row-even"><td><p>返回值</p></td>
+<td><p>无</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="pmu-release-deepwakelock">
+<h3>pmu_release_deepwakelock<a class="headerlink" href="#pmu-release-deepwakelock" title="Link to this heading"></a></h3>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>项目</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>功能</p></td>
+<td><p>释放某个模块的深度唤醒锁</p></td>
+</tr>
+<tr class="row-odd"><td><p>参数</p></td>
+<td><p><cite>nDeviceId</cite>：对应模块的设备 ID</p></td>
+</tr>
+<tr class="row-even"><td><p>返回值</p></td>
+<td><p>无</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="pmu-set-sysactive-time">
+<span id="id6"></span><h2>pmu_set_sysactive_time<a class="headerlink" href="#pmu-set-sysactive-time" title="Link to this heading"></a></h2>
+<p>在某些场景下，系统需要在活跃状态保持唤醒一段时间以完成特定流程。</p>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>项目</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>功能</p></td>
+<td><p>设置系统保持活跃状态的持续时间</p></td>
+</tr>
+<tr class="row-odd"><td><p>参数</p></td>
+<td><p><cite>timeout</cite>：时间（单位：毫秒）</p>
+<p>系统将从当前时刻起保持活跃状态达此时长</p>
+</td>
+</tr>
+<tr class="row-even"><td><p>返回值</p></td>
+<td><p>0</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id7">
+<h2>睡眠/唤醒回调 API<a class="headerlink" href="#id7" title="Link to this heading"></a></h2>
+<p>用于为 <em>&lt;nDeviceId&gt;</em> 注册挂起/恢复回调函数：</p>
+<ul class="simple">
+<li><p>挂起回调函数：系统进入睡眠模式前在空闲任务中触发</p></li>
+<li><p>恢复回调函数：系统唤醒后立即执行</p></li>
+</ul>
+<p>It is a good way to use the suspend and resume function if there is something to do before the chip sleeps or after the chip wakes.
+A typical application of the resume function is to acquire the wakelock to prevent the chip from sleeping again.
+Also, if the CPU chooses PG, some peripherals will lose power so they need to be reinitialized. This can be implemented in the resume function.</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<ul class="simple">
+<li><p>禁止在回调函数中使用可能引发 OS 调度的API（如： <code class="docutils literal notranslate"><span class="pre">rtos_task_yield</span></code>、 <code class="docutils literal notranslate"><span class="pre">rtos_time_delay_ms</span></code>、信号量/互斥锁相关操作）</p></li>
+<li><p>禁止在挂起回调函数中调用 <code class="docutils literal notranslate"><span class="pre">pmu_set_sysactive_time</span></code> （恢复回调函数中允许）</p></li>
+</ul>
+</div>
+<section id="pmu-register-sleep-callback">
+<h3>pmu_register_sleep_callback<a class="headerlink" href="#pmu-register-sleep-callback" title="Link to this heading"></a></h3>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>项目</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>功能</p></td>
+<td><p>为某个模块注册挂起/恢复回调函数</p></td>
+</tr>
+<tr class="row-odd"><td><p>参数</p></td>
+<td><ul class="simple">
+<li><p><cite>nDeviceId</cite>：需要挂起/恢复回调函数的设备 ID</p></li>
+<li><p><cite>sleep_hook_fun</cite>：挂起回调函数</p></li>
+<li><p><cite>sleep_param_ptr</cite>：挂起回调函数参数</p></li>
+<li><p><cite>wakeup_hook_fun</cite>：恢复回调函数</p></li>
+<li><p><cite>wakeup_param_ptr</cite>：恢复回调函数参数</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>返回值</p></td>
+<td><p>无</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="pmu-unregister-sleep-callback">
+<h3>pmu_unregister_sleep_callback<a class="headerlink" href="#pmu-unregister-sleep-callback" title="Link to this heading"></a></h3>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>项目</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>功能</p></td>
+<td><p>注销某个模块的挂起/恢复回调函数</p></td>
+</tr>
+<tr class="row-odd"><td><p>参数</p></td>
+<td><ul class="simple">
+<li><p><cite>nDeviceId</cite>：需要注销挂起/恢复回调函数的设备ID</p></li>
+<li><p><cite>sleep_hook_fun</cite>：挂起回调函数</p></li>
+<li><p><cite>sleep_param_ptr</cite>：挂起回调函数参数</p></li>
+<li><p><cite>wakeup_hook_fun</cite>：恢复回调函数</p></li>
+<li><p><cite>wakeup_param_ptr</cite>：恢复回调函数参数</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>返回值</p></td>
+<td><p>无</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="pmu-set-max-sleep-time">
+<h2>pmu_set_max_sleep_time<a class="headerlink" href="#pmu-set-max-sleep-time" title="Link to this heading"></a></h2>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>项目</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>功能</p></td>
+<td><p>设置最大睡眠时间</p></td>
+</tr>
+<tr class="row-odd"><td><p>参数</p></td>
+<td><p><cite>timer_ms</cite>：系统最大睡眠超时时间（单位：毫秒）</p></td>
+</tr>
+<tr class="row-even"><td><p>返回值</p></td>
+<td><p>无</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<ul class="simple">
+<li><p>超时后，系统不会被唤醒。</p></li>
+<li><p>超时前，系统可能被其他事件唤醒。</p></li>
+<li><p>此设置仅单次有效，系统唤醒后时间自动清零。</p></li>
+</ul>
+</div>
+</section>
+<section id="id8">
+<h2>唤醒原因 API<a class="headerlink" href="#id8" title="Link to this heading"></a></h2>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-3-3-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-3-3-0" name="3-0" role="tab" tabindex="0">RTL8721Dx</button><button aria-controls="panel-3-3-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-3-3-1" name="3-1" role="tab" tabindex="-1">RTL8720E</button><button aria-controls="panel-3-3-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-3-3-2" name="3-2" role="tab" tabindex="-1">RTL8726E</button><button aria-controls="panel-3-3-3" aria-selected="false" class="sphinx-tabs-tab" id="tab-3-3-3" name="3-3" role="tab" tabindex="-1">RTL8730E</button></div><div aria-labelledby="tab-3-3-0" class="sphinx-tabs-panel" id="panel-3-3-0" name="3-0" role="tabpanel" tabindex="0"><p><strong>SOCPS_AONWakeReason</strong></p>
+<table class="docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 30.0%" />
+<col style="width: 70.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Items</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Introduction</p></td>
+<td><p>Get the deep-sleep wakeup reason</p></td>
+</tr>
+<tr class="row-odd"><td><p>Parameter</p></td>
+<td><p>None</p></td>
+</tr>
+<tr class="row-even"><td><p>Return</p></td>
+<td><ul class="simple">
+<li><p>Bit[0]: CHIP_EN short press</p></li>
+<li><p>Bit[1]: CHIP_EN long press</p></li>
+<li><p>Bit[2]: BOR</p></li>
+<li><p>Bit[3]: AON Timer</p></li>
+<li><p>Bit[5:4]: AON GPIO</p></li>
+<li><p>Bit[8]: RTC</p></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>WAK_STATUS0</strong></p>
+<p>The following register can be used to get the sleep wakeup reason.</p>
+<table class="docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 30.0%" />
+<col style="width: 70.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Register</p></th>
+<th class="head"><p>Parameters</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>WAK_STATUS0</p></td>
+<td><ul class="simple">
+<li><p>Bit[1:0]: WLAN</p></li>
+<li><p>Bit[2]: KM4_WAKE</p></li>
+<li><p>Bit[3]: BT_WAKE_HOST</p></li>
+<li><p>Bit[4]: IPC_KM4</p></li>
+<li><p>Bit[9:6]: BASIC TIMER4~7</p></li>
+<li><p>Bit[11:10]: PMC TIMER0~1</p></li>
+<li><p>Bit[14:12]: UART0~2</p></li>
+<li><p>Bit[15]: UART_LOG</p></li>
+<li><p>Bit[16]: GPIOA</p></li>
+<li><p>Bit[17]: GPIOB</p></li>
+<li><p>Bit[19:18]:I2C0~1</p></li>
+<li><p>Bit[20]: Cap-Touch</p></li>
+<li><p>Bit[21]: RTC</p></li>
+<li><p>Bit[22]: ADC</p></li>
+<li><p>Bit[24]: BOR</p></li>
+<li><p>Bit[25]: PWR_DOWN</p></li>
+<li><p>Bit[26]: Key-Scan</p></li>
+<li><p>Bit[27]: AON_Timer</p></li>
+<li><p>Bit[28]: AON_Wakepin</p></li>
+</ul>
+<blockquote>
+<div><p>-Bit[29]: SDIO</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Note that when wakeup, the corresponding peripheral interrupt will be raised; when clearing the interrupt, the corresponding bit in wakeup reason will also be cleared.
+Thus it is not possible to get the wakeup reason after the interrupt is cleared.</p>
+</div><div aria-labelledby="tab-3-3-1" class="sphinx-tabs-panel" hidden="true" id="panel-3-3-1" name="3-1" role="tabpanel" tabindex="0"><p><strong>SOCPS_AONWakeReason</strong></p>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Items</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Introduction</p></td>
+<td><p>Get the deep-sleep wakeup reason</p></td>
+</tr>
+<tr class="row-odd"><td><p>Parameter</p></td>
+<td><p>None</p></td>
+</tr>
+<tr class="row-even"><td><p>Return</p></td>
+<td><ul class="simple">
+<li><p>Bit[0]:</p></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>WAK_STATUS0</strong></p>
+<p>The following register can be used to get the sleep wakeup reason.</p>
+<table class="docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 30.0%" />
+<col style="width: 70.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Register</p></th>
+<th class="head"><p>Parameters</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>WAK_STATUS0</p></td>
+<td><ul class="simple">
+<li><p>Bit[1:0]:</p></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Note that when wakeup, the corresponding peripheral interrupt will be raised; when clearing the interrupt, the corresponding bit in wakeup reason will also be cleared.
+Thus it is not possible to get the wakeup reason after the interrupt is cleared.</p>
+</div><div aria-labelledby="tab-3-3-2" class="sphinx-tabs-panel" hidden="true" id="panel-3-3-2" name="3-2" role="tabpanel" tabindex="0"><p><strong>SOCPS_AONWakeReason</strong></p>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Items</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Introduction</p></td>
+<td><p>Get the deep-sleep wakeup reason</p></td>
+</tr>
+<tr class="row-odd"><td><p>Parameter</p></td>
+<td><p>None</p></td>
+</tr>
+<tr class="row-even"><td><p>Return</p></td>
+<td><ul class="simple">
+<li><p>Bit[0]:</p></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>WAK_STATUS0</strong></p>
+<p>The following register can be used to get the sleep wakeup reason.</p>
+<table class="docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 30.0%" />
+<col style="width: 70.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Register</p></th>
+<th class="head"><p>Parameters</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>WAK_STATUS0</p></td>
+<td><ul class="simple">
+<li><p>Bit[1:0]:</p></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Note that when wakeup, the corresponding peripheral interrupt will be raised; when clearing the interrupt, the corresponding bit in wakeup reason will also be cleared.
+Thus it is not possible to get the wakeup reason after the interrupt is cleared.</p>
+</div><div aria-labelledby="tab-3-3-3" class="sphinx-tabs-panel" hidden="true" id="panel-3-3-3" name="3-3" role="tabpanel" tabindex="0"><p><strong>SOCPS_AONWakeReason</strong></p>
+<table class="docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 30.0%" />
+<col style="width: 70.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Items</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Introduction</p></td>
+<td><p>Get the deep-sleep wakeup reason</p></td>
+</tr>
+<tr class="row-odd"><td><p>Parameter</p></td>
+<td><p>None</p></td>
+</tr>
+<tr class="row-even"><td><p>Return</p></td>
+<td><p>Bit[0]: CHIP_EN short press</p>
+<p>Bit[1]: CHIP_EN long press</p>
+<p>Bit[2]: BOR</p>
+<p>Bit[3]: AON Timer</p>
+<p>Bit[7:4]: AON GPIO</p>
+<p>Bit[8]: RTC</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>WAK_STATUS0</strong></p>
+<p>The following register can be used to get the sleep wakeup reason.</p>
+<table class="docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 30.0%" />
+<col style="width: 70.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Register</p></th>
+<th class="head"><p>Parameters</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>WAK_STATUS0</p></td>
+<td><ul class="simple">
+<li><p>Bit[1:0]: WLAN</p></li>
+<li><p>Bit[2]: AON_TIMER</p></li>
+<li><p>Bit[3]: NP_WAKE</p></li>
+<li><p>Bit[4]: AP_WAKE</p></li>
+<li><p>Bit[5]: IWDG0</p></li>
+<li><p>Bit[13:6]: BASIC TIMER0~7</p></li>
+<li><p>Bit[14]: UART_LOG</p></li>
+<li><p>Bit[17:15]: GPIO</p></li>
+<li><p>Bit[18]: RTC</p></li>
+<li><p>Bit[19]: Cap-Touch</p></li>
+<li><p>Bit[20]: ADC</p></li>
+<li><p>Bit[22]: BOR</p></li>
+<li><p>Bit[23]: PWR_DOWN</p></li>
+<li><p>Bit[24]: VAD</p></li>
+<li><p>Bit[25]: IPC_NP</p></li>
+<li><p>Bit[26]: IPC_AP</p></li>
+<li><p>Bit[29:28]: SPI0~1</p></li>
+<li><p>Bit[31:30]: UART0~1</p></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>WAK_STATUS1</strong></p>
+<table class="docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 30.0%" />
+<col style="width: 70.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Register</p></th>
+<th class="head"><p>Parameters</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>WAK_STATUS1</p></td>
+<td><p>Bit[0]: UART2</p>
+<p>Bit[5]: AON_WAPEPIN</p>
+<p>Bit[6]: BT_WAKE_HOST</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>When wakeup, the corresponding peripheral interrupt will be raised; when clearing the interrupt, the corresponding bit in wakeup reason will also be cleared.
+Thus it is not possible to get the wakeup reason after the interrupt is cleared</p>
+</div>
+</div></div>
+</section>
+</section>
+<section id="id9">
+<h1>唤醒时间<a class="headerlink" href="#id9" title="Link to this heading"></a></h1>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-4-4-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-4-4-0" name="4-0" role="tab" tabindex="0">RTL8721Dx</button><button aria-controls="panel-4-4-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-4-4-1" name="4-1" role="tab" tabindex="-1">RTL8720E</button><button aria-controls="panel-4-4-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-4-4-2" name="4-2" role="tab" tabindex="-1">RTL8726E</button><button aria-controls="panel-4-4-3" aria-selected="false" class="sphinx-tabs-tab" id="tab-4-4-3" name="4-3" role="tab" tabindex="-1">RTL8730E</button></div><div aria-labelledby="tab-4-4-0" class="sphinx-tabs-panel" id="panel-4-4-0" name="4-0" role="tabpanel" tabindex="0"></div><div aria-labelledby="tab-4-4-1" class="sphinx-tabs-panel" hidden="true" id="panel-4-4-1" name="4-1" role="tabpanel" tabindex="0"></div><div aria-labelledby="tab-4-4-2" class="sphinx-tabs-panel" hidden="true" id="panel-4-4-2" name="4-2" role="tabpanel" tabindex="0"></div><div aria-labelledby="tab-4-4-3" class="sphinx-tabs-panel" hidden="true" id="panel-4-4-3" name="4-3" role="tabpanel" tabindex="0"><p>CPU can execute IRQ handler when the system is wakeup. The time between the wakeup event generating and CPU executing IRQ handler was defined as wakeup time.</p>
+<p>Take LP CG + NP PG + AP PG for example:</p>
+<table class="docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>CPU to wakeup</p></th>
+<th class="head"><p>LP</p></th>
+<th class="head"><p>LP + NP</p></th>
+<th class="head"><p>LP + NP + AP</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Wakeup time</p></td>
+<td><p>2.8ms</p></td>
+<td><p>3.5ms</p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>It takes about 2.8ms to wake LP only and 3.5ms to wake both LP and NP in LP CG + NP PG mode.</p>
+<p>For LP, 1.6ms to initialize hardware (mainly XTAL), 1.1ms to execute critical code, and 200-300us to enter IRQ handler.</p>
+</div></div>
+</section>
+<section id="uart-loguart">
+<h1>UART 和 LOGUART<a class="headerlink" href="#uart-loguart" title="Link to this heading"></a></h1>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-5-5-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-5-5-0" name="5-0" role="tab" tabindex="0">RTL8721Dx</button><button aria-controls="panel-5-5-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-5-5-1" name="5-1" role="tab" tabindex="-1">RTL8720E</button><button aria-controls="panel-5-5-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-5-5-2" name="5-2" role="tab" tabindex="-1">RTL8726E</button><button aria-controls="panel-5-5-3" aria-selected="false" class="sphinx-tabs-tab" id="tab-5-5-3" name="5-3" role="tab" tabindex="-1">RTL8730E</button></div><div aria-labelledby="tab-5-5-0" class="sphinx-tabs-panel" id="panel-5-5-0" name="5-0" role="tabpanel" tabindex="0"><p>For peripherals that need specific clock settings, such as UART and LOGUART, their setting flows are described in the following section.</p>
+<p id="dx-power-saving-uart"><strong>UART</strong></p>
+<ol class="arabic simple">
+<li><p>Initialize UART and enable its interrupt.</p></li>
+<li><p>Set the related wakeup source (<cite>WAKE_SRC_UART0</cite>/<cite>WAKE_SRC_UART1</cite>/<cite>WAKE_SRC_UART2_BT</cite>) in <code class="docutils literal notranslate"><span class="pre">sleep_wevent_config[]</span></code> to <cite>WAKEUP_KM4</cite> or <cite>WAKEUP_KM0</cite> (based on which CPU you want to wake). The interrupt should be registered on the same CPU selected by <cite>sleep_wevent_config[]</cite>.</p></li>
+<li><p>Set <cite>keep_OSC4M_on</cite> in <code class="docutils literal notranslate"><span class="pre">ps_config[]</span></code> to <strong>TRUE</strong> to keep OSC4M enabled during sleep mode.</p></li>
+<li><p>Switch clock to OSC2M with API <code class="docutils literal notranslate"><span class="pre">RCC_PeriphClockSource_UART(UARTx_DEV,</span> <span class="pre">UART_RX_CLK_OSC_LP)</span></code>.</p></li>
+<li><p>Enter sleep mode by releasing the wakelock in KM4 (PMU_OS needs to be released since it is acquired by default when boot).</p></li>
+<li><p>Clear the UART interrupt when wakeup.</p></li>
+<li><p>If a higher baudrate is required after waking up, it is recommended to switch to XTAL40M Rx clock by API <code class="docutils literal notranslate"><span class="pre">RCC_PeriphClockSource_UART(UART0_DEV,</span> <span class="pre">UART_RX_CLK_XTAL_40M)</span></code>.</p></li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>When using UART as a wakeup source, there are some restrictions:</p>
+<ul class="simple">
+<li><p>The Rx clock source can only be OSC2M, and do not turn off OSC4M during sleep.</p></li>
+<li><p>When the baudrate is larger than 115200, it is not recommended to use UART as a wakeup source.</p></li>
+<li><p>The portion of the command used to wake up that exceeds the FIFO depth (64B) will be lost.</p></li>
+</ul>
+</div>
+<p id="dx-power-saving-loguart"><strong>LOGUART</strong></p>
+<ol class="arabic simple">
+<li><p>Initialize LOGUART and enable its interrupt.</p></li>
+<li><p>Set <cite>WAKE_SRC_UART_LOG</cite> in <code class="docutils literal notranslate"><span class="pre">sleep_wevent_config[]</span></code> to <cite>WAKEUP_KM4</cite> or <cite>WAKEUP_KM0</cite> (based on which CPU you want to wake). The interrupt should be registered on the same CPU selected by <cite>sleep_wevent_config[]</cite>.</p></li>
+<li><p>Set <cite>xtal_mode_in_sleep</cite> to <strong>XTAL_Normal</strong> in <code class="docutils literal notranslate"><span class="pre">ps_config[]</span></code>.</p></li>
+<li><p>Enter sleep mode by releasing the wakelock in KM4 (PMU_OS needs to be released since it is acquired by default when boot).</p></li>
+<li><p>Clear the LOGUART interrupt when wakeup.</p></li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>When using LOGUART as a wakeup source, there are some restrictions:</p>
+<ul class="simple">
+<li><p>If the Rx clock source is XTAL40M, do not turn off XTAL or OSC4M during sleep; if the Rx clock source is OSC2M, do not turn off OSC4M during sleep.</p></li>
+<li><p>The portion of the command used to wake up that exceeds the FIFO depth (16B) will be lost.</p></li>
+</ul>
+</div>
+</div><div aria-labelledby="tab-5-5-1" class="sphinx-tabs-panel" hidden="true" id="panel-5-5-1" name="5-1" role="tabpanel" tabindex="0"><p>For peripherals that need specific clock settings, such as UART and LOGUART, their setting flows are described in following section.</p>
+<p><strong>UART</strong></p>
+<ol class="arabic simple">
+<li><p>Initialize UART and enable its interrupt.</p></li>
+<li><p>Set the related wakeup source (<code class="docutils literal notranslate"><span class="pre">WAKE_SRC_UART0/WAKE_SRC_UART1/WAKE_SRC_UART2_BT</span></code>) in <code class="docutils literal notranslate"><span class="pre">sleep_wevent_config[]</span></code> to <cite>WAKEUP_KM4</cite> or <cite>WAKEUP_KM0</cite> (based on which CPU you want to wake). The interrupt should be registered on the same CPU selected by <code class="docutils literal notranslate"><span class="pre">sleep_wevent_config[]</span></code>.</p></li>
+<li><p>Set the corresponding entry of <code class="docutils literal notranslate"><span class="pre">uart_config[]</span></code> in <code class="file docutils literal notranslate"><span class="pre">ameba_sleepcfg.c</span></code> to <strong>ENABLE</strong>.</p></li>
+<li><p>Set <cite>keep_OSC4M_on</cite> in <code class="docutils literal notranslate"><span class="pre">ps_config[]</span></code> to <strong>TRUE</strong> to keep OSC4M enabled during sleep mode.</p></li>
+<li><p>Enter sleep mode by releasing the wakelock in KM4 (PMU_OS needs to be released since it is acquired by default when boot).</p></li>
+<li><p>Clear the UART interrupt when wakeup.</p></li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>When using UART as a wakeup source, there are some restrictions:</p>
+<ul class="simple">
+<li><p>If the Rx clock source is XTAL40M, do not turn off XTAL during sleep.</p></li>
+<li><p>The portion of the command used to wake up that exceeds the FIFO depth (64B) will be lost.</p></li>
+</ul>
+</div>
+<p><strong>LOGUART</strong></p>
+<ol class="arabic simple">
+<li><p>Initialize LOGUART and enable its interrupt.</p></li>
+<li><p>Set <cite>WAKE_SRC_UART_LOG</cite> in <code class="docutils literal notranslate"><span class="pre">sleep_wevent_config[]</span></code> to <cite>WAKEUP_KM4</cite> or <cite>WAKEUP_KM0</cite> (based on which CPU you want to wake). The interrupt should be registered on the same CPU selected by <cite>sleep_wevent_config[]</cite>.</p></li>
+<li><p>Set <cite>xtal_mode_in_sleep</cite> to <strong>XTAL_Normal</strong> in <code class="docutils literal notranslate"><span class="pre">ps_config[]</span></code>.</p></li>
+<li><p>Enter sleep mode by releasing the wakelock in KM4 (PMU_OS needs to be released since it is acquired by default when boot).</p></li>
+<li><p>Clear the LOGUART interrupt when wakeup.</p></li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>When using LOGUART as a wakeup source, there are some restrictions:</p>
+<ul class="simple">
+<li><p>If the Rx clock source is XTAL40M, do not turn off XTAL during sleep.</p></li>
+<li><p>The portion of the command used to wake up that exceeds the FIFO depth (16B) will be lost.</p></li>
+</ul>
+</div>
+</div><div aria-labelledby="tab-5-5-2" class="sphinx-tabs-panel" hidden="true" id="panel-5-5-2" name="5-2" role="tabpanel" tabindex="0"><p>For peripherals that need specific clock settings, such as UART and LOGUART, their setting flows are described in following section.</p>
+<p><strong>UART</strong></p>
+<ol class="arabic simple">
+<li><p>Initialize UART and enable its interrupt.</p></li>
+<li><p>Set the related wakeup source (<code class="docutils literal notranslate"><span class="pre">WAKE_SRC_UART0/WAKE_SRC_UART1/WAKE_SRC_UART2_BT</span></code>) in <code class="docutils literal notranslate"><span class="pre">sleep_wevent_config[]</span></code> to <cite>WAKEUP_KM4</cite> or <cite>WAKEUP_KM0</cite> (based on which CPU you want to wake). The interrupt should be registered on the same CPU selected by <code class="docutils literal notranslate"><span class="pre">sleep_wevent_config[]</span></code>.</p></li>
+<li><p>Set the corresponding entry of <code class="docutils literal notranslate"><span class="pre">uart_config[]</span></code> in <code class="file docutils literal notranslate"><span class="pre">ameba_sleepcfg.c</span></code> to <strong>ENABLE</strong>.</p></li>
+<li><p>Set <cite>keep_OSC4M_on</cite> in <code class="docutils literal notranslate"><span class="pre">ps_config[]</span></code> to <strong>TRUE</strong> to keep OSC4M enabled during sleep mode.</p></li>
+<li><p>Enter sleep mode by releasing the wakelock in KM4 (PMU_OS needs to be released since it is acquired by default when boot).</p></li>
+<li><p>Clear the UART interrupt when wakeup.</p></li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>When using UART as a wakeup source, there are some restrictions:</p>
+<ul class="simple">
+<li><p>If the Rx clock source is XTAL40M, do not turn off XTAL during sleep.</p></li>
+<li><p>The portion of the command used to wake up that exceeds the FIFO depth (64B) will be lost.</p></li>
+</ul>
+</div>
+<p><strong>LOGUART</strong></p>
+<ol class="arabic simple">
+<li><p>Initialize LOGUART and enable its interrupt.</p></li>
+<li><p>Set <cite>WAKE_SRC_UART_LOG</cite> in <code class="docutils literal notranslate"><span class="pre">sleep_wevent_config[]</span></code> to <cite>WAKEUP_KM4</cite> or <cite>WAKEUP_KM0</cite> (based on which CPU you want to wake). The interrupt should be registered on the same CPU selected by <cite>sleep_wevent_config[]</cite>.</p></li>
+<li><p>Set <cite>xtal_mode_in_sleep</cite> to <strong>XTAL_Normal</strong> in <code class="docutils literal notranslate"><span class="pre">ps_config[]</span></code>.</p></li>
+<li><p>Enter sleep mode by releasing the wakelock in KM4 (PMU_OS needs to be released since it is acquired by default when boot).</p></li>
+<li><p>Clear the LOGUART interrupt when wakeup.</p></li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>When using LOGUART as a wakeup source, there are some restrictions:</p>
+<ul class="simple">
+<li><p>If the Rx clock source is XTAL40M, do not turn off XTAL during sleep.</p></li>
+<li><p>The portion of the command used to wake up that exceeds the FIFO depth (16B) will be lost.</p></li>
+</ul>
+</div>
+</div><div aria-labelledby="tab-5-5-3" class="sphinx-tabs-panel" hidden="true" id="panel-5-5-3" name="5-3" role="tabpanel" tabindex="0"><p>For peripherals that need specific clock settings, such as UART and LOGUART, their setting flows are described in following section.</p>
+<p id="smart-power-saving-uart"><strong>UART</strong></p>
+<ol class="arabic simple">
+<li><p>Initialize UART and enable its interrupt.</p></li>
+<li><p>Set the related wakeup source (<cite>WAKE_SRC_UART0/WAKE_SRC_UART1/WAKE_SRC_UART2_BT</cite>) in <code class="docutils literal notranslate"><span class="pre">sleep_wevent_config[]</span></code> to <cite>WAKEUP_KM4</cite> or <cite>WAKEUP_KM0</cite> (based on which CPU you want to wake). The interrupt should be registered on the same CPU selected by <code class="docutils literal notranslate"><span class="pre">sleep_wevent_config[]</span></code>.</p></li>
+<li><p>Set the corresponding entry of <code class="docutils literal notranslate"><span class="pre">uart_config[]</span></code> in <code class="file docutils literal notranslate"><span class="pre">ameba_sleepcfg.c</span></code> to <strong>ENABLE</strong>.</p></li>
+<li><p>Set <cite>keep_OSC4M_on</cite> in <code class="docutils literal notranslate"><span class="pre">ps_config[]</span></code> to <strong>TRUE</strong> to keep OSC4M enabled during sleep mode.</p></li>
+<li><p>Enter sleep mode by releasing the wakelock in KM4 (<cite>PMU_OS</cite> needs to be released since it is acquired by default when boot).</p></li>
+<li><p>Clear the UART interrupt when wakeup.</p></li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>When using UART as a wakeup source, there are some restrictions:</p>
+<ul class="simple">
+<li><p>If the Rx clock source is XTAL40M, do not turn off XTAL during sleep; if the Rx clock source is OSC2M, do not turn off OSC4M during sleep.</p></li>
+<li><p>The portion of the command used to wake up that exceeds the FIFO depth (64B) will be lost.</p></li>
+</ul>
+</div>
+<p id="smart-power-saving-loguart"><strong>LOGUART</strong></p>
+<ol class="arabic simple">
+<li><p>Initialize LOGUART and enable its interrupt.</p></li>
+<li><p>Set <cite>WAKE_SRC_UART_LOG</cite> in <code class="docutils literal notranslate"><span class="pre">sleep_wevent_config[]</span></code> to <cite>WAKEUP_KM4</cite> or <cite>WAKEUP_KM0</cite> (based on which CPU you want to wake). The interrupt should be registered on the same CPU selected by <cite>sleep_wevent_config[]</cite>.</p></li>
+<li><p>Set <cite>xtal_mode_in_sleep</cite> to <strong>XTAL_Normal</strong> in <code class="docutils literal notranslate"><span class="pre">ps_config[]</span></code>.</p></li>
+<li><p>Enter sleep mode by releasing the wakelock in KM4 (PMU_OS needs to be released since it is acquired by default when boot).</p></li>
+<li><p>Clear the LOGUART interrupt when wakeup.</p></li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>When using LOGUART as a wakeup source, there are some restrictions:</p>
+<ul class="simple">
+<li><p>If the Rx clock source is XTAL40M, do not turn off XTAL during sleep; if the Rx clock source is OSC2M, do not turn off OSC4M during sleep.</p></li>
+<li><p>The portion of the command used to wake up that exceeds the FIFO depth (16B) will be lost.</p></li>
+</ul>
+</div>
+</div></div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="0_ps_index_cn.html" class="btn btn-neutral float-left" title="低功耗开发" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="../2_wifi_basic/0_wifi_basic_index_cn.html" class="btn btn-neutral float-right" title="Wi-Fi 基础模式" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2025, Realsil。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+
+    <!-- 问题反馈按钮和对话框 -->
+    
+
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+     
+
+    <!-- templates/sidebar_toggle.html -->
+
+<button id="sidebar-toggle-button" aria-label="Toggle sidebar"></button>
+
+<script>
+    function sidebarToggleButton() {
+        const sidebar = document.querySelector('.wy-nav-side');
+        const contentArea = document.querySelector('.wy-nav-content');
+        const contentAreaWrap = document.querySelector('.wy-nav-content-wrap');
+        const sidebarToggleButton = document.getElementById('sidebar-toggle-button');
+
+        console.log('Sidebar:', sidebar);
+        console.log('Content Area:', contentArea);
+        console.log('Toggle Button:', sidebarToggleButton);
+
+        if (!sidebar || !contentArea || !sidebarToggleButton) {
+            console.error('One or more elements not found');
+            return;
+        }
+
+        let isSidebarCollapsed = false;
+
+        sidebarToggleButton.addEventListener('click', function() {
+            document.documentElement.classList.add('sidebar-transitioning');// 添加过渡类
+
+            if (isSidebarCollapsed) {
+                document.documentElement.classList.remove('sidebar-collapsed'); // 改为使用CSS类控制
+
+                sidebar.style.marginLeft = '0px';
+                contentAreaWrap.style.marginLeft = '300px';
+                contentArea.classList.remove('expanded');
+
+                sidebarToggleButton.style.left = '300px';
+            } else {
+                document.documentElement.classList.add('sidebar-collapsed');
+
+                sidebar.style.marginLeft = '-300px';
+                contentAreaWrap.style.marginLeft = '0px';
+                contentArea.classList.add('expanded');
+
+                sidebarToggleButton.style.left = '0px';
+            }
+
+            // 同步状态
+            isSidebarCollapsed = !isSidebarCollapsed;
+
+            // 过渡结束后移除标记
+            setTimeout(() => {
+                document.documentElement.classList.remove('sidebar-transitioning');
+            }, 300); // 必须与过渡时间匹配
+        });
+    }
+</script>
+
+<style>
+    #sidebar-toggle-button {
+        position: fixed;
+        left: 300px;
+        top: 0;
+        z-index: 1002;
+
+        width: 4px;  /* 竖线宽度 */
+        /* 增加热区 */
+        padding: 0 15px; /* 左右各扩展12px点击区域 */
+        margin: 0 -15px; /* 抵消padding带来的位置偏移 */
+        clip-path: inset(0 -15px); /* 保持视觉宽度4px */
+
+        height: 100vh; /* 竖线高度 */
+        background: #2d2d2d;
+        border: none;
+        border-radius: 2px;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        transform: none;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+
+        /* 隐藏原始文字 */
+        color: transparent;
+        font-size: 0;
+
+        /* 修正交互区域 */
+        padding: 0;
+        margin: 0;
+
+        /* 新增：防止内容溢出 */
+        overflow: visible;
+
+        /* 调整箭头定位 */
+        &::before {
+            top: 50vh; /* 改为视口中点定位 */
+            transform: translateY(-50%);
+        }
+
+        &::after {
+            top: 50vh;
+            transform: translateY(-50%) rotate(45deg);
+        }
+    }
+
+    /* 动态箭头指示器 */
+    #sidebar-toggle-button::before {
+        content: '‹';
+        position: absolute;
+        left: 6px;
+        top: 50%;
+        width: 24px;
+        height: 24px;
+        background: #3498db;
+        color: white;
+        font-size: 18px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transform: translateY(-50%);
+        opacity: 0;
+        transition: all 0.3s ease;
+        pointer-events: none;
+    }
+
+    #sidebar-toggle-button::after {
+        content: '';
+        position: absolute;
+
+        left: -15px;  /* 向左扩展12px */
+        right: -15px; /* 向右扩展12px */
+
+        top: 50%;
+        width: 8px;
+        height: 8px;
+        border: 2px solid white;
+        border-width: 2px 2px 0 0;
+        transform: translateY(-50%) rotate(45deg);
+        opacity: 0;
+        transition: all 0.3s ease;
+    }
+
+    /* 悬停效果 */
+    #sidebar-toggle-button:hover {
+        width: 10px;
+        background: #2980b9;
+    }
+
+    /* 点击动画 */
+    #sidebar-toggle-button:active {
+        transform: translateY(-50%) scale(0.9);
+    }
+</style>
+
+<!-- 统一移动速度 -->
+<style>
+    /* 统一过渡参数 */
+    :root {
+        --sidebar-transition: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .wy-nav-side,
+    .wy-nav-content-wrap,
+    #sidebar-toggle-button {
+        transition: all var(--sidebar-transition) !important;
+    }
+
+    /* 按钮样式调整 */
+    #sidebar-toggle-button {
+        left: 300px;
+        transition: left var(--sidebar-transition),
+                    width 150ms ease, /* 悬停效果保持独立 */
+                    background 150ms ease;
+    }
+
+    /* 折叠状态 */
+    .sidebar-collapsed {
+        .wy-nav-side {
+            margin-left: -300px !important;
+        }
+
+        .wy-nav-content-wrap {
+            margin-left: 0 !important;
+        }
+
+        #sidebar-toggle-button {
+            left: 0 !important;
+        }
+    }
+
+    /* 禁用点击时的过渡 */
+    .sidebar-transitioning {
+        .wy-nav-side,
+        .wy-nav-content-wrap,
+        #sidebar-toggle-button {
+            transition: none !important;
+        }
+    }
+</style>
+
+    
+
+    <script>
+        // 初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            
+
+            sidebarToggleButton();
+        });
+
+
+    </script>
+
+
+
+</body>
+</html>

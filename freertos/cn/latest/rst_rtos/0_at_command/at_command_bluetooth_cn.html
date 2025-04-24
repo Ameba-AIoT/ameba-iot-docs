@@ -6,13 +6,12 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>蓝牙 AT命令集 &mdash; Ameba IoT Docs  文档</title>
+  <title>蓝牙 AT 命令集 &mdash; Ameba IoT Docs  文档</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
-      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=b947ea82" />
-      <link rel="stylesheet" type="text/css" href="../../_static/tabs.css?v=a5c4661c" />
-      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=b947ea82" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=dcc6a489" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=dcc6a489" />
 
   
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
@@ -38,166 +37,32 @@
     <link rel="index" title="索引" href="../../genindex.html" />
     <link rel="search" title="搜索" href="../../search.html" />
     <link rel="next" title="文件系统 AT 命令集" href="at_command_file_system_cn.html" />
-    <link rel="prev" title="WebSocket AT命令集" href="at_command_websocket_cn.html" />
+    <link rel="prev" title="WebSocket AT 命令集" href="at_command_websocket_cn.html" />
      
 
     
-        
-        <script>
-        // 配置豁免路径（需要与后端路由完全匹配）
-        const EXEMPT_PATHS = [
-            '/_',                     // Sphinx生成路径
-            '/_static',               // 静态资源路径
-            '/_images',               // 图片资源
-            '/auth',                  // 认证端点
-            '/login',                 // 登录页面
-            '/logout',                // 登出端点
-            '/check_session',         // 会话检查
-            '/nda_restricted'         // 无权限提示页
-        ];
-
-        // 增强型路径检查
-        function isExemptPath(targetPath = window.location.pathname) {
-            const path = targetPath.toLowerCase();
-            const fullExemptPaths = EXEMPT_PATHS.concat(
-                EXEMPT_PATHS.map(p => `/en${p}`),  // 英文路径
-                EXEMPT_PATHS.map(p => `/zh_CN${p}`) // 中文路径
-            );
-
-            return fullExemptPaths.some(exempt => {
-                // 精确匹配或前缀匹配
-                return path === exempt.toLowerCase() || 
-                    path.startsWith(exempt.toLowerCase() + '/');
-            });
-        }
-        </script>
-    
 
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
-
-    <!-- NDA文档输入密码的框 -->
-    
-<script>
-// ▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼ 多语言配置 ▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼
-const lang = 'zh';  // 使用 Python 字符串切片
-const i18n = {
-    zh: {
-        title: '访问授权',
-        username: '用户名',
-        password: '密码',
-        confirm: '确认',
-        cancel: '取消',
-        usernameError: '用户名错误',
-        userNotExist: '该用户不存在',
-        passwordError: '密码错误',
-        wrongPassword: '请输入正确的密码',
-        accessDenied: '无访问权限',
-        noPermission: '您无权查看此内容',
-        expiredTitle: '访问已过期',
-        expiredMsg: '您的权限已失效<br>有效期：%s 至 %s',
-        deniedTitle: '⚠️ 无访问权限',
-        contact: '请联系 claire_wang@realsil.com.cn 获取权限'
-    },
-    en: {
-        title: 'Access Required',
-        username: 'Username',
-        password: 'Password',
-        confirm: 'Confirm',
-        cancel: 'Cancel',
-        usernameError: 'Invalid Username',
-        userNotExist: 'User does not exist',
-        passwordError: 'Wrong Password',
-        wrongPassword: 'Please enter correct password',
-        accessDenied: 'Access Denied',
-        noPermission: 'You have no permission to view this content',
-        expiredTitle: 'Authorization Expired',
-        expiredMsg: 'Your access has expired<br>Valid period: %s to %s',
-        deniedTitle: '⚠️ Access Denied',
-        contact: 'Please contact claire_wang@realsil.com.cn for access'
-    }
-};
-// ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲ 多语言配置结束 ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
-</script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
     <!-- 样式模板 -->
-    
+    <style>
+        .wy-nav-content {
+            max-width: 1100px;
+             
+        }
 
-<style>
-    .wy-nav-content {
-        max-width: 1100px;
-         
-    }
-    
-    .auth-denied {
-        padding: 20px;
-        background: #f8f9fa;
-        border-radius: 4px;
-        border: 1px solid #dee2e6;
-        text-align: center;
-        color: #721c24;
-        margin-top: 20px;
-    }
-    .auth-denied h3 {
-        margin-bottom: 10px;
-        color: #dc3545;
-    }
-    
-    #report-button {
-        position: fixed;
-        top: 10px;
-        left: 1270px;
-        padding: 1px 15px; /* 调整内边距：1px 为上下，5px 为左右 */
-        height: 30px; /* 设置固定高度 */
-        background-color: #2ecc71;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        z-index: 1000;
-    }
-    #report-button:hover {
-        background-color: #2ecc71;
-    }
-    
-    .feedback-dialog {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background: white;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-        z-index: 1001;
-        width: 600px;
-    }
-    .feedback-dialog textarea {
-        width: 100%;
-        height: 150px;
-        margin-top: 10px;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        resize: vertical;
-    }
-    .feedback-dialog button {
-        margin-top: 10px;
-        padding: 8px 16px;
-        background-color: #007bff;
-        color: white;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-    }
-    .feedback-dialog button:hover {
-        background-color: #0056b3;
-    }
+        .wy-nav-content {
+            transition: margin 0.3s ease; /* 添加过渡效果 */
+            margin-left: 0px !important; /* 侧边栏展开时的偏移 */
+            max-width: calc(100% - 0px) !important; /* 调整最大宽度，使其与侧边栏宽度相关 */
+        }
 
-    
-    
-</style>
-
-
+        .wy-nav-content.expanded {
+            margin-left: 0 !important; /* 侧边栏收缩时内容区域回归左边 */
+            max-width: 100% !important; /* 内容区域最大宽度调整 */
+        }
+    </style>
 
     <!-- 注入 TOC 映射和当前页面信息 -->
     
@@ -205,7 +70,7 @@ const i18n = {
 <!-- TOC 映射和当前文档信息 -->
 <script>
 // 将 Python 字典转换为 JS 对象
-const TOC_TITLE_MAP = {"rst_rtos/0_ameba_product": "\u4ea7\u54c1\u4e2d\u5fc3", "rst_rtos/0_ameba_product/0_ameba_product_center_index_cn": "\u4ea7\u54c1\u4e2d\u5fc3", "rst_rtos/0_ameba_sdk": "Ameba SDK", "rst_rtos/0_ameba_sdk/0_ameba_sdks_index_cn": "Ameba SDK", "rst_rtos/0_ameba_solutions": "\u89e3\u51b3\u65b9\u6848", "rst_rtos/0_ameba_solutions/0_ameba_solutions_index_cn": "\u89e3\u51b3\u65b9\u6848", "rst_rtos/0_at_command": "0.8 AT \u547d\u4ee4\u96c6", "rst_rtos/0_at_command/0_at_command_index_cn": "0.8 AT \u547d\u4ee4\u96c6", "rst_rtos/0_build_system": "0.3 \u6784\u5efa\u7cfb\u7edf", "rst_rtos/0_build_system/0_build_system_index_cn": "0.3 \u6784\u5efa\u7cfb\u7edf", "rst_rtos/0_file_system": "0.9 \u865a\u62df\u6587\u4ef6\u7cfb\u7edf", "rst_rtos/0_file_system/0_vfs_index_cn": "0.9 \u865a\u62df\u6587\u4ef6\u7cfb\u7edf", "rst_rtos/0_ftl": "0.a Flash \u8f6c\u6362\u5c42", "rst_rtos/0_ftl/0_ftl_index_cn": "0.a Flash \u8f6c\u6362\u5c42", "rst_rtos/0_gcc_build_environment": "0.1 GCC \u7f16\u8bd1\u73af\u5883", "rst_rtos/0_gcc_build_environment/0_gcc_build_index_cn": "0.1 GCC \u7f16\u8bd1\u73af\u5883", "rst_rtos/0_gdb_debug": "0.2 GDB \u8c03\u8bd5", "rst_rtos/0_gdb_debug/0_gdb_debug_index_cn": "0.2 GDB \u8c03\u8bd5", "rst_rtos/0_memory_layout": "0.5 Flash \u548c RAM \u5e03\u5c40", "rst_rtos/0_memory_layout/0_layout_index_cn": "0.5 Flash \u548c RAM \u5e03\u5c40", "rst_rtos/0_sdk_example": "0.4 SDK \u793a\u4f8b", "rst_rtos/0_sdk_example/0_sdk_example_index_cn": "0.4 SDK \u793a\u4f8b", "rst_rtos/0_tools": "0.7 \u5de5\u5177", "rst_rtos/0_tools/0_tools_index_cn": "0.7 \u5de5\u5177", "rst_rtos/0_user_config": "0.6 \u5f00\u53d1\u8005\u914d\u7f6e", "rst_rtos/0_user_config/0_usrcfg_index_cn": "0.6 \u5f00\u53d1\u8005\u914d\u7f6e", "rst_rtos/1_boot_process": "1.1 \u542f\u52a8\u8fc7\u7a0b", "rst_rtos/1_boot_process/0_boot_index_cn": "1.1 \u542f\u52a8\u8fc7\u7a0b", "rst_rtos/1_chipen": "1.4 \u82af\u7247\u4f7f\u80fd", "rst_rtos/1_chipen/0_chipen_index_cn": "1.4 \u82af\u7247\u4f7f\u80fd", "rst_rtos/1_gpio": "1.7 GPIO \u548c\u5f15\u811a\u63a7\u5236", "rst_rtos/1_gpio/0_gpio_index_cn": "1.7 GPIO \u548c\u5f15\u811a\u63a7\u5236", "rst_rtos/1_ipc": "1.5 \u6838\u95f4\u901a\u4fe1", "rst_rtos/1_ipc/0_ipc_index_cn": "1.5 \u6838\u95f4\u901a\u4fe1", "rst_rtos/1_mpu_cache": "1.0 \u5185\u5b58\u4fdd\u62a4\u5355\u5143\u548c\u7f13\u5b58", "rst_rtos/1_mpu_cache/0_mpu_cache_index_cn": "1.0 \u5185\u5b58\u4fdd\u62a4\u5355\u5143\u548c\u7f13\u5b58", "rst_rtos/1_ota": "1.2 \u56fa\u4ef6\u5347\u7ea7\uff08OTA\uff09", "rst_rtos/1_ota/0_ota_index_cn": "1.2 \u56fa\u4ef6\u5347\u7ea7\uff08OTA\uff09", "rst_rtos/1_otpc": "1.3 OTP\u5b58\u50a8\u5668", "rst_rtos/1_otpc/0_otpc_index_cn": "1.3 OTP\u5b58\u50a8\u5668", "rst_rtos/1_pinmux": "1.6 \u5f15\u811a\u590d\u7528", "rst_rtos/1_pinmux/0_pinmux_index_cn": "1.6 \u5f15\u811a\u590d\u7528", "rst_rtos/1_power_save": "1.9 \u4f4e\u529f\u8017\u5f00\u53d1", "rst_rtos/1_power_save/0_ps_index_cn": "1.9 \u4f4e\u529f\u8017\u5f00\u53d1", "rst_rtos/2_whc_fullmac": "2.1 WHC FullMAC", "rst_rtos/2_whc_fullmac/0_fullmac_index_cn": "2.1 WHC FullMAC", "rst_rtos/2_whc_wifi_bridge": "2.0 WHC Bridge", "rst_rtos/2_whc_wifi_bridge/0_wifi_bridge_index_cn": "2.0 WHC Bridge", "rst_rtos/2_wifi_adaptivity_test": "2.4 Wi-Fi Adaptivity \u6d4b\u8bd5\u6307\u5357", "rst_rtos/2_wifi_adaptivity_test/0_wifi_adaptivity_index_cn": "2.4 Wi-Fi Adaptivity \u6d4b\u8bd5\u6307\u5357", "rst_rtos/2_wifi_csi": "2.3 Wi-Fi CSI", "rst_rtos/2_wifi_csi/0_wifi_csi_index_cn": "2.3 Wi-Fi CSI", "rst_rtos/2_wifi_tunnel": "2.2 Wi-Fi R-Mesh", "rst_rtos/2_wifi_tunnel/0_wifi_tunnel_index_cn": "2.2 Wi-Fi R-Mesh", "rst_rtos/3_ap_trustzone": "3.d AP \u5b89\u5168\u670d\u52a1", "rst_rtos/3_ap_trustzone/0_ap_tz_index_cn": "3.d AP \u5b89\u5168\u670d\u52a1", "rst_rtos/3_crypto_engine": "3.9 \u5bf9\u79f0\u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_crypto_engine/0_crypto_engine_index_cn": "3.9 \u5bf9\u79f0\u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_ecdsa_engine": "3.a ECDSA \u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_ecdsa_engine/0_ecdsa_index_cn": "3.a ECDSA \u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_eddsa_engine": "3.b EDDSA \u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_eddsa_engine/0_eddsa_index_cn": "3.b EDDSA \u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_rsa_engine": "3.c RSA \u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_rsa_engine/0_rsa_index_cn": "3.c RSA \u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_security": "3.1 \u5b89\u5168\u4e0e\u52a0\u5bc6", "rst_rtos/3_security/0_security_index_cn": "3.1 \u5b89\u5168\u4e0e\u52a0\u5bc6", "rst_rtos/3_trng": "3.2 \u771f\u968f\u673a\u6570\u53d1\u751f\u5668", "rst_rtos/3_trng/0_trng_index_cn": "3.2 \u771f\u968f\u673a\u6570\u53d1\u751f\u5668", "rst_rtos/4_ai": "4.1 \u4eba\u5de5\u667a\u80fd", "rst_rtos/4_ai/0_ai_index_cn": "4.1 \u4eba\u5de5\u667a\u80fd", "rst_rtos/4_ai_voice": "4.2 \u8bed\u97f3\u8bc6\u522b", "rst_rtos/4_ai_voice/0_ai_voice_index_cn": "4.2 \u8bed\u97f3\u8bc6\u522b", "rst_rtos/4_dsp": "4.4 DSP \u4f7f\u7528\u6307\u5357", "rst_rtos/4_dsp/0_dsp_index_cn": "4.4 DSP \u4f7f\u7528\u6307\u5357", "rst_rtos/4_multimedia": "4.3 \u591a\u5a92\u4f53", "rst_rtos/4_multimedia/0_multimedia_index_cn": "4.3 \u591a\u5a92\u4f53", "rst_rtos/6_mass_production": "6.1 \u6279\u91cf\u751f\u4ea7", "rst_rtos/6_mass_production/0_mp_index_cn": "6.1 \u6279\u91cf\u751f\u4ea7", "rst_rtos/6_mptools": "6.2 \u4ea7\u6d4b\u5de5\u5177", "rst_rtos/6_mptools/0_mptools_index_cn": "6.2 \u4ea7\u6d4b\u5de5\u5177", "rst_rtos/7_usb": "7.1 USB \u4e3b\u673a\u4e0e\u8bbe\u5907", "rst_rtos/7_usb/0_usb_index_cn": "7.1 USB \u4e3b\u673a\u4e0e\u8bbe\u5907", "rst_rtos/8_adc": "8.4 \u6a21\u6570\u8f6c\u6362\u5668", "rst_rtos/8_adc/0_adc_index_cn": "8.4 \u6a21\u6570\u8f6c\u6362\u5668", "rst_rtos/8_cap_touch": "8.7 Cap-Touch", "rst_rtos/8_cap_touch/0_cap_touch_index_cn": "8.7 Cap-Touch", "rst_rtos/8_dmac": "8.1 DMA \u63a7\u5236\u5668", "rst_rtos/8_dmac/0_dmac_index_cn": "8.1 DMA \u63a7\u5236\u5668", "rst_rtos/8_ir": "8.5 \u7ea2\u5916\u6536\u53d1\u5668", "rst_rtos/8_ir/0_ir_index_cn": "8.5 \u7ea2\u5916\u6536\u53d1\u5668", "rst_rtos/8_key_scan": "8.8 Key-Scan", "rst_rtos/8_key_scan/0_key_scan_index_cn": "8.8 Key-Scan", "rst_rtos/8_lcdc": "8.a LCD \u63a7\u5236\u5668", "rst_rtos/8_lcdc/0_lcdc_index_cn": "8.a LCD \u63a7\u5236\u5668", "rst_rtos/8_ledc": "8.6 LED \u63a7\u5236\u5668", "rst_rtos/8_ledc/0_ledc_index_cn": "8.6 LED \u63a7\u5236\u5668", "rst_rtos/8_psram": "8.2 PSRAM", "rst_rtos/8_psram/0_psram_index_cn": "8.2 PSRAM", "rst_rtos/8_rtc_io": "8.9 RTC-IO", "rst_rtos/8_rtc_io/0_rtc_io_index_cn": "8.9 RTC-IO", "rst_rtos/8_thermal": "8.3 \u6e29\u5ea6\u6d4b\u91cf", "rst_rtos/8_thermal/0_thermal_index_cn": "8.3 \u6e29\u5ea6\u6d4b\u91cf"};
+const TOC_TITLE_MAP = {"rst_rtos/0_ameba_product": "\u4ea7\u54c1\u4e2d\u5fc3", "rst_rtos/0_ameba_product/0_ameba_product_center_index_cn": "\u4ea7\u54c1\u4e2d\u5fc3", "rst_rtos/0_ameba_sdk": "Ameba SDK", "rst_rtos/0_ameba_sdk/0_ameba_sdks_index_cn": "Ameba SDK", "rst_rtos/0_ameba_solutions": "\u89e3\u51b3\u65b9\u6848", "rst_rtos/0_ameba_solutions/0_ameba_solutions_index_cn": "\u89e3\u51b3\u65b9\u6848", "rst_rtos/0_at_command": "0.8 AT \u547d\u4ee4\u96c6", "rst_rtos/0_at_command/0_at_command_index_cn": "0.8 AT \u547d\u4ee4\u96c6", "rst_rtos/0_build_system": "0.3 \u6784\u5efa\u7cfb\u7edf", "rst_rtos/0_build_system/0_build_system_index_cn": "0.3 \u6784\u5efa\u7cfb\u7edf", "rst_rtos/0_file_system": "0.9 \u865a\u62df\u6587\u4ef6\u7cfb\u7edf", "rst_rtos/0_file_system/0_vfs_index_cn": "0.9 \u865a\u62df\u6587\u4ef6\u7cfb\u7edf", "rst_rtos/0_ftl": "0.a Flash \u8f6c\u6362\u5c42", "rst_rtos/0_ftl/0_ftl_index_cn": "0.a Flash \u8f6c\u6362\u5c42", "rst_rtos/0_gcc_build_environment": "0.1 GCC \u7f16\u8bd1\u73af\u5883", "rst_rtos/0_gcc_build_environment/0_gcc_build_index_cn": "0.1 GCC \u7f16\u8bd1\u73af\u5883", "rst_rtos/0_gdb_debug": "0.2 GDB \u8c03\u8bd5", "rst_rtos/0_gdb_debug/0_gdb_debug_index_cn": "0.2 GDB \u8c03\u8bd5", "rst_rtos/0_memory_layout": "0.5 Flash \u548c RAM \u5e03\u5c40", "rst_rtos/0_memory_layout/0_layout_index_cn": "0.5 Flash \u548c RAM \u5e03\u5c40", "rst_rtos/0_sdk_example": "0.4 SDK \u793a\u4f8b", "rst_rtos/0_sdk_example/0_sdk_example_index_cn": "0.4 SDK \u793a\u4f8b", "rst_rtos/0_tools": "0.7 \u5de5\u5177", "rst_rtos/0_tools/0_tools_index_cn": "0.7 \u5de5\u5177", "rst_rtos/0_user_config": "0.6 \u5f00\u53d1\u8005\u914d\u7f6e", "rst_rtos/0_user_config/0_usrcfg_index_cn": "0.6 \u5f00\u53d1\u8005\u914d\u7f6e", "rst_rtos/10_api_docs": "2.6 Wi-Fi API \u53c2\u8003", "rst_rtos/10_api_docs/0_api_index_cn": "2.6 Wi-Fi API \u53c2\u8003", "rst_rtos/1_boot_process": "1.1 \u542f\u52a8\u8fc7\u7a0b", "rst_rtos/1_boot_process/0_boot_index_cn": "1.1 \u542f\u52a8\u8fc7\u7a0b", "rst_rtos/1_chipen": "1.4 \u82af\u7247\u4f7f\u80fd", "rst_rtos/1_chipen/0_chipen_index_cn": "1.4 \u82af\u7247\u4f7f\u80fd", "rst_rtos/1_gpio": "1.7 GPIO \u548c\u5f15\u811a\u63a7\u5236", "rst_rtos/1_gpio/0_gpio_index_cn": "1.7 GPIO \u548c\u5f15\u811a\u63a7\u5236", "rst_rtos/1_ipc": "1.5 \u6838\u95f4\u901a\u4fe1", "rst_rtos/1_ipc/0_ipc_index_cn": "1.5 \u6838\u95f4\u901a\u4fe1", "rst_rtos/1_mpu_cache": "1.0 \u5185\u5b58\u7ba1\u7406\u548c\u7f13\u5b58", "rst_rtos/1_mpu_cache/0_mpu_cache_index_cn": "1.0 \u5185\u5b58\u7ba1\u7406\u548c\u7f13\u5b58", "rst_rtos/1_ota": "1.2 \u56fa\u4ef6\u5347\u7ea7\uff08OTA\uff09", "rst_rtos/1_ota/0_ota_index_cn": "1.2 \u56fa\u4ef6\u5347\u7ea7\uff08OTA\uff09", "rst_rtos/1_otpc": "1.3 OTP\u5b58\u50a8\u5668", "rst_rtos/1_otpc/0_otpc_index_cn": "1.3 OTP\u5b58\u50a8\u5668", "rst_rtos/1_pinmux": "1.6 \u5f15\u811a\u590d\u7528", "rst_rtos/1_pinmux/0_pinmux_index_cn": "1.6 \u5f15\u811a\u590d\u7528", "rst_rtos/1_power_save": "1.9 \u4f4e\u529f\u8017\u5f00\u53d1", "rst_rtos/1_power_save/0_ps_index_cn": "1.9 \u4f4e\u529f\u8017\u5f00\u53d1", "rst_rtos/2_whc_fullmac": "2.2 WHC FullMAC", "rst_rtos/2_whc_fullmac/0_fullmac_index_cn": "2.2 WHC FullMAC", "rst_rtos/2_whc_wifi_bridge": "2.1 WHC Bridge", "rst_rtos/2_whc_wifi_bridge/0_wifi_bridge_index_cn": "2.1 WHC Bridge", "rst_rtos/2_wifi_adaptivity_test": "2.5 Wi-Fi Adaptivity \u6d4b\u8bd5\u6307\u5357", "rst_rtos/2_wifi_adaptivity_test/0_wifi_adaptivity_index_cn": "2.5 Wi-Fi Adaptivity \u6d4b\u8bd5\u6307\u5357", "rst_rtos/2_wifi_basic": "2.0 Wi-Fi \u57fa\u7840\u6a21\u5f0f", "rst_rtos/2_wifi_basic/0_wifi_basic_index_cn": "2.0 Wi-Fi \u57fa\u7840\u6a21\u5f0f", "rst_rtos/2_wifi_csi": "2.4 Wi-Fi CSI", "rst_rtos/2_wifi_csi/0_wifi_csi_index_cn": "2.4 Wi-Fi CSI", "rst_rtos/2_wifi_tunnel": "2.3 Wi-Fi R-Mesh", "rst_rtos/2_wifi_tunnel/0_wifi_tunnel_index_cn": "2.3 Wi-Fi R-Mesh", "rst_rtos/3_ap_trustzone": "3.d AP \u5b89\u5168\u670d\u52a1", "rst_rtos/3_ap_trustzone/0_ap_tz_index_cn": "3.d AP \u5b89\u5168\u670d\u52a1", "rst_rtos/3_crypto_engine": "3.9 \u5bf9\u79f0\u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_crypto_engine/0_crypto_engine_index_cn": "3.9 \u5bf9\u79f0\u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_ecdsa_engine": "3.a ECDSA \u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_ecdsa_engine/0_ecdsa_index_cn": "3.a ECDSA \u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_eddsa_engine": "3.b EDDSA \u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_eddsa_engine/0_eddsa_index_cn": "3.b EDDSA \u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_rsa_engine": "3.c RSA \u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_rsa_engine/0_rsa_index_cn": "3.c RSA \u786c\u4ef6\u52a0\u5bc6\u5f15\u64ce", "rst_rtos/3_security": "3.1 \u5b89\u5168\u4e0e\u52a0\u5bc6", "rst_rtos/3_security/0_security_index_cn": "3.1 \u5b89\u5168\u4e0e\u52a0\u5bc6", "rst_rtos/3_trng": "3.2 \u771f\u968f\u673a\u6570\u53d1\u751f\u5668", "rst_rtos/3_trng/0_trng_index_cn": "3.2 \u771f\u968f\u673a\u6570\u53d1\u751f\u5668", "rst_rtos/4_ai": "4.1 \u4eba\u5de5\u667a\u80fd", "rst_rtos/4_ai/0_ai_index_cn": "4.1 \u4eba\u5de5\u667a\u80fd", "rst_rtos/4_ai_voice": "4.2 \u8bed\u97f3\u8bc6\u522b", "rst_rtos/4_ai_voice/0_ai_voice_index_cn": "4.2 \u8bed\u97f3\u8bc6\u522b", "rst_rtos/4_dsp": "4.4 DSP \u4f7f\u7528\u6307\u5357", "rst_rtos/4_dsp/0_dsp_index_cn": "4.4 DSP \u4f7f\u7528\u6307\u5357", "rst_rtos/4_multimedia": "4.3 \u591a\u5a92\u4f53", "rst_rtos/4_multimedia/0_multimedia_index_cn": "4.3 \u591a\u5a92\u4f53", "rst_rtos/6_mass_production": "6.1 \u6279\u91cf\u751f\u4ea7", "rst_rtos/6_mass_production/0_mp_index_cn": "6.1 \u6279\u91cf\u751f\u4ea7", "rst_rtos/6_mptools": "6.2 \u4ea7\u6d4b\u5de5\u5177", "rst_rtos/6_mptools/0_mptools_index_cn": "6.2 \u4ea7\u6d4b\u5de5\u5177", "rst_rtos/7_usb": "7.1 USB \u4e3b\u673a\u4e0e\u8bbe\u5907", "rst_rtos/7_usb/0_usb_index_cn": "7.1 USB \u4e3b\u673a\u4e0e\u8bbe\u5907", "rst_rtos/8_adc": "8.4 \u6a21\u6570\u8f6c\u6362\u5668", "rst_rtos/8_adc/0_adc_index_cn": "8.4 \u6a21\u6570\u8f6c\u6362\u5668", "rst_rtos/8_cap_touch": "8.7 Cap-Touch", "rst_rtos/8_cap_touch/0_cap_touch_index_cn": "8.7 Cap-Touch", "rst_rtos/8_dmac": "8.1 DMA \u63a7\u5236\u5668", "rst_rtos/8_dmac/0_dmac_index_cn": "8.1 DMA \u63a7\u5236\u5668", "rst_rtos/8_ir": "8.5 \u7ea2\u5916\u6536\u53d1\u5668", "rst_rtos/8_ir/0_ir_index_cn": "8.5 \u7ea2\u5916\u6536\u53d1\u5668", "rst_rtos/8_key_scan": "8.8 Key-Scan", "rst_rtos/8_key_scan/0_key_scan_index_cn": "8.8 Key-Scan", "rst_rtos/8_lcdc": "8.a LCD \u63a7\u5236\u5668", "rst_rtos/8_lcdc/0_lcdc_index_cn": "8.a LCD \u63a7\u5236\u5668", "rst_rtos/8_ledc": "8.6 LED \u63a7\u5236\u5668", "rst_rtos/8_ledc/0_ledc_index_cn": "8.6 LED \u63a7\u5236\u5668", "rst_rtos/8_psram": "8.2 PSRAM", "rst_rtos/8_psram/0_psram_index_cn": "8.2 PSRAM", "rst_rtos/8_rtc_io": "8.9 RTC-IO", "rst_rtos/8_rtc_io/0_rtc_io_index_cn": "8.9 RTC-IO", "rst_rtos/8_thermal": "8.3 \u6e29\u5ea6\u6d4b\u91cf", "rst_rtos/8_thermal/0_thermal_index_cn": "8.3 \u6e29\u5ea6\u6d4b\u91cf"};
 console.log("TOC_TITLE_MAP:", TOC_TITLE_MAP);
 
 // 获取当前页面的文档名 (例如 'rst_rtos/3_nda_secure_boot/0_secure_boot_index_nda')
@@ -262,647 +127,10 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
-    <style>
-        /* ====================== 紧凑型选择器 ====================== */
-        #topleft-panel {
-            background: rgba(40, 58, 73, 0.9);
-            border-radius: 8px;
-            padding: 4px;
-            margin: 4px 0;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-            backdrop-filter: blur(4px);
-        }
-
-        .selectors-grid {
-            display: grid;
-            gap: 4px;
-        }
-
-        .dual-selector-group {
-            display: grid;
-            grid-template-columns: 1fr 1fr; /* 两列等宽 */
-            gap: 4px; /* 列间距 */
-        }
-
-        .selector-group {
-            position: relative;
-        }
-
-        .selector-label {
-            display: block;
-            color: #a0b3c6;
-            font-size: 0.85em;
-            margin-bottom: 4px;
-            padding-left: 4px;
-        }
-
-        .selector-dropdown {
-            width: 100%;
-            padding: 4px 4px;
-            border: 1px solid rgba(64, 82, 97, 0.8);
-            border-radius: 6px;
-            background: rgba(44, 62, 80, 0.9);
-            color: #ecf0f1;
-            font-size: 0.95em;
-            transition: all 0.2s ease;
-            appearance: none;
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23a0b3c6'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
-            background-repeat: no-repeat;
-            background-position: right 10px center;
-            background-size: 16px;
-        }
-
-        .selector-dropdown:hover {
-            border-color: #4a6a8b;
-            background-color: rgba(44, 62, 80, 1);
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-        }
-
-        .selector-dropdown:focus {
-            outline: none;
-            border-color: #3498db;
-            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
-        }
-
-        /* 移动端优化 */
-        @media (max-width: 768px) {
-            #topleft-panel {
-                margin: 8px 0;
-                padding: 10px;
-            }
-
-            .selectors-grid {
-                grid-template-columns: 1fr;
-                gap: 10px;
-            }
-
-            .selector-dropdown {
-                padding: 10px 12px;
-            }
-
-            .dual-selector-group {
-                grid-template-columns: 1fr; /* 小屏幕下堆叠显示 */
-            }
-        }
-    </style>
-
     
-        
-
-<style>
-    /* ================= 用户面板 ================= */
-    .user-panel {
-        /* background: rgba(255,255,255,0.1); */
-        background: rgba(255, 255, 255, 0.05); /* 更暗的背景 */
-        border-radius: 4px;
-        padding: 4px 4px; /* 上下间距减少 */
-        margin: 4px 0px; /* 左右各10px边距 */
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-
-        width: calc(100% - 4px); /* 宽度占满父容器减去20px（左右边距总和） */
-        max-width: 280px; /* 设置最大宽度，防止过宽 */
-        box-sizing: border-box; /* 确保padding和border不影响总宽度 */
-    }
-
-    #user-info {
-        display: flex;
-        gap: 4px;
-        align-items: center;
-        padding: 4px 0;
-        width: 100%;
-    }
-
-    .username-btn, .logout-btn, .link-btn, .auth-btn {
-        flex: 1; /* 均分剩余空间 */
-        margin: 3px 0;           /* 减少外链按钮间距 */
-        padding: 4px 6px;       /* 减少内边距 */
-        background: rgba(255,255,255,0.05);
-        border: 1px solid rgba(255,255,255,0.1);
-        border-radius: 6px;
-        color: white;
-        display: flex;
-        align-items: center;
-        transition: all 0.3s ease;
-    }
-
-    .username-btn:hover {
-        background: #92b5bb;
-    }
-
-    #username-display {
-        font-size: 0.95em;
-        color: #ecf0f1;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        text-align: left;
-    }
-
-    .logout-btn:hover {
-        background: #c0392b;
-    }
-
-    /* ================= 按钮容器 ================= */
-    .button-row {
-        display: flex;
-        gap: 4px;
-        width: 100%;
-        margin: 4px 0;
-    }
-
-    .auth-btn:hover {
-        background: #2980b9;
-        transform: translateY(-1px);
-    }
-
-    /* 外链按钮 */
-    .external-links {
-        display: flex;       /* 新增Flex布局 */
-        gap: 4px;           /* 按钮间距 */
-        width: 100%;        /* 确保容器宽度填满父级 */
-    }
-
-    .link-btn:hover {
-        background: rgba(255,255,255,0.1);
-        transform: translateY(-1px);
-    }
-
-    .btn-text {
-        font-size: 0.95em;
-    }
-
-    .panel-divider {
-        height: 1px;
-        background: rgba(255,255,255,0.1);
-        margin: 6px 0;          /* 减少分隔线间距 */
-    }
-
-    /* 桌面端悬停效果 */
-    @media (hover: hover) {
-        .username-btn:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 2px 6px rgba(255,255,255,0.15);
-        }
-
-        .logout-btn:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 2px 6px rgba(231, 76, 60, 0.3);
-        }
-    }
-
-    /* 响应式调整 */
-    @media (max-width: 768px) {
-        .user-panel {
-            padding: 4px 6px;
-        }
-
-        .auth-btn {
-            padding: 4px 68px;
-            font-size: 0.9em;
-        }
-
-        .external-links {
-            flex-direction: column; /* 移动端垂直排列 */
-            gap: 6px;              /* 调整间距 */
-        }
-        .link-btn {
-            width: 100%;          /* 移动端填满宽度 */
-            flex: none;           /* 禁用flex缩放 */
-        }
-
-        .btn-text {
-            font-size: 0.9em;
-        }
-
-        #user-info {
-            flex-direction: row; /* 保持行排列 */
-            gap: 6px;
-        }
-
-        .username-btn {
-            flex: 1 1 60%;
-            padding: 6px 8px;
-        }
-
-        .logout-btn {
-            flex: 1 1 40%;
-            text-align: center;
-        }
-    }
-</style>
-
-<style>
-    .auth-dialog {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0,0,0,0.5);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 9999;
-        backdrop-filter: blur(3px);
-    }
-
-    .auth-content {
-        background: #ffffff;
-        padding: 2rem;
-        border-radius: 12px;
-        min-width: 380px;
-        box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-        transform: translateY(-20px);
-        opacity: 0;
-        animation: dialogEnter 0.3s ease forwards;
-    }
-
-    @keyframes dialogEnter {
-        to {
-            transform: translateY(0);
-            opacity: 1;
-        }
-    }
-
-    .auth-title {
-        color: #2c3e50;
-        font-size: 1.5rem;
-        margin: 0 0 1.5rem;
-        font-weight: 600;
-        text-align: center;
-    }
-
-    .auth-input-group {
-        margin-bottom: 1.2rem;
-    }
-
-    .auth-label {
-        display: block;
-        color: #7f8c8d;
-        font-size: 0.9rem;
-        margin-bottom: 0.5rem;
-    }
-
-    .auth-input {
-        width: 100%;
-        padding: 0.8rem;
-        border: 2px solid #ecf0f1;
-        border-radius: 8px;
-        font-size: 1rem;
-        transition: all 0.3s ease;
-    }
-
-    .auth-input:focus {
-        border-color: #3498db;
-        box-shadow: 0 0 0 3px rgba(52,152,219,0.1);
-        outline: none;
-    }
-
-    .auth-button-group {
-        display: flex;
-        gap: 1rem;
-        margin-top: 1.5rem;
-    }
-
-    .auth-button {
-        flex: 1;
-        padding: 0.8rem 1.2rem;
-        border: none;
-        border-radius: 8px;
-        font-weight: 500;
-        cursor: pointer;
-        transition: all 0.3s ease;
-    }
-
-    .auth-button.confirm {
-        background: #3498db;
-        color: white;
-    }
-
-    .auth-button.confirm:hover {
-        background: #2980b9;
-        transform: translateY(-1px);
-    }
-
-    .auth-button.cancel {
-        background: #f1f2f6;
-        color: #2c3e50;
-    }
-
-    .auth-button.cancel:hover {
-        background: #dfe4ea;
-    }
-
-    @media (max-width: 480px) {
-        .auth-content {
-            min-width: 90%;
-            padding: 1.2rem;
-        }
-
-        .auth-input-group {
-            margin-bottom: 0.8rem;
-        }
-
-        .auth-input {
-            padding: 0.7rem;
-            font-size: 0.9rem;
-        }
-    }
-</style>
-        <!-- source/_templates/_layout_issue_report.html -->
-<div id="prompt-box" style="
-    display: none;
-    position: fixed;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(0,0,0,0.8);
-    color: white;
-    padding: 10px 20px;
-    border-radius: 5px;
-    z-index: 9999;
-    text-align: center;
-    font-size: 14px;
-"></div>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    'use strict'; // 添加严格模式
-
-    // 获取所有DOM元素引用
-    const reportButton = document.getElementById('report-button');
-    const feedbackDialog = document.getElementById('feedback-dialog');
-    const feedbackText = document.getElementById('inquire_input');
-    const submitButton = document.getElementById('submit-feedback');
-    const cancelButton = document.getElementById('cancel-feedback');
-    const promptBox = document.getElementById('prompt-box');
-    const chapterSelect = document.getElementById('chapter-select');
-    const paragraphInput = document.getElementById('paragraph-input');
-    const postTypeSelect = document.getElementById('post-type');
-    console.log('帖子类型(postTypeSelect)DOM元素:', postTypeSelect); // 应输出<select>元素
-
-    // 状态变量
-    let hasUserInput = false; // 跟踪用户是否主动输入
-    let selectedText = '';
-    const language = 'zh-CN'; // 从模板引擎获取语言变量
-
-    // 初始化时设置placeholder
-    paragraphInput.placeholder = language === 'zh_CN' 
-        ? '你可以先选择有问题的段落或手动输入...'
-        : 'You can select text or type directly here...';
-
-    // 获取当前激活的章节
-    function getCurrentChapter() {
-        try {
-            // 通过激活的菜单项获取当前章节
-            const currentLink = document.querySelector('.wy-menu .toctree-l1.current > a');
-            if (currentLink) {
-                return currentLink.textContent.replace('¶', '').trim();
-            }
-
-            // 如果没有找到激活的链接，尝试通过页面标题获取
-            const pageTitle = document.querySelector('h1');
-            if (pageTitle) {
-                return pageTitle.textContent.split('\n')[0].trim();
-            }
-
-            // 如果以上方法都失败，尝试通过URL路径推断章节
-            const pathParts = window.location.pathname.split('/');
-            if (pathParts.length > 2) {
-                return decodeURIComponent(pathParts[pathParts.length - 2]);
-            }
-
-            return null;
-        } catch (error) {
-            console.error('获取当前章节失败:', error);
-            return null;
-        }
-    }
-
-    // 填充章节选择框
-    function populateChapters() {
-        const chapterElements = document.querySelectorAll('.wy-menu .toctree-l1 > a');
-        const chapters = Array.from(chapterElements).map(el => el.textContent.replace('¶', '').trim());
-        const currentChapter = getCurrentChapter();
-
-        console.log('提取全部章节:', chapters);
-        console.log('当前页面章节:', currentChapter);
-
-        if (chapters.length === 0) {
-            console.error('未找到章节链接');
-            return;
-        }
-
-        chapterSelect.innerHTML = '';
-
-        // 添加默认选项
-        const defaultOption = document.createElement('option');
-        defaultOption.value = '';
-        defaultOption.textContent = language === 'zh_CN' ? '-- 请选择章节 --' : '-- Select Chapter --';
-        chapterSelect.appendChild(defaultOption);
-
-        // 添加章节选项
-        chapters.forEach(chapter => {
-            const option = document.createElement('option');
-            option.value = chapter;
-            option.textContent = chapter;
-            if (chapter === currentChapter) {
-                option.selected = true;
-            }
-            chapterSelect.appendChild(option);
-        });
-    }
-
-    // 初始化章节选择框
-    populateChapters();
-
-    // 报告按钮点击事件（处理文本选择）
-    reportButton.addEventListener('click', function() {
-        // 重置所有输入字段，每次重新inquire应该让对话框处于默认状态
-        feedbackText.value = '';          // 清空问题输入框
-        paragraphInput.value = '';        // 清空段落输入框
-        selectedText = '';                // 清除之前选择的文本
-
-        const selection = window.getSelection().toString().trim();
-        if (selection) {
-            paragraphInput.value = selection;
-        } else {
-            // 保持placeholder提示
-            if (!paragraphInput.value.trim()) {
-                paragraphInput.value = '';
-            }
-        }
-        feedbackDialog.style.display = 'block';
-    });
-
-    // 监听输入事件
-    paragraphInput.addEventListener('input', function() {
-        // 标记用户已经输入
-        this.placeholder = '';
-    });
-
-    // 提交按钮点击事件
-    submitButton.addEventListener('click', function() {
-        const userQuestion = feedbackText.value.trim();
-        const selectedChapter = chapterSelect.value;
-        const selectedPostType = postTypeSelect.value;
-        const paragraphContent = paragraphInput.value.trim() || 'null';
-
-        // 在提交事件顶部添加详细日志
-        console.group('=== 提交调试信息 ===');
-        console.log('章节选择值:', chapterSelect.value);
-        console.log('帖子类型postTypeSelect DOM元素:', postTypeSelect);
-        console.log('帖子类型postTypeSelect 选中的选项:', postTypeSelect.options[postTypeSelect.selectedIndex]);
-        console.log('帖子类型postTypeSelect 实际值:', postTypeSelect.value); // 应输出'doc_correction' 对应文档纠错
-          console.groupEnd();
-
-        // 验证输入
-        if (!userQuestion) {
-            alert(language === 'zh_CN' ? '问题描述为空' : 'Issue description cannot be empty');
-            return;
-        }
-        if (!selectedChapter) {
-            alert(language === 'zh_CN' ? '请选择相关章节' : 'Please select a related chapter');
-            return;
-        }
-
-        if (!selectedPostType) {
-            alert(language === 'zh_CN' ? '请选择帖子类型' : 'Please select a post type');
-            return;
-        }
-
-        // 获取用户名
-        const username = localStorage.getItem('username') || 'Anonymous';
-
-        // 构建提交数据
-        const feedbackData = {
-            user: username,
-            chapters: selectedChapter,
-            post_type: selectedPostType,
-            paragraph: paragraphContent,
-            question: userQuestion
-        };
-
-        console.log('完整提交数据:', feedbackData);
-
-        // 发送到后端
-        fetch('http://172.29.57.206:5000/submit', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(feedbackData)
-        })
-        .then(response => {
-            if (!response.ok) throw new Error('Network response was not ok');
-            return response.json();
-        })
-        .then(data => {
-            console.log('提交成功:', data);
-            promptBox.textContent = language === 'zh_CN' ? '问题已成功提交' : 'Issue submitted successfully';
-            promptBox.style.display = 'block';
-            setTimeout(() => promptBox.style.display = 'none', 5000);
-        })
-        .catch(error => {
-            console.error('提交失败:', error);
-            promptBox.textContent = language === 'zh_CN' ? '提交失败，请检查网络连接' : 'Submission failed, check your network';
-            promptBox.style.display = 'block';
-            setTimeout(() => promptBox.style.display = 'none', 5000);
-        });
-
-        // 关闭对话框
-        feedbackDialog.style.display = 'none';
-    });
-
-
-    // 取消按钮点击事件
-    cancelButton.addEventListener('click', function() {
-        feedbackDialog.style.display = 'none';
-    });
-
-    // 初始化检查
-    console.log('问题反馈系统已加载');
-    console.log('当前语言:', language);
-    console.log('检测到章节数量:', chapterSelect.options.length - 1);
-});
-</script> <!-- 问题回报 -->
-    
-
-    <style>
-        /* 隐藏整个搜索栏容器 */
-        .wy-side-nav-search > div[role="search"] {
-            display: none !important;
-        }
-
-        /* 或者更精确地隐藏表单 */
-        form#rtd-search-form {
-            display: none !important;
-        }
-    </style>
-
-    <style>
-        .extension-container {
-            position: fixed;
-            left: 10px;
-            bottom: 10px;
-            z-index: 1000;
-        }
-
-        .extension-button {
-            background-color: #3498db;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            padding: 8px 15px;
-            cursor: pointer;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        }
-
-        .extension-button:hover {
-            background-color: #2980b9;
-        }
-    </style>
-
-    <style>
-        /* 保留bottomleft-panel作为用户面板容器 */
-        .bottomleft-panel {
-            position: fixed;
-            left: 0;
-            bottom: 0;
-            width: 300px;
-            height: auto;
-            background: #2d2d2d;
-            border-top: 1px solid #404040;
-            box-shadow: 0 -2px 12px rgba(0,0,0,0.2);
-            z-index: 1001;
-        }
-
-        /* 新增userpanel-container的flex定义 */
-        .userpanel-container {
-            padding: 10px;
-            width: 100%;
-        }
-        /* 增加字体配置 */
-        .material-symbols-outlined {
-            font-family: 'Material Symbols Outlined' !important;
-            font-weight: 400 !important;
-            font-style: normal !important;
-            line-height: 1 !important;
-            letter-spacing: normal !important;
-            text-transform: none !important;
-        }
-
-        /* 调整父容器定位方式 */
-        .userpanel-container {
-            position: relative; /* 新增定位上下文 */
-        }
-    </style>
 
     <!-- 左上角标题距离控制：Ameba IoT Docs -->
     <style>
-        /* 隐藏整个搜索栏容器 */
-        .wy-side-nav-search > div[role="search"] {
-            display: none !important;
-        }
-
         /* 新增的标题间距调整样式（添加在此处） */
         div[role="navigation"] > div[role="search"] {
             margin-bottom: 4px !important;
@@ -915,298 +143,6 @@ document.addEventListener('DOMContentLoaded', function() {
     </style>
 
     <!-- 引入功能模块 -->
-    
-        
-<script>
-    // 初始化认证对话框
-    window.initAuthDialogs = function() {
-        function createAuthDialog(type) {
-            const lang = document.getElementById('language-selector').value === 'cn' ? 'cn' : 'en';
-
-            // 对话框容器
-            const dialog = document.createElement('div');
-            dialog.className = 'auth-dialog';  // 使用CSS类替代内联样式
-
-            // 内容容器
-            const content = document.createElement('div');
-            content.className = 'auth-content';
-
-            // 标题
-            const title = document.createElement('h3');
-            title.className = 'auth-title';
-            title.textContent = type === 'register' 
-                ? (lang === 'cn' ? '注册' : 'Register') 
-                : (lang === 'cn' ? '登录' : 'Login');
-
-            // 输入字段创建函数
-            const createInput = (labelText, inputType) => {
-                const container = document.createElement('div');
-                container.className = 'auth-input-group';
-
-                const label = document.createElement('label');
-                label.textContent = labelText;
-
-                const input = document.createElement('input');
-                input.type = inputType;
-                input.className = 'auth-input';
-
-                container.appendChild(label);
-                container.appendChild(input);
-                return { container, input };
-            };
-
-            // 用户名输入
-            const username = createInput(
-                lang === 'cn' ? '用户名：' : 'Username:', 
-                'text'
-            );
-            content.appendChild(username.container);
-
-            // 密码输入
-            const password = createInput(
-                lang === 'cn' ? '密码：' : 'Password:', 
-                'password'
-            );
-            content.appendChild(password.container);
-
-            // Enter键支持
-            const handleKeyPress = (e) => {
-                if (e.key === 'Enter') confirmBtn.click();
-            };
-
-            // 确认密码（仅注册）
-            let confirmPassword;
-            let companyInput, productInput, emailInput;
-            if (type === 'register') {
-                confirmPassword = createInput(
-                    lang === 'cn' ? '确认密码：' : 'Confirm Password:', 
-                    'password'
-                );
-                content.appendChild(confirmPassword.container);
-
-                // 工作单位
-                const company = createInput(
-                    lang === 'cn' ? '工作单位：' : 'Company:', 
-                    'text'
-                );
-                content.appendChild(company.container);
-                companyInput = company.input;
-
-                // 产品信息 
-                const product = createInput(
-                    lang === 'cn' ? '产品信息：' : 'Product:', 
-                    'text'
-                );
-                content.appendChild(product.container);
-                productInput = product.input;
-
-                // 工作邮箱
-                const email = createInput(
-                    lang === 'cn' ? '工作邮箱：' : 'Email:', 
-                    'email'
-                );
-                email.input.autocomplete = 'email'; // ➕ 添加自动完成类型
-
-                content.appendChild(email.container);
-                emailInput = email.input;
-
-                // 添加Enter键支持到新字段
-                [companyInput, productInput, emailInput].forEach(input => {
-                    input.addEventListener('keypress', handleKeyPress);
-                });
-            }
-
-            // 按钮容器
-            const buttonContainer = document.createElement('div');
-            buttonContainer.className = 'auth-button-group';
-
-            // 确认按钮
-            const confirmBtn = document.createElement('button');
-            confirmBtn.className = 'auth-confirm-btn';
-            confirmBtn.textContent = lang === 'cn' ? '确认' : 'Confirm';
-
-            username.input.addEventListener('keypress', handleKeyPress);
-            password.input.addEventListener('keypress', handleKeyPress);
-            if (confirmPassword) confirmPassword.input.addEventListener('keypress', handleKeyPress);
-
-            // 确认按钮逻辑
-            confirmBtn.onclick = () => {
-                const usernameVal = username.input.value.trim();
-                const passwordVal = password.input.value.trim();
-                const companyVal = companyInput?.value.trim() || '';
-                const productVal = productInput?.value.trim() || '';
-                const emailVal = emailInput?.value.trim() || '';
-                const confirmVal = confirmPassword ? confirmPassword.input.value.trim() : null;
-
-                // 基础邮箱格式验证
-                if (type === 'register' && emailVal) {
-                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                    if (!emailRegex.test(emailVal)) {
-                        alert(lang === 'cn' 
-                            ? '请输入有效邮箱地址' 
-                            : 'Please enter a valid email address');
-                        return;
-                    }
-                }
-
-                // 验证逻辑
-                if (!usernameVal || !passwordVal) {
-                    alert(lang === 'cn' ? '用户名和密码不能为空！' : 'Username and password are required!');
-                    return;
-                }
-
-                if (type === 'register' && passwordVal !== confirmVal) {
-                    alert(lang === 'cn' ? '两次输入的密码不一致！' : 'Passwords do not match!');
-                    return;
-                }
-
-                // fetch请求
-                fetch('http://172.29.57.206:5000/auth', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRFToken': window.getCSRFToken()
-                    },
-                    body: JSON.stringify({
-                        action: type, 
-                        username: usernameVal, 
-                        password: passwordVal,
-                        company: companyVal,
-                        product: productVal,
-                        email: emailVal
-                    }),
-                    credentials: 'include'
-                })
-                .then(response => {
-                    console.log('[DEBUG] 完整响应头:', [...response.headers.entries()]);
-                    console.log('Access-Control-Allow-Origin:', response.headers.get('Access-Control-Allow-Origin'));
-                    console.log('Access-Control-Allow-Credentials:', response.headers.get('Access-Control-Allow-Credentials'));
-                    console.log('登录响应 Cookies:', response.headers.get('Set-Cookie'));
-                    return response.json();
-                })
-                .then(async (data) => {
-                    // 成功处理逻辑
-                    if (data.success) {
-                        console.log('initAuthDialogs 登录成功，当前 Cookies:', document.cookie);
-                        console.log('initAuthDialogs CSRF Token:', window.getCSRFToken());
-
-                        localStorage.setItem('auth_session', JSON.stringify({
-                            username: data.username, 
-                            expires: Date.now() + 3600000
-                        }));
-
-                        localStorage.setItem('isLoggedIn', 'true');
-                        localStorage.setItem('username', usernameVal);
-                        
-                        document.getElementById('auth-buttons').style.display = 'none';
-                        document.getElementById('user-info').style.display = 'flex';
-                        document.getElementById('username-display').textContent = localStorage.getItem('username') || '';
-                        document.body.removeChild(dialog);
-
-                        Swal.fire({
-                            icon: 'success',
-                            title: lang === 'cn' ? '登录成功' : 'Logged In',
-                            showConfirmButton: false,
-                            timer: 500
-                        });
-                    } else {
-                        document.body.removeChild(dialog);
-                        window.syncLoginState();
-                        Swal.fire({
-                            icon: 'fail',
-                            title: lang === 'cn' ? '登录失败' : 'Logged In Fail',
-                            showConfirmButton: false,
-                            timer: 500
-                        });
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert(lang === 'cn' ? '网络错误' : 'Network error');
-                });
-            };
-
-            // 取消按钮
-            const cancelBtn = document.createElement('button');
-            cancelBtn.className = 'auth-cancel-btn';
-            cancelBtn.textContent = lang === 'cn' ? '取消' : 'Cancel';
-            cancelBtn.onclick = () => document.body.removeChild(dialog);
-
-            // 组装元素
-            buttonContainer.appendChild(confirmBtn);
-            buttonContainer.appendChild(cancelBtn);
-            content.appendChild(buttonContainer);
-            dialog.appendChild(content);
-            document.body.appendChild(dialog);
-
-            // 点击外部关闭
-            dialog.addEventListener('click', (e) => {
-                if (e.target === dialog) document.body.removeChild(dialog);
-            });
-        }
-
-        // 事件绑定
-        document.getElementById('register-button').addEventListener('click', () => createAuthDialog('register'));
-        document.getElementById('login-button').addEventListener('click', () => createAuthDialog('login'));
-    }
-
-    // 注销功能
-    async function handleLogout() {
-        try {
-            const lang = (window.location.pathname.includes('/zh_CN') || 
-                        document.documentElement.lang === 'zh_CN') ? 'cn' : 'en';
-
-            // 更新本地存储和UI
-            //localStorage.removeItem('isLoggedIn');
-            localStorage.setItem('isLoggedIn', 'false');
-            localStorage.removeItem('username');
-
-            // 强制刷新显示状态
-            document.getElementById('auth-buttons').style.display = 'flex';
-            document.getElementById('user-info').style.display = 'none';
-            document.getElementById('username-display').textContent = localStorage.getItem('username') || '';
-
-            const response = await fetch('http://172.29.57.206:5000/logout', {
-                method: 'GET',
-                headers: {
-                    'X-CSRFToken': window.getCSRFToken(),
-                    'Content-Type': 'application/json'
-                },
-                credentials: 'include'
-            });
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-
-            await Swal.fire({
-                icon: 'success',
-                title: lang === 'cn' ? '登出成功' : 'Logged Out',
-                timer: 1500
-            });
-        } catch (error) {
-            console.error('登出流程异常:', error);
-            Swal.fire({
-                icon: 'error',
-                title: lang === 'cn' ? '登出异常' : 'Logout Failed',
-                text: lang === 'cn' ? '请尝试清除浏览器缓存' : 'Please clear browser cache'
-            });
-        }
-    }
-
-    // 同步登录状态
-    window.syncLoginState = function() {
-        const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-        document.getElementById('auth-buttons').style.display = isLoggedIn ? 'none' : 'flex';
-        document.getElementById('user-info').style.display = isLoggedIn ? 'flex' : 'none';
-        if (isLoggedIn) {
-            document.getElementById('username-display').textContent = localStorage.getItem('username') || '';
-        } else {
-
-        }
-    }
-
-</script>
     
     
 <script>
@@ -1229,8 +165,28 @@ document.addEventListener('DOMContentLoaded', function() {
     };
     /* ====================== 嵌入式配置结束 ====================== */
 </script>
-    
+
 <script>
+    // 获取OS显示名称列表
+    function getOSNames(data) {
+        return Object.keys(data).map(key => data[key].name);
+    }
+
+    // 获取指定OS的语言列表
+    function getLanguages(data, osKey) {
+        return Object.keys(data[osKey]?.languages || {});
+    }
+
+    // 获取指定OS和语言的版本列表
+    function getVersions(data, osKey, language) {
+        return data[osKey]?.languages?.[language] || ['latest'];
+    }
+
+    // 根据显示名称查找OS键
+    function findOSKey(data, displayName) {
+        return Object.keys(data).find(key => data[key].name === displayName);
+    }
+
     // 获取基础URL路径
     function getBaseURL() {
         const url = new URL(window.location.href);
@@ -1255,6 +211,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const url = new URL(window.location.href);
         let segments = url.pathname.split('/').filter(segment => segment);
 
+
         console.log('[DEBUG] getCurrentSegments:');
 
         if (url.protocol === 'file:') {
@@ -1264,7 +221,7 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log('[DEBUG] getCurrentSegments0:', segments);
         } else {
             // 网络路径处理
-            segments = segments.slice(3); // 去掉 ameba-iot-docs/
+            segments = segments.slice(1); // 去掉 ameba-iot-docs/
             console.log('[DEBUG] getCurrentSegments:', segments);
         }
 
@@ -1274,30 +231,43 @@ document.addEventListener('DOMContentLoaded', function() {
             version: segments[2] || 'latest' // 默认为 latest
         };
     }
+
+    // 绑定事件监听
+    function bindEvents(baseURL, segments) {
+        document.getElementById('os-selector').addEventListener('change', () => {
+            const newOSKey = document.getElementById('os-selector').value;
+            const availableLangs = getLanguages(embeddedConfig, newOSKey);
+            const defaultLang = availableLangs[0] || 'en';
+            const defaultVersion = getVersions(embeddedConfig, newOSKey, defaultLang)[0] || 'latest';
+            console.log('OS Changed:', {newOSKey, defaultLang, defaultVersion});
+            redirectTo(`${baseURL}${newOSKey}/${defaultLang}/${defaultVersion}/`);
+        });
+
+        document.getElementById('language-selector').addEventListener('change', () => {
+            const newLang = document.getElementById('language-selector').value;
+            const defaultVersion = getVersions(embeddedConfig, segments.osKey, newLang)[0] || 'latest';
+            console.log('Language Changed:', {newLang, defaultVersion});
+            redirectTo(`${baseURL}${segments.osKey}/${newLang}/${defaultVersion}/`);
+        });
+
+        document.getElementById('version-selector').addEventListener('change', () => {
+            const newVer = document.getElementById('version-selector').value;
+            console.log('Version Changed:', {newVer});
+            redirectTo(`${baseURL}${segments.osKey}/${segments.language}/${newVer}/`);
+        });
+    }
+
+    // 跳转函数
+    function redirectTo(path) {
+        const url = new URL(path, window.location.href);
+        if (url.protocol === 'file:') {
+            url.pathname += 'index.html';
+        }
+        console.log('Redirecting to:', url.href);
+        window.location.href = url.href;
+    }
 </script>
-    
-<script>
-    // 获取OS显示名称列表
-    function getOSNames(data) {
-        return Object.keys(data).map(key => data[key].name);
-    }
 
-    // 获取指定OS的语言列表
-    function getLanguages(data, osKey) {
-        return Object.keys(data[osKey]?.languages || {});
-    }
-
-    // 获取指定OS和语言的版本列表
-    function getVersions(data, osKey, language) {
-        return data[osKey]?.languages?.[language] || ['latest'];
-    }
-
-    // 根据显示名称查找OS键
-    function findOSKey(data, displayName) {
-        return Object.keys(data).find(key => data[key].name === displayName);
-    }
-</script>
-    
 <script>
     // 验证并修正路径参数
     function validateSegments(segments) {
@@ -1318,87 +288,6 @@ document.addEventListener('DOMContentLoaded', function() {
         return segments;
     }
 
-    // 生成选择器HTML
-    function generateSelectorsHTML(segments) {
-        return `
-        <div class="selectors-grid">
-            <!-- 系统选择器 -->
-            <div class="selector-group">
-                <select id="os-selector" class="selector-dropdown">
-                    ${Object.keys(embeddedConfig).map(key => `
-                        <option value="${key}">${embeddedConfig[key].name}</option>
-                    `).join('')}
-                </select>
-            </div>
-
-            <!-- 语言和版本组合（修正类名） -->
-            <div class="dual-selector-group"> <!-- 修改此处 -->
-                <div class="selector-group">
-                    <select id="language-selector" class="selector-dropdown">
-                        ${getLanguages(embeddedConfig, segments.osKey).map(lang => `
-                            <option value="${lang}">${lang}</option>
-                        `).join('')}
-                    </select>
-                </div>
-
-                <div class="selector-group">
-                    <select id="version-selector" class="selector-dropdown">
-                        ${getVersions(embeddedConfig, segments.osKey, segments.language).map(ver => `
-                            <option value="${ver}">${ver}</option>
-                        `).join('')}
-                    </select>
-                </div>
-            </div>
-        </div>
-        ${generateUserPanelHTML(segments)}`;
-    }
-
-    // 生成用户面板HTML
-    function generateUserPanelHTML(segments) {
-        return `
-            <div class="user-panel">
-                <!-- 用户名显示（登录后可见） -->
-                <div id="user-info" style="display: ${localStorage.getItem('isLoggedIn') ? 'flex' : 'none'}">
-                    <button class="username-btn")">
-                        <span class="btn-icon">👤</span>
-                        <span id="username-display">${localStorage.getItem('username') || ''}</span>
-                    </button>
-                    <button class="logout-btn" onclick="handleLogout()")">
-                        <span class="btn-icon">🚪</span>
-                        <span id="btn-text">${segments.language === 'cn' ? '注销' : 'Logout'}</span>
-                    </button>
-                </div>
-
-                <!-- 登录注册按钮（未登录时可见） -->
-                <div id="auth-buttons" class="button-row" style="display: ${localStorage.getItem('isLoggedIn') ? 'none' : 'flex'}">
-                    <button class="auth-btn" id="login-button">
-                        <span class="btn-icon">🔓</span> <!-- 登录图标 -->
-                        ${segments.language === 'cn' ? '登录' : 'Login'}
-                    </button>
-                    <button class="auth-btn" id="register-button">
-                        <span class="btn-icon">✍️</span> <!-- 注册图标 -->
-                        ${segments.language === 'cn' ? '注册' : 'Register'}
-                    </button>
-                </div>
-
-                <!-- 分隔线 -->
-                <div class="panel-divider"></div>
-
-                <!-- 外链按钮 -->
-                <div class="external-links">
-                    <button class="link-btn official" onclick="window.open('https://www.realmcu.com/', '_blank')">
-                        <span class="btn-icon">🌐</span>
-                        <span class="btn-text">${segments.language === 'cn' ? '官网' : 'Official'}</span>
-                    </button>
-                    <button class="link-btn forum" onclick="window.open('http://172.29.57.206:5000/view', '_blank')">
-                        <span class="btn-icon">💬</span>
-                        <span class="btn-text">${segments.language === 'cn' ? '论坛' : 'Forum'}</span>
-                    </button>
-                </div>
-            </div>
-        `;
-    }
-
     // 设置初始选中值
     function setInitialValues(segments) {
         document.getElementById('os-selector').value = segments.osKey;
@@ -1409,39 +298,88 @@ document.addEventListener('DOMContentLoaded', function() {
         versionSelector.value = availableVersions.includes(segments.version) ? segments.version : availableVersions[0] || 'latest';
     }
 </script>
-    
-<script>
-    // 绑定事件监听
-    function bindEvents(baseURL, segments) {
-        document.getElementById('os-selector').addEventListener('change', () => {
-            const newOSKey = document.getElementById('os-selector').value;
-            const availableLangs = getLanguages(embeddedConfig, newOSKey);
-            const defaultLang = availableLangs[0] || 'en';
-            const defaultVersion = getVersions(embeddedConfig, newOSKey, defaultLang)[0] || 'latest';
-            redirectTo(`${baseURL}${newOSKey}/${defaultLang}/${defaultVersion}/`);
-        });
 
-        document.getElementById('language-selector').addEventListener('change', () => {
-            const newLang = document.getElementById('language-selector').value;
-            const defaultVersion = getVersions(embeddedConfig, segments.osKey, newLang)[0] || 'latest';
-            redirectTo(`${baseURL}${segments.osKey}/${newLang}/${defaultVersion}/`);
-        });
+<style>
+    .selectors-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr); /* 三列等宽 */
+        gap: 4px;
+        padding: 1px 1px;
 
-        document.getElementById('version-selector').addEventListener('change', () => {
-            const newVer = document.getElementById('version-selector').value;
-            redirectTo(`${baseURL}${segments.osKey}/${segments.language}/${newVer}/`);
-        });
+        margin-top: var(--root-margin-top, 4px);
+        margin-bottom: var(--root-margin-bottom, 0px);
     }
 
-    // 跳转函数
-    function redirectTo(path) {
-        const url = new URL(path, window.location.href);
-        if (url.protocol === 'file:') {
-            url.pathname += 'index.html';
+    .dual-selector-group {
+        display: grid;
+        grid-template-columns: 1fr 1fr; /* 两列等宽 */
+        gap: 4px; /* 列间距 */
+    }
+
+    .selector-group {
+        position: relative;
+        width: 100%; /* 确保填满网格列 */
+    }
+
+    .selector-label {
+        display: block;
+        color: #a0b3c6;
+        font-size: 0.85em;
+        margin-bottom: 4px;
+        padding-left: 4px;
+    }
+
+    .selector-dropdown {
+        width: 100%;
+        margin-top: var(--root-margin-top, 4px);
+        margin-bottom: var(--root-margin-bottom, 0px);
+        padding: 2px 2px;
+        border: 2px white !important;
+        border-radius: 6px !important;
+        background: #627078 !important;
+        color: white;
+        font-size: 0.95em;
+        transition: all 0.3s ease;
+        appearance: none;
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23a0b3c6'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right 10px center;
+        background-size: 16px;
+        display: flex;
+        height: 30px;
+
+        box-shadow: none !important; /* 不要边框阴影 */
+        outline: none !important; /* 不要边框阴影 */
+    }
+
+    .selector-dropdown:hover {
+        border-color: #4a6a8b;
+        background-color: rgba(44, 62, 80, 1);
+        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    .selector-dropdown:focus {
+        outline: none;
+        border-color: #3498db;
+        box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+    }
+
+    /* 移动端优化 */
+    @media (max-width: 768px) {
+        .selectors-grid {
+            grid-template-columns: 1fr; /* 小屏幕下堆叠显示 */
+            gap: 10px;
         }
-        window.location.href = url.href;
+
+        .selector-dropdown {
+            padding: 10px 12px;
+        }
+
+        .dual-selector-group {
+            grid-template-columns: 1fr; /* 小屏幕下堆叠显示 */
+        }
     }
-</script>
+</style>
 
 </head>
 
@@ -1465,48 +403,99 @@ document.addEventListener('DOMContentLoaded', function() {
   </form>
 </div>
 
-    
-    <div id="topleft-panel" style="display: block !important; padding: 0; background: none; border: none;"></div>
+    <!-- templates/sidebar_toggle.html -->
 
-    
+
+<div id="topleft-panel" style="display: block !important; padding: 0; background: none; border: none;"></div>
+
+
+<div class="bottomleft-panel"></div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        try {
+            const segments = validateSegments(getCurrentSegments());
+            const baseURL = getBaseURL();
+
+            // 渲染HTML
+            document.getElementById('topleft-panel').innerHTML = `
+<!-- templates/sidebar_user_panel_div.html -->
+
+
+<!-- templates/sidebar_user_panel_div_docselect.html -->
+
+<div class="selectors-grid">
+    <!-- 系统选择器 -->
+    <div class="selector-group">
+        <select id="os-selector" class="selector-dropdown">
+            ${Object.keys(embeddedConfig).map(key => `
+                <option value="${key}">${embeddedConfig[key].name}</option>
+            `).join('')}
+        </select>
+    </div>
+
+    <!-- 语言选择器 -->
+    <div class="selector-group">
+        <select id="language-selector" class="selector-dropdown">
+            ${getLanguages(embeddedConfig, segments.osKey).map(lang => `
+                <option value="${lang}">${lang === 'en' ? 'en' : 'cn'}</option>
+            `).join('')}
+        </select>
+    </div>
+
+    <!-- 版本选择器 -->
+    <div class="selector-group">
+        <select id="version-selector" class="selector-dropdown">
+            ${getVersions(embeddedConfig, segments.osKey, segments.language).map(ver => `
+                <option value="${ver}">${ver}</option>
+            `).join('')}
+        </select>
+    </div>
+</div>
+
+<div class="user-panel-container">
+    <div class="user-panel">
         
-        <div class="bottomleft-panel">
-            <div class="userpanel-container"></div>
-        </div>
-    
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            try {
-                const segments = validateSegments(getCurrentSegments());
-                const baseURL = getBaseURL();
+    </div>
+</div>`;
 
-                // 渲染HTML
-                document.getElementById('topleft-panel').innerHTML = generateSelectorsHTML(segments);
+            // 设置初始值
+            setInitialValues(segments);
 
-                // 设置初始值
-                setInitialValues(segments);
+            // 绑定事件
+            bindEvents(baseURL, segments);
 
-                // 绑定事件
-                bindEvents(baseURL, segments);
-
-                // 初始化认证逻辑
-                
-                    window.initAuthDialogs();
-                    window.syncLoginState();
-
-                    // 将 user-panel 移动到 bottomleft-panel 内
-                    const userPanel = document.querySelector('.user-panel');
-                    const settingsContainer = document.querySelector('.userpanel-container');
-                    if (userPanel && settingsContainer) {
-                        settingsContainer.appendChild(userPanel); // 直接添加为子元素
-                    }
-                
-            } catch (error) {
-                console.error("Error initializing selectors:", error);
+            // 将 user-panel 移动到 bottomleft-panel 内
+            const userPanel = document.querySelector('.user-panel');
+            const bottomleftPanel = document.querySelector('.bottomleft-panel');
+            if (userPanel && bottomleftPanel) {
+                bottomleftPanel.appendChild(userPanel); // 直接添加为子元素
             }
-        });
-    </script>
+        } catch (error) {
+            console.error("Error initializing selectors:", error);
+        }
+    });
+</script>
+
+<style>
+    #topleft-panel {
+        background: rgba(40, 58, 73, 0.9);
+        border-radius: 4px;
+        padding: 4px;
+        margin: 4px 0;
+        box-shadow: 0 4px 4px rgba(0,0,0,0.15);
+        backdrop-filter: blur(4px);
+    }
+
+    /* 移动端优化 */
+    @media (max-width: 768px) {
+        #topleft-panel {
+            margin: 8px 0;
+            padding: 10px;
+        }
+    }
+</style>
 
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
               <ul class="current">
@@ -1522,16 +511,16 @@ document.addEventListener('DOMContentLoaded', function() {
 <li class="toctree-l1"><a class="reference internal" href="../0_tools/0_tools_index_cn.html">0.7 工具</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="0_at_command_index_cn.html">0.8 AT 命令集</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="at_command_introduction_cn.html">概述</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_use_spi_cn.html">通过SPI接口使用AT命令</a></li>
+<li class="toctree-l2"><a class="reference internal" href="at_command_use_spi_cn.html">通过 SPI 接口使用 AT 命令</a></li>
 <li class="toctree-l2"><a class="reference internal" href="at_command_image_cn.html">官方发布的固件</a></li>
 <li class="toctree-l2"><a class="reference internal" href="at_command_common_cn.html">通用 AT命令集</a></li>
 <li class="toctree-l2"><a class="reference internal" href="at_command_wifi_cn.html">Wi-Fi AT 命令集</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_network_cn.html">Network AT命令集</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_socket_cn.html">Socket AT命令集</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_mqtt_cn.html">MQTT AT命令集</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_http_cn.html">HTTP AT命令集</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_websocket_cn.html">WebSocket AT命令集</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">蓝牙 AT命令集</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="at_command_network_cn.html">Network AT 命令集</a></li>
+<li class="toctree-l2"><a class="reference internal" href="at_command_socket_cn.html">Socket AT 命令集</a></li>
+<li class="toctree-l2"><a class="reference internal" href="at_command_mqtt_cn.html">MQTT AT 命令集</a></li>
+<li class="toctree-l2"><a class="reference internal" href="at_command_http_cn.html">HTTP AT 命令集</a></li>
+<li class="toctree-l2"><a class="reference internal" href="at_command_websocket_cn.html">WebSocket AT 命令集</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">蓝牙 AT 命令集</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#at-btdemo-transfer-module">AT+BTDEMO=transfer_module</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#id1">功能说明</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#id2">命令格式</a></li>
@@ -1724,7 +713,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <li class="toctree-l4"><a class="reference internal" href="#id113">功能说明</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#id114">命令格式</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#id115">响应格式</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id116">备注</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id116">示例</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#id117">参数</a></li>
 </ul>
 </li>
@@ -1829,12 +818,12 @@ document.addEventListener('DOMContentLoaded', function() {
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="at_command_file_system_cn.html">文件系统 AT 命令集</a></li>
-<li class="toctree-l2"><a class="reference internal" href="at_command_ota_cn.html">OTA AT命令集</a></li>
+<li class="toctree-l2"><a class="reference internal" href="at_command_ota_cn.html">OTA AT 命令集</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../0_file_system/0_vfs_index_cn.html">0.9 虚拟文件系统</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../0_ftl/0_ftl_index_cn.html">0.a Flash 转换层</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../1_mpu_cache/0_mpu_cache_index_cn.html">1.0 内存保护单元和缓存</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_mpu_cache/0_mpu_cache_index_cn.html">1.0 内存管理和缓存</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../1_boot_process/0_boot_index_cn.html">1.1 启动过程</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../1_ota/0_ota_index_cn.html">1.2 固件升级（OTA）</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../1_otpc/0_otpc_index_cn.html">1.3 OTP存储器</a></li>
@@ -1843,11 +832,13 @@ document.addEventListener('DOMContentLoaded', function() {
 <li class="toctree-l1"><a class="reference internal" href="../1_pinmux/0_pinmux_index_cn.html">1.6 引脚复用</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../1_gpio/0_gpio_index_cn.html">1.7 GPIO 和引脚控制</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../1_power_save/0_ps_index_cn.html">1.9 低功耗开发</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../2_whc_wifi_bridge/0_wifi_bridge_index_cn.html">2.0 WHC Bridge</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../2_whc_fullmac/0_fullmac_index_cn.html">2.1 WHC FullMAC</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../2_wifi_tunnel/0_wifi_tunnel_index_cn.html">2.2 Wi-Fi R-Mesh</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../2_wifi_csi/0_wifi_csi_index_cn.html">2.3 Wi-Fi CSI</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../2_wifi_adaptivity_test/0_wifi_adaptivity_index_cn.html">2.4 Wi-Fi Adaptivity 测试指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_wifi_basic/0_wifi_basic_index_cn.html">2.0 Wi-Fi 基础模式</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_whc_wifi_bridge/0_wifi_bridge_index_cn.html">2.1 WHC Bridge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_whc_fullmac/0_fullmac_index_cn.html">2.2 WHC FullMAC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_wifi_tunnel/0_wifi_tunnel_index_cn.html">2.3 Wi-Fi R-Mesh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_wifi_csi/0_wifi_csi_index_cn.html">2.4 Wi-Fi CSI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_wifi_adaptivity_test/0_wifi_adaptivity_index_cn.html">2.5 Wi-Fi Adaptivity 测试指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../10_api_docs/0_api_index_cn.html">2.6 Wi-Fi API 参考</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../3_security/0_security_index_cn.html">3.1 安全与加密</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../3_trng/0_trng_index_cn.html">3.2 真随机数发生器</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../3_crypto_engine/0_crypto_engine_index_cn.html">3.9 对称硬件加密引擎</a></li>
@@ -1890,7 +881,7 @@ document.addEventListener('DOMContentLoaded', function() {
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="0_at_command_index_cn.html">AT 命令集</a></li>
-      <li class="breadcrumb-item active">蓝牙 AT命令集</li>
+      <li class="breadcrumb-item active">蓝牙 AT 命令集</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -1900,12 +891,14 @@ document.addEventListener('DOMContentLoaded', function() {
            <div itemprop="articleBody">
              
   <section id="at">
-<span id="bluetooth-at-commands"></span><h1>蓝牙 AT命令集<a class="headerlink" href="#at" title="Link to this heading"></a></h1>
+<span id="bluetooth-at-commands"></span><h1>蓝牙 AT 命令集<a class="headerlink" href="#at" title="Link to this heading"></a></h1>
 <div class="admonition note">
 <p class="admonition-title">备注</p>
-<p>蓝牙 AT命令集默认未启用。</p>
-<p>可以参考 <a class="reference internal" href="../0_gcc_build_environment/1_gcc_build_environment_toprst_cn.html#configuring-sdk"><span class="std std-ref">配置 SDK (menuconfig)</span></a> 进入 <code class="docutils literal notranslate"><span class="pre">CONFIG</span> <span class="pre">BT</span></code> 配置，勾选 <code class="docutils literal notranslate"><span class="pre">Enable</span> <span class="pre">BT</span></code> 打开蓝牙功能, 再勾选 <code class="docutils literal notranslate"><span class="pre">BLE</span> <span class="pre">Transfer</span> <span class="pre">Module</span></code> 打开传输模块。</p>
-<p>在传输模块初始化之前，仅支持使用以 AT+BTDEMO 开头的命令，若要使用其他命令必须先初始化传输模块。</p>
+<ul class="simple">
+<li><p>蓝牙 AT 命令集默认未启用。</p></li>
+<li><p>参考 <a class="reference internal" href="../0_gcc_build_environment/1_gcc_build_environment_toprst_cn.html#configuring-sdk"><span class="std std-ref">配置 SDK (menuconfig)</span></a> 进入 <code class="docutils literal notranslate"><span class="pre">CONFIG</span> <span class="pre">BT</span></code> 配置，勾选 <code class="docutils literal notranslate"><span class="pre">Enable</span> <span class="pre">BT</span></code> 打开蓝牙功能，再勾选 <code class="docutils literal notranslate"><span class="pre">BLE</span> <span class="pre">Transfer</span> <span class="pre">Module</span></code> 打开传输模块。</p></li>
+<li><p>在传输模块初始化之前，仅支持使用以 <code class="docutils literal notranslate"><span class="pre">AT+BTDEMO</span></code> 开头的命令，若要使用其他命令必须先初始化传输模块。</p></li>
+</ul>
 </div>
 <section id="at-btdemo-transfer-module">
 <span id="bt-at-btdemo"></span><h2>AT+BTDEMO=transfer_module<a class="headerlink" href="#at-btdemo-transfer-module" title="Link to this heading"></a></h2>
@@ -1927,16 +920,15 @@ document.addEventListener('DOMContentLoaded', function() {
 </section>
 <section id="id4">
 <h3>参数<a class="headerlink" href="#id4" title="Link to this heading"></a></h3>
-<ul>
-<li><p>&lt;op&gt;: 初始化或反初始化传输模块</p>
-<blockquote>
-<div><ul class="simple">
+<dl class="field-list simple">
+<dt class="field-odd">&lt;op&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>初始化或反初始化传输模块</p>
+<ul class="simple">
 <li><p>0: 反初始化传输模块</p></li>
 <li><p>1: 初始化传输模块</p></li>
 </ul>
-</div></blockquote>
-</li>
-</ul>
+</dd>
+</dl>
 </section>
 </section>
 <section id="at-btdemo-transfer-module-get-name">
@@ -1960,9 +952,11 @@ document.addEventListener('DOMContentLoaded', function() {
 </section>
 <section id="id8">
 <h3>参数<a class="headerlink" href="#id8" title="Link to this heading"></a></h3>
-<ul class="simple">
-<li><p>&lt;name&gt;: 设备名称</p></li>
-</ul>
+<dl class="field-list simple">
+<dt class="field-odd">&lt;name&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>设备名称</p>
+</dd>
+</dl>
 </section>
 </section>
 <section id="at-btdemo-transfer-module-set-name">
@@ -1985,18 +979,17 @@ document.addEventListener('DOMContentLoaded', function() {
 </section>
 <section id="id12">
 <h3>参数<a class="headerlink" href="#id12" title="Link to this heading"></a></h3>
-<ul>
-<li><p>&lt;name&gt;: 设备名称</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>设备名称长度不应超过40个字符</p></li>
+<dl class="field-list simple">
+<dt class="field-odd">&lt;name&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>设备名称</p>
+<ul class="simple">
+<li><p>长度不应超过40个字符</p></li>
 </ul>
-</div></blockquote>
-</li>
-</ul>
+</dd>
+</dl>
 <div class="admonition note">
 <p class="admonition-title">备注</p>
-<p>此命令仅设置设备名称。如果要修改广播数据中的名称,请在开始广播前使用命令 <code class="docutils literal notranslate"><span class="pre">AT+BLEGAP=adv_data[,&lt;data&gt;]</span></code>。</p>
+<p>此命令仅设置设备名称。如果要修改广播数据中的名称，请在开始广播前使用命令 <code class="docutils literal notranslate"><span class="pre">AT+BLEGAP=adv_data[,&lt;data&gt;]</span></code>。</p>
 </div>
 </section>
 </section>
@@ -2021,20 +1014,21 @@ document.addEventListener('DOMContentLoaded', function() {
 </section>
 <section id="id16">
 <h3>参数<a class="headerlink" href="#id16" title="Link to this heading"></a></h3>
-<ul>
-<li><p>&lt;attr&gt;: 属性索引</p>
-<blockquote>
-<div><ul class="simple">
+<dl class="field-list simple">
+<dt class="field-odd">&lt;attr&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>属性索引</p>
+<ul class="simple">
 <li><p>0: 主服务</p></li>
 <li><p>1: 读特性</p></li>
 <li><p>2: 写特性</p></li>
 <li><p>3: 通知特性</p></li>
 <li><p>4: 指示特性</p></li>
 </ul>
-</div></blockquote>
-</li>
-<li><p>&lt;uuid&gt;: 属性的UUID</p></li>
-</ul>
+</dd>
+<dt class="field-even">&lt;uuid&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>属性的UUID</p>
+</dd>
+</dl>
 </section>
 </section>
 <section id="at-btdemo-transfer-module-set-uuid">
@@ -2057,20 +1051,21 @@ document.addEventListener('DOMContentLoaded', function() {
 </section>
 <section id="id20">
 <h3>参数<a class="headerlink" href="#id20" title="Link to this heading"></a></h3>
-<ul>
-<li><p>&lt;attr&gt;: 属性索引</p>
-<blockquote>
-<div><ul class="simple">
+<dl class="field-list simple">
+<dt class="field-odd">&lt;attr&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>属性索引</p>
+<ul class="simple">
 <li><p>0: 主服务</p></li>
 <li><p>1: 读特性</p></li>
 <li><p>2: 写特性</p></li>
 <li><p>3: 通知特性</p></li>
 <li><p>4: 指示特性</p></li>
 </ul>
-</div></blockquote>
-</li>
-<li><p>&lt;uuid&gt;: 要设置的UUID</p></li>
-</ul>
+</dd>
+<dt class="field-even">&lt;uuid&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>要设置的UUID</p>
+</dd>
+</dl>
 </section>
 <section id="id21">
 <h3>示例<a class="headerlink" href="#id21" title="Link to this heading"></a></h3>
@@ -2100,16 +1095,17 @@ document.addEventListener('DOMContentLoaded', function() {
 </section>
 <section id="id25">
 <h3>参数<a class="headerlink" href="#id25" title="Link to this heading"></a></h3>
-<ul>
-<li><p>&lt;length&gt;: 读取值的长度</p>
-<blockquote>
-<div><ul class="simple">
+<dl class="field-list simple">
+<dt class="field-odd">&lt;length&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>读取值的长度</p>
+<ul class="simple">
 <li><p>最大值为30</p></li>
 </ul>
-</div></blockquote>
-</li>
-<li><p>&lt;data&gt;: 读取值,不包含0x的十六进制数,例如112233445566778899aabb</p></li>
-</ul>
+</dd>
+<dt class="field-even">&lt;data&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>读取值，不包含0x的十六进制数，例如：112233445566778899aabb</p>
+</dd>
+</dl>
 </section>
 </section>
 <section id="at-blegap-addr">
@@ -2133,19 +1129,20 @@ document.addEventListener('DOMContentLoaded', function() {
 </section>
 <section id="id29">
 <h3>参数<a class="headerlink" href="#id29" title="Link to this heading"></a></h3>
-<ul>
-<li><p>&lt;addr&gt;: 本地地址字符串,例如00:11:22:33:44:55</p></li>
-<li><p>&lt;addr_type&gt;: 本地地址类型字符串</p>
-<blockquote>
-<div><ul class="simple">
+<dl class="field-list simple">
+<dt class="field-odd">&lt;addr&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>本地地址字符串，例如：00:11:22:33:44:55</p>
+</dd>
+<dt class="field-even">&lt;addr_type&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>本地地址类型字符串</p>
+<ul class="simple">
 <li><p>public: 公共地址</p></li>
 <li><p>random: 随机地址</p></li>
 <li><p>public-id: 公共身份地址类型</p></li>
 <li><p>random-id: 随机身份地址类型</p></li>
 </ul>
-</div></blockquote>
-</li>
-</ul>
+</dd>
+</dl>
 </section>
 </section>
 <section id="at-blegap-rand-addr">
@@ -2169,31 +1166,28 @@ document.addEventListener('DOMContentLoaded', function() {
 </section>
 <section id="id33">
 <h3>参数<a class="headerlink" href="#id33" title="Link to this heading"></a></h3>
-<ul>
-<li><p>&lt;addr&gt;: 要设置的随机地址</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>地址字符串,例如001122334455</p></li>
+<dl class="field-list simple">
+<dt class="field-odd">&lt;addr&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>要设置的随机地址</p>
+<ul class="simple">
+<li><p>地址字符串，例如：001122334455</p></li>
 </ul>
-</div></blockquote>
-</li>
-<li><p>&lt;type&gt;: 地址类型</p>
-<blockquote>
-<div><ul class="simple">
+</dd>
+<dt class="field-even">&lt;type&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>地址类型</p>
+<ul class="simple">
 <li><p>0: 静态随机设备地址</p></li>
 <li><p>1: 不可解析随机设备地址</p></li>
 <li><p>2: 可解析随机设备地址</p></li>
 </ul>
-</div></blockquote>
-</li>
-<li><p>&lt;rand_addr&gt;: 设置成功的随机地址</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>地址字符串,例如00:11:22:33:44:55</p></li>
+</dd>
+<dt class="field-odd">&lt;rand_addr&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>设置成功的随机地址</p>
+<ul class="simple">
+<li><p>地址字符串，例如：00:11:22:33:44:55</p></li>
 </ul>
-</div></blockquote>
-</li>
-</ul>
+</dd>
+</dl>
 </section>
 </section>
 <section id="at-blegap-mtu-size">
@@ -2217,10 +1211,14 @@ document.addEventListener('DOMContentLoaded', function() {
 </section>
 <section id="id37">
 <h3>参数<a class="headerlink" href="#id37" title="Link to this heading"></a></h3>
-<ul class="simple">
-<li><p>&lt;conn_handle&gt;: 连接句柄</p></li>
-<li><p>&lt;mtu_size&gt;: 此连接的MTU大小</p></li>
-</ul>
+<dl class="field-list simple">
+<dt class="field-odd">&lt;conn_handle&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>连接句柄</p>
+</dd>
+<dt class="field-even">&lt;mtu_size&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>此连接的MTU大小</p>
+</dd>
+</dl>
 </section>
 </section>
 <section id="at-blegap-set-mtu">
@@ -2243,9 +1241,11 @@ document.addEventListener('DOMContentLoaded', function() {
 </section>
 <section id="id41">
 <h3>参数<a class="headerlink" href="#id41" title="Link to this heading"></a></h3>
-<ul class="simple">
-<li><p>&lt;mtu_size&gt;: MTU大小</p></li>
-</ul>
+<dl class="field-list simple">
+<dt class="field-odd">&lt;mtu_size&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>MTU大小</p>
+</dd>
+</dl>
 </section>
 </section>
 <section id="at-blegap-adv">
@@ -2268,84 +1268,78 @@ document.addEventListener('DOMContentLoaded', function() {
 </section>
 <section id="bt-at-blegap-adv-para">
 <span id="id45"></span><h3>参数<a class="headerlink" href="#bt-at-blegap-adv-para" title="Link to this heading"></a></h3>
-<ul>
-<li><p>&lt;op&gt;: 广播选项</p>
-<blockquote>
-<div><ul class="simple">
+<dl class="field-list simple">
+<dt class="field-odd">&lt;op&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>广播选项</p>
+<ul class="simple">
 <li><p>1: 开始广播</p></li>
 <li><p>0: 停止广播</p></li>
 </ul>
-</div></blockquote>
-</li>
-<li><p>&lt;type&gt;: 广播类型</p>
-<blockquote>
-<div><ul class="simple">
+</dd>
+<dt class="field-even">&lt;type&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>广播类型</p>
+<ul class="simple">
 <li><p>0: 可连接非定向广播</p></li>
 <li><p>1: 可连接高占空比定向广播</p></li>
 <li><p>2: 可扫描非定向广播</p></li>
 <li><p>3: 不可连接非定向广播</p></li>
 <li><p>4: 可连接低占空比定向广播</p></li>
 </ul>
-</div></blockquote>
-</li>
-<li><p>&lt;own_addr_type&gt;: 本地地址类型</p>
-<blockquote>
-<div><ul class="simple">
+</dd>
+<dt class="field-odd">&lt;own_addr_type&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>本地地址类型</p>
+<ul class="simple">
 <li><p>0: 公共地址</p></li>
 <li><p>1: 随机地址</p></li>
 <li><p>2: 公共身份地址类型</p></li>
 <li><p>3: 随机身份地址类型</p></li>
 </ul>
-</div></blockquote>
-</li>
-<li><p>&lt;filter_policy&gt;: 广播过滤策略</p>
-<blockquote>
-<div><ul class="simple">
+</dd>
+<dt class="field-even">&lt;filter_policy&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>广播过滤策略</p>
+<ul class="simple">
 <li><p>0: 处理所有设备的扫描和连接请求</p></li>
-<li><p>1: 处理所有设备的连接请求,仅处理白名单中设备的扫描请求</p></li>
-<li><p>2: 处理所有设备的扫描请求,仅处理白名单中设备的连接请求</p></li>
+<li><p>1: 处理所有设备的连接请求，仅处理白名单中设备的扫描请求</p></li>
+<li><p>2: 处理所有设备的扫描请求，仅处理白名单中设备的连接请求</p></li>
 <li><p>3: 仅处理白名单中设备的扫描和连接请求</p></li>
 </ul>
-</div></blockquote>
-</li>
-<li><p>&lt;peer_addr_type&gt;: 对端地址类型</p>
-<blockquote>
-<div><ul class="simple">
+</dd>
+<dt class="field-odd">&lt;peer_addr_type&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>对端地址类型</p>
+<ul class="simple">
 <li><p>0: 公共地址</p></li>
 <li><p>1: 随机地址</p></li>
 <li><p>2: 公共身份地址类型</p></li>
 <li><p>3: 随机身份地址类型</p></li>
 </ul>
-</div></blockquote>
-</li>
-<li><p>&lt;peer_addr&gt;: 对端地址</p></li>
-<li><p>&lt;interval_min&gt;: 最小广播间隔</p>
-<blockquote>
-<div><ul class="simple">
+</dd>
+<dt class="field-even">&lt;peer_addr&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>对端地址</p>
+</dd>
+<dt class="field-odd">&lt;interval_min&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>最小广播间隔</p>
+<ul class="simple">
 <li><p>[0x20, 0x4000]</p></li>
-<li><p>最小广播间隔 = &lt;interval_min&gt; * 0.625 ms,范围20ms到10.24s</p></li>
+<li><p>最小广播间隔 = &lt;interval_min&gt; * 0.625ms，范围20ms到10.24s</p></li>
 </ul>
-</div></blockquote>
-</li>
-<li><p>&lt;interval_max&gt;: 最大广播间隔</p>
-<blockquote>
-<div><ul class="simple">
+</dd>
+<dt class="field-even">&lt;interval_max&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>最大广播间隔</p>
+<ul class="simple">
 <li><p>[0x20, 0x4000]</p></li>
-<li><p>最大广播间隔 = &lt;interval_max&gt; * 0.625 ms,范围20ms到10.24s</p></li>
+<li><p>最大广播间隔 = &lt;interval_max&gt; * 0.625ms，范围20ms到10.24s</p></li>
 </ul>
-</div></blockquote>
-</li>
-<li><p>&lt;channel_map&gt;: 广播通道映射</p>
-<blockquote>
-<div><ul class="simple">
+</dd>
+<dt class="field-odd">&lt;channel_map&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>广播通道映射</p>
+<ul class="simple">
 <li><p>0x01: 广播通道37</p></li>
 <li><p>0x02: 广播通道38</p></li>
 <li><p>0x04: 广播通道39</p></li>
 <li><p>0x07: 所有广播通道启用</p></li>
 </ul>
-</div></blockquote>
-</li>
-</ul>
+</dd>
+</dl>
 </section>
 </section>
 <section id="at-blegap-get-adv-param">
@@ -2392,27 +1386,26 @@ document.addEventListener('DOMContentLoaded', function() {
 </section>
 <section id="id53">
 <h3>参数<a class="headerlink" href="#id53" title="Link to this heading"></a></h3>
-<ul>
-<li><p>&lt;data&gt;: 广播数据</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>如果未给出&lt;data&gt;,将使用默认广播数据</p></li>
+<dl class="field-list simple">
+<dt class="field-odd">&lt;data&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>广播数据</p>
+<ul class="simple">
+<li><p>如果未给出&lt;data&gt;，将使用默认广播数据</p></li>
 </ul>
-</div></blockquote>
-</li>
-</ul>
+</dd>
+</dl>
 </section>
 <section id="id54">
 <h3>示例<a class="headerlink" href="#id54" title="Link to this heading"></a></h3>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">BLEGAP</span><span class="o">=</span><span class="n">adv_data</span><span class="p">,</span><span class="mi">02010508095265616</span><span class="n">c74656b</span>
-<span class="n">OK</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>AT+BLEGAP=adv_data,02010508095265616c74656b
+OK
 
-<span class="o">//</span><span class="mi">02</span><span class="p">:</span> <span class="n">标志部分的长度</span>
-<span class="o">//</span><span class="mi">01</span><span class="p">:</span> <span class="n">类型是标志</span>
-<span class="o">//</span><span class="mi">05</span><span class="p">:</span> <span class="n">LE限制可发现模式和BR</span><span class="o">/</span><span class="n">EDR不支持</span>
-<span class="o">//</span><span class="mi">08</span><span class="p">:</span> <span class="n">本地名称部分的长度</span>
-<span class="o">//</span><span class="mi">09</span><span class="p">:</span> <span class="n">类型是完整本地名称</span>
-<span class="o">//</span><span class="mi">5265616</span><span class="n">c74656b</span><span class="p">:</span> <span class="n">字符串</span><span class="s2">&quot;Realtek&quot;</span><span class="n">的ASCII值</span><span class="p">,</span><span class="n">这是广播数据中的本地名称</span>
+//02: 标志部分的长度
+//01: 类型是标志
+//05: LE限制可发现模式和BR/EDR不支持
+//08: 本地名称部分的长度
+//09: 类型是完整本地名称
+//5265616c74656b: 字符串 ``Realtek`` 的ASCII值，这是广播数据中的本地名称
 </pre></div>
 </div>
 </section>
@@ -2447,36 +1440,37 @@ document.addEventListener('DOMContentLoaded', function() {
 </section>
 <section id="id60">
 <h3>参数<a class="headerlink" href="#id60" title="Link to this heading"></a></h3>
-<ul>
-<li><p>&lt;op&gt;: 扫描选项</p>
-<blockquote>
-<div><ul class="simple">
+<dl class="field-list simple">
+<dt class="field-odd">&lt;op&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>扫描选项</p>
+<ul class="simple">
 <li><p>1: 开始扫描</p></li>
 <li><p>0: 停止扫描</p></li>
 </ul>
-</div></blockquote>
-</li>
-<li><p>&lt;addr&gt;: 广播地址</p></li>
-<li><p>&lt;event_type&gt;: 事件类型</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>0: 可连接可扫描的非定向广播(ADV_IND)</p></li>
-<li><p>1: 可连接的定向广播(ADV_DIRECT_IND)</p></li>
-<li><p>2: 可扫描的非定向广播(ADV_SCAN_IND)</p></li>
-<li><p>3: 不可连接的非定向广播(ADV_NONCONN_IND)</p></li>
-<li><p>4: 扫描响应(SCAN_RSP)</p></li>
+</dd>
+<dt class="field-even">&lt;addr&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>广播地址</p>
+</dd>
+<dt class="field-odd">&lt;event_type&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>事件类型</p>
+<ul class="simple">
+<li><p>0: 可连接可扫描的非定向广播（ADV_IND）</p></li>
+<li><p>1: 可连接的定向广播（ADV_DIRECT_IND）</p></li>
+<li><p>2: 可扫描的非定向广播（ADV_SCAN_IND）</p></li>
+<li><p>3: 不可连接的非定向广播（ADV_NONCONN_IND）</p></li>
+<li><p>4: 扫描响应（SCAN_RSP）</p></li>
 </ul>
-</div></blockquote>
-</li>
-<li><p>&lt;rssi&gt;: RSSI</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>[-127, 20], 127表示RSSI不可用</p></li>
+</dd>
+<dt class="field-even">&lt;rssi&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>RSSI</p>
+<ul class="simple">
+<li><p>[-127, 20]，127表示RSSI不可用</p></li>
 </ul>
-</div></blockquote>
-</li>
-<li><p>&lt;adv_report_len&gt;: 广播数据长度</p></li>
-</ul>
+</dd>
+<dt class="field-odd">&lt;adv_report_len&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>广播数据长度</p>
+</dd>
+</dl>
 </section>
 </section>
 <section id="at-blegap-scan-param">
@@ -2499,61 +1493,55 @@ document.addEventListener('DOMContentLoaded', function() {
 </section>
 <section id="bt-at-blegap-scan-para">
 <span id="id64"></span><h3>参数<a class="headerlink" href="#bt-at-blegap-scan-para" title="Link to this heading"></a></h3>
-<ul>
-<li><p>&lt;type&gt;: 扫描类型</p>
-<blockquote>
-<div><ul class="simple">
+<dl class="field-list simple">
+<dt class="field-odd">&lt;type&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>扫描类型</p>
+<ul class="simple">
 <li><p>0: 被动扫描</p></li>
 <li><p>1: 主动扫描</p></li>
 </ul>
-</div></blockquote>
-</li>
-<li><p>&lt;own_addr_type&gt;: 本地地址类型</p>
-<blockquote>
-<div><ul class="simple">
+</dd>
+<dt class="field-even">&lt;own_addr_type&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>本地地址类型</p>
+<ul class="simple">
 <li><p>0: 公共地址</p></li>
 <li><p>1: 随机地址</p></li>
 <li><p>2: 公共身份地址类型</p></li>
 <li><p>3: 随机身份地址类型</p></li>
 </ul>
-</div></blockquote>
-</li>
-<li><p>&lt;filter_policy&gt;: 扫描过滤策略</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>0: 接受所有广播数据包,除了是不针对此设备的定向广播数据包(默认)</p></li>
+</dd>
+<dt class="field-odd">&lt;filter_policy&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>扫描过滤策略</p>
+<ul class="simple">
+<li><p>0: 接受所有广播数据包，除了是不针对此设备的定向广播数据包（默认）</p></li>
 <li><p>1: 仅接受白名单中广播者地址的广播数据包。不针对此设备的定向广播数据包将被忽略</p></li>
-<li><p>2: 接受所有广播数据包,除了发起者的身份地址不针对此设备的定向广播数据包</p></li>
-<li><p>3: 接受所有广播数据包,除了广播者的身份地址不在白名单中且发起者的身份地址不针对此设备的定向广播数据包</p></li>
+<li><p>2: 接受所有广播数据包，除了发起者的身份地址不针对此设备的定向广播数据包</p></li>
+<li><p>3: 接受所有广播数据包，除了广播者的身份地址不在白名单中且发起者的身份地址不针对此设备的定向广播数据包</p></li>
 </ul>
-</div></blockquote>
-</li>
-<li><p>&lt;duplicate_opt&gt;: 扫描重复过滤选项</p>
-<blockquote>
-<div><ul class="simple">
+</dd>
+<dt class="field-even">&lt;duplicate_opt&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>扫描重复过滤选项</p>
+<ul class="simple">
 <li><p>0: 禁用重复过滤</p></li>
 <li><p>1: 启用重复过滤</p></li>
-<li><p>2: 启用重复过滤,每个扫描周期重置</p></li>
+<li><p>2: 启用重复过滤，每个扫描周期重置</p></li>
 </ul>
-</div></blockquote>
-</li>
-<li><p>&lt;interval&gt;: 扫描间隔</p>
-<blockquote>
-<div><ul class="simple">
+</dd>
+<dt class="field-odd">&lt;interval&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>扫描间隔</p>
+<ul class="simple">
 <li><p>[0x4, 0x4000]</p></li>
-<li><p>扫描间隔 = &lt;interval&gt; * 0.625 ms, 范围2.5ms到10.24s</p></li>
+<li><p>扫描间隔 = &lt;interval&gt; * 0.625ms，范围2.5ms到10.24s</p></li>
 </ul>
-</div></blockquote>
-</li>
-<li><p>&lt;window&gt;: 扫描窗口</p>
-<blockquote>
-<div><ul class="simple">
+</dd>
+<dt class="field-even">&lt;window&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>扫描窗口</p>
+<ul class="simple">
 <li><p>[0x4, 0x4000]</p></li>
-<li><p>扫描窗口 = &lt;window&gt; * 0.625 ms, 范围2.5ms到10.24s</p></li>
+<li><p>扫描窗口 = &lt;window&gt; * 0.625ms，范围2.5ms到10.24s</p></li>
 </ul>
-</div></blockquote>
-</li>
-</ul>
+</dd>
+</dl>
 <div class="admonition note">
 <p class="admonition-title">备注</p>
 <p>扫描间隔不能小于扫描窗口</p>
@@ -2604,24 +1592,23 @@ document.addEventListener('DOMContentLoaded', function() {
 </section>
 <section id="id72">
 <h3>参数<a class="headerlink" href="#id72" title="Link to this heading"></a></h3>
-<ul>
-<li><p>&lt;data&gt;: 扫描响应数据</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>如果未给出&lt;data&gt;,将使用默认扫描响应数据</p></li>
+<dl class="field-list simple">
+<dt class="field-odd">&lt;data&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>扫描响应数据</p>
+<ul class="simple">
+<li><p>如果未给出&lt;data&gt;，将使用默认扫描响应数据</p></li>
 </ul>
-</div></blockquote>
-</li>
-</ul>
+</dd>
+</dl>
 </section>
 <section id="id73">
 <h3>示例<a class="headerlink" href="#id73" title="Link to this heading"></a></h3>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">BLEGAP</span><span class="o">=</span><span class="n">scan_rsp</span><span class="p">,</span><span class="mi">03194000</span>
-<span class="n">OK</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>AT+BLEGAP=scan_rsp,03194000
+OK
 
-<span class="o">//</span><span class="mi">03</span><span class="p">:</span> <span class="n">外观部分的长度</span>
-<span class="o">//</span><span class="mi">19</span><span class="p">:</span> <span class="n">广播数据类型外观</span>
-<span class="o">//</span><span class="mi">4000</span><span class="p">:</span> <span class="n">外观通用手机</span><span class="p">(</span><span class="mh">0x0040</span><span class="p">)</span>
+//03: 外观部分的长度
+//19: 广播数据类型外观
+//4000: 外观通用手机（0x0040）
 </pre></div>
 </div>
 </section>
@@ -2647,102 +1634,96 @@ document.addEventListener('DOMContentLoaded', function() {
 </section>
 <section id="id77">
 <h3>备注<a class="headerlink" href="#id77" title="Link to this heading"></a></h3>
-<p>如果BLE连线成功建立,对端设备会有如下提示:</p>
+<p>如果BLE连线成功建立，对端设备会有如下提示:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>[$]+BLEGAP:conn,&lt;conn_handle&gt;,&lt;peer_device_addr&gt;
 </pre></div>
 </div>
 </section>
 <section id="id78">
 <h3>参数<a class="headerlink" href="#id78" title="Link to this heading"></a></h3>
-<ul>
-<li><p>&lt;peer_addr_type&gt;: 对等地址类型</p>
-<blockquote>
-<div><ul class="simple">
+<dl class="field-list simple">
+<dt class="field-odd">&lt;peer_addr_type&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>对等地址类型</p>
+<ul class="simple">
 <li><p>0: 公共地址</p></li>
 <li><p>1: 随机地址</p></li>
 <li><p>2: 公共身份地址类型</p></li>
 <li><p>3: 随机身份地址类型</p></li>
 </ul>
-</div></blockquote>
-</li>
-<li><p>&lt;own_addr_type&gt;: 本地地址类型</p>
-<blockquote>
-<div><ul class="simple">
+</dd>
+<dt class="field-even">&lt;own_addr_type&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>本地地址类型</p>
+<ul class="simple">
 <li><p>0: 公共地址</p></li>
 <li><p>1: 随机地址</p></li>
 <li><p>2: 公共身份地址类型</p></li>
 <li><p>3: 随机身份地址类型</p></li>
 </ul>
-</div></blockquote>
-</li>
-<li><p>&lt;filter_policy&gt;: 连接过滤策略</p>
-<blockquote>
-<div><ul class="simple">
+</dd>
+<dt class="field-odd">&lt;filter_policy&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>连接过滤策略</p>
+<ul class="simple">
 <li><p>0: 不使用白名单过滤</p></li>
 <li><p>1: 使用白名单过滤</p></li>
 </ul>
-</div></blockquote>
-</li>
-<li><p>&lt;scan_interval&gt;: 扫描间隔</p>
-<blockquote>
-<div><ul class="simple">
+</dd>
+<dt class="field-even">&lt;scan_interval&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>扫描间隔</p>
+<ul class="simple">
 <li><p>[0x4, 0x4000]</p></li>
-<li><p>扫描间隔 = &lt;scan_interval&gt; * 0.625 ms, 范围2.5ms到10.24s</p></li>
+<li><p>扫描间隔 = &lt;scan_interval&gt; * 0.625ms，范围2.5ms到10.24s</p></li>
 </ul>
-</div></blockquote>
-</li>
-<li><p>&lt;scan_window&gt;: 扫描窗口</p>
-<blockquote>
-<div><ul class="simple">
+</dd>
+<dt class="field-odd">&lt;scan_window&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>扫描窗口</p>
+<ul class="simple">
 <li><p>[0x4, 0x4000]</p></li>
-<li><p>扫描窗口 = &lt;scan_window&gt; * 0.625 ms, 范围2.5ms到10.24s</p></li>
+<li><p>扫描窗口 = &lt;scan_window&gt; * 0.625ms，范围2.5ms到10.24s</p></li>
 </ul>
-</div></blockquote>
-</li>
-<li><p>&lt;conn_interval_min&gt;: 最小连接间隔</p>
-<blockquote>
-<div><ul class="simple">
+</dd>
+<dt class="field-even">&lt;conn_interval_min&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>最小连接间隔</p>
+<ul class="simple">
 <li><p>[0x6, 0x0C80]</p></li>
-<li><p>最小连接间隔 = &lt;conn_interval_min&gt; * 1.25 ms, 范围7.5ms到4s</p></li>
+<li><p>最小连接间隔 = &lt;conn_interval_min&gt; * 1.25ms，范围7.5ms到4s</p></li>
 </ul>
-</div></blockquote>
-</li>
-<li><p>&lt;conn_interval_max&gt;: 最大连接间隔</p>
-<blockquote>
-<div><ul class="simple">
+</dd>
+<dt class="field-odd">&lt;conn_interval_max&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>最大连接间隔</p>
+<ul class="simple">
 <li><p>[0x6, 0x0C80]</p></li>
-<li><p>最大连接间隔 = &lt;conn_interval_max&gt; * 1.25 ms, 范围7.5ms到4s</p></li>
+<li><p>最大连接间隔 = &lt;conn_interval_max&gt; * 1.25ms，范围7.5ms到4s</p></li>
 </ul>
-</div></blockquote>
-</li>
-<li><p>&lt;conn_latency&gt;: 从机连接延迟(连接事件数)</p>
-<blockquote>
-<div><ul class="simple">
+</dd>
+<dt class="field-even">&lt;conn_latency&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>从机连接延迟（连接事件数）</p>
+<ul class="simple">
 <li><p>[0, 0x01F3]</p></li>
 </ul>
-</div></blockquote>
-</li>
-<li><p>&lt;supv_timeout&gt;: LE链路的监督超时</p>
-<blockquote>
-<div><ul class="simple">
+</dd>
+<dt class="field-odd">&lt;supv_timeout&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>LE链路的监督超时</p>
+<ul class="simple">
 <li><p>[0xa, 0x0C80]</p></li>
-<li><p>监督超时 = &lt;supv_timeout&gt; * 10 ms, 范围100ms到32s</p></li>
+<li><p>监督超时 = &lt;supv_timeout&gt; * 10ms，范围100ms到32s</p></li>
 </ul>
-</div></blockquote>
-</li>
-<li><p>&lt;conn_handle&gt;: 连接句柄</p></li>
-<li><p>&lt;peer_device_addr&gt;: 对端设备地址字符串, 例如00:11:22:33:44:55</p></li>
-<li><p>&lt;peer_device_addr_type&gt;: 对端设备地址类型字符串</p>
-<blockquote>
-<div><ul class="simple">
+</dd>
+<dt class="field-even">&lt;conn_handle&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>连接句柄</p>
+</dd>
+<dt class="field-odd">&lt;peer_device_addr&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>对端设备地址字符串（例如：00:11:22:33:44:55）</p>
+</dd>
+<dt class="field-even">&lt;peer_device_addr_type&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>对端设备地址类型字符串</p>
+<ul class="simple">
 <li><p>public: 公共地址</p></li>
 <li><p>random: 随机地址</p></li>
 <li><p>public-id: 公共身份地址类型</p></li>
 <li><p>random-id: 随机身份地址类型</p></li>
 </ul>
-</div></blockquote>
-</li>
-</ul>
+</dd>
+</dl>
 <div class="admonition note">
 <p class="admonition-title">备注</p>
 <p>扫描间隔不能小于扫描窗口</p>
@@ -2780,31 +1761,34 @@ OK
 </section>
 <section id="id83">
 <h3>备注<a class="headerlink" href="#id83" title="Link to this heading"></a></h3>
-<p>如果BLE连线断开,对端设备会有如下提示:</p>
+<p>如果BLE连线断开，对端设备会有如下提示:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>[$]+BLEGAP:disconn,&lt;conn_handle&gt;,&lt;peer_addr&gt;(&lt;peer_addr_type&gt;)
 </pre></div>
 </div>
-<p>如果本地设备没有执行这个命令并且本地设备的BLE连接断开了,本地设备会有如下提示:</p>
+<p>如果本地设备没有执行这个命令并且本地设备的BLE连接断开了，本地设备会有如下提示:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>[$]+BLEGAP:disconn,&lt;conn_handle&gt;,&lt;peer_addr&gt;(&lt;peer_addr_type&gt;)
 </pre></div>
 </div>
 </section>
 <section id="id84">
 <h3>参数<a class="headerlink" href="#id84" title="Link to this heading"></a></h3>
-<ul>
-<li><p>&lt;conn_handle&gt;: 连接句柄</p></li>
-<li><p>&lt;peer_addr&gt;: 对端设备地址字符串,例如00:11:22:33:44:55</p></li>
-<li><p>&lt;peer_addr_type&gt;: 对端设备地址类型字符串</p>
-<blockquote>
-<div><ul class="simple">
+<dl class="field-list simple">
+<dt class="field-odd">&lt;conn_handle&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>连接句柄</p>
+</dd>
+<dt class="field-even">&lt;peer_addr&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>对端设备地址字符串（例如：00:11:22:33:44:55）</p>
+</dd>
+<dt class="field-odd">&lt;peer_addr_type&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>对端设备地址类型字符串</p>
+<ul class="simple">
 <li><p>public: 公共地址</p></li>
 <li><p>random: 随机地址</p></li>
 <li><p>public-id: 公共身份地址类型</p></li>
 <li><p>random-id: 随机身份地址类型</p></li>
 </ul>
-</div></blockquote>
-</li>
-</ul>
+</dd>
+</dl>
 </section>
 </section>
 <section id="at-blegap-conn-info">
@@ -2828,32 +1812,42 @@ OK
 </section>
 <section id="id88">
 <h3>参数<a class="headerlink" href="#id88" title="Link to this heading"></a></h3>
-<ul>
-<li><p>&lt;conn_handle&gt;: 连接句柄</p></li>
-<li><p>&lt;role&gt;: 主设备或从设备</p></li>
-<li><p>&lt;remote_addr&gt;: 远端设备地址</p></li>
-<li><p>&lt;interval&gt;: 连接间隔</p></li>
-<li><p>&lt;latency&gt;: 从机连接延迟(连接事件数)</p></li>
-<li><p>&lt;supv_timeout&gt;: LE链路的监督超时</p></li>
-<li><p>&lt;tx_phy&gt;: 发送物理层</p>
-<blockquote>
-<div><ul class="simple">
+<dl class="field-list simple">
+<dt class="field-odd">&lt;conn_handle&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>连接句柄</p>
+</dd>
+<dt class="field-even">&lt;role&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>主设备或从设备</p>
+</dd>
+<dt class="field-odd">&lt;remote_addr&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>远端设备地址</p>
+</dd>
+<dt class="field-even">&lt;interval&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>连接间隔</p>
+</dd>
+<dt class="field-odd">&lt;latency&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>从机连接延迟（连接事件数）</p>
+</dd>
+<dt class="field-even">&lt;supv_timeout&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>LE链路的监督超时</p>
+</dd>
+<dt class="field-odd">&lt;tx_phy&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>发送物理层</p>
+<ul class="simple">
 <li><p>1: 1M</p></li>
 <li><p>2: 2M</p></li>
 <li><p>3: 编码</p></li>
 </ul>
-</div></blockquote>
-</li>
-<li><p>&lt;rx_phy&gt;: 接收物理层</p>
-<blockquote>
-<div><ul class="simple">
+</dd>
+<dt class="field-even">&lt;rx_phy&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>接收物理层</p>
+<ul class="simple">
 <li><p>1: 1M</p></li>
 <li><p>2: 2M</p></li>
 <li><p>3: 编码</p></li>
 </ul>
-</div></blockquote>
-</li>
-</ul>
+</dd>
+</dl>
 </section>
 </section>
 <section id="at-blegap-conn-update">
@@ -2876,40 +1870,38 @@ OK
 </section>
 <section id="id92">
 <h3>参数<a class="headerlink" href="#id92" title="Link to this heading"></a></h3>
-<ul>
-<li><p>&lt;conn_handle&gt;: 连接句柄</p></li>
-<li><p>&lt;conn_interval_min&gt;: 最小连接间隔</p>
-<blockquote>
-<div><ul class="simple">
+<dl class="field-list simple">
+<dt class="field-odd">&lt;conn_handle&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>连接句柄</p>
+</dd>
+<dt class="field-even">&lt;conn_interval_min&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>最小连接间隔</p>
+<ul class="simple">
 <li><p>[0x6, 0x0C80]</p></li>
-<li><p>最小连接间隔 = &lt;conn_interval_min&gt; * 1.25 ms, 范围7.5ms到4s</p></li>
+<li><p>最小连接间隔 = &lt;conn_interval_min&gt; * 1.25ms，范围7.5ms到4s</p></li>
 </ul>
-</div></blockquote>
-</li>
-<li><p>&lt;conn_interval_max&gt;: 最大连接间隔</p>
-<blockquote>
-<div><ul class="simple">
+</dd>
+<dt class="field-odd">&lt;conn_interval_max&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>最大连接间隔</p>
+<ul class="simple">
 <li><p>[0x6, 0x0C80]</p></li>
-<li><p>最大连接间隔 = &lt;conn_interval_max&gt; * 1.25 ms, 范围7.5ms到4s</p></li>
+<li><p>最大连接间隔 = &lt;conn_interval_max&gt; * 1.25ms，范围7.5ms到4s</p></li>
 </ul>
-</div></blockquote>
-</li>
-<li><p>&lt;conn_latency&gt;: 从机连接延迟(连接事件数)</p>
-<blockquote>
-<div><ul class="simple">
+</dd>
+<dt class="field-even">&lt;conn_latency&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>从机连接延迟（连接事件数）</p>
+<ul class="simple">
 <li><p>[0, 0x01F3]</p></li>
 </ul>
-</div></blockquote>
-</li>
-<li><p>&lt;supv_timeout&gt;: LE链路的监督超时</p>
-<blockquote>
-<div><ul class="simple">
+</dd>
+<dt class="field-odd">&lt;supv_timeout&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>LE链路的监督超时</p>
+<ul class="simple">
 <li><p>[0xa, 0x0C80]</p></li>
-<li><p>监督超时 = &lt;supv_timeout&gt; * 10 ms, 范围100ms到32s</p></li>
+<li><p>监督超时 = &lt;supv_timeout&gt; * 10ms，范围100ms到32s</p></li>
 </ul>
-</div></blockquote>
-</li>
-</ul>
+</dd>
+</dl>
 </section>
 </section>
 <section id="at-blegap-wl-add">
@@ -2932,19 +1924,20 @@ OK
 </section>
 <section id="id96">
 <h3>参数<a class="headerlink" href="#id96" title="Link to this heading"></a></h3>
-<ul>
-<li><p>&lt;addr_type&gt;: 远端地址类型</p>
-<blockquote>
-<div><ul class="simple">
+<dl class="field-list simple">
+<dt class="field-odd">&lt;addr_type&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>远端地址类型</p>
+<ul class="simple">
 <li><p>0: 公共地址</p></li>
 <li><p>1: 随机地址</p></li>
 <li><p>2: 公共身份地址</p></li>
 <li><p>3: 随机身份地址</p></li>
 </ul>
-</div></blockquote>
-</li>
-<li><p>&lt;addr&gt;: 要添加到白名单的地址</p></li>
-</ul>
+</dd>
+<dt class="field-even">&lt;addr&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>要添加到白名单的地址</p>
+</dd>
+</dl>
 </section>
 </section>
 <section id="at-blegap-wl-remove">
@@ -2967,19 +1960,20 @@ OK
 </section>
 <section id="id100">
 <h3>参数<a class="headerlink" href="#id100" title="Link to this heading"></a></h3>
-<ul>
-<li><p>&lt;addr_type&gt;: 远端地址类型</p>
-<blockquote>
-<div><ul class="simple">
+<dl class="field-list simple">
+<dt class="field-odd">&lt;addr_type&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>远端地址类型</p>
+<ul class="simple">
 <li><p>0: 公共地址</p></li>
 <li><p>1: 随机地址</p></li>
 <li><p>2: 公共身份地址</p></li>
 <li><p>3: 随机身份地址</p></li>
 </ul>
-</div></blockquote>
-</li>
-<li><p>&lt;addr&gt;: 要从白名单中移除的地址</p></li>
-</ul>
+</dd>
+<dt class="field-even">&lt;addr&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>要从白名单中移除的地址</p>
+</dd>
+</dl>
 </section>
 </section>
 <section id="at-blegap-wl-clear">
@@ -3025,54 +2019,57 @@ OK
 </section>
 <section id="bt-at-blegap-sec-para">
 <span id="id108"></span><h3>参数<a class="headerlink" href="#bt-at-blegap-sec-para" title="Link to this heading"></a></h3>
-<ul>
-<li><p>&lt;io_cap&gt;: 输入/输出能力</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>0: 只有显示,无键盘或是/否键</p></li>
+<dl class="field-list simple">
+<dt class="field-odd">&lt;io_cap&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>输入/输出能力</p>
+<ul class="simple">
+<li><p>0: 只有显示，无键盘或是/否键</p></li>
 <li><p>1: 有显示和是/否键</p></li>
-<li><p>2: 只有键盘,无显示</p></li>
+<li><p>2: 只有键盘，无显示</p></li>
 <li><p>3: 无输入输出能力</p></li>
 <li><p>4: 有键盘和显示</p></li>
 </ul>
-</div></blockquote>
-</li>
-<li><p>&lt;oob_data_flag&gt;: OOB数据标志</p>
-<blockquote>
-<div><ul class="simple">
+</dd>
+<dt class="field-even">&lt;oob_data_flag&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>OOB数据标志</p>
+<ul class="simple">
 <li><p>默认全0</p></li>
 </ul>
-</div></blockquote>
-</li>
-<li><p>&lt;bond&gt;: 绑定标志</p></li>
-<li><p>&lt;mitm&gt;: MITM保护标志</p></li>
-<li><p>&lt;sec_pair&gt;: 安全配对标志</p></li>
-<li><p>&lt;use_fixed_key&gt;: 配对时使用固定密钥</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>0: 禁用(默认)</p></li>
+</dd>
+<dt class="field-odd">&lt;bond&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>绑定标志</p>
+</dd>
+<dt class="field-even">&lt;mitm&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>MITM保护标志</p>
+</dd>
+<dt class="field-odd">&lt;sec_pair&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>安全配对标志</p>
+</dd>
+<dt class="field-even">&lt;use_fixed_key&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>配对时使用固定密钥</p>
+<ul class="simple">
+<li><p>0: 禁用（默认）</p></li>
 <li><p>1: 启用</p></li>
 </ul>
-</div></blockquote>
-</li>
-<li><p>&lt;fixed_key&gt;: MITM保护的固定密钥</p>
-<blockquote>
-<div><ul class="simple">
+</dd>
+<dt class="field-odd">&lt;fixed_key&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>MITM保护的固定密钥</p>
+<ul class="simple">
 <li><p>[0, 999999]</p></li>
 <li><p>默认为0</p></li>
 </ul>
-</div></blockquote>
-</li>
-<li><p>&lt;sec_pair_only&gt;: 仅安全配对标志</p></li>
-<li><p>&lt;auto_sec_req&gt;: 连接时自动发送SMP安全请求</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>0: 禁用(默认)</p></li>
+</dd>
+<dt class="field-even">&lt;sec_pair_only&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>仅安全配对标志</p>
+</dd>
+<dt class="field-odd">&lt;auto_sec_req&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>连接时自动发送SMP安全请求</p>
+<ul class="simple">
+<li><p>0: 禁用（默认）</p></li>
 <li><p>1: 启用</p></li>
 </ul>
-</div></blockquote>
-</li>
-</ul>
+</dd>
+</dl>
 </section>
 </section>
 <section id="at-blegap-get-sec-param">
@@ -3118,42 +2115,44 @@ OK
 </div>
 </section>
 <section id="id116">
-<h3>备注<a class="headerlink" href="#id116" title="Link to this heading"></a></h3>
-<p>如果BLE配对完成,本地设备和对端设备会有如下提示:</p>
+<h3>示例<a class="headerlink" href="#id116" title="Link to this heading"></a></h3>
+<p>如果BLE配对完成，本地设备和对端设备会有如下提示:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>[$]+BLEGAP:authcmpl,&lt;conn_hdl&gt;,&lt;sec_result&gt;
 </pre></div>
 </div>
-<p>如果对端设备要在配对时进行仅工作配对确认,对端设备会有如下提示:</p>
+<p>如果对端设备要在配对时进行仅工作配对确认，对端设备会有如下提示:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>[$]+BLEGAP:pair_cfm,&lt;conn_handle&gt;
 </pre></div>
 </div>
-<p>如果设备在配对过程中需要输入认证密钥,设备会有如下提示:</p>
+<p>如果设备在配对过程中需要输入认证密钥，设备会有如下提示:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>[$]+BLEGAP:passkey_input,&lt;conn_handle&gt;
 </pre></div>
 </div>
-<p>如果设备在配对过程中需要显示密钥,设备会有如下提示:</p>
+<p>如果设备在配对过程中需要显示密钥，设备会有如下提示:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>[$]+BLEGAP:passkey_display,&lt;conn_handle&gt;,&lt;passkey&gt;
 </pre></div>
 </div>
-<p>如果设备在配对过程中需要输入OOB密钥,设备会有如下提示:</p>
+<p>如果设备在配对过程中需要输入OOB密钥，设备会有如下提示:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>[$]+BLEGAP:oobkey_input,&lt;conn_handle&gt;
 </pre></div>
 </div>
 </section>
 <section id="id117">
 <h3>参数<a class="headerlink" href="#id117" title="Link to this heading"></a></h3>
-<ul>
-<li><p>&lt;conn_handle&gt;: 连接句柄</p></li>
-<li><p>&lt;sec_result&gt;:</p>
-<blockquote>
-<div><ul class="simple">
+<dl class="field-list simple">
+<dt class="field-odd">&lt;conn_handle&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>连接句柄</p>
+</dd>
+<dt class="field-even">&lt;sec_result&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
 <li><p>0: 成功</p></li>
 <li><p>1: 失败</p></li>
 </ul>
-</div></blockquote>
-</li>
-<li><p>&lt;passkey&gt;: 输入的密钥</p></li>
-</ul>
+</dd>
+<dt class="field-odd">&lt;passkey&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>输入的密钥</p>
+</dd>
+</dl>
 </section>
 </section>
 <section id="at-blegap-pair-cfm">
@@ -3176,17 +2175,18 @@ OK
 </section>
 <section id="id121">
 <h3>参数<a class="headerlink" href="#id121" title="Link to this heading"></a></h3>
-<ul>
-<li><p>&lt;conn_handle&gt;: 连接句柄</p></li>
-<li><p>&lt;op&gt;: 确认配对指示</p>
-<blockquote>
-<div><ul class="simple">
+<dl class="field-list simple">
+<dt class="field-odd">&lt;conn_handle&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>连接句柄</p>
+</dd>
+<dt class="field-even">&lt;op&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>确认配对指示</p>
+<ul class="simple">
 <li><p>1: 接受</p></li>
 <li><p>2: 拒绝</p></li>
 </ul>
-</div></blockquote>
-</li>
-</ul>
+</dd>
+</dl>
 </section>
 </section>
 <section id="at-blegap-auth-key">
@@ -3209,16 +2209,17 @@ OK
 </section>
 <section id="id125">
 <h3>参数<a class="headerlink" href="#id125" title="Link to this heading"></a></h3>
-<ul>
-<li><p>&lt;conn_handle&gt;: 连接句柄</p></li>
-<li><p>&lt;passkey&gt;: 认证密钥</p>
-<blockquote>
-<div><ul class="simple">
+<dl class="field-list simple">
+<dt class="field-odd">&lt;conn_handle&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>连接句柄</p>
+</dd>
+<dt class="field-even">&lt;passkey&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>认证密钥</p>
+<ul class="simple">
 <li><p>[0, 999999]</p></li>
 </ul>
-</div></blockquote>
-</li>
-</ul>
+</dd>
+</dl>
 </section>
 </section>
 <section id="at-blegap-auth-keycfm">
@@ -3241,17 +2242,18 @@ OK
 </section>
 <section id="id129">
 <h3>参数<a class="headerlink" href="#id129" title="Link to this heading"></a></h3>
-<ul>
-<li><p>&lt;conn_handle&gt;: 连接句柄</p></li>
-<li><p>&lt;op&gt;: 确认认证密钥</p>
-<blockquote>
-<div><ul class="simple">
+<dl class="field-list simple">
+<dt class="field-odd">&lt;conn_handle&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>连接句柄</p>
+</dd>
+<dt class="field-even">&lt;op&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>确认认证密钥</p>
+<ul class="simple">
 <li><p>1: 接受</p></li>
 <li><p>2: 拒绝</p></li>
 </ul>
-</div></blockquote>
-</li>
-</ul>
+</dd>
+</dl>
 </section>
 </section>
 <section id="at-blegap-auth-oob">
@@ -3274,10 +2276,14 @@ OK
 </section>
 <section id="id133">
 <h3>参数<a class="headerlink" href="#id133" title="Link to this heading"></a></h3>
-<ul class="simple">
-<li><p>&lt;conn_handle&gt;: 连接句柄</p></li>
-<li><p>&lt;tk&gt;: OOB数据</p></li>
-</ul>
+<dl class="field-list simple">
+<dt class="field-odd">&lt;conn_handle&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>连接句柄</p>
+</dd>
+<dt class="field-even">&lt;tk&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>OOB数据</p>
+</dd>
+</dl>
 </section>
 </section>
 <section id="at-blegap-bond-info">
@@ -3301,11 +2307,17 @@ OK
 </section>
 <section id="id137">
 <h3>参数<a class="headerlink" href="#id137" title="Link to this heading"></a></h3>
-<ul class="simple">
-<li><p>&lt;idx&gt;: 绑定信息的索引号</p></li>
-<li><p>&lt;remote_addr&gt;: 远端设备地址</p></li>
-<li><p>&lt;identity_addr&gt;: 远端设备身份地址</p></li>
-</ul>
+<dl class="field-list simple">
+<dt class="field-odd">&lt;idx&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>绑定信息的索引号</p>
+</dd>
+<dt class="field-even">&lt;remote_addr&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>远端设备地址</p>
+</dd>
+<dt class="field-odd">&lt;identity_addr&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>远端设备身份地址</p>
+</dd>
+</dl>
 </section>
 </section>
 <section id="at-blegap-bond-del">
@@ -3328,19 +2340,20 @@ OK
 </section>
 <section id="id141">
 <h3>参数<a class="headerlink" href="#id141" title="Link to this heading"></a></h3>
-<ul>
-<li><p>&lt;addr_type&gt;: 地址类型</p>
-<blockquote>
-<div><ul class="simple">
+<dl class="field-list simple">
+<dt class="field-odd">&lt;addr_type&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>地址类型</p>
+<ul class="simple">
 <li><p>0: 公共地址</p></li>
 <li><p>1: 随机地址</p></li>
 <li><p>2: 公共身份地址</p></li>
 <li><p>3: 随机身份地址</p></li>
 </ul>
-</div></blockquote>
-</li>
-<li><p>&lt;addr&gt;: 要删除的地址</p></li>
-</ul>
+</dd>
+<dt class="field-even">&lt;addr&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>要删除的地址</p>
+</dd>
+</dl>
 </section>
 </section>
 <section id="at-blegap-bond-clear">
@@ -3363,9 +2376,7 @@ OK
 </section>
 <section id="id145">
 <h3>参数<a class="headerlink" href="#id145" title="Link to this heading"></a></h3>
-<ul class="simple">
-<li><p>无</p></li>
-</ul>
+<p>无</p>
 </section>
 </section>
 <section id="at-blegap-disc">
@@ -3382,32 +2393,32 @@ OK
 </section>
 <section id="id148">
 <h3>响应格式<a class="headerlink" href="#id148" title="Link to this heading"></a></h3>
-<p>如果&lt;discover_type&gt;为0,响应如下:</p>
+<p>如果&lt;discover_type&gt;为0，响应如下:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+</span><span class="n">BLEGATTC</span><span class="p">:</span><span class="n">disc</span><span class="p">,</span><span class="o">&lt;</span><span class="n">discover_type</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">conn_handle</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">start_handle</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">end_handle</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">UUID</span><span class="o">&gt;</span>
 <span class="n">OK</span>
 </pre></div>
 </div>
-<p>如果&lt;discover_type&gt;为1,响应如下:</p>
+<p>如果&lt;discover_type&gt;为1，响应如下:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+</span><span class="n">BLEGATTC</span><span class="p">:</span><span class="n">disc</span><span class="p">,</span><span class="o">&lt;</span><span class="n">discover_type</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">conn_handle</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">start_handle</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">end_handle</span><span class="o">&gt;</span>
 <span class="n">OK</span>
 </pre></div>
 </div>
-<p>如果&lt;discover_type&gt;为2,响应如下:</p>
+<p>如果&lt;discover_type&gt;为2，响应如下:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+</span><span class="n">BLEGATTC</span><span class="p">:</span><span class="n">disc</span><span class="p">,</span><span class="o">&lt;</span><span class="n">discover_type</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">conn_handle</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">included_service_handle</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">start_handle</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">end_handle</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">UUID</span><span class="o">&gt;</span>
 <span class="n">OK</span>
 </pre></div>
 </div>
-<p>如果&lt;discover_type&gt;为3,响应如下:</p>
+<p>如果&lt;discover_type&gt;为3，响应如下:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+</span><span class="n">BLEGATTC</span><span class="p">:</span><span class="n">disc</span><span class="p">,</span><span class="o">&lt;</span><span class="n">discover_type</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">conn_handle</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">characteristic_handle</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">properties</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">value_handle</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">UUID</span><span class="o">&gt;</span>
 <span class="n">OK</span>
 </pre></div>
 </div>
-<p>如果&lt;discover_type&gt;为4,响应如下:</p>
+<p>如果&lt;discover_type&gt;为4，响应如下:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+</span><span class="n">BLEGATTC</span><span class="p">:</span><span class="n">disc</span><span class="p">,</span><span class="o">&lt;</span><span class="n">discover_type</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">conn_handle</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">characteristic_handle</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">properties</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">value_handle</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">UUID</span><span class="o">&gt;</span>
 <span class="n">OK</span>
 </pre></div>
 </div>
-<p>如果&lt;discover_type&gt;为5,响应如下:</p>
+<p>如果&lt;discover_type&gt;为5，响应如下:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+</span><span class="n">BLEGATTC</span><span class="p">:</span><span class="n">disc</span><span class="p">,</span><span class="o">&lt;</span><span class="n">discover_type</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">conn_handle</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">descriptor_handle</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">UUID</span><span class="o">&gt;</span>
 <span class="n">OK</span>
 </pre></div>
@@ -3415,11 +2426,13 @@ OK
 </section>
 <section id="id149">
 <h3>参数<a class="headerlink" href="#id149" title="Link to this heading"></a></h3>
-<ul>
-<li><p>&lt;conn_handle&gt;: 连接句柄</p></li>
-<li><p>&lt;discover_type&gt;: 发现类型</p>
-<blockquote>
-<div><ul class="simple">
+<dl class="field-list simple">
+<dt class="field-odd">&lt;conn_handle&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>连接句柄</p>
+</dd>
+<dt class="field-even">&lt;discover_type&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>发现类型</p>
+<ul class="simple">
 <li><p>0: 发现所有主服务</p></li>
 <li><p>1: 根据服务UUID发现主服务</p></li>
 <li><p>2: 查找包含的服务</p></li>
@@ -3427,17 +2440,32 @@ OK
 <li><p>4: 根据UUID发现特征</p></li>
 <li><p>5: 发现所有特征描述符</p></li>
 </ul>
-</div></blockquote>
-</li>
-<li><p>&lt;start_handle&gt;: 发现范围的起始属性句柄</p></li>
-<li><p>&lt;end_handle&gt;: 发现范围的结束属性句柄</p></li>
-<li><p>&lt;uuid16/uuid128&gt;: UUID发现目标</p></li>
-<li><p>&lt;included_service_handle&gt;: 包含服务声明的句柄</p></li>
-<li><p>&lt;characteristic_handle&gt;: 特征声明句柄</p></li>
-<li><p>&lt;properties&gt;: 特征属性</p></li>
-<li><p>&lt;value_handle&gt;: 特征值属性句柄</p></li>
-<li><p>&lt;descriptor_handle&gt;: 特征描述符句柄</p></li>
-</ul>
+</dd>
+<dt class="field-odd">&lt;start_handle&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>发现范围的起始属性句柄</p>
+</dd>
+<dt class="field-even">&lt;end_handle&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>发现范围的结束属性句柄</p>
+</dd>
+<dt class="field-odd">&lt;uuid16/uuid128&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>UUID发现目标</p>
+</dd>
+<dt class="field-even">&lt;included_service_handle&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>包含服务声明的句柄</p>
+</dd>
+<dt class="field-odd">&lt;characteristic_handle&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>特征声明句柄</p>
+</dd>
+<dt class="field-even">&lt;properties&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>特征属性</p>
+</dd>
+<dt class="field-odd">&lt;value_handle&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>特征值属性句柄</p>
+</dd>
+<dt class="field-even">&lt;descriptor_handle&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>特征描述符句柄</p>
+</dd>
+</dl>
 </section>
 <section id="id150">
 <h3>示例<a class="headerlink" href="#id150" title="Link to this heading"></a></h3>
@@ -3469,17 +2497,17 @@ OK
 </section>
 <section id="id153">
 <h3>响应格式<a class="headerlink" href="#id153" title="Link to this heading"></a></h3>
-<p>如果&lt;type&gt;为0,响应如下:</p>
+<p>如果&lt;type&gt;为0，响应如下:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+</span><span class="n">BLEGATTC</span><span class="p">:</span><span class="n">read</span><span class="p">,</span><span class="o">&lt;</span><span class="n">conn_handle</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="nb">type</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">handle</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">length</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">data</span><span class="o">&gt;</span>
 <span class="n">OK</span>
 </pre></div>
 </div>
-<p>如果&lt;type&gt;为1,响应如下:</p>
+<p>如果&lt;type&gt;为1，响应如下:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+</span><span class="n">BLEGATTC</span><span class="p">:</span><span class="n">read</span><span class="p">,</span><span class="o">&lt;</span><span class="n">conn_handle</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="nb">type</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">handle</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">length</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">data</span><span class="o">&gt;</span>
 <span class="n">OK</span>
 </pre></div>
 </div>
-<p>如果&lt;type&gt;为3,响应如下:</p>
+<p>如果&lt;type&gt;为3，响应如下:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+</span><span class="n">BLEGATTC</span><span class="p">:</span><span class="n">read</span><span class="p">,</span><span class="o">&lt;</span><span class="n">conn_handle</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="nb">type</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">length</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">data</span><span class="o">&gt;</span>
 <span class="n">OK</span>
 </pre></div>
@@ -3487,31 +2515,42 @@ OK
 </section>
 <section id="id154">
 <h3>备注<a class="headerlink" href="#id154" title="Link to this heading"></a></h3>
-<p>如果GATT客户端读取特征值成功,GATT服务端会有如下提示:</p>
+<p>如果GATT客户端读取特征值成功，GATT服务端会有如下提示:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>[$]+BLEGATTS:read,&lt;service_app_id&gt;,&lt;conn_handle&gt;,&lt;charac_index&gt;
 </pre></div>
 </div>
 </section>
 <section id="id155">
 <h3>参数<a class="headerlink" href="#id155" title="Link to this heading"></a></h3>
-<ul>
-<li><p>&lt;conn_handle&gt;: 连接句柄</p></li>
-<li><p>&lt;type&gt;: 读取类型</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>0: 通过句柄读取特征值,[…]=&lt;handle&gt;</p></li>
-<li><p>1: 通过特征UUID读取,[…]=&lt;start_handle&gt;,&lt;end_handle&gt;,&lt;uuid16/uuid128&gt;</p></li>
-<li><p>2: 读取多个特征值(不支持)</p></li>
-<li><p>3: 读取多个可变特征值,[…]=&lt;handle_count&gt;,&lt;handles_arr_1&gt;[,…]</p></li>
+<dl class="field-list simple">
+<dt class="field-odd">&lt;conn_handle&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>连接句柄</p>
+</dd>
+<dt class="field-even">&lt;type&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>读取类型</p>
+<ul class="simple">
+<li><p>0: 通过句柄读取特征值，[…]=&lt;handle&gt;</p></li>
+<li><p>1: 通过特征UUID读取，[…]=&lt;start_handle&gt;,&lt;end_handle&gt;,&lt;uuid16/uuid128&gt;</p></li>
+<li><p>2: 读取多个特征值（不支持）</p></li>
+<li><p>3: 读取多个可变特征值，[…]=&lt;handle_count&gt;,&lt;handles_arr_1&gt;[,…]</p></li>
 </ul>
-</div></blockquote>
-</li>
-<li><p>&lt;handle&gt;: 属性句柄</p></li>
-<li><p>&lt;length&gt;: 读取的值的长度</p></li>
-<li><p>&lt;data&gt;: 读取的值,不包含0x的十六进制数</p></li>
-<li><p>&lt;service_app_id&gt;: 服务应用ID</p></li>
-<li><p>&lt;charac_index&gt;: 特征索引</p></li>
-</ul>
+</dd>
+<dt class="field-odd">&lt;handle&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>属性句柄</p>
+</dd>
+<dt class="field-even">&lt;length&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>读取的值的长度</p>
+</dd>
+<dt class="field-odd">&lt;data&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>读取的值，不包含0x的十六进制数</p>
+</dd>
+<dt class="field-even">&lt;service_app_id&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>服务应用ID</p>
+</dd>
+<dt class="field-odd">&lt;charac_index&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>特征索引</p>
+</dd>
+</dl>
 </section>
 <section id="id156">
 <h3>示例<a class="headerlink" href="#id156" title="Link to this heading"></a></h3>
@@ -3545,41 +2584,54 @@ OK
 </section>
 <section id="id160">
 <h3>备注<a class="headerlink" href="#id160" title="Link to this heading"></a></h3>
-<p>如果GATT客户端写入特征值成功,GATT服务端会有如下提示:</p>
+<p>如果GATT客户端写入特征值成功，GATT服务端会有如下提示:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>[$]+BLEGATTS:write,&lt;service_app_id&gt;,&lt;conn_handle&gt;,&lt;charac_index&gt;,&lt;type&gt;,&lt;length&gt;,&lt;data&gt;
 </pre></div>
 </div>
 <p>你应该使用这个命令来使能/禁用通知/指示。格式如下:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">BLEGATTC</span><span class="o">=</span><span class="n">write</span><span class="p">,</span><span class="mi">17</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mh">0x17</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">0100</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>AT+BLEGATTC=write,17,0,0x17,2,0100
 
-<span class="o">//</span><span class="mi">17</span><span class="p">:</span> <span class="n">连接句柄</span>
-<span class="o">//</span><span class="mi">0</span><span class="p">:</span> <span class="n">写入请求类型</span><span class="p">,</span><span class="n">必须为0</span>
-<span class="o">//</span><span class="mh">0x17</span><span class="p">:</span> <span class="n">CCCD句柄</span>
-<span class="o">//</span><span class="mi">2</span><span class="p">:</span> <span class="n">写入数据长度</span><span class="p">,</span><span class="n">必须为2</span>
-<span class="o">//</span><span class="mi">0100</span><span class="p">:</span> <span class="n">写入数据</span><span class="p">,</span><span class="mi">0100</span><span class="n">表示使能通知</span><span class="p">,</span><span class="mi">0200</span><span class="n">表示使能指示</span><span class="p">,</span><span class="mi">0000</span><span class="n">表示禁用通知</span><span class="o">/</span><span class="n">指示</span>
+//17: 连接句柄
+//0: 写入请求类型，必须为0
+//0x17: CCCD句柄
+//2: 写入数据长度，必须为2
+//0100: 写入数据，0100表示使能通知，0200表示使能指示，0000表示禁用通知/指示
 </pre></div>
 </div>
 </section>
 <section id="id161">
 <h3>参数<a class="headerlink" href="#id161" title="Link to this heading"></a></h3>
-<ul>
-<li><p>&lt;conn_handle&gt;: 连接句柄</p></li>
-<li><p>&lt;type&gt;: 写入类型</p>
-<blockquote>
-<div><ul class="simple">
+<dl class="field-list simple">
+<dt class="field-odd">&lt;conn_handle&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>连接句柄</p>
+</dd>
+<dt class="field-even">&lt;type&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>写入类型</p>
+<ul class="simple">
 <li><p>0: 写入特征值请求</p></li>
 <li><p>1: 无响应写入特征值</p></li>
 <li><p>2: 无响应且带签名数据写入特征值</p></li>
 </ul>
-</div></blockquote>
-</li>
-<li><p>&lt;handle&gt;: 对等设备的属性句柄</p></li>
-<li><p>&lt;length&gt;: 写入数据的长度</p></li>
-<li><p>&lt;data&gt;: 写入的数据,不包含0x的十六进制数,如0a0b</p></li>
-<li><p>&lt;service_app_id&gt;: 服务应用ID</p></li>
-<li><p>&lt;len&gt;: 数据长度</p></li>
-<li><p>&lt;data&gt;: 写入的数据值,如 0a0b</p></li>
-</ul>
+</dd>
+<dt class="field-odd">&lt;handle&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>对等设备的属性句柄</p>
+</dd>
+<dt class="field-even">&lt;length&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>写入数据的长度</p>
+</dd>
+<dt class="field-odd">&lt;data&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>写入的数据，不包含0x的十六进制数，如0a0b</p>
+</dd>
+<dt class="field-even">&lt;service_app_id&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>服务应用ID</p>
+</dd>
+<dt class="field-odd">&lt;len&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>数据长度</p>
+</dd>
+<dt class="field-even">&lt;data&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>写入的数据值，例如：0a0b</p>
+</dd>
+</dl>
 </section>
 <section id="id162">
 <h3>示例<a class="headerlink" href="#id162" title="Link to this heading"></a></h3>
@@ -3612,21 +2664,33 @@ OK
 </section>
 <section id="id166">
 <h3>备注<a class="headerlink" href="#id166" title="Link to this heading"></a></h3>
-<p>如果GATT服务器发送通知成功,GATT客户端会有如下提示:</p>
+<p>如果GATT服务器发送通知成功，GATT客户端会有如下提示:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>[$]+BLEGATTC:notify,&lt;conn_handle&gt;,&lt;value_handle&gt;,&lt;length&gt;,&lt;data&gt;
 </pre></div>
 </div>
 </section>
 <section id="id167">
 <h3>参数<a class="headerlink" href="#id167" title="Link to this heading"></a></h3>
-<ul class="simple">
-<li><p>&lt;conn_handle&gt;: 连接句柄</p></li>
-<li><p>&lt;service_app_id&gt;: 服务应用ID,固定值12</p></li>
-<li><p>&lt;charac_index&gt;: 特征索引,固定值6</p></li>
-<li><p>&lt;length&gt;: 通知数据的长度</p></li>
-<li><p>&lt;data&gt;: 通知数据,不包含0x的十六进制数,如0a0b</p></li>
-<li><p>&lt;value_handle&gt;: 特征值属性句柄</p></li>
-</ul>
+<dl class="field-list simple">
+<dt class="field-odd">&lt;conn_handle&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>连接句柄</p>
+</dd>
+<dt class="field-even">&lt;service_app_id&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>服务应用ID，固定值12</p>
+</dd>
+<dt class="field-odd">&lt;charac_index&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>特征索引，固定值6</p>
+</dd>
+<dt class="field-even">&lt;length&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>通知数据的长度</p>
+</dd>
+<dt class="field-odd">&lt;data&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>通知数据，不包含0x的十六进制数，例如：0a0b</p>
+</dd>
+<dt class="field-even">&lt;value_handle&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>特征值属性句柄</p>
+</dd>
+</dl>
 </section>
 <section id="id168">
 <h3>示例<a class="headerlink" href="#id168" title="Link to this heading"></a></h3>
@@ -3659,21 +2723,33 @@ OK
 </section>
 <section id="id172">
 <h3>备注<a class="headerlink" href="#id172" title="Link to this heading"></a></h3>
-<p>如果GATT服务器发送指示成功,GATT客户端会有如下提示:</p>
+<p>如果GATT服务器发送指示成功，GATT客户端会有如下提示:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>[$]+BLEGATTC:indicate,&lt;conn_handle&gt;,&lt;value_handle&gt;,&lt;length&gt;,&lt;data&gt;
 </pre></div>
 </div>
 </section>
 <section id="id173">
 <h3>参数<a class="headerlink" href="#id173" title="Link to this heading"></a></h3>
-<ul class="simple">
-<li><p>&lt;conn_handle&gt;: 连接句柄</p></li>
-<li><p>&lt;service_app_id&gt;: 服务应用ID,固定值12</p></li>
-<li><p>&lt;charac_index&gt;: 特征索引,固定值9</p></li>
-<li><p>&lt;length&gt;: 指示数据的长度</p></li>
-<li><p>&lt;data&gt;: 指示数据,不包含0x的十六进制数,如0a0b</p></li>
-<li><p>&lt;value_handle&gt;: 特征值属性句柄</p></li>
-</ul>
+<dl class="field-list simple">
+<dt class="field-odd">&lt;conn_handle&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>连接句柄</p>
+</dd>
+<dt class="field-even">&lt;service_app_id&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>服务应用ID，固定值12</p>
+</dd>
+<dt class="field-odd">&lt;charac_index&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>特征索引，固定值9</p>
+</dd>
+<dt class="field-even">&lt;length&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>指示数据的长度</p>
+</dd>
+<dt class="field-odd">&lt;data&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>指示数据，不包含0x的十六进制数，如0a0b</p>
+</dd>
+<dt class="field-even">&lt;value_handle&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>特征值属性句柄</p>
+</dd>
+</dl>
 </section>
 <section id="id174">
 <h3>示例<a class="headerlink" href="#id174" title="Link to this heading"></a></h3>
@@ -3690,16 +2766,18 @@ OK
 <h2>Bluetooth AT Error Code<a class="headerlink" href="#bluetooth-at-error-code" title="Link to this heading"></a></h2>
 <section id="id175">
 <h3>功能说明<a class="headerlink" href="#id175" title="Link to this heading"></a></h3>
-<p>如果在执行AT命令时出现错误,响应如下:</p>
+<p>如果在执行AT命令时出现错误，响应如下:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ERROR</span><span class="p">:</span><span class="o">&lt;</span><span class="n">err_code</span><span class="o">&gt;</span>
 </pre></div>
 </div>
 </section>
 <section id="id176">
 <h3>参数<a class="headerlink" href="#id176" title="Link to this heading"></a></h3>
-<ul class="simple">
-<li><p>&lt;err_code&gt;: 蓝牙AT错误代码</p></li>
-</ul>
+<dl class="field-list simple">
+<dt class="field-odd">&lt;err_code&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>蓝牙AT错误代码</p>
+</dd>
+</dl>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>&lt;err_code&gt;</p></th>
@@ -3756,7 +2834,7 @@ OK
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
-        <a href="at_command_websocket_cn.html" class="btn btn-neutral float-left" title="WebSocket AT命令集" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="at_command_websocket_cn.html" class="btn btn-neutral float-left" title="WebSocket AT 命令集" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
         <a href="at_command_file_system_cn.html" class="btn btn-neutral float-right" title="文件系统 AT 命令集" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
@@ -3773,78 +2851,9 @@ OK
 
 </footer>
         </div>
+
     <!-- 问题反馈按钮和对话框 -->
     
-        <button id="report-button">Inquire</button>
-    
-    <div id="feedback-dialog" class="feedback-dialog" style="display: none;">
-        <div class="form-group">
-            <label style="font-weight: bold;">Please select the related chapter:</label>
-            <select id="chapter-select">
-                <option value="">Select Chapter</option>
-                <!-- 章节选项将通过JavaScript动态填充 -->
-            </select>
-        </div>
-
-        <div class="form-group">
-            <label style="font-weight: bold;">Post Type</label>
-            <select id="post-type" class="form-control" required>
-                <option value="">-- Select Type --</option>
-                <option value="doc_correction">Document Correction</option>
-                <option value="tech_consult">Technical Consult</option>
-                <option value="tech_summary">Technical Summary</option>
-                <option value="operation_flow">Operation Flow</option>
-            </select>
-        </div>
-
-        <div class="form-group">
-            <label style="font-weight: bold;">Related Paragraph:</label>
-            <textarea
-                id="paragraph-input"
-                placeholder="{{ '你可以先选择有问题的段落或手动输入...' if language == 'zh_CN' else 'You can select text or type directly here...' }}"
-                rows="4"
-            ></textarea>
-        </div>
-
-        <div class="form-group">
-            <label style="font-weight: bold;">Please describe your issue:</label>
-            <textarea
-                id="inquire_input"
-                placeholder="Feature enhancement in progress, please stay tuned...">
-            </textarea>
-        </div>
-
-        <button id="submit-feedback">Submit</button>
-        <button id="cancel-feedback">Cancel</button>
-    </div>
-
-    <style>
-        .form-group {
-            margin: 5px 0;  /* 基础间距 */
-        }
-
-        /* 相邻表单项缩小上方间距 */
-        .form-group + .form-group {
-            margin-top: 10px;
-        }
-
-        /* 段落输入框底部微调 */
-        #paragraph-input, #inquire_input {
-            margin: 2px 0; /* 上下间距 */
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            resize: vertical;
-            min-height: 100px;
-
-            /* 占位符样式 */
-            &::placeholder {
-                color: #999;
-                font-style: italic;
-            }
-        }
-    </style>
 
       </div>
     </section>
@@ -3856,116 +2865,214 @@ OK
   </script>
      
 
-    
-        
-        <script>
-            // 路由守卫配置
-            const ROUTER_CONFIG = {
-                baseUrl: 'http://172.29.57.206:5000',
-                checkInterval: 30000 // 30秒检查一次
-            };
+    <!-- templates/sidebar_toggle.html -->
 
-            window.getStoredUsername = function() {
-                try {
-                    const session = localStorage.getItem('auth_session');
-                    if (!session) return null;
-                    const { username, expires } = JSON.parse(session);
-                    if (Date.now() > expires) {
-                        localStorage.removeItem('auth_session');
-                        return null;
-                    }
-                    return username;
-                } catch (e) {
-                    console.error('读取存储会话失败:', e);
-                    return null;
-                }
+<button id="sidebar-toggle-button" aria-label="Toggle sidebar"></button>
+
+<script>
+    function sidebarToggleButton() {
+        const sidebar = document.querySelector('.wy-nav-side');
+        const contentArea = document.querySelector('.wy-nav-content');
+        const contentAreaWrap = document.querySelector('.wy-nav-content-wrap');
+        const sidebarToggleButton = document.getElementById('sidebar-toggle-button');
+
+        console.log('Sidebar:', sidebar);
+        console.log('Content Area:', contentArea);
+        console.log('Toggle Button:', sidebarToggleButton);
+
+        if (!sidebar || !contentArea || !sidebarToggleButton) {
+            console.error('One or more elements not found');
+            return;
+        }
+
+        let isSidebarCollapsed = false;
+
+        sidebarToggleButton.addEventListener('click', function() {
+            document.documentElement.classList.add('sidebar-transitioning');// 添加过渡类
+
+            if (isSidebarCollapsed) {
+                document.documentElement.classList.remove('sidebar-collapsed'); // 改为使用CSS类控制
+
+                sidebar.style.marginLeft = '0px';
+                contentAreaWrap.style.marginLeft = '300px';
+                contentArea.classList.remove('expanded');
+
+                sidebarToggleButton.style.left = '300px';
+            } else {
+                document.documentElement.classList.add('sidebar-collapsed');
+
+                sidebar.style.marginLeft = '-300px';
+                contentAreaWrap.style.marginLeft = '0px';
+                contentArea.classList.add('expanded');
+
+                sidebarToggleButton.style.left = '0px';
             }
 
-            // 增强型路由守卫
-            function setupRouteGuard() {
-                const originalPushState = history.pushState;
-                const originalReplaceState = history.replaceState;
+            // 同步状态
+            isSidebarCollapsed = !isSidebarCollapsed;
+
+            // 过渡结束后移除标记
+            setTimeout(() => {
+                document.documentElement.classList.remove('sidebar-transitioning');
+            }, 300); // 必须与过渡时间匹配
+        });
+    }
+</script>
+
+<style>
+    #sidebar-toggle-button {
+        position: fixed;
+        left: 300px;
+        top: 0;
+        z-index: 1002;
+
+        width: 4px;  /* 竖线宽度 */
+        /* 增加热区 */
+        padding: 0 15px; /* 左右各扩展12px点击区域 */
+        margin: 0 -15px; /* 抵消padding带来的位置偏移 */
+        clip-path: inset(0 -15px); /* 保持视觉宽度4px */
+
+        height: 100vh; /* 竖线高度 */
+        background: #2d2d2d;
+        border: none;
+        border-radius: 2px;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        transform: none;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+
+        /* 隐藏原始文字 */
+        color: transparent;
+        font-size: 0;
+
+        /* 修正交互区域 */
+        padding: 0;
+        margin: 0;
+
+        /* 新增：防止内容溢出 */
+        overflow: visible;
+
+        /* 调整箭头定位 */
+        &::before {
+            top: 50vh; /* 改为视口中点定位 */
+            transform: translateY(-50%);
+        }
+
+        &::after {
+            top: 50vh;
+            transform: translateY(-50%) rotate(45deg);
+        }
+    }
+
+    /* 动态箭头指示器 */
+    #sidebar-toggle-button::before {
+        content: '‹';
+        position: absolute;
+        left: 6px;
+        top: 50%;
+        width: 24px;
+        height: 24px;
+        background: #3498db;
+        color: white;
+        font-size: 18px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transform: translateY(-50%);
+        opacity: 0;
+        transition: all 0.3s ease;
+        pointer-events: none;
+    }
+
+    #sidebar-toggle-button::after {
+        content: '';
+        position: absolute;
+
+        left: -15px;  /* 向左扩展12px */
+        right: -15px; /* 向右扩展12px */
+
+        top: 50%;
+        width: 8px;
+        height: 8px;
+        border: 2px solid white;
+        border-width: 2px 2px 0 0;
+        transform: translateY(-50%) rotate(45deg);
+        opacity: 0;
+        transition: all 0.3s ease;
+    }
+
+    /* 悬停效果 */
+    #sidebar-toggle-button:hover {
+        width: 10px;
+        background: #2980b9;
+    }
+
+    /* 点击动画 */
+    #sidebar-toggle-button:active {
+        transform: translateY(-50%) scale(0.9);
+    }
+</style>
+
+<!-- 统一移动速度 -->
+<style>
+    /* 统一过渡参数 */
+    :root {
+        --sidebar-transition: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .wy-nav-side,
+    .wy-nav-content-wrap,
+    #sidebar-toggle-button {
+        transition: all var(--sidebar-transition) !important;
+    }
+
+    /* 按钮样式调整 */
+    #sidebar-toggle-button {
+        left: 300px;
+        transition: left var(--sidebar-transition),
+                    width 150ms ease, /* 悬停效果保持独立 */
+                    background 150ms ease;
+    }
+
+    /* 折叠状态 */
+    .sidebar-collapsed {
+        .wy-nav-side {
+            margin-left: -300px !important;
+        }
+
+        .wy-nav-content-wrap {
+            margin-left: 0 !important;
+        }
+
+        #sidebar-toggle-button {
+            left: 0 !important;
+        }
+    }
+
+    /* 禁用点击时的过渡 */
+    .sidebar-transitioning {
+        .wy-nav-side,
+        .wy-nav-content-wrap,
+        #sidebar-toggle-button {
+            transition: none !important;
+        }
+    }
+</style>
+
+    
+
+    <script>
+        // 初始化
+        document.addEventListener('DOMContentLoaded', () => {
             
-                function wrappedHistoryMethod(method) {
-                    return function(state, title, url) {
-                        if (url) {
-                            const urlObj = new URL(url, window.location.origin);
-                            verifyNavigation(urlObj.pathname).then(allowed => {
-                                if (allowed) {
-                                    method.apply(history, [state, title, url]);
-                                }
-                            });
-                        } else {
-                            method.apply(history, [state, title, url]);
-                        }
-                    };
-                }
 
-                history.pushState = wrappedHistoryMethod(originalPushState);
-                history.replaceState = wrappedHistoryMethod(originalReplaceState);
+            sidebarToggleButton();
+        });
 
-                window.addEventListener('popstate', () => {
-                    verifyNavigation(window.location.pathname);
-                });
-            }
 
-            // CSRF Token处理：获取CSRF令牌
-            window.getCSRFToken = function() {
-                // 从 Cookie 中获取 CSRF Token
-                const cookieValue = document.cookie
-                    .split('; ')
-                    .find(row => row.startsWith('csrf_token='))
-                    ?.split('=')[1];
-                return cookieValue || '';
-            }
+    </script>
 
-            // 统一验证逻辑
-            function verifyNavigation(path, isBackgroundCheck = false) {
-                console.log('[NDA Auth] verifyNavigation fetch check_nda_access ...');
-
-                if (isExemptPath(path)) return Promise.resolve(true);
-
-                const page = new URL(path, window.location.origin).pathname.split('/').pop();
-                console.log('[DEBUG] 提取的页面名称:', page);
-
-                return fetch('http://172.29.57.206:5000/check_nda_access', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRFToken': window.getCSRFToken()
-                    },
-                    body: JSON.stringify({
-                        path: page,
-                        username: window.getStoredUsername() || 'null' //  注意：后端从 session 取用户名，此处不需要传 username
-                    }),
-                    credentials: 'include'
-                })
-                .then(response => {
-                    // 关键：先检查状态码再解析 JSON
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-                    return response.json(); // 显式解析 JSON
-                })
-                .then(data => {
-                    console.log('[DEBUG] data.access:', data.access);
-                    return data.access ?? false;
-                })
-                .catch(error => {
-                    console.error('[ERROR] 验证失败:', error);
-                    return false;
-                });
-            }
-
-            // 初始化
-            document.addEventListener('DOMContentLoaded', () => {
-                verifyNavigation(window.location.pathname);
-                setupRouteGuard();
-            });
-        </script>
-    
-
-    
 
 
 </body>

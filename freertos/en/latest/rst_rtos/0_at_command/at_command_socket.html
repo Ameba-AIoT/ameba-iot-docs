@@ -10,9 +10,8 @@
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
-      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=b947ea82" />
-      <link rel="stylesheet" type="text/css" href="../../_static/tabs.css?v=a5c4661c" />
-      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=b947ea82" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=dcc6a489" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=dcc6a489" />
 
   
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
@@ -42,162 +41,28 @@
      
 
     
-        
-        <script>
-        // 配置豁免路径（需要与后端路由完全匹配）
-        const EXEMPT_PATHS = [
-            '/_',                     // Sphinx生成路径
-            '/_static',               // 静态资源路径
-            '/_images',               // 图片资源
-            '/auth',                  // 认证端点
-            '/login',                 // 登录页面
-            '/logout',                // 登出端点
-            '/check_session',         // 会话检查
-            '/nda_restricted'         // 无权限提示页
-        ];
-
-        // 增强型路径检查
-        function isExemptPath(targetPath = window.location.pathname) {
-            const path = targetPath.toLowerCase();
-            const fullExemptPaths = EXEMPT_PATHS.concat(
-                EXEMPT_PATHS.map(p => `/en${p}`),  // 英文路径
-                EXEMPT_PATHS.map(p => `/zh_CN${p}`) // 中文路径
-            );
-
-            return fullExemptPaths.some(exempt => {
-                // 精确匹配或前缀匹配
-                return path === exempt.toLowerCase() || 
-                    path.startsWith(exempt.toLowerCase() + '/');
-            });
-        }
-        </script>
-    
 
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
-
-    <!-- NDA文档输入密码的框 -->
-    
-<script>
-// ▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼ 多语言配置 ▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼
-const lang = 'en';  // 使用 Python 字符串切片
-const i18n = {
-    zh: {
-        title: '访问授权',
-        username: '用户名',
-        password: '密码',
-        confirm: '确认',
-        cancel: '取消',
-        usernameError: '用户名错误',
-        userNotExist: '该用户不存在',
-        passwordError: '密码错误',
-        wrongPassword: '请输入正确的密码',
-        accessDenied: '无访问权限',
-        noPermission: '您无权查看此内容',
-        expiredTitle: '访问已过期',
-        expiredMsg: '您的权限已失效<br>有效期：%s 至 %s',
-        deniedTitle: '⚠️ 无访问权限',
-        contact: '请联系 claire_wang@realsil.com.cn 获取权限'
-    },
-    en: {
-        title: 'Access Required',
-        username: 'Username',
-        password: 'Password',
-        confirm: 'Confirm',
-        cancel: 'Cancel',
-        usernameError: 'Invalid Username',
-        userNotExist: 'User does not exist',
-        passwordError: 'Wrong Password',
-        wrongPassword: 'Please enter correct password',
-        accessDenied: 'Access Denied',
-        noPermission: 'You have no permission to view this content',
-        expiredTitle: 'Authorization Expired',
-        expiredMsg: 'Your access has expired<br>Valid period: %s to %s',
-        deniedTitle: '⚠️ Access Denied',
-        contact: 'Please contact claire_wang@realsil.com.cn for access'
-    }
-};
-// ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲ 多语言配置结束 ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
-</script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
     <!-- 样式模板 -->
-    
+    <style>
+        .wy-nav-content {
+            max-width: 1100px;
+             
+        }
 
-<style>
-    .wy-nav-content {
-        max-width: 1100px;
-         
-    }
-    
-    .auth-denied {
-        padding: 20px;
-        background: #f8f9fa;
-        border-radius: 4px;
-        border: 1px solid #dee2e6;
-        text-align: center;
-        color: #721c24;
-        margin-top: 20px;
-    }
-    .auth-denied h3 {
-        margin-bottom: 10px;
-        color: #dc3545;
-    }
-    
-    #report-button {
-        position: fixed;
-        top: 10px;
-        left: 1270px;
-        padding: 1px 15px; /* 调整内边距：1px 为上下，5px 为左右 */
-        height: 30px; /* 设置固定高度 */
-        background-color: #2ecc71;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        z-index: 1000;
-    }
-    #report-button:hover {
-        background-color: #2ecc71;
-    }
-    
-    .feedback-dialog {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background: white;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-        z-index: 1001;
-        width: 600px;
-    }
-    .feedback-dialog textarea {
-        width: 100%;
-        height: 150px;
-        margin-top: 10px;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        resize: vertical;
-    }
-    .feedback-dialog button {
-        margin-top: 10px;
-        padding: 8px 16px;
-        background-color: #007bff;
-        color: white;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-    }
-    .feedback-dialog button:hover {
-        background-color: #0056b3;
-    }
+        .wy-nav-content {
+            transition: margin 0.3s ease; /* 添加过渡效果 */
+            margin-left: 0px !important; /* 侧边栏展开时的偏移 */
+            max-width: calc(100% - 0px) !important; /* 调整最大宽度，使其与侧边栏宽度相关 */
+        }
 
-    
-    
-</style>
-
-
+        .wy-nav-content.expanded {
+            margin-left: 0 !important; /* 侧边栏收缩时内容区域回归左边 */
+            max-width: 100% !important; /* 内容区域最大宽度调整 */
+        }
+    </style>
 
     <!-- 注入 TOC 映射和当前页面信息 -->
     
@@ -205,7 +70,7 @@ const i18n = {
 <!-- TOC 映射和当前文档信息 -->
 <script>
 // 将 Python 字典转换为 JS 对象
-const TOC_TITLE_MAP = {"rst_rtos/0_ameba_product": "Products Center", "rst_rtos/0_ameba_product/0_ameba_product_center_index": "Products Center", "rst_rtos/0_ameba_sdk": "Ameba SDK", "rst_rtos/0_ameba_sdk/0_ameba_sdks_index": "Ameba SDK", "rst_rtos/0_ameba_solutions": "Ameba Solutions", "rst_rtos/0_ameba_solutions/0_ameba_solutions_index": "Ameba Solutions", "rst_rtos/0_at_command": "0.8 AT Commands", "rst_rtos/0_at_command/0_at_command_index": "0.8 AT Commands", "rst_rtos/0_build_system": "0.3 Build System", "rst_rtos/0_build_system/0_build_system_index": "0.3 Build System", "rst_rtos/0_file_system": "0.9 Virtual File System", "rst_rtos/0_file_system/0_vfs_index": "0.9 Virtual File System", "rst_rtos/0_ftl": "0.a Flash Translation Layer", "rst_rtos/0_ftl/0_ftl_index": "0.a Flash Translation Layer", "rst_rtos/0_gcc_build_environment": "0.1 GCC Build Environment", "rst_rtos/0_gcc_build_environment/0_gcc_build_index": "0.1 GCC Build Environment", "rst_rtos/0_gdb_debug": "0.2 GDB Debug", "rst_rtos/0_gdb_debug/0_gdb_debug_index": "0.2 GDB Debug", "rst_rtos/0_memory_layout": "0.5 Flash \u0026 RAM Layout", "rst_rtos/0_memory_layout/0_layout_index": "0.5 Flash \u0026 RAM Layout", "rst_rtos/0_sdk_example": "0.4 SDK Example", "rst_rtos/0_sdk_example/0_sdk_example_index": "0.4 SDK Example", "rst_rtos/0_tools": "0.7 Tools", "rst_rtos/0_tools/0_tools_index": "0.7 Tools", "rst_rtos/0_user_config": "0.6 User Config", "rst_rtos/0_user_config/0_usrcfg_index": "0.6 User Config", "rst_rtos/10_api_docs": "10.0 API Reference", "rst_rtos/10_api_docs/0_api_index": "10.0 API Reference", "rst_rtos/1_boot_process": "1.1 Boot Process", "rst_rtos/1_boot_process/0_boot_index": "1.1 Boot Process", "rst_rtos/1_chipen": "1.4 Chip Enable", "rst_rtos/1_chipen/0_chipen_index": "1.4 Chip Enable", "rst_rtos/1_gpio": "1.7 GPIO \u0026 Pin Control", "rst_rtos/1_gpio/0_gpio_index": "1.7 GPIO \u0026 Pin Control", "rst_rtos/1_ipc": "1.5 Inter Processor Communication", "rst_rtos/1_ipc/0_ipc_index": "1.5 Inter Processor Communication", "rst_rtos/1_mpu_cache": "1.0 MPU and Cache", "rst_rtos/1_mpu_cache/0_mpu_cache_index": "1.0 MPU and Cache", "rst_rtos/1_ota": "1.2 OTA", "rst_rtos/1_ota/0_ota_index": "1.2 OTA", "rst_rtos/1_otpc": "1.3 OTPC", "rst_rtos/1_otpc/0_otpc_index": "1.3 OTPC", "rst_rtos/1_pinmux": "1.6 Pin Multiplexing", "rst_rtos/1_pinmux/0_pinmux_index": "1.6 Pin Multiplexing", "rst_rtos/1_power_save": "1.9 Power Save", "rst_rtos/1_power_save/0_ps_index": "1.9 Power Save", "rst_rtos/2_whc_fullmac": "2.1 WHC FullMAC", "rst_rtos/2_whc_fullmac/0_fullmac_index": "2.1 WHC FullMAC", "rst_rtos/2_whc_wifi_bridge": "2.0 WHC Bridge", "rst_rtos/2_whc_wifi_bridge/0_wifi_bridge_index": "2.0 WHC Bridge", "rst_rtos/2_wifi_adaptivity_test": "2.4 Wi-Fi Adaptivity Test", "rst_rtos/2_wifi_adaptivity_test/0_wifi_adaptivity_index": "2.4 Wi-Fi Adaptivity Test", "rst_rtos/2_wifi_csi": "2.3 Wi-Fi CSI", "rst_rtos/2_wifi_csi/0_wifi_csi_index": "2.3 Wi-Fi CSI", "rst_rtos/2_wifi_tunnel": "2.2 Wi-Fi R-Mesh", "rst_rtos/2_wifi_tunnel/0_wifi_tunnel_index": "2.2 Wi-Fi R-Mesh", "rst_rtos/3_ap_trustzone": "3.d AP Secure Service", "rst_rtos/3_ap_trustzone/0_ap_tz_index": "3.d AP Secure Service", "rst_rtos/3_crypto_engine": "3.9 Crypto Engine", "rst_rtos/3_crypto_engine/0_crypto_engine_index": "3.9 Crypto Engine", "rst_rtos/3_ecdsa_engine": "3.a ECDSA Engine", "rst_rtos/3_ecdsa_engine/0_ecdsa_index": "3.a ECDSA Engine", "rst_rtos/3_eddsa_engine": "3.b EDDSA Engine", "rst_rtos/3_eddsa_engine/0_eddsa_index": "3.b EDDSA Engine", "rst_rtos/3_rsa_engine": "3.c RSA Engine", "rst_rtos/3_rsa_engine/0_rsa_index": "3.c RSA Engine", "rst_rtos/3_security": "3.1 Security \u0026 Encryption", "rst_rtos/3_security/0_security_index": "3.1 Security \u0026 Encryption", "rst_rtos/3_trng": "3.2 True Random Number Generator", "rst_rtos/3_trng/0_trng_index": "3.2 True Random Number Generator", "rst_rtos/4_ai": "4.1 AI", "rst_rtos/4_ai/0_ai_index": "4.1 AI", "rst_rtos/4_ai_voice": "4.2 AIVoice", "rst_rtos/4_ai_voice/0_ai_voice_index": "4.2 AIVoice", "rst_rtos/4_dsp": "4.4 DSP", "rst_rtos/4_dsp/0_dsp_index": "4.4 DSP", "rst_rtos/4_multimedia": "4.3 Multimedia", "rst_rtos/4_multimedia/0_multimedia_index": "4.3 Multimedia", "rst_rtos/6_mass_production": "6.1 Mass Production", "rst_rtos/6_mass_production/0_mp_index": "6.1 Mass Production", "rst_rtos/6_mptools": "6.2 MP Tools", "rst_rtos/6_mptools/0_mptools_index": "6.2 MP Tools", "rst_rtos/7_usb": "7.1 USB Host \u0026 Device", "rst_rtos/7_usb/0_usb_index": "7.1 USB Host \u0026 Device", "rst_rtos/8_adc": "8.4 ADC", "rst_rtos/8_adc/0_adc_index": "8.4 ADC", "rst_rtos/8_cap_touch": "8.7 Cap-Touch", "rst_rtos/8_cap_touch/0_cap_touch_index": "8.7 Cap-Touch", "rst_rtos/8_dmac": "8.1 DMA Controller", "rst_rtos/8_dmac/0_dmac_index": "8.1 DMA Controller", "rst_rtos/8_ir": "8.5 IR", "rst_rtos/8_ir/0_ir_index": "8.5 IR", "rst_rtos/8_key_scan": "8.8 Key-Scan", "rst_rtos/8_key_scan/0_key_scan_index": "8.8 Key-Scan", "rst_rtos/8_lcdc": "8.a LCD Controller", "rst_rtos/8_lcdc/0_lcdc_index": "8.a LCD Controller", "rst_rtos/8_ledc": "8.6 LED Controller", "rst_rtos/8_ledc/0_ledc_index": "8.6 LED Controller", "rst_rtos/8_psram": "8.2 PSRAM", "rst_rtos/8_psram/0_psram_index": "8.2 PSRAM", "rst_rtos/8_rtc_io": "8.9 RTC-IO", "rst_rtos/8_rtc_io/0_rtc_io_index": "8.9 RTC-IO", "rst_rtos/8_thermal": "8.3 Thermal Meter", "rst_rtos/8_thermal/0_thermal_index": "8.3 Thermal Meter"};
+const TOC_TITLE_MAP = {"rst_rtos/0_ameba_product": "Products Center", "rst_rtos/0_ameba_product/0_ameba_product_center_index": "Products Center", "rst_rtos/0_ameba_sdk": "Ameba SDK", "rst_rtos/0_ameba_sdk/0_ameba_sdks_index": "Ameba SDK", "rst_rtos/0_ameba_solutions": "Ameba Solutions", "rst_rtos/0_ameba_solutions/0_ameba_solutions_index": "Ameba Solutions", "rst_rtos/0_at_command": "0.8 AT Commands", "rst_rtos/0_at_command/0_at_command_index": "0.8 AT Commands", "rst_rtos/0_build_system": "0.3 Build System", "rst_rtos/0_build_system/0_build_system_index": "0.3 Build System", "rst_rtos/0_file_system": "0.9 Virtual File System", "rst_rtos/0_file_system/0_vfs_index": "0.9 Virtual File System", "rst_rtos/0_ftl": "0.a Flash Translation Layer", "rst_rtos/0_ftl/0_ftl_index": "0.a Flash Translation Layer", "rst_rtos/0_gcc_build_environment": "0.1 GCC Build Environment", "rst_rtos/0_gcc_build_environment/0_gcc_build_index": "0.1 GCC Build Environment", "rst_rtos/0_gdb_debug": "0.2 GDB Debug", "rst_rtos/0_gdb_debug/0_gdb_debug_index": "0.2 GDB Debug", "rst_rtos/0_memory_layout": "0.5 Flash \u0026 RAM Layout", "rst_rtos/0_memory_layout/0_layout_index": "0.5 Flash \u0026 RAM Layout", "rst_rtos/0_sdk_example": "0.4 SDK Example", "rst_rtos/0_sdk_example/0_sdk_example_index": "0.4 SDK Example", "rst_rtos/0_tools": "0.7 Tools", "rst_rtos/0_tools/0_tools_index": "0.7 Tools", "rst_rtos/0_user_config": "0.6 User Config", "rst_rtos/0_user_config/0_usrcfg_index": "0.6 User Config", "rst_rtos/10_api_docs": "2.6 Wi-Fi API Reference", "rst_rtos/10_api_docs/0_api_index": "2.6 Wi-Fi API Reference", "rst_rtos/1_boot_process": "1.1 Boot Process", "rst_rtos/1_boot_process/0_boot_index": "1.1 Boot Process", "rst_rtos/1_chipen": "1.4 Chip Enable", "rst_rtos/1_chipen/0_chipen_index": "1.4 Chip Enable", "rst_rtos/1_gpio": "1.7 GPIO \u0026 Pin Control", "rst_rtos/1_gpio/0_gpio_index": "1.7 GPIO \u0026 Pin Control", "rst_rtos/1_ipc": "1.5 Inter Processor Communication", "rst_rtos/1_ipc/0_ipc_index": "1.5 Inter Processor Communication", "rst_rtos/1_mpu_cache": "1.0 Memory Management \u0026 Cache", "rst_rtos/1_mpu_cache/0_mpu_cache_index": "1.0 Memory Management \u0026 Cache", "rst_rtos/1_ota": "1.2 OTA", "rst_rtos/1_ota/0_ota_index": "1.2 OTA", "rst_rtos/1_otpc": "1.3 OTPC", "rst_rtos/1_otpc/0_otpc_index": "1.3 OTPC", "rst_rtos/1_pinmux": "1.6 Pin Multiplexing", "rst_rtos/1_pinmux/0_pinmux_index": "1.6 Pin Multiplexing", "rst_rtos/1_power_save": "1.9 Power Saving", "rst_rtos/1_power_save/0_ps_index": "1.9 Power Saving", "rst_rtos/2_whc_fullmac": "2.2 WHC FullMAC", "rst_rtos/2_whc_fullmac/0_fullmac_index": "2.2 WHC FullMAC", "rst_rtos/2_whc_wifi_bridge": "2.1 WHC Bridge", "rst_rtos/2_whc_wifi_bridge/0_wifi_bridge_index": "2.1 WHC Bridge", "rst_rtos/2_wifi_adaptivity_test": "2.5 Wi-Fi Adaptivity Test", "rst_rtos/2_wifi_adaptivity_test/0_wifi_adaptivity_index": "2.5 Wi-Fi Adaptivity Test", "rst_rtos/2_wifi_basic": "2.0 Wi-Fi Basic Mode", "rst_rtos/2_wifi_basic/0_wifi_basic_index": "2.0 Wi-Fi Basic Mode", "rst_rtos/2_wifi_csi": "2.4 Wi-Fi CSI", "rst_rtos/2_wifi_csi/0_wifi_csi_index": "2.4 Wi-Fi CSI", "rst_rtos/2_wifi_tunnel": "2.3 Wi-Fi R-Mesh", "rst_rtos/2_wifi_tunnel/0_wifi_tunnel_index": "2.3 Wi-Fi R-Mesh", "rst_rtos/3_ap_trustzone": "3.d AP Secure Service", "rst_rtos/3_ap_trustzone/0_ap_tz_index": "3.d AP Secure Service", "rst_rtos/3_crypto_engine": "3.9 Crypto Engine", "rst_rtos/3_crypto_engine/0_crypto_engine_index": "3.9 Crypto Engine", "rst_rtos/3_ecdsa_engine": "3.a ECDSA Engine", "rst_rtos/3_ecdsa_engine/0_ecdsa_index": "3.a ECDSA Engine", "rst_rtos/3_eddsa_engine": "3.b EDDSA Engine", "rst_rtos/3_eddsa_engine/0_eddsa_index": "3.b EDDSA Engine", "rst_rtos/3_rsa_engine": "3.c RSA Engine", "rst_rtos/3_rsa_engine/0_rsa_index": "3.c RSA Engine", "rst_rtos/3_security": "3.1 Security \u0026 Encryption", "rst_rtos/3_security/0_security_index": "3.1 Security \u0026 Encryption", "rst_rtos/3_trng": "3.2 True Random Number Generator", "rst_rtos/3_trng/0_trng_index": "3.2 True Random Number Generator", "rst_rtos/4_ai": "4.1 AI", "rst_rtos/4_ai/0_ai_index": "4.1 AI", "rst_rtos/4_ai_voice": "4.2 AIVoice", "rst_rtos/4_ai_voice/0_ai_voice_index": "4.2 AIVoice", "rst_rtos/4_dsp": "4.4 DSP", "rst_rtos/4_dsp/0_dsp_index": "4.4 DSP", "rst_rtos/4_multimedia": "4.3 Multimedia", "rst_rtos/4_multimedia/0_multimedia_index": "4.3 Multimedia", "rst_rtos/6_mass_production": "6.1 Mass Production", "rst_rtos/6_mass_production/0_mp_index": "6.1 Mass Production", "rst_rtos/6_mptools": "6.2 MP Tools", "rst_rtos/6_mptools/0_mptools_index": "6.2 MP Tools", "rst_rtos/7_usb": "7.1 USB Host \u0026 Device", "rst_rtos/7_usb/0_usb_index": "7.1 USB Host \u0026 Device", "rst_rtos/8_adc": "8.4 ADC", "rst_rtos/8_adc/0_adc_index": "8.4 ADC", "rst_rtos/8_cap_touch": "8.7 Cap-Touch", "rst_rtos/8_cap_touch/0_cap_touch_index": "8.7 Cap-Touch", "rst_rtos/8_dmac": "8.1 DMA Controller", "rst_rtos/8_dmac/0_dmac_index": "8.1 DMA Controller", "rst_rtos/8_ir": "8.5 IR", "rst_rtos/8_ir/0_ir_index": "8.5 IR", "rst_rtos/8_key_scan": "8.8 Key-Scan", "rst_rtos/8_key_scan/0_key_scan_index": "8.8 Key-Scan", "rst_rtos/8_lcdc": "8.a LCD Controller", "rst_rtos/8_lcdc/0_lcdc_index": "8.a LCD Controller", "rst_rtos/8_ledc": "8.6 LED Controller", "rst_rtos/8_ledc/0_ledc_index": "8.6 LED Controller", "rst_rtos/8_psram": "8.2 PSRAM", "rst_rtos/8_psram/0_psram_index": "8.2 PSRAM", "rst_rtos/8_rtc_io": "8.9 RTC-IO", "rst_rtos/8_rtc_io/0_rtc_io_index": "8.9 RTC-IO", "rst_rtos/8_thermal": "8.3 Thermal Meter", "rst_rtos/8_thermal/0_thermal_index": "8.3 Thermal Meter"};
 console.log("TOC_TITLE_MAP:", TOC_TITLE_MAP);
 
 // 获取当前页面的文档名 (例如 'rst_rtos/3_nda_secure_boot/0_secure_boot_index_nda')
@@ -262,647 +127,10 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
-    <style>
-        /* ====================== 紧凑型选择器 ====================== */
-        #topleft-panel {
-            background: rgba(40, 58, 73, 0.9);
-            border-radius: 8px;
-            padding: 4px;
-            margin: 4px 0;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-            backdrop-filter: blur(4px);
-        }
-
-        .selectors-grid {
-            display: grid;
-            gap: 4px;
-        }
-
-        .dual-selector-group {
-            display: grid;
-            grid-template-columns: 1fr 1fr; /* 两列等宽 */
-            gap: 4px; /* 列间距 */
-        }
-
-        .selector-group {
-            position: relative;
-        }
-
-        .selector-label {
-            display: block;
-            color: #a0b3c6;
-            font-size: 0.85em;
-            margin-bottom: 4px;
-            padding-left: 4px;
-        }
-
-        .selector-dropdown {
-            width: 100%;
-            padding: 4px 4px;
-            border: 1px solid rgba(64, 82, 97, 0.8);
-            border-radius: 6px;
-            background: rgba(44, 62, 80, 0.9);
-            color: #ecf0f1;
-            font-size: 0.95em;
-            transition: all 0.2s ease;
-            appearance: none;
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23a0b3c6'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
-            background-repeat: no-repeat;
-            background-position: right 10px center;
-            background-size: 16px;
-        }
-
-        .selector-dropdown:hover {
-            border-color: #4a6a8b;
-            background-color: rgba(44, 62, 80, 1);
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-        }
-
-        .selector-dropdown:focus {
-            outline: none;
-            border-color: #3498db;
-            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
-        }
-
-        /* 移动端优化 */
-        @media (max-width: 768px) {
-            #topleft-panel {
-                margin: 8px 0;
-                padding: 10px;
-            }
-
-            .selectors-grid {
-                grid-template-columns: 1fr;
-                gap: 10px;
-            }
-
-            .selector-dropdown {
-                padding: 10px 12px;
-            }
-
-            .dual-selector-group {
-                grid-template-columns: 1fr; /* 小屏幕下堆叠显示 */
-            }
-        }
-    </style>
-
     
-        
-
-<style>
-    /* ================= 用户面板 ================= */
-    .user-panel {
-        /* background: rgba(255,255,255,0.1); */
-        background: rgba(255, 255, 255, 0.05); /* 更暗的背景 */
-        border-radius: 4px;
-        padding: 4px 4px; /* 上下间距减少 */
-        margin: 4px 0px; /* 左右各10px边距 */
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-
-        width: calc(100% - 4px); /* 宽度占满父容器减去20px（左右边距总和） */
-        max-width: 280px; /* 设置最大宽度，防止过宽 */
-        box-sizing: border-box; /* 确保padding和border不影响总宽度 */
-    }
-
-    #user-info {
-        display: flex;
-        gap: 4px;
-        align-items: center;
-        padding: 4px 0;
-        width: 100%;
-    }
-
-    .username-btn, .logout-btn, .link-btn, .auth-btn {
-        flex: 1; /* 均分剩余空间 */
-        margin: 3px 0;           /* 减少外链按钮间距 */
-        padding: 4px 6px;       /* 减少内边距 */
-        background: rgba(255,255,255,0.05);
-        border: 1px solid rgba(255,255,255,0.1);
-        border-radius: 6px;
-        color: white;
-        display: flex;
-        align-items: center;
-        transition: all 0.3s ease;
-    }
-
-    .username-btn:hover {
-        background: #92b5bb;
-    }
-
-    #username-display {
-        font-size: 0.95em;
-        color: #ecf0f1;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        text-align: left;
-    }
-
-    .logout-btn:hover {
-        background: #c0392b;
-    }
-
-    /* ================= 按钮容器 ================= */
-    .button-row {
-        display: flex;
-        gap: 4px;
-        width: 100%;
-        margin: 4px 0;
-    }
-
-    .auth-btn:hover {
-        background: #2980b9;
-        transform: translateY(-1px);
-    }
-
-    /* 外链按钮 */
-    .external-links {
-        display: flex;       /* 新增Flex布局 */
-        gap: 4px;           /* 按钮间距 */
-        width: 100%;        /* 确保容器宽度填满父级 */
-    }
-
-    .link-btn:hover {
-        background: rgba(255,255,255,0.1);
-        transform: translateY(-1px);
-    }
-
-    .btn-text {
-        font-size: 0.95em;
-    }
-
-    .panel-divider {
-        height: 1px;
-        background: rgba(255,255,255,0.1);
-        margin: 6px 0;          /* 减少分隔线间距 */
-    }
-
-    /* 桌面端悬停效果 */
-    @media (hover: hover) {
-        .username-btn:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 2px 6px rgba(255,255,255,0.15);
-        }
-
-        .logout-btn:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 2px 6px rgba(231, 76, 60, 0.3);
-        }
-    }
-
-    /* 响应式调整 */
-    @media (max-width: 768px) {
-        .user-panel {
-            padding: 4px 6px;
-        }
-
-        .auth-btn {
-            padding: 4px 68px;
-            font-size: 0.9em;
-        }
-
-        .external-links {
-            flex-direction: column; /* 移动端垂直排列 */
-            gap: 6px;              /* 调整间距 */
-        }
-        .link-btn {
-            width: 100%;          /* 移动端填满宽度 */
-            flex: none;           /* 禁用flex缩放 */
-        }
-
-        .btn-text {
-            font-size: 0.9em;
-        }
-
-        #user-info {
-            flex-direction: row; /* 保持行排列 */
-            gap: 6px;
-        }
-
-        .username-btn {
-            flex: 1 1 60%;
-            padding: 6px 8px;
-        }
-
-        .logout-btn {
-            flex: 1 1 40%;
-            text-align: center;
-        }
-    }
-</style>
-
-<style>
-    .auth-dialog {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0,0,0,0.5);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 9999;
-        backdrop-filter: blur(3px);
-    }
-
-    .auth-content {
-        background: #ffffff;
-        padding: 2rem;
-        border-radius: 12px;
-        min-width: 380px;
-        box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-        transform: translateY(-20px);
-        opacity: 0;
-        animation: dialogEnter 0.3s ease forwards;
-    }
-
-    @keyframes dialogEnter {
-        to {
-            transform: translateY(0);
-            opacity: 1;
-        }
-    }
-
-    .auth-title {
-        color: #2c3e50;
-        font-size: 1.5rem;
-        margin: 0 0 1.5rem;
-        font-weight: 600;
-        text-align: center;
-    }
-
-    .auth-input-group {
-        margin-bottom: 1.2rem;
-    }
-
-    .auth-label {
-        display: block;
-        color: #7f8c8d;
-        font-size: 0.9rem;
-        margin-bottom: 0.5rem;
-    }
-
-    .auth-input {
-        width: 100%;
-        padding: 0.8rem;
-        border: 2px solid #ecf0f1;
-        border-radius: 8px;
-        font-size: 1rem;
-        transition: all 0.3s ease;
-    }
-
-    .auth-input:focus {
-        border-color: #3498db;
-        box-shadow: 0 0 0 3px rgba(52,152,219,0.1);
-        outline: none;
-    }
-
-    .auth-button-group {
-        display: flex;
-        gap: 1rem;
-        margin-top: 1.5rem;
-    }
-
-    .auth-button {
-        flex: 1;
-        padding: 0.8rem 1.2rem;
-        border: none;
-        border-radius: 8px;
-        font-weight: 500;
-        cursor: pointer;
-        transition: all 0.3s ease;
-    }
-
-    .auth-button.confirm {
-        background: #3498db;
-        color: white;
-    }
-
-    .auth-button.confirm:hover {
-        background: #2980b9;
-        transform: translateY(-1px);
-    }
-
-    .auth-button.cancel {
-        background: #f1f2f6;
-        color: #2c3e50;
-    }
-
-    .auth-button.cancel:hover {
-        background: #dfe4ea;
-    }
-
-    @media (max-width: 480px) {
-        .auth-content {
-            min-width: 90%;
-            padding: 1.2rem;
-        }
-
-        .auth-input-group {
-            margin-bottom: 0.8rem;
-        }
-
-        .auth-input {
-            padding: 0.7rem;
-            font-size: 0.9rem;
-        }
-    }
-</style>
-        <!-- source/_templates/_layout_issue_report.html -->
-<div id="prompt-box" style="
-    display: none;
-    position: fixed;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(0,0,0,0.8);
-    color: white;
-    padding: 10px 20px;
-    border-radius: 5px;
-    z-index: 9999;
-    text-align: center;
-    font-size: 14px;
-"></div>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    'use strict'; // 添加严格模式
-
-    // 获取所有DOM元素引用
-    const reportButton = document.getElementById('report-button');
-    const feedbackDialog = document.getElementById('feedback-dialog');
-    const feedbackText = document.getElementById('inquire_input');
-    const submitButton = document.getElementById('submit-feedback');
-    const cancelButton = document.getElementById('cancel-feedback');
-    const promptBox = document.getElementById('prompt-box');
-    const chapterSelect = document.getElementById('chapter-select');
-    const paragraphInput = document.getElementById('paragraph-input');
-    const postTypeSelect = document.getElementById('post-type');
-    console.log('帖子类型(postTypeSelect)DOM元素:', postTypeSelect); // 应输出<select>元素
-
-    // 状态变量
-    let hasUserInput = false; // 跟踪用户是否主动输入
-    let selectedText = '';
-    const language = 'en'; // 从模板引擎获取语言变量
-
-    // 初始化时设置placeholder
-    paragraphInput.placeholder = language === 'zh_CN' 
-        ? '你可以先选择有问题的段落或手动输入...'
-        : 'You can select text or type directly here...';
-
-    // 获取当前激活的章节
-    function getCurrentChapter() {
-        try {
-            // 通过激活的菜单项获取当前章节
-            const currentLink = document.querySelector('.wy-menu .toctree-l1.current > a');
-            if (currentLink) {
-                return currentLink.textContent.replace('¶', '').trim();
-            }
-
-            // 如果没有找到激活的链接，尝试通过页面标题获取
-            const pageTitle = document.querySelector('h1');
-            if (pageTitle) {
-                return pageTitle.textContent.split('\n')[0].trim();
-            }
-
-            // 如果以上方法都失败，尝试通过URL路径推断章节
-            const pathParts = window.location.pathname.split('/');
-            if (pathParts.length > 2) {
-                return decodeURIComponent(pathParts[pathParts.length - 2]);
-            }
-
-            return null;
-        } catch (error) {
-            console.error('获取当前章节失败:', error);
-            return null;
-        }
-    }
-
-    // 填充章节选择框
-    function populateChapters() {
-        const chapterElements = document.querySelectorAll('.wy-menu .toctree-l1 > a');
-        const chapters = Array.from(chapterElements).map(el => el.textContent.replace('¶', '').trim());
-        const currentChapter = getCurrentChapter();
-
-        console.log('提取全部章节:', chapters);
-        console.log('当前页面章节:', currentChapter);
-
-        if (chapters.length === 0) {
-            console.error('未找到章节链接');
-            return;
-        }
-
-        chapterSelect.innerHTML = '';
-
-        // 添加默认选项
-        const defaultOption = document.createElement('option');
-        defaultOption.value = '';
-        defaultOption.textContent = language === 'zh_CN' ? '-- 请选择章节 --' : '-- Select Chapter --';
-        chapterSelect.appendChild(defaultOption);
-
-        // 添加章节选项
-        chapters.forEach(chapter => {
-            const option = document.createElement('option');
-            option.value = chapter;
-            option.textContent = chapter;
-            if (chapter === currentChapter) {
-                option.selected = true;
-            }
-            chapterSelect.appendChild(option);
-        });
-    }
-
-    // 初始化章节选择框
-    populateChapters();
-
-    // 报告按钮点击事件（处理文本选择）
-    reportButton.addEventListener('click', function() {
-        // 重置所有输入字段，每次重新inquire应该让对话框处于默认状态
-        feedbackText.value = '';          // 清空问题输入框
-        paragraphInput.value = '';        // 清空段落输入框
-        selectedText = '';                // 清除之前选择的文本
-
-        const selection = window.getSelection().toString().trim();
-        if (selection) {
-            paragraphInput.value = selection;
-        } else {
-            // 保持placeholder提示
-            if (!paragraphInput.value.trim()) {
-                paragraphInput.value = '';
-            }
-        }
-        feedbackDialog.style.display = 'block';
-    });
-
-    // 监听输入事件
-    paragraphInput.addEventListener('input', function() {
-        // 标记用户已经输入
-        this.placeholder = '';
-    });
-
-    // 提交按钮点击事件
-    submitButton.addEventListener('click', function() {
-        const userQuestion = feedbackText.value.trim();
-        const selectedChapter = chapterSelect.value;
-        const selectedPostType = postTypeSelect.value;
-        const paragraphContent = paragraphInput.value.trim() || 'null';
-
-        // 在提交事件顶部添加详细日志
-        console.group('=== 提交调试信息 ===');
-        console.log('章节选择值:', chapterSelect.value);
-        console.log('帖子类型postTypeSelect DOM元素:', postTypeSelect);
-        console.log('帖子类型postTypeSelect 选中的选项:', postTypeSelect.options[postTypeSelect.selectedIndex]);
-        console.log('帖子类型postTypeSelect 实际值:', postTypeSelect.value); // 应输出'doc_correction' 对应文档纠错
-          console.groupEnd();
-
-        // 验证输入
-        if (!userQuestion) {
-            alert(language === 'zh_CN' ? '问题描述为空' : 'Issue description cannot be empty');
-            return;
-        }
-        if (!selectedChapter) {
-            alert(language === 'zh_CN' ? '请选择相关章节' : 'Please select a related chapter');
-            return;
-        }
-
-        if (!selectedPostType) {
-            alert(language === 'zh_CN' ? '请选择帖子类型' : 'Please select a post type');
-            return;
-        }
-
-        // 获取用户名
-        const username = localStorage.getItem('username') || 'Anonymous';
-
-        // 构建提交数据
-        const feedbackData = {
-            user: username,
-            chapters: selectedChapter,
-            post_type: selectedPostType,
-            paragraph: paragraphContent,
-            question: userQuestion
-        };
-
-        console.log('完整提交数据:', feedbackData);
-
-        // 发送到后端
-        fetch('http://172.29.57.206:5000/submit', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(feedbackData)
-        })
-        .then(response => {
-            if (!response.ok) throw new Error('Network response was not ok');
-            return response.json();
-        })
-        .then(data => {
-            console.log('提交成功:', data);
-            promptBox.textContent = language === 'zh_CN' ? '问题已成功提交' : 'Issue submitted successfully';
-            promptBox.style.display = 'block';
-            setTimeout(() => promptBox.style.display = 'none', 5000);
-        })
-        .catch(error => {
-            console.error('提交失败:', error);
-            promptBox.textContent = language === 'zh_CN' ? '提交失败，请检查网络连接' : 'Submission failed, check your network';
-            promptBox.style.display = 'block';
-            setTimeout(() => promptBox.style.display = 'none', 5000);
-        });
-
-        // 关闭对话框
-        feedbackDialog.style.display = 'none';
-    });
-
-
-    // 取消按钮点击事件
-    cancelButton.addEventListener('click', function() {
-        feedbackDialog.style.display = 'none';
-    });
-
-    // 初始化检查
-    console.log('问题反馈系统已加载');
-    console.log('当前语言:', language);
-    console.log('检测到章节数量:', chapterSelect.options.length - 1);
-});
-</script> <!-- 问题回报 -->
-    
-
-    <style>
-        /* 隐藏整个搜索栏容器 */
-        .wy-side-nav-search > div[role="search"] {
-            display: none !important;
-        }
-
-        /* 或者更精确地隐藏表单 */
-        form#rtd-search-form {
-            display: none !important;
-        }
-    </style>
-
-    <style>
-        .extension-container {
-            position: fixed;
-            left: 10px;
-            bottom: 10px;
-            z-index: 1000;
-        }
-
-        .extension-button {
-            background-color: #3498db;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            padding: 8px 15px;
-            cursor: pointer;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        }
-
-        .extension-button:hover {
-            background-color: #2980b9;
-        }
-    </style>
-
-    <style>
-        /* 保留bottomleft-panel作为用户面板容器 */
-        .bottomleft-panel {
-            position: fixed;
-            left: 0;
-            bottom: 0;
-            width: 300px;
-            height: auto;
-            background: #2d2d2d;
-            border-top: 1px solid #404040;
-            box-shadow: 0 -2px 12px rgba(0,0,0,0.2);
-            z-index: 1001;
-        }
-
-        /* 新增userpanel-container的flex定义 */
-        .userpanel-container {
-            padding: 10px;
-            width: 100%;
-        }
-        /* 增加字体配置 */
-        .material-symbols-outlined {
-            font-family: 'Material Symbols Outlined' !important;
-            font-weight: 400 !important;
-            font-style: normal !important;
-            line-height: 1 !important;
-            letter-spacing: normal !important;
-            text-transform: none !important;
-        }
-
-        /* 调整父容器定位方式 */
-        .userpanel-container {
-            position: relative; /* 新增定位上下文 */
-        }
-    </style>
 
     <!-- 左上角标题距离控制：Ameba IoT Docs -->
     <style>
-        /* 隐藏整个搜索栏容器 */
-        .wy-side-nav-search > div[role="search"] {
-            display: none !important;
-        }
-
         /* 新增的标题间距调整样式（添加在此处） */
         div[role="navigation"] > div[role="search"] {
             margin-bottom: 4px !important;
@@ -915,298 +143,6 @@ document.addEventListener('DOMContentLoaded', function() {
     </style>
 
     <!-- 引入功能模块 -->
-    
-        
-<script>
-    // 初始化认证对话框
-    window.initAuthDialogs = function() {
-        function createAuthDialog(type) {
-            const lang = document.getElementById('language-selector').value === 'cn' ? 'cn' : 'en';
-
-            // 对话框容器
-            const dialog = document.createElement('div');
-            dialog.className = 'auth-dialog';  // 使用CSS类替代内联样式
-
-            // 内容容器
-            const content = document.createElement('div');
-            content.className = 'auth-content';
-
-            // 标题
-            const title = document.createElement('h3');
-            title.className = 'auth-title';
-            title.textContent = type === 'register' 
-                ? (lang === 'cn' ? '注册' : 'Register') 
-                : (lang === 'cn' ? '登录' : 'Login');
-
-            // 输入字段创建函数
-            const createInput = (labelText, inputType) => {
-                const container = document.createElement('div');
-                container.className = 'auth-input-group';
-
-                const label = document.createElement('label');
-                label.textContent = labelText;
-
-                const input = document.createElement('input');
-                input.type = inputType;
-                input.className = 'auth-input';
-
-                container.appendChild(label);
-                container.appendChild(input);
-                return { container, input };
-            };
-
-            // 用户名输入
-            const username = createInput(
-                lang === 'cn' ? '用户名：' : 'Username:', 
-                'text'
-            );
-            content.appendChild(username.container);
-
-            // 密码输入
-            const password = createInput(
-                lang === 'cn' ? '密码：' : 'Password:', 
-                'password'
-            );
-            content.appendChild(password.container);
-
-            // Enter键支持
-            const handleKeyPress = (e) => {
-                if (e.key === 'Enter') confirmBtn.click();
-            };
-
-            // 确认密码（仅注册）
-            let confirmPassword;
-            let companyInput, productInput, emailInput;
-            if (type === 'register') {
-                confirmPassword = createInput(
-                    lang === 'cn' ? '确认密码：' : 'Confirm Password:', 
-                    'password'
-                );
-                content.appendChild(confirmPassword.container);
-
-                // 工作单位
-                const company = createInput(
-                    lang === 'cn' ? '工作单位：' : 'Company:', 
-                    'text'
-                );
-                content.appendChild(company.container);
-                companyInput = company.input;
-
-                // 产品信息 
-                const product = createInput(
-                    lang === 'cn' ? '产品信息：' : 'Product:', 
-                    'text'
-                );
-                content.appendChild(product.container);
-                productInput = product.input;
-
-                // 工作邮箱
-                const email = createInput(
-                    lang === 'cn' ? '工作邮箱：' : 'Email:', 
-                    'email'
-                );
-                email.input.autocomplete = 'email'; // ➕ 添加自动完成类型
-
-                content.appendChild(email.container);
-                emailInput = email.input;
-
-                // 添加Enter键支持到新字段
-                [companyInput, productInput, emailInput].forEach(input => {
-                    input.addEventListener('keypress', handleKeyPress);
-                });
-            }
-
-            // 按钮容器
-            const buttonContainer = document.createElement('div');
-            buttonContainer.className = 'auth-button-group';
-
-            // 确认按钮
-            const confirmBtn = document.createElement('button');
-            confirmBtn.className = 'auth-confirm-btn';
-            confirmBtn.textContent = lang === 'cn' ? '确认' : 'Confirm';
-
-            username.input.addEventListener('keypress', handleKeyPress);
-            password.input.addEventListener('keypress', handleKeyPress);
-            if (confirmPassword) confirmPassword.input.addEventListener('keypress', handleKeyPress);
-
-            // 确认按钮逻辑
-            confirmBtn.onclick = () => {
-                const usernameVal = username.input.value.trim();
-                const passwordVal = password.input.value.trim();
-                const companyVal = companyInput?.value.trim() || '';
-                const productVal = productInput?.value.trim() || '';
-                const emailVal = emailInput?.value.trim() || '';
-                const confirmVal = confirmPassword ? confirmPassword.input.value.trim() : null;
-
-                // 基础邮箱格式验证
-                if (type === 'register' && emailVal) {
-                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                    if (!emailRegex.test(emailVal)) {
-                        alert(lang === 'cn' 
-                            ? '请输入有效邮箱地址' 
-                            : 'Please enter a valid email address');
-                        return;
-                    }
-                }
-
-                // 验证逻辑
-                if (!usernameVal || !passwordVal) {
-                    alert(lang === 'cn' ? '用户名和密码不能为空！' : 'Username and password are required!');
-                    return;
-                }
-
-                if (type === 'register' && passwordVal !== confirmVal) {
-                    alert(lang === 'cn' ? '两次输入的密码不一致！' : 'Passwords do not match!');
-                    return;
-                }
-
-                // fetch请求
-                fetch('http://172.29.57.206:5000/auth', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRFToken': window.getCSRFToken()
-                    },
-                    body: JSON.stringify({
-                        action: type, 
-                        username: usernameVal, 
-                        password: passwordVal,
-                        company: companyVal,
-                        product: productVal,
-                        email: emailVal
-                    }),
-                    credentials: 'include'
-                })
-                .then(response => {
-                    console.log('[DEBUG] 完整响应头:', [...response.headers.entries()]);
-                    console.log('Access-Control-Allow-Origin:', response.headers.get('Access-Control-Allow-Origin'));
-                    console.log('Access-Control-Allow-Credentials:', response.headers.get('Access-Control-Allow-Credentials'));
-                    console.log('登录响应 Cookies:', response.headers.get('Set-Cookie'));
-                    return response.json();
-                })
-                .then(async (data) => {
-                    // 成功处理逻辑
-                    if (data.success) {
-                        console.log('initAuthDialogs 登录成功，当前 Cookies:', document.cookie);
-                        console.log('initAuthDialogs CSRF Token:', window.getCSRFToken());
-
-                        localStorage.setItem('auth_session', JSON.stringify({
-                            username: data.username, 
-                            expires: Date.now() + 3600000
-                        }));
-
-                        localStorage.setItem('isLoggedIn', 'true');
-                        localStorage.setItem('username', usernameVal);
-                        
-                        document.getElementById('auth-buttons').style.display = 'none';
-                        document.getElementById('user-info').style.display = 'flex';
-                        document.getElementById('username-display').textContent = localStorage.getItem('username') || '';
-                        document.body.removeChild(dialog);
-
-                        Swal.fire({
-                            icon: 'success',
-                            title: lang === 'cn' ? '登录成功' : 'Logged In',
-                            showConfirmButton: false,
-                            timer: 500
-                        });
-                    } else {
-                        document.body.removeChild(dialog);
-                        window.syncLoginState();
-                        Swal.fire({
-                            icon: 'fail',
-                            title: lang === 'cn' ? '登录失败' : 'Logged In Fail',
-                            showConfirmButton: false,
-                            timer: 500
-                        });
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert(lang === 'cn' ? '网络错误' : 'Network error');
-                });
-            };
-
-            // 取消按钮
-            const cancelBtn = document.createElement('button');
-            cancelBtn.className = 'auth-cancel-btn';
-            cancelBtn.textContent = lang === 'cn' ? '取消' : 'Cancel';
-            cancelBtn.onclick = () => document.body.removeChild(dialog);
-
-            // 组装元素
-            buttonContainer.appendChild(confirmBtn);
-            buttonContainer.appendChild(cancelBtn);
-            content.appendChild(buttonContainer);
-            dialog.appendChild(content);
-            document.body.appendChild(dialog);
-
-            // 点击外部关闭
-            dialog.addEventListener('click', (e) => {
-                if (e.target === dialog) document.body.removeChild(dialog);
-            });
-        }
-
-        // 事件绑定
-        document.getElementById('register-button').addEventListener('click', () => createAuthDialog('register'));
-        document.getElementById('login-button').addEventListener('click', () => createAuthDialog('login'));
-    }
-
-    // 注销功能
-    async function handleLogout() {
-        try {
-            const lang = (window.location.pathname.includes('/zh_CN') || 
-                        document.documentElement.lang === 'zh_CN') ? 'cn' : 'en';
-
-            // 更新本地存储和UI
-            //localStorage.removeItem('isLoggedIn');
-            localStorage.setItem('isLoggedIn', 'false');
-            localStorage.removeItem('username');
-
-            // 强制刷新显示状态
-            document.getElementById('auth-buttons').style.display = 'flex';
-            document.getElementById('user-info').style.display = 'none';
-            document.getElementById('username-display').textContent = localStorage.getItem('username') || '';
-
-            const response = await fetch('http://172.29.57.206:5000/logout', {
-                method: 'GET',
-                headers: {
-                    'X-CSRFToken': window.getCSRFToken(),
-                    'Content-Type': 'application/json'
-                },
-                credentials: 'include'
-            });
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-
-            await Swal.fire({
-                icon: 'success',
-                title: lang === 'cn' ? '登出成功' : 'Logged Out',
-                timer: 1500
-            });
-        } catch (error) {
-            console.error('登出流程异常:', error);
-            Swal.fire({
-                icon: 'error',
-                title: lang === 'cn' ? '登出异常' : 'Logout Failed',
-                text: lang === 'cn' ? '请尝试清除浏览器缓存' : 'Please clear browser cache'
-            });
-        }
-    }
-
-    // 同步登录状态
-    window.syncLoginState = function() {
-        const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-        document.getElementById('auth-buttons').style.display = isLoggedIn ? 'none' : 'flex';
-        document.getElementById('user-info').style.display = isLoggedIn ? 'flex' : 'none';
-        if (isLoggedIn) {
-            document.getElementById('username-display').textContent = localStorage.getItem('username') || '';
-        } else {
-
-        }
-    }
-
-</script>
     
     
 <script>
@@ -1229,8 +165,28 @@ document.addEventListener('DOMContentLoaded', function() {
     };
     /* ====================== 嵌入式配置结束 ====================== */
 </script>
-    
+
 <script>
+    // 获取OS显示名称列表
+    function getOSNames(data) {
+        return Object.keys(data).map(key => data[key].name);
+    }
+
+    // 获取指定OS的语言列表
+    function getLanguages(data, osKey) {
+        return Object.keys(data[osKey]?.languages || {});
+    }
+
+    // 获取指定OS和语言的版本列表
+    function getVersions(data, osKey, language) {
+        return data[osKey]?.languages?.[language] || ['latest'];
+    }
+
+    // 根据显示名称查找OS键
+    function findOSKey(data, displayName) {
+        return Object.keys(data).find(key => data[key].name === displayName);
+    }
+
     // 获取基础URL路径
     function getBaseURL() {
         const url = new URL(window.location.href);
@@ -1255,6 +211,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const url = new URL(window.location.href);
         let segments = url.pathname.split('/').filter(segment => segment);
 
+
         console.log('[DEBUG] getCurrentSegments:');
 
         if (url.protocol === 'file:') {
@@ -1264,7 +221,7 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log('[DEBUG] getCurrentSegments0:', segments);
         } else {
             // 网络路径处理
-            segments = segments.slice(3); // 去掉 ameba-iot-docs/
+            segments = segments.slice(1); // 去掉 ameba-iot-docs/
             console.log('[DEBUG] getCurrentSegments:', segments);
         }
 
@@ -1274,30 +231,43 @@ document.addEventListener('DOMContentLoaded', function() {
             version: segments[2] || 'latest' // 默认为 latest
         };
     }
+
+    // 绑定事件监听
+    function bindEvents(baseURL, segments) {
+        document.getElementById('os-selector').addEventListener('change', () => {
+            const newOSKey = document.getElementById('os-selector').value;
+            const availableLangs = getLanguages(embeddedConfig, newOSKey);
+            const defaultLang = availableLangs[0] || 'en';
+            const defaultVersion = getVersions(embeddedConfig, newOSKey, defaultLang)[0] || 'latest';
+            console.log('OS Changed:', {newOSKey, defaultLang, defaultVersion});
+            redirectTo(`${baseURL}${newOSKey}/${defaultLang}/${defaultVersion}/`);
+        });
+
+        document.getElementById('language-selector').addEventListener('change', () => {
+            const newLang = document.getElementById('language-selector').value;
+            const defaultVersion = getVersions(embeddedConfig, segments.osKey, newLang)[0] || 'latest';
+            console.log('Language Changed:', {newLang, defaultVersion});
+            redirectTo(`${baseURL}${segments.osKey}/${newLang}/${defaultVersion}/`);
+        });
+
+        document.getElementById('version-selector').addEventListener('change', () => {
+            const newVer = document.getElementById('version-selector').value;
+            console.log('Version Changed:', {newVer});
+            redirectTo(`${baseURL}${segments.osKey}/${segments.language}/${newVer}/`);
+        });
+    }
+
+    // 跳转函数
+    function redirectTo(path) {
+        const url = new URL(path, window.location.href);
+        if (url.protocol === 'file:') {
+            url.pathname += 'index.html';
+        }
+        console.log('Redirecting to:', url.href);
+        window.location.href = url.href;
+    }
 </script>
-    
-<script>
-    // 获取OS显示名称列表
-    function getOSNames(data) {
-        return Object.keys(data).map(key => data[key].name);
-    }
 
-    // 获取指定OS的语言列表
-    function getLanguages(data, osKey) {
-        return Object.keys(data[osKey]?.languages || {});
-    }
-
-    // 获取指定OS和语言的版本列表
-    function getVersions(data, osKey, language) {
-        return data[osKey]?.languages?.[language] || ['latest'];
-    }
-
-    // 根据显示名称查找OS键
-    function findOSKey(data, displayName) {
-        return Object.keys(data).find(key => data[key].name === displayName);
-    }
-</script>
-    
 <script>
     // 验证并修正路径参数
     function validateSegments(segments) {
@@ -1318,87 +288,6 @@ document.addEventListener('DOMContentLoaded', function() {
         return segments;
     }
 
-    // 生成选择器HTML
-    function generateSelectorsHTML(segments) {
-        return `
-        <div class="selectors-grid">
-            <!-- 系统选择器 -->
-            <div class="selector-group">
-                <select id="os-selector" class="selector-dropdown">
-                    ${Object.keys(embeddedConfig).map(key => `
-                        <option value="${key}">${embeddedConfig[key].name}</option>
-                    `).join('')}
-                </select>
-            </div>
-
-            <!-- 语言和版本组合（修正类名） -->
-            <div class="dual-selector-group"> <!-- 修改此处 -->
-                <div class="selector-group">
-                    <select id="language-selector" class="selector-dropdown">
-                        ${getLanguages(embeddedConfig, segments.osKey).map(lang => `
-                            <option value="${lang}">${lang}</option>
-                        `).join('')}
-                    </select>
-                </div>
-
-                <div class="selector-group">
-                    <select id="version-selector" class="selector-dropdown">
-                        ${getVersions(embeddedConfig, segments.osKey, segments.language).map(ver => `
-                            <option value="${ver}">${ver}</option>
-                        `).join('')}
-                    </select>
-                </div>
-            </div>
-        </div>
-        ${generateUserPanelHTML(segments)}`;
-    }
-
-    // 生成用户面板HTML
-    function generateUserPanelHTML(segments) {
-        return `
-            <div class="user-panel">
-                <!-- 用户名显示（登录后可见） -->
-                <div id="user-info" style="display: ${localStorage.getItem('isLoggedIn') ? 'flex' : 'none'}">
-                    <button class="username-btn")">
-                        <span class="btn-icon">👤</span>
-                        <span id="username-display">${localStorage.getItem('username') || ''}</span>
-                    </button>
-                    <button class="logout-btn" onclick="handleLogout()")">
-                        <span class="btn-icon">🚪</span>
-                        <span id="btn-text">${segments.language === 'cn' ? '注销' : 'Logout'}</span>
-                    </button>
-                </div>
-
-                <!-- 登录注册按钮（未登录时可见） -->
-                <div id="auth-buttons" class="button-row" style="display: ${localStorage.getItem('isLoggedIn') ? 'none' : 'flex'}">
-                    <button class="auth-btn" id="login-button">
-                        <span class="btn-icon">🔓</span> <!-- 登录图标 -->
-                        ${segments.language === 'cn' ? '登录' : 'Login'}
-                    </button>
-                    <button class="auth-btn" id="register-button">
-                        <span class="btn-icon">✍️</span> <!-- 注册图标 -->
-                        ${segments.language === 'cn' ? '注册' : 'Register'}
-                    </button>
-                </div>
-
-                <!-- 分隔线 -->
-                <div class="panel-divider"></div>
-
-                <!-- 外链按钮 -->
-                <div class="external-links">
-                    <button class="link-btn official" onclick="window.open('https://www.realmcu.com/', '_blank')">
-                        <span class="btn-icon">🌐</span>
-                        <span class="btn-text">${segments.language === 'cn' ? '官网' : 'Official'}</span>
-                    </button>
-                    <button class="link-btn forum" onclick="window.open('http://172.29.57.206:5000/view', '_blank')">
-                        <span class="btn-icon">💬</span>
-                        <span class="btn-text">${segments.language === 'cn' ? '论坛' : 'Forum'}</span>
-                    </button>
-                </div>
-            </div>
-        `;
-    }
-
     // 设置初始选中值
     function setInitialValues(segments) {
         document.getElementById('os-selector').value = segments.osKey;
@@ -1409,39 +298,88 @@ document.addEventListener('DOMContentLoaded', function() {
         versionSelector.value = availableVersions.includes(segments.version) ? segments.version : availableVersions[0] || 'latest';
     }
 </script>
-    
-<script>
-    // 绑定事件监听
-    function bindEvents(baseURL, segments) {
-        document.getElementById('os-selector').addEventListener('change', () => {
-            const newOSKey = document.getElementById('os-selector').value;
-            const availableLangs = getLanguages(embeddedConfig, newOSKey);
-            const defaultLang = availableLangs[0] || 'en';
-            const defaultVersion = getVersions(embeddedConfig, newOSKey, defaultLang)[0] || 'latest';
-            redirectTo(`${baseURL}${newOSKey}/${defaultLang}/${defaultVersion}/`);
-        });
 
-        document.getElementById('language-selector').addEventListener('change', () => {
-            const newLang = document.getElementById('language-selector').value;
-            const defaultVersion = getVersions(embeddedConfig, segments.osKey, newLang)[0] || 'latest';
-            redirectTo(`${baseURL}${segments.osKey}/${newLang}/${defaultVersion}/`);
-        });
+<style>
+    .selectors-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr); /* 三列等宽 */
+        gap: 4px;
+        padding: 1px 1px;
 
-        document.getElementById('version-selector').addEventListener('change', () => {
-            const newVer = document.getElementById('version-selector').value;
-            redirectTo(`${baseURL}${segments.osKey}/${segments.language}/${newVer}/`);
-        });
+        margin-top: var(--root-margin-top, 4px);
+        margin-bottom: var(--root-margin-bottom, 0px);
     }
 
-    // 跳转函数
-    function redirectTo(path) {
-        const url = new URL(path, window.location.href);
-        if (url.protocol === 'file:') {
-            url.pathname += 'index.html';
+    .dual-selector-group {
+        display: grid;
+        grid-template-columns: 1fr 1fr; /* 两列等宽 */
+        gap: 4px; /* 列间距 */
+    }
+
+    .selector-group {
+        position: relative;
+        width: 100%; /* 确保填满网格列 */
+    }
+
+    .selector-label {
+        display: block;
+        color: #a0b3c6;
+        font-size: 0.85em;
+        margin-bottom: 4px;
+        padding-left: 4px;
+    }
+
+    .selector-dropdown {
+        width: 100%;
+        margin-top: var(--root-margin-top, 4px);
+        margin-bottom: var(--root-margin-bottom, 0px);
+        padding: 2px 2px;
+        border: 2px white !important;
+        border-radius: 6px !important;
+        background: #627078 !important;
+        color: white;
+        font-size: 0.95em;
+        transition: all 0.3s ease;
+        appearance: none;
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23a0b3c6'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right 10px center;
+        background-size: 16px;
+        display: flex;
+        height: 30px;
+
+        box-shadow: none !important; /* 不要边框阴影 */
+        outline: none !important; /* 不要边框阴影 */
+    }
+
+    .selector-dropdown:hover {
+        border-color: #4a6a8b;
+        background-color: rgba(44, 62, 80, 1);
+        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    .selector-dropdown:focus {
+        outline: none;
+        border-color: #3498db;
+        box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+    }
+
+    /* 移动端优化 */
+    @media (max-width: 768px) {
+        .selectors-grid {
+            grid-template-columns: 1fr; /* 小屏幕下堆叠显示 */
+            gap: 10px;
         }
-        window.location.href = url.href;
+
+        .selector-dropdown {
+            padding: 10px 12px;
+        }
+
+        .dual-selector-group {
+            grid-template-columns: 1fr; /* 小屏幕下堆叠显示 */
+        }
     }
-</script>
+</style>
 
 </head>
 
@@ -1465,48 +403,99 @@ document.addEventListener('DOMContentLoaded', function() {
   </form>
 </div>
 
-    
-    <div id="topleft-panel" style="display: block !important; padding: 0; background: none; border: none;"></div>
+    <!-- templates/sidebar_toggle.html -->
 
-    
+
+<div id="topleft-panel" style="display: block !important; padding: 0; background: none; border: none;"></div>
+
+
+<div class="bottomleft-panel"></div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        try {
+            const segments = validateSegments(getCurrentSegments());
+            const baseURL = getBaseURL();
+
+            // 渲染HTML
+            document.getElementById('topleft-panel').innerHTML = `
+<!-- templates/sidebar_user_panel_div.html -->
+
+
+<!-- templates/sidebar_user_panel_div_docselect.html -->
+
+<div class="selectors-grid">
+    <!-- 系统选择器 -->
+    <div class="selector-group">
+        <select id="os-selector" class="selector-dropdown">
+            ${Object.keys(embeddedConfig).map(key => `
+                <option value="${key}">${embeddedConfig[key].name}</option>
+            `).join('')}
+        </select>
+    </div>
+
+    <!-- 语言选择器 -->
+    <div class="selector-group">
+        <select id="language-selector" class="selector-dropdown">
+            ${getLanguages(embeddedConfig, segments.osKey).map(lang => `
+                <option value="${lang}">${lang === 'en' ? 'en' : 'cn'}</option>
+            `).join('')}
+        </select>
+    </div>
+
+    <!-- 版本选择器 -->
+    <div class="selector-group">
+        <select id="version-selector" class="selector-dropdown">
+            ${getVersions(embeddedConfig, segments.osKey, segments.language).map(ver => `
+                <option value="${ver}">${ver}</option>
+            `).join('')}
+        </select>
+    </div>
+</div>
+
+<div class="user-panel-container">
+    <div class="user-panel">
         
-        <div class="bottomleft-panel">
-            <div class="userpanel-container"></div>
-        </div>
-    
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            try {
-                const segments = validateSegments(getCurrentSegments());
-                const baseURL = getBaseURL();
+    </div>
+</div>`;
 
-                // 渲染HTML
-                document.getElementById('topleft-panel').innerHTML = generateSelectorsHTML(segments);
+            // 设置初始值
+            setInitialValues(segments);
 
-                // 设置初始值
-                setInitialValues(segments);
+            // 绑定事件
+            bindEvents(baseURL, segments);
 
-                // 绑定事件
-                bindEvents(baseURL, segments);
-
-                // 初始化认证逻辑
-                
-                    window.initAuthDialogs();
-                    window.syncLoginState();
-
-                    // 将 user-panel 移动到 bottomleft-panel 内
-                    const userPanel = document.querySelector('.user-panel');
-                    const settingsContainer = document.querySelector('.userpanel-container');
-                    if (userPanel && settingsContainer) {
-                        settingsContainer.appendChild(userPanel); // 直接添加为子元素
-                    }
-                
-            } catch (error) {
-                console.error("Error initializing selectors:", error);
+            // 将 user-panel 移动到 bottomleft-panel 内
+            const userPanel = document.querySelector('.user-panel');
+            const bottomleftPanel = document.querySelector('.bottomleft-panel');
+            if (userPanel && bottomleftPanel) {
+                bottomleftPanel.appendChild(userPanel); // 直接添加为子元素
             }
-        });
-    </script>
+        } catch (error) {
+            console.error("Error initializing selectors:", error);
+        }
+    });
+</script>
+
+<style>
+    #topleft-panel {
+        background: rgba(40, 58, 73, 0.9);
+        border-radius: 4px;
+        padding: 4px;
+        margin: 4px 0;
+        box-shadow: 0 4px 4px rgba(0,0,0,0.15);
+        backdrop-filter: blur(4px);
+    }
+
+    /* 移动端优化 */
+    @media (max-width: 768px) {
+        #topleft-panel {
+            margin: 8px 0;
+            padding: 10px;
+        }
+    }
+</style>
 
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
@@ -1528,8 +517,8 @@ document.addEventListener('DOMContentLoaded', function() {
 <li class="toctree-l2"><a class="reference internal" href="at_command_wifi.html">Wi-Fi AT Commands</a></li>
 <li class="toctree-l2"><a class="reference internal" href="at_command_network.html">Network AT Commands</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Socket AT Commands</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#at-sktserver">AT+SKTSERVER</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#at-sktcfg">AT+SKTCFG</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#function-description">Function Description</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#command-format">Command Format</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#response-format">Response Format</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#parameters">Parameters</a></li>
@@ -1537,61 +526,74 @@ document.addEventListener('DOMContentLoaded', function() {
 <li class="toctree-l4"><a class="reference internal" href="#examples">Examples</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#at-sktclient">AT+SKTCLIENT</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#id2">Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#at-sktquery">AT+SKTQUERY</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id2">Function Description</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#id3">Command Format</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#id4">Response Format</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id5">Parameters</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id6">Error Codes</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id7">Examples</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id5">Error Codes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#example">Example</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#at-sktdel">AT+SKTDEL</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#id8">Description</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id9">Command Format</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id10">Response Format</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id11">Parameters</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id12">Error Codes</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id13">Examples</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#at-sktserver">AT+SKTSERVER</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id6">Function Description</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id7">Command Format</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id8">Response Format</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id9">Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id10">Error Codes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id11">Examples</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#at-skttt">AT+SKTTT</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#id14">Description</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id15">Command Format</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id16">Response Format</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id17">Parameters</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id18">Error Codes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#at-sktclient">AT+SKTCLIENT</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id12">Function Description</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id13">Command Format</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id14">Response Format</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id15">Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id16">Error Codes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id17">Examples</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#at-sktsend">AT+SKTSEND</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#id19">Description</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id20">Command Format</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id21">Response Format</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id22">Parameters</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id23">Error Codes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id18">Function Description</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id19">Command Format</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id20">Response Format</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id21">Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id22">Error Codes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id23">Examples</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#at-sktread">AT+SKTREAD</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#id24">Description</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id24">Function Description</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#id25">Command Format</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#id26">Response Format</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#id27">Parameters</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#id28">Error Codes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id29">Examples</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#at-sktrecvcfg">AT+SKTRECVCFG</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#id29">Description</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id30">Command Format</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id31">Response Format</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id32">Parameters</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id33">Error Codes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#at-sktsendraw">AT+SKTSENDRAW</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id30">Function Description</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id31">Command Format</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id32">Response Format</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id33">Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id34">Error Codes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id35">Examples</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#at-sktstate">AT+SKTSTATE</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#id34">Description</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id35">Command Format</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id36">Response Format</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#example">Example</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id36">Function Description</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id37">Command Format</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id38">Response Format</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id39">Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id40">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#at-sktdel">AT+SKTDEL</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id41">Function Description</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id42">Command Format</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id43">Response Format</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id44">Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id45">Error Codes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id46">Examples</a></li>
 </ul>
 </li>
 </ul>
@@ -1606,7 +608,7 @@ document.addEventListener('DOMContentLoaded', function() {
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../0_file_system/0_vfs_index.html">0.9 Virtual File System</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../0_ftl/0_ftl_index.html">0.a Flash Translation Layer</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../1_mpu_cache/0_mpu_cache_index.html">1.0 MPU and Cache</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_mpu_cache/0_mpu_cache_index.html">1.0 Memory Management &amp; Cache</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../1_boot_process/0_boot_index.html">1.1 Boot Process</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../1_ota/0_ota_index.html">1.2 OTA</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../1_otpc/0_otpc_index.html">1.3 OTPC</a></li>
@@ -1614,12 +616,14 @@ document.addEventListener('DOMContentLoaded', function() {
 <li class="toctree-l1"><a class="reference internal" href="../1_ipc/0_ipc_index.html">1.5 Inter Processor Communication</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../1_pinmux/0_pinmux_index.html">1.6 Pin Multiplexing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../1_gpio/0_gpio_index.html">1.7 GPIO &amp; Pin Control</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../1_power_save/0_ps_index.html">1.9 Power Save</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../2_whc_wifi_bridge/0_wifi_bridge_index.html">2.0 WHC Bridge</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../2_whc_fullmac/0_fullmac_index.html">2.1 WHC FullMAC</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../2_wifi_tunnel/0_wifi_tunnel_index.html">2.2 Wi-Fi R-Mesh</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../2_wifi_csi/0_wifi_csi_index.html">2.3 Wi-Fi CSI</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../2_wifi_adaptivity_test/0_wifi_adaptivity_index.html">2.4 Wi-Fi Adaptivity Test</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_power_save/0_ps_index.html">1.9 Power Saving</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_wifi_basic/0_wifi_basic_index.html">2.0 Wi-Fi Basic Mode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_whc_wifi_bridge/0_wifi_bridge_index.html">2.1 WHC Bridge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_whc_fullmac/0_fullmac_index.html">2.2 WHC FullMAC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_wifi_tunnel/0_wifi_tunnel_index.html">2.3 Wi-Fi R-Mesh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_wifi_csi/0_wifi_csi_index.html">2.4 Wi-Fi CSI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_wifi_adaptivity_test/0_wifi_adaptivity_index.html">2.5 Wi-Fi Adaptivity Test</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../10_api_docs/0_api_index.html">2.6 Wi-Fi API Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../3_security/0_security_index.html">3.1 Security &amp; Encryption</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../3_trng/0_trng_index.html">3.2 True Random Number Generator</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../3_crypto_engine/0_crypto_engine_index.html">3.9 Crypto Engine</a></li>
@@ -1644,7 +648,6 @@ document.addEventListener('DOMContentLoaded', function() {
 <li class="toctree-l1"><a class="reference internal" href="../8_key_scan/0_key_scan_index.html">8.8 Key-Scan</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../8_rtc_io/0_rtc_io_index.html">8.9 RTC-IO</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../8_lcdc/0_lcdc_index.html">8.a LCD Controller</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../10_api_docs/0_api_index.html">10.0 API Reference</a></li>
 </ul>
 
         </div>
@@ -1676,18 +679,20 @@ document.addEventListener('DOMContentLoaded', function() {
 <span id="id1"></span><h1>Socket AT Commands<a class="headerlink" href="#socket-at-commands" title="Link to this heading"></a></h1>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Socket AT commands are disabled by default.</p>
-<p>You can refer to <a class="reference internal" href="../0_gcc_build_environment/1_gcc_build_environment_toprst.html#configuring-sdk"><span class="std std-ref">Configuring SDK (menuconfig)</span></a> to enter <code class="docutils literal notranslate"><span class="pre">CONFIG</span> <span class="pre">AT</span> <span class="pre">CMD</span></code> configuration, and check <code class="docutils literal notranslate"><span class="pre">Enable</span> <span class="pre">Socket</span></code> to enable the Socket AT commands.</p>
+<ul class="simple">
+<li><p>Socket AT commands are disabled by default.</p></li>
+<li><p>Refer to <a class="reference internal" href="../0_gcc_build_environment/1_gcc_build_environment_toprst.html#configuring-sdk"><span class="std std-ref">Configuring SDK (menuconfig)</span></a> to enter <code class="docutils literal notranslate"><span class="pre">CONFIG</span> <span class="pre">AT</span> <span class="pre">CMD</span></code> configuration, and check <code class="docutils literal notranslate"><span class="pre">Enable</span> <span class="pre">Socket</span></code> to enable the Socket AT commands.</p></li>
+</ul>
 </div>
-<section id="at-sktserver">
-<h2>AT+SKTSERVER<a class="headerlink" href="#at-sktserver" title="Link to this heading"></a></h2>
-<section id="description">
-<h3>Description<a class="headerlink" href="#description" title="Link to this heading"></a></h3>
-<p>Configure TCP/UDP/SSL server listening service.</p>
+<section id="at-sktcfg">
+<h2>AT+SKTCFG<a class="headerlink" href="#at-sktcfg" title="Link to this heading"></a></h2>
+<section id="function-description">
+<h3>Function Description<a class="headerlink" href="#function-description" title="Link to this heading"></a></h3>
+<p>Configure socket TCP/UDP/SSL global option parameters.</p>
 </section>
 <section id="command-format">
 <h3>Command Format<a class="headerlink" href="#command-format" title="Link to this heading"></a></h3>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">SKTSERVER</span><span class="o">=&lt;</span><span class="n">mode</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">loc_port</span><span class="o">&gt;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">SKTCFG</span><span class="o">=</span><span class="p">[</span><span class="o">&lt;</span><span class="n">so_sndtimeo</span><span class="o">&gt;</span><span class="p">],[</span><span class="o">&lt;</span><span class="n">so_rcvtimeo</span><span class="o">&gt;</span><span class="p">],[</span><span class="o">&lt;</span><span class="n">tcp_nodelay</span><span class="o">&gt;</span><span class="p">],[</span><span class="o">&lt;</span><span class="n">so_keepalive</span><span class="o">&gt;</span><span class="p">],[</span><span class="o">&lt;</span><span class="n">tcp_keepidle</span><span class="o">&gt;</span><span class="p">],[</span><span class="o">&lt;</span><span class="n">tcp_keepintvl</span><span class="o">&gt;</span><span class="p">],[</span><span class="o">&lt;</span><span class="n">tcp_keepcnt</span><span class="o">&gt;</span><span class="p">]</span>
 </pre></div>
 </div>
 </section>
@@ -1695,7 +700,6 @@ document.addEventListener('DOMContentLoaded', function() {
 <h3>Response Format<a class="headerlink" href="#response-format" title="Link to this heading"></a></h3>
 <p>Success Response:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">OK</span>
-<span class="o">+</span><span class="n">SKTSERVER</span><span class="p">:</span><span class="n">con_id</span><span class="o">=&lt;</span><span class="n">con_id</span><span class="o">&gt;</span>
 </pre></div>
 </div>
 <p>Error Response:</p>
@@ -1705,299 +709,364 @@ document.addEventListener('DOMContentLoaded', function() {
 </section>
 <section id="parameters">
 <h3>Parameters<a class="headerlink" href="#parameters" title="Link to this heading"></a></h3>
+<dl class="field-list simple">
+<dt class="field-odd">&lt;so_sndtimeo&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Set <code class="docutils literal notranslate"><span class="pre">SO_SNDTIMEO</span></code> option to enable socket send operate to return within &lt;so_sndtimeo&gt; timeout, regardless of success or failure.</p>
 <ul class="simple">
-<li><dl class="simple">
-<dt><strong>&lt;mode&gt;</strong>: Protocol type</dt><dd><ul>
-<li><p>0: TCP</p></li>
-<li><p>1: UDP</p></li>
-<li><p>2: SSL</p></li>
+<li><p>Unit: millisecond</p></li>
+<li><p>Non-negative integer</p></li>
+<li><p>Default: 0</p></li>
+</ul>
+</dd>
+<dt class="field-even">&lt;so_rcvtimeo&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>Set <code class="docutils literal notranslate"><span class="pre">SO_RCVTIMEO</span></code> option to enable socket receive operate to return within &lt;so_rcvtimeo&gt; timeout, regardless of success or failure.</p>
+<ul class="simple">
+<li><p>Unit: millisecond</p></li>
+<li><p>Non-negative integer</p></li>
+<li><p>Default: 0</p></li>
+</ul>
+</dd>
+<dt class="field-odd">&lt;tcp_nodelay&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Set the <code class="docutils literal notranslate"><span class="pre">TCP_NODELAY</span></code> option for the socket to enable/disable the Nagle’s algorithm in TCP connections.</p>
+<ul class="simple">
+<li><p>Default: 0 (enable the Nagle’s algorithm)</p></li>
+<li><p>0: disable TCP_NODELAY, 1: enable TCP_NODELAY</p></li>
+</ul>
+</dd>
+<dt class="field-even">&lt;so_keepalive&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>Set the <code class="docutils literal notranslate"><span class="pre">SO_KEEPALIVE</span></code> option for the socket to enable/disable the keepalive feature in TCP connections.</p>
+<ul class="simple">
+<li><p>Default: 0</p></li>
+<li><p>0: disable SO_KEEPALIVE, 1: enable SO_KEEPALIVE</p></li>
+</ul>
+</dd>
+<dt class="field-odd">&lt;tcp_keepidle&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Set <code class="docutils literal notranslate"><span class="pre">TCP_KEEPIDLE</span></code> option to configure the idle time before the first keepalive probe is sent to check if the connection is still active.</p>
+<ul class="simple">
+<li><p>Unit: second</p></li>
+<li><p>Range: [0,7200]; Positive integer</p></li>
+<li><p>Default: 0</p></li>
+</ul>
+</dd>
+<dt class="field-even">&lt;tcp_keepintvl&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>Set <code class="docutils literal notranslate"><span class="pre">TCP_KEEPINTVL</span></code> option to configure the interval between successive keepalive probes if no response is received</p>
+<ul class="simple">
+<li><p>Unit: second</p></li>
+<li><p>Range: [0,75]; Positive integer</p></li>
+<li><p>Default: 0</p></li>
+</ul>
+</dd>
+<dt class="field-odd">&lt;tcp_keepcnt&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Set <code class="docutils literal notranslate"><span class="pre">TCP_KEEPCNT</span></code> option to determines how many probes are sent without a response before declaring the connection dead</p>
+<ul class="simple">
+<li><p>Range: [0,10]; Positive integer</p></li>
+<li><p>Default: 0</p></li>
 </ul>
 </dd>
 </dl>
-</li>
-<li><dl class="simple">
-<dt><strong>&lt;loc_port&gt;</strong>: Local listening port</dt><dd><ul>
-<li><p>Range: [1, 65535]</p></li>
-</ul>
-</dd>
-</dl>
-</li>
-<li><dl class="simple">
-<dt><strong>&lt;con_id&gt;</strong>: Connection identifier (initial value: 1, increments on success)</dt><dd><ul>
-<li><p>Valid range: [1,7], 0 is reserved.</p></li>
-</ul>
-</dd>
-</dl>
-</li>
-</ul>
 </section>
 <section id="error-codes">
 <h3>Error Codes<a class="headerlink" href="#error-codes" title="Link to this heading"></a></h3>
 <ul class="simple">
-<li><p>1: Parameter count mismatch</p></li>
-<li><p>2: Invalid local port</p></li>
-<li><p>3: Connection ID allocation failed</p></li>
-<li><p>4: Server task initialization failed</p></li>
-<li><p>5: Socket creation failed</p></li>
-<li><p>6: Socket option configuration error</p></li>
-<li><p>7: Port binding failed</p></li>
-<li><p>8: Listen mode setup failed</p></li>
-<li><p>9: TCP server already exists</p></li>
-<li><p>10: Client connection error</p></li>
-<li><p>11: Seed ID allocation failed</p></li>
-<li><p>12: UDP server already exists</p></li>
-<li><p>13: Transparent transmission conflict</p></li>
-<li><p>14: Unsupported protocol (SSL unavailable)</p></li>
-<li><p>15: SSL server binding failed</p></li>
-<li><p>16: Certificate memory allocation failed</p></li>
-<li><p>17: Private key memory allocation failed</p></li>
-<li><p>18: Certificate parsing error</p></li>
-<li><p>19: CA chain parsing failed</p></li>
-<li><p>20: Private key parsing error</p></li>
-<li><p>21: SSL pending node error</p></li>
-<li><p>22: SSL accept failed</p></li>
-<li><p>23: SSL seed memory error</p></li>
-<li><p>24: SSL context initialization failed</p></li>
-<li><p>25: Certificate loading failed</p></li>
-<li><p>26: SSL handshake failed</p></li>
-<li><p>27: SSL seed creation failed</p></li>
+<li><p>1: Parameter error</p></li>
 </ul>
 </section>
 <section id="examples">
 <h3>Examples<a class="headerlink" href="#examples" title="Link to this heading"></a></h3>
-<p>Create TCP server on port 1234:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">SKTSERVER</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="mi">1234</span>
+<p>Configure global option parameters:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">SKTCFG</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span><span class="mi">2000</span><span class="p">,,</span><span class="mi">1</span><span class="p">,</span><span class="mi">60</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">3</span>
 <span class="n">OK</span>
-<span class="o">+</span><span class="n">SKTSERVER</span><span class="p">:</span><span class="n">con_id</span><span class="o">=</span><span class="mi">1</span>
 </pre></div>
 </div>
-<p>Create UDP server on port 4321:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">SKTSERVER</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="mi">4321</span>
+</section>
+</section>
+<section id="at-sktquery">
+<h2>AT+SKTQUERY<a class="headerlink" href="#at-sktquery" title="Link to this heading"></a></h2>
+<section id="id2">
+<h3>Function Description<a class="headerlink" href="#id2" title="Link to this heading"></a></h3>
+<p>Query global socket option configuration.</p>
+</section>
+<section id="id3">
+<h3>Command Format<a class="headerlink" href="#id3" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">SKTQUERY</span>
+</pre></div>
+</div>
+</section>
+<section id="id4">
+<h3>Response Format<a class="headerlink" href="#id4" title="Link to this heading"></a></h3>
+<p>Standard Response:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Global</span> <span class="n">SOCKET</span> <span class="n">configuration</span><span class="p">:</span>
+<span class="n">so_sndtimeo</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">so_sndtimeo</span><span class="o">&gt;</span>
+<span class="n">so_rcvtimeo</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">so_rcvtimeo</span><span class="o">&gt;</span>
+<span class="n">tcp_nodelay</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">tcp_nodelay</span><span class="o">&gt;</span>
+<span class="n">so_keepalive</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">so_keepalive</span><span class="o">&gt;</span>
+<span class="n">tcp_keepidle</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">tcp_keepidle</span><span class="o">&gt;</span>
+<span class="n">tcp_keepintvl</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">tcp_keepintvl</span><span class="o">&gt;</span>
+<span class="n">tcp_keepcnt</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">tcp_keepcnt</span><span class="o">&gt;</span>
+
 <span class="n">OK</span>
-<span class="o">+</span><span class="n">SKTSERVER</span><span class="p">:</span><span class="n">con_id</span><span class="o">=</span><span class="mi">2</span>
+</pre></div>
+</div>
+</section>
+<section id="id5">
+<h3>Error Codes<a class="headerlink" href="#id5" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>1: No need input Parameter</p></li>
+</ul>
+</section>
+<section id="example">
+<h3>Example<a class="headerlink" href="#example" title="Link to this heading"></a></h3>
+<p>Query the default configuration value:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">SKTQUERY</span>
+
+<span class="n">Global</span> <span class="n">SOCKET</span> <span class="n">configuration</span><span class="p">:</span>
+<span class="n">so_sndtimeo</span><span class="p">:</span> <span class="mi">0</span>
+<span class="n">so_rcvtimeo</span><span class="p">:</span> <span class="mi">0</span>
+<span class="n">tcp_nodelay</span><span class="p">:</span> <span class="mi">0</span>
+<span class="n">so_keepalive</span><span class="p">:</span> <span class="mi">0</span>
+<span class="n">tcp_keepidle</span><span class="p">:</span> <span class="mi">0</span>
+<span class="n">tcp_keepintvl</span><span class="p">:</span> <span class="mi">0</span>
+<span class="n">tcp_keepcnt</span><span class="p">:</span> <span class="mi">0</span>
+
+<span class="n">OK</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="at-sktserver">
+<h2>AT+SKTSERVER<a class="headerlink" href="#at-sktserver" title="Link to this heading"></a></h2>
+<section id="id6">
+<h3>Function Description<a class="headerlink" href="#id6" title="Link to this heading"></a></h3>
+<p>Configure TCP/UDP/SSL server listening service.</p>
+</section>
+<section id="id7">
+<h3>Command Format<a class="headerlink" href="#id7" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">SKTSERVER</span><span class="o">=&lt;</span><span class="n">link_id</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">conn_type</span><span class="o">&gt;</span><span class="p">[,</span><span class="o">&lt;</span><span class="n">cert_index</span><span class="o">&gt;</span><span class="p">],</span><span class="o">&lt;</span><span class="n">src_port</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">auto_rcv</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</section>
+<section id="id8">
+<h3>Response Format<a class="headerlink" href="#id8" title="Link to this heading"></a></h3>
+<p>Success Response:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">OK</span>
+</pre></div>
+</div>
+<p>Error Response:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ERROR</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">error_no</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</section>
+<section id="id9">
+<h3>Parameters<a class="headerlink" href="#id9" title="Link to this heading"></a></h3>
+<dl class="field-list simple">
+<dt class="field-odd">&lt;link_id&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Link ID specified by user</p>
+<ul class="simple">
+<li><p>Range: [0, MEMP_NUM_NETCONN-1], currently MEMP_NUM_NETCONN=20 for lwip configuration</p></li>
+</ul>
+</dd>
+<dt class="field-even">&lt;conn_type&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>Connection type</p>
+<ul class="simple">
+<li><p>0: Socket server over UDP</p></li>
+<li><p>1: Socket server over TCP</p></li>
+<li><p>2: Socket server over TLS (provides server certificate for client verification)</p></li>
+<li><p>3: Socket server over TLS (provides server certificate for client verification and uses CA certificate to verify client certificate)</p></li>
+</ul>
+</dd>
+<dt class="field-odd">&lt;cert_index&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Security certificate suite index, refer to <a class="reference internal" href="at_command_introduction.html#atcmd-host-control-mode-certificate"><span class="std std-ref">AT Security Certificates</span></a></p>
+<ul class="simple">
+<li><p>Range: [1-10]</p></li>
+<li><p>Only required when &lt;conn_type&gt; is 2 or 3</p></li>
+</ul>
+</dd>
+<dt class="field-even">&lt;src_port&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>The local port that the server to be created listens on</p>
+<ul class="simple">
+<li><p>Range: [1,65535]</p></li>
+</ul>
+</dd>
+<dt class="field-odd">&lt;auto_rcv&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Auto receive flag</p>
+<ul class="simple">
+<li><p>0: don’t enable</p></li>
+<li><p>1: enable</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="id10">
+<h3>Error Codes<a class="headerlink" href="#id10" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>1: Parameter error</p></li>
+<li><p>2: Failed to create TCP server</p></li>
+<li><p>3: Failed to create the task that auto-receives the TCP client and TCP data</p></li>
+<li><p>4: Failed to create UDP server</p></li>
+<li><p>5: Failed to create the task that auto-receives UDP client and its data</p></li>
+<li><p>6: Failed to get SERVER_CERT/SERVER_KEY/SERVER_CA from flash</p></li>
+<li><p>7: Memory allocation failed</p></li>
+<li><p>8: mbedtls_ssl_config_defaults() failed</p></li>
+<li><p>9: mbedtls_x509_crt_parse() failed</p></li>
+<li><p>10: mbedtls_ssl_conf_own_cert() failed</p></li>
+<li><p>11: mbedtls_net_bind() failed</p></li>
+<li><p>12: Failed to create the task that auto-receives the TLS client and TLS data</p></li>
+</ul>
+</section>
+<section id="id11">
+<h3>Examples<a class="headerlink" href="#id11" title="Link to this heading"></a></h3>
+<p>Create a TCP server with auto-receive on link_id = 1, port = 1234:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">SKTSERVER</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,,</span><span class="mi">1234</span><span class="p">,</span><span class="mi">1</span>
+<span class="n">OK</span>
+</pre></div>
+</div>
+<p>Create a UDP server without auto-receive on link_id = 2, port = 4321:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">SKTSERVER</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,,</span><span class="mi">4321</span><span class="p">,</span><span class="mi">0</span>
+<span class="n">OK</span>
+</pre></div>
+</div>
+<p>Create a TLS server(provides server certificate for client verification and uses CA certificate to verify client certificate, cert_index = 1) with auto-receive on link_id = 0, port = 4433:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">SKTSERVER</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">4433</span><span class="p">,</span><span class="mi">1</span>
+<span class="n">OK</span>
+</pre></div>
+</div>
+<p>If a client connects to this TLS server, the log window will pop up unsolicited message:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>[$][SKT][EVENT]: A client[link_id:1,seed,tls,dst_address:192.168.0.103,dst_port:49946] connected to server[link_id:0]
 </pre></div>
 </div>
 </section>
 </section>
 <section id="at-sktclient">
 <span id="socket-at-sktclient"></span><h2>AT+SKTCLIENT<a class="headerlink" href="#at-sktclient" title="Link to this heading"></a></h2>
-<section id="id2">
-<h3>Description<a class="headerlink" href="#id2" title="Link to this heading"></a></h3>
+<section id="id12">
+<h3>Function Description<a class="headerlink" href="#id12" title="Link to this heading"></a></h3>
 <p>Establish TCP/UDP/SSL client connection.</p>
 </section>
-<section id="id3">
-<h3>Command Format<a class="headerlink" href="#id3" title="Link to this heading"></a></h3>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">SKTCLIENT</span><span class="o">=&lt;</span><span class="n">mode</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">rmt_host</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">rmt_port</span><span class="o">&gt;</span><span class="p">[,</span><span class="o">&lt;</span><span class="n">loc_port</span><span class="o">&gt;</span><span class="p">]</span>
-</pre></div>
-</div>
-</section>
-<section id="id4">
-<h3>Response Format<a class="headerlink" href="#id4" title="Link to this heading"></a></h3>
-<p>Success Response:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">OK</span>
-<span class="o">+</span><span class="n">SKTCLIENT</span><span class="p">:</span><span class="n">con_id</span><span class="o">=&lt;</span><span class="n">con_id</span><span class="o">&gt;</span>
-</pre></div>
-</div>
-<p>Error Response:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ERROR</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">error_no</span><span class="o">&gt;</span>
-</pre></div>
-</div>
-</section>
-<section id="id5">
-<h3>Parameters<a class="headerlink" href="#id5" title="Link to this heading"></a></h3>
-<ul class="simple">
-<li><dl class="simple">
-<dt><strong>&lt;mode&gt;</strong>: Protocol type</dt><dd><ul>
-<li><p>0: TCP</p></li>
-<li><p>1: UDP</p></li>
-<li><p>2: SSL</p></li>
-</ul>
-</dd>
-</dl>
-</li>
-<li><dl class="simple">
-<dt><strong>&lt;rmt_host&gt;</strong>: Remote host address</dt><dd><ul>
-<li><p>Supports IP or domain (e.g., 192.168.1.100 or www.example.com)</p></li>
-</ul>
-</dd>
-</dl>
-</li>
-<li><dl class="simple">
-<dt><strong>&lt;rmt_port&gt;</strong>: Remote port</dt><dd><ul>
-<li><p>Range: [1, 65535]</p></li>
-</ul>
-</dd>
-</dl>
-</li>
-<li><dl class="simple">
-<dt><strong>&lt;loc_port&gt;</strong>: Local UDP binding port (required for UDP only)</dt><dd><ul>
-<li><p>Range: [1, 65535]</p></li>
-</ul>
-</dd>
-</dl>
-</li>
-</ul>
-</section>
-<section id="id6">
-<h3>Error Codes<a class="headerlink" href="#id6" title="Link to this heading"></a></h3>
-<ul class="simple">
-<li><p>1: Parameter count error</p></li>
-<li><p>2: Host resolution failed</p></li>
-<li><p>3: Invalid remote port</p></li>
-<li><p>4: Connection ID creation failed</p></li>
-<li><p>5: Client task initialization failed</p></li>
-<li><p>6: Invalid remote address</p></li>
-<li><p>7: Socket creation error</p></li>
-<li><p>8: TCP pending node error</p></li>
-<li><p>9: TCP connection failed</p></li>
-<li><p>10: UDP pending node error</p></li>
-<li><p>11: Invalid local port</p></li>
-<li><p>12: Port binding failed</p></li>
-<li><p>13: Transparent transmission active</p></li>
-<li><p>14: Broadcast setup failed</p></li>
-<li><p>15: Multicast membership error</p></li>
-<li><p>16: Multicast interface error</p></li>
-<li><p>17: Unsupported protocol</p></li>
-<li><p>18: SSL connection failed</p></li>
-<li><p>19: SSL context allocation failed</p></li>
-<li><p>20: SSL initialization error</p></li>
-<li><p>21: SSL handshake failure</p></li>
-<li><p>22: SSL pending error</p></li>
-</ul>
-</section>
-<section id="id7">
-<h3>Examples<a class="headerlink" href="#id7" title="Link to this heading"></a></h3>
-<p>Connect to TCP server:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">SKTCLIENT</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="mf">192.168.0.100</span><span class="p">,</span><span class="mi">6666</span>
-<span class="n">OK</span>
-<span class="o">+</span><span class="n">SKTCLIENT</span><span class="p">:</span><span class="n">con_id</span><span class="o">=</span><span class="mi">1</span>
-</pre></div>
-</div>
-<p>Create UDP client:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">SKTCLIENT</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="mf">192.168.0.100</span><span class="p">,</span><span class="mi">6666</span><span class="p">,</span><span class="mi">1234</span>
-<span class="n">OK</span>
-<span class="o">+</span><span class="n">SKTCLIENT</span><span class="p">:</span><span class="n">con_id</span><span class="o">=</span><span class="mi">2</span>
-</pre></div>
-</div>
-</section>
-</section>
-<section id="at-sktdel">
-<span id="socket-at-sktdel"></span><h2>AT+SKTDEL<a class="headerlink" href="#at-sktdel" title="Link to this heading"></a></h2>
-<section id="id8">
-<h3>Description<a class="headerlink" href="#id8" title="Link to this heading"></a></h3>
-<p>Close specified or all network connections.</p>
-</section>
-<section id="id9">
-<h3>Command Format<a class="headerlink" href="#id9" title="Link to this heading"></a></h3>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">SKTDEL</span><span class="o">=&lt;</span><span class="n">con_id</span><span class="o">&gt;</span>
-</pre></div>
-</div>
-</section>
-<section id="id10">
-<h3>Response Format<a class="headerlink" href="#id10" title="Link to this heading"></a></h3>
-<p>Success Response:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">OK</span>
-</pre></div>
-</div>
-<p>Error Response:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ERROR</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">error_no</span><span class="o">&gt;</span>
-</pre></div>
-</div>
-</section>
-<section id="id11">
-<h3>Parameters<a class="headerlink" href="#id11" title="Link to this heading"></a></h3>
-<ul class="simple">
-<li><dl class="simple">
-<dt><strong>&lt;con_id&gt;</strong>: Connection identifier</dt><dd><ul>
-<li><p>0: Close all connections</p></li>
-<li><p>1-7: Specific connection ID</p></li>
-</ul>
-</dd>
-</dl>
-</li>
-</ul>
-</section>
-<section id="id12">
-<h3>Error Codes<a class="headerlink" href="#id12" title="Link to this heading"></a></h3>
-<ul class="simple">
-<li><p>1: Empty parameter</p></li>
-<li><p>2: Invalid connection ID format</p></li>
-<li><p>3: Connection ID not found</p></li>
-</ul>
-</section>
 <section id="id13">
-<h3>Examples<a class="headerlink" href="#id13" title="Link to this heading"></a></h3>
-<p>Close all connections:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">SKTDEL</span><span class="o">=</span><span class="mi">0</span>
-<span class="n">OK</span>
+<h3>Command Format<a class="headerlink" href="#id13" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">SKTCLIENT</span><span class="o">=&lt;</span><span class="n">link_id</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">conn_type</span><span class="o">&gt;</span><span class="p">[,</span><span class="o">&lt;</span><span class="n">cert_index</span><span class="o">&gt;</span><span class="p">],</span><span class="o">&lt;</span><span class="n">dst_host</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">dst_port</span><span class="o">&gt;</span><span class="p">[,</span><span class="o">&lt;</span><span class="n">src_port</span><span class="o">&gt;</span><span class="p">],</span><span class="o">&lt;</span><span class="n">auto_rcv</span><span class="o">&gt;</span>
 </pre></div>
 </div>
 </section>
-</section>
-<section id="at-skttt">
-<span id="socket-at-skttt"></span><h2>AT+SKTTT<a class="headerlink" href="#at-skttt" title="Link to this heading"></a></h2>
 <section id="id14">
-<h3>Description<a class="headerlink" href="#id14" title="Link to this heading"></a></h3>
-<p>Enable transparent transmission mode.</p>
+<h3>Response Format<a class="headerlink" href="#id14" title="Link to this heading"></a></h3>
+<p>Success Response:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">OK</span>
+</pre></div>
+</div>
+<p>Error Response:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ERROR</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">error_no</span><span class="o">&gt;</span>
+</pre></div>
+</div>
 </section>
 <section id="id15">
-<h3>Command Format<a class="headerlink" href="#id15" title="Link to this heading"></a></h3>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">SKTTT</span><span class="o">=&lt;</span><span class="n">enable</span><span class="o">&gt;</span>
-</pre></div>
-</div>
-</section>
-<section id="id16">
-<h3>Response Format<a class="headerlink" href="#id16" title="Link to this heading"></a></h3>
-<p>Success Response:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+</span><span class="n">SKTTT</span><span class="p">:</span><span class="n">OK</span>
-</pre></div>
-</div>
-<p>Error Response:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+</span><span class="n">SKTTT</span><span class="p">:</span><span class="n">ERROR</span><span class="p">:</span><span class="o">&lt;</span><span class="n">error_no</span><span class="o">&gt;</span>
-</pre></div>
-</div>
-</section>
-<section id="id17">
-<h3>Parameters<a class="headerlink" href="#id17" title="Link to this heading"></a></h3>
+<h3>Parameters<a class="headerlink" href="#id15" title="Link to this heading"></a></h3>
+<dl class="field-list simple">
+<dt class="field-odd">&lt;link_id&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Link ID specified by user</p>
 <ul class="simple">
-<li><dl class="simple">
-<dt><strong>&lt;enable&gt;</strong>: Mode switch</dt><dd><ul>
-<li><p>1: Enable transparent mode</p></li>
+<li><p>Range: [0, MEMP_NUM_NETCONN-1], currently MEMP_NUM_NETCONN=20 for lwip configuration</p></li>
+</ul>
+</dd>
+<dt class="field-even">&lt;conn_type&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>Connection type</p>
+<ul class="simple">
+<li><p>0: Socket client over UDP</p></li>
+<li><p>1: Socket client over TCP</p></li>
+<li><p>2: Socket client over TLS (no certificate verification)</p></li>
+<li><p>3: Socket client over TLS (verify server certificate with CA certificate)</p></li>
+<li><p>4: Socket client over TLS (provide client certificate to server for verification)</p></li>
+<li><p>5: Socket client over TLS (mutual authentication, both 3 and 4)</p></li>
+</ul>
+</dd>
+<dt class="field-odd">&lt;cert_index&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Security certificate suite index, refer to <a class="reference internal" href="at_command_introduction.html#atcmd-host-control-mode-certificate"><span class="std std-ref">AT Security Certificates</span></a></p>
+<ul class="simple">
+<li><p>Range: [1-10]</p></li>
+<li><p>Only required when &lt;conn_type&gt; is 3, 4, or 5</p></li>
+</ul>
+</dd>
+<dt class="field-even">&lt;dst_host&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>Remote server address</p>
+<ul class="simple">
+<li><p>Supports IPv4 address or domain name (e.g., 192.168.1.100 or www.example.com)</p></li>
+<li><p>Domain name maximum length: 255 characters</p></li>
+</ul>
+</dd>
+<dt class="field-odd">&lt;dst_port&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Remote server port</p>
+<ul class="simple">
+<li><p>Range: [1,65535]</p></li>
+</ul>
+</dd>
+<dt class="field-even">&lt;src_port&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>The local port binded by UDP client (required for UDP only)</p>
+<ul class="simple">
+<li><p>Range: [1,65535]</p></li>
+</ul>
+</dd>
+<dt class="field-odd">&lt;auto_rcv&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Auto receive flag</p>
+<ul class="simple">
+<li><p>0: don’t enable</p></li>
+<li><p>1: enable</p></li>
 </ul>
 </dd>
 </dl>
-</li>
-</ul>
 </section>
-<section id="id18">
-<h3>Error Codes<a class="headerlink" href="#id18" title="Link to this heading"></a></h3>
+<section id="id16">
+<h3>Error Codes<a class="headerlink" href="#id16" title="Link to this heading"></a></h3>
 <ul class="simple">
 <li><p>1: Parameter error</p></li>
-<li><p>2: Invalid connection ID</p></li>
-<li><p>3: Server connection unsupported</p></li>
-<li><p>4: Multiple connection conflict</p></li>
-<li><p>5: Mode switch failed</p></li>
+<li><p>2: Failed to create TCP client</p></li>
+<li><p>3: Failed to create the task that auto-receives TCP data as TCP client</p></li>
+<li><p>4: Failed to create UDP client</p></li>
+<li><p>5: Failed to create the task that auto-receives UDP data as UDP client</p></li>
+<li><p>6: Failed to get CLIENT_CERT/CLIENT_KEY/CLIENT_CA from flash</p></li>
+<li><p>7: Memory allocation failed</p></li>
+<li><p>8: mbedtls_ssl_config_defaults() failed</p></li>
+<li><p>9: mbedtls_x509_crt_parse() failed</p></li>
+<li><p>10: mbedtls_ssl_conf_own_cert() failed</p></li>
+<li><p>11: mbedtls_ssl_setup() failed</p></li>
+<li><p>12: inet_ntoa_r() failed</p></li>
+<li><p>13: mbedtls_net_connect() failed</p></li>
+<li><p>14: mbedtls_ssl_handshake() failed</p></li>
+<li><p>15: Failed to create the task that auto-receives TLS data as TLS client</p></li>
 </ul>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Enter “—-” to exit transparent mode.</p>
+</section>
+<section id="id17">
+<h3>Examples<a class="headerlink" href="#id17" title="Link to this heading"></a></h3>
+<p>Connect to TCP server(IPv4 address: 192.168.0.100, port: 6666) with auto-receive on link_id = 1:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">SKTCLIENT</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,,</span><span class="mf">192.168.0.100</span><span class="p">,</span><span class="mi">6666</span><span class="p">,,</span><span class="mi">1</span>
+<span class="n">OK</span>
+</pre></div>
+</div>
+<p>Create UDP client(port: 12345) connect to UDP server(IPv4 address: 192.168.1.10, port: 6666) with auto-receive on link_id = 0:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">SKTCLIENT</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,,</span><span class="mf">192.168.1.10</span><span class="p">,</span><span class="mi">6666</span><span class="p">,</span><span class="mi">12345</span><span class="p">,</span><span class="mi">1</span>
+<span class="n">OK</span>
+</pre></div>
+</div>
+<p>Connect to TLS server(IPv4 address: 192.168.1.10, port: 4433) with auto-receive on link_id = 5, no certificate verification:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">SKTCLIENT</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span><span class="mi">2</span><span class="p">,,</span><span class="mf">192.168.1.10</span><span class="p">,</span><span class="mi">4433</span><span class="p">,,</span><span class="mi">1</span>
+<span class="n">OK</span>
+</pre></div>
 </div>
 </section>
 </section>
 <section id="at-sktsend">
 <span id="socket-at-sktsend"></span><h2>AT+SKTSEND<a class="headerlink" href="#at-sktsend" title="Link to this heading"></a></h2>
-<section id="id19">
-<h3>Description<a class="headerlink" href="#id19" title="Link to this heading"></a></h3>
-<p>Send data through specified connection.</p>
+<section id="id18">
+<h3>Function Description<a class="headerlink" href="#id18" title="Link to this heading"></a></h3>
+<p>Send data through specified connection &lt;link_id&gt;.</p>
 </section>
-<section id="id20">
-<h3>Command Format<a class="headerlink" href="#id20" title="Link to this heading"></a></h3>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">SKTSEND</span><span class="o">=&lt;</span><span class="n">data_size</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">con_id</span><span class="o">&gt;</span><span class="p">[,</span><span class="o">&lt;</span><span class="n">dst_ip</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">dst_port</span><span class="o">&gt;</span><span class="p">]:</span><span class="o">&lt;</span><span class="n">data</span><span class="o">&gt;</span>
+<section id="id19">
+<h3>Command Format<a class="headerlink" href="#id19" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">SKTSEND</span><span class="o">=&lt;</span><span class="n">link_id</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">data_size</span><span class="o">&gt;</span><span class="p">[,</span><span class="o">&lt;</span><span class="n">dst_ip</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">dst_port</span><span class="o">&gt;</span><span class="p">],</span><span class="o">&lt;</span><span class="n">data</span><span class="o">&gt;</span>
 </pre></div>
 </div>
 </section>
-<section id="id21">
-<h3>Response Format<a class="headerlink" href="#id21" title="Link to this heading"></a></h3>
+<section id="id20">
+<h3>Response Format<a class="headerlink" href="#id20" title="Link to this heading"></a></h3>
 <p>Success Response:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">OK</span>
 </pre></div>
@@ -2007,45 +1076,80 @@ document.addEventListener('DOMContentLoaded', function() {
 </pre></div>
 </div>
 </section>
-<section id="id22">
-<h3>Parameters<a class="headerlink" href="#id22" title="Link to this heading"></a></h3>
+<section id="id21">
+<h3>Parameters<a class="headerlink" href="#id21" title="Link to this heading"></a></h3>
+<dl class="field-list simple">
+<dt class="field-odd">&lt;link_id&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Link ID created successfully</p>
 <ul class="simple">
-<li><p><strong>&lt;data_size&gt;</strong>: Valid data length (bytes)</p></li>
-<li><p><strong>&lt;con_id&gt;</strong>: Target connection ID</p></li>
-<li><p><strong>&lt;dst_ip&gt;</strong>: Destination IP (required for UDP server)</p></li>
-<li><p><strong>&lt;dst_port&gt;</strong>: Destination port (required for UDP server)</p></li>
+<li><p>Range: [0, MEMP_NUM_NETCONN-1], currently MEMP_NUM_NETCONN=20 for lwip configuration</p></li>
+</ul>
+</dd>
+<dt class="field-even">&lt;data_size&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>The number of data bytes that user want to send</p>
+<ul class="simple">
+<li><p>Maximum value: decided by UART_LOG_CMD_BUFLEN - the number of characters before the &lt;data&gt; field, the maximum UART_LOG_CMD_BUFLEN is 2000, refer to <a class="reference internal" href="../0_gcc_build_environment/1_gcc_build_environment_toprst.html#configuring-sdk"><span class="std std-ref">Configuring SDK (menuconfig)</span></a> to enter <code class="docutils literal notranslate"><span class="pre">CONFIG</span> <span class="pre">AT</span> <span class="pre">CMD</span></code> configuration and check <code class="docutils literal notranslate"><span class="pre">Enable</span> <span class="pre">Longer</span> <span class="pre">CMD</span></code>, refer to <a class="reference internal" href="at_command_introduction.html#atcmd-max-length"><span class="std std-ref">Command Length</span></a> to check command length</p></li>
+</ul>
+</dd>
+<dt class="field-odd">&lt;dst_ip&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Destination IPv4 address (required for UDP server only)</p>
+<ul class="simple">
+<li><p>e.g., 192.168.1.100</p></li>
+</ul>
+</dd>
+<dt class="field-even">&lt;dst_port&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>Destination port (required for UDP server only)</p>
+<ul class="simple">
+<li><p>Range: [1,65535]</p></li>
+</ul>
+</dd>
+<dt class="field-odd">&lt;data&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The actual data to be send, length is specified by &lt;data_size&gt;</p>
+</dd>
+</dl>
+</section>
+<section id="id22">
+<h3>Error Codes<a class="headerlink" href="#id22" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>1: Parameter error</p></li>
+<li><p>2: Failed to send data</p></li>
 </ul>
 </section>
 <section id="id23">
-<h3>Error Codes<a class="headerlink" href="#id23" title="Link to this heading"></a></h3>
-<ul class="simple">
-<li><p>1: Parameter error</p></li>
-<li><p>2: Buffer overflow</p></li>
-<li><p>3: Invalid connection ID</p></li>
-<li><p>4: UDP server error</p></li>
-<li><p>5: UDP send failed</p></li>
-<li><p>6: UDP client error</p></li>
-<li><p>7: TCP requires seed ID</p></li>
-<li><p>8: TCP write failed</p></li>
-</ul>
+<h3>Examples<a class="headerlink" href="#id23" title="Link to this heading"></a></h3>
+<p>TCP client(link_id = 0) send data to TCP server:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>AT+SKTSEND=0,6,,,Hello!
+OK
+</pre></div>
+</div>
+<p>UDP server(link_id = 3) send data to UDP client(IPv4 address: 192.168.1.101, port: 61409):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>AT+SKTSEND=3,10,192.168.1.101,61409,Lwip_Test!
+OK
+</pre></div>
+</div>
+<p>TLS server(link_id = 1) send data to TLS client(seed link_id = 2):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">SKTSEND</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span><span class="mi">5</span><span class="p">,,,</span><span class="mi">12345</span>
+<span class="n">OK</span>
+</pre></div>
+</div>
 </section>
 </section>
 <section id="at-sktread">
 <span id="socket-at-sktread"></span><h2>AT+SKTREAD<a class="headerlink" href="#at-sktread" title="Link to this heading"></a></h2>
 <section id="id24">
-<h3>Description<a class="headerlink" href="#id24" title="Link to this heading"></a></h3>
-<p>Read buffered data from specified connection.</p>
+<h3>Function Description<a class="headerlink" href="#id24" title="Link to this heading"></a></h3>
+<p>Read buffered data from specified connection &lt;link_id&gt;.</p>
 </section>
 <section id="id25">
 <h3>Command Format<a class="headerlink" href="#id25" title="Link to this heading"></a></h3>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">SKTREAD</span><span class="o">=&lt;</span><span class="n">con_id</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">buff_size</span><span class="o">&gt;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">SKTREAD</span><span class="o">=&lt;</span><span class="n">link_id</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">data_size</span><span class="o">&gt;</span>
 </pre></div>
 </div>
 </section>
 <section id="id26">
 <h3>Response Format<a class="headerlink" href="#id26" title="Link to this heading"></a></h3>
 <p>Success Response:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+</span><span class="n">SKTREAD</span><span class="p">:</span><span class="o">&lt;</span><span class="n">recv_size</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">con_id</span><span class="o">&gt;</span><span class="p">[,</span><span class="o">&lt;</span><span class="n">udp_clientip</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">udp_clientport</span><span class="o">&gt;</span><span class="p">]:</span><span class="o">&lt;</span><span class="n">data</span><span class="o">&gt;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+</span><span class="n">SKTREAD</span><span class="p">:</span><span class="o">&lt;</span><span class="n">link_id</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">actual_recv_size</span><span class="o">&gt;</span><span class="p">[,</span><span class="o">&lt;</span><span class="n">udp_dstip</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">udp_dstport</span><span class="o">&gt;</span><span class="p">],</span><span class="o">&lt;</span><span class="n">data</span><span class="o">&gt;</span>
 <span class="n">OK</span>
 </pre></div>
 </div>
@@ -2056,40 +1160,253 @@ document.addEventListener('DOMContentLoaded', function() {
 </section>
 <section id="id27">
 <h3>Parameters<a class="headerlink" href="#id27" title="Link to this heading"></a></h3>
+<dl class="field-list simple">
+<dt class="field-odd">&lt;link_id&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Link ID created successfully</p>
 <ul class="simple">
-<li><p><strong>&lt;con_id&gt;</strong>: Connection identifier</p></li>
-<li><p><strong>&lt;buff_size&gt;</strong>: Receive buffer size</p></li>
+<li><p>Range: [0, MEMP_NUM_NETCONN-1], currently MEMP_NUM_NETCONN=20 for lwip configuration</p></li>
 </ul>
+</dd>
+<dt class="field-even">&lt;data_size&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>The number of data bytes that user want to read</p>
+</dd>
+<dt class="field-odd">&lt;actual_recv_size&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The actual number of bytes read</p>
+</dd>
+<dt class="field-even">&lt;udp_dstip&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>Destination UDP client/server IPv4 address (used for UDP only)</p>
+<ul class="simple">
+<li><p>e.g., 192.168.1.100</p></li>
+</ul>
+</dd>
+<dt class="field-odd">&lt;udp_dstport&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Destination UDP client/server port (used for UDP only)</p>
+<ul class="simple">
+<li><p>Range: [1,65535]</p></li>
+</ul>
+</dd>
+<dt class="field-even">&lt;data&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>The actual data to be read, length is decided by &lt;actual_recv_size&gt;</p>
+</dd>
+</dl>
 </section>
 <section id="id28">
 <h3>Error Codes<a class="headerlink" href="#id28" title="Link to this heading"></a></h3>
 <ul class="simple">
 <li><p>1: Parameter error</p></li>
-<li><p>2: Buffer error</p></li>
-<li><p>3: Invalid connection ID</p></li>
-<li><p>4: UDP receive error</p></li>
-<li><p>5: UDP client error</p></li>
-<li><p>6: TCP requires seed ID</p></li>
-<li><p>7: Connection lost</p></li>
-<li><p>8: TCP read failed</p></li>
+<li><p>2: Memory allocation failed</p></li>
+<li><p>3: select() failed</p></li>
+<li><p>4: Failed to read data</p></li>
 </ul>
 </section>
-</section>
-<section id="at-sktrecvcfg">
-<span id="socket-at-sktrecvcfg"></span><h2>AT+SKTRECVCFG<a class="headerlink" href="#at-sktrecvcfg" title="Link to this heading"></a></h2>
 <section id="id29">
-<h3>Description<a class="headerlink" href="#id29" title="Link to this heading"></a></h3>
-<p>Configure automatic data reception.</p>
-<p>In auto-receive mode, data will be output immediately upon arrival without needing AT+SKTREAD.</p>
-</section>
-<section id="id30">
-<h3>Command Format<a class="headerlink" href="#id30" title="Link to this heading"></a></h3>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">SKTRECVCFG</span><span class="o">=&lt;</span><span class="n">enable</span><span class="o">&gt;</span>
+<h3>Examples<a class="headerlink" href="#id29" title="Link to this heading"></a></h3>
+<p>TCP server (link_id = 0) read data from TCP client (seed link_id = 1):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>AT+SKTREAD=1,10
++SKTREAD:1,6,Hello!
+OK
+</pre></div>
+</div>
+<p>UDP server (link_id = 3) read data from UDP client (IPv4 address: 192.168.1.101, port: 61409):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">SKTREAD</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span><span class="mi">10</span>
+<span class="o">+</span><span class="n">SKTREAD</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mf">192.168.1.101</span><span class="p">,</span><span class="mi">61409</span><span class="p">,</span><span class="mi">12345</span>
+<span class="n">OK</span>
+</pre></div>
+</div>
+<p>TLS client (link_id = 2) read data from TLS server:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">SKTREAD</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span><span class="mi">10</span>
+<span class="o">+</span><span class="n">SKTREAD</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="n">ABC</span>
+<span class="n">OK</span>
 </pre></div>
 </div>
 </section>
+</section>
+<section id="at-sktsendraw">
+<span id="socket-at-sktsendraw"></span><h2>AT+SKTSENDRAW<a class="headerlink" href="#at-sktsendraw" title="Link to this heading"></a></h2>
+<section id="id30">
+<h3>Function Description<a class="headerlink" href="#id30" title="Link to this heading"></a></h3>
+<p>Send data through specified connection &lt;link_id&gt; in Transparent Transmission mode.  Refer to <a class="reference internal" href="../0_gcc_build_environment/1_gcc_build_environment_toprst.html#configuring-sdk"><span class="std std-ref">Configuring SDK (menuconfig)</span></a> to enter <code class="docutils literal notranslate"><span class="pre">CONFIG</span> <span class="pre">AT</span> <span class="pre">CMD</span></code> configuration and select <code class="docutils literal notranslate"><span class="pre">Host</span> <span class="pre">Control</span> <span class="pre">Mode</span></code>, and then refer to the introduction of <a class="reference internal" href="at_command_introduction.html#transparent-transmission"><span class="std std-ref">Transparent Transmission (TT) Mode</span></a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This command is only supported in <strong>Host Control Mode</strong>.</p>
+</div>
+</section>
 <section id="id31">
-<h3>Response Format<a class="headerlink" href="#id31" title="Link to this heading"></a></h3>
+<h3>Command Format<a class="headerlink" href="#id31" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">SKTSENDRAW</span><span class="o">=&lt;</span><span class="n">link_id</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">data_size</span><span class="o">&gt;</span><span class="p">[,</span><span class="o">&lt;</span><span class="n">dst_ip</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">dst_port</span><span class="o">&gt;</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<section id="id32">
+<h3>Response Format<a class="headerlink" href="#id32" title="Link to this heading"></a></h3>
+<p>Success Response:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt;</span>
+<span class="go">&lt;data&gt;</span>
+<span class="go">OK</span>
+</pre></div>
+</div>
+<p>Error Response:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ERROR</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">error_no</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</section>
+<section id="id33">
+<h3>Parameters<a class="headerlink" href="#id33" title="Link to this heading"></a></h3>
+<dl class="field-list simple">
+<dt class="field-odd">&lt;link_id&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Link ID created successfully</p>
+<ul class="simple">
+<li><p>Range: [0, MEMP_NUM_NETCONN-1], currently MEMP_NUM_NETCONN=20 for lwip configuration</p></li>
+</ul>
+</dd>
+<dt class="field-even">&lt;data_size&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>The number of data bytes that user want to send</p>
+<ul class="simple">
+<li><p>Arbitrarily user-specified data size</p></li>
+</ul>
+</dd>
+<dt class="field-odd">&lt;dst_ip&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Destination IPv4 address (required for UDP server only)</p>
+<ul class="simple">
+<li><p>e.g., 192.168.1.100</p></li>
+</ul>
+</dd>
+<dt class="field-even">&lt;dst_port&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>Destination port (required for UDP server only)</p>
+<ul class="simple">
+<li><p>Range: [1,65535]</p></li>
+</ul>
+</dd>
+<dt class="field-odd">&lt;data&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The actual data to be send, length is specified by &lt;data_size&gt;</p>
+</dd>
+</dl>
+</section>
+<section id="id34">
+<h3>Error Codes<a class="headerlink" href="#id34" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>1: Parameter error</p></li>
+<li><p>2: Failed to send data</p></li>
+<li><p>3: Memory allocation failed</p></li>
+<li><p>4: Get data failed in TT mode</p></li>
+</ul>
+</section>
+<section id="id35">
+<h3>Examples<a class="headerlink" href="#id35" title="Link to this heading"></a></h3>
+<p>TCP client (link_id = 0) send data to TCP server:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>AT+SKTSENDRAW=0,6
+&gt;&gt;&gt;
+Hello!
+OK
+</pre></div>
+</div>
+<p>UDP server (link_id = 3) send data to UDP client (IPv4 address: 192.168.0.103, port: 61468):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>AT+SKTSENDRAW=3,10,192.168.0.103,61468
+&gt;&gt;&gt;
+Lwip_Test!
+OK
+</pre></div>
+</div>
+<p>TLS server (link_id = 1) send data to TLS client (seed link_id = 2):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">SKTSENDRAW</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span><span class="mi">5</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="mi">12345</span>
+<span class="n">OK</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="at-sktstate">
+<span id="socket-at-sktstate"></span><h2>AT+SKTSTATE<a class="headerlink" href="#at-sktstate" title="Link to this heading"></a></h2>
+<section id="id36">
+<h3>Function Description<a class="headerlink" href="#id36" title="Link to this heading"></a></h3>
+<p>Query all active connection &lt;link_id&gt; status.</p>
+</section>
+<section id="id37">
+<h3>Command Format<a class="headerlink" href="#id37" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">SKTSTATE</span>
+</pre></div>
+</div>
+</section>
+<section id="id38">
+<h3>Response Format<a class="headerlink" href="#id38" title="Link to this heading"></a></h3>
+<p>Standard Response:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">link_id</span><span class="p">:</span><span class="o">&lt;</span><span class="n">link_id</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">role</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">protocol</span><span class="o">&gt;</span><span class="p">,</span><span class="n">src_address</span><span class="p">:</span><span class="o">&lt;</span><span class="n">ip</span><span class="o">&gt;</span><span class="p">,</span><span class="n">src_port</span><span class="p">:</span><span class="o">&lt;</span><span class="n">port</span><span class="o">&gt;</span><span class="p">,</span><span class="n">dst_address</span><span class="p">:</span><span class="o">&lt;</span><span class="n">ip</span><span class="o">&gt;</span><span class="p">,</span><span class="n">dst_port</span><span class="p">:</span><span class="o">&lt;</span><span class="n">port</span><span class="o">&gt;</span><span class="p">,</span><span class="n">socket_fd</span><span class="p">:</span><span class="o">&lt;</span><span class="n">fd</span><span class="o">&gt;</span>
+
+<span class="n">OK</span>
+</pre></div>
+</div>
+</section>
+<section id="id39">
+<h3>Parameters<a class="headerlink" href="#id39" title="Link to this heading"></a></h3>
+<dl class="field-list simple">
+<dt class="field-odd">&lt;link_id&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Link ID created successfully</p>
+<ul class="simple">
+<li><p>Range: [0, MEMP_NUM_NETCONN-1], currently MEMP_NUM_NETCONN=20 for lwip configuration</p></li>
+</ul>
+</dd>
+<dt class="field-even">&lt;role&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>String format</p>
+<ul class="simple">
+<li><p>server</p></li>
+<li><p>client</p></li>
+<li><p>seed</p></li>
+</ul>
+</dd>
+<dt class="field-odd">&lt;protocol&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>String format, the protocol used by connection &lt;link_id&gt;</p>
+<ul class="simple">
+<li><p>tcp</p></li>
+<li><p>udp</p></li>
+<li><p>tls</p></li>
+</ul>
+</dd>
+<dt class="field-even">&lt;ip&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>IPv4 address</p>
+<ul class="simple">
+<li><p>e.g., 192.168.1.100</p></li>
+</ul>
+</dd>
+<dt class="field-odd">&lt;port&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>port number</p>
+<ul class="simple">
+<li><p>Range: [1,65535]</p></li>
+</ul>
+</dd>
+<dt class="field-even">&lt;fd&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>socket fd created by lwip</p>
+</dd>
+</dl>
+</section>
+<section id="id40">
+<h3>Example<a class="headerlink" href="#id40" title="Link to this heading"></a></h3>
+<p>Assume there is a TCP server (link_id = 0) with its seed (a TCP client, link_id = 3), a UDP server (link_id = 1), and TLS client (link_id = 2):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">SKTSTATE</span>
+<span class="n">link_id</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="n">server</span><span class="p">,</span><span class="n">tcp</span><span class="p">,</span><span class="n">src_address</span><span class="p">:</span><span class="mf">192.168.0.109</span><span class="p">,</span><span class="n">src_port</span><span class="p">:</span><span class="mi">6666</span><span class="p">,</span><span class="n">dst_address</span><span class="p">:</span><span class="mf">0.0.0.0</span><span class="p">,</span><span class="n">dst_port</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="n">socket_fd</span><span class="p">:</span><span class="mi">0</span>
+<span class="n">link_id</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span><span class="n">seed</span><span class="p">,</span><span class="n">tcp</span><span class="p">,</span><span class="n">src_address</span><span class="p">:</span><span class="mf">0.0.0.0</span><span class="p">,</span><span class="n">src_port</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="n">dst_address</span><span class="p">:</span><span class="mf">192.168.0.103</span><span class="p">,</span><span class="n">dst_port</span><span class="p">:</span><span class="mi">49941</span><span class="p">,</span><span class="n">socket_fd</span><span class="p">:</span><span class="mi">3</span>
+<span class="n">link_id</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="n">server</span><span class="p">,</span><span class="n">udp</span><span class="p">,</span><span class="n">src_address</span><span class="p">:</span><span class="mf">192.168.0.109</span><span class="p">,</span><span class="n">src_port</span><span class="p">:</span><span class="mi">12345</span><span class="p">,</span><span class="n">dst_address</span><span class="p">:</span><span class="mf">0.0.0.0</span><span class="p">,</span><span class="n">dst_port</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="n">socket_fd</span><span class="p">:</span><span class="mi">1</span>
+<span class="n">link_id</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span><span class="n">client</span><span class="p">,</span><span class="n">ssl</span><span class="p">,</span><span class="n">src_address</span><span class="p">:</span><span class="mf">0.0.0.0</span><span class="p">,</span><span class="n">src_port</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="n">dst_address</span><span class="p">:</span><span class="mf">192.168.0.103</span><span class="p">,</span><span class="n">dst_port</span><span class="p">:</span><span class="mi">4433</span><span class="p">,</span><span class="n">socket_fd</span><span class="p">:</span><span class="mi">2</span>
+
+<span class="n">OK</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="at-sktdel">
+<span id="socket-at-sktdel"></span><h2>AT+SKTDEL<a class="headerlink" href="#at-sktdel" title="Link to this heading"></a></h2>
+<section id="id41">
+<h3>Function Description<a class="headerlink" href="#id41" title="Link to this heading"></a></h3>
+<p>Delete specified connection &lt;link_id&gt;. If &lt;link_id&gt; corresponds to a client or a seed, the execution of the command will only delete the &lt;link_id&gt; itself. If &lt;link_id&gt; corresponds to a server, the execution of the command will delete this &lt;link_id&gt; along with all of its seeds (clients).</p>
+</section>
+<section id="id42">
+<h3>Command Format<a class="headerlink" href="#id42" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">SKTDEL</span><span class="o">=&lt;</span><span class="n">link_id</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</section>
+<section id="id43">
+<h3>Response Format<a class="headerlink" href="#id43" title="Link to this heading"></a></h3>
 <p>Success Response:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">OK</span>
 </pre></div>
@@ -2099,55 +1416,43 @@ document.addEventListener('DOMContentLoaded', function() {
 </pre></div>
 </div>
 </section>
-<section id="id32">
-<h3>Parameters<a class="headerlink" href="#id32" title="Link to this heading"></a></h3>
+<section id="id44">
+<h3>Parameters<a class="headerlink" href="#id44" title="Link to this heading"></a></h3>
+<dl class="field-list simple">
+<dt class="field-odd">&lt;link_id&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Link ID created successfully</p>
 <ul class="simple">
-<li><dl class="simple">
-<dt><strong>&lt;enable&gt;</strong>: Auto-receive switch</dt><dd><ul>
-<li><p>0: Disable</p></li>
-<li><p>1: Enable</p></li>
+<li><p>Range: [0, MEMP_NUM_NETCONN-1], currently MEMP_NUM_NETCONN=20 for lwip configuration</p></li>
 </ul>
 </dd>
 </dl>
-</li>
-</ul>
 </section>
-<section id="id33">
-<h3>Error Codes<a class="headerlink" href="#id33" title="Link to this heading"></a></h3>
+<section id="id45">
+<h3>Error Codes<a class="headerlink" href="#id45" title="Link to this heading"></a></h3>
 <ul class="simple">
 <li><p>1: Parameter error</p></li>
-<li><p>2: Task initialization failed</p></li>
 </ul>
 </section>
-</section>
-<section id="at-sktstate">
-<span id="socket-at-sktstate"></span><h2>AT+SKTSTATE<a class="headerlink" href="#at-sktstate" title="Link to this heading"></a></h2>
-<section id="id34">
-<h3>Description<a class="headerlink" href="#id34" title="Link to this heading"></a></h3>
-<p>Query all active connection statuses.</p>
-</section>
-<section id="id35">
-<h3>Command Format<a class="headerlink" href="#id35" title="Link to this heading"></a></h3>
+<section id="id46">
+<h3>Examples<a class="headerlink" href="#id46" title="Link to this heading"></a></h3>
+<p>Assume there is a TCP server (link_id = 0) with its seed (a TCP client, link_id = 3), a UDP server (link_id = 1), and TLS client (link_id = 2):</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">SKTSTATE</span>
-</pre></div>
-</div>
-</section>
-<section id="id36">
-<h3>Response Format<a class="headerlink" href="#id36" title="Link to this heading"></a></h3>
-<p>Standard Response:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">con_id</span><span class="p">:</span><span class="o">&lt;</span><span class="nb">id</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="nb">type</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">protocol</span><span class="o">&gt;</span><span class="p">,</span><span class="n">address</span><span class="p">:</span><span class="o">&lt;</span><span class="n">ip</span><span class="o">&gt;</span><span class="p">,</span><span class="n">port</span><span class="p">:</span><span class="o">&lt;</span><span class="n">port</span><span class="o">&gt;</span><span class="p">,</span><span class="n">socket_fd</span><span class="p">:</span><span class="o">&lt;</span><span class="n">fd</span><span class="o">&gt;</span>
+<span class="n">link_id</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="n">server</span><span class="p">,</span><span class="n">tcp</span><span class="p">,</span><span class="n">src_address</span><span class="p">:</span><span class="mf">192.168.0.109</span><span class="p">,</span><span class="n">src_port</span><span class="p">:</span><span class="mi">6666</span><span class="p">,</span><span class="n">dst_address</span><span class="p">:</span><span class="mf">0.0.0.0</span><span class="p">,</span><span class="n">dst_port</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="n">socket_fd</span><span class="p">:</span><span class="mi">0</span>
+<span class="n">link_id</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span><span class="n">seed</span><span class="p">,</span><span class="n">tcp</span><span class="p">,</span><span class="n">src_address</span><span class="p">:</span><span class="mf">0.0.0.0</span><span class="p">,</span><span class="n">src_port</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="n">dst_address</span><span class="p">:</span><span class="mf">192.168.0.103</span><span class="p">,</span><span class="n">dst_port</span><span class="p">:</span><span class="mi">49941</span><span class="p">,</span><span class="n">socket_fd</span><span class="p">:</span><span class="mi">3</span>
+<span class="n">link_id</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="n">server</span><span class="p">,</span><span class="n">udp</span><span class="p">,</span><span class="n">src_address</span><span class="p">:</span><span class="mf">192.168.0.109</span><span class="p">,</span><span class="n">src_port</span><span class="p">:</span><span class="mi">12345</span><span class="p">,</span><span class="n">dst_address</span><span class="p">:</span><span class="mf">0.0.0.0</span><span class="p">,</span><span class="n">dst_port</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="n">socket_fd</span><span class="p">:</span><span class="mi">1</span>
+<span class="n">link_id</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span><span class="n">client</span><span class="p">,</span><span class="n">ssl</span><span class="p">,</span><span class="n">src_address</span><span class="p">:</span><span class="mf">0.0.0.0</span><span class="p">,</span><span class="n">src_port</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="n">dst_address</span><span class="p">:</span><span class="mf">192.168.0.103</span><span class="p">,</span><span class="n">dst_port</span><span class="p">:</span><span class="mi">4433</span><span class="p">,</span><span class="n">socket_fd</span><span class="p">:</span><span class="mi">2</span>
+
 <span class="n">OK</span>
 </pre></div>
 </div>
-</section>
-<section id="example">
-<h3>Example<a class="headerlink" href="#example" title="Link to this heading"></a></h3>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">SKTSTATE</span>
-<span class="n">con_id</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="n">server</span><span class="p">,</span><span class="n">tcp</span><span class="p">,</span><span class="n">address</span><span class="p">:</span><span class="mf">192.168.0.101</span><span class="p">,</span><span class="n">port</span><span class="p">:</span><span class="mi">1234</span><span class="p">,</span><span class="n">socket_fd</span><span class="p">:</span><span class="mi">0</span>
-<span class="n">con_id</span><span class="p">:</span><span class="mi">4</span><span class="p">,</span><span class="n">seed</span><span class="p">,</span><span class="n">tcp</span><span class="p">,</span><span class="n">address</span><span class="p">:</span><span class="mf">192.168.0.100</span><span class="p">,</span><span class="n">port</span><span class="p">:</span><span class="mi">49682</span><span class="p">,</span><span class="n">socket_fd</span><span class="p">:</span><span class="mi">3</span>
-<span class="n">con_id</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span><span class="n">server</span><span class="p">,</span><span class="n">udp</span><span class="p">,</span><span class="n">address</span><span class="p">:</span><span class="mf">192.168.0.101</span><span class="p">,</span><span class="n">port</span><span class="p">:</span><span class="mi">4321</span><span class="p">,</span><span class="n">socket_fd</span><span class="p">:</span><span class="mi">1</span>
-<span class="n">con_id</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span><span class="n">server</span><span class="p">,</span><span class="n">ssl</span><span class="p">,</span><span class="n">address</span><span class="p">:</span><span class="mf">192.168.0.101</span><span class="p">,</span><span class="n">port</span><span class="p">:</span><span class="mi">443</span><span class="p">,</span><span class="n">socket_fd</span><span class="p">:</span><span class="mi">2</span>
-<span class="n">con_id</span><span class="p">:</span><span class="mi">5</span><span class="p">,</span><span class="n">seed</span><span class="p">,</span><span class="n">ssl</span><span class="p">,</span><span class="n">address</span><span class="p">:</span><span class="mf">192.168.0.100</span><span class="p">,</span><span class="n">port</span><span class="p">:</span><span class="mi">49683</span><span class="p">,</span><span class="n">socket_fd</span><span class="p">:</span><span class="mi">4</span>
+<p>Now user want to delete link_id = 0, cause link_id = 0 corresponds to a TCP server, to delete this link, it needs to be removed along with its seed(link_id = 3), and then use the command AT+SKTSTATE to check:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AT</span><span class="o">+</span><span class="n">SKTDEL</span><span class="o">=</span><span class="mi">0</span>
+<span class="n">OK</span>
+
+<span class="n">AT</span><span class="o">+</span><span class="n">SKTSTATE</span>
+<span class="n">link_id</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="n">server</span><span class="p">,</span><span class="n">udp</span><span class="p">,</span><span class="n">src_address</span><span class="p">:</span><span class="mf">192.168.0.109</span><span class="p">,</span><span class="n">src_port</span><span class="p">:</span><span class="mi">12345</span><span class="p">,</span><span class="n">dst_address</span><span class="p">:</span><span class="mf">0.0.0.0</span><span class="p">,</span><span class="n">dst_port</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="n">socket_fd</span><span class="p">:</span><span class="mi">1</span>
+<span class="n">link_id</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span><span class="n">client</span><span class="p">,</span><span class="n">ssl</span><span class="p">,</span><span class="n">src_address</span><span class="p">:</span><span class="mf">0.0.0.0</span><span class="p">,</span><span class="n">src_port</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="n">dst_address</span><span class="p">:</span><span class="mf">192.168.0.103</span><span class="p">,</span><span class="n">dst_port</span><span class="p">:</span><span class="mi">4433</span><span class="p">,</span><span class="n">socket_fd</span><span class="p">:</span><span class="mi">2</span>
+
 <span class="n">OK</span>
 </pre></div>
 </div>
@@ -2176,78 +1481,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
 </footer>
         </div>
+
     <!-- 问题反馈按钮和对话框 -->
     
-        <button id="report-button">Inquire</button>
-    
-    <div id="feedback-dialog" class="feedback-dialog" style="display: none;">
-        <div class="form-group">
-            <label style="font-weight: bold;">Please select the related chapter:</label>
-            <select id="chapter-select">
-                <option value="">Select Chapter</option>
-                <!-- 章节选项将通过JavaScript动态填充 -->
-            </select>
-        </div>
-
-        <div class="form-group">
-            <label style="font-weight: bold;">Post Type</label>
-            <select id="post-type" class="form-control" required>
-                <option value="">-- Select Type --</option>
-                <option value="doc_correction">Document Correction</option>
-                <option value="tech_consult">Technical Consult</option>
-                <option value="tech_summary">Technical Summary</option>
-                <option value="operation_flow">Operation Flow</option>
-            </select>
-        </div>
-
-        <div class="form-group">
-            <label style="font-weight: bold;">Related Paragraph:</label>
-            <textarea
-                id="paragraph-input"
-                placeholder="{{ '你可以先选择有问题的段落或手动输入...' if language == 'zh_CN' else 'You can select text or type directly here...' }}"
-                rows="4"
-            ></textarea>
-        </div>
-
-        <div class="form-group">
-            <label style="font-weight: bold;">Please describe your issue:</label>
-            <textarea
-                id="inquire_input"
-                placeholder="Feature enhancement in progress, please stay tuned...">
-            </textarea>
-        </div>
-
-        <button id="submit-feedback">Submit</button>
-        <button id="cancel-feedback">Cancel</button>
-    </div>
-
-    <style>
-        .form-group {
-            margin: 5px 0;  /* 基础间距 */
-        }
-
-        /* 相邻表单项缩小上方间距 */
-        .form-group + .form-group {
-            margin-top: 10px;
-        }
-
-        /* 段落输入框底部微调 */
-        #paragraph-input, #inquire_input {
-            margin: 2px 0; /* 上下间距 */
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            resize: vertical;
-            min-height: 100px;
-
-            /* 占位符样式 */
-            &::placeholder {
-                color: #999;
-                font-style: italic;
-            }
-        }
-    </style>
 
       </div>
     </section>
@@ -2259,116 +1495,214 @@ document.addEventListener('DOMContentLoaded', function() {
   </script>
      
 
-    
-        
-        <script>
-            // 路由守卫配置
-            const ROUTER_CONFIG = {
-                baseUrl: 'http://172.29.57.206:5000',
-                checkInterval: 30000 // 30秒检查一次
-            };
+    <!-- templates/sidebar_toggle.html -->
 
-            window.getStoredUsername = function() {
-                try {
-                    const session = localStorage.getItem('auth_session');
-                    if (!session) return null;
-                    const { username, expires } = JSON.parse(session);
-                    if (Date.now() > expires) {
-                        localStorage.removeItem('auth_session');
-                        return null;
-                    }
-                    return username;
-                } catch (e) {
-                    console.error('读取存储会话失败:', e);
-                    return null;
-                }
+<button id="sidebar-toggle-button" aria-label="Toggle sidebar"></button>
+
+<script>
+    function sidebarToggleButton() {
+        const sidebar = document.querySelector('.wy-nav-side');
+        const contentArea = document.querySelector('.wy-nav-content');
+        const contentAreaWrap = document.querySelector('.wy-nav-content-wrap');
+        const sidebarToggleButton = document.getElementById('sidebar-toggle-button');
+
+        console.log('Sidebar:', sidebar);
+        console.log('Content Area:', contentArea);
+        console.log('Toggle Button:', sidebarToggleButton);
+
+        if (!sidebar || !contentArea || !sidebarToggleButton) {
+            console.error('One or more elements not found');
+            return;
+        }
+
+        let isSidebarCollapsed = false;
+
+        sidebarToggleButton.addEventListener('click', function() {
+            document.documentElement.classList.add('sidebar-transitioning');// 添加过渡类
+
+            if (isSidebarCollapsed) {
+                document.documentElement.classList.remove('sidebar-collapsed'); // 改为使用CSS类控制
+
+                sidebar.style.marginLeft = '0px';
+                contentAreaWrap.style.marginLeft = '300px';
+                contentArea.classList.remove('expanded');
+
+                sidebarToggleButton.style.left = '300px';
+            } else {
+                document.documentElement.classList.add('sidebar-collapsed');
+
+                sidebar.style.marginLeft = '-300px';
+                contentAreaWrap.style.marginLeft = '0px';
+                contentArea.classList.add('expanded');
+
+                sidebarToggleButton.style.left = '0px';
             }
 
-            // 增强型路由守卫
-            function setupRouteGuard() {
-                const originalPushState = history.pushState;
-                const originalReplaceState = history.replaceState;
+            // 同步状态
+            isSidebarCollapsed = !isSidebarCollapsed;
+
+            // 过渡结束后移除标记
+            setTimeout(() => {
+                document.documentElement.classList.remove('sidebar-transitioning');
+            }, 300); // 必须与过渡时间匹配
+        });
+    }
+</script>
+
+<style>
+    #sidebar-toggle-button {
+        position: fixed;
+        left: 300px;
+        top: 0;
+        z-index: 1002;
+
+        width: 4px;  /* 竖线宽度 */
+        /* 增加热区 */
+        padding: 0 15px; /* 左右各扩展12px点击区域 */
+        margin: 0 -15px; /* 抵消padding带来的位置偏移 */
+        clip-path: inset(0 -15px); /* 保持视觉宽度4px */
+
+        height: 100vh; /* 竖线高度 */
+        background: #2d2d2d;
+        border: none;
+        border-radius: 2px;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        transform: none;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+
+        /* 隐藏原始文字 */
+        color: transparent;
+        font-size: 0;
+
+        /* 修正交互区域 */
+        padding: 0;
+        margin: 0;
+
+        /* 新增：防止内容溢出 */
+        overflow: visible;
+
+        /* 调整箭头定位 */
+        &::before {
+            top: 50vh; /* 改为视口中点定位 */
+            transform: translateY(-50%);
+        }
+
+        &::after {
+            top: 50vh;
+            transform: translateY(-50%) rotate(45deg);
+        }
+    }
+
+    /* 动态箭头指示器 */
+    #sidebar-toggle-button::before {
+        content: '‹';
+        position: absolute;
+        left: 6px;
+        top: 50%;
+        width: 24px;
+        height: 24px;
+        background: #3498db;
+        color: white;
+        font-size: 18px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transform: translateY(-50%);
+        opacity: 0;
+        transition: all 0.3s ease;
+        pointer-events: none;
+    }
+
+    #sidebar-toggle-button::after {
+        content: '';
+        position: absolute;
+
+        left: -15px;  /* 向左扩展12px */
+        right: -15px; /* 向右扩展12px */
+
+        top: 50%;
+        width: 8px;
+        height: 8px;
+        border: 2px solid white;
+        border-width: 2px 2px 0 0;
+        transform: translateY(-50%) rotate(45deg);
+        opacity: 0;
+        transition: all 0.3s ease;
+    }
+
+    /* 悬停效果 */
+    #sidebar-toggle-button:hover {
+        width: 10px;
+        background: #2980b9;
+    }
+
+    /* 点击动画 */
+    #sidebar-toggle-button:active {
+        transform: translateY(-50%) scale(0.9);
+    }
+</style>
+
+<!-- 统一移动速度 -->
+<style>
+    /* 统一过渡参数 */
+    :root {
+        --sidebar-transition: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .wy-nav-side,
+    .wy-nav-content-wrap,
+    #sidebar-toggle-button {
+        transition: all var(--sidebar-transition) !important;
+    }
+
+    /* 按钮样式调整 */
+    #sidebar-toggle-button {
+        left: 300px;
+        transition: left var(--sidebar-transition),
+                    width 150ms ease, /* 悬停效果保持独立 */
+                    background 150ms ease;
+    }
+
+    /* 折叠状态 */
+    .sidebar-collapsed {
+        .wy-nav-side {
+            margin-left: -300px !important;
+        }
+
+        .wy-nav-content-wrap {
+            margin-left: 0 !important;
+        }
+
+        #sidebar-toggle-button {
+            left: 0 !important;
+        }
+    }
+
+    /* 禁用点击时的过渡 */
+    .sidebar-transitioning {
+        .wy-nav-side,
+        .wy-nav-content-wrap,
+        #sidebar-toggle-button {
+            transition: none !important;
+        }
+    }
+</style>
+
+    
+
+    <script>
+        // 初始化
+        document.addEventListener('DOMContentLoaded', () => {
             
-                function wrappedHistoryMethod(method) {
-                    return function(state, title, url) {
-                        if (url) {
-                            const urlObj = new URL(url, window.location.origin);
-                            verifyNavigation(urlObj.pathname).then(allowed => {
-                                if (allowed) {
-                                    method.apply(history, [state, title, url]);
-                                }
-                            });
-                        } else {
-                            method.apply(history, [state, title, url]);
-                        }
-                    };
-                }
 
-                history.pushState = wrappedHistoryMethod(originalPushState);
-                history.replaceState = wrappedHistoryMethod(originalReplaceState);
+            sidebarToggleButton();
+        });
 
-                window.addEventListener('popstate', () => {
-                    verifyNavigation(window.location.pathname);
-                });
-            }
 
-            // CSRF Token处理：获取CSRF令牌
-            window.getCSRFToken = function() {
-                // 从 Cookie 中获取 CSRF Token
-                const cookieValue = document.cookie
-                    .split('; ')
-                    .find(row => row.startsWith('csrf_token='))
-                    ?.split('=')[1];
-                return cookieValue || '';
-            }
+    </script>
 
-            // 统一验证逻辑
-            function verifyNavigation(path, isBackgroundCheck = false) {
-                console.log('[NDA Auth] verifyNavigation fetch check_nda_access ...');
-
-                if (isExemptPath(path)) return Promise.resolve(true);
-
-                const page = new URL(path, window.location.origin).pathname.split('/').pop();
-                console.log('[DEBUG] 提取的页面名称:', page);
-
-                return fetch('http://172.29.57.206:5000/check_nda_access', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRFToken': window.getCSRFToken()
-                    },
-                    body: JSON.stringify({
-                        path: page,
-                        username: window.getStoredUsername() || 'null' //  注意：后端从 session 取用户名，此处不需要传 username
-                    }),
-                    credentials: 'include'
-                })
-                .then(response => {
-                    // 关键：先检查状态码再解析 JSON
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-                    return response.json(); // 显式解析 JSON
-                })
-                .then(data => {
-                    console.log('[DEBUG] data.access:', data.access);
-                    return data.access ?? false;
-                })
-                .catch(error => {
-                    console.error('[ERROR] 验证失败:', error);
-                    return false;
-                });
-            }
-
-            // 初始化
-            document.addEventListener('DOMContentLoaded', () => {
-                verifyNavigation(window.location.pathname);
-                setupRouteGuard();
-            });
-        </script>
-    
-
-    
 
 
 </body>
