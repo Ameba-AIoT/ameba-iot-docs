@@ -1,11 +1,7 @@
 ## Reading the Docs
 Click the following URLs to view the documentations of the specific SoC.
-- FreeRTOS:
-  * English: https://ameba-aiot.github.io/ameba-iot-docs/freertos/en/latest/
-  * Chinese: https://ameba-aiot.github.io/ameba-iot-docs/freertos/cn/latest/
-- Linux:
-  * English: https://ameba-aiot.github.io/ameba-iot-docs/linux/en/latest/
-  * Chinese: https://ameba-aiot.github.io/ameba-iot-docs/linux/cn/latest/
+- English: https://doc.real-aiot.com/docs/en/latest/
+- Chinese: https://doc.real-aiot.com/docs/cn/latest/
 
 -----------------------------------------------------------------------------------------
 
@@ -14,7 +10,7 @@ This repository contains the technical documentations for Realtek Ameba IoT SoCs
 - AmebaDPlus
 - AmebaLite
 - AmebaSmart
-- AmebaGreen2 (TBD)
+- AmebaGreen2
 
 The technical documentation of every SoC includes but is not limited to the following parts：
 - Product Overview
