@@ -1,7 +1,7 @@
 ## Reading the Docs
 Click the following URLs to view the documentations of the specific SoC.
-- English: https://doc.real-aiot.com/docs/en/latest/
-- Chinese: https://doc.real-aiot.com/docs/cn/latest/
+- English: https://aiot.realmcu.com/docs/en/latest/index.html
+- Chinese: https://aiot.realmcu.com/docs/cn/latest/index.html
 
 -----------------------------------------------------------------------------------------
 
