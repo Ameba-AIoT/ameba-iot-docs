@@ -1,7 +1,7 @@
 ## Reading the Docs
 Click the following URLs to view the documentations of the specific SoC.
-- English: https://aiot.realmcu.com/docs/en/latest/index.html
-- Chinese: https://aiot.realmcu.com/docs/cn/latest/index.html
+- English: https://aiot.realmcu.com/en/
+- Chinese: https://aiot.realmcu.com/cn/
 
 -----------------------------------------------------------------------------------------
 
@@ -24,6 +24,6 @@ The technical documentation of every SoC includes but is not limited to the foll
 The SDK related to the documentation can be downloaded from https://github.com/Ameba-AIoT/ameba-rtos.
 
 ## Feedback
-- If you have any issues or suggestions when using these documentations, please log in [RealMCU](https://www.realmcu.com/en/Account/Login) and give feedback.
+- If you have any issues or suggestions when using these documentations, please log in [aiot](https://aiot.realmcu.com/loginpage) and give feedback.
 - If you find a bug or any error, you can directly create a Pull Request on GitHub.
 
